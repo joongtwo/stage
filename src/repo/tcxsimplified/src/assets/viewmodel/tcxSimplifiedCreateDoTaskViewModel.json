@@ -1,0 +1,90 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-command-sub-panel.directive",
+        "js/aw-navigate-panel.directive",
+        "js/aw-i18n.directive"
+    ],
+    "data": {
+        "sharedData": {
+            "initialValues": {
+                "activeView": "",
+                "previousView":"",
+                "addedSourceObjects": [],
+                "addedUserObjects": []
+            },
+            "meta": {
+                "activeView": {
+                    "field": "true",
+                    "type": "STRING"
+                },
+                "previousView": {
+                    "field": "true",
+                    "type": "STRING"
+                },
+                "addedSourceObjects": {
+                    "field": true,
+                    "type": "OBJECTARRAY"
+                }
+            }
+        },
+        "universalData": {
+            "selectedObj": {}
+        }
+    },
+    "actions": {
+        "doTaskPanelInit": {
+            "actionType": "JSFunction",
+            "method": "doTaskPanelInit",
+            "inputData":
+            {
+                "data": "{{data}}"
+            },
+            "outputData":
+            {
+                "sharedData": "sharedData"
+            },
+            "deps": "js/createTaskService"
+        },
+        "backToCreateTaskActionData":{
+            "actionType": "JSFunction",
+            "method": "backToCreateTaskActionData",
+            "inputData": {
+                "sharedData": "{{data.sharedData}}"
+            },
+            "outputData": {
+                "sharedData":""
+            },
+            "deps": "js/createTaskService"
+        },
+        "closeTaskPanelOnSelectionChange": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "awsidenav.openClose",
+                        "inputData": {
+                            "id": "aw_navigation",
+                            "commandId": "tcxSimplifiedCreateDoTask"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "primaryWorkArea.selectionChangeEvent",
+            "action": "closeTaskPanelOnSelectionChange"
+        }
+    ],
+    "lifecycleHooks": {
+        "onMount": "doTaskPanelInit"
+    },
+    "i18n": {
+        "createDoTask": ["tcxsimplifiedMessages"],
+        "add": ["tcxsimplifiedMessages"]
+    }
+}

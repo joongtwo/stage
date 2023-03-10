@@ -1,0 +1,26 @@
+[
+  {
+    "name": {
+      "source": "/i18n/ActiveCollabDeclarativeMessages",
+      "key": "overview"
+    },
+    "priority": 100,
+    "view": "ac0FeedSummary",
+    "visibleWhen": "selection.length === 1 && ctx.sublocation.nameToken === 'com_siemens_splm_client_activecollab_DiscussionsLocation:feedSubLocation'"
+  },
+  {
+    "name": {
+      "source": "/i18n/ActiveCollabDeclarativeMessages",
+      "key": "overview"
+    },
+    "priority": 100,
+    "view": "ac0ActionableFeedSummary",
+    "visibleWhen": "selection.length === 1 && ctx.sublocation.nameToken === 'com_siemens_splm_client_activecollab_DiscussionsLocation:actionableFeedSubLocation'"
+  },
+  {
+    "name": "",
+    "priority": 10,
+    "view": "AwSecondaryWorkareaNoSkeleton",
+    "visibleWhen": "selection.length === 0 && (ctx.sublocation.nameToken === 'com_siemens_splm_client_activecollab_DiscussionsLocation:feedSubLocation' || ctx.sublocation.nameToken === 'com_siemens_splm_client_activecollab_DiscussionsLocation:actionableFeedSubLocation')"
+  }
+]

@@ -1,0 +1,124 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "EpBalancingSubPage_selectedStationAndPr": {
+            "onChangeAction": "resetOperationsHeaderAndSetSelection",
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "occContext": {
+            "initialValues": {
+                "selectedModelObjects": [],
+                "viewKey": "",
+                "productContextInfo": null,
+                "elementToPCIMapCount": null,
+                "supportedFeatures": null,
+                "skipReloadOnConfigParamChange": true
+            },
+            "meta": {}
+        },
+        "provider":{
+            "label": "{{i18n.BalancingTitle}}",
+            "priority": 2,
+            "name": "lineBalancing",
+            "clientScopeURI": "lineBalancing",
+            "nameToken": "lineBalancing"
+        },
+        "overviewContext": {
+            "tabs": [ {
+                "name": "{{i18n.balancingOverviewTitle}}",
+                "tabKey": "EpBalancingOverview"
+            } ]
+        },
+        "stationTilesContext": {
+            "tabs": [ {
+                "name": "{{i18n.stationTilesTitle}}",
+                "tabKey": "EpBalancingStationTilesList"
+            } ]
+        },
+        "operationsContext": {
+            "tabs": [ {
+                "name": "{{i18n.operationsTableTitle}}",
+                "tabKey": "EpBalancingOperationsTable"
+            } ],
+            "sharedCommandAnchor": "commandBalancingTabAnchor"
+        },
+        "sequenceContext": {
+            "tabs": [ {
+                "name": "{{i18n.operationsSequenceTitle}}",
+                "tabKey": "EpBalancingOperationsSequence"
+            } ]
+        },
+        "productBOPContext": {
+            "tabs": [ {
+                "name": "{{i18n.balancingProductBOPTitle}}",
+                "tabKey": "EpBalancingProductBOP"
+            } ]
+        },
+        "awSubLocationPref": {
+            "hideRightWall": true
+        }
+    },
+    "actions": {
+        "initializeEPPage": {
+            "actionType": "JSFunctionAsync",
+            "method": "initializeEPPage",
+            "inputData": {
+                "provider": "{{data.provider}}"
+            },
+            "outputData": {
+                "stateContext": "stateContext",
+                "propertyPolicyId": "propertyPolicyId"
+            },
+            "deps": "js/epInitializationService"
+        },
+        "resetOperationsHeaderAndSetSelection": {
+            "actionType": "JSFunction",
+            "method": "resetOperationsHeaderAndSetSelection",
+            "inputData": {
+                "operationsTableTitle": "{{i18n.operationsTableTitle}}",
+                "operationsTableTitleWithStation": "{{i18n.operationsTableTitleWithStation}}",
+                "operationsTableTitleWithStationAndPR": "{{i18n.operationsTableTitleWithStationAndPR}}",
+                "station": "{{ports.EpBalancingSubPage_selectedStationAndPr.syncObject.station}}",
+                "processResource": "{{ports.EpBalancingSubPage_selectedStationAndPr.syncObject.pr}}",
+                "contentPanelData": "{{data.operationsContext}}",
+                "tabKey": "EpBalancingOperationsTable"
+            },
+            "outputData": {
+                "operationsContext": ""
+            },
+            "deps": "js/epBalancingLabelsService"
+        }
+
+    },
+    "lifecycleHooks": {
+        "onMount": "initializeEPPage"
+    },
+    "i18n": {
+        "BalancingTitle":[
+            "BalancingMessages"
+        ],
+        "balancingOverviewTitle": [
+            "BalancingMessages"
+        ],
+        "stationTilesTitle": [
+            "BalancingMessages"
+        ],
+        "operationsTableTitle": [
+            "BalancingMessages"
+        ],
+        "operationsTableTitleWithStation": [
+            "BalancingMessages"
+        ],
+        "operationsTableTitleWithStationAndPR": [
+            "BalancingMessages"
+        ],
+        "operationsSequenceTitle": [
+            "BalancingMessages"
+        ],
+        "balancingProductBOPTitle": [
+            "BalancingMessages"
+        ]
+    }
+}

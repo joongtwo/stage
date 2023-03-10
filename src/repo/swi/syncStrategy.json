@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "1.0.0",
+  "syncStrategies": {
+    "syncStrategyObject": {
+      "source": {
+        "view": "SwiSkillsList",
+        "port": "skillListPort"
+      },
+      "target": {
+        "view": "SwiSkillDetails",
+        "port": "skillDetailsPort"
+      }
+    },
+    "syncSwiVisViewerIdToSwi": {
+      "source": {
+        "view": "swiVisViewer",
+        "port": "publishVisWebInstanceId"
+      },
+      "target": {
+        "view": "Swi",
+        "port": "listenSwiViewersId"
+      }
+    },
+    "listenOnVisibilityChangedSwiToSwiVisViewer": {
+      "source": {
+        "view": "Swi",
+        "port": "swiVisibilityChangePort"
+      },
+      "target": {
+        "view": "swiVisViewer",
+        "port": "setVisibility"
+      }
+    }
+  },
+  "syncStrategyHandlers": {
+    "skillsHandler": {
+      "id": "syncStrategyObject",
+      "activeWhen": true
+    },
+    "syncSwiVisViewerIdToSwiHandler": {
+      "id": "syncSwiVisViewerIdToSwi",
+      "activeWhen": true
+    },
+    "listenOnVisibilityChangedSwiToSwiVisViewerHandler": {
+      "id": "listenOnVisibilityChangedSwiToSwiVisViewer",
+      "activeWhen": true
+    }
+  }
+}

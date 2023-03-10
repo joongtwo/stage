@@ -1,0 +1,126 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "current-processes": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "additionalProcessTitleMessage": {
+            "text": "{{i18n.additionalProcessTitleMessage}}",
+            "params": [
+                "{{props.currentProcesses.mbomRevisionName}}"
+            ]
+        },
+        "additionalProcessDescriptionMessage": {
+            "text": "{{i18n.additionalProcessDescriptionMessage}}",
+            "params": [
+                "{{props.currentProcesses.currentRevisionName}}",
+                "{{props.currentProcesses.mbomCurrentName}}"
+            ]
+        }
+    },
+    "grids": {
+        "additionalProcessesTable": {
+            "dataProvider": "additionalProcessesTableDataProvider",
+            "columnProvider": "additionalProcessesTableColumnProvider",
+            "addIconColumn": true,
+            "gridOptions": {
+                "enablePinning": true,
+                "enableSorting": false
+            }
+        }
+    },
+    "dataProviders": {
+        "additionalProcessesTableDataProvider": {
+            "initializeAction": "initialLoadData",
+            "response": "{{data.response.processes}}",
+            "totalFound": "{{data.response.totalFound}}"
+        }
+    },
+    "columnProviders": {
+        "additionalProcessesTableColumnProvider": {
+            "loadColumnAction": "createColumns"
+        }
+    },
+    "actions": {
+        "checkReleaseStatusInPrefernce":{
+            "actionType": "JSFunction",
+            "method": "checkReleaseStatusInPrefernce",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.additionalProcessesTableDataProvider}}"
+            },
+            "outputData": {
+                "showReviseCommand": "showReviseCommand"
+            },
+            "deps": "js/associatedProcessesForMbomNodeService"
+        },
+
+        "createColumns": {
+            "actionType": "JSFunction",
+            "method": "createColumns",
+            "inputData": {
+                "preferenceValues": "EP_OpenInDetailedPlanningPageProcessTableColumnConfiguration",
+                "dataProvider": "{{data.dataProviders.additionalProcessesTableDataProvider}}"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "initialLoadData": {
+            "actionType": "JSFunctionAsync",
+            "method": "initialLoadData",
+            "inputData": {
+                "processes": "{{props.currentProcesses.additionalProcesses}}"
+            },
+            "outputData": {
+                "response": ""
+            },
+            "deps": "js/associatedProcessesForMbomNodeService"
+        },
+       
+        "reviseAndRelinkProcesses": {
+            "actionType": "JSFunctionAsync",
+            "method": "reviseAndRelink",
+            "inputData": {
+                "selectedObjectUid": "{{data.dataProviders.additionalProcessesTableDataProvider.selectedObjects[0].uid}}",
+                "selectedMBOMNode": "{{props.currentProcesses.selectedMBOMNode}}",
+                "dataProvider": "{{data.dataProviders.additionalProcessesTableDataProvider}}",
+                "processData": "{{data.dataProviders.additionalProcessesTableDataProvider.selectedObjects[0]}}"
+            },
+            "deps":"js/associatedProcessesForMbomNodeService"
+        }
+    },
+    "conditions": {
+
+        "enableReviseAndLinkCommand":{
+            "expression" : "showReviseCommand"
+        },
+        "onProcessSelection": {
+            "expression": "data.dataProviders.additionalProcessesTableDataProvider.selectedObjects.length != 0"
+
+        }
+    },
+
+    "onEvent": [{
+        "eventId": "additionalProcessesTableDataProvider.selectionChangeEvent",
+        "action": "checkReleaseStatusInPrefernce",
+       "inputArgs": {
+            "eventData": "{{eventData}}"
+        }
+    }],
+
+    "i18n": {
+        "additionalProcessTitleMessage":[
+            "navigationMessages"
+        ],
+        "additionalProcessDescriptionMessage":[
+            "navigationMessages"
+        ],
+        "processReviseAndRelinkButtonLabel": [
+            "navigationMessages"
+        ],
+        "processLinkButtonLabel": [
+            "navigationMessages"
+        ]
+    }
+
+}

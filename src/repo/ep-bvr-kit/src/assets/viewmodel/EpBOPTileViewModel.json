@@ -1,0 +1,129 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "commandbarContext": {
+            "objectBaseType": "MEProcess",
+            "createProductLabelCaption": "{{i18n.createProcessHeaderTitle}}",
+            "addProductLabelCaption": "{{i18n.addProcess}}",
+            "boTypeName": "MEProcessRevision",
+            "exclusionBOTypeNames": [],
+            "objectTypesToSearch": [
+                "MEProcessRevision"
+            ],
+            "preferenceSuffixForTypesToSearch": "",
+            "buttonName": "{{i18n.addProcess}}",
+            "placeHolderForSearch": "{{i18n.productSearchPlaceHolder}}",
+            "commandTitles": {
+                "epAddStructureTitle": "{{i18n.useExistingProcess}}",
+                "epCreateStructureTitle": "{{i18n.createNewProcess}}"
+            }
+        }
+    },
+    "actions": {
+        "updateStructureContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "addVMOAndRevRuleToStructureContext"
+                },
+                {
+                    "action": "setCommandContext"
+                }
+            ]
+        },
+        "addVMOAndRevRuleToStructureContext": {
+            "actionType": "JSFunction",
+            "method": "addVMOAndRevRuleToStructureContext",
+            "inputData": {
+                "contextPath": "epTaskPageContext.processStructureContext"
+            },
+            "deps": "js/manageWorkPackageService"
+        },
+        "clearTaskPageContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "clearTaskPageContextForManagePage"
+                },
+                {
+                    "action": "clearCommandContext"
+                }
+            ]
+        },
+        "clearTaskPageContextForManagePage": {
+            "actionType": "JSFunction",
+            "method": "removeContextsFromCtx",
+            "inputData": {
+                "contextPaths": [
+                    "epTaskPageContext.processStructureContext",
+                    "epTaskPageContext.processStructure",
+                    "epTaskPageContext.processPCI",
+                    "epTaskPageContext.processStructureConfigFlags"
+                ]
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": "{{ctx.epTaskPageContext.processStructureContext}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "clearCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": ""
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        }
+    },
+    "conditions": {
+        "isTileDataAvailable": {
+            "expression": "ctx.epTaskPageContext.processStructureContext && ctx.epTaskPageContext.processStructureContext.vmo"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "updateStructureContextAndCommandContext"
+    },
+    "onEvent": [{
+            "eventId": "ep.addRemoveEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "clearTaskPageContextAndCommandContext",
+            "condition": "removedSaveEvent.includes(ctx.epTaskPageContext.processStructureContext.uid)"
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "updateStructureContextAndCommandContext",
+            "condition": "addedSaveEvent !== undefined"
+        }
+    ],
+    "i18n": {
+        "createProcessHeaderTitle": [
+            "AdminMessages"
+        ],
+        "addProcess": [
+            "AdminMessages"
+        ],
+        "productSearchPlaceHolder": [
+            "AdminMessages"
+        ],
+        "createNewProcess": [
+            "AdminMessages"
+        ],
+        "useExistingProcess": [
+            "AdminMessages"
+        ]
+    }
+}

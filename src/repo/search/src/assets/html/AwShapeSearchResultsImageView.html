@@ -1,0 +1,11 @@
+<span class="aw-widgets-propertyNonEditValue aw-search-inContentSearchBox"
+    exist-when="data.totalFound===0 && !(subPanelContext.searchState.thresholdExceeded === 'true')">{{i18n.noFiltersFound}}</span>
+<span class="aw-widgets-propertyNonEditValue aw-search-inContentSearchBox"
+    exist-when="data.totalFound===0 && subPanelContext.searchState.thresholdExceeded === 'true'">{{ctx.searchInfo.noResultsFound}}</span>
+<!-- <aw-scrollpanel visible-when="data.totalFound>0"> -->
+<aw-list dataprovider="data.dataProviders.imageDataProvider" show-decorators="true"
+    exist-when="subPanelContext.searchState.criteria !== undefined && subPanelContext.searchState.criteria.searchString !== ''"
+    show-context-menu="true" show-check-box="subPanelContext.showCheckBox">
+    <aw-image-cell vmo="item"></aw-image-cell>
+</aw-list>
+<!-- </aw-scrollpanel> -->

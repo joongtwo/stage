@@ -1,0 +1,119 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+
+    "actions":
+    {
+        "updateFilterData":
+        {
+            "actionType": "JSFunctionAsync",
+            "method": "updateFilterData",
+            "inputData":
+            {
+                "graphModel": "{{ctx.panelContext.graphModel}}",
+                "graphFilters": "{{ctx.panelContext.graphFilterState}}",
+                "filterState": "{{data.filterState}}",
+                "filterMap": "{{ctx.panelContext.filterMap}}"
+            },
+            "outputData": {
+                "filterState.categories": ""
+            },
+            "deps": "js/Rv1RelationBrowserLegendService"
+        },
+        "loadProperties": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadProperties",
+            "inputData":
+            {
+                "filterMap": "{{ctx.panelContext.filterMap}}",
+                "graphModel": "{{ctx.panelContext.graphModel}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "Rv1RelationsBrowser.updateFilterData"
+                } ]
+            },
+            "deps": "js/Rv1RelationBrowserLegendService"
+        },
+        "applyFilters": {
+            "actionType": "JSFunction",
+            "method": "applyFilters",
+            "inputData":
+            {
+                "filterState": "{{data.filterState}}",
+                "graphFilterState": "{{ctx.panelContext.graphFilterState}}"
+            },
+            "outputData": {
+                "selectedFilters": "result.appliedFilters",
+                "updateFilters": "result.updateFilters"
+            },
+            "events": {
+                "success": [ {
+                    "name": "Rv1RelationsBrowser.updateFilterData",
+                    "condition": "updateFilters === true"
+                } ]
+            },
+            "deps": "js/Rv1RelationBrowserLegendService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "loadProperties",
+        "onUpdate": [ {
+            "action": "applyFilters",
+            "observers": [ "viewModel.atomicData.filterState" ]
+        } ]
+    },
+    "data":
+    {
+        "selectedFilters": {},
+        "filterState": {
+            "initialValues": {},
+            "meta": {
+                "categories": [ {
+                    "filterValues": [ {
+                        "selected": {
+                            "field": "true",
+                            "type": "BOOLEAN"
+                        }
+                    } ]
+                } ]
+            }
+        }
+    },
+
+    "functions":
+    {
+
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "Rv1RelationsBrowser.updateFilterData",
+            "action": "updateFilterData"
+        },
+        {
+            "eventId": "awGraph.itemsRemoved",
+            "action": "updateFilterData"
+        },
+        {
+            "eventId": "awGraph.itemsAdded",
+            "action": "updateFilterData"
+        },
+        {
+            "eventId": "awGraph.visibilityChanged",
+            "action": "updateFilterData"
+        }
+    ],
+
+    "conditions": {
+
+    },
+
+
+
+    "i18n":
+    {
+
+    }
+}

@@ -1,0 +1,817 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-listbox.directive",
+        "js/aw-list.directive",
+        "js/aw-checkbox.directive",
+        "js/visible-when.directive",
+        "js/aw-flex-row.directive",
+        "js/aw-flex-column.directive",
+        "js/aw-button.directive",
+        "js/aw-label.directive",
+        "js/aw-i18n.directive"
+    ],
+    "actions": {
+        "reveal": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                        "name": "ctm1.getUnderlyingObject"
+                    },
+                    {
+                        "name": "ctm1.getLanguages"
+                    },
+                    {
+                        "name": "ctm1.getTransformPolicy"
+                    },
+                    {
+                        "name": "ctm1.getRevisionRules"
+                    },
+                    {
+                        "name": "ctm1.resetLocal"
+                    }
+                ]
+            }
+        },
+
+        "Ctm1GetUnderlyingObject": {
+            "actionType": "JSFunction",
+            "method": "getObject",
+            "inputData": {
+                "data": "{{ctx.selected.props.awb0UnderlyingObject.dbValues[0]}}"
+            },
+            "outputData": {
+                "Ctm1Topic": ""
+            },
+            "events": {
+                "success": [ {
+                    "name": "ctm1.dataprovider"
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1GetLanguages": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "__ctm0_Language_Query",
+                        "searchID": "LANGUAGE_QUERY",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0",
+                        "lastEndIndex": "0",
+                        "languageName": "*",
+                        "startIndex": "0"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "languageName",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "policy": {
+                "types": [ {
+                    "name": "DCt_Language",
+                    "properties": [ {
+                        "name": "languageName"
+                    } ]
+                } ]
+            },
+
+            "outputData": {
+                "languageList": "{{function:getLovFromQuery}}"
+            },
+
+            "events": {
+                "success": [ {
+                    "name": "ctm1.setDefaultLanguage"
+                } ]
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1GetTools": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "__ctm1_publish_tools_based_on_topic_type",
+                        "searchID": "PUBLISH_TOOL_QUERY",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0",
+                        "lastEndIndex": "0",
+                        "object_name": "{{function:ctm1GetTopicTypeName}}",
+                        "startIndex": "0"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "object_name",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "events": {
+                "success": [ {
+                    "name": "ctm1.getStyleTypes"
+                } ],
+                "failure": [ {
+                    "name": "ctm1.getStyleTypes"
+                } ]
+            },
+
+            "outputData": {
+                "toolList": "{{function:getLovFromQuery}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1GetStyleTypes": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "__ctm0_Style_Type_Query",
+                        "searchID": "STYLE_TYPES_QUERY",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0",
+                        "lastEndIndex": "0",
+                        "object_name": "*",
+                        "startIndex": "0"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "object_name",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "events": {
+                "success": [ {
+                    "name": "ctm1.restoreLocal"
+                } ],
+                "failure": [ {
+                    "name": "ctm1.restoreLocal"
+                } ]
+            },
+
+            "outputData": {
+                "styleTypeList": "{{function:getLovFromQueryInsertEmpty}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1GetTransformPolicy": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "General...",
+                        "searchID": "GENERAL_QUERY",
+                        "Type": "DC_TransfPolicy",
+                        "lastEndIndex": "",
+                        "totalObjectsFoundReportedToClient": "",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "object_name",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "outputData": {
+                "transformPolicyList": "{{function:getLovFromQuery}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1GetRevisionRules": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "General...",
+                        "searchID": "GENERAL_QUERY",
+                        "Type": "Revision Rule",
+                        "lastEndIndex": "",
+                        "totalObjectsFoundReportedToClient": "",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "object_name",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "outputData": {
+                "composeVersionList": "{{function:getLovFromQuery}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1GetGlobalDitaValueFilters": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "General...",
+                        "searchID": "GENERAL_QUERY",
+                        "Type": "DITA Value Filter",
+                        "lastEndIndex": "",
+                        "totalObjectsFoundReportedToClient": "",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "object_name",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "outputData": {
+                "globalDitaValueFiltersLov": "{{function:getLovFromQuery}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1PublishAction": {
+            "actionType": "TcSoaService",
+            "serviceName": "ContMgmtBase-2011-06-ContentManagement",
+            "method": "preparePublish",
+            "inputData": {
+                "inputs": [ {
+                    "clientId": "publish",
+                    "primaryObject": "{{function:ctm1GetUnderlyingObject}}",
+                    "publishTool": "{{function:ctm1GetToolObject}}",
+                    "priority": 0,
+                    "keyValueArgs": {
+                        "publishToFileSystem": "false",
+                        "language": "{{data.language.uiValue}}",
+                        "transVerSel": "{{data.translationVersion.dbValue}}",
+                        "transformPolicy": "{{data.transformPolicy.uiValue}}",
+                        "registerResult": "{{data.registerResult.dbValue}}",
+                        "styleType": "{{data.styleType.uiValue}}",
+                        "ditaFilterValues": "{{function:getCheckedGlobalDitaValueFilter}}",
+                        "ditavalTopics": "{{function:getCheckedDitaValueFilter}}",
+                        "dontComposeTopics": "{{function:getUnCheckedDitaValueFilter}}",
+                        "resultingFileName": "{{ctx.selected.props.awb0ArchetypeId.uiValues[0]}}"
+                    }
+                } ]
+            },
+            "outputData": {
+                "publishData": "publishData"
+            },
+            "events": {
+                "success": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "publishInProgress"
+                    }
+                ],
+                "failure": [
+                    {
+                        "message": "publishError"
+                    }
+                ]
+            },
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1GetDitaValueFilters": {
+            "actionType": "TcSoaService",
+            "serviceName": "ContMgmtBase-2011-06-ContentManagement",
+            "method": "composeContent",
+            "inputData": {
+                "input": [ {
+                    "clientId": "findDitaVals",
+                    "composableBO": "{{function:ctm1GetUnderlyingObject}}",
+                    "revisionRule": null,
+                    "keyValueArgs": {
+                        "actionType": "findDitaVals"
+                    }
+                } ]
+            },
+            "outputData": {
+                "composedData": "composedData"
+            },
+            "events": {
+                "success": [ {
+                    "name": "ctm1.exportReady",
+                    "eventData": {
+                        "composedData": [
+                            "{{data.composedData}}"
+                        ]
+                    }
+                } ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "failure",
+                    "condition": "errorCode.code === 38015"
+                } ]
+            },
+            "deps": "soa/kernel/clientDataModel"
+        },
+
+        "Ctm1GetSizeEstimate": {
+            "actionType": "TcSoaService",
+            "serviceName": "ContMgmtBase-2011-06-ContentManagement",
+            "method": "composeContent",
+            "inputData": {
+                "input": [ {
+                    "clientId": "estimate_size",
+                    "composableBO": "{{function:ctm1GetUnderlyingObject}}",
+                    "revisionRule": null,
+                    "keyValueArgs": {
+                        "actionType": "estimate_size",
+                        "includeContentRefs": "true",
+                        "includeComposeRefs": "true",
+                        "includeSchemas": "false",
+                        "includeGraphics": "true",
+                        "includeStyleSheets": "false",
+                        "toolName": "{{data.tool.uiValue}}"
+                    }
+                } ]
+            },
+            "outputData": {
+                "publishSizeEstimate.dispValue": "composedData[0].composedTransientFileReadTicket",
+                "publishSizeEstimate.uiValue": "composedData[0].composedTransientFileReadTicket"
+            },
+            "deps": "soa/kernel/clientDataModel"
+        },
+
+        "Ctm1SetDefaultLanguage": {
+            "actionType": "JSFunction",
+            "method": "setLanguage",
+            "inputData": {
+                "response": "",
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1GlobalDitaValueFiltersDataProvider": {
+            "actionType": "dataProvider",
+            "method": "globalDitaValueFilters"
+        },
+
+        "Ctm1DitaValueFiltersDataProvider": {
+            "actionType": "dataProvider",
+            "method": "ditaValueFilters"
+        },
+
+        "downloadComposedFilterFile": {
+            "actionType": "JSFunction",
+            "method": "getDitaValueFilters",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "resetLocal": {
+            "actionType": "JSFunction",
+            "method": "resetLocal",
+
+            "events": {
+                "success": [ {
+                    "name": "ctm1.getTools"
+                } ],
+                "failure": [ {
+                    "name": "ctm1.getTools"
+                } ]
+            },
+
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "restoreLocal": {
+            "actionType": "JSFunction",
+            "method": "restoreLocal",
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        }
+    },
+    "functions": {
+        "ctm1GetUnderlyingObject": {
+            "functionName": "getObject",
+            "parameters": [
+                "{{ctx.selected.props.awb0UnderlyingObject.dbValues[0]}}"
+            ]
+        },
+        "ctm1GetTopicTypeName": {
+            "functionName": "getTopicTypeName",
+            "parameters": [
+                "{{ctx.selected.props.awb0UnderlyingObject.dbValues[0]}}"
+            ]
+        },
+        "ctm1GetToolObject": {
+            "functionName": "getObject",
+            "parameters": [
+                "{{data.tool.dbValue}}"
+            ]
+        },
+        "getLovFromQuery": {
+            "functionName": "getLovFromQuery",
+            "parameters": [
+                "{{data}}",
+                "false"
+            ]
+        },
+        "getLovFromQueryInsertEmpty": {
+            "functionName": "getLovFromQuery",
+            "parameters": [
+                "{{data}}",
+                "true"
+            ]
+        },
+        "getGlobalDitaValuesFilterCheckBoxData": {
+            "functionName": "getCheckBoxData",
+            "parameters": [
+                "{{data.globalDitaValueFiltersLov}}",
+                "{{data}}",
+                "globalDitaValueFiltersList",
+                "false"
+            ]
+        },
+        "getCheckedGlobalDitaValueFilter": {
+            "functionName": "getChecked",
+            "parameters": [
+                "{{data.globalDitaValueFiltersList}}"
+            ]
+        },
+        "getCheckedDitaValueFilter": {
+            "functionName": "getChecked",
+            "parameters": [
+                "{{data.ditaValueFiltersList}}"
+            ]
+        },
+        "getUnCheckedDitaValueFilter": {
+            "functionName": "getChecked",
+            "parameters": [
+                "{{data.ditaValueFiltersList}}",
+                "false"
+            ]
+        }
+    },
+    "onEvent": [ {
+            "eventId": "ctm1.getUnderlyingObject",
+            "action": "Ctm1GetUnderlyingObject",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.getLanguages",
+            "action": "Ctm1GetLanguages",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.getTools",
+            "action": "Ctm1GetTools",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.getStyleTypes",
+            "action": "Ctm1GetStyleTypes",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.getTransformPolicy",
+            "action": "Ctm1GetTransformPolicy",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.setDefaultLanguage",
+            "action": "Ctm1SetDefaultLanguage",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.getRevisionRules",
+            "action": "Ctm1GetRevisionRules",
+            "condition": "conditions.objectIsNotCtm1Topic",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.exportReady",
+            "action": "downloadComposedFilterFile",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.dataprovider",
+            "action": "Ctm1GlobalDitaValueFiltersDataProvider",
+            "condition": "conditions.objectIsDitaTopic",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.dataprovider",
+            "action": "Ctm1DitaValueFiltersDataProvider",
+            "condition": "conditions.objectIsDitaTopic",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.resetLocal",
+            "action": "resetLocal"
+        },
+        {
+            "eventId": "ctm1.restoreLocal",
+            "action": "restoreLocal"
+        }
+    ],
+    "dataProviders": {
+        "globalDitaValueFilters": {
+            "dataProviderType": "Action",
+            "action": "Ctm1GetGlobalDitaValueFilters",
+            "response": "{{function:getGlobalDitaValuesFilterCheckBoxData}}",
+            "totalFound": "{{data.globalDitaValueFiltersList.length}}",
+            "selectionModelMode": "none"
+        },
+        "ditaValueFilters": {
+            "dataProviderType": "Action",
+            "action": "Ctm1GetDitaValueFilters",
+            "response": "{{data.ditaValueFiltersList}}",
+            "totalFound": "{{data.ditaValueFiltersList.length}}",
+            "selectionModelMode": "none"
+        }
+    },
+    "data": {
+        "Ctm1Topic": null,
+        "doSizeEstimate": {
+            "displayName": "{{i18n.CtmlEstimateSize}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+            
+        },
+        "publishSizeEstimate": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": ""
+
+        },
+        "tool": {
+            "displayName": "{{i18n.tool}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "toolList": {
+            "type": "STRING",
+            "dbValue": []
+        },
+        "styleType": {
+            "displayName": "{{i18n.styleType}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "styleTypeList": {
+            "type": "STRING",
+            "dbValue": []
+        },
+        "language": {
+            "displayName": "{{i18n.language}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "languageList": {
+            "type": "STRING",
+            "dbValue": []
+        },
+
+        "composeVersion": {
+            "displayName": "{{i18n.composeVersion}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "composeVersionList": {
+            "type": "STRING",
+            "dbValue": []
+        },
+        "translationVersion": {
+            "displayName": "{{i18n.translationVersion}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "translationVersionList": {
+            "type": "STRING",
+            "dbValue": [ {
+                    "propDisplayValue": "{{i18n.latestReceived}}",
+                    "propInternalValue": "Latest Received"
+                },
+                {
+                    "propDisplayValue": "{{i18n.matchTopic}}",
+                    "propInternalValue": "Match Topic"
+                },
+                {
+                    "propDisplayValue": "{{i18n.received}}",
+                    "propInternalValue": "Received"
+                }
+            ]
+        },
+        "registerResult": {
+            "displayName": "{{i18n.registerResult}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "registerResultList": {
+            "type": "STRING",
+            "dbValue": [ {
+                    "propDisplayValue": "{{i18n.composedDocument}}",
+                    "propInternalValue": "Composed Document"
+                },
+                {
+                    "propDisplayValue": "{{i18n.reviewerDocument}}",
+                    "propInternalValue": "Reviewer Document"
+                }
+            ]
+        },
+        "transformPolicy": {
+            "displayName": "{{i18n.transformPolicy}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "transformPolicyList": {
+            "type": "STRING",
+            "dbValue": []
+        },
+        "globalDitaValueFilters": {
+            "displayName": "{{i18n.globalDitaValueFilters}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "globalDitaValueFiltersList": [],
+        "ditaValueFilters": {
+            "displayName": "{{i18n.ditaValueFilters}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "ditaValueFiltersList": []
+    },
+    "preferences": [
+        "ctm0DefaultLanguage"
+    ],
+    "conditions": {
+        "objectIsDitaTopic": {
+            "expression": "data.Ctm1Topic && data.Ctm1Topic.modelType.typeHierarchyArray.indexOf( 'DC_DitaItemRevision' ) > -1"
+        },
+        "objectIsNotCtm1Topic": {
+            "expression": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'Ctm1Topic' ) === -1"
+        }
+    },
+    "messages": {
+        "failure": {
+            "messageType": "INFO"
+        },
+        "publishInProgress": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.publishInProgress}}"
+        },
+        "publishError": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "lifecycleHooks": {
+        "onInit": "reveal"
+    },
+    "i18n": {
+        "ctm1Publish": [ "ContentMgmtMessages" ],
+        "publishTopic": [ "ContentMgmtMessages" ],
+        "tool": [ "ContentMgmtMessages" ],
+        "styleType": [ "ContentMgmtMessages" ],
+        "language": [ "ContentMgmtMessages" ],
+        "composeVersion": [ "ContentMgmtMessages" ],
+        "translationVersion": [ "ContentMgmtMessages" ],
+        "registerResult": [ "ContentMgmtMessages" ],
+        "transformPolicy": [ "ContentMgmtMessages" ],
+        "latestReceived": [ "ContentMgmtMessages" ],
+        "matchTopic": [ "ContentMgmtMessages" ],
+        "received": [ "ContentMgmtMessages" ],
+        "composedDocument": [ "ContentMgmtMessages" ],
+        "reviewerDocument": [ "ContentMgmtMessages" ],
+        "globalDitaValueFilters": [ "ContentMgmtMessages" ],
+        "ditaValueFilters": [ "ContentMgmtMessages" ],
+        "estimate": [ "ContentMgmtMessages" ],
+        "publishInProgress": [ "ContentMgmtMessages" ],
+        "CtmlEstimateSize": [ "ContentMgmtMessages" ]
+    }
+}

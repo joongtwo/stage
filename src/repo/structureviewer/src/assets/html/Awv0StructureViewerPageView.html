@@ -1,0 +1,34 @@
+<aw-server-visibility-toolbar exist-when="!conditions.displayImageCapture " first-anchor="aw_3dViewer" second-anchor="aw_toolbarRight,aw_fullScreen" orientation="HORIZONTAL" context="{viewerContextData : data.svInstance.viewerCtxData, viewerAtomicData:props.viewerStateProp.value, occmgmtContext: props.subPanelContext.context.occContext, fullScreenState : subPanelContext.fullScreenState}"></aw-server-visibility-toolbar>
+<aw-server-visibility-toolbar exist-when="conditions.displayImageCapture" first-anchor="aw_2dViewer" second-anchor="aw_viewerRightSide" orientation="HORIZONTAL" context="{viewerContextData : data.svInstance.viewerCtxData, viewerAtomicData:props.viewerStateProp.value, occmgmtContext: props.subPanelContext.context.occContext}"></aw-server-visibility-toolbar>
+<div class="aw-threeDViewer-viewer3DParentContainer sw-column w-12">
+    <div exist-when="conditions.display3dOnScreenMarkupToolbar && !conditions.displayImageCapture" class="aw-viewer-viewerMarkupContainer sw-row">
+        <aw-toolbar class="aw-viewer-viewer3DSubCommandToolbar" first-anchor="aw_3dMarkupViewer" second-anchor="aw_3dMarkupRight" orientation="HORIZONTAL" context="{viewerContextData : data.svInstance.viewerCtxData, viewerAtomicData:props.viewerStateProp.value, occmgmtContext: props.subPanelContext.context.occContext}"></aw-toolbar>
+    </div>
+    <div exist-when="conditions.displaySubCommandToolbar" class="aw-viewer-viewer3DContainer sw-row">
+        <aw-toolbar class="aw-viewer-viewer3DSubCommandToolbar" first-anchor="aw_3dViewerSubCommandsFirstAnchor" second-anchor="aw_3dViewerSubCommandsSecondAnchor" orientation="HORIZONTAL" context="{viewerContextData : data.svInstance.viewerCtxData, viewerAtomicData:props.viewerStateProp.value}"></aw-toolbar>
+    </div>
+    <div exist-when="conditions.displayExplodedViewSubCommandToolbar" class="aw-viewer-viewer3DContainer sw-row">
+        <awv0-explode-view-component sub-panel-context="{viewerContextData: data.svInstance.viewerCtxData, viewerAtomicData:props.viewerStateProp.value}">
+        </awv0-explode-view-component>
+    </div>
+    <div visible-when="conditions.loadingViewer && !conditions.viewerLoadbarVisible" class="aw-threeDViewer-viewer3DChildContainer sw-row">
+        <aw-i18n>i18n.LoadingViewer</aw-i18n>
+    </div>
+    <div visible-when="conditions.loadingViewer" class="aw-threeDViewer-viewer3DChildContainer sw-row">
+        <aw-image source="data.thumbnailImage"></aw-image>
+    </div>
+    <div id="imageCaptureContainer" visible-when="conditions.displayImageCapture" class="aw-threeDViewer-viewer3DChildContainer aw-threeDViewer-imageCaptureContainer sw-row">
+    </div>
+    <div id="awStructureViewer" class="aw-threeDViewer-viewer3DChildContainer sw-row">
+        <awv0-structure-viewer-component view-container-prop="data.viewContainerProp"></awv0-structure-viewer-component>
+    </div>
+    <div visible-when="conditions.showViewerProgress" class="aw-threeDViewer-loadProgressContainer sw-row">
+        <div class="aw-viewer-loadProgressPerformant aw-threeDViewer-loadProgress"></div>
+    </div>
+    <div visible-when="conditions.showViewerEmmProgress" class="aw-threeDViewer-emmLoadProgressContainer sw-row">
+        <div class="aw-viewer-emmLoadProgress aw-threeDViewer-emmLoadProgress"></div>
+    </div>
+    <div id="awViewerLoadbar" visible-when="conditions.viewerLoadbarVisible" class="aw-threeDViewer-loadbarContainer">
+        <awv0-viewer-load-dialog viewerStateProp="{{props.viewerStateProp}}" viewerCtxData="{{data.svInstance.viewerCtxData}}"></awv0-viewer-load-dialog>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel-body.directive",
+        "js/aw-default-cell.directive",
+        "js/aw-list.directive"
+    ],
+    "actions": {
+        "callMergeChangeSoa": {
+            "actionType": "TcSoaService",
+            "deps": "js/Cm1RevertMergeUtils",
+            "serviceName": "Internal-CmAws-2020-12-Changes",
+            "method": "mergeRedLineChanges",
+            "inputData": {
+                "mergeRedLineChangesInput": "{{function:getInputForMerge}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "getMergeCandidates.reload"
+                    },
+                    {
+                        "name": "updateStartFreshNavigation"
+                    }
+                ]
+            }
+        }
+    },
+    "functions": {
+        "getInputForMerge": {
+            "functionName": "getInputForMerge",
+            "parameters": [
+                "{{props.mergeItem}}"
+            ]
+        }
+    },
+    "onEvent": [],
+    "conditions": {
+        "isNotAlreadyMerged": {
+            "expression": "props.mergeItem.mergeCandidateItem.isAlreadyMerged === false"
+        }
+    },
+    "props": {
+        "merge-item": {
+            "type": "object"
+        }
+    }
+}

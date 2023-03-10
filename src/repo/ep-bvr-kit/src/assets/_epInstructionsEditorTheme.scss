@@ -1,0 +1,52 @@
+// Copyright 2020 Siemens Product Lifecycle Management Software Inc.
+
+.aw-epInstructionsEditor-wiEditorContainer {
+    .aw-widgets-cellListItem {
+        border-color: transparent;
+        .wi-editor-textarea {
+            background-color: $Siemens_Snow;
+        }
+        .wi-step-editor {
+            background-color: $PL_Black_25;
+            border-color: $PL_Black_24;
+            &:hover {
+                background-color: $brand_selection_background_hover;
+                border-color: $brand_selection_background_hover;
+    
+                .wi-editor-textarea {
+                    border-color: $brand_selection_background_hover;
+                }
+            }
+        }
+        .aw-epInstructionsEditor-partsToolsPlaceholder {
+            color:$Siemens_Blue_Dark_Old;
+        }
+        .aw-epInstructionsEditor-standardTextPlaceholder{
+            border-color: $Siemens_Snow;
+            border-left-color: $Siemens_Blue_Dark_Old;
+        }
+    }
+
+    .aw-widgets-cellListItemSelected {
+        .wi-step-editor {
+            background-color: $Siemens_Blue_10_Old;
+            border-color: $Siemens_Blue_10_Old;
+            .wi-editor-textarea {
+                border-color: $Siemens_Blue_10_Old;
+            }
+    
+            &:hover {
+                background-color: $brand_selection_background_selected_hover;
+                border-color: $brand_selection_background_selected_hover;
+    
+                .wi-editor-textarea {
+                    border-color: $brand_selection_background_selected_hover;
+                }
+            }
+        }
+    }
+
+    .wi-stepHeader-changeContent {
+        background-color: $Siemens_Yellow_13;
+    }
+}

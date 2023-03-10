@@ -1,0 +1,23 @@
+<%  if(vmo.props && vmo.props[ propName ]) {
+    var checked_out = vmo.props[ propName ].dbValue;
+    var user = tooltipProps[0];
+    var date1 = tooltipProps[1];
+    if( checked_out === 'Y' ){
+        var imagePath = basePath +'/image/';
+        var toolTip = "";
+        var underlyingBO = dependentServices[ 0 ].getObject( vmo.props["awb0UnderlyingObject"].dbValues[0] );
+        if( tooltipProps ){
+            _.forEach( tooltipProps, function( tooltipPropName ){
+                if( underlyingBO.props[ tooltipPropName ] ){
+                    var toolTipPropDispName = underlyingBO.props[ tooltipPropName ].propertyDescriptor.displayName;
+                    var toolTipPropVal =  underlyingBO.props[ tooltipPropName ].uiValues[0];
+                    if( toolTipPropVal ){
+                        toolTip += toolTipPropDispName + ": " + toolTipPropVal + '\n'
+                    }
+                }
+            });
+        }       
+        imagePath += "indicatorCheckedOut16.svg"
+    %>
+<img src ="<%=imagePath%>" title="<%=toolTip%>" alt="<%=toolTip%>" class="aw-visual-indicator">
+<%}}%>

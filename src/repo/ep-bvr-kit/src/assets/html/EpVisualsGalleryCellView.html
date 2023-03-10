@@ -1,0 +1,14 @@
+<div class="sw-column aw-epBvrGraphics-cellContainer"
+    extended-tooltip="subPanelContext.props.changeIndicationProp && subPanelContext.props.changeIndicationProp.value[0].changeType === 'Impacted' ? 'EpImpactedPVTooltip' : data.tooltipWithNoView"
+    extended-tooltip-options="{placement : ['bottom']}">
+    <div class="sw-row aw-epGraphics-thumbnailContainer">
+        <aw-panel class="aw-epBvrGraphics-thumbnailPanel">
+            <aw-image source="subPanelContext.thumbnailURL !== '' ? subPanelContext.thumbnailURL : subPanelContext.typeIconURL"></aw-image>
+        </aw-panel>
+    </div>
+    <div class="sw-row aw-epBvrGraphics-thumbnailLabelContainer">
+        <span class="aw-epBvrGraphics-thumbnailLabel" id="{{data.labelId}}">
+            {{data.thumbnailLabel}}
+        </span>
+    </div>
+</div>

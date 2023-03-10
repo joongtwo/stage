@@ -1,0 +1,36 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2020.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+@mixin ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+label.aw-epValidation-title {
+    box-sizing: border-box;
+    font-size: $fontsize_large;
+    font-weight: 400;
+    padding-bottom: 4px;
+    padding-top: 6px;
+    padding-right: 4px;
+    padding-left: 16px;
+    @include ellipsis;
+}
+.aw-epValidation-line {
+    box-sizing: border-box;
+    font: 12px Segoe UI Semibold;
+    padding-bottom: 4px;
+    padding-top: 8px;
+    padding-right: 4px;
+}
+
+.aw-epValidation-tableCell{
+    align-self: center;
+}
+.aw-epValidation-title {
+    font-size:$fontsize_x_large;
+  }

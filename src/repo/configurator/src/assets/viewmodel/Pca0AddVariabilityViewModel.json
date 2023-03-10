@@ -1,0 +1,66 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "addVariabilityToConstraintTree": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "Pca0Constraints.addVariabilityToConstraintTree",
+                    "eventData": {
+                        "parentNode":"{{ctx.panelContext.vmo}}",
+                        "isTopGrid":"{{ctx.panelContext.isTopGrid}}",
+                        "selected": "{{data.atomicData.selectedVariability.vmoSelected}}",
+                        "isPanelPinned":"{{subPanelContext.panelPinned}}"
+                    }
+                } ]
+            }
+        }
+    },
+    "ctx": {
+        "panelContext": {
+            "type": "object"
+        }
+    },
+    "conditions": {
+        "showFeatures": {
+            "expression": "data.selectedTab.tabKey === 'tc_xrt_Features'"
+        },
+        "showModels": {
+            "expression": "data.selectedTab.tabKey === 'tc_xrt_Models'"
+        }
+    },
+    "selectionModels": {
+        "variabilitySelectionModel": {
+            "selectionMode": "multiple"
+        }
+    },
+    "data": {
+        "selectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "selectedVariability": {
+            "initialValues": {
+                "vmoSelected": [],
+                "featureSelected": [],
+                "modelsSelected": []
+            },
+            "meta": {}
+        },
+        "tabModels": [
+            {
+                "name": "Features",
+                "tabKey": "tc_xrt_Features"
+            },
+            {
+                "name": "Models",
+                "tabKey": "tc_xrt_Models"
+            }
+        ]
+    },
+    "i18n": {
+        "addPanelTitle": [ "ConfiguratorExplorerMessages" ],
+        "addButtonTitle": [ "TCUICommandPanelsMessages" ]
+    }
+}

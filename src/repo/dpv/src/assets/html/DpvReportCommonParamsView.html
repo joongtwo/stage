@@ -1,0 +1,40 @@
+<div class="sw-row">
+    <div class="sw-column w-3">
+        <aw-listbox prop="data.queryType" enable-when="conditions.showShiftAndQryType" list="data.queryTypeList.dbValue" action="updateQueryType"></aw-listbox>
+    </div>
+    <div class="sw-column w-3">
+        <aw-listbox prop="data.shift" enable-when="conditions.showShiftAndQryType" list="data.shiftList.dbValue" action="updateShift"></aw-listbox>
+    </div>
+</div>
+<div class="sw-row">
+    <div class="sw-column w-3">
+        <aw-numeric prop="data.lastNJobs" enable-when="conditions.showLastNJobsData"></aw-numeric>
+    </div>
+</div>
+<div class="sw-row">
+    <div class="sw-column w-3">
+        <aw-numeric prop="data.days" enable-when="conditions.showLastJobsTimeData"></aw-numeric>
+    </div>
+    <div class="sw-column w-3">
+        <aw-numeric prop="data.hours" enable-when="conditions.showLastJobsTimeData"></aw-numeric>
+    </div>
+    <div class="sw-column w-3">
+        <aw-numeric prop="data.minutes" enable-when="conditions.showLastJobsTimeData"></aw-numeric>
+    </div>
+</div>
+<div class="sw-row">
+    <div class="sw-column w-4">
+        <aw-datetime prop="data.fromDate" enable-when="conditions.showDateTimeData"></aw-datetime>
+    </div>
+    <div class="sw-column w-4">
+        <aw-datetime prop="data.toDate" enable-when="conditions.showDateTimeData"></aw-datetime>
+    </div>
+</div>
+<div class="sw-row">
+    <div class="sw-column w-3">
+        <aw-textbox prop="data.fromJob" enable-when="conditions.showFromOrSingleJob"></aw-textbox>
+    </div>
+    <div class="sw-column w-3">
+        <aw-textbox prop="data.toJob" enable-when="conditions.showToJob"></aw-textbox>
+    </div>
+</div>

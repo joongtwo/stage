@@ -1,0 +1,12 @@
+<aw-panel-body exist-when="!data.structureCreation">
+    <div class="sw-row h-5">{{i18n.autogenerateCmdDescription}}</div>
+    <div class="sw-row">{{i18n.creationConfirmationMessage}}</div>
+</aw-panel-body>
+<aw-panel-body exist-when="data.structureCreation">
+    <div class="sw-row">{{i18n.progressMessage}}</div>
+    <mfe-loading-message class="sw-row"></mfe-loading-message>
+</aw-panel-body>
+<aw-panel-footer exist-when="!data.structureCreation">
+    <aw-button button-type="base" size='auto' action="closePopupWindow" >{{i18n.cancel}}</aw-button>
+    <aw-button size='auto' action="createStructuresUsingRuleStream" >{{i18n.generateStructures}}</aw-button>
+</aw-panel-footer>

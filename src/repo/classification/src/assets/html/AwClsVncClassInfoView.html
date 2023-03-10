@@ -1,0 +1,16 @@
+<div class='sw-component h-12 w-12 aw-class-info'>
+    <div class="w-12" exist-when="props.imagelink && !props.probability">
+        <aw-pic class="sw-base-icon h-11 w-11" source='props.imagelink' title='{{props.classdescription}}'></aw-pic>
+    </div>
+    <div class="w-12 h-10" exist-when="props.imagelink && props.probability">
+        <aw-pic class="sw-base-icon h-12 w-12" source='props.imagelink' title='{{props.classdescription}}'></aw-pic>
+    </div>
+    <div class="sw-column h-12 w-12" exist-when="props.classdescription">
+        <div class="sw-row h-12 w-2 aw-widgets-classDescription">
+            {{props.classdescription}}
+        </div>
+    </div>
+    <div class="aw-clspanel-suggestedProbability" exist-when="props.probability">
+        {{ props.probability }}% <span>{{i18n.match}}</span>
+    </div>
+</div>

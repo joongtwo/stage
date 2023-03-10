@@ -1,0 +1,13 @@
+<aw-command-panel caption="i18n.Select">
+    <aw-panel-header>
+           <aw-panel-section>
+        </aw-panel-section>
+    </aw-panel-header>
+    <aw-form name="commandPanelForm">
+            <aw-add target-object='selectedMO' relations='contents' visible-tabs='palette,search'
+              selection-mode="single" type-filter='ItemRevision' add-panel-state="fields.addPanelState"></aw-add>
+    </aw-form>
+    <aw-panel-footer>
+              <aw-button size="auto" action="addProblemItem" show-when="conditions.showCommand" ><aw-i18n>i18n.set</aw-i18n></aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

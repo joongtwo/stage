@@ -1,0 +1,28 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "initialize": {
+            "actionType": "JSFunction",
+            "method": "initializeEffectivityValidator",
+            "inputData": {
+                "effectivityData":"{{subPanelContext}}",
+                "validateEffectivityData":"{{subPanelContext.validateEffectivityData}}",
+                "configData":"{{subPanelContext.configData}}"
+            },
+            "deps": "js/epValidateEffectivityService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initialize"
+    },
+    "conditions": {
+        "showMessage": {
+            "expression": "{{subPanelContext.validateEffectivityData.showMessage}}"
+        }
+    }
+}

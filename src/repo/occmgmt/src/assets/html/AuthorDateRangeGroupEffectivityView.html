@@ -1,0 +1,19 @@
+<aw-flex-row>
+    <aw-flex-column width="12">
+        <aw-panel-body scrollable="false">
+            <aw-flex-column width="12">
+            <aw-textbox prop="data.nameBox" ></aw-textbox>
+            <aw-datetime prop="data.startDateTime" exist-when="data.isTimeEnabled"></aw-datetime>
+            <aw-date prop="data.startDateTime" exist-when="!data.isTimeEnabled"></aw-date>
+            <aw-listbox prop="data.endDateOptions" list="data.endDateList.dbValue"></aw-listbox>
+            <aw-widget prop="data.endDateTime" class="aw-endDate-authorEffectivityPanel" exist-when="data.endDateOptions.dbValue=='Date' && !data.isTimeEnabled"></aw-widget>
+            <aw-datetime prop="data.endDateTime" class="aw-endDate-authorEffectivityPanel" exist-when="data.endDateOptions.dbValue=='Date' && data.isTimeEnabled"></aw-datetime>
+            </aw-flex-column>
+        </aw-panel-body>
+        <aw-panel-footer >
+            <aw-button size="auto" action="createGroupEffectivity" visible-when="(data.nameBox.dbValue != '' && data.nameBox.dbValue != undefined) && (data.endDateOptions.dbValue === 'UP' || data.endDateOptions.dbValue === 'SO' || data.endDateTime.dbValue > data.startDateTime.dbValue)">
+                <aw-i18n>i18n.apply</aw-i18n>
+            </aw-button>
+        </aw-panel-footer>
+    </aw-flex-column>
+</aw-flex-row>

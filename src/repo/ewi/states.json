@@ -1,0 +1,74 @@
+{
+  "com_siemens_splm_clientfx_tcui_xrt_showObject": {
+    "params": {
+      "date": null,
+      "enditem": null,
+      "revrule": null,
+      "stepUid": null,
+      "unitno": null,
+      "resource": null,
+      "preview": null
+    },
+    "type": "parameter"
+  },
+  "com_siemens_splm_client_Ewi_sendFeedbackLocationDev": {
+    "data": {
+      "browserTitle": {
+        "source": "/i18n/EWIMessages",
+        "key": "SendFeedbackTitle"
+      },
+      "headerTitle": {
+        "source": "/i18n/EWIMessages",
+        "key": "SendFeedbackTitle"
+      }
+    },
+    "type": "location",
+    "url": "/ewi"
+  },
+  "com_siemens_splm_client_Ewi_sendFeedbackDev": {
+    "controller": "EWISubLocationCtrl",
+    "data": {
+      "priority": 0,
+      "label": "",
+      "clientScopeURI": null,
+      "nameToken": "com.siemens.splm.client.ewi.sendFeedback",
+      "policy": "/policies/EWIObjectPropertyPolicy.json"
+    },
+    "dependencies": [
+      "js/aw.ewi.sublocation.controller"
+    ],
+    "parent": "com_siemens_splm_client_Ewi_sendFeedbackLocationDev",
+    "templateUrl": "/html/Ewi0SendFeedback.html",
+    "type": "subLocation",
+    "url": "/com.siemens.splm.client.ewi.sendFeedback"
+  },
+  "com_siemens_splm_client_Ewi_embeddedLocation": {
+    "data": {
+      "browserTitle": {
+        "source": "/i18n/EWIMessages",
+        "key": "ewiBrowserTitle"
+      }
+    },
+    "type": "location"
+  },
+  "com_siemens_splm_client_Ewi_embedded": {
+    "controller": "EWISITCtrl",
+    "data": {
+      "priority": 0,
+      "label": "",
+      "clientScopeURI": null,
+      "nameToken": "com.siemens.splm.client.ewi.embedded"
+    },
+    "params": {
+      "uid": null,
+      "context": null
+    },
+    "dependencies": [
+      "js/aw.ewi.SIT.controller"
+    ],
+    "parent": "com_siemens_splm_client_Ewi_embeddedLocation",
+    "templateUrl": "/html/Ewi0SITView.html",
+    "type": "subLocation",
+    "url": "/com.siemens.splm.client.ewi.embedded"
+  }
+}

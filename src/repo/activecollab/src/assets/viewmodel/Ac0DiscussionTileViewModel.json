@@ -1,0 +1,97 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "replyDiscussion": {
+            "initialValues": {
+                "discussionIsExpanded": false,
+                "repliesString": "",
+                "showFollowConv": "{{props.convItem.discussionItem.showFollowConv}}"
+            },
+            "meta": {
+                "discussionIsExpanded": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                },
+                "repliesString": {
+                    "field": "true",
+                    "type": "STRING"
+                },
+                "showFollowConv": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        },
+        "updateReplyDiscussion": {
+            "initialValues": {
+                "loadedCommentsObject": {}
+            },
+            "meta": {
+                "loadedCommentsObject": {
+                    "field": "true",
+                    "type": "OBJECT"
+                }
+            }
+        }
+    },
+    "ports": {
+    },
+    "actions": {
+        "updateRepliesString": {
+            "actionType": "JSFunction",
+            "method": "initDiscussionTile",
+            "inputData":
+            {
+                "data": "{{data.replyDiscussion}}",
+                "convItem": "{{props.convItem.discussionItem}}",
+                "i18n": "{{i18n}}",
+                "sharedData": "{{props.sharedDataObj.sharedData}}"
+            },
+            "outputData": {
+                "replyDiscussion": ""
+            },
+            "deps": "js/Ac0DiscussionTileService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "updateRepliesString",
+        "onUpdate": {
+            "action": "updateRepliesString",
+            "observers": [ "props.convItem.discussionItem.props.numReplies.dbValue" ]
+        }
+    },
+    "props": {
+        "conv-item": {
+            "type": "object"
+        },
+        "contents": {
+            "type": "object"
+        },
+        "search-state": {
+            "type": "object"
+        },
+        "selected-obj": {
+            "type": "object"
+        },
+        "shared-data-obj": {
+            "type": "object"
+        }
+    },
+
+    "ctx": {
+        "preferences": {
+            "type": "object"
+        },
+        "sublocation": {
+            "type": "object"
+        },
+        "shared-data-obj": {
+            "type": "object"
+        }
+    },
+
+    "i18n": {
+        "replies": [ "ActiveCollabDeclarativeMessages" ],
+        "reply": [ "ActiveCollabDeclarativeMessages" ]
+    }
+}

@@ -1,0 +1,207 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpHighLevelPlanningGuidanceMessage_MbomTreeSelection": {
+            "syncObject": {}
+        },
+        "EpHighLevelPlanningGuidanceMessage_ProcessTreeSelection": {
+            "syncObject": {}
+        }
+    },
+    "actions": {
+        "cmdCreateProcessButtonCommandAction": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "CheckForTargetAssemblies",
+                    "condition": "!props.subPanelContext.sharedSelectionData.isPertModeActive"
+                },
+                {
+                    "action": "createProcessPlanAction",
+                    "condition": "data.targetAssembly.length < 1 && !props.subPanelContext.sharedSelectionData.isPertModeActive"
+                },
+                {
+                    "action": "CheckForTargetAssembliesForPert",
+                    "condition": "props.subPanelContext.sharedSelectionData.isPertModeActive"
+                },
+                {
+                    "action": "createProcessPlanActionForPert",
+                    "condition": "data.targetAssembly.length < 1 && props.subPanelContext.sharedSelectionData.isPertModeActive"
+                }
+            ]
+        },
+        "CheckForTargetAssemblies": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTargetAssemblies",
+            "deps": "js/associatedProcessesForMbomNodeService",
+            "inputData": {
+                "selectedProcessNode": "{{ports.EpHighLevelPlanningGuidanceMessage_ProcessTreeSelection.syncObject}}",
+                "shouldHaveAssembly": false,
+                "errorMessage": {
+                    "objectType": "plan",
+                    "commandName": "createButtonTitle"
+                }
+            },
+            "outputData": {
+                "targetAssembly": ""
+            }
+        },
+        "createProcessPlanAction": {
+            "actionType": "JSFunction",
+            "method": "executeCommandIfVisibleAndEnabled",
+            "inputData": {
+                "commandId": "epCreateProcess",
+                "commandContext": {
+                    "inputObject": [
+                        "{{ports.EpHighLevelPlanningGuidanceMessage_ProcessTreeSelection.syncObject}}"
+                    ],
+                    "targetAssembly": "{{ports.EpHighLevelPlanningGuidanceMessage_MbomTreeSelection.syncObject}}",
+                    "hideCreateAndAddMoreButton": true
+                },
+                "runActionWithViewModel": "{{parameters.commandActionExecutor.runActionWithViewModel}}"
+            },
+            "deps": "js/command.service"
+        },
+        "CheckForTargetAssembliesForPert": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTargetAssemblies",
+            "deps": "js/associatedProcessesForMbomNodeService",
+            "inputData": {
+                "selectedProcessNode": "{{props.subPanelContext.sharedSelectionData.contextObjectForPert}}",
+                "shouldHaveAssembly": false,
+                "errorMessage": {
+                    "objectType": "plan",
+                    "commandName": "createButtonTitle"
+                }
+            },
+            "outputData": {
+                "targetAssembly": ""
+            }
+        },
+        "createProcessPlanActionForPert": {
+            "actionType": "JSFunction",
+            "method": "executeCommandIfVisibleAndEnabled",
+            "inputData": {
+                "commandId": "epCreateProcess",
+                "commandContext": {
+                    "inputObject": [
+                        "{{props.subPanelContext.sharedSelectionData.contextObjectForPert}}"
+                    ],
+                    "targetAssembly": "{{ports.EpHighLevelPlanningGuidanceMessage_MbomTreeSelection.syncObject}}",
+                    "hideCreateAndAddMoreButton": true
+                },
+                "runActionWithViewModel": "{{parameters.commandActionExecutor.runActionWithViewModel}}"
+            },
+            "deps": "js/command.service"
+        }
+    },
+    "data": {},
+    "messages": {
+        "mbomTreeGuidanceMsg": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.treeSelectionInfo}}"
+        },
+        "pertGuidanceMsg": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.pertGuidanceMsg}}"
+        },
+        "processTreeGuidanceMsg": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.processTreeGuidanceMsg}}"
+        }
+    },
+    "i18n": {
+        "treeSelectionInfo": [
+            "HighLevelPlanningMessages"
+        ],
+        "createButtonTitle": [
+            "HighLevelPlanningMessages"
+        ],
+        "processTreeGuidanceMsg": [
+            "HighLevelPlanningMessages"
+        ],
+        "pertGuidanceMsg": [
+            "HighLevelPlanningMessages"
+        ]
+    },
+    "conditions": {
+        "enableButton": {
+            "expression": {
+                "$and": [{
+                        "$source": "conditions.isSelectionFromMbomAvailable",
+                        "$query": {
+                            "$eq": true
+                        }
+                    },
+                    {
+                        "$source": "conditions.isSelectionFromBopAvailable",
+                        "$query": {
+                            "$eq": true
+                        }
+                    },
+                    {
+                        "$source": "conditions.isTopNodeSelected",
+                        "$query": {
+                            "$eq": false
+                        }
+                    },
+                    {
+                        "$source": "conditions.isReadOnlyMode",
+                        "$query": {
+                            "$eq": false
+                        }
+                    }
+                ]
+            }
+        },
+        "isSelectionFromMbomAvailable": {
+            "expression": "ports.EpHighLevelPlanningGuidanceMessage_MbomTreeSelection.syncObject && ports.EpHighLevelPlanningGuidanceMessage_MbomTreeSelection.syncObject.uid"
+        },
+        "isSelectionFromBopAvailable": {
+            "expression": "ports.EpHighLevelPlanningGuidanceMessage_ProcessTreeSelection.syncObject && ports.EpHighLevelPlanningGuidanceMessage_ProcessTreeSelection.syncObject.uid"
+        },
+        "isTopNodeSelected": {
+            "expression": "ports.EpHighLevelPlanningGuidanceMessage_MbomTreeSelection.syncObject && ports.EpHighLevelPlanningGuidanceMessage_MbomTreeSelection.syncObject.uid === ctx.epPageContext.productStructure.uid"
+        },
+        "isReadOnlyMode": {
+            "expression": {
+                "$and": [{
+                    "$source": "ctx.mfgReadOnlyMode.readOnlyMode",
+                    "$query": {
+                        "$eq": true
+                    }
+                }]
+            }
+        },
+        "isContainer": {
+            "expression": "ports.EpHighLevelPlanningGuidanceMessage_ProcessTreeSelection.syncObject.props.mbc0BopQualifier"
+        },
+        "enableButtonForPert": {
+            "expression": {
+                "$and": [{
+                        "$source": "conditions.isSelectionFromMbomAvailable",
+                        "$query": {
+                            "$eq": true
+                        }
+                    },
+                    {
+                        "$source": "conditions.isTopNodeSelected",
+                        "$query": {
+                            "$eq": false
+                        }
+                    },
+                    {
+                        "$source": "conditions.isReadOnlyMode",
+                        "$query": {
+                            "$eq": false
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

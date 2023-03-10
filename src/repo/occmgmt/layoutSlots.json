@@ -1,0 +1,104 @@
+{
+  "slots": {
+    "occmgmtPrimaryWorkAreaCommandBarSlot": {
+      "name": "aw_pwaCommandBar",
+      "view": "OccmgmtPwaCommandBar",
+      "activeWhen": {
+        "condition": "conditions.isOccurrenceManagementSubLocation"
+      }
+    },
+    "fullscreenOccmgmtHeader": {
+      "name": "aw_fullScreenHeader",
+      "view": "OccmgmtFullScreenHeader",
+      "activeWhen": {
+        "condition": "conditions.isOccmgmtSubLocation"
+      }
+    },
+    "OccmgmtDuplicateSubLocationPWACommandBarSlot": {
+      "name": "aw_pwaCommandBar",
+      "view": "OcMgmtDuplicatePWACommandbar",
+      "activeWhen": {
+        "condition": "conditions.isOccMgmtDuplicateSubLocation"
+      }
+    },
+    "OccmgmtDuplicateSubLocationTitleSlot": {
+      "name": "aw_headerTitle",
+      "view": "OccMgmtDuplicateHeaderTitle",
+      "activeWhen": {
+        "condition": "conditions.isOccMgmtDuplicateSubLocation"
+      }
+    },
+    "OccmgmtDuplicateSubLocationTaskBarSlot": {
+      "name": "aw_taskBar",
+      "view": "OccMgmtDuplicateTaskbar",
+      "activeWhen": {
+        "condition": "conditions.isOccMgmtDuplicateSubLocation"
+      }
+    },
+    "ImportPreviewSublocationHeaderTitleSlot": {
+      "name": "aw_headerTitle",
+      "view": "Awb0ImportPreviewHeaderTitle",
+      "activeWhen": {
+        "condition": "conditions.isImportPreviewSublocation"
+      }
+    },
+    "occmgmtSplitHeaderTitle": {
+      "name": "aw_headerTitle",
+      "view": "occmgmtSplitHeader",
+      "activeWhen": {
+        "condition": "conditions.isSplitView"
+      }
+    },
+    "occmgmtSplitTaskBarSlot": {
+      "name": "aw_taskBar",
+      "view": "occmgmtSplitViewTaskbar",
+      "activeWhen": {
+        "condition": "conditions.isSplitView"
+      }
+    },
+    "Awb0ContextFeatureSlot": {
+      "name": "Awb0ContextFeature_ContextInFilter",
+      "view": "Awb0ContextFeature",
+      "activeWhen": {
+        "condition": "conditions.contextEnabled"
+      }
+    },
+    "CbaHeaderTitleSlot": {
+      "name": "aw_headerTitle",
+      "view": "CbaHeaderTitle",
+      "activeWhen": {
+        "condition": "conditions.EntCBAIsSubLocation"
+      }
+    },
+    "CbaTaskBarSlot": {
+      "name": "aw_taskBar",
+      "view": "CbaTaskbar",
+      "activeWhen": {
+        "condition": "conditions.EntCBAIsSubLocation"
+      }
+    }
+  },
+  "conditions": {
+    "isOccurrenceManagementSubLocation": {
+      "expression": "provider.clientScopeURI === 'Awb0OccurrenceManagement'"
+    },
+    "isOccmgmtSubLocation": {
+      "expression": "context.context.provider.clientScopeURI === 'Awb0OccurrenceManagement' && !context.activeTab.api"
+    },
+    "isOccMgmtDuplicateSubLocation": {
+      "expression": "ctx.sublocation.nameToken === 'com.siemens.splm.client.duplicate:DuplicateSublocation'"
+    },
+    "isImportPreviewSublocation": {
+      "expression": "ctx.sublocation.nameToken === 'com.siemens.splm.client.Awb0ImportPreview:importPreviewSublocation'"
+    },
+    "isSplitView": {
+      "expression": "ctx.splitView.mode && ctx.sublocation.nameToken === 'com.siemens.splm.client.occmgmt:OccurrenceManagementSubLocation'"
+    },
+    "contextEnabled": {
+      "expression": "ctx.aceActiveContext.context.isOpenedUnderAContext"
+    },
+    "EntCBAIsSubLocation": {
+      "expression": "ctx.sublocation.nameToken === 'com.siemens.splm.client.cba.CADBOMAlignment:CBASublocation'"
+    }
+  }
+}

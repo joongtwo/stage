@@ -1,0 +1,38 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "lifecycleHooks": {
+        "onMount": "buildTitle",
+        "onUpdate": {
+            "action": "buildTitle",
+            "observers": [
+                "props.subPanelContext.searchState.criteria.searchString",
+                "props.subPanelContext.searchState.searchString"
+             ]
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "buildTitle": {
+            "actionType": "JSFunctionAsync",
+            "method": "buildTitle",
+            "inputData": {
+                "searchState": "{{props.subPanelContext.searchState}}"
+            },
+            "outputData": {
+                "crumbTitle": ""
+            },
+            "deps": "js/AwClsAdminBreadCrumbService"
+        }
+    },
+    "data": {
+        "crumbTitle": null,
+        "selectedNode": null
+    },
+    "conditions": {},
+    "onEvent": []
+}

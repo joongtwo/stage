@@ -1,0 +1,62 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "actions": {
+        "doSaveCriteria": {
+            "actionType": "JSFunction",
+            "method": "saveEditReportCriteria",
+            "inputData": {
+                "revRuleProp": "{{data.revRuleProp}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "rb0EditReportCriteria.saveCriteriaSuccessful"
+                } ]
+            },
+            "deps": "js/configureItemReportService"
+        },
+        "closePopup": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupEl": "{{ctx.ReportsContext.criteriaPopupId}}"
+            },
+            "deps": "js/popupService"
+        }
+    },
+
+    "data": {
+        "revRuleProp":
+        {
+            "displayName": "{{i18n.appliedRevRule}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": true,
+            "labelPosition": "PROPERTY_LABEL_AT_TOP",
+            "dbValue": "{{subPanelContext.appliedRevRuleObj.uid}}",
+            "uiValues": ["{{subPanelContext.appliedRevRuleObj.propDisplayValue}}"],
+            "uiValue": "{{subPanelContext.appliedRevRuleObj.propDisplayValue}}",
+            "dispValue": "{{subPanelContext.appliedRevRuleObj.propDisplayValue}}"
+        }
+
+    },
+
+    "i18n":
+    {
+        "applyCriteria":
+        [
+            "ReportChartMessages"
+        ],
+        "appliedRevRule":
+        [
+            "ReportChartMessages"
+        ]
+    },
+
+    "onEvent": [
+        {
+            "eventId": "rb0EditReportCriteria.saveCriteriaSuccessful",
+            "action": "closePopup"
+        }
+    ]
+}

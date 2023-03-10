@@ -1,0 +1,42 @@
+<aw-panel-section>
+        <aw-checkbox prop="data.useOrigSettingCheckbox" action="updateUseOrigTemplateSettings" enable-when="conditions.isQryTypeUseOrigSettingsOff"></aw-checkbox>
+        <aw-radiobutton prop="data.chartType" list="data.chartTypeValues.dbValue" action="updateChartType" enable-when="conditions.enableChartSettingsWidgetsCond"></aw-radiobutton>
+        <aw-radiobutton prop="data.xAxisLabels" list="data.xAxisLabelsList.dbValue" action="updateXAxisLabels" enable-when="conditions.enableChartSettingsWidgetsCond"></aw-radiobutton>
+        <aw-radiobutton prop="data.yAxisLabels" list="data.yAxisLabelsList.dbValue" action="updateYAxisLabels" enable-when="conditions.enableChartSettingsWidgetsCond"></aw-radiobutton>
+        <div class="sw-row justify-center">
+                <div class="sw-column">
+                        <y-axis-labels-user-defined-option sub-panel-context="props.subPanelContext" exist-when="conditions.showUserDefinedOption"></y-axis-labels-user-defined-option>
+                        <y-axis-labels-spec-limit-option sub-panel-context="props.subPanelContext" exist-when="conditions.showSpecLimitOption"></y-axis-labels-spec-limit-option>
+                        <y-axis-labels-auto-option sub-panel-context="props.subPanelContext" enable-when="conditions.enableChartSettingsWidgetsCond"
+                                exist-when="conditions.showAutoOption"></y-axis-labels-auto-option>
+                </div>
+        </div>
+        <div class="sw-row">
+                <div class="sw-column w-3">
+                        <aw-checkbox prop="data.annotationColorCheckbox" enable-when="conditions.enableChartSettingsWidgetsCond" action="updateAnnotationColorBox"></aw-checkbox>
+                </div>
+                <div class="sw-column w-2">
+                        <aw-numeric prop="data.annotationGreen" enable-when="conditions.enableChartSettingsWidgetsCond"></aw-numeric>
+                </div>
+                <div class="sw-column w-2">
+                        <aw-numeric prop="data.annotationRed" enable-when="conditions.enableChartSettingsWidgetsCond"></aw-numeric>
+                </div>
+                <div class="sw-column w-2">
+                        <aw-listbox prop="data.basis" action="updateBasisAndAnnColors" list="data.basisList.dbValue" enable-when="conditions.enableChartSettingsWidgetsCond"></aw-listbox>
+                </div>
+        </div>
+        <div class="sw-row">
+                <div class="sw-column w-3">
+                        <aw-label prop="data.barChartColorScope" enable-when="conditions.enableChartSettingsWidgetsCond"></aw-label>
+                </div>
+                <div class="sw-column w-2">
+                        <aw-numeric prop="data.barChartScopeGreen" enable-when="conditions.enableChartSettingsWidgetsCond"></aw-numeric>
+                </div>
+                <div class="sw-column w-2">
+                        <aw-numeric prop="data.barChartScopeRed" enable-when="conditions.enableChartSettingsWidgetsCond"></aw-numeric>
+                </div>
+                <div class="sw-column w-2">
+                        <aw-numeric prop="data.barChartScopeBlack" enable-when="conditions.enableChartSettingsWidgetsCond"></aw-numeric>
+                </div>
+        </div>
+</aw-panel-section>

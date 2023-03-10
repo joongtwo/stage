@@ -1,0 +1,19 @@
+<aw-panel>
+
+    <div class="sw-row demo-h-12f" align-content="center" exist-when="!conditions.hasSkills" >
+        <mfe-message sub-panel-context="data.messages.SkillsNotAssigned"></mfe-message>
+    </div>
+
+    <div class="sw-column h-12 w-12 justify-center" exist-when="conditions.hasSkills" >
+
+        <mfe-content-container class="sw-row h-12 w-12" container-direction="HORIZONTAL" container-name="skillsTabs">
+
+            <swi-skills-list sub-panel-context="{...props.subPanelContext}"  exist-when="conditions.hasSkills" > </swi-skills-list>
+
+            <swi-skill-details  exist-when="conditions.hasSkills"></swi-skill-details>
+
+        </mfe-content-container>
+
+    </div>
+
+</aw-panel>

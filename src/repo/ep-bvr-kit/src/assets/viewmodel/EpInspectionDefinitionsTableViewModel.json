@@ -1,0 +1,109 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpInspectionDefinitionsTable_inputObject": {
+            "onChangeAction": "handleInput",
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "preferenceName": "EP_AssignedInspectionDefinitionTabColumnConfiguration",
+        "relationName": [
+            "Mfg0inspection_definition",
+            "Mfg0sub_elements"
+        ],
+        "loadInputObject": {
+            "loadTypes": [ "GetInspectionDefinition" ],
+            "relatedObjectMapKey": [
+                "InspectionDefinitions"
+            ]
+        },
+        "messages": {
+            "noElementSelected": [{
+                "text": "{{i18n.selectOperationOrExecutionStep}}",
+                "textParams": [
+                    "{{i18n.inspectionDef}}"
+                ]
+            }],
+            "noAssigned": [
+                {
+                    "text": "{{i18n.noAssigned}}",
+                    "textParams": [
+                        "{{i18n.inspectionDef}}"
+                    ]
+                }
+            ]
+        }
+    },
+    "actions": {
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext.tabContext}}"
+            },
+            "outputData": {
+                "tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "saveInputToData": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{ports.EpInspectionDefinitionsTable_inputObject.syncObject}}"
+            },
+            "outputData": {
+                "inputObject": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "inputObject": "{{data.inputObject}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "handleInput": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "saveInputToData"
+                },
+                {
+                    "action": "setCommandContext",
+                    "condition": "conditions.isInputInvalid"
+                }
+            ]
+        }
+    },
+    "conditions": {
+        "isValidInput": {
+            "expression": "data.inputObject.uid && ( data.inputObject.modelType.typeHierarchyArray.includes('Mfg0BvrOperation') || data.inputObject.modelType.typeHierarchyArray.includes('Mfg0BvrStep') )"
+        },
+        "isInputInvalid": {
+            "expression": "!data.inputObject.modelType.typeHierarchyArray.includes('Mfg0BvrOperation')"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getValueInViewModel"
+    },
+    "i18n": {
+        "inspectionDef": ["DetailsMessages"],
+        "selectOperationOrExecutionStep": [ "DetailsMessages" ],
+        "noAssigned": [ "DetailsMessages" ]
+    }
+}

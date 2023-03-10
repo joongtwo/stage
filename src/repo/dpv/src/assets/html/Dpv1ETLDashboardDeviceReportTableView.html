@@ -1,0 +1,9 @@
+<div class="sw-column flex-auto">
+    <aw-guidance-message exist-when="props.subPanelContext.context.searchState.selectedPlants.length===0" message="noPlantSelectedMsg" closable="false" banner-style="true"
+        show-icon="true" show-type="true">
+    </aw-guidance-message>
+    <aw-break exist-when="props.subPanelContext.context.searchState.selectedPlants.length===0"></aw-break>
+    <div class="sw-row h-12">
+        <aw-splm-table gridid="deviceReportGrid" show-context-menu="true" show-decorators="true" show-check-box="true"></aw-splm-table>
+    </div>
+</div>

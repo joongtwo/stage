@@ -1,0 +1,101 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {},
+    "lifecycleHooks": {
+        "onMount": "prepareList",
+        "onUpdate": [
+            {
+                "action": "addFilterListToParentView",
+                "observers": [
+                    "viewModel.data.operationValues.dbValue",
+                    "viewModel.data.operationType.dbValue"
+                ]
+            },
+            {
+                "action": "updateItem",
+                "observers": [
+                    "props.subPanelContext.filterState.filterRemoved"
+                ]
+            },{
+                "action": "updateApplyBtn",
+                "observers": [
+                    "props.subPanelContext.item.operationValues.dbValue",
+                    "props.subPanelContext.item.operationType.dbValue"
+                ]
+            }
+        ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "prepareList": {
+            "actionType": "JSFunction",
+            "method": "prepareList",
+            "inputData": {
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "outputData": {
+                "operationType": "result.operationType",
+                "operationTypeValues": "result.operationTypeValues",
+                "operationValues": "result.operationValues"
+            },
+            "deps": "js/classifyAdminFilterService"
+        },
+        "addFilterListToParentView": {
+            "actionType": "JSFunction",
+            "method": "addFilterListToParentView",
+            "inputData": {
+                "data": "{{data}}",
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "deps": "js/classifyAdminFilterService"
+        },
+        "displayApply": {
+            "actionType": "JSFunction",
+            "method": "displayApply",
+            "inputData": {
+                "filterState": "{{props.subPanelContext.filterState}}"
+            },
+            "deps": "js/classifyAdminFilterService"
+        },
+        "hideApply": {
+            "actionType": "JSFunction",
+            "method": "hideApply",
+            "inputData": {
+                "filterState": "{{props.subPanelContext.filterState}}"
+            },
+            "deps": "js/classifyAdminFilterService"
+        },
+        "updateApplyBtn": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "displayApply",
+                    "condition": "data.operationValues.dbValue || (!data.operationValues.dbValue && props.subPanelContext.searchState.searchString)"
+                },{
+                    "action": "hideApply",
+                    "condition": "!data.operationValues.dbValue && props.subPanelContext.searchState.searchString.indexOf(' ') < 1"
+                }
+            ]
+        },
+        "updateItem": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "prepareList"
+                }
+            ]
+        }
+    },
+    "dataProviders": {},
+    "onEvent": [],
+    "conditions": {},
+    "i18n": {
+        "and": [
+            "ClassificationAdminMessages"
+        ]
+    }
+}

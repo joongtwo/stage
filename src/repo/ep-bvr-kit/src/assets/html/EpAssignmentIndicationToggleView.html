@@ -1,0 +1,9 @@
+<aw-togglebutton enable-when="conditions.isToggleButtonEnabled" class="aw-ep-assignmentIndicationToggle" prop="data.assignmentIndicationToggleCommand" action='handleToggleStateChange'></aw-togglebutton>
+<aw-label class="aw-ep-assignmenIndicationLabel" prop="data.assignmentIndicationToggleLbl"></aw-label>
+
+<div exist-when="conditions.isAssignmentIndicationModeOn" class="aw-ep-assignmentIndicationCount h-12">
+    <div aw-repeat="chipConfig : data.overConsumedInfoChips.dbValues" class="aw-mfeChip-container" title="{{chipConfig.tooltipText}}">
+        <aw-icon class="aw-mfeChip-icon" icon-id="{{chipConfig.iconId}}"></aw-icon>
+        <div class="aw-mfeChip-value">{{chipConfig.labelDisplayName}}</div>
+    </div>
+</div>

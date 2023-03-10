@@ -1,0 +1,107 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "showPopupMessage":false,
+        "hideAdditionalProcessTable":true,
+        "additionalMessage":"{{subPanelContext.mbomRevisionName}}",
+        "showActionCammand":{
+            "displayName": "{{i18n.showActionMsg}}",
+            "type": "STRING"
+        }
+    },
+    "actions":{
+        "showButtonClicked":{
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": true
+            },
+            "outputData": {
+                "showPopupMessage": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "hideAddtionalProcessTable":{
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "hideAddtionalProcess"
+                },
+                {
+                    "action": "hidePopupMessageButton"
+                }
+            ]
+        },
+
+        "hideAddtionalProcess":{
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": false
+            },
+            "outputData": {
+                "hideAdditionalProcessTable": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+
+        "hidePopupMessageButton":{
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": false
+            },
+            "outputData": {
+                "showPopupMessage": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "messages": {
+        "associatedProcessGuidanceMsg": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.showAdditionalProcessPopUp}}",
+            "messageTextParams": [
+                "{{data.additionalMessage}}"
+            ],
+            "messageTextLinks": [
+                {
+                    "prop": "data.showActionCammand",
+                    "action": "showButtonClicked"
+                }
+            ]
+        }
+    },
+    "i18n": {
+        "showAdditionalProcessPopUp": [
+            "navigationMessages"
+        ],
+        "showActionMsg":[
+            "navigationMessages"
+        ]
+    },
+    "conditions": {
+        "enabledShowCommand": {
+            "expression": "subPanelContext.additionalProcesses.length >= 1 && subPanelContext.currentRevisionProcesses.length >= 1"
+        },
+        "showAdditionalAssociatedProcesses":{
+            "expression": "subPanelContext.additionalProcesses.length >= 1 && subPanelContext.currentRevisionProcesses.length < 1"
+        }
+    },
+  
+    "onEvent": [
+        {
+            "eventId": "ep.hideAdditionalProcessTable",
+            "action": "hideAddtionalProcessTable",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        }
+    ]
+}
+   

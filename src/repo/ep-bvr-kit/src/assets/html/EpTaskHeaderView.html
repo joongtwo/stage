@@ -1,0 +1,19 @@
+<aw-guidance-message message="{{ctx.mfgReadOnlyMode.readOnlyMessage}}" closable="false" banner-style="false"
+    show-icon="false" show-type="false" exist-when="conditions.isReadOnlyMode" class="aw-epHeader-readOnlyMessage"></aw-guidance-message>
+<div class="sw-row aw-epHeader-container">
+    <div class="sw-column flex-auto">
+        <div class="aw-epHeader-taskContainer" exist-when="ctx.epPageContext">
+            <aw-layout-slot name="ep_taskNavigation" context="data"></aw-layout-slot>
+            <aw-layout-slot name="ep_taskScope" context="data"></aw-layout-slot>
+        </div>
+    </div>
+    <div class="sw-flex-column">
+        <div class="aw-epHeader-additionsContainer">
+            <aw-global-search></aw-global-search>
+            <aw-layout-slot name="ep_headerAdditions" context="data" exist-when="conditions.isEpPageContextAvailable">
+            </aw-layout-slot>
+            <aw-logo></aw-logo>
+            <aw-layout-slot name="ep_additionalLogos" context="data"></aw-layout-slot>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,83 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "preferenceName": "EP_DependenciesTabColumnConfiguration",
+        "loadInputObject": {
+            "loadTypes": [
+                "GetScopeFlows"
+            ],
+            "relatedObjectMapKey": [
+                "ExternalPredecessors",
+                "ExternalSuccessors"
+            ]
+        },
+        "relationName": [
+            "ExternalPredecessors",
+            "ExternalSuccessors"
+        ],
+        "customColumns":
+        [
+            {
+                "clientColumn": true,
+                "name": "externalFlowIndication",
+                "propertyDisplayName": "{{i18n.externalFlowIndicationColumnName}}"
+            }
+        ],
+        "messages": {
+            "noElementSelected": [{
+                "text": "{{i18n.selectElement}}",
+                "textParams": [
+                    "{{i18n.externalFlows}}"
+                ]
+            }],
+            "noAssigned": [{
+                "text": "{{i18n.noData}}",
+                "textParams": [
+                    "{{i18n.externalFlows}}"
+                ]
+            }]
+        },
+        "excludeInputTypes":["Mfg0BvrProcessResource"]
+    },
+    "actions": {
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getValueInViewModel"
+    },
+    "i18n": {
+        "selectElement": [
+            "DetailsMessages"
+        ],
+        "noData": [
+            "DetailsMessages"
+        ],
+        "externalFlows": [
+            "DetailsMessages"
+        ],
+        "externalFlowIndicationColumnName": [
+            "DetailsMessages"
+        ]
+    }
+}

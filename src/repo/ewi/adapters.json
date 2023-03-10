@@ -1,0 +1,23 @@
+[
+  {
+    "conditions": {
+      "$and": [
+        {
+          "modelType.typeHierarchyArray": {
+            "$in": "BOMLine"
+          }
+        },
+        {
+          "modelType.typeHierarchyArray": {
+            "$notin": "Mes0BvrDCD"
+          }
+        }
+      ]
+    },
+    "target": {
+      "prop": "bl_revision",
+      "method": "getAlternateSelectedObjects",
+      "deps": "js/selection.service"
+    }
+  }
+]

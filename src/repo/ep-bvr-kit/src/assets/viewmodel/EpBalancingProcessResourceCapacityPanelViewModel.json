@@ -1,0 +1,51 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "capacityData": {
+            "displayName": "{{i18n.epBalancingCapacityDatadisplayName}}",
+            "type": "STRING",
+            "hasLov": true
+        }
+    },
+    "actions": {
+        "reveal": {
+            "actionType": "JSFunction",
+            "method": "getAllowedProcessResourceCapacities",
+            "inputData": {
+                "preferenceValues": "{{ctx.preferences.EP_ProcessResourceCapacityValues}}"
+            },
+            "outputData": {
+                "capacityDataList": "capacityDataList"
+            },
+            "deps": "js/epBalancingService"
+        },
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "deps": "js/declpopupService"
+        },
+        "epBalancingEditPrCapacityAction": {
+            "actionType": "JSFunctionAsync",
+            "method": "setPrCapacity",
+            "inputData": {
+                "selectedPr": "{{subPanelContext.scopeObject}}",
+                "capacityValue": "{{data.capacityData.dbValue}}"
+            },
+            "deps": "js/epBalancingService"
+        }
+    },
+    "i18n": {
+        "epBalancingProcessResourceCapacityText": [
+            "BalancingMessages"
+        ],
+        "epBalancingCapacityDatadisplayName": [
+            "BalancingMessages"
+        ],
+        "cancel": [
+            "BalancingMessages"
+        ],
+        "done": [
+            "BalancingMessages"
+        ]
+    }
+}

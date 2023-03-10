@@ -1,0 +1,16 @@
+<aw-panel-body>
+    <aw-search-box prop="data.objectSearchBox" placeholder="subPanelContext.placeHolderForSearch" action="searchObjects"></aw-search-box>
+    <aw-scrollpanel class="aw-mfe-epSearchObjectScrollPanel">
+        <div class="sw-row" exist-when="conditions.isSearchObjectNotFound">
+            <span class="aw-mfe-messageLine">{{i18n.noObjectFound}}</span>
+        </div>
+            <aw-list dataprovider="data.dataProviders.epSearchObjectProvider" class="aw-epSearchObject-listBoxWidth">
+                <aw-default-cell vmo="item" class="sw-column w-6" exist-when="subPanelContext.additionalCellWidget"></aw-default-cell>
+                <aw-include name="{{subPanelContext.additionalCellWidget}}" sub-panel-context="subPanelContext" class="sw-column"
+                    exist-when="subPanelContext.additionalCellWidget && data.selectedObject && item.uid === data.selectedObject.uid">
+                </aw-include>
+                <aw-default-cell vmo="item" class="sw-row" exist-when="!subPanelContext.additionalCellWidget"></aw-default-cell>
+            </aw-list>
+        </aw-scrollpanel>
+
+</aw-panel-body>

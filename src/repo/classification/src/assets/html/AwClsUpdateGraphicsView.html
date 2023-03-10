@@ -1,0 +1,28 @@
+<aw-command-panel caption="i18n.updateGraphicsCommandPanelTitle">
+    <aw-panel-body>
+        <aw-radiobutton prop="data.updateTargetBtn"></aw-radiobutton>
+        <aw-listbox exist-when="conditions.showPartFamily" prop="data.templateListPartFamilyBox" list="data.partFamilyTemplatesList" action="tableContentsUpdate"></aw-listbox>
+        <aw-chip chip="data.errorIcon"  exist-when="conditions.showAttrMappingWarForPartFamilyTemplate"></aw-chip>
+        <label exist-when="conditions.showAttrMappingWarForPartFamilyTemplate">
+            <aw-i18n>i18n.graphicBuilderAttrMapWar</aw-i18n>
+        </label>
+        <div class="sw-row w-12" exist-when="conditions.showAttrMappingWarForPartFamilyTemplate">
+            <aw-splm-table gridid="templatePartFamilyTable"></aw-splm-table>
+        </div>
+        <aw-listbox exist-when="conditions.showTemplatePart" prop="data.templatePartListBox" list="data.templatePartsList" action="tableContentsUpdate"></aw-listbox>
+        <aw-chip chip="data.errorIcon" exist-when="conditions.showAttrMappingWarForTemplatePart"></aw-chip>
+        <label exist-when="conditions.showAttrMappingWarForTemplatePart">
+            <aw-i18n>i18n.graphicBuilderAttrMapWar</aw-i18n>
+        </label>
+        <div class="sw-row w-12" exist-when="conditions.showAttrMappingWarForTemplatePart">
+            <aw-splm-table gridid="templatePartTable"></aw-splm-table>
+        </div>
+        <aw-checkbox exist-when="conditions.panelEnabled" prop="data.createPartFileBtn" action="dealWithJTBox"></aw-checkbox>
+        <aw-checkbox exist-when="conditions.panelEnabled && conditions.canCreateJTFile" prop="data.createJTFileBtn"></aw-checkbox>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button size="stretched" action="handleSaveData" exist-when="conditions.submitValid">
+          <aw-i18n>i18n.updateGraphicsLbl</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

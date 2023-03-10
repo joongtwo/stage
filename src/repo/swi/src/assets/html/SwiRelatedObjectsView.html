@@ -1,0 +1,85 @@
+<div>
+    <div class='sw-row demo-h-2f align-center justify-space-between'>
+        <div class='sw-row'>
+            <div class='sw-column demo-w-1f'>
+            </div>
+            <div class='sw-column'>
+                <span class="aw-swi-span">
+                    <label class="aw-swi-labelKey">{{i18n.frequency}}</label>
+                    <label class="aw-swi-labelValue" title={{data.frequencyValue}}>{{data.frequencyValue}}</label>
+                </span>
+            </div>
+            <div class='sw-column demo-w-2f'></div>
+            <div class='sw-column'>
+                <span class="aw-swi-span">
+                    <label class="aw-swi-labelKey">{{i18n.faultCode}}</label>
+                    <label class="aw-swi-labelValue" title={{data.faultCodes}}>{{data.faultCodes}}</label>
+                </span>
+            </div>
+            <div class='sw-column demo-w-2f'></div>
+            <div class='sw-column'>
+                <span class="aw-swi-span">
+                    <label class="aw-swi-labelKey">{{i18n.description}}</label>
+                    <label class="aw-swi-labelValue" title={{data.descriptionValue}}>{{data.descriptionValue}}</label>
+                </span>
+            </div>
+            <div class='sw-column demo-w-2f'></div>
+        </div>
+        <div class='sw-column demo-w-3f'>
+            <aw-icon-button class="aw-layout-right" command="data.downArrowCommand"
+                visible-when="conditions.isIconButtonVisible">
+            </aw-icon-button>
+        </div>
+    </div>
+</div>
+<div visible-when="conditions.isPanelVisible">
+
+    <div class='sw-row demo-h-2f align-center justify-space-between'>
+        <div class='sw-row'>
+            <div class='sw-column demo-w-1f'>
+            </div>
+            <div visible-when="data.satisfiedByValues==='' && data.requiredByValues===''">
+                <span class="aw-swi-span">
+                    <label class="aw-swi-labelKey">{{i18n.requires}}</label>
+                    <label class="aw-swi-labelValue" title={{data.requiresValue}}> {{data.requiresValue}}</label>
+                </span>
+            </div>
+            <div class='sw-column demo-w-2f' visible-when="data.satisfiedByValues==='' && data.requiredByValues===''">
+            </div>
+            <div class='sw-column' visible-when="data.satisfiesValue!=''">
+                <span class="aw-swi-span">
+                    <label class="aw-swi-labelKey">{{i18n.satisfies}}</label>
+                    <label class="aw-swi-labelValue" title={{data.satisfiesValue}}> {{data.satisfiesValue}}</label>
+                </span>
+            </div>
+            <div class='sw-column demo-w-2f' visible-when="data.satisfiedByValues==='' && data.requiredByValues===''">
+            </div>
+            <div class='sw-column' visible-when="data.satisfiesValue==='' && data.requiresValue===''">
+                <span class="aw-swi-span">
+                    <label class="aw-swi-labelKey">{{i18n.requiredBy}}</label>
+                    <label class="aw-swi-labelValue" title={{data.requiredByValues}}> {{data.requiredByValues}}</label>
+                </span>
+            </div>
+            <div class='sw-column demo-w-2f'></div>
+            <div class='sw-column' visible-when="data.satisfiesValue==='' && data.requiresValue===''">
+                <span class="aw-swi-span">
+                    <label class="aw-swi-labelKey">{{i18n.satisfiedBy}}</label>
+                    <label class="aw-swi-labelValue" title={{data.satisfiedByValues}}>
+                        {{data.satisfiedByValues}}</label>
+                </span>
+            </div>
+            <div class='sw-column demo-w-2f'></div>
+            <div class='sw-column' visible-when="data.partApplicabilityValue!==''">
+                <span class="aw-swi-span">
+                    <label class="aw-swi-labelKey">{{i18n.partApplicability}}</label>
+                    <label class="aw-swi-labelValue" title={{data.partApplicabilityToolTip}}>
+                        {{data.partApplicabilityValue}}</label>
+                </span>
+            </div>
+            <div class='sw-column demo-w-2f'></div>
+        </div>
+        <div class='sw-column w-3f'>
+            <aw-icon-button command="data.upArrowCommand"></aw-icon-button>
+        </div>
+    </div>
+</div>

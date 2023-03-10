@@ -1,0 +1,78 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-command-sub-panel.directive"
+    ],
+    "actions": {
+        "unRegisterExcelData": {
+            "actionType": "JSFunction",
+            "method": "unRegisterExcelData",
+            "deps": "js/importBOMService",
+            "inputData": {
+                "ctx": "{{ctx}}"
+            }
+        },
+        "backAction":{
+            "actionType": "JSFunction",
+            "method": "backActionData",
+            "inputData": {
+                "sharedData": "{{data.sharedData}}"
+            },
+            "outputData": {
+                "sharedData":""
+            },
+            "deps": "js/importBOMService"
+        }
+
+    },
+    "onEvent": [
+        {
+            "eventId": "awsidenav.openClose",
+            "condition": "!keepOthersOpen",
+            "action": "unRegisterExcelData"
+        }
+    ],
+    "data": {
+        "sharedData": {
+            "initialValues": {
+                "activeView": "Awb0ImportFromExcelSub",
+                "typePropInfos": []
+            },
+            "meta": {}
+        },
+        "importHelptooltipView": {
+            "view": "Awb0ImportHelpTooltip"
+        },
+        "importType": {
+            "dbValue": ""
+        },
+        "viewModel": ""
+    },
+    "functions": {},
+    "conditions": {},
+    "messages": {
+        "notificationForImportBOMMsg": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.notificationForImportBOM}}"
+        },
+        "successImportBOM": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.successImportBOM}}"
+        }
+    },
+    "i18n": {
+        "importTitle": [
+            "OccmgmtImportExportConstants"
+        ],
+        "selectExcelFile": [
+            "OccmgmtImportExportConstants"
+        ],
+        "notificationForImportBOM": [
+            "OccmgmtImportExportConstants"
+        ],
+        "addProperties": [
+            "OccmgmtImportExportConstants"
+        ]
+    }
+}

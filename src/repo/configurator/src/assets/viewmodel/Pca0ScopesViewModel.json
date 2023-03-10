@@ -1,0 +1,378 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-default-cell.directive",
+        "js/aw-list.directive",
+        "js/aw-panel-body.directive"
+    ],
+
+    "dataProviders": {
+        "scopesListDataProvider": {
+            "action": "loadScopesData",
+            "response": "{{data.scopes}}",
+            "showDecorators": "false"
+        }
+    },
+    "actions": {
+        "shouldGetConfigurationData": {
+            "actionType": "batchJob",
+            "steps": [ {
+                "action": "getConfigurationData",
+                "condition": "conditions.shouldGetConfigurationData"
+            } ]
+        },
+        "getConfigurationDataOnMount": {
+            "actionType": "batchJob",
+            "steps": [ {
+                "action": "getConfigurationData",
+                "condition": "props.fscState.value.unloadedVariant === true"
+            } ]
+        },
+        "getConfigurationData": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "getConfigurationDataPrep"
+                },
+                {
+                    "action": "fireFetchActiveSettingsEvent",
+                    "condition": "conditions.shouldFetchAppliedSettings"
+                },
+                {
+                    "action": "fireClearSystemSelectionsInManualMode",
+                    "condition": "conditions.canClearSystemSelections"
+                },
+                {
+                    "action": "doScopesListDataProvider",
+                    "condition": "conditions.areAppliedSettings"
+                },
+                {
+                    "action": "resetVariantState"
+                }
+            ]
+        },
+        "getConfigurationDataPrep": {
+            "actionType": "JSFunction",
+            "method": "getConfigurationData",
+            "inputData": {
+                "data": "{{data}}",
+                "applySettings": true
+            },
+            "deps": "js/pca0ScopesService"
+        },
+        "resetVariantState": {
+            "actionType": "JSFunction",
+            "inputData": {
+                "fscState": "{{props.fscState}}"
+            },
+            "method": "resetVariantState",
+            "deps": "js/pca0ScopesService"
+        },
+        "setSelectionScopeToFirstGroup": {
+            "actionType": "JSFunction",
+            "inputData": {
+                "scopeSelection": "{{props.scopeSelection}}"
+            },
+            "method": "setSelectionScopeToFirstGroup",
+            "deps": "js/pca0ScopesService"
+        },
+        "fireClearSystemSelectionsInManualMode": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "Pca0Features.clearSystemSelectionsInManualMode"
+                } ]
+            }
+        },
+        "fireFetchActiveSettingsEvent": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "Pca0FullScreenConfiguration.fetchActiveSettings"
+                } ]
+            },
+            "outputData": {
+                "fetchedActiveSettings": true
+            }
+        },
+        "getConfigurationDataForApplySettings": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "getConfigurationDataPrepForApplySettings"
+                },
+                {
+                    "action": "fireClearSystemSelectionsInManualMode",
+                    "condition": "conditions.canClearSystemSelections"
+                },
+                {
+                    "action": "fireFetchActiveSettingsEvent",
+                    "condition": "conditions.shouldFetchAppliedSettings"
+                },
+                {
+                    "action": "doScopesListDataProvider",
+                    "condition": "conditions.areAppliedSettings"
+                }
+            ]
+        },
+        "getConfigurationDataPrepForApplySettings": {
+            "actionType": "JSFunction",
+            "method": "getConfigurationData",
+            "inputData": {
+                "data": "{{data}}",
+                "applySettings": true
+            },
+            "deps": "js/pca0ScopesService"
+        },
+        "cleanUp": {
+            "actionType": "JSFunction",
+            "method": "cleanUp",
+            "deps": "js/pca0ScopesService"
+        },
+        "doScopesListDataProvider": {
+            "actionType": "dataProvider",
+            "method": "scopesListDataProvider"
+        },
+        "loadScopesData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ProductConfiguratorAw-2022-12-ConfiguratorManagement",
+            "method": "variantConfigurationView3",
+            "inputData": {
+                "input": {
+                    "configPerspective": "{{function:getConfigPerspective}}",
+                    "activeVariantRules": "{{function:getActiveVariantRules}}",
+                    "selectedContext": "{{function:getSelectionForVariantContext}}",
+                    "scopes": [ "{{props.scopeSelection.currentScopeSelectionUid}}" ],
+                    "selectedExpressions": "{{function:convertSelectedExpressionJsonObjectToString}}",
+                    "payloadStrings": "{{ctx.fscContext.payloadStrings}}",
+                    "requestInfo": {
+                        "requestType": [ "getConfig" ],
+                        "configurationControlMode": [ "{{function:getConfigurationMode}}" ],
+                        "switchingToGuidedMode": [ "{{function:getSwitchingToGuidedMode}}" ],
+                        "profileSettings": [ "{{function:getProfileSettings}}" ],
+                        "reassessSelections": [ "{{ctx.fscContext.reassessSelections === undefined ? \"\" : ctx.fscContext.reassessSelections}}" ],
+                        "fetchSummaryOfSelections": [ "{{props.fscState.isSwitchingFromGridToListView ? 'true' : \"\" }}" ]
+                    }
+                }
+            },
+            "outputData": {
+                "scopes": "{{function:getScopesData}}",
+                "renderToggleMode": "{{function:renderToggleMode}}",
+                "responseInfo": "responseInfo"
+            },
+            "events": {
+                "failure": [ {
+                    "name": "Pca0FullScreenConfiguration.processPartialError",
+                    "eventData": {
+                        "ServiceData": "{{data.ServiceData}}"
+                    }
+                } ],
+                "success": [ {
+                    "name": "Pca0Scopes.deleteIsSwitchingFromGridToListViewFlag"
+                } ]
+            },
+            "actionMessages": {
+                "success": [ {
+                    "message": "failedToRenderSplitExpression",
+                    "condition": "data.responseInfo.isSplit[0] === 'true'"
+                } ]
+            },
+            "deps": "js/pca0ScopesService"
+        },
+        "refreshGroups": {
+            "actionType": "JSFunction",
+            "method": "refreshGroupsInScopeView",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "scopes": "",
+                "fetchedActiveSettings": false
+            },
+            "events": {
+                "success": [ {
+                    "name": "Pca0Scopes.selectCurrentGroup"
+                } ]
+            },
+            "deps": "js/pca0ScopesService"
+        },
+        "selectCurrentScope": {
+            "actionType": "JSFunction",
+            "method": "selectCurrentScope",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/pca0ScopesService"
+        },
+        "deleteIsSwitchingFromGridToListViewFlag": {
+            "actionType": "JSFunction",
+            "inputData": {
+                "fscState": "{{props.fscState}}"
+            },
+            "method": "resetIsSwitchingFromGridToListViewFlag",
+            "deps": "js/pca0ScopesService"
+        },
+        "selectNavigationScope": {
+            "actionType": "JSFunction",
+            "method": "selectScope",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.scopesListDataProvider}}",
+                "scopeSelection": "{{props.scopeSelection.currentScopeSelectionUid}}"
+            },
+            "deps": "js/pca0ScopesService"
+        }
+    },
+
+    "functions": {
+        "getSelectionForVariantContext": {
+            "functionName": "getSelectionForVariantContext",
+            "parameters": [ "fscContext" ]
+        },
+        "getConfigurationMode": {
+            "functionName": "getConfigurationMode",
+            "parameters": [ "fscContext", "{{props.fscState}}" ]
+        },
+        "getConfigPerspective": {
+            "functionName": "getConfigPerspective",
+            "parameters": [ "{{props.variantRuleData}}" ]
+        },
+        "getProfileSettings": {
+            "functionName": "getProfileSettings"
+        },
+        "getActiveVariantRules": {
+            "functionName": "getActiveVariantRules"
+        },
+        "getScopesData": {
+            "functionName": "getScopesData",
+            "parameters": [ "{{data}}", "{{props.scopeSelection}}" ]
+        },
+        "getSwitchingToGuidedMode": {
+            "functionName": "getSwitchingToGuidedMode"
+        },
+        "renderToggleMode": {
+            "functionName": "renderToggleMode",
+            "parameters": [ "{{props.fscState}}" ]
+        },
+        "convertSelectedExpressionJsonObjectToString": {
+            "functionName": "convertSelectedExpressionJsonObjectToString",
+            "parameters": [ "{{ctx.fscContext.selectedExpressions}}" ]
+        }
+    },
+    "messages": {
+        "noVariabilityReasons": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.noVariabilityReasons}}"
+        },
+        "failedToRenderSplitExpression": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.failedToRenderSplitExpressionMessage}}"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "Pca0FullScreenConfiguration.activeSettingsLoaded",
+            "action": "doScopesListDataProvider"
+        },
+        {
+            "eventId": "Pca0Scopes.loadedSVRChanged",
+            "cacheEventData": true,
+            "action": "getConfigurationData"
+        },
+        {
+            "eventId": "Pca0Settings.applySettings",
+            "action": "getConfigurationDataForApplySettings"
+        },
+        {
+            "eventId": "Pca0Scopes.updateGroups",
+            "cacheEventData": true,
+            "action": "refreshGroups"
+        },
+        {
+            "eventId": "Pca0Scopes.selectCurrentGroup",
+            "cacheEventData": true,
+            "action": "selectCurrentScope"
+        },
+        {
+            "eventId": "Pca0Scopes.noVariabilityReasons",
+            "message": "noVariabilityReasons"
+        },
+        {
+            "eventId": "Pca0Scopes.deleteIsSwitchingFromGridToListViewFlag",
+            "action": "deleteIsSwitchingFromGridToListViewFlag"
+        },
+        {
+            "eventId": "Pca0Scopes.setScopeToFirstGroup",
+            "action": "setSelectionScopeToFirstGroup"
+        }
+    ],
+    "conditions": {
+        "areAppliedSettings": {
+            "expression": "ctx.fscContext.appliedSettings !== undefined && Object.keys( ctx.fscContext.appliedSettings ).length !== 0"
+        },
+        "allowedToFetchSettings": {
+            "expression": "!props.fscState.value.savedVariant"
+        },
+        "definedCurrentScope": {
+            "expression": "props.scopeSelection.currentScopeSelectionUid !== ''"
+        },
+        "shouldFetchAppliedSettings": {
+            "expression": "!conditions.areAppliedSettings && conditions.allowedToFetchSettings"
+        },
+        "notTreeDisplayMode": {
+            "expression": "props.fscState.value.treeDisplayMode=== false"
+        },
+        "treeDisplayMode": {
+            "expression": "props.fscState.value.treeDisplayMode=== true"
+        },
+        "noCurrentScope": {
+            "expression": "ctx.fscContext.currentScope === undefined || ctx.fscContext.currentScope === ''"
+        },
+        "canClearSystemSelections": {
+            "expression": "ctx.fscContext.guidedMode === false && props.fscState.value.isSwitchingFromGridToListView === false && props.fscState.value.savedVariant === false"
+        },
+        "isNoVariantRuleLoaded": {
+            "expression": "ctx.fscContext.initialVariantRule === undefined && props.variantRuleData.variantRulesToLoad.length === 0"
+        },
+        "isCustomConfiguration": {
+            "expression": "ctx.fscContext.initialVariantRule && ctx.fscContext.initialVariantRule.props.object_name.dbValue === 'Custom Configuration'"
+        },
+        "isOneVariantRuleLoaded": {
+            "expression": "(props.variantRuleData.variantRulesToLoad.length === 0 && ctx.fscContext.initialVariantRule !== undefined) || ( props.variantRuleData.variantRulesToLoad.length === 1 )"
+        },
+        "shouldGetConfigurationData": {
+            "expression": "conditions.treeDisplayMode && props.variantRuleData.variantRulesToLoad.length > 0 || !conditions.areAppliedSettings || ctx.fscContext.initialVariantRule === undefined || props.fscState.value.isSwitchingFromGridToListView || props.variantRuleData.variantRulesToLoad.length === 1 && props.variantRuleData.variantRulesToLoad[0].uid !== ctx.fscContext.initialVariantRule.uid"
+        }
+    },
+    "lifecycleHooks": {
+        "onUnmount": "cleanUp",
+        "onMount": "getConfigurationDataOnMount",
+        "onUpdate": [ {
+                "action": "shouldGetConfigurationData",
+                "observers": [ "viewModel.ctx.fscContext.initialVariantRule" ]
+            },
+            {
+                "action": "selectNavigationScope",
+                "observers": [ "props.scopeSelection.currentScopeSelectionUid" ]
+            }
+        ]
+    },
+    "ctx": {
+        "fscContext": {
+            "type": "object"
+        }
+    },
+    "props": {
+        "scope-selection": {
+            "type": "object"
+        },
+        "fsc-state": {
+            "type": "object"
+        },
+        "variant-rule-data": {
+            "type": "object"
+        }
+    },
+    "i18n": {
+        "noVariabilityReasons": [ "FullScreenConfigurationMessages" ],
+        "failedToRenderSplitExpressionMessage": [ "ConfiguratorMessages" ]
+    }
+}

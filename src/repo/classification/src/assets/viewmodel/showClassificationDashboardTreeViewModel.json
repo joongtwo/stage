@@ -1,0 +1,331 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+    ],
+    "lifecycleHooks": {
+        "onInit": "prepareDashboard"
+    },
+    "data": {
+        "fileName": "",
+        "summaryCollapsed": false,
+        "importMode": false,
+        "chartProvider": {}
+    },
+    "actions": {
+        "navigateBack": {
+            "actionType": "JSFunction",
+            "method": "goBack",
+            "deps": "js/locationNavigation.service"
+        },
+        "importAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "toggleImportMode"
+                },
+                {
+                    "action": "getSummary"
+                },
+                {
+                    "action": "toggleImportMode"
+                }
+            ]
+        },
+        "toggleImportMode":{
+            "actionType": "JSFunction",
+            "method": "toggleImportMode",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "importMode": ""
+            },
+            "deps": "js/classifyAdminService"
+        },
+        "getSummary": {
+            "actionType": "JSFunction",
+            "method": "getAdminObjects",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "Summary"
+            },
+            "outputData": {
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "clsAdmin.selectFirstItem"
+                    },
+                    {
+                        "name": "clsAdmin.getPreferences"
+                    }
+                ]
+            },
+            "deps": "js/classifyAdminService"
+        },
+        "selectFirstItem": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "selectKeylovFirstItem"
+                },
+                {
+                    "action": "selectNodesFirstItem"
+                },
+                {
+                    "action": "selectPropertiesFirstItem"
+                },
+                {
+                    "action": "selectClassesFirstItem"
+                },
+                {
+                    "action": "getEReleases"
+                }
+            ]
+        },
+        "selectNodesFirstItem": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "selectionModel": "{{data.dataProviders.nodes.selectionModel}}",
+                "newSelection": "{{data.nodes[0].id}}"
+            },
+            "deps": "js/selectionModelFactory"
+        },
+        "selectClassesFirstItem": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "selectionModel": "{{data.dataProviders.classes.selectionModel}}",
+                "newSelection": "{{data.classes[0].id}}"
+            },
+            "deps": "js/selectionModelFactory"
+        },
+        "selectPropertiesFirstItem": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "selectionModel": "{{data.dataProviders.properties.selectionModel}}",
+                "newSelection": "{{data.properties[0].id}}"
+            },
+            "deps": "js/selectionModelFactory"
+        },
+        "selectKeylovFirstItem": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "selectionModel": "{{data.dataProviders.keylov.selectionModel}}",
+                "newSelection": "{{data.keylovs[0].id}}"
+            },
+            "deps": "js/selectionModelFactory"
+        },
+        "prepareDashboard": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "condition": "conditions.traditionalUser",
+                    "action": "preventClassificationManagerUse"
+                },
+                {
+                    "condition": "!conditions.traditionalUser",
+                    "action": "getSummary"
+                }
+            ]
+        },
+        "preventClassificationManagerUse": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "clsManagerLocation.navigateBack"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "cannotUseClassificationManager"
+                    }
+                ]
+            }
+        },
+        "getClasses": {
+            "actionType": "JSFunction",
+            "method": "getAdminObjects",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "Classes"
+            },
+            "outputData": {
+            },
+            "deps": "js/classifyAdminService"
+        },
+        "getProperties": {
+            "actionType": "JSFunction",
+            "method": "getAdminObjects",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "Properties"
+            },
+            "outputData": {
+            },
+            "deps": "js/classifyAdminService"
+        },
+        "getKeyLov": {
+            "actionType": "JSFunction",
+            "method": "getAdminObjects",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "KeyLov"
+            },
+            "outputData": {
+            },
+            "deps": "js/classifyAdminService"
+        },
+        "getNodes": {
+            "actionType": "JSFunction",
+            "method": "getAdminObjects",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "Nodes"
+            },
+            "outputData": {
+            },
+            "deps": "js/classifyAdminService"
+        },
+        "import": {
+            "actionType": "JSFunction",
+            "method": "activateCommandPanel",
+            "deps": "js/commandPanel.service",
+            "inputData": {
+                "commandId": "Awp0ClsAdminImport",
+                "location": "aw_toolsAndInfo"
+            }
+        },
+        "expandCollapseSummary": {
+            "actionType": "JSFunction",
+            "method": "expandOrCollapseSummary",
+            "inputData": {
+                "data": "{{data}}",
+                "viewName": "{{data.eventMap['awCommandPanelSection.collapse'].name}}",
+                "isCollapsed": "{{data.eventMap['awCommandPanelSection.collapse'].isCollapsed}}"
+            },
+            "deps": "js/classifyAdminService"
+        },
+        "getEReleases":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-01-Session",
+            "method": "getPreferences",
+            "inputData": {
+                "requestedPrefs": [
+                    {
+                        "scope": "Site",
+                        "names": [
+                            "CST_supported_eclass_releases"
+                        ]
+                    }
+                ]
+            },
+            "outputData": {
+                "ctx.clsAdmin.releases.eReleases": "{{function:getReleasePreferenceValues}}"
+            },
+            "events":{
+                "success":[
+                    {
+                        "name": "classify.toggleView"
+                    }
+                ]
+            },
+            "deps": "js/classifyAdminService"
+        }
+    },
+    "dataProviders": {
+        "classes":
+        {
+            "action": "getClasses",
+            "response": "{{data.classes}}",
+            "totalFound": "{{data.classesFound}}",
+            "commands": {},
+            "selectionModelMode": "single"
+        },
+        "properties":
+        {
+            "action": "getProperties",
+            "response": "{{data.properties}}",
+            "totalFound": "{{data.propsFound}}",
+            "commands": {},
+            "selectionModelMode": "single"
+        },
+        "nodes":
+        {
+            "action": "getNodes",
+            "response": "{{data.nodes}}",
+            "totalFound": "{{data.nodesFound}}",
+            "commands": {},
+            "selectionModelMode": "single"
+        },
+        "keylov":
+        {
+            "action": "getKeyLov",
+            "response": "{{data.keylovs}}",
+            "totalFound": "{{data.keylovFound}}",
+            "commands": {},
+            "selectionModelMode": "single"
+        }
+    },
+
+    "messages": {
+        "cannotUseClassificationManager": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.cannotUseClsManager}}"
+        }
+    },
+    "functions": {
+    },
+    "i18n": {
+        "classesTitle":         [ "ClassificationAdminMessages" ],
+        "import":               [ "ClassificationAdminMessages" ],
+        "keylovTitle":          [ "ClassificationAdminMessages" ],
+        "nodesTitle":           [ "ClassificationAdminMessages" ],
+        "noSOAError":           [ "ClassificationAdminMessages" ],
+        "propertiesTitle":      [ "ClassificationAdminMessages" ],
+        "summaryTitle":         [ "ClassificationAdminMessages" ],
+        "cannotUseClsManager":  [ "ClassificationAdminMessages" ]
+    },
+    "conditions": {
+        "clsDashLocation": {
+            "expression": "ctx.locationContext['ActiveWorkspace:SubLocation'] === 'showClassificationDashboard'"
+        },
+        "clsImportVisible": {
+            "expression": "ctx.clsAdmin.soaSupported === true"
+        },
+        "traditionalUser": {
+            "expression": "!ctx.preferences.CLS_is_presentation_hierarchy_active || ctx.preferences.CLS_is_presentation_hierarchy_active[0] !== 'true'"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "awCommandPanelSection.collapse",
+            "action":"expandCollapseSummary",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "clsManagerLocation.navigateBack",
+            "action":"navigateBack"
+        },
+        {
+            "eventId": "clsAdmin.refresh",
+            "action": "importAction"
+        },
+        {
+            "eventId" : "clsAdmin.getPreferences",
+            "condition":"!ctx.clsAdmin.eReleases",
+            "action": "getEReleases"
+        },
+        {
+            "eventId" : "clsAdmin.selectFirstItem",
+            "action": "selectFirstItem"
+        }
+    ]
+}

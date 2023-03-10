@@ -1,0 +1,152 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+    ],
+    "ports": {
+
+    },
+    "lifecycleHooks": {
+        "render": "render",
+        "onUpdate": [
+            {
+                "action": "initialize",
+                "observers": [ "props.attr.name" ]
+            },
+            {
+                "action": "updateLovValue",
+                "observers": [ "props.attr.value"]
+            },
+            {
+                "action": "updateUnitValue",
+                "observers": [ "props.unitLink"]
+            }
+        ]
+    },
+    "ctx": {
+        "clsTab": {
+            "type": "object"
+        }
+    },
+    "props": {
+        "attrs": {
+            "type": "array"
+        },
+        "attribute": {
+            "type": "object"
+        },
+        "classify-state": {
+            "type": "object"
+        },
+        "prop-details": {
+            "type": "object"
+        },
+        "response-state": {
+            "type": "object"
+        },
+        "unit-link": {
+            "type": "field"
+        }
+    },
+    "actions": {
+        "render": {
+            "method": "AwClsAttributesServiceRenderFunction",
+            "deps": "js/AwClsAttributesService"
+        },
+        "generateCardinalBlocks":{
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getCardinalInstances"
+                },
+                {
+                    "action": "updateInstances"
+                }
+            ]
+        },
+        "getCardinalInstances": {
+            "actionType": "JSFunction",
+            "method": "getCardinalInstances",
+            "inputData": {
+                "cardinalValue": "{{props.attrs[0].value}}",
+                "blockAttribute": "{{props.propDetails.cardinalAttribute}}"
+            },
+            "deps": "js/classifyService"
+        },
+        "updateInstances": {
+            "actionType": "JSFunction",
+            "method": "updateInstances",
+            "inputData": {
+                "cardinalAttribute": "{{props.propDetails.cardinalAttribute}}",
+                "classifyState": "{{props.classifyState}}"
+            },
+            "deps": "js/AwClsAttributesService"
+        },
+        "updateUnitValue": {
+            "actionType": "JSFunction",
+            "method": "updateUnitValue",
+            "inputData": {
+                "classifyState": "{{props.classifyState}}",
+                "attribute": "{{props.attribute}}",
+                "unitLink": "{{props.unitLink}}"
+            },
+            "deps": "js/AwClsAttributesService"
+        },
+        "onClickProp": {
+            "actionType": "JSFunction",
+            "method": "getAttributeProperties",
+            "inputData": {
+                "selectedProp": "{{props.attribute}}",
+                "searchState": "{{props.classifyState}}"
+            },
+            "outputData": {
+            },
+            "deps": "js/AwClsAttributesService"
+        }
+    },
+    "functions": {
+
+    },
+    "dataProviders": {
+    },
+    "columnProviders": {
+
+    },
+    "grids": {
+
+    },
+    "data": {
+        "showMinMaxTooltip": {
+            "view": "clsShowMinMaxTooltip"
+        },
+        "unitState": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "cardinalCommand": {
+            "action": "generateCardinalBlocks",
+            "iconName": "cmdCreateGroup",
+            "tooltip": "{{i18n.createInstances}}"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "classify.generateInstances",
+            "cacheEventData": true,
+            "action": "generateCardinalBlocks",
+            "condition": "conditions.isCardinalControlAttribute"
+        }
+    ],
+    "conditions": {
+        "hasUnits":
+        {
+            "expression": "prop.unitLink !== undefined"
+        },
+        "isCardinalControlAttribute":
+        {
+            "expression": "props.propDetails.parentAttribute.isCardinalControl === 'true'"
+        }
+    },
+    "i18n": {
+        "createInstances": [ "ClassificationPanelMessages" ]
+    }
+}

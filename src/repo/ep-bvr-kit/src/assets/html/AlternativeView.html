@@ -1,0 +1,26 @@
+<aw-panel>
+    <aw-panel-body>
+        <div class="sw-component h-1">
+            <aw-i18n exist-when="conditions.createPartialAlternative">{{i18n.titleDescriptionPartial}} "{{data.currentNode}}".</aw-i18n>
+            <aw-i18n exist-when="conditions.createAlternative">{{i18n.titleDescriptionCreate}} '{{data.currentNode}}'.
+            </aw-i18n>
+            <aw-i18n exist-when="conditions.Clone">{{i18n.titleDescriptionCreate}} '{{data.currentNode}}'.</aw-i18n>
+        </div>
+
+        <aw-textbox prop="data.packageName"></aw-textbox>
+        <aw-textbox prop="data.plantBOPName"></aw-textbox>
+        <aw-textarea prop="data.description"></aw-textarea>
+        <aw-checkbox prop="data.openOnActionBoxCreate" exist-when="conditions.Create"></aw-checkbox>
+        <aw-checkbox prop="data.openOnActionBoxClone" exist-when="conditions.Clone"></aw-checkbox>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button size="auto" button-type="base" action="AlternativePopupCloseAction">
+            <aw-i18n>i18n.closeBtnText</aw-i18n>
+        </aw-button>
+        <aw-button size="auto" action="createAlternativeAction" enable-when="conditions.isValidtoCreate">
+            <aw-i18n exist-when="conditions.createAlternative">{{i18n.Create}}</aw-i18n>
+            <aw-i18n exist-when="conditions.Clone">{{i18n.Clone}}</aw-i18n>
+            <aw-i18n exist-when="conditions.createPartialAlternative">{{i18n.Create}}</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-panel>

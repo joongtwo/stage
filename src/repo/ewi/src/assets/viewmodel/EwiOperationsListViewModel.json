@@ -1,0 +1,93 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "actions":
+    {
+        "operationsListDataProviderAction":
+        {
+            "actionType": "dataProvider",
+            "method": "operationsListDataProvider"
+        },
+        "setInputAndSelectionToMyContext": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setCommandContext"
+                },
+                {
+                    "action": "listItemSelected"
+                }
+            ]
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{props.subPanelContext}}",
+                "commandContext": {
+                    "selectedObjects": "{{data.dataProviders.operationsListDataProvider.selectedObjects}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "listItemSelected": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "workinstr.selectionChange",
+                        "eventData":
+                        {
+                            "dataProvider": "{{data.dataProviders.operationsListDataProvider}}",
+                            "activeTab": "{{props.subPanelContext}}"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+
+    "dataProviders":
+    {
+        "operationsListDataProvider":
+        {
+            "response": "{{props.subPanelContext.datasetsToShow}}",
+            "totalFound": "{{props.subPanelContext.datasetsToShow.length}}",
+            "selectionModelMode": "single",
+            "commandsAnchor": "ewiOperationsCellCommands"
+        }
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "operationsListDataProvider.selectionChangeEvent",
+            "action": "setInputAndSelectionToMyContext"
+        }
+    ],
+
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "operationsListDataProviderAction",
+                "observers": [
+                    "props.subPanelContext.datasetsToShow"
+                ]
+            }
+        ]
+    }
+}

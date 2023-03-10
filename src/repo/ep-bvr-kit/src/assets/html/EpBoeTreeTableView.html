@@ -1,0 +1,7 @@
+<div class="sw-column flex-auto">
+    <div class="sw-row h-12">
+        <mfe-loading-message exist-when="data.isLoading"></mfe-loading-message>
+        <mfe-message exist-when="conditions.isBoeStructureMissing" sub-panel-context="data.messages.noBoeStructure"></mfe-message>
+        <aw-splm-table show-when="conditions.isTreeDataLoaded" class="aw-ep-treeTable" gridid="EpBoeTreeTable" use-tree="true" show-decorators="true"></aw-splm-table>
+    </div>
+</div>

@@ -1,0 +1,258 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpStructureSearch_selectedObjects": {
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "structureSearchBox": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "structureSearchPlaceHolder": {
+            "displayName": "{{subPanelContext.searchPlaceholderString}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{subPanelContext.searchPlaceholderString}}",
+            "dispValue": ""
+        },
+        "resultsFoundWithNumberMessage": ""
+    },
+    "actions": {
+        "initiateStructureSearch": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getLoadTypeInputForSearch",
+                    "condition": "conditions.isSearchStringNotEmpty"
+                },
+                {
+                    "action": "getSearchResults",
+                    "condition": "conditions.isSearchStringNotEmpty"
+                }
+            ]
+        },
+        "getLoadTypeInputForSearch": {
+            "actionType": "JSFunction",
+            "method": "getLoadTypeInputs",
+            "inputData": {
+                "loadType": ["SearchInStructure"],
+                "objectUid" :"",
+                "propertiesToLoad":"",
+                "targetUid":"",
+                "additionalLoadParams": [
+                    {
+                        "tagName": "searchCriteria",
+                        "attributeName": "searchScopeUID",
+                        "attributeValue": "{{subPanelContext.searchScopeUid}}"
+                    },
+                    {
+                        "tagName": "searchCriteria",
+                        "attributeName": "searchObjectType",
+                        "attributeValue": "{{subPanelContext.searchObjectType}}"
+                    },
+                    {
+                        "tagName": "searchCriteria",
+                        "attributeName": "searchString",
+                        "attributeValue": "{{data.structureSearchBox.dbValue}}"
+                    }
+                ]
+            },
+            "outputData": {
+                "loadTypeInputs": ""
+            },
+            "deps": "js/epLoadInputHelper"
+        },
+        "search": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadObject",
+            "inputData": {
+                "loadTypeInputs": "{{data.loadTypeInputs}}",
+                "replaceContext": false
+            },
+            "outputData": {
+                "loadedObjectResponse": ""
+            },
+            "deps": "js/epLoadService"
+        },
+
+        "getSearchResults": {
+            "actionType": "dataProvider",
+            "method": "performSearch"
+        },
+
+        "updateSelectionPort": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getLoadTypeInputForSelectedItem"
+                },
+                {
+                    "action": "loadPackMasterForItem"
+                },
+                {
+                    "action": "findSelectedItemInMbomTree"
+                },
+                {
+                    "action": "setSelectionPort",
+                    "condition": "data.selectedVmo !== null"
+                }
+            ]
+        },
+
+        "getLoadTypeInputForSelectedItem": {
+            "actionType": "JSFunction",
+            "method": "getLoadTypeInputs",
+            "inputData": {
+                "loadType": ["getProperties"],
+                "objectUid": "{{data.eventData.selectedObjects[0].uid}}",
+                "props": ["bl_pack_master"]
+            },
+            "outputData": {
+                "loadTypeInputs": ""
+            },
+            "deps": "js/epLoadInputHelper"
+        },
+
+        "loadPackMasterForItem": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadObject",
+            "inputData": {
+                "loadTypeInputs": "{{data.loadTypeInputs}}"
+            },
+            "outputData": {
+                "loadedPackMasterObjResponse": ""
+            },
+            "deps": "js/epLoadService"
+        },
+
+        "findSelectedItemInMbomTree": {
+            "actionType": "JSFunction",
+            "method": "findSelectedItemInMbomTree",
+            "inputData": {
+                "vmoObj": "{{data.eventData.selectedObjects[0]}}",
+                "loadedObjectResponse": "{{data.loadedPackMasterObjResponse}}"
+            },
+            "outputData": {
+                "selectedVmo": ""
+            },
+            "deps": "js/epStructureSearchService"
+        },
+
+        "setSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpStructureSearch_selectedObjects",
+                "syncObject": "{{data.selectedVmo}}"
+            }
+        },
+
+        "emptySearchResults": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "emptyLoadedObjectResponse"
+                },
+                {
+                    "action": "emptyDataProvider"
+                }
+            ]
+        },
+        "emptyLoadedObjectResponse": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": ""
+            },
+            "outputData":{
+                "loadedObjectResponse":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+
+        "emptyDataProvider": {
+            "actionType": "JSFunction",
+            "method": "emptyDataProvider",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.performSearch}}"
+            },
+            "deps": "js/mfeTableService"
+        },
+
+        "updateResultsFoundMessage": {
+            "actionType": "JSFunction",
+            "method": "getResultsFoundMessage",
+            "inputData": {
+                "unformattedString": "{{i18n.numberOfResultsFound}}",
+                "resultsCount": "{{data.loadedObjectResponse.loadedObjects.length}}"
+            },
+            "outputData": {
+                "resultsFoundWithNumberMessage": ""
+            },
+            "deps": "js/epStructureSearchService"
+        }
+    },
+
+    "dataProviders": {
+        "performSearch": {
+            "action": "search",
+            "response": "{{data.loadedObjectResponse.loadedObjects}}",
+            "totalFound": "{{data.loadedObjectResponse.loadedObjects.length}}"
+        }
+    },
+
+    "onEvent": [
+        {
+            "eventId": "performSearch.selectionChangeEvent",
+            "action": "updateSelectionPort",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "performSearch.modelObjectsUpdated",
+            "action": "updateResultsFoundMessage",
+            "condition": "conditions.moreThan1andLessThan50Results"
+        }
+    ],
+
+    "conditions": {
+        "isSearchStringNotEmpty": {
+            "expression": "data.structureSearchBox.dbValue && data.structureSearchBox.dbValue.length > 0"
+        },
+        "shouldShowSearchResults": {
+            "expression": "data.loadedObjectResponse"
+        },
+        "zeroResults": {
+            "expression": "data.dataProviders.performSearch.viewModelCollection.totalObjectsLoaded === 0"
+        },
+        "oneResult": {
+            "expression": "data.dataProviders.performSearch.viewModelCollection.totalObjectsLoaded === 1"
+        },
+        "moreThan49Results": {
+            "expression": "data.dataProviders.performSearch.viewModelCollection.totalObjectsLoaded > 49"
+        },
+        "thereAreResults": {
+            "expression": "conditions.shouldShowSearchResults && data.dataProviders.performSearch.viewModelCollection.totalObjectsLoaded > 0"
+        },
+        "moreThan1andLessThan50Results": {
+            "expression": "data.dataProviders.performSearch.viewModelCollection.totalObjectsLoaded > 1 && data.dataProviders.performSearch.viewModelCollection.totalObjectsLoaded < 50"
+        }
+    },
+    "i18n": {
+        "cancel": [ "EPMessages" ],
+        "noResultsFound": [ "searchObjectMessages" ],
+        "oneResultFound": [ "searchObjectMessages" ],
+        "numberOfResultsFound": [ "searchObjectMessages" ],
+        "moreThan49ResultsFound": [ "searchObjectMessages" ]
+    }
+}

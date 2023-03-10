@@ -1,0 +1,46 @@
+<div class="sw-column" id="fscPanelBody">
+    <div class="aw-cfg-fullScreenPage" exist-when="conditions.isFscInListView">
+        <aw-column id="fscColumnWrapper">
+            <aw-row height="4f">
+                <aw-server-visibility-toolbar id="fscToolbar" first-anchor="aw_fscCommandBar" second-anchor="aw_toolbarRight,aw_fullScreen" context="{scopeSelection: data.scopeSelection, fscState: data.fscState, variantRuleData: data.variantRuleData, ...props.subPanelContext }" orientation="HORIZONTAL"></aw-server-visibility-toolbar>
+            </aw-row>
+            <aw-row height="fill" id="fscRowWrapper" exist-when="conditions.CfgHorizontalLayout">
+                <aw-column class="aw-cfg-columnWithoutPadding afx-alt-content-background pca0scopes" id="fscColumnScopes" width="{{conditions.CfgHorizontalLayout ? conditions.CfgLayoutWithSummary?'30%' : '35%': 'fill'}}">
+                    <pca0-scopes fsc-state="data.fscState" scope-selection="data.scopeSelection" variant-rule-data="data.variantRuleData" exist-when="conditions.isFscContext"></pca0-scopes>
+                </aw-column>
+                <aw-splitter id="splitter1" direction="Vertical"></aw-splitter>
+
+                <aw-column id="fscColumnFeatures" class="aw-cfg-columnWithoutPadding pca0features" width="{{conditions.CfgHorizontalLayout ? conditions.CfgLayoutWithSummary?'40%' : '65%': 'fill'}}">
+                    <pca0-features fsc-state="data.fscState" scope-selection="data.scopeSelection" variant="data.variantRuleData"></pca0-features>
+                </aw-column>
+
+                <aw-splitter id="splitter2" direction="Vertical"></aw-splitter>
+
+                <aw-column id="fscColumnSummary" class="aw-cfg-columnWithoutPadding pca0summary" width="30%" exist-when="conditions.CfgLayoutWithSummary">
+                    <pca0-summary summarystate="data.fscState" variant-rule-data="data.variantRuleData" exist-when="conditions.canLoadSummary"></pca0-summary>
+                </aw-column>
+            </aw-row>
+
+            <aw-row height="fill" exist-when="!conditions.CfgHorizontalLayout">
+                <aw-column>
+                    <aw-row class="afx-alt-content-background" height="35%">
+                        <pca0-scopes fsc-state="data.fscState" scope-selection="data.scopeSelection" variant-rule-data="data.variantRuleData" exist-when="conditions.isFscContext"></pca0-scopes>
+                    </aw-row>
+                    <aw-splitter direction="HORIZONTAL"></aw-splitter>
+                    <aw-row height="35%">
+                        <aw-panel-body>
+                            <pca0-features fsc-state="data.fscState" variant="data.variantRuleData" scope-selection="data.scopeSelection"></pca0-features>
+                        </aw-panel-body>
+                    </aw-row>
+                    <aw-splitter direction="HORIZONTAL"></aw-splitter>
+                    <aw-row height="fill" exist-when="conditions.CfgLayoutWithSummary">
+                        <aw-panel-body>
+                            <pca0-summary summarystate="data.fscState" variant-rule-data="data.variantRuleData" exist-when="conditions.canLoadSummary"></pca0-summary>
+                        </aw-panel-body>
+                    </aw-row>
+                </aw-column>
+            </aw-row>
+        </aw-column>
+    </div>
+    <pca0-variant-configuration-grid fscstate="data.fscState" variant="data.variantRuleData" context="props.subPanelContext" exist-when="!conditions.isFscInListView"></pca0-variant-configuration-grid>
+</div>

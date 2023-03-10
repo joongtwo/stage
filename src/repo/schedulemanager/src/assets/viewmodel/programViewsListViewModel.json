@@ -1,0 +1,116 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+        "option": {
+            "type": "STRING",
+            "hasLov": true,
+            "dbValue": ""
+        }
+    },
+    "actions": {
+        "setSelectedProgramViewsOption": {
+            "actionType": "JSFunction",
+            "method": "setSelectedProgramViewsOption",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Saw1ProgramViewsService"
+        },
+        "getProgramViewsOptions": {
+            "actionType": "JSFunction",
+            "method": "getProgramViewsOptions",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "optionList" : "optionList"
+            },
+            "deps": "js/Saw1ProgramViewsService"
+        },
+        "reveal": {
+            "actionType": "dataProvider",
+            "method": "listDataProvider"
+        },
+        "loadData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "searchInput": {
+                    "maxToLoad": "{{subPanelContext.searchState.maxToLoad}}",
+                    "maxToReturn": "{{subPanelContext.searchState.maxToReturn}}",
+                    "providerName": "{{subPanelContext.searchState.provider}}",
+                    "searchCriteria": "{{function:getProgramViewsSearchCriteria}}",
+                    "searchFilterFieldSortType": "{{subPanelContext.searchState.sortType}}",
+                    "startIndex": "{{data.dataProviders.listDataProvider.startIndex}}",
+                    "searchFilterMap6": "{{subPanelContext.searchState.activeFilterMap}}",
+                    "searchSortCriteria": "{{subPanelContext.searchState.sortCriteria}}"
+                }
+            },
+            "policy": {
+                "types": [ {
+                    "name": "BusinessObject",
+                    "properties": [ {
+                        "name": "awp0CellProperties"
+                    } ]
+                } ]
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "{{json:searchResultsJSON}}",
+                "output": "{{function:processOutput}}"
+            },
+            "deps": "js/Saw1ProgramViewsService"
+        }
+    },
+    "functions": {
+        "getProgramViewsSearchCriteria": {
+            "functionName": "getProgramViewsSearchCriteria",
+            "parameters": [
+                "{{data.option.dbValue}}",
+                "{{subPanelContext.searchState.criteria}}"
+            ]
+        },
+        "processOutput": {
+            "functionName": "processOutput",
+            "parameters": [
+                "{{data}}",
+                "{{subPanelContext.searchState}}"
+            ]
+        }
+    },
+    "dataProviders": {
+        "listDataProvider": {
+            "action": "loadData",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            },
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        }
+
+    },
+    "onEvent": [ {
+        "eventId": "programViewsList.contentLoaded",
+        "action": "getProgramViewsOptions"
+    } ],
+    "i18n": {
+        "myProgramViews": [
+            "ScheduleManagerMessages"
+        ],
+        "allProgramViews": [
+            "ScheduleManagerMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onUpdate": {
+            "action": "reveal",
+            "observers": [
+                "props.subPanelContext.searchState.criteria.searchString",
+                "props.subPanelContext.searchState.filterString"
+            ]
+        }
+    }
+}

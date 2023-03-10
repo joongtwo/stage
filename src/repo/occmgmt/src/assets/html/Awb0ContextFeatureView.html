@@ -1,0 +1,10 @@
+<aw-panel-section caption="i18n.contextTitle" exist-when="subPanelContext.occContext.isOpenedUnderAContext && subPanelContext.occContext.elementToPCIMapCount > 1" id="aw-occmgmt-contextsection">
+    <aw-list show-drop-area="false" dataprovider="data.dataProviders.getCurrentContextData" class="awb0ContextAnchor">
+        <aw-default-cell vmo="item" ></aw-default-cell>
+    </aw-list>
+</aw-panel-section>
+<aw-panel-section caption="i18n.contextTitle" exist-when="ctx.aceActiveContext.context.viewActiveContext" id="aw-occmgmt-contextsection">
+    <aw-list show-drop-area="false" dataprovider="data.dataProviders.getCurrentContextData">
+        <aw-default-cell vmo="item"></aw-default-cell>
+    </aw-list>
+</aw-panel-section>

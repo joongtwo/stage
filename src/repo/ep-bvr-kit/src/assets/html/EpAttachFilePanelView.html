@@ -1,0 +1,10 @@
+<aw-command-panel caption="i18n.attachFile">
+    <aw-add target-object="{{subPanelContext.occContext.scopeObject}}" relations="IMAN_specification,IMAN_reference,IMAN_manifestation,IMAN_Rendering,TC_Attaches,IMAN_UG_altrep,IMAN_UG_scenario,IMAN_Simulation" include-types="Dataset" auto-select-on-unique-type="true" visible-tabs="new" type-filter="Dataset" relation-map="ctx.addObject.relationMap" add-panel-state="fields.addPanelState" xrt-state="data.xrtState" edit-handler="editHandlers.addPanelEditHandler" is-custom-dataset-action="true" sub-panel-context="{ ...subPanelContext, showDataSetUploadPanel: true }">
+    </aw-add>
+
+    <aw-panel-footer>
+        <aw-button button-type="base" action="closePopupWindow" size="auto">{{i18n.cancel}}</aw-button>
+        <aw-button enable-when="!ctx.addItemEventProgressing && formProp.attributes.valid" action="epCreateAttach" size="auto">{{i18n.done}}
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

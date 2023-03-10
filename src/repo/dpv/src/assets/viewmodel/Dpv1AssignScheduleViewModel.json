@@ -1,0 +1,280 @@
+{
+    "schemaVersion" : "1.0.0",
+    "actions": {
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        },
+        "assignSchedule": {
+            "actionType": "JSFunctionAsync",
+            "method": "assignSchedule",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "aw.closePopup"
+                } ],
+                "failure": [ {
+                    "name": "aw.closePopup"
+                } ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "assignScheduleSuccessfulMessage"
+                    }
+                ],
+                "failure": [
+                    {
+                        "message": "assignScheduleFailedMessage"
+                    }
+                ]
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "unAssignSchedule": {
+            "actionType": "JSFunctionAsync",
+            "method": "unAssignSchedule",
+            "inputData": {},
+            "events": {
+                "success": [ {
+                    "name": "aw.closePopup"
+                } ],
+                "failure": [ {
+                    "name": "aw.closePopup"
+                } ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "condition": "data.runningScheduleState.scheduleName",
+                        "message": "unAssignScheduleSuccessfulMessage1"
+                    },
+                    {
+                        "condition": "!data.runningScheduleState.scheduleName",
+                        "message": "unAssignScheduleSuccessfulMessage2"
+                    }
+                ],
+                "failure": [
+                    {
+                        "message": "unAssignScheduleFailedMessage"
+                    }
+                ]
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "updateRepSpecificSchAssignEnabled": {
+            "actionType": "JSFunction",
+            "method": "updateRepSpecificSchAssignEnabled",
+            "inputData": {
+                "assignScheduleState": "{{data.assignScheduleState}}",
+                "runningScheduleState": "{{data.runningScheduleState}}",
+                "cronModelState": "{{data.cronModelState}}"
+            },
+            "outputData": {
+                "repSpecificSchAssignEnabled": ""
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "updateScheduleConditions": {
+            "actionType": "JSFunction",
+            "method": "updateScheduleConditions",
+            "inputData": {
+                "assignScheduleState": "{{data.assignScheduleState}}",
+                "runningScheduleState": "{{data.runningScheduleState}}"
+            },
+            "outputData": {
+                "trigSchAssignEnabled": "trigSchAssignEnabled",
+                "trigSchUnassignEnabled": "trigSchUnassignEnabled",
+                "sharedSchAssignEnabled": "sharedSchAssignEnabled",
+                "sharedSchUnassignEnabled": "sharedSchUnassignEnabled",
+                "reportSpecSchUnassignEnabled": "reportSpecSchUnassignEnabled"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        }
+    },
+    "data": {
+        "assignScheduleTabs": [
+            {
+                "name": "{{i18n.scheduleInfoTabTitle}}",
+                "panelId": "scheduleInfoTab"
+            },
+            {
+                "name": "{{i18n.reportParamsTabTitle}}",
+                "panelId": "reportParamsTab"
+            }
+        ],
+        "assignScheduleState": {
+            "initialValues": {
+                "scheduleId": "",
+                "scheduleName": "",
+                "scheduleType": "0",
+                "trigScheduleId": "",
+                "trigScheduleName": "",
+                "trigScheduleType": ""
+            },
+            "meta": {}
+        },
+        "qryTypeState": {
+            "initialValues": {
+                "repExecPriority": "1",
+                "shift": "0",
+                "qryType": "0",
+                "lastNJobs": "",
+                "lastJobsDays": "",
+                "lastJobsHrs": "",
+                "lastJobsMins": "",
+                "fromDate": "",
+                "toDate": "",
+                "fromOrSingleJob": "",
+                "toJob": ""
+            },
+            "meta": {}
+        },
+        "cronModelState": {
+            "initialValues": {
+                "basis": 2,
+                "startTime": "",
+                "daily_selectedDaysOfWeek": [0,1,2,3,4,5,6],
+                "hourly_everyXHoursVal": 2,
+                "monthly_dayVal": 1,
+                "monthly_everyXMonthsVal": 1
+            },
+            "meta": {}
+        },
+        "runningScheduleState": {
+            "initialValues": {
+                "scheduleId": "",
+                "scheduleName": "",
+                "scheduleType": "0",
+                "scheduleTypeName": "",
+                "nextOccurrence": "",
+                "basis": 2,
+                "startTime": "",
+                "daily_selectedDaysOfWeek": [0,1,2,3,4,5,6],
+                "hourly_everyXHoursVal": 2,
+                "monthly_dayVal": 1,
+                "monthly_everyXMonthsVal": 1
+            },
+            "meta": {}
+        },
+        "sharedSchAssignEnabled": false,
+        "sharedSchUnassignEnabled": false,
+        "repSpecificSchAssignEnabled": false,
+        "reportSpecSchUnassignEnabled": false,
+        "trigSchAssignEnabled":false,
+        "trigSchUnassignEnabled":false
+    },
+    "conditions": {
+        "sharedSchUnassignCond": {
+            "expression": "data.sharedSchUnassignEnabled"
+        },
+        "reportSpecSchUnassignCond": {
+            "expression": "data.reportSpecSchUnassignEnabled"
+        },
+        "triggerSchUnassignCond": {
+            "expression": "data.trigSchUnassignEnabled"
+        },
+        "sharedSchAssignCond":{
+            "expression": "data.sharedSchAssignEnabled"
+        },
+        "reportSpecSchAssignCond":{
+            "expression": "data.repSpecificSchAssignEnabled"
+        },
+        "triggerSchAssignCond":{
+            "expression": "data.trigSchAssignEnabled"
+        },
+        "assignCond":{
+            "expression": "conditions.sharedSchAssignCond || conditions.reportSpecSchAssignCond || conditions.triggerSchAssignCond"
+        },
+        "unAssignCond":{
+            "expression": "conditions.sharedSchUnassignCond || conditions.reportSpecSchUnassignCond || conditions.triggerSchUnassignCond"
+        }
+    },
+    "onEvent":[
+        {
+            "eventId": "aw.closePopup",
+            "action": "closePopupWindow"
+        }
+    ],
+    "messages": {
+        "assignScheduleSuccessfulMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Dpv1AssignScheduleSuccessful}}",
+            "messageTextParams": [
+                "{{data.assignScheduleState.scheduleName}}",
+                "{{ctx.mselected[0].props.object_string.uiValues}}"
+            ]
+        },
+        "assignScheduleFailedMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Dpv1AssignScheduleFailed}}",
+            "messageTextParams": [
+                "{{data.assignScheduleState.scheduleName}}",
+                "{{ctx.mselected[0].props.object_string.uiValues}}"
+            ]
+        },
+        "unAssignScheduleSuccessfulMessage1": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Dpv1UnassignScheduleSuccessful}}",
+            "messageTextParams": [
+                "{{data.runningScheduleState.scheduleName}}",
+                "{{ctx.mselected[0].props.object_string.uiValues}}"
+            ]
+        },
+        "unAssignScheduleSuccessfulMessage2": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Dpv1UnassignScheduleSuccessful}}",
+            "messageTextParams": [
+                "{{data.runningScheduleState.scheduleId}}",
+                "{{ctx.mselected[0].props.object_string.uiValues}}"
+            ]
+        },
+        "unAssignScheduleFailedMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Dpv1UnassignScheduleFailed}}",
+            "messageTextParams": [
+                "{{data.runningScheduleState.scheduleId}}",
+                "{{ctx.mselected[0].props.object_string.uiValues}}"
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "updateRepSpecificSchAssignEnabled",
+                "observers": [
+                    "viewModel.atomicData.cronModelState",
+                    "viewModel.atomicData.assignScheduleState"
+                ]
+            },
+            {
+                "action": "updateScheduleConditions",
+                "observers": [
+                    "viewModel.atomicData.assignScheduleState"
+                ]
+            }
+        ]
+    },
+    "i18n": {
+        "closeBtn": ["DpvMessages"],
+        "assignReportBtn": ["DpvMessages"],
+        "unAssignReportBtn": ["DpvMessages"],
+        "scheduleInfoTabTitle": ["DpvMessages"],
+        "reportParamsTabTitle": ["DpvMessages"],
+        "Dpv1AssignScheduleSuccessful": ["DpvMessages"],
+        "Dpv1AssignScheduleFailed": ["DpvMessages"],
+        "Dpv1UnassignScheduleSuccessful": ["DpvMessages"],
+        "Dpv1UnassignScheduleFailed": ["DpvMessages"]
+    },
+    "props": {
+        "sub-panel-context":{
+            "type":"object"
+        }
+    } 
+}

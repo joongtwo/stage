@@ -1,0 +1,49 @@
+<div class="sw-row w-12 h-12">
+    <div class="sw-column justify-top aw-dpv-healthContainer h-11">
+        <aw-chart chart-provider="data.chartProviders.filesPieChartProvider" chart-points="data.filesPieChartProvider_chartPoints"
+            exist-when="conditions.showPieChart"></aw-chart>
+    </div>
+    <div class="sw-column aw-dpv-healthContainer h-11">
+        <aw-break></aw-break>
+        <div class="sw-row aw-layout-panelSectionTitle h-1" exist-when="conditions.dpv1FailedFilesCond">
+            <span>{{i18n.etlFailedFilesReportTitle}}</span>
+        </div>
+        <div class="sw-row aw-layout-panelSectionTitle h-1" exist-when="conditions.dpv1PartialSuccessFilesCond">
+            <span>{{i18n.etlPartialSuccessFilesReportTitle}}</span>
+        </div>
+        <div class="sw-row aw-layout-panelSectionTitle h-1" exist-when="conditions.dpv1SuccessFilesCond">
+            <span>{{i18n.etlSuccessFilesReportTitle}}</span>
+        </div>
+        <aw-break></aw-break>
+        <div class="sw-row" exist-when="conditions.dpv1FailedFilesCond">
+            <dpv-failed-files-report-table sub-panel-context="props.subPanelContext"></dpv-failed-files-report-table>
+        </div>
+        <div class="sw-row" exist-when="conditions.dpv1PartialSuccessFilesCond">
+            <dpv-partial-success-files-report-table sub-panel-context="props.subPanelContext"></dpv-partial-success-files-report-table>
+        </div>
+        <div class="sw-row" exist-when="conditions.dpv1SuccessFilesCond">
+            <dpv-success-files-report-table sub-panel-context="props.subPanelContext"></dpv-success-files-report-table>
+        </div>
+    </div>
+    <aw-splitter isprimarysplitter="false" direction="VERTICAL"></aw-splitter>
+    <div class="sw-column aw-dpv-healthContainer h-11">
+        <aw-i18n class="aw-layout-panelSectionTitle">{{i18n.properties}}</aw-i18n>
+        <aw-break> </aw-break>
+        <div class="sw-row align-self-stretch" exist-when="conditions.dpv1IsFileSelectedCond">
+            <aw-label prop="data.dataFile"></aw-label>
+            <aw-link prop="data.dataFileLink" action="openDataFile"></aw-link>
+        </div>
+        <div class="sw-row align-self-stretch" exist-when="conditions.dpv1FailedFilesCond">
+            <aw-label prop="data.dmlFile"></aw-label>
+            <aw-link prop="data.dmlFileLink" action="openDMLFile"></aw-link>
+        </div>
+        <div class="sw-row align-self-stretch" exist-when="conditions.dpv1FailedFilesCond">
+            <aw-label prop="data.errorFile"></aw-label>
+            <aw-link prop="data.errorFileLink" action="openErrorFile"></aw-link>
+        </div>
+        <div class="sw-row align-self-stretch" exist-when="conditions.dpv1PartialSuccessFilesCond">
+            <aw-label prop="data.warnFile"></aw-label>
+            <aw-link prop="data.warnFileLink" action="openWarnFile"></aw-link>
+        </div>
+    </div>
+</div>

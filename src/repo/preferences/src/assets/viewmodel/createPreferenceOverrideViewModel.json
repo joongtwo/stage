@@ -1,0 +1,139 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-widget.directive",
+        "js/aw-break.directive",
+        "js/aw-property-label.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-i18n.directive",
+        "js/aw-button.directive",
+        "js/aw-listbox.directive"
+    ],
+    "actions": {
+        "openUserOverridePanel": {
+            "actionType": "JSFunction",
+            "method": "activateUserOverridePanel",
+            "deps": "js/createPreferencesService",
+            "inputData": {
+                "commandId": "createPreferenceOverride",
+                "location": "aw_toolsAndInfo",
+                "selectedPreference": "{{subPanelContext.selection[0]}}",
+                "overrideLocationList":"{{ctx.overrideLOVList}}"
+            }
+        },
+        "selectionChange":
+        {
+            "actionType": "JSFunction",
+            "method": "createOverrideSelectionChange",
+            "inputData": {
+                "commandId": "createPreferenceOverride",
+                "location": "aw_toolsAndInfo",
+                "data": "{{data}}",
+                "ctx": "{{ctx}}"
+            },
+            "deps": "js/createPreferencesService",
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "reOpenUserOverridePanel"
+                    }
+                ]
+            }
+        },
+        "createUserOverride": {
+            "actionType": "JSFunction",
+            "method": "createUserOverride",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/createPreferencesService"
+        }
+    },
+    "onEvent":
+    [
+        {
+            "eventId": "reOpenUserOverridePanel",
+            "action": "openUserOverridePanel"
+        }
+    ],
+    "dataParseDefinitions": {},
+    "dataProviders": {},
+    "data":
+    {
+        "overrideLocationList":{
+            "dbValues":"{{ctx.panelContext.sourcePref.overrideLocationList}}"
+        },
+        "fnd0PreferenceName": {
+            "dbValue": "{{ctx.panelContext.sourcePref.name}}"
+        },
+        "fnd0Location": {
+            "displayName": "{{i18n.Location}}",
+            "type": "STRING",
+            "hasLov": "true",
+            "isRequired": "true",
+            "isEditable": "false"
+        },
+        "fnd0LocationLOV": {
+            "displayName": "{{i18n.Location}}",
+            "type": "STRING",
+            "hasLov": "true",
+            "isRequired": "true",
+            "isEditable":"true"
+        },
+        "fnd0PreferenceValues": {
+            "displayName": "{{i18n.Values}}",
+            "type": "{{ctx.panelContext.sourcePref.valuesVMType}}",
+            "dbValue": "{{ctx.panelContext.sourcePref.values}}",
+            "dispValue":"{{ctx.panelContext.sourcePref.valuesDisplay}}",
+            "isArray": "{{ctx.panelContext.sourcePref.isArray}}"
+        },
+        "userLocationTitle": "{{i18n.User}}"
+    },
+    "i18n": {
+        "Values": [ "preferenceMessages" ],
+        "location": [ "preferenceMessages" ],
+        "createPreferenceOverrideTitle": [ "createPreferenceMessages" ],
+        "addPreferenceButtonText": [ "createPreferenceMessages" ],
+        "User": [ "preferenceMessages" ]
+    },
+    "conditions": {
+        "showCreateButton": {
+            "expression": "data.fnd0PreferenceValues.dbValue !== undefined"
+        },
+        "showLocationLOV":{
+            "expression": "ctx.panelContext.sourcePref.isLocationLOV"
+        }
+    },
+    "functions": {
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "selectionChange",
+                "observers": [
+                    "props.subPanelContext.selection"
+                ]
+            }
+        ]
+    }
+}

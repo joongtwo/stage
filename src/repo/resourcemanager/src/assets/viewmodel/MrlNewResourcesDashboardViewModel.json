@@ -1,0 +1,43 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "_provider": {
+            "breadcrumbConfig": {
+                "vm" : "AwSearchBreadcrumb"
+            },
+            "priority": 7,
+            "label": {
+                "source": "/i18n/mrlMessages",
+                "key": "mrlNewResourcesText"
+            },
+            "clientScopeURI": "Awp0SearchResults",
+            "nameToken": "com.siemens.splm.client.mrm:manageResourcesSublocation",
+            "context": {
+                "search": {
+                    "provider": "Awp0ObjectSetRowProvider",
+                    "sortType": "Priority",
+                    "criteria": {
+                        "objectSet": "contents.WorkspaceObject",
+                        "parentUid": "{{ctx.mrlDashboard.mrlNewResourcesFolderUid}}",
+                        "returnTargetObjs": "true",
+                        "showConfiguredRev":"true"
+                    },                    
+                    "sortCriteria": [{
+                        "fieldName": "creation_date",
+                        "sortDirection": "DESC"
+                    }],
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "searchFilterMap6": {},
+                    "hideInContentSearchBox":true,
+                    "showLoadingText": true
+                }
+            },
+            "viewBase": "Awp0Base",
+            "params": {
+                "searchCriteria": "",
+                "filter": ""
+            }
+        }
+    }
+}

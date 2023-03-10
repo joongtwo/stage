@@ -1,0 +1,24 @@
+[
+  {
+    "conditions": {
+      "modelType.typeHierarchyArray": {
+        "$in": "Cm1ChangeHistoryElement"
+      }
+    },
+    "target": {
+      "prop": "cm1SolutionItemObject"
+    }
+  },
+  {
+    "conditions": {
+      "modelType.typeHierarchyArray": {
+        "$in": "Cm0ProposedImpactedObject"
+      }
+    },
+    "target": {
+      "prop": "cm0ProposedImpactedObject",
+      "method": "getAlternateSelectedObjects",
+      "deps": "js/selection.service"
+    }
+  }
+]

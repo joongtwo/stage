@@ -1,0 +1,721 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "_sublocation": {
+            "name": "com.siemens.splm.client.ewi:ewiSubLocation",
+            "label": {
+                "source": "/i18n/EWIMessages",
+                "key": "EWILabel"
+            },
+            "clientScopeURI": "Ewi0EwiSubLocation",
+            "nameToken": "com.siemens.splm.client.ewi:ewiSubLocation",
+            "policy": "/policies/EWIObjectPropertyPolicy.json",
+            "viewBase": "Ewi"
+        },
+        "headerProperties": {},
+        "newHeaderProperties": {},
+        "Execution": {
+            "policy": {
+                "types": [
+                    {
+                        "name": "ImanItemBOPLine",
+                        "properties": [
+                            {
+                                "name": "ewi0ExecutionStatus"
+                            },
+                            {
+                                "name": "ewi0ExecutionPercentage"
+                            },
+                            {
+                                "name": "ewi0ExecutionDate"
+                            },
+                            {
+                                "name": "ewi0ExecutionUser"
+                            },
+                            {
+                                "name": "ewi0ExecutionComment"
+                            },
+                            {
+                                "name": "ewi0ExecutionAttachment"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "OperatorSelection": {
+            "policy": {
+                "types": [
+                    {
+                        "name": "Mfg0BvrProcessStation",
+                        "properties": [
+                            {
+                                "name": "Mfg0processResources",
+                                "modifiers": [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mfg0BvrProcessResource",
+                        "properties": [
+                            {
+                                "name": "bl_item_item_id"
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "actions": {
+        "openPreviousStep": {
+            "actionType": "JSFunctionAsync",
+            "method": "navigateToSelectedObject",
+            "inputData": {
+                "data": "{{data.previousStepUid}}"
+            },
+            "deps": "js/ewiService"
+        },
+        "openNextStep": {
+            "actionType": "JSFunctionAsync",
+            "method": "navigateToSelectedObject",
+            "inputData": {
+                "data": "{{data.nextStepUid}}"
+            },
+            "deps": "js/ewiService"
+        },
+        "init": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "computeLayoutAndGetUpdatedWorkareasTabsData"
+                },
+                {
+                    "action": "getLayoutTabsFromPreference",
+                    "condition": "conditions.isNeedToGetLayoutTabs"
+                },
+                {
+                    "action": "getStep",
+                    "condition": "conditions.isNeedToReloadStep"
+                },
+                {
+                    "action": "getVisLicense",
+                    "condition": "!ctx.workinstr0Vis.visLicense"
+                }
+            ]
+        },
+        "getLayoutTabsFromPreference": {
+            "actionType": "JSFunctionAsync",
+            "method": "getLayoutTabsFromPreference",
+            "inputData": {
+                "layoutName": "{{data.layoutName}}",
+                "executionPolicy": "{{data.Execution.policy}}",
+                "operatorSelectionPolicy": "{{data.OperatorSelection.policy}}"
+            },
+            "outputData": {
+                "workareasTabs": "workareasTabs",
+                "allRelationsToLoad": "allRelationsToLoad",
+                "allPropPolicy": "allPropPolicy",
+                "policyIds": "policyIds",
+                "hiddenComponents": "hiddenComponents",
+                "layoutName": "layoutName",
+                "views": "views"
+            },
+            "deps": "js/ewiService"
+        },
+        "loadStep": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "registerPolicies"
+                },
+                {
+                    "action": "getStep"
+                }
+            ]
+        },
+        "getStep": {
+            "actionType": "TcSoaService",
+            "serviceName": "Ewia-2015-03-DataManagement",
+            "method": "loadWorkPackageDataConfigured",
+            "deps": "js/ewiService",
+            "inputData": {
+                "input": [
+                    {
+                        "workPackageUid": "{{ctx.state.params.uid}}",
+                        "currentStepUid": "{{ctx.state.params.stepUid}}",
+                        "loadHeaderProperties": "{{function:shouldReloadProps}}",
+                        "configParamsMap": {
+                            "date": "{{ctx.state.params.date}}",
+                            "enditem": "{{ctx.state.params.enditem}}",
+                            "revrule": "{{ctx.state.params.revrule}}",
+                            "stepUid": "{{ctx.state.params.stepUid}}",
+                            "unitno": "{{ctx.state.params.unitno}}",
+                            "resource": "{{ctx.state.params.resource}}"
+                        }
+                    }
+                ]
+            },
+            "outputData": {
+                "currentStep": "workPackageDataInfo[0].currentStep",
+                "workPackage": "workPackageDataInfo[0].workPackage",
+                "previousStepUid": "workPackageDataInfo[0].previousStepUid",
+                "nextStepUid": "workPackageDataInfo[0].nextStepUid",
+                "newHeaderProperties": "workPackageDataInfo[0].headerProperties"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "ewi.setCurrentStep"
+                    },
+                    {
+                        "name": "ewi.registerWIPropertiesPolicies"
+                    },
+                    {
+                        "name": "ewi.getRelated"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "stepLoadErrorMessage"
+                    }
+                ]
+            }
+        },
+        "setCurrentStep": {
+            "actionType": "JSFunction",
+            "method": "setCurrentStep",
+            "inputData": {
+                "workPackage": "{{data.workPackage}}",
+                "currentStep": "{{data.currentStep}}",
+                "headerProps": "{{data.headerProperties}}",
+                "loadHeaderProperties": "{{conditions.isNeedToReloadHeaderProperties}}",
+                "newHeaderProps": "{{data.newHeaderProperties}}"
+            },
+            "outputData": {
+                "topLine": "topLine",
+                "revRuleParam": "revRuleParam",
+                "dateParam": "dateParam",
+                "unitNoParam": "unitNoParam",
+                "endItemParam": "endItemParam",
+                "resourceParam": "resourceParam",
+                "headerProperties": "headerProps"
+            },
+            "deps": "js/ewiService"
+        },
+        "getRelated": {
+            "actionType": "TcSoaService",
+            "serviceName": "Ewia-2012-10-DataManagement",
+            "method": "getRelated",
+            "inputData": {
+                "input": {
+                    "businessObjects": [
+                        "{{data.currentStep}}"
+                    ],
+                    "relations": "{{data.allRelationsToLoad}}"
+                }
+            },
+            "policy": {
+                "types": [
+                    {
+                        "name": "ItemRevision",
+                        "properties": [
+                            {
+                                "name": "object_name"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Dataset",
+                        "properties": [
+                            {
+                                "name": "ref_list",
+                                "modifiers": [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "object_name"
+                            },
+                            {
+                                "name": "ref_names"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "ImanFile",
+                        "properties": [
+                            {
+                                "name": "original_file_name"
+                            },
+                            {
+                                "name": "file_ext"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "FullText",
+                        "properties": [
+                            {
+                                "name": "body_text"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Web Link",
+                        "properties": [
+                            {
+                                "name": "data_file",
+                                "modifiers": [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "WebLink",
+                        "properties": [
+                            {
+                                "name": "url"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mfg0BvrProcess",
+                        "properties": [
+                            {
+                                "name": "ewi0cortona_app_ref"
+                            },
+                            {
+                                "name": "bl_clone_stable_occurrence_id"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mfg0BvrOperation",
+                        "properties": [
+                            {
+                                "name": "ewi0cortona_app_ref"
+                            },
+                            {
+                                "name": "bl_clone_stable_occurrence_id"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "outputData": {
+                "relatedObjectsInfo": "relatedObjectsInfo"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "ewi.setRelatedData"
+                    }
+                ]
+            }
+        },
+        "setRelatedData": {
+            "actionType": "JSFunction",
+            "method": "setRelatedData",
+            "inputData": {
+                "workareasTabs": "{{data.workareasTabs}}",
+                "allRelatedObjects": "{{function:loadRelations}}",
+                "data":"{{data}}"
+            },
+            "outputData": {
+                "workareasTabsData": "workareasTabsData"
+            },
+            "deps": "js/ewiService",
+            "events": {
+                "success": [
+                    {
+                        "name": "ewi.unregisterPolicies"
+                    },
+                    {
+                        "name": "ewi.shouldReloadTab"
+                    },
+                    {
+                        "name": "workinstr.dataChange",
+                        "eventData": {
+                            "tab": "{{ctx.workinstr0viewToRefresh}}"
+                        }
+                    }
+                ]
+            }
+        },
+        "unregisterPolicies": {
+            "actionType": "JSFunction",
+            "method": "unregisterPolicies",
+            "inputData": {
+                "policyIds": "{{data.policyIds}}"
+            },
+            "deps": "js/ewiService"
+        },
+        "toggleAggregateParts": {
+            "actionType": "JSFunction",
+            "method": "toggleAggregateParts",
+            "inputData": {
+                "partsData": "{{data.views.Parts}}",
+                "relations": "{{data.allRelationsToLoad}}",
+                "workareasTabs": "{{data.workareasTabs}}",
+                "policyIds": "{{data.policyIds}}"
+            },
+            "deps": "js/Ewi0PartsService"
+        },
+        "toggleAggregateTools": {
+            "actionType": "JSFunction",
+            "method": "toggleAggregateTools",
+            "inputData": {
+                "toolsData": "{{data.views.Tools}}",
+                "relations": "{{data.allRelationsToLoad}}",
+                "workareasTabs": "{{data.workareasTabs}}",
+                "policyIds": "{{data.policyIds}}"
+            },
+            "deps": "js/Ewi0ToolsService"
+        },
+        "refreshData": {
+            "actionType": "JSFunction",
+            "method": "refreshData",
+            "deps": "js/ewiService",
+            "inputData": {
+                "allPropPolicy": "{{data.allPropPolicy}}",
+                "policyIds": "{{data.policyIds}}"
+            }
+        },
+        "registerPolicies": {
+            "actionType": "JSFunction",
+            "method": "registerPolicies",
+            "deps": "js/ewiService",
+            "inputData": {
+                "allPropPolicy": "{{data.allPropPolicy}}",
+                "policyIds": "{{data.policyIds}}"
+            }
+        },
+        "registerWIPropertiesPolicies": {
+            "actionType": "JSFunction",
+            "method": "registerWIPropertiesPolicies",
+            "deps": "js/ewiService",
+            "inputData": {
+                "workareasTabs": "{{data.workareasTabs}}",
+                "allPropPolicy": "{{data.allPropPolicy}}",
+                "policyIds": "{{data.policyIds}}"
+            },
+            "outputData": {
+                "workareasTabs": "workareasTabs",
+                "allPropPolicy": "allPropPolicy",
+                "policyIds": "policyIds"
+            }
+        },
+        "getVisLicense": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2008-03-Session",
+            "method": "connect",
+            "inputData": {
+                "featureKey": "visview_std",
+                "action": "check"
+            },
+            "outputData": {
+                "visLicenseVal": "outputVal"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "ewi.checkVisLicense"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "ewi.getVisLicenseLite"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "visLicenseErrorMessage"
+                    }
+                ]
+            }
+        },
+
+        "getVisLicenseLite": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2008-03-Session",
+            "method": "connect",
+            "inputData": {
+                "featureKey": "visview_base",
+                "action": "check"
+            },
+            "outputData": {
+                "visLicenseVal": "outputVal"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "ewi.checkVisLicense"
+                    }
+                ]
+            }
+        },
+        "checkVisLicense": {
+            "actionType": "JSFunction",
+            "method": "checkVisLicense",
+            "deps": "js/ewiService",
+            "inputData": {
+                "visLicenseVal": "{{data.visLicenseVal}}",
+                "snapshotConfiguration": "{{ctx.preferences.EWI_ProductViewOpenConfiguration[0]}}",
+                "autoLoad3D": "{{ctx.preferences.EWI_AutoLoad3D[0]}}"
+            }
+        },
+        "completeStatusChanged": {
+            "actionType": "JSFunction",
+            "method": "completeStatusChanged",
+            "deps": "js/ewiService",
+            "inputData": {
+                "workareasTabs": "{{data.workareasTabs}}",
+                "preferences": "{{ctx.preferences}}"
+            }
+        },
+        "resize": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "computeLayoutAndGetUpdatedWorkareasTabsData"
+                },
+
+                {
+                    "action": "getLayoutTabsFromPreference",
+                    "condition": "conditions.isLayoutChanged"
+                },
+                {
+                    "action": "refreshData",
+                    "condition": "conditions.isLayoutChanged"
+                }
+            ]
+        },
+        "shouldReloadTab": {
+            "actionType": "JSFunction",
+            "method": "shouldReloadTab",
+            "inputData": {
+                "workareasTabsData": "{{data.workareasTabsData}}"
+            },
+            "outputData": {
+                "workareasTabsData": ""
+            },
+            "deps": "js/ewiService"
+        },
+        "computeLayoutAndGetUpdatedWorkareasTabsData": {
+            "actionType": "JSFunction",
+            "method": "computeLayoutAndGetUpdatedWorkareasTabsData",
+            "inputData": {
+                "preferenceLayout": "{{ctx.preferences.EWI_Layout[0]}}",
+                "layoutName": "{{data.layoutName}}",
+                "workareasTabsData":"{{data.workareasTabsData}}"
+            },
+            "outputData": {
+                "layoutName": "currentLayoutName",
+                "isLayoutChanged":"isLayoutChanged",
+                "workareasTabsData":"updatedWorkareasTabsData"
+            },
+            "deps": "js/ewiService"
+        }
+    },
+    "conditions": {
+        "leftPanelTabsVisible": {
+            "expression": "(conditions.topLeftPanelTabsVisible && conditions.isNotSinglePanelLayout ) || conditions.bottomLeftPanelTabsVisible"
+        },
+        "topLeftPanelTabsVisible": {
+            "expression": "!ctx.EWI0FullScreen || ctx.EWI0FullScreen === 'topLeftPanelTabs'"
+        },
+        "bottomLeftPanelTabsVisible": {
+            "expression": "(!ctx.EWI0FullScreen && conditions.isThreePanelLayout ) || ctx.EWI0FullScreen === 'bottomLeftPanelTabs'"
+        },
+        "rightPanelTabsVisible": {
+            "expression": "!ctx.EWI0FullScreen || ctx.EWI0FullScreen === 'rightPanelTabs'"
+        },
+        "isNeedToGetLayoutTabs": {
+            "expression": "!data.workareasTabs"
+        },
+        "isNeedToReloadHeaderProperties": {
+            "expression": "!(conditions.isSameWP && conditions.isSameRevRule && conditions.isSameDate && conditions.isSameUnitNo && conditions.isSameEndItem && conditions.isSameResource) || !ctx.state.params.stepUid || ctx.state.params.stepUid===''"
+        },
+        "isNeedToReloadStep": {
+            "expression": "!conditions.isSameStep || conditions.isNeedToReloadHeaderProperties"
+        },
+        "isAllURLParamsTheSame": {
+            "expression": "conditions.isSameWP && conditions.isSameStep && conditions.isSameRevRule && conditions.isSameDate && conditions.isSameUnitNo && conditions.isSameEndItem && conditions.isSameResource"
+        },
+        "isSameWP": {
+            "expression": "data.workPackage && data.workPackage.uid === ctx.state.params.uid"
+        },
+        "isSameStep": {
+            "expression": "(data.currentStep && data.currentStep.uid === ctx.state.params.stepUid) || (!ctx.state.params.stepUid && data.currentStep.uid === data.topLine.uid && conditions.isSameWP)"
+        },
+        "isSameRevRule": {
+            "expression": "data.revRuleParam === ctx.state.params.revrule || ( data.revRuleParam === '' && ctx.state.params.revrule === null )"
+        },
+        "isSameDate": {
+            "expression": "data.dateParam === ctx.state.params.date || ( data.dateParam === '' && ctx.state.params.date === null )"
+        },
+        "isSameUnitNo": {
+            "expression": "data.unitNoParam === ctx.state.params.unitno || ( data.unitNoParam === '' && ctx.state.params.unitno === null )"
+        },
+        "isSameEndItem": {
+            "expression": "data.endItemParam === ctx.state.params.enditem || ( data.endItemParam === '' && ctx.state.params.enditem === null )"
+        },
+        "isSameResource": {
+            "expression": "data.resourceParam === ctx.state.params.resource || ( data.resourceParam === '' && ctx.state.params.resource === null )"
+        },
+        "isFooterHidden": {
+            "expression": "data.hiddenComponents.ewiFooter === true"
+        },
+        "isNotSinglePanelLayout": {
+            "expression": "ctx.preferences.EWI_Layout[0] !== 'SinglePanelLayout' && data.layoutName !== 'SinglePanelLayout'"
+        },
+        "isThreePanelLayout": {
+            "expression": "ctx.preferences.EWI_Layout[0] === 'ThreePanelLayout'"
+        },
+        "isNotInFullScreen": {
+            "expression": "!ctx.EWI0FullScreen"
+        },
+        "isLayoutChanged": {
+            "expression": "data.isLayoutChanged === true"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "ewi.loadStep",
+            "action": "loadStep"
+        },
+        {
+            "eventId": "ewi.getRelated",
+            "action": "getRelated"
+        },
+        {
+            "eventId": "ewi.setRelatedData",
+            "action": "setRelatedData"
+        },
+        {
+            "eventId": "ewi.unregisterPolicies",
+            "action": "unregisterPolicies"
+        },
+        {
+            "eventId": "ewi.toggleAggregateParts",
+            "action": "toggleAggregateParts"
+        },
+        {
+            "eventId": "ewi.toggleAggregateTools",
+            "action": "toggleAggregateTools"
+        },
+        {
+            "eventId": "ewi.refreshData",
+            "action": "refreshData"
+        },
+        {
+            "eventId": "ewi.registerPolicies",
+            "action": "registerPolicies"
+        },
+        {
+            "eventId": "ewi.registerWIPropertiesPolicies",
+            "action": "registerWIPropertiesPolicies"
+        },
+        {
+            "eventId": "aw.windowResize",
+               "action": "resize"
+        },
+        {
+            "eventId": "ewi.setCurrentStep",
+            "action": "setCurrentStep"
+        },
+        {
+            "eventId": "ewi.checkVisLicense",
+            "action": "checkVisLicense"
+        },
+        {
+            "eventId": "ewi.completeStatusChanged",
+            "action": "completeStatusChanged"
+        },
+        {
+            "eventId": "ewi.getVisLicenseLite",
+            "action": "getVisLicenseLite"
+        },
+        {
+            "eventId": "ewi.shouldReloadTab",
+            "action": "shouldReloadTab"
+        }
+    ],
+    "lifecycleHooks": {
+        "onMount": "init"
+    },
+    "functions": {
+        "loadRelations": {
+            "functionName": "loadRelations",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "shouldReloadProps": {
+            "functionName": "shouldReloadProps",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "messages": {
+        "visLicenseErrorMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.visLicenseError}}",
+            "messageTextParams": []
+        },
+        "stepLoadErrorMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.stepLoadError}}",
+            "messageTextParams": []
+        }
+    },
+    "i18n": {
+        "nextStepName": [
+            "EWIMessages"
+        ],
+        "nextStepTooltip": [
+            "EWIMessages"
+        ],
+        "previousStepName": [
+            "EWIMessages"
+        ],
+        "previousStepTooltip": [
+            "EWIMessages"
+        ],
+        "visLicenseError": [
+            "EWIMessages"
+        ],
+        "stepLoadError": [
+            "EWIMessages"
+        ]
+    }
+}

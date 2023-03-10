@@ -1,0 +1,383 @@
+{
+    "data": { "isCollapse": false},
+    "messages": {
+        "warningInformation": {
+            "messageType": "WARNING",
+            "messageText": "{{data.stepInformation}}"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "getPropertiesOnSwiItems": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "attributes": [
+                    "swi1Parent",
+                    "swi1ObjectName",
+                    "swi1ObjectDescription",
+                    "swi1Predecessor",
+                    "swi1UnderlyingObject",
+                    "swi1Parts",
+                    "swi1Skills",
+                    "swi1Tools",
+                    "swi1Resources",
+                    "swi1PartsInformation",
+                    "swi1ResultingInformation",
+                    "swi1SupportingInformation",
+                    "swi1RequiredDuration"
+                ],
+                "objects": "{{props.subPanelContext.swiItemsList}}"
+            },
+            "outputData": {
+                "treeLoadResult": "{{function:loadTreeLoadResultForAllNodes}}",
+                "response":""
+            },
+            "policy":{
+                "types": [
+                    {
+                        "name": "Smr0Warning",
+                        "properties": [
+                            {
+                                "name": "smr0warningType",
+                                "modifiers":[{
+                                    "name":"withProperties",
+                                    "Value":"true"
+                                }]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mfg0BvrPart",
+                        "properties": [
+                            {
+                                "name": "bl_line_name",
+                                "modifiers":[{
+                                    "name":"withProperties",
+                                    "Value":"true"
+                                }]
+                            },
+                            {
+                                "name": "bl_occ_type",
+                                "modifiers":[{
+                                    "name":"withProperties",
+                                    "Value":"true"
+                                }]
+                            },
+                            {
+                                "name": "bl_item_item_id",
+                                "modifiers":[{
+                                    "name":"withProperties",
+                                    "Value":"true"
+                                }]
+                            },
+                            {
+                                "name": "bl_item_object_desc",
+                                "modifiers":[{
+                                    "name":"withProperties",
+                                    "Value":"true"
+                                }]
+                            },
+                            {
+                                "name": "bl_occurrence_name",
+                                "modifiers":[{
+                                    "name":"withProperties",
+                                    "Value":"true"
+                                }]
+                            },
+                            {
+                                "name": "bl_quantity",
+                                "modifiers":[{
+                                    "name":"withProperties",
+                                    "Value":"true"
+                                }]
+                            },
+                            {
+                                "name": "bl_rev_item_revision_id",
+                                "modifiers":[{
+                                    "name":"withProperties",
+                                    "Value":"true"
+                                }]
+                            },
+                            {
+                                "name": "bl_rev_object_name",
+                                "modifiers":[{
+                                    "name":"withProperties",
+                                    "Value":"true"
+                                }]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mfg0BvrEquipment",
+                        "properties": [
+                            {
+                                "name": "bl_item_item_id",
+                                "modifiers":[{
+                                    "name":"withProperties",
+                                    "Value":"true"
+                                }]
+                            },
+                            {
+                                "name": "bl_line_name",
+                                "modifiers":[{
+                                    "name":"withProperties",
+                                    "Value":"true"
+                                }]
+                            },
+                            {
+                                "name": "bl_item_object_desc",
+                                "modifiers":[{
+                                    "name":"withProperties",
+                                    "Value":"true"
+                                }]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "setSelectedObjectOnTreeLoadEvent"
+                    }
+                ]
+            },
+            "deps": "js/swiTreeLoadDataService"
+        },
+        "loadServiceReqTreeTableColumns": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadServiceReqTreeTableColumns",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "dataProviders.serviceReqDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/swiTreeLoadDataService"
+        },
+        "setSelectedVMO": {
+            "actionType": "JSFunctionAsync",
+            "method": "setSelectedVMO",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.serviceReqDataProvider}}",
+                "isManualSelection":false,
+                "swiAtomicData":"{{props.subPanelContext.swiAtomicData}}",
+                "actionType":"nextStep"
+            },
+            "outputData":{
+                "stepInformation": "stepInformation"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "setSelectedVMOSuccessEvent"
+                    }
+                ]
+            },
+            "deps": "js/swiTreeLoadDataService"
+        },
+        "setSelectedObjectOnTreeLoadAction": {
+            "actionType": "JSFunctionAsync",
+            "method": "setSelectedVMO",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.serviceReqDataProvider}}",
+                "isManualSelection":false,
+                "swiAtomicData":"{{props.subPanelContext.swiAtomicData}}",
+                "actionType":"onTreeLoad"
+            },
+            "outputData": {
+                "stepInformation": "stepInformation"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "setSelectedVMOSuccessEvent"
+                    }
+                ]
+            },
+            "deps": "js/swiTreeLoadDataService"
+        },
+        "setSelectedOnPreviousStep": {
+            "actionType": "JSFunctionAsync",
+            "method": "setSelectedVMO",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.serviceReqDataProvider}}",
+                "isManualSelection":false,
+                "swiAtomicData":"{{props.subPanelContext.swiAtomicData}}",
+                "actionType":"previousStep"
+            },
+            "outputData": {
+                "stepInformation": "stepInformation"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "setSelectedVMOSuccessEvent"
+                    }
+                ]
+            },
+            "deps": "js/swiTreeLoadDataService"
+        },
+        "setSelectedOnManual": {
+            "actionType": "JSFunctionAsync",
+            "method": "setSelectedOnManual",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.serviceReqDataProvider}}",
+                "isManualSelection":"{{ctx.isManualSelection}}",
+                "swiAtomicData":"{{props.subPanelContext.swiAtomicData}}",
+                "actionType":"manual"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "setSelectedVMOSuccessEvent"
+                    }
+                ]
+            }   ,
+            "deps": "js/swiTreeLoadDataService"
+        },
+         "updateCtxVariableForManualSelection": {
+            "actionType": "JSFunction",
+            "method": "registerCtx",
+            "inputData": {
+                "name": "isManualSelection",
+                "value": true
+            },
+            "deps": "js/appCtxService"
+        },
+        "isWarningType": {
+            "actionType": "JSFunction",
+            "method": "isWarningType",
+            "outputData":{
+                "isWarning": "isWarning"
+            },
+            "deps": "js/swiTreeLoadDataService"
+        },
+        "registerCtxandCheckIsWarning": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateCtxVariableForManualSelection"
+                },
+                {
+                    "action": "isWarningType"
+                }
+            ]
+        },
+        "loadTreeNodesOnFocus": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeLoadResultForAllNodes",
+            "inputData": {
+                "response": "{{data.response}}",
+                "nodeBeingExpanded": "{{data.treeLoadInput.parentNode}}",
+                "swiAtomicData": "{{props.subPanelContext.swiAtomicData}}",
+                "isCollapse":true
+
+            },
+            "outputData":{
+                "treeLoadResult":"treeLoadResult"
+            },
+            "deps": "js/swiTreeLoadDataService"
+        }
+
+    },
+    "dataProviders": {
+        "serviceReqDataProvider": {
+            "initializeAction": "getPropertiesOnSwiItems",
+            "action": "loadTreeNodesOnFocus",
+            "treeLoadResult": "{{data.treeLoadResult}}",
+            "inputData": {
+                "accessMode": "tree",
+                "topNodeUid": "{{ctx.state.params.uid}}"
+            },
+            "selectionModelMode": "single"
+        }
+    },
+    "columnProviders": {
+        "serviceReqColumnProvider": {
+            "loadColumnAction": "loadServiceReqTreeTableColumns",
+            "columns": "{{data.columns}}",
+            "frozenColumnIndex": -1
+        }
+    },
+    "grids": {
+        "serviceReqTreeTable": {
+            "dataProvider": "serviceReqDataProvider",
+            "columnProvider": "serviceReqColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": false,
+                "enablePinning": false,
+                "enableSorting": false
+            }
+        }
+    },
+    "functions": {
+        "loadTreeLoadResultForAllNodes": {
+            "functionName": "loadTreeLoadResultForAllNodes",
+            "parameters": [
+                "{{data.treeLoadInput.parentNode}}",
+                "{{props.subPanelContext.swiAtomicData}}",
+                "{{data.isCollapse}}"
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "setSelectedObjectOnTreeLoadEvent",
+            "action": "setSelectedObjectOnTreeLoadAction",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "nextActionEvent",
+            "action": "setSelectedVMO"
+        },
+        {
+            "eventId": "serviceReqDataProvider.selectionChangeEvent",
+            "action": "setSelectedOnManual",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "setSelectedVMOSuccessEvent",
+            "action": "registerCtxandCheckIsWarning",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "previousActionEvent",
+            "action": "setSelectedOnPreviousStep",
+            "cacheEventData": true
+        }
+
+        ],
+    "conditions": {
+        "isAllViewSelected": {
+            "expression": "ctx.changeViewFlag === 'All'"
+        },
+        "isStepsViewSelected": {
+            "expression": "ctx.changeViewFlag === 'Steps'"
+        }
+    },
+    "i18n": {
+        "allViewMessage": [
+            "swiMessages"
+        ],
+        "stepsViewMessage": [
+            "swiMessages"
+        ],
+        "nameValueColumn": [
+            "swiMessages"
+        ],
+        "descriptionValueColumn": [
+            "swiMessages"
+        ],
+        "reqDurationValueColumn": [
+            "swiMessages"
+        ]
+    }
+}

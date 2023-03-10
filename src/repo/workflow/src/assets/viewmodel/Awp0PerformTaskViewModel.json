@@ -1,0 +1,67 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports": [
+
+        "js/aw-include.directive",
+        "js/exist-when.directive",
+        "js/aw-panel.directive"
+    ],
+    "actions":
+    {
+        "populateSecondaryPanel": {
+            "actionType": "JSFunction",
+            "method": "populateSecondaryPanel",
+            "deps": "js/Awp0PerformTask",
+            "inputData":
+            {
+                "data": "{{data}}",
+                "name": "{{props.subPanelContext.selected}}"
+            },
+            "outputData":{
+                "isTaskPerformable": "isTaskPerformable",
+                "taskToPerform": "taskToPerform",
+                "activePerformTaskPanelId": "activePerformTaskPanelId"
+            }
+        },
+        "isPerformPanelUpdateNeeded": {
+            "actionType": "JSFunction",
+            "method": "isPerformPanelUpdateNeeded",
+            "inputData": {
+                "data": "{{data}}",
+                "selection": "{{props.subPanelContext.selected}}",
+                "updatedObjects": "{{data.eventMap['cdm.updated'].updatedObjects}}"
+            },
+            "outputData":{
+                "isTaskPerformable": "isTaskPerformable",
+                "taskToPerform": "taskToPerform",
+                "activePerformTaskPanelId": "activePerformTaskPanelId"
+            },
+            "deps": "js/Awp0PerformTask"
+        }
+    },
+    "functions":
+    {
+
+    },
+    "onEvent":
+    [
+        {
+            "eventId": "cdm.updated",
+            "cacheEventData": true,
+            "action": "isPerformPanelUpdateNeeded"
+        }
+    ],
+
+    "lifecycleHooks":{
+        "onMount" : "populateSecondaryPanel"
+    },
+
+    "conditions":
+    {
+    },
+    "i18n":
+    {
+
+    }
+
+}

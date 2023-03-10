@@ -1,0 +1,16 @@
+{
+  "slots": {
+    "programPlanningPrimaryWorkAreaCommandBarSlot": {
+      "name": "aw_pwaCommandBar",
+      "view": "Pgp0PwaCommandBar",
+      "activeWhen": {
+        "condition": "conditions.isPlanNavigationPage"
+      }
+    }
+  },
+  "conditions": {
+    "isPlanNavigationPage": {
+      "expression": "context.nameToken === 'com.siemens.splm.client.prgplanning:PlanNavigationSubLocation'"
+    }
+  }
+}

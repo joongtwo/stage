@@ -1,0 +1,15 @@
+<div class="sw-column w-12">
+    <mfe-loading-message exist-when="data.activitiesModel.isLoading"></mfe-loading-message>
+    <ep-activities-header exist-when="conditions.hasSelection && !data.activitiesModel.isLoading"
+        activities-model="data.activitiesModel"
+        scope-label="{{conditions.isProcessActivities ? i18n.processDisplayName : i18n.operationDisplayName}}">
+    </ep-activities-header>
+    <div class="sw-row h-12" aw-class="[{'hidden': data.activitiesModel.isLoading}]">
+        <ep-scope-process-activities-table exist-when="conditions.isProcessActivities"
+            sub-panel-context="{...data, ...props.subPanelContext}" activities-model="data.activitiesModel">
+        </ep-scope-process-activities-table>
+        <ep-operation-activities-table exist-when="!conditions.isProcessActivities"
+            sub-panel-context="{...data, ...props.subPanelContext}" activities-model="data.activitiesModel">
+        </ep-operation-activities-table>
+    </div>
+</div>

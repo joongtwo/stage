@@ -1,0 +1,685 @@
+{
+    "schemaVersion": "1.0.0",
+    "i18n": {
+        "elementValueColumn": [
+            "ssp0Messages"
+        ],
+        "idValueColumn": [
+            "ssp0Messages"
+        ],
+        "revisionValueColumn": [
+            "ssp0Messages"
+        ],
+        "revisionNameValueColumn": [
+            "ssp0Messages"
+        ],
+        "ownerValueColumn": [
+            "ssp0Messages"
+        ]
+    },
+    "actions": {
+        "loadProperties": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableProperties",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.sbomTreeDataProvider}}",
+                "gridId": "sbomTree",
+                "vmNodes": "{{data.dataProviders.sbomTreeDataProvider.viewModelCollection.loadedVMObjects}}",
+                "context": {
+                    "clientScopeURI": "Awb0OccurrenceManagement",
+                    "clientName": "AWClient",
+                    "columnsToExclude": [],
+                    "operationType": "Union"
+                }
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "sbom.loadPropertiesSuccess"
+                    }
+                ]
+            },
+            "deps": "js/ssp0TreeLoadDataServiceOfSBOMTree"
+        },
+        "initialLoadProperties": {
+            "actionType": "JSFunctionAsync",
+            "method": "initialLoadTreeTableProperties",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.sbomTreeDataProvider}}",
+                "gridId": "sbomTree",
+                "vmNodes": "{{data.dataProviders.sbomTreeDataProvider.viewModelCollection.loadedVMObjects}}",
+                "context": {
+                    "clientScopeURI": "Awb0OccurrenceManagement",
+                    "clientName": "AWClient",
+                    "columnsToExclude": [],
+                    "operationType": "Union"
+                }
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "sbom.loadPropertiesSuccess"
+                    }
+                ]
+            },
+            "deps": "js/ssp0TreeLoadDataServiceOfSBOMTree"
+        },
+        "getNeutralProductOfServicePlan": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-09-DataManagement",
+            "method": "expandGRMRelationsForPrimary",
+            "inputData": {
+                "primaryObjects": [
+                    "{{data.servicePlanObject}}"
+                ],
+                "pref": {
+                    "expItemRev": false,
+                    "returnRelations": false,
+                    "info": [
+                        {
+                            "relationTypeName": "SSP0PlanForNeutralProduct",
+                            "otherSideObjectTypes": ""
+                        }
+                    ]
+                }
+            },
+            "outputData": {
+                "neutralProductUid": "{{function:getNeutralProductUid}}"
+            },
+            "deps": "js/ssp0TreeLoadDataServiceOfSBOMTree"
+        },
+        "loadSBOMAssembly": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2022-06-OccurrenceManagement",
+            "method": "getOccurrences4",
+            "inputData": {
+                "inputData": {
+                    "product": {
+                        "uid": "{{data.neutralProductUid}}"
+                    },
+                    "parentElement": "",
+                    "requestPref": {
+                        "calculateFilters": [
+                            "false"
+                        ],
+                        "displayMode": [
+                            "Tree"
+                        ],
+                        "includePath": [
+                            "true"
+                        ],
+                        "loadTreeHierarchyThreshold": [
+                            "50"
+                        ],
+                        "refresh": [
+                            "true"
+                        ],
+                        "savedSessionMode": [
+                            "restore"
+                        ],
+                        "showExplodedLines": [
+                            "false"
+                        ],
+                        "startFreshNavigation": [
+                            "true"
+                        ],
+                        "useGlobalRevRule": [
+                            "false"
+                        ],
+                        "viewType": [
+                            ""
+                        ]
+                    }
+                }
+            },
+            "outputData": {
+                "treeLoadResult": "{{function:setParentNodeProperties}}"
+            },
+            "deps": "js/ssp0TreeLoadDataServiceOfSBOMTree"
+        },
+        "getChildNodeWithOcc": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2022-06-OccurrenceManagement",
+            "method": "getOccurrences4",
+            "inputData": {
+                "inputData": {
+                    "product": {
+                        "uid": "{{data.neutralProductUid}}"
+                    },
+                    "config": {
+                        "productContext": "{{ctx.sbomProductContext}}"
+                    },
+                    "parentElement": "{{data.treeLoadInput.parentNode.uid}}",
+                    "requestPref": {
+                        "calculateFilters": [
+                            "false"
+                        ],
+                        "displayMode": [
+                            "Tree"
+                        ],
+                        "savedSessionMode": [
+                            "restore"
+                        ],
+                        "showExplodedLines": [
+                            "false"
+                        ],
+                        "startFreshNavigation": [
+                            "false"
+                        ],
+                        "useGlobalRevRule": [
+                            "false"
+                        ],
+                        "viewType": [
+                            ""
+                        ]
+                    }
+                }
+            },
+            "outputData": {
+                "treeLoadResult": "{{function:setChildNodeProperties}}"
+            },
+            "deps": "js/ssp0TreeLoadDataServiceOfSBOMTree"
+        },
+        "getServicePlanID": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "attributes": [
+                    "bl_items_tag",
+                    "bl_item_object_desc",
+                    "bl_item_object_type"
+                ],
+                "objects": [
+                    {
+                        "uid": "{{ctx.state.params.uid}}",
+                        "type": "SSP0ServicePlanRevision"
+                    }
+                ]
+            },
+            "outputData": {
+                "servicePlanObject": "{{function:getServicePlanID}}"
+            },
+            "deps": "js/ssp0TreeLoadDataServiceOfSBOMTree"
+        },
+        "loadAssembly": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getServicePlanID"
+                },
+                {
+                    "action": "getNeutralProductOfServicePlan"
+                },
+                {
+                    "action": "loadSBOMAssembly"
+                }
+            ]
+        },
+        "selectionSyncBatchJob": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getSelectedNodeInSBOM"
+                },
+                {
+                    "action": "selectNodeInSBOMTree",
+                    "condition": "conditions.checkSelectedObjects"
+                },
+                {
+                    "action": "clearTableSelection",
+                    "condition": "conditions.checkSelectedObjectsLength"
+                }
+            ]
+        },
+        "getSelectedNodeInSBOM": {
+            "actionType": "JSFunction",
+            "method": "getSelectedNodeInSBOM",
+            "inputData": {
+                "selectedObjectsArray": "{{ports.onVisViewerSelectionChangedForSBOM.syncObject}}"
+            },
+            "outputData": {
+                "selectedObjects": "selectedObjectsArray"
+            },
+            "deps": "js/ssp0SelectionSyncService"
+        },
+        "retrieveTreeLoadResult": {
+            "actionType": "JSFunction",
+            "method": "retrieveTreeLoadResult",
+            "inputData": {
+                "treeNode": "{{data.treeLoadInput.parentNode}}"
+            },
+            "outputData": {
+                "treeLoadResult": "{{function:retrieveTreeLoadResult}}"
+            },
+            "deps": "js/ssp0TreeLoadDataServiceOfSBOMTree"
+        },
+        "loadChildren": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "retrieveTreeLoadResult",
+                    "condition": "conditions.checkIfNodeIsLoaded"
+                },
+                {
+                    "action": "getChildNodeWithOcc",
+                    "condition": "conditions.checkIfNodeIsNotLoaded"
+                }
+            ]
+        },
+        "loadOccColumns": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableColumns",
+            "inputData": {
+                "data": "{{data}}",
+                "columnProvider": {
+                    "clientColumns": "{{data.sbomClientColumns}}"
+                }
+            },
+            "outputData": {
+                "dataProviders.sbomTreeDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/ssp0TreeLoadDataServiceOfSBOMTree"
+        },
+        "loadSbomColumns": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "loadSbomClientColumns"
+                },
+                {
+                    "action": "loadOccColumns"
+                }
+            ]
+        },
+        "loadSbomClientColumns": {
+            "actionType": "JSFunction",
+            "method": "loadSbomClientColumns",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/ssp0LoadSbomClientColumns"
+        },
+        "soaCallForPLFDisplayNames": {
+            "actionType": "JSFunction",
+            "method": "soaCallForPLFDisplayNames",
+            "deps": "js/ssp0LoadSbomClientColumns"
+        },
+        "loadPLFProperties": {
+            "actionType": "JSFunction",
+            "method": "getPartList",
+            "inputData": {
+                "vmos": "{{data.dataProviders.sbomTreeDataProvider.viewModelCollection.loadedVMObjects}}"
+            },
+            "deps": "js/ssp0PLFTablePropertyRenderer"
+        },
+        "loadPLF": {
+            "actionType": "JSFunction",
+            "method": "getPLF",
+            "deps": "js/ssp0PLFTablePropertyRenderer"
+        },
+        "selectNodeInPartsTree": {
+            "actionType": "TcSoaService",
+            "serviceName": "Manufacturing-2013-05-Core",
+            "method": "findNodeInContext",
+            "inputData": {
+                "input": [
+                    {
+                        "clientID": "sbomViewer",
+                        "context": "{{function:getParentNode}}",
+                        "nodes": "{{function:getNodeToBeSearched}}",
+                        "byIdOnly": false,
+                        "allContexts": false,
+                        "inContextLine": "{{function:getParentNode}}",
+                        "relationTypes": [],
+                        "relationDirection": 0,
+                        "relationDepth": -1
+                    }
+                ]
+            },
+            "outputData": {
+                "object": "{{function:selectNodeInSBOMTree}}"
+            },
+            "deps": "js/ssp0SelectionSyncService"
+        },
+        "selectNodeInSBOMTree": {
+            "actionType": "TcSoaService",
+            "serviceName": "Manufacturing-2013-05-Core",
+            "method": "findNodeInContext",
+            "inputData": {
+                "input": [
+                    {
+                        "clientID": "sbomViewer",
+                        "context": "{{function:getParentNode}}",
+                        "nodes": "{{data.selectedObjects}}",
+                        "byIdOnly": false,
+                        "allContexts": false,
+                        "inContextLine": "{{function:getParentNode}}",
+                        "relationTypes": [],
+                        "relationDirection": 0,
+                        "relationDepth": -1
+                    }
+                ]
+            },
+            "outputData": {
+                "object": "{{function:selectNodeInSBOMTree}}"
+            },
+            "deps": "js/ssp0SelectionSyncService"
+        },
+        "listenSBOMViewersAction": {
+            "actionType": "JSFunction",
+            "method": "updateVisViewerInstanceId",
+            "inputData": {
+                "x": "{{ports.listenSBOMViewersId.syncObject}}",
+                "y": "{{data}}",
+                "z": "SBOMViewer"
+            },
+            "deps": "js/ssp0VisViewerUtilityService"
+        },
+        "getCurrentVisibilityState": {
+            "actionType": "JSFunction",
+            "method": "getCurrentVisibilityState",
+            "inputData": {
+                "vmo": "{{data.eventMap['spVisGraphicsVisibilityChanged'].vmo}}"
+            },
+            "outputData": {
+                "currentVisibilityState": "currentVisibilityState"
+            },
+            "deps": "js/ssp0VisViewerUtilityService"
+        },
+        "loadGraphics": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "callPropertyProviderFunction"
+                },
+                {
+                    "action": "getCurrentVisibilityState"
+                },
+                {
+                    "action": "load"
+                }
+            ]
+        },
+        "callPropertyProviderFunction": {
+            "actionType": "JSFunction",
+            "method": "rendererLoadingGraphicVisibilityIndicationBasedOnViewer",
+            "inputData": {
+                "vmo": "{{data.eventMap['spVisGraphicsVisibilityChanged'].vmo}}",
+                "containerElement": "{{data.eventMap['spVisGraphicsVisibilityChanged'].vmo.graphicsVisibilityContainerElement}}"
+            },
+            "deps": "js/ssp0GraphicVisibilityTablePropertyRenderer"
+        },
+        "onVisViewerVisibilityChanged2": {
+            "actionType": "JSFunction",
+            "method": "rendererGraphicVisibilityIndicationBasedOnSBOMViewer",
+            "inputData": {
+                "vmo": "{{data.eventMap['spVisGraphicsVisibilityChanged'].vmo}}",
+                "containerElement": "{{data.eventMap['spVisGraphicsVisibilityChanged'].vmo.graphicsVisibilityContainerElement}}"
+            },
+            "deps": "js/ssp0GraphicVisibilityTablePropertyRenderer"
+        },
+        "onSBOMVisViewerVisibilityChanged": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "sbomTree.plTable.clientRefresh"
+                    }
+                ]
+            }
+        },
+        "load": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "sbomVisibilityChangePort",
+                "syncObject": {
+                    "id": "{{data.eventMap['spVisGraphicsVisibilityChanged'].modelId}}",
+                    "show": "{{data.currentVisibilityState}}"
+                }
+            }
+        },
+        "subscribeToNodesLoaded": {
+            "actionType": "JSFunction",
+            "method": "subscribeToNodesLoaded",
+            "deps": "js/ssp0TreeLoadDataServiceOfSBOMTree"
+        },
+        "selectionChangedBatchJob": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getSelectNodes"
+                },
+                {
+                    "action": "selectionChanged",
+                    "condition": "conditions.isSelectedVMOUndefined"
+                }
+            ]
+        },
+        "getSelectNodes": {
+            "actionType": "JSFunction",
+            "method": "getSelectNodes",
+            "inputData": {
+                "vmo": "{{data.eventMap['sbomTreeDataProvider.selectionChangeEvent'].selectedObjects}}",
+                "viewerId": "SBOMViewer"
+            },
+            "outputData": {
+                "bomLineUid": "bomLineUid",
+                "isSelected": "isSelected"
+            },
+            "deps": "js/ssp0SelectionSyncService"
+        },
+        "selectionChanged": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "onSBOMTreeSelectionChanged",
+                "syncObject": {
+                    "modelIds": "{{data.bomLineUid}}",
+                    "isSelected": "{{data.isSelected}}"
+                }
+            }
+        },
+        "clearTableSelection": {
+            "actionType": "JSFunction",
+            "method": "clearSelectionInTree",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.sbomTreeDataProvider}}"
+            },
+            "deps": "js/ssp0SelectionSyncService"
+        },
+        "expandSelectedNode": {
+            "actionType": "JSFunction",
+            "method": "expandSelectedNode",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.sbomTreeDataProvider}}"
+            },
+            "deps": "js/ssp0TreeLoadDataServiceOfSBOMTree"
+        }
+    },
+    "ctx": {
+        "sbomProductContext": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "visibilityCheckbox": {
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true"
+        },
+        "visContext": {}
+    },
+    "lifecycleHooks": {
+        "onInit": "soaCallForPLFDisplayNames",
+        "onMount": "subscribeToNodesLoaded"
+    },
+    "dataProviders": {
+        "sbomTreePropertyProvider": {
+            "action": "loadProperties",
+            "propertyLoadResult": "action.result.propertyLoadResult"
+        },
+        "sbomTreeDataProvider": {
+            "initializeAction": "loadAssembly",
+            "action": "loadChildren",
+            "treeLoadResult": "{{data.treeLoadResult}}",
+            "inputData": {
+                "accessMode": "tree",
+                "topNodeUid": "{{ctx.state.params.uid}}"
+            },
+            "selectionModelMode": "multiple"
+        }
+    },
+    "columnProviders": {
+        "sbomTreeColumnProvider": {
+            "loadColumnAction": "loadSbomColumns",
+            "columns": "{{data.columns}}",
+            "frozenColumnIndex": -1
+        }
+    },
+    "grids": {
+        "sbomTree": {
+            "dataProvider": "sbomTreeDataProvider",
+            "propertyProvider": "sbomTreePropertyProvider",
+            "columnProvider": "sbomTreeColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": false,
+                "enablePinning": false,
+                "enableSorting": false
+            }
+        }
+    },
+    "conditions": {
+        "checkIfNodeIsNotLoaded": {
+            "expression": "data.treeLoadInput.parentNode.alreadyExpanded == false"
+        },
+        "checkSelectedObjects": {
+            "expression": "data.selectedObjects.length > 0"
+        },
+        "checkSelectedObjectsLength": {
+            "expression": "data.selectedObjects.length === 0"
+        },
+        "checkIfNodeIsLoaded": {
+            "expression": "data.treeLoadInput.parentNode.alreadyExpanded == true"
+        },
+        "isSelectedVMOUndefined": {
+            "expression": "data.isSelected"
+        }
+    },
+    "functions": {
+        "getServicePlanID": {
+            "functionName": "getServicePlanID",
+            "parameters": []
+        },
+        "getParentNode": {
+            "functionName": "getParentNode",
+            "parameters": [
+                "{{data.dataProviders.sbomTreeDataProvider}}"
+            ]
+        },
+        "getNodeToBeSearched": {
+            "functionName": "getNodeToBeSearched",
+            "parameters": [
+                "{{data.eventMap['Ssp0SbomTree.syncPart'].selectedPart}}"
+            ]
+        },
+        "selectNodeInSBOMTree": {
+            "functionName": "selectNodeInSBOMTree",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getNeutralProductUid": {
+            "functionName": "getNeutralProductUid",
+            "parameters": []
+        },
+        "setChildNodeProperties": {
+            "functionName": "setChildNodeProperties",
+            "parameters": [
+                "{{data.treeLoadInput.parentNode}}"
+            ]
+        },
+        "setParentNodeProperties": {
+            "functionName": "setParentNodeProperties",
+            "parameters": [
+                "{{data.treeLoadInput.parentNode}}",
+                "{{ctx}}",
+                "{{data.dataProviders.sbomTreeDataProvider}}"
+            ]
+        },
+        "retrieveTreeLoadResult": {
+            "functionName": "retrieveTreeLoadResult",
+            "parameters": [
+                "{{data.treeLoadInput.parentNode}}"
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "SBOMTree.expandSelectedNode",
+            "cacheEventData": true,
+            "action": "expandSelectedNode"
+        },
+        {
+            "eventId": "sbomTreeDataProvider.selectionChangeEvent",
+            "action": "selectionChangedBatchJob",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "spVisGraphicsVisibilityChanged",
+            "cacheEventData": true,
+            "action": "loadGraphics"
+        },
+        {
+            "eventId": "sbomTreeDataProvider.plTable.toggleTreeNode",
+            "cacheEventData": true,
+            "action": "refreshClient"
+        },
+        {
+            "eventId": "sbomTreeDataProvider.treeNodesLoaded",
+            "cacheEventData": true,
+            "action": "initialLoadProperties",
+            "condition": "!data.dataProviders.sbomTreeDataProvider.columnConfigLoadingInProgress"
+        },
+        {
+            "eventId": "sbom.loadPropertiesSuccess",
+            "action": "loadPLFProperties"
+        },
+        {
+            "eventId": "ssp0Sbom.loadPLF",
+            "action": "loadPLF"
+        },
+        {
+            "eventId": "Ssp0SbomTree.syncPart",
+            "cacheEventData": true,
+            "action": "selectNodeInPartsTree"
+        }
+    ],
+    "ports": {
+        "onVisViewerSelectionChangedForSBOM": {
+            "syncObject": {},
+            "onChangeAction": "selectionSyncBatchJob"
+        },
+        "onSBOMTreeSelectionChanged": {
+            "syncObject": {
+                "id": "unknown",
+                "isSelected": false
+            }
+        },
+        "sbomVisibilityChangePort": {
+            "syncObject": {
+                "id": "unknown",
+                "show": false
+            }
+        },
+        "listenSBOMViewersId": {
+            "syncObject": {},
+            "onChangeAction": "listenSBOMViewersAction"
+        },
+        "onSBOMVisViewerVisibilityChanged": {
+            "syncObject": {},
+            "onChangeAction": "onSBOMVisViewerVisibilityChanged"
+        }
+    }
+}

@@ -1,0 +1,17 @@
+<aw-panel-body class="aw-epStructureSearch-body">
+    <aw-search-box prop="data.structureSearchBox" class="aw-epStructureSearch-boxstyle" reset-action="emptySearchResults"
+            placeholder="data.structureSearchPlaceHolder.dbValue" action="initiateStructureSearch">
+    </aw-search-box>
+    <div exist-when="conditions.shouldShowSearchResults" class="aw-splm-tableHeaderCellLabel aw-epStructureSearch-resultItemTitle">
+        <span exist-when="conditions.zeroResults">{{i18n.noResultsFound}}</span>
+        <span exist-when="conditions.oneResult">{{i18n.oneResultFound}}</span>
+        <span exist-when="conditions.moreThan1andLessThan50Results">{{data.resultsFoundWithNumberMessage}}</span>
+        <span exist-when="conditions.moreThan49Results">{{i18n.moreThan49ResultsFound}}</span>
+    </div>
+    <aw-scrollpanel class="aw-epStructureSearchResults" exist-when="conditions.thereAreResults">
+        <aw-list dataprovider="data.dataProviders.performSearch" class="aw-epStructureSearch-list">
+            <img src="{{item.typeIconURL}}" class="aw-epStructureSearch-resultItemIcon">
+            <span class="aw-epStructureSearch-resultItemText">{{item.props.object_string.dbValues[0]}}</span>
+        </aw-list>
+    </aw-scrollpanel>
+</aw-panel-body>

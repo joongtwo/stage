@@ -1,0 +1,56 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "goToDateApply": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "scrollToDateInTimeline",
+                    "eventData": {
+                        "dateString": "{{data.enterDate.dbValue}}",
+                        "isToday": false
+                    }
+                } ]
+            },
+            "events": {
+                "success": [ {
+                    "name": "hideGoToOptionsPopup"
+                } ]
+            }
+        },
+        "hideGoToOptionsPopup": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "deps": "js/popupService"
+        }
+    },
+    "data": {
+        "enterDate": {
+            "displayName": "{{i18n.Pgp0Date}}",
+            "type": "DATE",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        }
+
+    },
+    "onEvent": [ {
+        "eventId": "hideGoToOptionsPopup",
+        "action": "hideGoToOptionsPopup"
+    } ],
+    "conditions": {
+        "buttonEnable": {
+            "expression": "data.enterDate.dbValue"
+        }
+    },
+    "i18n": {
+        "Pgp0Date": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0Go": [
+            "ProgramPlanningCommandPanelsMessages"
+        ]
+    }
+}

@@ -1,0 +1,9 @@
+<div class="sw-column h-12">
+    <div class="aw-cba-cbaHeaderPanel">
+        <cba-header-config-panel sub-panel-context="subPanelContext"></cba-header-config-panel>
+    </div>
+    <aw-data-navigator
+        sub-panel-context="{...subPanelContext, occContext:subPanelContext.occContext ? subPanelContext.occContext : data.occContext, selectionQueryParamKey : subPanelContext.provider.selectionQueryParamKey }"
+        provider="subPanelContext.provider" contextKey="subPanelContext.provider.contextKey"
+        baseSelection="subPanelContext.openedObject"></aw-data-navigator>
+</div>

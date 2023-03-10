@@ -1,0 +1,166 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-command-sub-panel.directive",
+        "js/aw-init.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive",
+        "js/visible-when.directive",
+        "js/enable-when.directive"
+    ],
+    "actions": {
+        "initPanel": {
+            "actionType": "JSFunction",
+            "method": "populatePeopleSearchCriteriaContextData",
+            "inputData": {
+                "ctx": "{{ctx.panelContext}}",
+                "addUserPanelState": "{{data.addUserPanelState}}",
+                "criteria": {
+                    "providerContentType": "User,GroupMember,ResourcePool",
+                    "searchString": "*",
+                    "selectedObject": "{{ctx.panelContext.selectedObject.uid}}",
+                    "searchSubGroup": "true"
+                }
+            },
+            "outputData": {
+                "addUserPanelState": "userPanelState",
+                "isDataInit": "isDataInit"
+            },
+            "deps": "js/Awp0WorkflowUtils"
+        },
+        "addParticipants": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "getAdaptedObjects"
+                },
+                {
+                    "action": "addParticipantsInternal"
+                }
+            ]
+        },
+        "getAdaptedObjects": {
+            "actionType": "JSFunction",
+            "method": "getAdaptedObjects",
+            "inputData": {
+                "sourceObjects": [
+                    "{{props.addUserPanelState.selectedObject}}"
+                ]
+            },
+            "outputData": {
+                "selectedObj": ""
+            },
+            "deps": "js/adapterService"
+        },
+        "addParticipantsInternal": {
+            "actionType": "JSFunction",
+            "method": "addParticipants",
+            "inputData": {
+                "userPanelData": "{{addUserPanelState}}",
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "deps": "js/AddParticipant"
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "complete",
+                        "condition": "!data.isDestroyed()",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+        "closePanelOnSelectionChange": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "cacheInitialSelection",
+                    "condition": "!data.initialSelection"
+                },
+                {
+                    "action": "closePanel",
+                    "condition": "data.initialSelection !== props.subPanelContext.selectionData.selected[0].uid"
+                }
+            ]
+        },
+        "cacheInitialSelection":{
+            "actionType": "JSFunction",
+            "method": "cacheSelection",
+            "inputData": {
+                "selectedUid": "{{props.subPanelContext.selectionData.selected[0].uid}}"
+            },
+            "outputData": {
+                "initialSelection": ""
+            },
+            "deps": "js/Awp0WorkflowUtils"
+        }
+    },
+    "data": {
+        "addUserPanelState": {
+            "initialValues": {
+                "provider": "Awp0PeoplePickerProvider",
+                "selectionModelMode": "single",
+                "criteria": {
+                    "providerContentType": "User,GroupMember,ResourcePool",
+                    "searchString": "*",
+                    "selectedObject": "",
+                    "searchSubGroup": "true",
+                    "participantType": "",
+                    "group": "",
+                    "role": ""
+                },
+                "preferenceCriteria": [
+                    "WRKFLW_user_panel_content_display",
+                    "WRKFLW_allow_resourcepool_assignments",
+                    "WRKFLW_show_user_assignment_options"
+                ],
+                "selectedUsers": "",
+                "isAddButtonNeeded": false
+            },
+            "meta": {
+                "selectedUsers": {
+                    "field": "true",
+                    "type": "OBJECTARRAY"
+                }
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initPanel",
+        "onUpdate": {
+            "action": "closePanelOnSelectionChange",
+            "observers": [ "props.subPanelContext.selectionData.selected" ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "workflow.addParticipants",
+            "action": "addParticipantsInternal"
+        }
+    ],
+    "conditions": {
+        "isValidToAdd": {
+            "expression": "addUserPanelState.selectedUsers && addUserPanelState.selectedUsers.length > 0 && addUserPanelState.criteria.participantType"
+        },
+        "showParticipantTypes": {
+            "expression": "addUserPanelState.assignableParticipantTypes && addUserPanelState.assignableParticipantTypes.length > 0"
+        }
+    },
+    "ctx": {
+        "panelContext": null,
+        "xrtSummaryContextObject": null,
+        "preferences": null
+    },
+    "i18n": {
+        "Add_Title": [
+            "WorkflowCommandPanelsMessages"
+        ]
+    }
+}

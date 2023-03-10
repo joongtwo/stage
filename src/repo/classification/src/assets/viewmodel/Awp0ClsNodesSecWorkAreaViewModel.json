@@ -1,0 +1,50 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+    ],
+    "lifecycleHooks": {
+        "onInit": "initializeNodesSWA",
+        "onUpdate": {
+            "action": "initializeNodesSWA",
+            "observers": [
+                "props.subPanelContext.context.searchState.propertiesSWA"
+            ]
+        }
+    },
+    "props":{
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data":{
+        "classifyImageCommands": "classify_imgCommands"
+    },
+    "actions":{
+        "initializeNodesSWA": {
+            "actionType": "JSFunction",
+            "method": "initializeSWA",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext.context.searchState}}",
+                "subLocationName": "Nodes"
+            },
+            "outputData": {
+                "currentSecData": "currentSecData",
+                "hasImages": "hasImages",
+                "selectedUid": "selectedUid",
+                "parentProp": "parentProp",
+                "appClassProp": "appClassProp"
+            },
+            "deps":"js/classifyAdminService"
+        }
+    },
+    "onEvent": [
+    ],
+    "i18n": {
+        "applicationClass":  [ "ClassificationAdminMessages" ],
+        "attributes":        [ "ClassificationAdminMessages" ],
+        "overview":          ["ClassificationAdminMessages"],
+        "parent":            ["ClassificationAdminMessages"],
+        "preview":           ["ClassificationAdminMessages"],
+        "propertiesTitle":   [ "ClassificationAdminMessages" ]
+    }
+}

@@ -1,0 +1,50 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "preferenceName": "EP_TargetAssembliesTabTableColumnConfiguration",
+        "loadInputObject": {
+            "loadTypes": ["GetScopeAssembly"],
+            "relatedObjectMapKey": "associatedAssembly"
+        },
+        "relationName": "ScopingRelation",
+        "isTableEditable": false,
+        "messages": {
+            "noElementSelected": [{
+                "text": "{{i18n.selectProcess}}"
+            }],
+            "noAssigned": [{
+                "text": "{{i18n.noAssigned}}",
+                "textParams": [
+                    "{{i18n.targetAssemblies}}"
+                ]
+            }]
+        }
+    },
+    "actions": {
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getValueInViewModel"
+    },
+    "i18n": {
+        "selectProcess": [
+            "PlanningMessages"
+        ],
+        "noAssigned": [
+            "DetailsMessages"
+        ],
+        "targetAssemblies": [
+            "PlanningMessages"
+        ]
+    }
+}

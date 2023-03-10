@@ -1,0 +1,419 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "datasetName": {
+            "displayName": "{{i18n.name}}",
+            "type": "STRING",
+            "isRequired": "true"
+        },
+        "datasetDesc": {
+            "displayName": "{{i18n.description}}",
+            "type": "STRING"
+        },
+        "datasetType": {
+            "displayName": "{{i18n.type}}",
+            "type": "STRING",
+            "hasLov": true
+        }
+    },
+    "actions": {
+        "reveal": {
+            "actionType": "JSFunction",
+            "method": "getAllowedDatasetTypes",
+            "inputData": {
+                "preferenceValues": "{{ctx.preferences.EP_FileTypesForLayoutDataset}}"
+            },
+            "outputData": {
+                "allowedTypes": "allowedTypes"
+            },
+            "deps": "js/lineLayoutService"
+        },
+        "startDatasetCreation": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "attachLineLayout.initDSCreateParams",
+                        "condition": "data.fileName"
+                    },
+                    {
+                        "name": "attachLineLayout.getDatasetTypes",
+                        "condition": "data.fileExt"
+                    }
+                ]
+            }
+        },
+        "initDSCreateParams": {
+            "actionType": "JSFunction",
+            "method": "initDSCreateParams",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "getDatasetTypes": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2015-10-DataManagement",
+            "method": "getDatasetTypesWithDefaultRelation",
+            "inputData": {
+                "fileExtensions": [
+                    "{{data.fileExt}}"
+                ],
+                "parent": {
+                    "type": "{{ctx.epPageContext.loadedObject.type}}",
+                    "uid": "{{ctx.epPageContext.loadedObject.uid}}"
+                }
+            },
+            "policy": {
+                "types": [
+                    {
+                        "name": "DatasetType",
+                        "properties": [
+                            {
+                                "name": "datasettype_name"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "outputData": {
+                "datasetTypesWithDefaultRelInfo": "output[0].datasetTypesWithDefaultRelInfo",
+                "fileExtension": "output[0].fileExtension",
+                "fileFormat": "output[0].datasetTypesWithDefaultRelInfo[0].refInfos.fileFormat",
+                "datasetTypeList": "{{function:getDatasetTypesFromTypesWithRelInfo}}"
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "attachFile": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "generateNewID"
+                },
+                {
+                    "action": "getFileType"
+                },
+                {
+                    "action": "epSaveData"
+                }
+            ]
+        },
+        "generateNewID": {
+            "actionType": "JSFunction",
+            "method": "generateNewID",
+            "inputData": {},
+            "outputData": {
+                "newId": ""
+            },
+            "deps": "js/lineLayoutService"
+        },
+        "getFileType": {
+            "actionType": "JSFunction",
+            "method": "getFileType",
+            "inputData": {
+                "typesList": "{{ctx.preferences.DRAG_AND_DROP_default_dataset_type}}",
+                "fileExtension": "{{data.fileExt}}"
+            },
+            "outputData": {
+                "fileType": "fileType",
+                "isText": "isText"
+            },
+            "deps": "js/lineLayoutService"
+        },
+        "epSaveData": {
+            "actionType": "JSFunction",
+            "method": "epSave",
+            "inputData": {
+                "relatedObject": "{{ctx.epPageContext.loadedObject}}",
+                "datasetDesc": "{{data.datasetDesc.dbValue}}",
+                "objectsToCreateEntry": {
+                    "Object": {
+                        "nameToValuesMap": {
+                            "id": [
+                                "{{data.newId}}"
+                            ],
+                            "connectTo": [
+                                "{{ctx.epPageContext.loadedObject.uid}}"
+                            ],
+                            "Type": [
+                                "{{data.fileType}}"
+                            ],
+                            "RelationHint": [
+                                "Layout"
+                            ]
+                        }
+                    },
+                    "ItemProps": {
+                        "nameToValuesMap": {
+                            "object_name": [
+                                "{{data.datasetName.dbValue}}"
+                            ]
+                        }
+                    }
+                }
+            },
+            "deps": "js/lineLayoutService"
+        },
+        "getSavedDatasetObject": {
+            "actionType": "JSFunction",
+            "method": "getSavedDatasetObject",
+            "inputData": {
+                "saveResults": "{{data.eventData}}",
+                "id": "{{data.newId}}"
+            },
+            "outputData": {
+                "datasetUid": "datasetUid",
+                "datasetObj": "datasetObj",
+                "namedReference": "namedReference"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "attachLineLayout.getDatasetWriteTickets"
+                    }
+                ]
+            },
+            "deps": "js/lineLayoutService"
+        },
+        "getDatasetWriteTickets": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-FileManagement",
+            "method": "getDatasetWriteTickets",
+            "inputData": {
+                "inputs": [
+                    {
+                        "createNewVersion": true,
+                        "dataset": {
+                            "uid": "{{data.datasetUid}}",
+                            "type": "{{data.fileType}}"
+                        },
+                        "datasetFileInfos": [
+                            {
+                                "allowReplace": true,
+                                "fileName": "{{data.fileName}}",
+                                "isText": "{{data.isText}}",
+                                "namedReferencedName": "{{data.namedReference}}"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "outputData": {
+                "fmsTicket1": "commitInfo[0].datasetFileTicketInfos[0].ticket",
+                "commitInfos1": "commitInfo[0]"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "attachLineLayout.updateFormData"
+                    }
+                ]
+            }
+        },
+        "updateFormData": {
+            "actionType": "JSFunction",
+            "method": "updateFormData",
+            "inputData": {
+                "fileData": {
+                    "key": "fmsTicket",
+                    "value": "{{data.fmsTicket1}}"
+                },
+                "data": "{{data}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "attachLineLayout.uploadFile"
+                    }
+                ]
+            },
+            "deps": "js/declUtils"
+        },
+        "uploadFile": {
+            "actionType": "RESTService",
+            "serviceName": "",
+            "method": "POST",
+            "inputData": {
+                "request": {
+                    "method": "POST",
+                    "url": "{{Constants.fmsUrl}}",
+                    "headers": {
+                        "Content-type": "undefined"
+                    },
+                    "data": "{{data.formData}}"
+                }
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "attachLineLayout.commitDatasetFiles"
+                    }
+                ]
+            }
+        },
+        "commitDatasetFiles": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-FileManagement",
+            "method": "commitDatasetFiles",
+            "inputData": {
+                "commitInput": [
+                    "{{data.commitInfos1}}"
+                ]
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "attachLineLayout.getViewerType"
+                    }
+                ]
+            }
+        },
+        "getViewerType": {
+            "actionType": "JSFunction",
+            "method": "getViewerType",
+            "inputData": {
+                "datasetType": "{{data.datasetObj.type}}"
+            },
+            "outputData": {
+                "viewerType": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "attachLineLayout.getViewerData"
+                    }
+                ]
+            },
+            "deps": "js/lineLayoutService"
+        },
+        "getViewerData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2017-06-DataManagement",
+            "method": "getViewerData",
+            "inputData": {
+                "inputs": {
+                    "obj": "{{data.datasetObj}}",
+                    "dataset": "",
+                    "direction": ""
+                }
+            },
+            "outputData": {
+                "viewerData": "output"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "attachLineLayout.setViewerDataInCtx"
+                    }
+                ]
+            }
+        },
+        "setViewerDataInCtx": {
+            "actionType": "JSFunction",
+            "method": "setViewerDataInCtx",
+            "inputData": {
+                "viewerData": {
+                    "fileData": {
+                        "file": "{{data.datasetObj}}",
+                        "fmsTicket": "{{data.viewerData.views[0].fmsTicket}}",
+                        "fileUrl": "{{function:getLayoutFileURL}}",
+                        "viewer": "{{data.viewerType}}"
+                    },
+                    "uid": "{{data.datasetObj.uid}}"
+                }
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "attachLineLayout.closePopupWindow"
+                    }
+                ]
+            },
+            "deps": "js/lineLayoutService"
+        },
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "deps": "js/declpopupService"
+        }
+    },
+    "functions": {
+        "getLayoutFileURL": {
+            "functionName": "getLayoutFileURL",
+            "parameters": [
+                "{{data.viewerData.views[0].fmsTicket}}"
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "attachLineLayout.initDSCreateParams",
+            "action": "initDSCreateParams"
+        },
+        {
+            "eventId": "attachLineLayout.getDatasetTypes",
+            "action": "getDatasetTypes"
+        },
+        {
+            "eventId": "attachLineLayout.getSavedDatasetObject",
+            "cacheEventData": true,
+            "action": "getSavedDatasetObject"
+        },
+        {
+            "eventId": "attachLineLayout.getDatasetWriteTickets",
+            "action": "getDatasetWriteTickets"
+        },
+        {
+            "eventId": "attachLineLayout.commitDatasetFiles",
+            "action": "commitDatasetFiles"
+        },
+        {
+            "eventId": "attachLineLayout.closePopupWindow",
+            "action": "closePopupWindow"
+        },
+        {
+            "eventId": "attachLineLayout.updateFormData",
+            "action": "updateFormData"
+        },
+        {
+            "eventId": "attachLineLayout.uploadFile",
+            "action": "uploadFile"
+        },
+        {
+            "eventId": "attachLineLayout.getViewerType",
+            "action": "getViewerType"
+        },
+        {
+            "eventId": "attachLineLayout.getViewerData",
+            "action": "getViewerData"
+        },
+        {
+            "eventId": "attachLineLayout.setViewerDataInCtx",
+            "action": "setViewerDataInCtx"
+        }
+    ],
+    "conditions": {
+        "validFile": {
+            "expression": "data.fileName !== null && data.fileName !== '' && data.datasetTypeList"
+        }
+    },
+
+    "i18n": {
+        "name": [
+            "EPMessages"
+        ],
+        "description": [
+            "EPMessages"
+        ],
+        "type": [
+            "EPMessages"
+        ],
+        "cancel": [
+            "EPMessages"
+        ],
+        "done": [
+            "EPMessages"
+        ]
+    }
+}

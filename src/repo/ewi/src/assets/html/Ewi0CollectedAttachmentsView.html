@@ -1,0 +1,25 @@
+<aw-command-panel caption="i18n.collectedAttachments">
+    <aw-panel-body>
+        <aw-add target-object="{{ctx.EWI0currentStep}}" include-types="Dataset" auto-select-on-unique-type="true" visible-tabs="new,palette" type-filter="Dataset" relation-map="ctx.addObject.relationMap" add-panel-state="fields.addPanelState" xrt-state="data.xrtState" edit-handler="editHandlers.addPanelEditHandler" is-custom-dataset-action="true" sub-panel-context="{ ...subPanelContext, showDataSetUploadPanel: true }">
+        </aw-add>
+
+        <aw-panel-section caption="{{i18n.currentAttachments}}" collapsed="false" exist-when="!data.fileName && conditions.isNewTabSelected">
+            <aw-scrollpanel>
+                <aw-list dataprovider="data.dataProviders.collectedAttachmentsListDataProvider">
+                    <aw-default-cell vmo="item"></aw-default-cell>
+                </aw-list>
+            </aw-scrollpanel>
+        </aw-panel-section>
+    </aw-panel-body>
+
+    <aw-panel-footer>
+        <!-- panel-footer button for New tab -->
+        <aw-button action="isTextFile" visible-when="conditions.isNewTabAttachButtonVisible">
+            <aw-i18n>i18n.attach</aw-i18n>
+        </aw-button>
+        <!-- panel-footer button for Palette tab -->
+        <aw-button action="getAllSelectedFromPalette" visible-when="conditions.isPaletteTabAttachButtonVisible">
+                <aw-i18n>i18n.attach</aw-i18n>
+            </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

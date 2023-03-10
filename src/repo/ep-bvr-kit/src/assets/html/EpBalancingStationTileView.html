@@ -1,0 +1,11 @@
+<div vmouid="{{props.vmo.uid}}" class="sw-column w-12 aw-epBalancing-singleStationTile">
+    <div aw-class="['aw-epBalancing-cycleTimeStationHeader', {'aw-epBalancing-problematicStation': props.problematic}]"
+     title="{{props.vmo.props.bl_rev_object_name.displayValues[0] + ' - ' + i18n.cycleTimeChip + ' ' + data.stationCycleTime + ' ' + data.timeUnits}}">
+        <div class="aw-epBalancing-textEllipses">{{props.vmo.props.bl_rev_object_name.displayValues[0]}}</div>
+        <div class="aw-epBalancing-stationTileClockIcon">
+            <aw-icon icon-id="cmdTime"></aw-icon>
+        </div>
+        <div>{{data.stationCycleTime}}</div>
+    </div>
+    <ep-balancing-process-resource-tiles-list class="sw-row" vmo="props.vmo" max="{{props.max}}" selection-data="props.selectionData" prs="{{props.prs}}"></ep-balancing-process-resource-tiles-list>
+</div>

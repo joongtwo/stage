@@ -1,0 +1,17 @@
+<aw-panel-body>
+    <aw-panel-section exist-when="ctx.classicCfgContext.isSavePanelDirty">
+        <div class="aw-toolbar-layout aw-toolbar-horizontal">
+            <aw-command-bar anchor="awb_variantConfigurationCommandBar" alignment="HORIZONTAL" context="{...subPanelContext}"></aw-command-bar>
+        </div>
+    </aw-panel-section>
+    <aw-panel-section >
+        <div aw-repeat="eachOption : data.vmpForOptions">
+            <awb0-display-lov listData="{{eachOption}}" lov="{{eachOption.lov}}"></awb0-display-lov>        
+        </div>
+    </aw-panel-section>
+</aw-panel-body>
+<aw-panel-footer>
+    <aw-button action="selectiveConfigureAction" exist-when="ctx.classicCfgContext.vmpForOptions.length > 0">
+        <aw-i18n>i18n.configure</aw-i18n>
+    </aw-button>
+</aw-panel-footer>

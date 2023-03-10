@@ -1,0 +1,44 @@
+<aw-panel-body>
+        <aw-row justify="top" height="3f" width="5f">
+            <span class="aw-layout-locationTitle">{{data.logging.uiValue}}</span>
+        </aw-row>
+        <aw-row justify="top">
+            <aw-column align-content="left" width="fill">
+                <aw-textbox prop="data.listBoxLogTypes"></aw-textbox>
+                <aw-break></aw-break>
+                <aw-break></aw-break>
+
+                <aw-textbox prop="data.comments"></aw-textbox>
+                <aw-break></aw-break>                
+
+                <aw-panel-section caption="i18n.options" collapsed="true">
+                   <!-- <aw-column visible-when="data.box1.uiValue === '2'">-->
+                    <aw-column>
+                        <aw-break></aw-break>
+                        <aw-widget prop="data.listBoxJournalTypes" enable-when="conditions.isValidForFields"></aw-widget>
+                        <aw-break></aw-break>
+
+                        <aw-widget prop="data.listBoxJournalPerformanceTypes" enable-when="conditions.isValidForFields"></aw-widget>
+                        <aw-break></aw-break>
+                        <div enable-when="conditions.hideAppearModulesFields">
+                            <aw-widget prop="data.listBoxJournalModules" ></aw-widget>
+                        </div>
+                        <aw-break></aw-break>
+                    </aw-column>
+                    <!--</aw-column> -->
+                </aw-panel-section>
+            </aw-column>
+        </aw-row>
+</aw-panel-body>
+
+    <aw-panel-footer>
+        <aw-button action="startLogging" visible-when="conditions.isValidForStartButton">
+            <aw-i18n>i18n.start</aw-i18n>
+        </aw-button>
+        <aw-button action="stopLogging" visible-when="conditions.isValidForStopButton">
+                <aw-i18n>i18n.stop</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+
+
+

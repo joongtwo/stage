@@ -1,0 +1,62 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "addSelectedPartsTools": {
+            "actionType": "JSFunction",
+            "method": "addSelectedPartsTools",
+            "inputData": {
+                "data": "{{parameters.eventData.selectedObjects}}"
+            },
+            "deps": "js/wiPartsTools.service"
+        },
+        "filterPartsAndToolsList": {
+            "actionType": "JSFunction",
+            "method": "filterPartsAndToolsList",
+            "inputData": {
+                "data": "{{data.partsToolsFilterBox.dbValue}}"
+            },
+            "outputData": {
+                "searchResults": "filteredListOfPartsTools",
+                "totalFound": "totalFound"
+            },
+            "deps": "js/wiPartsTools.service"
+        },
+        "showInitialFilterPartsToolsList": {
+            "actionType": "dataProvider",
+            "method": "performPartsToolsSearch"
+        }
+    },
+
+    "data": {
+        "partsToolsFilterBox": {
+            "displayName": "MyFilter",
+            "type": "STRING",
+            "autofocus": true,
+            "requiredText": "{{i18n.filterPartsToolsListMessage}}"
+        }
+    },
+
+    "dataProviders": {
+        "performPartsToolsSearch": {
+            "action": "filterPartsAndToolsList",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "performPartsToolsSearch.selectionChangeEvent",
+            "action": "addSelectedPartsTools",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        }
+    ],
+    "lifecycleHooks": {
+        "onMount": "showInitialFilterPartsToolsList"
+    },
+    "i18n": {
+        "filterPartsToolsListMessage": [
+            "InstructionsEditorMessages"
+        ]
+    }
+}

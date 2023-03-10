@@ -1,0 +1,135 @@
+{
+  "senSbomTraceableColumn_template": {
+    "grids": [
+      "senSbomTreeTable"
+    ],
+    "columns": [
+      "traceableValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/senPLFTablePropertyRenderer"
+  },
+  "senSbomSerializedColumn_template": {
+    "grids": [
+      "senSbomTreeTable"
+    ],
+    "columns": [
+      "serializedValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/senPLFTablePropertyRenderer"
+  },
+  "senSbomLotColumn_template": {
+    "grids": [
+      "senSbomTreeTable"
+    ],
+    "columns": [
+      "lotValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/senPLFTablePropertyRenderer"
+  },
+  "senSbomPQuantityColumn_template": {
+    "grids": [
+      "senSbomTreeTable"
+    ],
+    "columns": [
+      "pQuantityValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/senPLFTablePropertyRenderer"
+  },
+  "senSbomRotableColumn_template": {
+    "grids": [
+      "senSbomTreeTable"
+    ],
+    "columns": [
+      "rotableValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/senPLFTablePropertyRenderer"
+  },
+  "senSbomConsumableColumn_template": {
+    "grids": [
+      "senSbomTreeTable"
+    ],
+    "columns": [
+      "consumableValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/senPLFTablePropertyRenderer"
+  },
+  "senSbomAssetColumn_template": {
+    "grids": [
+      "senSbomTreeTable"
+    ],
+    "columns": [
+      "assetValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/senPLFTablePropertyRenderer"
+  },
+  "senSbomSkipPartColumn_template": {
+    "grids": [
+      "senSbomTreeTable"
+    ],
+    "columns": [
+      "skipPartValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/senPLFTablePropertyRenderer"
+  },
+  "senEbomAssignmentColumn_template": {
+    "grids": [
+      "senEbomTreeTable"
+    ],
+    "columns": [
+      "assignmentIndication"
+    ],
+    "renderFunction": "getAssignmentIndicationRenderer",
+    "deps": "js/senAlignmentTablePropertyRenderer"
+  },
+  "senEbomMismatchtColumn_template": {
+    "grids": [
+      "senEbomTreeTable"
+    ],
+    "columns": [
+      "mismatchIndication"
+    ],
+    "renderFunction": "getMismatchIndicationRenderer",
+    "deps": "js/senAlignmentTablePropertyRenderer"
+  },
+  "senSbomMismatchtOrMissingColumn_template": {
+    "grids": [
+      "senSbomTreeTable"
+    ],
+    "columns": [
+      "mismatchOrMissingIndication"
+    ],
+    "renderFunction": "getMismatchOrMissingIndicationRenderer",
+    "deps": "js/senAlignmentTablePropertyRenderer"
+  },
+  "senSbomUsagePLFColumn_template": {
+    "grids": [
+      "senSbomTreeTable"
+    ],
+    "columns": [
+      "usagePLFColumn"
+    ],
+    "renderFunction": "usagePLFRenderer",
+    "deps": "js/senUsagePLFRenderer"
+  },
+  "senAlignmentColumnHeader_template": {
+    "grids": [
+      "senEbomTreeTable",
+      "senSbomTreeTable"
+    ],
+    "columns": [
+      "assignmentIndication",
+      "mismatchIndication",
+      "mismatchOrMissingIndication"
+    ],
+    "headerRenderFunction": "getAlignmentColumnHeaderRenderer",
+    "deps": "js/senAlignmentTablePropertyRenderer"
+  }
+}

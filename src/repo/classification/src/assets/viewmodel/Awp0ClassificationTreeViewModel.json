@@ -1,0 +1,777 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+        "js/aw-splm-table.directive"
+    ],
+    "lifecycleHooks": {
+        "onMount": "expandTreeToTargetClass",
+        "onUnmount": "clearSelection",
+        "onUpdate": [
+            {
+                "action": "filterHierarchy",
+                "observers": [
+                    "props.searchString",
+                    "props.releasesState.releasesString",
+                    "props.sortOption.value"
+                ]
+            },
+            {
+                "action": "updateExternalSelection",
+                "observers": [
+                    "props.classifyState.value.selectedNode.uid"
+                ]
+            },
+            {
+                "action": "updateExternalSelectionClsLocation",
+                "observers": [
+                    "props.navigateState.value.selectedNode.uid"
+                ]
+            },
+            {
+                "action": "checkForDeselection",
+                "observers": [
+                    "viewModel.dataProviders.getClassTableSummary.selectionModel.selectionData.value.selected"
+                ]
+            },
+            {
+                "action": "cleanTreeDrill",
+                "observers": [
+                    "viewModel.dataProviders.getClassTableSummary.viewModelCollection.loadedVMObjects"
+                ]
+            },
+            {
+                "action": "acknowledgeTreeEmpty",
+                "observers": [
+                    "viewModel.dataProviders.getClassTableSummary.viewModelCollection.loadedVMObjects"
+                ]
+            },
+            {
+                "action": "expandTreeToTargetClass",
+                "observers": [
+                    "props.classifyState.value.suggestedClassIcoUID"
+                ]
+            }
+        ]
+    },
+    "ports": {
+        "nodeData": {
+            "syncObject": {}
+        }
+    },
+    "props": {
+        "releases-state": {
+            "type": "object"
+        },
+        "classify-state": {
+            "type": "object"
+        },
+        "node-state": {
+            "type": "object"
+        },
+        "search-string": {
+            "type": "STRING"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "selection": {
+            "type": "object"
+        },
+        "sort-option":{
+            "type":"object"
+        },
+        "navigate-state": {
+            "type":"object"
+        }
+    },
+     "data": {
+        "selectedNodeState": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "searchStringMinLength": 3,
+        "loadClassSuggestion" : true
+    },
+    "actions": {
+        "setupTreeStructure": {
+            "actionType": "dataProvider",
+            "method": "getClassTableSummary"
+        },
+        "decoupleIdFromSearchStr": {
+            "actionType": "JSFunction",
+            "method": "decoupleSearchEncoding",
+            "inputData": {
+                "searchStr": "{{props.subPanelContext.searchState.criteria.searchString}}"
+            },
+            "outputData": {
+                "panelSyncedUid": ""
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "checkForDeselection": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateDeselection",
+                    "condition": "conditions.deselectOccurring"
+                },
+                {
+                    "action": "deselectNavigation",
+                    "condition": "conditions.deselectClsLocation"
+                }
+            ]
+        },
+        "deselectNavigation": {
+            "actionType": "JSFunction",
+            "method": "deselectNavigation",
+            "inputData": {
+                "navigateState": "{{props.navigateState}}"
+            },
+            "deps": "js/classifyTreeSyncUtils"
+        },
+        "checkForSearchBoxClear": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateDeselection",
+                    "condition": "conditions.searchBoxCleared"
+                }
+            ]
+        },
+        "acknowledgeTreeEmpty": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setNoVnc",
+                    "condition": "conditions.treeEmpty"
+                }
+            ]
+        },
+        "setNoVnc": {
+            "actionType": "JSFunction",
+            "method": "setNoVnc",
+            "inputData": {
+                "classifyState": "{{props.classifyState}}",
+                "selectionModel": "{{data.dataProviders.getClassTableSummary.selectionModel}}"
+            },
+            "deps": "js/classifyTreeSyncUtils"
+        },
+        "noSelectionSearchState": {
+            "actionType": "JSFunction",
+            "method": "noSelectionSearchState",
+            "inputData": {
+                "searchState": "{{props.subPanelContext.searchState}}",
+                "selectionModel": "{{data.dataProviders.getClassTableSummary.selectionModel}}"
+            },
+            "deps": "js/classifyTreeSyncUtils"
+        },
+        "establishNavigationRoot": {
+            "actionType": "JSFunction",
+            "method": "establishNavigationRoot",
+            "inputData": {
+                "navigateState": "{{props.navigateState}}",
+                "vmCollection": "{{data.dataProviders.getClassTableSummary.selectionModel}}"
+            },
+            "deps": "js/classifyTreeSyncUtils"
+        },
+        "expandTreeToTargetClass": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "processSuggestedClassIco",
+                    "condition": "conditions.processSuggestedClass"
+                },
+                {
+                    "action": "decoupleIdFromSearchStr",
+                    "condition": "conditions.clsLocationSyncNeeded"
+                },
+                {
+                    "action": "buildSOASearchCriteriasNavPanel",
+                    "condition": "conditions.clsLocationSyncNeeded"
+                },
+                {
+                    "action": "getIcoParentInfo",
+                    "condition": "conditions.outsideClsLocation"
+                },
+                {
+                    "action": "getIcoParentInfoSync",
+                    "condition": "conditions.clsLocationSyncNeeded"
+                },
+                {
+                    "action": "buildSOASearchCriterias",
+                    "condition": "conditions.treeDrillDownOnOpen"
+                },
+                {
+                    "action": "getSiblings",
+                    "condition": "conditions.outsideClsLocation"
+                },
+                {
+                    "action": "getSiblingsSync",
+                    "condition": "conditions.clsLocationSyncNeeded"
+                },
+                {
+                    "action": "setupTreeStructure",
+                    "condition": "conditions.treeDrillDownOnOpen"
+                }
+            ]
+        },
+        "processSuggestedClassIco": {
+            "actionType": "JSFunction",
+            "method": "processSuggestedClassIco",
+            "inputData": {
+                "classifyState": "{{props.classifyState}}"
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "getSiblings": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-IcsAw-2019-12-Classification",
+            "method": "findClassificationInfo3",
+            "inputData": {
+                "workspaceObjects": [
+                    {
+                        "uid" : "{{props.classifyState.value.editClassUID}}"
+                    }
+                ],
+                "searchCriterias": "{{data.SOABodyForParentHierarchy}}",
+                "classificationDataOptions": "{{function:getClassificationDataOptions}}"
+            },
+            "outputData": {
+                "siblingsResponse": ""
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "getSiblingsSync": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-IcsAw-2019-12-Classification",
+            "method": "findClassificationInfo3",
+            "inputData": {
+                "workspaceObjects": [],
+                "searchCriterias": "{{data.SOABodyForParentHierarchy}}",
+                "classificationDataOptions": 64
+            },
+            "outputData": {
+                "siblingsResponse": ""
+            }
+        },
+        "buildSOASearchCriterias": {
+            "actionType": "JSFunction",
+            "method": "buildSOASearchCriterias",
+            "inputData": {
+                "parentClasses": "{{data.parentInfoResponse.classParents}}",
+                "targetClass": "{{props.classifyState.value.expandToClass}}"
+            },
+            "outputData": {
+                "SOABodyForParentHierarchy": "body",
+                "targetParentHierarchy": "targetHierarchy"
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "buildSOASearchCriteriasNavPanel": {
+            "actionType": "JSFunction",
+            "method": "buildSOASearchCriteriasNavPanel",
+            "inputData": {
+                "syncUid": "{{data.panelSyncedUid}}"
+            },
+            "outputData": {
+                "navPanelDrillCriteria": ""
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "getIcoParentInfo":{
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-IcsAw-2019-12-Classification",
+            "method": "findClassificationInfo3",
+            "inputData": {
+                "workspaceObjects": [
+                    {
+                        "uid" : "{{props.classifyState.value.editClassUID}}"
+                    }
+                ],
+                "searchCriterias": [],
+                "classificationDataOptions": 2052
+            },
+            "outputData": {
+                "parentInfoResponse": ""
+            }
+        },
+        "getIcoParentInfoSync":{
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-IcsAw-2019-12-Classification",
+            "method": "findClassificationInfo3",
+            "inputData": {
+                "workspaceObjects": [],
+                "searchCriterias": "{{data.navPanelDrillCriteria}}",
+                "classificationDataOptions": 2052
+            },
+            "outputData": {
+                "parentInfoResponse": ""
+            }
+        },
+        "cleanTreeDrill": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "cleanEditClassState"
+                },
+                {
+                    "action": "establishNavigationRoot",
+                    "condition": "conditions.establishNavigation"
+                },
+                {
+                    "action": "syncPanel",
+                    "condition": "conditions.syncPanel"
+                }
+            ]
+        },
+        "cleanEditClassState": {
+            "actionType": "JSFunction",
+            "method": "selectEditClass",
+            "inputData": {
+                "classifyState": "{{props.classifyState}}",
+                "vmCollection": "{{data.dataProviders.getClassTableSummary.viewModelCollection}}"
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "syncPanel": {
+            "actionType": "JSFunction",
+            "method": "syncPanel",
+            "inputData": {
+                "nodeUid": "{{data.panelSyncedUid}}",
+                "vmCollection": "{{data.dataProviders.getClassTableSummary.viewModelCollection}}",
+                "selectionModel": "{{data.dataProviders.getClassTableSummary.selectionModel}}",
+                "navDrill": "{{data.navPanelDrillCriteria}}"
+            },
+            "outputData": {
+                "navPanelDrillCriteria": ""
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "updateSelectedClassNode": {
+            "actionType": "JSFunction",
+            "method": "updateSelectedClassNode",
+            "inputData": {
+                "selectedNode": "{{data.eventData.selectedNode}}",
+                "context": "{{props.subPanelContext.selectionData}}",
+                "response": "{{data.response}}",
+                "searchString": "{{props.searchString.dbValue}}"
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "updateExternalSelection": {
+            "actionType": "JSFunction",
+            "method": "updateExternalSelection",
+            "inputData": {
+                "vmCollection": "{{data.dataProviders.getClassTableSummary.viewModelCollection}}",
+                "selectionModel": "{{data.dataProviders.getClassTableSummary.selectionModel}}",
+                "node": "{{props.classifyState.value.selectedNode}}",
+                "classifyState": "{{props.classifyState}}",
+                "gridToExpandId": "{{data.grids.clsTreeTable.gridid}}"
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "updateExternalSelectionClsLocation": {
+            "actionType": "JSFunction",
+            "method": "updateExternalSelection",
+            "inputData": {
+                "vmCollection": "{{data.dataProviders.getClassTableSummary.viewModelCollection}}",
+                "selectionModel": "{{data.dataProviders.getClassTableSummary.selectionModel}}",
+                "node": "{{props.navigateState.value.selectedNode}}",
+                "state": "{{props.navigateState}}",
+                "gridToExpandId": "{{data.grids.clsTreeTable.gridid}}"
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "updateTreeSelection": {
+            "actionType": "JSFunction",
+            "method": "updateTreeSelection",
+            "inputData": {
+                "vmCollection": "{{data.dataProviders.getClassTableSummary.viewModelCollection}}",
+                "selectionModel": "{{data.dataProviders.getClassTableSummary.selectionModel}}",
+                "node": "{{data.eventData}}",
+                "state": "{{props.classifyState}}"
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "updateDeselection": {
+            "actionType": "JSFunction",
+            "method": "updateTreeSelection",
+            "inputData": {
+                "vmCollection": "{{data.dataProviders.getClassTableSummary.viewModelCollection}}",
+                "selectionModel": "{{data.dataProviders.getClassTableSummary.selectionModel}}",
+                "node": "",
+                "state": "{{props.classifyState}}",
+                "deselection": true,
+                "searchString": "{{props.searchString.dbValue}}"
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "getTreeStructureTable": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTreeStructure",
+            "inputData": {
+                "treeLoadInput": "request.treeLoadInput",
+                "data": "{{data}}",
+                "providerName": "getClassTableSummary",
+                "searchString": "{{props.searchString.dbValue}}",
+                "releasesState": "{{props.releasesState}}",
+                "classifyState":"{{props.classifyState}}",
+                "sortOption": "{{props.sortOption}}",
+                "siblingsResponse":"{{data.siblingsResponse}}",
+                "processSiblingsResponse": "{{data.navPanelDrillCriteria ? true : props.classifyState.value.expandToClass }}",
+                "siblingParentHierarchy": "{{data.targetParentHierarchy}}",
+                "workspaceObjUid": "{{subPanelContext.selection[0].uid}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "getClassTableSummary.updateSelectedClassNode"
+                    },
+                    {
+                        "name": "activate.classificationSearchFilters",
+                        "condition":"props.subPanelContext.searchState.activateSearchSimilarMode === true"
+                    }
+                ]
+            },
+            "outputData": {
+                "response": ""
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "getTreeStructureTableForExpand": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTreeStructureTableForExpand",
+            "inputData": {
+                "treeLoadInput": "request.treeLoadInput",
+                "data": "{{data}}",
+                "providerName": "getClassTableSummary",
+                "releasesState": "{{props.releasesState}}",
+                "sortOption": "{{props.sortOption}}",
+                "siblingsResponse": "{{data.siblingsResponse}}",
+                "processSiblingsResponse": "{{props.classifyState.value.expandToClass}}"
+            },
+            "outputData": {
+                "response": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "getClassTableSummary.updateSelectedClassNode"
+                    }
+                ]
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "doSearchDataProvider": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setupTreeStructure",
+                    "condition": "conditions.noNeedsToExpandTreeToTarget"
+                },
+                {
+                    "action": "clearSelection",
+                    "condition": "conditions.selectionCanBeCleared"
+                }
+            ]
+        },
+        "loadColumns": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.getClassTableSummary}}",
+                "gridoptions": "{{gridOptions}}"
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "loadPropertiesActionJS": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadPropertiesJS",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.getClassTableSummary}}",
+                "propertyLoadInput": "request.propertyLoadInput"
+            },
+            "outputData": {
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "drillToNextLevel": {
+            "actionType": "JSFunction",
+            "method": "drillToNextLevel",
+            "inputData": {
+                "data": "{{data}}",
+                "providerName": "getClassTableSummary"
+            },
+            "outputData": {
+                "selectedNode": ""
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "parseExpansion":{
+            "actionType": "JSFunction",
+            "method": "parseExpansion",
+            "inputData": {
+                "data": "{{data}}",
+                "providerName": "getClassTableSummary"
+            },
+            "outputData": {
+                "expansionCounter": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "getClassTableSummary.selectPreviousNode",
+                        "condition":"data.selectedTreeNode !== undefined && data.selectedTreeNode && data.isChildVNC != true && data.isVNCaction != true"
+                    }
+                ]
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "filterHierarchy": {
+            "actionType": "JSFunction",
+            "method": "filterHierarchy",
+            "inputData": {
+                "data":"{{data}}",
+                "searchString":"{{props.searchString.dbValue ? props.searchString.dbValue : ''}}",
+                "providerName": "getClassTableSummary",
+                "conditions":"{{conditions}}"
+            },
+            "outputData": {
+                "initializationComplete": "result.initializationComplete"
+            },
+            "deps": "js/classifyFilterUtils"
+        },
+        "checkForInvalidSearch": {
+            "actionType": "JSFunction",
+            "method": "checkForInvalidSearch",
+            "inputData": {
+                "searchString":"{{props.searchString.dbValue}}",
+                "eventName": "getClassTableSummary.plTable.reload"
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "NotAllowedSearchMessage"
+                } ]
+            },
+            "deps": "js/classifyFilterUtils"
+        },
+        "resetView": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [{
+                    "name": "getClassTableSummary.dataProvider.reset"
+                }]
+            }
+        },
+        "searchClass": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "searchClassForNode"
+                },
+                {
+                    "action": "updateNodeDataSync"
+                },
+                {
+                    "action": "updateNodeData"
+                }
+            ]
+        },
+        "searchClassForNode": {
+            "actionType": "JSFunction",
+            "method": "searchClass",
+            "inputData": {
+                "data": "{{data}}",
+                "context": "{{props.subPanelContext}}",
+                "classifyState": "{{props.classifyState}}"
+            },
+            "outputData": {
+                "selectedNode": ""
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "updateNodeDataSync": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "nodeData",
+                "syncObject": {
+                    "selectedNode": "{{data.selectedNode}}"
+                }
+            }
+        },
+        "updateNodeData": {
+            "actionType": "JSFunction",
+            "method": "updateNodeData",
+            "inputData": {
+                "data": "{{data}}",
+                "searchState": "{{props.subPanelContext.searchState}}",
+                "classifyState": "{{props.classifyState}}",
+                "selectedNode": "{{data.selectedNode}}"
+            },
+            "deps": "js/Awp0ClassificationTreeService"
+        },
+        "clearSelection": {
+            "actionType": "JSFunction",
+            "method": "clearSelection",
+            "inputData": {
+                "selectionData": "{{data.dataProviders.getClassTableSummary.selectionModel}}"
+            },
+            "deps": "js/classifyTreeSyncUtils"
+        }
+    },
+    "dataProviders": {
+        "getClassTableSummary": {
+            "initializeAction": "getTreeStructureTable",
+            "nextAction": "getTreeStructureTableForExpand",
+            "focusAction": "getTreeStructureTableForExpand",
+            "treeLoadResult": "action.result.treeLoadResult",
+            "editContext": "TABLE_CONTEXT",
+            "inputData": {
+                "accessMode": "tree",
+                "selectionData": "{{subPanelContext.selectionData}}"
+            },
+            "response": "data.response",
+            "selectionModelMode": "single"
+        },
+        "getTableDetails": {
+            "action": "loadPropertiesActionJS",
+            "propertyLoadResult": "action.result.propertyLoadResult"
+        }
+    },
+    "columnProviders": {
+        "structureColumnProvider": {
+            "loadColumnAction": "loadColumns",
+            "columns": "{{data.columns}}",
+            "frozenColumnIndex" : -1,
+            "sortCriteria": []
+        }
+    },
+    "grids": {
+        "clsTreeTable": {
+            "dataProvider": "getClassTableSummary",
+            "propertyProvider": "getTableDetails",
+            "columnProvider": "structureColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "useStaticFirstCol": true
+            }
+        }
+    },
+    "conditions": {
+        "needsToExpandTreeToTarget": {
+            "expression": "props.classifyState.value.expandToClass && props.classifyState.value.expandToClass !== ''"
+        },
+        "noNeedsToExpandTreeToTarget": {
+            "expression": "!conditions.needsToExpandTreeToTarget"
+        },
+        "isPanel": {
+            "expression": "props.classifyState.value.isClassifyPanel"
+        },
+        "clsLocationSyncNeeded": {
+            "expression": "props.subPanelContext.searchState.criteria.searchString && !conditions.isPanel && !(props.searchString.dbValue > data.searchStringMinLength)"
+        },
+        "syncPanel": {
+            "expression": "conditions.clsLocationSyncNeeded && (data.navPanelDrillCriteria || data.dataProviders.getClassTableSummary.selectionModel.selectionData.value.selected)"
+        },
+        "treeDrillDownOnOpen": {
+            "expression": "(conditions.needsToExpandTreeToTarget || conditions.clsLocationSyncNeeded) && !conditions.syncSelMade"
+        },
+        "syncSelMade": {
+            "expression": "props.subPanelContext.selectionData.value.selected.length && props.subPanelContext.selectionData.value.selected[0].uid && props.navigateState && props.navigateState.selectedNode && props.navigateState.selectedNode.uid && props.subPanelContext.selectionData.value.selected[0].uid === props.navigateState.selectedNode.uid"
+        },
+        "outsideClsLocation": {
+            "expression": "conditions.needsToExpandTreeToTarget && !conditions.clsLocationSyncNeeded"
+        },
+        "isValidSearchInput": {
+                "expression": {
+                    "$source": "props.searchString.dbValue",
+                    "$query": {
+                        "$regexp": "(.*[a-zA-Z0-9$&+,:;=?@#|'<>.-^()%!]){3}"
+                    }
+                }
+        },
+        "deselectOccurring": {
+            "expression": "data.dataProviders.getClassTableSummary.selectionModel.selectionData.value.selected.length === 0 && data.dataProviders.getClassTableSummary.viewModelCollection.totalFound > 0"
+        },
+        "deselectClsLocation": {
+            "expression": "conditions.deselectOccurring && props.navigateState"
+        },
+        "searchBoxCleared": {
+            "expression": "props.searchString.dbValue.length === 0 && data.dataProviders.getClassTableSummary.viewModelCollection.totalFound > 0"
+        },
+        "searchBoxClearedClsLocation": {
+            "expression": "conditions.searchBoxCleared && props.subPanelContext.searchState"
+        },
+        "treeEmpty": {
+            "expression": "data.dataProviders.getClassTableSummary.viewModelCollection.totalFound === 0"
+        },
+        "selectionMade": {
+            "expression": "data.dataProviders.getClassTableSummary.selectionModel.selectionData.value.selected.length > 0"
+        },
+        "selectionCanBeCleared": {
+            "expression": "conditions.noNeedsToExpandTreeToTarget && conditions.selectionMade"
+        },
+        "initializationComplete": {
+            "expression": "data.initializationComplete"
+        },
+        "processSuggestedClass": {
+            "expression": "props.classifyState.value.suggestedClassIcoUID"
+        },
+        "establishNavigation": {
+            "expression": "props.navigateState && !props.navigateState.value.originVNCs"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "getClassTableSummary.dataProvider.reset",
+            "action": "checkForInvalidSearch"
+        },
+        {
+            "eventId": "getClassTableSummary.selectionChangeEvent",
+            "action": "drillToNextLevel"
+        },
+        {
+            "eventId": "getClassTableSummary.plTable.reload",
+            "action": "doSearchDataProvider"
+        },
+        {
+            "eventId": "getClassTableSummary.updateSelectedClassNode",
+            "action": "updateSelectedClassNode"
+        },
+        {
+            "eventId": "getClassTableSummary.selectStorageNode",
+            "action": "searchClass",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "getClassTableSummary.selectParentNode",
+            "action": "searchClass",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "clsTreeTable.plTable.toggleTreeNode",
+            "action": "updateTreeSelection",
+            "cacheEventData": true
+        }
+    ],
+    "messages":{
+        "NotAllowedSearchMessage":{
+            "messageType": "INFO",
+            "messageText": "{{i18n.NotAllowedSearch}}",
+            "messageTextParams": []
+        }
+    },
+    "functions": {
+        "getClassificationDataOptions": {
+            "functionName": "getClassificationDataOptions",
+            "parameters": [
+                "{{props.sortOption.value}}",
+                "{{props.classifyState}}",
+                "{{data.loadClassSuggestion}}"
+            ]
+        }
+    },
+    "i18n": {
+    }
+}

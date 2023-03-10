@@ -1,0 +1,22 @@
+<aw-command-panel name="Pca0ConstraintsGridEditorSettingsPanel" caption="i18n.settings">
+    <aw-panel-body>
+        <aw-panel-section caption="i18n.topTableHeightResizeTitle">
+            <aw-slider prop="data.headerHeight"></aw-slider>
+        </aw-panel-section>
+        <aw-panel-section caption="i18n.tableColumnHeaderWidthTitle">
+            <aw-slider prop="data.columnWidth"></aw-slider>
+            <aw-checkbox prop="data.useCompactColumnWidth"></aw-checkbox>
+        </aw-panel-section>
+        <aw-panel-section caption="i18n.properties">
+            <aw-togglebutton prop="data.showPropsInfoInGrid"></aw-togglebutton>
+        </aw-panel-section>
+        <aw-panel-section caption="i18n.sectionTitle">
+            <aw-togglebutton prop="data.showSubjectInTopGrid"></aw-togglebutton>
+        </aw-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer class=" aw-cfg-settingsFooter">
+        <aw-button action="applySettings" visible-when="conditions.settingsChanged">
+            <aw-i18n>i18n.applyCmd</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

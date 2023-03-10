@@ -1,0 +1,19 @@
+<div class='sw-full-screen-header aw-layout-panelTitle sw-row justify-justified'>
+    <aw-flex-row align-content="start">
+        <div class='aw-layout-locationTitle justify-justified' exist-when="props.subPanelContext.headerTitle">
+            {{props.subPanelContext.headerTitle}}
+        </div>
+        <div class='aw-layout-locationTitle aw-occmgmt-FullScreenSeperator' exist-when="props.subPanelContext.headerTitle">|</div>
+        <div class='aw-layout-locationTitle justify-justified aw-occmgmt-FullScreenHeaderContent' exist-when="props.subPanelContext.headerPath">
+            {{props.subPanelContext.headerPath}}
+        </div>
+        <div class='aw-layout-locationTitle aw-occmgmt-FullScreenSeperator' exist-when="props.subPanelContext.headerPath">|</div>
+        <div class='flex-auto aw-layout-locationTitle justify-justified aw-layout-flexRow aw-layout-breadCrumbContainer'>
+            <occmgmt-breadcrumb occ-context="props.subPanelContext.context.occContext">
+            </occmgmt-breadcrumb>
+        </div>
+    </aw-flex-row>
+    <div class='align-center justify-right flex-shrink sw-panel-bar'>
+        <aw-command-bar class='aw-layout-workareaCommandbar' anchor="aw_fullScreenHeader" context="props.subPanelContext" alignment="HORIZONTAL"></aw-command-bar>
+    </div>
+</div>

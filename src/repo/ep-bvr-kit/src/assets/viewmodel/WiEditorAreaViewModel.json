@@ -1,0 +1,167 @@
+{
+    "schemaVersion": "1.0.0",
+    "props":{
+        "occ-context":{"type": "object" },
+        "sub-panel-context": {
+            "type": "object"
+        }
+     },
+    "data": {
+        "contentPanelData": {
+            "tabs": [ {
+                    "name": "{{i18n.editorTitle}}",
+                    "tabKey": "WiEditor",
+                    "occContext":"{{props.occContext}}"
+                },
+                {
+                    "name": "{{i18n.pmiTitle}}",
+                    "tabKey": "WiAssemblyPmiTable",
+                    "contentCount": 0,
+                    "showWhen": "ctx.ep.licenses && ctx.ep.licenses['tcmfg_pmi_ep'] === true"
+                }
+            ]
+        },
+        "lastAppliedLoadMethod": {
+            "initialValues": {
+                "pmiContext": {
+                    "uid": "",
+                    "displayName": ""
+                },
+                "selectedMethod": "",
+                "contentCount": 0
+            },
+            "meta": {}
+        }
+    },
+    "actions": {
+        "handleChangeInEdiorIconVisibility": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "unsetChangeIndicationIconVisibility"
+                },
+                {
+                    "action": "getChangeIndicationData"
+                },
+                {
+                    "action": "setChangeIndicationIconVisibility",
+                    "condition":"data.affectedUIds!=='' && subPanelContext.sharedSelectionData.isIndicationToggleOn === true"
+                }
+
+            ]
+        },
+        "getChangeIndicationData": {
+            "actionType": "JSFunction",
+            "method": "getProperty",
+            "inputData": {
+                "name": "{{ctx.epTaskPageContext.loadedObject.uid}}",
+                "propertyName": "ChangeLoadedProcessIndication"
+            },
+            "outputData": {
+                "affectedUIds": ""
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "setChangeIndicationIconVisibility": {
+            "actionType": "JSFunction",
+            "method": "setIconOnTab",
+            "inputData": {
+                "contentPanelData": "{{data.contentPanelData}}",
+                "tabKey": "WiEditor",
+                "shouldBeVisible": "{{data.affectedUIds}}",
+                "iconName": "indicatorImpacted"
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+
+        },
+        "unsetChangeIndicationIconVisibility": {
+            "actionType": "JSFunction",
+            "method": "setIconOnTab",
+            "inputData": {
+                "contentPanelData": "{{data.contentPanelData}}",
+                "tabKey": "WiEditor",
+                "shouldBeVisible": false
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "updateTabTitle": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setContentCount"
+                },
+                {
+                    "action": "setTabDisplayNameWithQuantity"
+                },
+                {
+                    "action": "selectPMIAssemblyLevelTab",
+                    "condition": "data.contentPanelData.tabs[1].selectedTab"
+                }
+            ]
+        },
+        "setContentCount": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{data.lastAppliedLoadMethod.contentCount}}"
+            },
+            "outputData":{
+                "contentPanelData.tabs[1].contentCount":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setTabDisplayNameWithQuantity": {
+            "actionType": "JSFunction",
+            "method": "setTabDisplayNameWithQuantity",
+            "inputData": {
+                "tabData": "{{data.contentPanelData.tabs[1]}}"
+            },
+            "outputData": {
+                "contentPanelData.tabs[1]": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "selectPMIAssemblyLevelTab": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "awTab.setSelected",
+                    "eventData": {
+                        "tabKey": "WiAssemblyPmiTable"
+                    }
+                } ]
+            }
+        }
+    },
+    "onEvent": [ {
+        "eventId": "epObjectPropertyCache.ChangeLoadedProcessIndicationUpdated",
+        "action": "handleChangeInEdiorIconVisibility"
+    } ],
+    "i18n": {
+        "editorTitle": [ "InstructionsMessages" ],
+        "pmiTitle": [ "InstructionsMessages" ]
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "handleChangeInEdiorIconVisibility",
+                "observers": [
+                    "props.subPanelContext.sharedSelectionData.isIndicationToggleOn"
+                ]
+            },
+            {
+                "action": "updateTabTitle",
+                "observers": [
+                    "viewModel.atomicData.lastAppliedLoadMethod.contentCount"
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,346 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-button.directive",
+        "js/aw-checkbox.directive",
+        "js/aw-column.directive",
+        "js/aw-command-panel.directive",
+        "js/aw-flex-column.directive",
+        "js/aw-flex-row.directive",
+        "js/aw-i18n.directive",
+        "js/aw-link-with-popup-menu.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-pic.directive",
+        "js/aw-property-label.directive",
+        "js/aw-tab-set.directive",
+        "js/exist-when.directive"
+    ],
+    "actions": {
+        "initialize": {
+            "actionType": "JSFunction",
+            "method": "handleInitializeActions",
+            "inputData": {
+                "tabs": "{{data.tabsModel.dbValue}}",
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "tabModels": "visibleTabs",
+                "tabApiCallback": "api",
+                "activeTab": "activeTab"
+            },
+            "deps": "js/pca0LoadSavedVariantsService"
+        },
+        "programmaticallySwitchToTab": {
+            "actionType": "JSFunction",
+            "method": "handleTabChange",
+            "inputData": {
+                "tabs": "{{data.tabsModel.dbValue}}",
+                "pageId": "{{data.eventData.pageId}}",
+                "tabKey": "{{data.eventData.tabKey}}"
+            },
+            "outputData": {
+                "selectedTab": "selectedTab"
+            },
+            "deps": "js/pca0LoadSavedVariantsService"
+        },
+        "setActiveView": {
+            "actionType": "JSFunction",
+            "method": "setActiveView",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "activeView": ""
+            },
+            "deps": "js/pca0LoadSavedVariantsService"
+        },
+        "processSVRSearchCriteriaSelection": {
+            "actionType": "JSFunction",
+            "method": "processSVRSearchCriteriaSelection",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "searchCriteriaLink": "result.searchCriteriaLink",
+                "activeSearchCriteria": "result.activeSearchCriteria",
+                "dispValueSearchCriteria": "result.dispValueSearchCriteria",
+                "tabData.searchCriteriaLink": "result.searchCriteriaLink"
+            },
+            "events": {
+                "success": [ {
+                    "name": "Pca0LoadSVRSearchCriteriaPanel.updateActiveSearchCriteria",
+                    "eventData": {
+                        "activeSearchCriteria": "{{data.activeSearchCriteria}}",
+                        "dispValue": "{{data.dispValueSearchCriteria}}"
+                    }
+                } ]
+            },
+            "deps": "js/pca0LoadSavedVariantsService"
+        },
+        "closeLoadSVRSearchCriteriaPanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+        "loadSavedVariants": {
+            "actionType": "JSFunction",
+            "method": "loadSavedVariants",
+            "inputData": {
+                "selectedVariantRules": "{{data.selectedResultObjects}}",
+                "fscState": "{{ctx.panelContext.fscState}}",
+                "variantRuleData": "{{ctx.panelContext.variantRuleData}}",
+                "appendSVRElement": "{{appendSVRElement.dbValue}}"
+            },
+            "events": {
+                "success": [ 
+                    {
+                        "name": "Pca0VariantConfigurationGrid.loadOrAppendSVRs"
+                    },
+                    {
+                        "name": "Pca0FullScreenConfiguration.updateSVRListInSummary"
+                    },
+                    
+                    {
+                        "name": "Pca0FullScreenConfiguration.switchToGridView",
+                        "condition": "conditions.areMultipleItemsSelected"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/pca0LoadSavedVariantsService"
+        },
+        "showConfirmationMessageForLoad": {
+            "actionType": "JSFunction",
+            "method": "showConfirmationMessageForLoad",
+            "deps": "js/pca0LoadSavedVariantsService"
+        },
+        "handleSelectionChange": {
+            "actionType": "JSFunction",
+            "method": "handleResultsSelectionChange",
+            "inputData": {
+                "data": "{{data.eventData}}"
+            },
+            "outputData": {
+                "selectedResultObjects": ""
+            },
+            "deps": "js/pca0LoadSavedVariantsService"
+        },
+        "cleanUp": {
+            "actionType": "JSFunction",
+            "method": "cleanUp",
+            "outputData": {
+                "tabData.searchCriteriaLink": "searchCriteriaLink"
+            },
+            "deps": "js/pca0LoadSavedVariantsService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initialize",
+        "onUnmount": "cleanUp"
+    },
+
+    "onEvent": [ {
+            "eventId": "awTab.selected",
+            "action": "setActiveView",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "Pca0LoadSVRSearchTab.tabChange",
+            "action": "programmaticallySwitchToTab",
+            "cacheEventData": true
+        },
+
+        {
+            "eventId": "awlinkPopup.selected",
+            "cacheEventData": true,
+            "action": "processSVRSearchCriteriaSelection"
+        },
+        {
+            "eventId": "gwt.SubLocationContentSelectionChangeEvent",
+            "action": "closeLoadSVRSearchCriteriaPanel"
+        },
+        {
+            "eventId": "getAllVariantRulesBasedOnSearchCriteria.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "handleSelectionChange"
+        },
+        {
+            "eventId": "Pca0LoadSVRSearchTab.loadSavedVariants",
+            "action": "loadSavedVariants"
+        },
+        {
+            "eventId": "Pca0LoadSVRSearchTab.closeLoadSVRSearchCriteriaPanel",
+            "action": "closeLoadSVRSearchCriteriaPanel"
+        }
+
+    ],
+    "data": {
+        "selectedTab": "Input",
+        "activeView": "",
+        "activeTab": {
+            "view": "Pca0LoadSVRSearchInputTab"
+        },
+        "tabData": {
+            "initialValues": {
+                "searchCriteriaLink": "Name",
+                "searchCriteria": "",
+                "revisionRule": "",
+                "featurePropLabel": ""
+            },
+            "meta": {}
+        },
+        "searchByLabel": {
+            "displayName": "{{i18n.searchBy}}",
+            "type": "STRING",
+            "labelPosition": "PROPERTY_LABEL_AT_LEFT"
+        },
+        "searchCriteriaLink": {
+            "displayName": "{{i18n.name}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "dbValue": "Name",
+            "uiValue": "{{i18n.name}}"
+        },
+        "tabsModel": {
+            "isArray": "true",
+            "dbValue": [ {
+                    "name": "{{i18n.input}}",
+                    "pageId": "Pca0LoadSVRSearchInputTab",
+                    "view": "Pca0LoadSVRSearchInputTab",
+                    "resourceProviderContentType": "Input",
+                    "tabKey": "Input",
+                    "selectedTab": true,
+                    "recreatePanel": true
+                },
+                {
+                    "name": "{{i18n.results}}",
+                    "pageId": "Pca0LoadSVRSearchResultsTab",
+                    "view": "Pca0LoadSVRSearchResultsTab",
+                    "resourceProviderContentType": "Results",
+                    "tabKey": "Results",
+                    "recreatePanel": true
+                }
+            ]
+        },
+        "appendSVRElement": {
+            "displayName": "{{i18n.appendSVR}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "indicatorInfo": "indicatorInfo",
+        "indicatorWarning": "indicatorWarning"
+    },
+
+    "dataProviders": {
+        "searchCriteriaProvider": {
+            "dataProviderType": "Static",
+            "response": [ {
+                    "staticDisplayValue": "{{i18n.name}}",
+                    "staticElementObject": "Name",
+                    "selected": true
+                },
+                {
+                    "staticDisplayValue": "{{i18n.id}}",
+                    "staticElementObject": "ID",
+                    "selected": false
+                },
+                {
+                    "staticDisplayValue": "{{i18n.description}}",
+                    "staticElementObject": "Description",
+                    "selected": false
+                },
+                {
+                    "staticDisplayValue": "{{i18n.feature}}",
+                    "staticElementObject": "Feature",
+                    "selected": false
+                }
+            ],
+            "totalFound": 4
+        }
+    },
+    "ctx": {
+        "fscContext": {
+            "type": "object"
+        },
+        "panelContext": {
+            "type": "object"
+        }
+    },
+    "messages": {
+        "loadConfirmation": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.loadConfirmation}}",
+            "navigationOptions": [ {
+                    "option": "Cancel",
+                    "text": "{{i18n.cancel}}",
+                    "action": "closeLoadSavedVariantsPanel"
+                },
+                {
+                    "option": "Load",
+                    "text": "{{i18n.load}}",
+                    "action": "loadSavedVariants"
+                }
+            ]
+        }
+    },
+    "conditions": {
+        "showLoadButton": {
+            "expression": "data.selectedResultObjects && data.selectedResultObjects.length > 0"
+        },
+        "isDirty": {
+            "expression": "(conditions.isTreeMode && conditions.isGridDirty) || conditions.isVariantRuleDirty"
+        },
+        "isVariantRuleDirty": {
+            "expression": "ctx.panelContext.fscState.value.variantRuleDirty === true"
+        },
+        "isTreeMode": {
+            "expression": "ctx.panelContext.fscState.value.treeDisplayMode === true"
+        },
+        "isGridDirty": {
+            "expression": "ctx.panelContext.fscState.value.isGridDirty === true"
+        },
+        "areMultipleItemsSelected": {
+            "expression": "data.selectedResultObjects && data.selectedResultObjects.length > 1"
+        },
+        "showInputPage": {
+            "expression": "data.selectedTab.tabKey === 'Input'"
+        },
+        "showResultsPage": {
+            "expression": "data.selectedTab.tabKey === 'Results'"
+        }
+    },
+    "i18n": {
+        "id": [ "FullScreenConfigurationMessages" ],
+        "name": [ "FullScreenConfigurationMessages" ],
+        "description": [ "FullScreenConfigurationMessages" ],
+        "feature": [ "FullScreenConfigurationMessages" ],
+        "input": [ "FullScreenConfigurationMessages" ],
+        "results": [ "FullScreenConfigurationMessages" ],
+        "searchBy": [ "FullScreenConfigurationMessages" ],
+        "cmdLoadSavedVariantsTitle": [ "FullScreenConfigurationMessages" ],
+        "load": [ "FullScreenConfigurationMessages" ],
+        "loadConfirmation": [ "FullScreenConfigurationMessages" ],
+        "cancel": [ "FullScreenConfigurationMessages" ],
+        "appendSVR": [ "FullScreenConfigurationMessages" ],
+        "singleSVRSelectionMsg": [ "FullScreenConfigurationMessages" ],
+        "multipleSVRSelectionMsg": [ "FullScreenConfigurationMessages" ]
+
+    }
+}

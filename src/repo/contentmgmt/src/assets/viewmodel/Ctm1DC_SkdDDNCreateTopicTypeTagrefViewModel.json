@@ -1,0 +1,394 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+        "js/aw-panel.directive",
+        "js/aw-widget.directive"
+    ],
+
+    "actions":
+    {
+        "updateDataSource": {
+            "actionType": "JSFunction",
+            "method": "addHtmlPanelInDataSource",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "{{data.subPanelContext.xrtType}}",
+                "panelID": "Ctm1DC_SkdDDNCreateTopicTypeTagref"
+            },
+            "deps": "js/addObjectUtils"
+        },
+
+        "reveal": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "ctm1.cleanupCtx"
+                    },
+                    {
+                        "name": "ctm1.getValidTopicTypes"
+                    },
+                    {
+                        "name": "ctm1.getTopicByParentTopicType"
+                    }
+                ]
+            }
+        },
+
+        "cleanupCtx": {
+            "actionType": "JSFunction",
+            "method": "cleanupCtx",
+            "inputData": {
+                "ctx": "{{ctx}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "getValidTopicTypes":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "__ctm0_Topic_Type_Query",
+                        "searchID": "TOPIC_TYPE_QUERY",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0",
+                        "lastEndIndex": "0",
+                        "object_name": "*",
+                        "applyClassName": "DC_SkdDDN",
+                        "startIndex": "{{data.dataProviders.listProvider.startIndex}}"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "object_name",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "outputData":
+            {
+                "ctx.ctm1.validTopicTypes": "{{function:filterReferenceTopicTypes}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "getTopicByParentTopicType":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": "{{function:getParentTopicTypeSearchInput}}"
+            },
+
+            "outputData":
+            {
+                "ctx.ctm1.parentTopicType": "{{function:getParentTopicType}}"
+            },
+
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "ctm1.expandParentTopicTypeRelations"
+                    }
+                ]
+            },
+
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "expandParentTopicTypeRelations":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-09-DataManagement",
+            "method": "expandGRMRelationsForPrimary",
+            "inputData":
+            {
+                "primaryObjects":
+                [
+                    "{{ctx.ctm1.parentTopicType}}"
+                ],
+                "pref":
+                {
+                    "expItemRev": false,
+                    "returnRelations": true,
+                    "info":
+                    [
+                        {
+                            "relationTypeName": "DC_TopicTypeTopicTypeR",
+                            "otherSideObjectTypes": ""
+                        }
+                    ]
+                }
+            },
+            "outputData":
+            {
+                "ctx.ctm1.parentTopicTypeRelations": "{{function:sortTopicTypeRelations}}"
+            },
+
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "ctm1.expandReferenceTopicTypeRelations",
+                        "condition": "ctx.ctm1.parentTopicTypeRelations.DC_RefTopicType.length > 0"
+                    },
+                    {
+                        "name": "ctm1.zeroReferenceTopicTypeRelations",
+                        "condition": "ctx.ctm1.parentTopicTypeRelations.DC_RefTopicType.length === 0"
+                    }
+                ]
+            },
+
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "expandReferenceTopicTypeRelations":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-09-DataManagement",
+            "method": "expandGRMRelationsForPrimary",
+            "inputData":
+            {
+                "primaryObjects": "{{ctx.ctm1.parentTopicTypeRelations.DC_RefTopicType}}",
+                "pref":
+                {
+                    "expItemRev": false,
+                    "returnRelations": true,
+                    "info":
+                    [
+                        {
+                            "relationTypeName": "DC_TopicTypeTopicTypeR",
+                            "otherSideObjectTypes": ""
+                        }
+                    ]
+                }
+            },
+            "outputData":
+            {
+                "ctx.ctm1.referenceTopicTypeRelationsMap": "output",
+                "ctx.ctm1.referenceTopicTypeRelations": "{{function:sortTopicTypeRelations}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+
+        "changeTopicType":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "topicType.selectionChange",
+                        "condition": "data.revision__ctm0TopicTypeTagref.dbValue.length > 0",
+                        "eventData":
+                        {
+                            "ctm0TopicTypeTagref": "{{data.revision__ctm0TopicTypeTagref}}"
+                        }
+                    }
+                ]
+            }
+        },
+
+        "zeroReferenceTopicTypeRelations": {
+            "actionType": "JSFunction",
+            "method": "zeroReferenceTopicTypeRelations",
+            "inputData": {
+                "ctx": "{{ctx}}"
+            },
+            "outputData":
+            {
+                "lovValues": ""
+            },
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "getTopicTypeLov": {
+            "actionType": "JSFunction",
+            "method": "getTopicTypeLov",
+            "inputData": {
+                "ctx": "{{ctx}}",
+                "filter": "{{data.revision__ctm0TopicTypeTagref.filterString}}"
+            },
+            "outputData":
+            {
+                "lovValues": ""
+            },
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "validateList": {
+            "actionType": "JSFunction",
+            "method": "rejectSuggestions",
+            "inputData": {
+                "suggestion": "request.suggestion"
+            },
+            "outputData": {
+                "valid": "valid",
+                "message": "message"
+            },
+            "deps": "js/Ctm1ContentMgmtService"
+        }
+    },
+
+    "data":
+    {
+        "revision__ctm0TopicTypeTagref": {
+            "dbValue": "",
+            "displayName": "{{i18n.topicType}}",
+            "type": "STRING",
+            "dataProvider": "listProvider",
+            "isRequired": "true",
+            "isEditable": "true"
+        }
+    },
+
+    "dataProviders":
+    {
+        "listProvider":
+        {
+            "initializeAction": "getTopicTypeLov",
+            "nextAction": "getTopicTypeLov",
+            "response": "{{data.lovValues}}",
+            "totalFound": "{{data.totalFound}}",
+            "valid": "{{data.valid}}",
+            "message": "{{data.message}}",
+            "moreValuesExist": false
+        }
+    },
+
+    "functions":
+    {
+        "sortTopicTypeRelations": {
+            "functionName": "sortTopicTypeRelations",
+            "parameters":
+            [
+                "{{response}}"
+            ]
+        },
+        "filterReferenceTopicTypes":
+        {
+            "functionName": "filterReferenceTopicTypes",
+            "parameters":
+            [
+                "{{response}}"
+            ]
+        },
+        "getParentTopicTypeSearchInput":
+        {
+            "functionName": "getParentTopicTypeSearchInput",
+            "parameters":
+            [
+                "{{ctx}}",
+                "{{data}}"
+            ]
+        },
+        "getParentTopicType":
+        {
+            "functionName": "getParentTopicType",
+            "parameters":
+            [
+            ]
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "updateDataSource",
+        "onUpdate": {
+            "action": "updateDataSource",
+            "observers": [ "viewModel.data" ]
+        },
+        "onInit": "reveal"
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "ctm1.cleanupCtx",
+            "action": "cleanupCtx"
+        },
+        {
+            "eventId": "ctm1.getValidTopicTypes",
+            "action": "getValidTopicTypes"
+        },
+        {
+            "eventId": "ctm1.getTopicByParentTopicType",
+            "action": "getTopicByParentTopicType",
+            "condition": "conditions.isAddChildOrSibling"
+        },
+        {
+            "eventId": "ctm1.expandParentTopicTypeRelations",
+            "action": "expandParentTopicTypeRelations"
+        },
+        {
+            "eventId": "ctm1.expandReferenceTopicTypeRelations",
+            "action": "expandReferenceTopicTypeRelations"
+        },
+        {
+            "eventId": "ctm1.zeroReferenceTopicTypeRelations",
+            "action": "zeroReferenceTopicTypeRelations"
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "changeTopicType",
+            "criteria": {
+                "condition": "conditions.expressionValueChanged"
+            }
+        }
+    ],
+
+    "conditions":
+    {
+        "isAddChildOrSibling": {
+            "expression": "ctx.activeToolsAndInfoCommand.commandId === 'Awb0AddChildElementDeclarative' || ctx.activeToolsAndInfoCommand.commandId === 'Awb0AddSiblingElementDeclarative'"
+        },
+        "expressionValueChanged": {
+            "expression": "data.revision__ctm0TopicTypeTagref.dbValue",
+            "trackValues": true
+        }
+    },
+
+    "preferences":
+    [
+
+    ],
+
+    "messages":
+    {
+
+    },
+
+    "i18n":
+    {
+        "topicType": [ "ContentMgmtMessages" ]
+    }
+}

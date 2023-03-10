@@ -1,0 +1,15 @@
+<aw-sublocation fullscreen="ctx.fullscreen" context="commandContext">
+    <aw-sublocation-body ng-if="!validationErrorMessage">
+        <aw-include class="aw-preferences-orgTreePanelContainer" name="preferencesOrgTree" exist-when="ctx.tcadmconsole.preferences.isUserSystemAdmin === true || ctx.tcadmconsole.preferences.isUserGroupAdmin === true"></aw-include>
+        <aw-splitter min-size-1="0" min-size-2="415" isPrimarySplitter=false direction="vertical" exist-when="ctx.tcadmconsole.preferences.isUserSystemAdmin === true || ctx.tcadmconsole.preferences.isUserGroupAdmin === true"></aw-splitter>
+        <div class="aw-layout-primaryWorkarea aw-layout-flexRowContainer aw-preferences-primaryWorkarea afx-alt-content-background"
+            ng-class="{'aw-layout-primaryWorkareaLeft aw-layout-summaryList': showSecondaryWorkArea && ['table','tree'].indexOf(view) === -1,
+            'aw-layout-primaryWorkareaLeft aw-layout-summaryList aw-layout-tableSummaryList': showSecondaryWorkArea && ['table','tree'].indexOf(view) !== -1,
+            'aw-layout-primaryWorkareaFill': !showSecondaryWorkArea}"
+            ng-hide="showSecondaryWorkArea && ctx.fullscreen">
+            <aw-primary-workarea view-base="viewBase" view="view" context="pwaContext" breadcrumb-config="breadcrumbConfig"></aw-primary-workarea>
+        </div>
+        <aw-splitter min-size-1="415" min-size-2="300" isPrimarySplitter=true direction="vertical" ng-class="{'hidden': !showSecondaryWorkArea || ctx.fullscreen || !objFound}"></aw-splitter>
+        <aw-secondary-workarea class="aw-preferences-secondaryWorkarea" ng-if="showSecondaryWorkArea" selected="modelObjects" context="swaContext"></aw-secondary-workarea>
+    </aw-sublocation-body>
+</aw-sublocation>

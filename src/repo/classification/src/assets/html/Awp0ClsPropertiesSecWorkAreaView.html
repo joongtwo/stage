@@ -1,0 +1,26 @@
+<aw-panel>
+    <aw-panel-body>
+        <aw-widget prop="item" aw-repeat="item : data.currentSecData" visible-when="data.isAvailable === true"></aw-widget>
+        <aw-panel-section caption="{{i18n.dataType}}" visible-when=" data.dataTypeMetric.length > 0" collapsed="false">
+            <aw-panel-section caption="{{i18n.metric}}" visible-when=" data.dataTypeMetric.length > 0" collapsed="false">
+                <aw-widget prop="item" aw-repeat="item : data.dataTypeMetric"></aw-widget>
+            </aw-panel-section>
+            <aw-panel-section caption="{{i18n.nonMetric}}" visible-when=" data.dataTypeNonMetric.length > 0" collapsed="false">
+                <aw-widget prop="item" aw-repeat="item : data.dataTypeNonMetric"></aw-widget>
+            </aw-panel-section>
+        </aw-panel-section>
+
+        <aw-panel-section caption="{{i18n.keylovTitle}}" visible-when="data.keyLOVTreeDataMetric.length > 0" collapsed="false">
+            <aw-panel-section caption="{{i18n.metric}}" visible-when=" data.keyLOVTreeDataMetric.length > 0" collapsed="false">
+                <aw-tree name="propertiesKeyLOVMetric" tree="data.keyLOVTreeDataMetric">
+                    {{node.label}}
+                </aw-tree>
+            </aw-panel-section>
+            <aw-panel-section caption="{{i18n.nonMetric}}" visible-when=" data.keyLOVTreeDataNonMetric.length > 0" collapsed="false">
+                <aw-tree name="propertiesKeyLOVNonMetric" tree="data.keyLOVTreeDataNonMetric">
+                    {{node.label}}
+                </aw-tree>
+            </aw-panel-section>
+        </aw-panel-section>
+    </aw-panel-body>
+</aw-panel>

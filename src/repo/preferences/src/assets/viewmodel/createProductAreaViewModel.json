@@ -1,0 +1,82 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-widget.directive",
+        "js/aw-listbox.directive",
+        "js/aw-break.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-i18n.directive",
+        "js/visible-when.directive",
+        "js/aw-button.directive"
+    ],
+    "actions": {
+        "reveal": {
+            "actionType": "JSFunction",
+            "method": "populateCreateProductAreaPanel",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "productAreaList": "productAreaList",
+                "totalFound": "totalFound"
+            },
+            "deps": "js/createProductAreaService"
+        },
+        "createProductArea": {
+            "actionType": "JSFunctionAsync",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "method": "createProductArea",
+            "events": {
+                "success": [ {
+                        "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/createProductAreaService"
+        }
+    },
+    "data": {
+        "fnd0SubcategoryName": {
+            "displayName": "{{i18n.Name}}",
+            "type": "STRING",
+            "isEditable": "true",
+            "isRequired": "true"
+        },
+        "fnd0ProductArea": {
+            "displayName": "{{i18n.ProductArea}}",
+            "type": "STRING",
+            "hasLov": "true",
+            "isRequired": "false",
+            "dataProvider": "productAreaProvider"
+        }
+        },
+    "dataProviders": {
+        "productAreaProvider": {
+            "action": "reveal",
+            "selectionModelMode": "single",
+            "response": "{{data.productAreaList}}"
+        }
+    },
+    "i18n": {
+        "createProductAreaPanelTitle": [ "preferenceMessages" ],
+        "createProductAreaBtnTitle": [ "preferenceMessages" ],
+        "ProductArea": [ "preferenceMessages" ],
+        "Name": [ "preferenceMessages" ]
+    },
+    "conditions": {
+        "showAddBtn": {
+            "expression": "data.fnd0SubcategoryName.dbValue != '' && data.fnd0SubcategoryName.dbValue !== null && data.fnd0SubcategoryName.dbValue !== undefined"
+        }
+    }
+}

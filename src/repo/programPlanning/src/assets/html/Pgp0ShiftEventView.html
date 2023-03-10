@@ -1,0 +1,21 @@
+<aw-command-panel caption="i18n.Pgp0ShiftEvent">
+    <aw-panel-body>
+        <aw-panel-header>
+            <aw-panel-section caption="i18n.addEventOnTimelineCommandTitle">
+                <aw-default-cell item="data.selectedEvent"></aw-default-cell>
+            </aw-panel-section>
+        </aw-panel-header>
+        <aw-date prop="data.Pgp0NewPlannedDate"></aw-date>
+        <div visible-when="props.subPanelContext.selectionData.selected[0].props.Prg0EventDependencyRel.dbValues.length">
+            <aw-break></aw-break>
+            <aw-checkbox prop="data.Pgp0ShiftSecondary"></aw-checkbox>
+            <p>{{i18n.Pgp0ShiftSecondaryDesc}}</p>
+            <aw-break></aw-break>
+        </div>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="shiftEvent" enable-when="awPanelBody.$valid">
+            <aw-i18n>i18n.Pgp0ShiftText</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

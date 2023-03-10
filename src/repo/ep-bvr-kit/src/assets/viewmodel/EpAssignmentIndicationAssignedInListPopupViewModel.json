@@ -1,0 +1,88 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpAssignmentIndicationAssignedInListPopup_navigateToOutOfScopeNode": {
+            "onChangeAction": "navigateToOutOfScopeNode",
+            "syncObject": {}
+        }
+    },
+    "actions": {
+        "navigateToOutOfScopeNode":{
+            "actionType": "batchJob",
+            "steps":[
+                {
+                    "action":"getParentOfSelectedObj",
+                    "condition":"conditions.hasOutScopeSelectedObject"
+                },
+                {
+                    "action":"cacheSelectionObjectToLocalStorage",
+                    "condition":"conditions.hasOutScopeSelectedObject"
+                },
+                {
+                    "action":"navigate",
+                    "condition":"conditions.hasOutScopeSelectedObject"
+                },
+                {
+                    "action":"closeAssignedInListPopup",
+                    "condition":"conditions.hasOutScopeSelectedObject"
+                }
+            ]
+        },
+        "getParentOfSelectedObj":{
+            "actionType": "JSFunction",
+            "method": "getSelectedObjectParent",
+            "inputData": {
+                "selectedObjects": ["{{ports.EpAssignmentIndicationAssignedInListPopup_navigateToOutOfScopeNode.syncObject.additionalData.socpeVsFoundNodeUid}}"]
+            },
+            "outputData": {
+                "selectedObjectParent": "selectedObjectParent"
+            },
+            "deps": "js/epTableService"
+        },
+        "navigate":{
+            "actionType": "JSFunction",
+            "method": "navigteToSameStateWithDifferentConfiguration",
+            "inputData": {
+                "objectToNavigateUid": "{{ports.EpAssignmentIndicationAssignedInListPopup_navigateToOutOfScopeNode.syncObject.vmo.uid}}",
+                "navigateIn": "newTab"
+            },
+            "deps": "js/epNavigationService"
+        },
+        "cacheSelectionObjectToLocalStorage":{
+            "actionType": "JSFunction",
+            "method": "cacheSelectionObjectToLocalStorage",
+            "inputData": {
+                "processToBeSelected": "{{data.selectedObjectParent}}",
+                "partsToBeSelected": "{{ports.EpAssignmentIndicationAssignedInListPopup_navigateToOutOfScopeNode.syncObject.additionalData.socpeVsFoundNodeUid}}",
+                "key": "epAssignmentIndicationFindInAnotherScope",
+                "scopedObject":"{{ctx.epPageContext.processStructure.uid}}"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "closeAssignedInListPopup": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "inputData": {
+                "popupEl": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        }
+    },
+    "conditions": {
+        "hasOutScopeSelectedObject": {
+            "expression": "ports.EpAssignmentIndicationAssignedInListPopup_navigateToOutOfScopeNode.syncObject && ports.EpAssignmentIndicationAssignedInListPopup_navigateToOutOfScopeNode.syncObject.vmo"
+        }
+    },
+    "i18n": {
+        "assignmentIndicationPopupTitle": [ "assignmentIndicationMessages" ],
+        "consumedOutOfScope":[ "assignmentIndicationMessages" ]
+    }
+}

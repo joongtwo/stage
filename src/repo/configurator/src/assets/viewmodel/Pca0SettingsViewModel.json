@@ -1,0 +1,65 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-command-sub-panel.directive"
+    ],
+    "actions": {
+        "closeSettingsPanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+        "settingsInit": {
+            "actionType": "JSFunction",
+            "method": "settingsInit",
+            "deps": "js/Pca0SettingsService"
+        },
+        "settingsClose": {
+            "actionType": "JSFunction",
+            "method": "settingsClose",
+            "deps": "js/Pca0SettingsService"
+        },
+        "modifyFilterCriteria": {
+            "actionType": "JSFunction",
+            "method": "filterCriteriaModified",
+            "deps": "js/Pca0FilterCriteriaSettingsService"
+        }
+    },
+    "lifecycleHooks": {
+        "onInit": "settingsInit",
+        "onUnmount": "settingsClose"
+    },
+    "data": {
+        "activeView": "Pca0SettingsTab"
+    },
+    "i18n": {
+        "settings": [
+            "FullScreenConfigurationMessages"
+        ]
+    },
+    "onEvent": [ {
+            "eventId": "gwt.SubLocationContentSelectionChangeEvent",
+            "action": "closeSettingsPanel"
+        },
+        {
+            "eventId": "Pca0RuleDate.ruleDateChanged",
+            "action": "modifyFilterCriteria"
+        },
+        {
+            "eventId": "Pca0DateEffectivity.effectivityChanged",
+            "action": "modifyFilterCriteria"
+        },
+        {
+            "eventId": "Pca0UnitEffectivity.effectivityChanged",
+            "action": "modifyFilterCriteria"
+        }
+    ]
+}

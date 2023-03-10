@@ -1,0 +1,46 @@
+<aw-command-panel caption="{{data.panelTitle ? data.panelTitle : i18n.occmgmtConfigurationFilterTitle}}">
+    <div class="sw-column">
+        <div class="sw-row aw-epStructureConfiguration-checkBoxHeight" show-when="fields.configData.isBaseViewVisible">
+            <div class="sw-column">
+                <aw-checkbox prop="data.epExcludedByEffectivityCheckBox" action="excludedByEffectivityChanged">
+                </aw-checkbox>
+            </div>
+            <div class="sw-column">
+                <aw-icon class="aw-epStructureConfiguration-hintButton" icon-id="cmdHelp" extended-tooltip="data.epExcludedByEffectivityHint">
+                </aw-icon>
+            </div>
+        </div>
+        <div class="sw-row aw-epStructureConfiguration-checkBoxHeight" show-when="fields.configData.isBaseViewVisible">
+            <div class="sw-column">
+                <aw-checkbox prop="data.epShowExcludedByVariantCheckBox" action="excludedByVariantChanged">
+                </aw-checkbox>
+            </div>
+            <div class="sw-column">
+                <aw-icon icon-id="cmdHelp" class="aw-epStructureConfiguration-hintButton" extended-tooltip="data.epShowExcludedByVariantHint">
+                </aw-icon>
+            </div>
+        </div>
+        <div class="sw-row aw-epStructureConfiguration-checkBoxHeight" exist-when="conditions.isBopConfiguration" show-when="fields.configData.isBaseViewVisible">
+            <div class="sw-column">
+                <aw-checkbox prop="data.epShowExcludedAssignmentsCheckBox" action="excludedAssignmentChanged">
+                </aw-checkbox>
+            </div>
+            <div class="sw-column">
+                <aw-icon icon-id="cmdHelp" class="aw-epStructureConfiguration-hintButton" extended-tooltip="data.epShowExcludedAssignmentsHint">
+                </aw-icon>
+            </div>
+        </div>
+        <aw-include exist-when="fields.configData.initializedConfigPanel" name="AwNestedNavigation" sub-panel-context="{...subPanelContext,  baseView:'EpStructureConfigurationFilter', contextKey:ctx.aceActiveContext.key, configData:data.configData}" class="h-12"></aw-include>
+        <aw-checkbox prop="data.saveConfigurationToWP" action="saveConfigToWpChanged" show-when="fields.configData.isBaseViewVisible"></aw-checkbox>
+        <aw-panel-footer show-when="fields.configData.isBaseViewVisible">
+            <div class="sw-row sw-button-group justify-right">
+                <aw-button size="auto" button-type="base" action="cancelBatchAction">
+                    <aw-i18n>i18n.cancel</aw-i18n>
+                </aw-button>
+                <aw-button enable-when="data.isConfigurationChanged===true" size="auto" aw-class="{'disabled': data.disabledButtonChk.dbValue}" action="applyConfiguration">
+                    <aw-i18n>i18n.configure</aw-i18n>
+                </aw-button>
+            </div>
+        </aw-panel-footer>
+    </div>
+</aw-command-panel>

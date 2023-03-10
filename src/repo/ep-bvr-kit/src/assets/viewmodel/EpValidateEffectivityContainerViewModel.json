@@ -1,0 +1,63 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "closeEffectivityAction": {
+            "actionType": "JSFunction",
+            "method": "closePopup",
+            "inputData": {
+                "popupId": "{{data.popupId}}",
+                "endItem" : "{{props.subPanelContext.effectivityData.endItem}}",
+                "validateEffectivityData": "{{props.subPanelContext.effectivityData.validateEffectivityData}}",
+                "configData": "{{subPanelContext.configData}}"
+            },
+            "deps": "js/epValidateEffectivityService"
+        },
+        "endItemSelectionChange": {
+            "actionType": "JSFunction",
+            "method": "endItemSelectionChange",
+            "deps": "js/epValidateEffectivityService",
+            "inputData": {
+                "currentValue": "{{props.subPanelContext.effectivityData.endItem}}",
+                "validateEffectivityData": "{{props.subPanelContext.effectivityData.validateEffectivityData}}",
+                "configData": "{{subPanelContext.configData}}"
+            }
+        },
+        "saveEffectivityAction": {
+            "actionType": "JSFunction",
+            "method": "saveEffectivity",
+            "deps": "js/epSaveEffectivityService",
+            "inputData": {
+                "endItem" : "{{props.subPanelContext.effectivityData.endItem}}",
+                "validateEffectivityData": "{{props.subPanelContext.effectivityData.validateEffectivityData}}",
+                "configData": "{{subPanelContext.configData}}"
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "mfeLargePopup.closeRequest",
+            "action": "closeEffectivityAction"
+        },
+        {
+            "eventId": "epValidateEffectivityPopup.cancelRequest",
+            "action": "closeEffectivityAction"
+        },
+        {
+            "eventId": "epValidateEffectivity.saveEffectivityRequest",
+            "action": "saveEffectivityAction"
+        }
+    ],
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "endItemSelectionChange",
+                "observers": [ "props.subPanelContext.effectivityData.endItem" ]
+            }
+        ]
+    }
+}

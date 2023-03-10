@@ -1,0 +1,18 @@
+<aw-show-object-page key="{{subPanelContext.openedObject.uid}}"
+    header-title="subPanelContext.showObjectContext.displayName"
+    browser-sub-title="subPanelContext.showObjectContext.displayName">
+    <aw-show-object-header sub-panel-context="{...subPanelContext,occContext:subPanelContext.occContext ? subPanelContext.occContext : data.occContext,  provider: subPanelContext.provider ? subPanelContext.provider : data._sublocation, contextKey: subPanelContext.provider && subPanelContext.provider.contextKey ? subPanelContext.provider.contextKey : data._sublocation.contextKey}"
+        headerVMO="subPanelContext.openedObject" header-data="subPanelContext.headerData"
+        header-props="subPanelContext.showObjectContext.xrtViewModel.data._headers">
+        <occmgmt-breadcrumb occ-context="subPanelContext.occContext ? subPanelContext.occContext : data.occContext">
+        </occmgmt-breadcrumb>
+        <aw-global-search exist-when="!subPanelContext.provider.headerPreference.hideGlobalSearch"></aw-global-search>
+        <aw-logo exist-when="!subPanelContext.provider.headerPreference.hideLogo"></aw-logo>
+    </aw-show-object-header>
+    <aw-tab-container tab-container-model="subPanelContext.showObjectContext.subLocationTabs"
+        callback="subPanelContext.showObjectContext.api" tab-set-id="primary">
+    </aw-tab-container>
+    <aw-occmgmt-sublocation
+        sub-panel-context="{...subPanelContext, occContext: subPanelContext.occContext ? subPanelContext.occContext : data.occContext, provider: subPanelContext.provider ? subPanelContext.provider : data._sublocation, contextKey: subPanelContext.provider && subPanelContext.provider.contextKey ? subPanelContext.provider.contextKey : data._sublocation.contextKey, baseSelection: subPanelContext.openedObject}">
+    </aw-occmgmt-sublocation>
+</aw-show-object-page>

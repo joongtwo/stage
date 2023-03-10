@@ -1,0 +1,249 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel-body.directive",
+        "js/aw-xrt.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive",
+        "js/visible-when.directive"
+    ],
+    "actions": {
+        "startEditNative": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2017-12-DataManagement",
+            "method": "loadViewModelForEditing2",
+            "inputData": {
+                "inputs": [
+                    {
+                        "objs": ["{{data.vmo}}"],
+                        "propertyNames": "{{data.propertyNamesRetrieved}}",
+                        "isPessimisticLock": false
+                    }
+                ]
+            },
+            "outputData": {
+                "lsd": "outputs[0].objLsds"
+            },
+            "policy": {
+                "types": [
+                    {
+                        "name": "{{data.vmo.type}}",
+                        "modifiers": [
+                            {
+                                "name": "includeIsModifiable",
+                                "Value": "true"
+                            }
+                        ],
+                        "properties": "{{data.propertyPolicyRetrieved}}"
+                    }
+                ]
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "startEditNative.success",
+                        "eventData": {
+                            "context": "INFO_PANEL_CONTEXT",
+                            "source": "navigationPanel"
+                        }
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "startEditNative.fail",
+                        "eventData": {
+                            "context": "INFO_PANEL_CONTEXT",
+                            "source": "navigationPanel"
+                        }
+                    }
+                ]
+            }
+        },
+        "saveEditNative": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2018-05-DataManagement",
+            "method": "saveViewModelEditAndSubmitWorkflow2",
+            "inputData": {
+                "inputs": [
+                    {
+                        "object": "{{data.vmo}}",
+                        "objLsds": "{{data.lsd}}",
+                        "viewModelProperties": "{{function:getAllModifiedValues}}",
+                        "isPessimisticLock": false,
+                        "workflowData": {}
+                    }
+                ]
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "saveEditNative.success",
+                        "eventData": {
+                            "context": "INFO_PANEL_CONTEXT",
+                            "source": "navigationPanel"
+                        }
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "saveEditNative.fail",
+                        "eventData": {
+                            "context": "INFO_PANEL_CONTEXT",
+                            "source": "navigationPanel"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/declUtils"
+        },
+        "startEdit": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "objInfo.startEdit"
+                    }
+                ]
+            }
+        },
+        "save": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "objInfo.saveEdit"
+                    }
+                ]
+            }
+        },
+        "editHandlerStartEdit": {
+            "actionType": "JSFunction",
+            "method": "startEdit",
+            "inputData": {
+                "editHandler": "{{editHandlers.infoPanelEditHandler}}"
+            },
+            "deps": "js/Awp0ObjectInfoService"
+        },
+        "startEditAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "editHandlerStartEdit"
+                }
+            ]
+        },
+        "editHandlerSaveEdit": {
+            "actionType": "JSFunction",
+            "method": "saveEdit",
+            "inputData": {
+                "editHandler": "{{editHandlers.infoPanelEditHandler}}"
+            },
+            "deps": "js/Awp0ObjectInfoService"
+        },
+        "startSaveAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "editHandlerSaveEdit"
+                }
+            ]
+        }
+    },
+    "functions": {
+        "getAllModifiedValues": {
+            "functionName": "getAllModifiedValues",
+            "parameters": [
+                "{{data.vmo}}"
+            ]
+        }
+    },
+    "messages": {
+        "confirmLeave": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.navigationConfirmationSingle}}",
+            "messageTextParams": [
+                "{{data.vmo.props.object_string.dbValue}}"
+            ],
+            "navigationOptions": [
+                {
+                    "option": "Discard",
+                    "text": "{{i18n.discard}}",
+                    "action": ""
+                },
+                {
+                    "option": "Save",
+                    "text": "{{i18n.save}}",
+                    "action": "save"
+                }
+            ]
+        }
+    },
+    "data": {
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "editHandlers": {
+        "infoPanelEditHandler": {
+            "context": "INFO_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "ctx": {
+        "idDisplayRuleContext": {
+            "type": "Object"
+        },
+        "INFO_PANEL_CONTEXT": {
+            "type": "Object"
+        },
+        "INFO_PANEL_CONTEXT._editing": {
+            "type": "Boolean"
+        },
+        "INFO_PANEL_CONTEXT.canEdit": {
+            "type": "Boolean"
+        }
+    },
+    "conditions": {
+        "isEditButtonVisible": {
+            "expression": "ctx.INFO_PANEL_CONTEXT && ctx.INFO_PANEL_CONTEXT._editing !== true"
+        },
+        "isSaveButtonVisible": {
+            "expression": "ctx.INFO_PANEL_CONTEXT && ctx.INFO_PANEL_CONTEXT._editing === true"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "objInfo.startEdit",
+            "action": "startEditAction"
+        },
+        {
+            "eventId": "objInfo.saveEdit",
+            "action": "startSaveAction"
+        }
+    ],
+    "i18n": {
+        "Awp0EditGroup": [
+            "ZeroCompileCommandBaseMessages"
+        ],
+        "save": [
+            "XRTMessages"
+        ],
+        "navigationConfirmationSingle": [
+            "XRTMessages"
+        ],
+        "discard": [
+            "XRTMessages"
+        ]
+    }
+}

@@ -1,0 +1,13 @@
+<aw-panel-body>
+    <aw-break></aw-break>
+    <aw-textbox prop="data.nameBox"></aw-textbox>
+    <aw-break></aw-break>
+    <aw-row height="25f" justify="top">
+        <aw-splm-table gridid="groupeffEditTable"></aw-splm-table>
+    </aw-row>
+</aw-panel-body>
+<aw-panel-footer>
+    <aw-button size="auto" action="EditGroupEffectivity" visible-when="data.nameBox.dbValue != '' && data.nameBox.dbValue != undefined ">
+        <aw-i18n>i18n.saveButtonText</aw-i18n>
+    </aw-button>
+</aw-panel-footer>

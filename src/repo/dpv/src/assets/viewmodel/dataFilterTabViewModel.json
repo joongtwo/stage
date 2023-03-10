@@ -1,0 +1,274 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "updateUseOrigTemplateSettings": {
+            "actionType": "JSFunction",
+            "method": "updateDataFilterOrigSettings",
+            "inputData": {
+                "state": "{{props.subPanelContext.dataFilterState}}",
+                "origSettingsVal":"{{data.useOrigSettingCheckbox.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateSpecType": {
+            "actionType": "JSFunction",
+            "method": "updateSpecType",
+            "inputData": {
+                "state": "{{props.subPanelContext.dataFilterState}}",
+                "specTypeVal":"{{data.specType.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateDeviceType": {
+            "actionType": "JSFunction",
+            "method": "updateDeviceType",
+            "inputData": {
+                "state": "{{props.subPanelContext.dataFilterState}}",
+                "deviceTypeVal":"{{data.deviceType.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadSpecTypesData": {
+            "actionType": "JSFunction",
+            "method": "loadSpecTypesData",
+            "inputData": {
+                "dataFilterState": "{{props.subPanelContext.dataFilterState}}"
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "specTypesList": "specTypesList"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadDeviceTypesData": {
+            "actionType": "JSFunction",
+            "method": "loadDeviceTypesData",
+            "inputData": {
+                "dataFilterState": "{{props.subPanelContext.dataFilterState}}"
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "deviceTypesList": "deviceTypesList"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadTraceCodeData": {
+            "actionType": "JSFunction",
+            "method": "loadTraceCodeData",
+            "inputData": {
+                "treeLoadInput": "request.treeLoadInput",
+                "dataFilterState": "{{props.subPanelContext.dataFilterState}}"
+            },
+            "dataParsers": [ {
+                "id": "traceCodeDataParser",
+                "responseObjs": ""
+            } ],
+            "outputData": {
+                "treeLoadResult": ""
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "doSpecTypesDataProvider": {
+            "actionType": "dataProvider",
+            "method": "dataProviderSpecTypes"
+        },
+        "doDeviceTypesDataProvider": {
+            "actionType": "dataProvider",
+            "method": "dataProviderDeviceTypes"
+        },
+        "doTraceCodeDataProvider": {
+            "actionType": "dataProvider",
+            "method": "traceCodeDataProvider"
+        },
+        "loadTraceCodeTreeProperties": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTraceCodeTreeProperties",
+            "inputData": {
+                "dataProvider": "{{dataProviders.traceCodeDataProvider}}",
+                "propertyLoadInput": "request.propertyLoadInput"
+            },
+            "outputData": {},
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "traceCodeSelectionAction": {
+            "actionType": "JSFunction",
+            "method": "traceCodeSelectionAction",
+            "inputData": {
+                "selection": "{{data.eventMap['traceCodeDataProvider.selectionChangeEvent'].selectedObjects}}",
+                "dataProvider": "{{dataProviders.traceCodeDataProvider}}",
+                "dataFilterState": "{{props.subPanelContext.dataFilterState}}"
+            },
+            "outputData": {},
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "enableAutomaticMultiSelection": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "traceCodeDataProvider.multiSelectModeAction",
+                        "eventData": {
+                            "multiSelect": true
+                        }
+                    }
+                ]
+            }
+        },
+        "resetDataFilterData": {
+            "actionType": "JSFunction",
+            "method": "resetDataFilterData",
+            "inputData": {
+                "data": "{{data}}",
+                "traceCodeDataProvider": "{{dataProviders.traceCodeDataProvider}}",
+                "dataFilterState": "{{props.subPanelContext.dataFilterState}}"
+            },
+            "outputData": {
+                "useOrigSettingCheckbox": "useOrigSettingCheckbox",
+                "specType": "specType",
+                "deviceType": "deviceType"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        }
+    },
+    "dataProviders": {
+        "dataProviderSpecTypes": {
+            "action": "loadSpecTypesData",
+            "response": "{{data.specTypesList}}",
+            "totalFound": "{{data.totalFound}}"
+        },
+        "dataProviderDeviceTypes": {
+            "action": "loadDeviceTypesData",
+            "response": "{{data.deviceTypesList}}",
+            "totalFound": "{{data.totalFound}}"
+        },
+        "traceCodeDataProvider": {
+            "action": "loadTraceCodeData",
+            "initializeAction": "loadTraceCodeData",
+            "treeLoadResult": "action.result.treeLoadResult",
+            "selectionModelMode": "multiple",
+            "inputData": {
+                "accessMode": "tree",
+                "topNodeUid": "top"
+            }
+        },
+        "traceCodePropertyProvider": {
+            "action": "loadTraceCodeTreeProperties",
+            "propertyLoadResult": "action.result.propertyLoadResult"
+        }
+    },
+    "data": {
+        "useOrigSettingCheckbox": {
+            "displayName": "{{i18n.UseOrigFilters}}",
+            "type": "BOOLEAN",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.dataFilterState.useOrigTempSettings}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "specType": {
+            "displayName": "{{i18n.specType}}",
+            "name":"specType",
+            "type": "STRING",
+            "isRequired": "false",
+            "dataProvider": "dataProviderSpecTypes",
+            "dbValue": "{{props.subPanelContext.dataFilterState.selectedSpecType}}",
+            "dispValue": "",
+            "emptyLOVEntry": false
+        },
+        "deviceType": {
+            "displayName": "{{i18n.deviceType}}",
+            "name":"deviceType",    
+            "type": "STRING",
+            "isRequired": "false",
+            "dataProvider": "dataProviderDeviceTypes",
+            "dbValue": "{{props.subPanelContext.dataFilterState.selectedDeviceType}}",
+            "dispValue": "",
+            "emptyLOVEntry": false
+        }
+    },
+    "columnProviders": {
+        "traceCodeColumnProvider": {
+            "headerHeight": "LARGE",
+            "columns": [
+                {
+                    "name": "traceCode",
+                    "displayName": "{{i18n.traceCode}}",
+                    "maxWidth": 500,
+                    "minWidth": 500,
+                    "width": 500,
+                    "pinnedLeft":true,
+                    "isTreeNavigation": true,
+                    "enableColumnMenu": false,
+                    "enableColumnMoving": false,
+                    "enableColumnResizing": false
+                }
+            ]
+        }
+    },
+    "grids": {
+        "traceCodeTree": {
+            "dataProvider": "traceCodeDataProvider",
+            "propertyProvider": "traceCodePropertyProvider",
+            "columnProvider": "traceCodeColumnProvider",
+            "enableArrangeMenu": false,
+            "addIconColumn": false,
+            "gridOptions": {
+                "enablePinning": true,
+                "enableGridMenu": false,
+                "maxRowsToShow": 18,
+                "enableSorting": false
+            }
+        }
+    },
+    "dataParseDefinitions": {
+        "traceCodeDataParser": {
+            "type": "TraceCode",
+            "props": {
+                "object_name": {
+                    "name": "object_name",
+                    "displayName": "",
+                    "value": "ABC",
+                    "displayValue": "XYZ",
+                    "type": "STRING"
+                }
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "enableAutomaticMultiSelection",
+        "onUpdate": [ {
+            "action": "resetDataFilterData",
+            "observers": [
+                "props.subPanelContext.dataFilterState.useOrigTempSettings"
+            ]
+        } ],
+        "onUnmount": "resetDataFilterData"
+    },
+    "onEvent": [
+        {
+            "eventId": "traceCodeDataProvider.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "traceCodeSelectionAction"
+        }
+    ],
+    "functions": {},
+    "conditions":{
+        "isQryTypeUseOrigSettingsOff": {
+            "expression": "!props.subPanelContext.qryTypeState.useOrigTempSettings"
+        },
+        "enableDataFilterWidgetsCond": {
+            "expression": "conditions.isQryTypeUseOrigSettingsOff && !props.subPanelContext.dataFilterState.useOrigTempSettings"
+        }
+    },
+    "i18n": {
+        "UseOrigFilters": [ "DpvMessages" ],
+        "specType": [ "DpvMessages" ],
+        "deviceType": [ "DpvMessages" ],
+        "traceCode": [ "DpvMessages" ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

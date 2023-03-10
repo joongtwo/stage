@@ -1,0 +1,209 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "saveRevRuleAndConfigureProduct": {
+            "actionType": "JSFunction",
+            "method": "isMinimumTCVersion",
+            "inputData": {
+                "majorTCVersion": "14",
+                "minorTCVersion": "0"
+            },
+            "outputData": {
+                "isMinimumTCVersionFor14": ""
+            },
+            "events": {
+                "success":  [ {
+                    "name": "ConfigureProduct.saveRevRuleAndConfigureProductForPlatform",
+                    "condition": "conditions.isTcReleaseAtLeast14"
+                },
+                {
+                    "name": "ConfigureProduct.saveRevRuleAndConfigureProductForACE",
+                    "condition": "conditions.isTcReleaseLessThan14"
+                }]
+            },
+            "deps": "js/occmgmtUtils"
+        },
+
+        "saveRevRuleAndConfigureProductForPlatform": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-StructureManagement-2020-05-RevisionRuleAdministration",
+            "method": "createOrUpdateRevisionRule",
+            "inputData": {
+                "inputData": {
+                    "updateExisting": true,
+                    "isPrivate": true,
+                    "revisionRuleInfo": {
+                        "uid": "{{function:getRevisionRule}}",
+                        "name": "{{function:getModifiedRevisionRuleName}}",
+                        "description": "{{subPanelContext.revRuleDesc.uiValue}}",
+                        "entriesInfo": "{{function:getUpdatedClauses}}",
+                        "nestedEffectivity": "{{ctx.RevisionRuleAdmin.isNestedEffectivityPresent}}"
+                    }
+                }
+            },
+            "policy": {
+                "types": [ {
+                    "name": "RevisionRule",
+                    "properties": [ {
+                        "name": "rule_date"
+                    } ]
+                } ]
+            },
+            "outputData": {
+                "updatedRevisionRule": "{{function:getUpdatedRevisionRule}}",
+                "revisionRuleCreationError": "ServiceData.partialErrors[0]"
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "condition":"revisionRuleCreationError.errorValues[0].code == 710106",
+                    "message": "revisionRuleCreationFailed"
+                } ]
+            },
+            "deps": "js/revisionRuleAdminPanelService"
+        },
+
+        "saveRevRuleAndConfigureProductForACE": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-RevRuleMgmt-2019-12-RevisionRuleAdministration",
+            "method": "createOrUpdateRevisionRule",
+            "inputData": {
+                "inputData": {
+                    "updateExisting": true,
+                    "isPrivate": true,
+                    "revisionRuleInfo": {
+                        "uid": "{{function:getRevisionRule}}",
+                        "name": "{{function:getModifiedRevisionRuleName}}",
+                        "description": "{{subPanelContext.revRuleDesc.uiValue}}",
+                        "entriesInfo": "{{function:getUpdatedClauses}}",
+                        "nestedEffectivity": "{{ctx.RevisionRuleAdmin.isNestedEffectivityPresent}}"
+                    }
+                }
+            },
+            "policy": {
+                "types": [ {
+                    "name": "RevisionRule",
+                    "properties": [ {
+                        "name": "rule_date"
+                    } ]
+                } ]
+            },
+            "outputData": {
+                "updatedRevisionRule": "{{function:getUpdatedRevisionRule}}",
+                "revisionRuleCreationError": "ServiceData.partialErrors[0]"
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "condition":"revisionRuleCreationError.errorValues[0].code == 710106",
+                    "message": "revisionRuleCreationFailed"
+                } ]
+            },
+            "deps": "js/revisionRuleAdminPanelService"
+        },
+
+        "cancelModification": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "RevisionRuleAdminPanel.cancelModification"
+                } ]
+            }
+        },
+        "saveRevRuleIfRequiredAndConfigureProduct": {
+            "actionType": "JSFunction",
+            "method": "saveRevRuleIfRequiredAndConfigureProduct",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "deps": "js/revisionRuleAdminPanelService"
+        }
+    },
+
+    "data": {
+        "nestedEffectivity": {
+            "displayName": "{{i18n.nestedEffectivity}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "dbValue": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+    "functions": {
+        "getModifiedRevisionRuleName": {
+            "functionName": "getModifiedRevisionRuleName",
+            "parameters": [
+                    "{{data.subPanelContext.revRuleName}}",
+                    "{{data.subPanelContext.isClauseModified}}",
+                    "{{data.subPanelContext.nestedNavigationState}}"           
+            ]
+        },
+        "getUpdatedClauses": {
+            "functionName": "getUpdatedClauses",
+            "parameters": [
+                "{{props.subPanelContext.nestedNavigationState}}"
+            ]
+        },
+        "getUpdatedRevisionRule": {
+            "functionName": "getUpdatedRevisionRule",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getRevisionRule": {
+            "functionName": "getRevisionRule",
+            "parameters": [
+
+            ]
+        }
+    },
+
+    "onEvent": [ {
+        "eventId": "RevisionRuleAdminPanel.saveRevRuleAndConfigureProduct",
+        "action": "saveRevRuleAndConfigureProduct",
+        "cacheEventData": true
+    },
+
+    {
+        "eventId": "ConfigureProduct.saveRevRuleAndConfigureProductForPlatform",
+        "action": "saveRevRuleAndConfigureProductForPlatform"
+    },
+
+    {
+        "eventId": "ConfigureProduct.saveRevRuleAndConfigureProductForACE",
+        "action": "saveRevRuleAndConfigureProductForACE"
+    } ],
+
+    "conditions": {
+        "isTcReleaseAtLeast123": {
+            "expression": "(ctx.tcSessionData.tcMajorVersion === 12 && ctx.tcSessionData.tcMinorVersion >= 3) || ctx.tcSessionData.tcMajorVersion > 12"
+        },
+        "isBranchClauseNotPresent": {
+            "expression": "ctx.RevisionRuleAdmin.isBranchClausePresent !== undefined&& ctx.RevisionRuleAdmin.isBranchClausePresent === false"
+        },
+        "isRevisionRuleEditable": {
+            "expression": "conditions.isTcReleaseAtLeast123 && conditions.isBranchClauseNotPresent"
+        },
+        "isTcReleaseAtLeast14": {
+            "expression": "(data.isMinimumTCVersionFor14 === true)"
+        },
+        "isTcReleaseLessThan14": {
+            "expression": "(data.isMinimumTCVersionFor14 === false)"
+        }
+    },
+
+    "i18n": {
+        "configure": [ "RevisionRuleAdminConstants" ],
+        "modifyAndConfigure": [ "RevisionRuleAdminConstants" ],
+        "cancelModification": [ "RevisionRuleAdminConstants" ],
+        "nestedEffectivity": [ "RevisionRuleAdminConstants" ],
+        "confirmModification": [ "RevisionRuleAdminConstants" ]
+
+    },
+    "messages": {
+        "revisionRuleCreationFailed": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    }
+}

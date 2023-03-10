@@ -1,0 +1,7 @@
+<aw-message-params context="subPanelContext.context" params="subPanelContext.params"
+    message="{{i18n.deleteSuccessMessage}}" ></aw-message-params>
+<div aw-repeat="partialError : subPanelContext.partialErrors">
+    <div aw-repeat="errorValue : partialError.errorValues">
+        <aw-partial-error partial-error="partialError" message="{{errorValue.message}}"></aw-partial-error>
+    </div>
+</div>

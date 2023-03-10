@@ -1,0 +1,936 @@
+{
+  "commands": {
+    "Ac0UniversalConversationCommand": {
+      "iconId": "cmdConversationPanel",
+      "title": "{{i18n.conversation}}",
+      "description": "{{i18n.conversationDesc}}"
+    },
+    "Ac0CreateNewConvCommand": {
+      "iconId": "cmdAdd",
+      "title": "{{i18n.newConversation}}",
+      "description": "{{i18n.newConversationDesc}}"
+    },
+    "Ac0AddSourceObjectCommand": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.addSource}}",
+      "description": "{{i18n.sourceDesc}}"
+    },
+    "Ac0AddParticipantCommand": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.addParticipant}}",
+      "description": "{{i18n.participantDesc}}"
+    },
+    "Ac0SubSrcObjCommand": {
+      "iconId": "cmdFollow",
+      "title": "{{i18n.follow}}",
+      "description": "{{i18n.followObjDesc}}"
+    },
+    "Ac0UnSubSrcObjCommand": {
+      "iconId": "cmdFollow",
+      "title": "{{i18n.unfollow}}",
+      "description": "{{i18n.unFollowObjDesc}}"
+    },
+    "Ac0SubConvObjCommand": {
+      "iconId": "cmdFollow",
+      "isGroup": false,
+      "title": "{{i18n.follow}}",
+      "description": "{{i18n.followConvDesc}}"
+    },
+    "Ac0UnSubConvObjCommand": {
+      "iconId": "cmdFollow",
+      "isGroup": false,
+      "title": "{{i18n.unfollow}}",
+      "description": "{{i18n.unFollowConvDesc}}"
+    },
+    "Ac0ConvCellEditCommand": {
+      "iconId": "cmdEdit",
+      "isGroup": false,
+      "title": "{{i18n.edit}}",
+      "description": "{{i18n.editDiscussion}}"
+    },
+    "Ac0ConvCellDeleteCommand": {
+      "iconId": "cmdDelete",
+      "isGroup": false,
+      "title": "{{i18n.delete}}",
+      "description": "{{i18n.deleteConvDesc}}"
+    },
+    "Ac0FeedFilter": {
+      "iconId": "cmdFilterActive",
+      "isGroup": false,
+      "title": "{{i18n.Awp0FeedFilterTitle}}",
+      "description": "{{i18n.Awp0FeedFilterDesc}}"
+    },
+    "Ac0ActionableFilter": {
+      "iconId": "cmdFilterActive",
+      "isGroup": false,
+      "title": "{{i18n.Awp0FeedFilterTitle}}",
+      "description": "{{i18n.Awp0FeedFilterDesc}}"
+    },
+    "Ac0CommentCellEditCommand": {
+      "iconId": "cmdEdit",
+      "isGroup": false,
+      "title": "{{i18n.edit}}",
+      "description": "{{i18n.editComment}}"
+    },
+    "Awp0Discussions": {
+      "iconId": "cmdConversationPanel",
+      "title": "{{i18n.discussions}}"
+    },
+    "Ac0DiscussionMetaShowMore": {
+      "iconId": "cmdMore",
+      "isGroup": false,
+      "title": "{{i18n.more}}"
+    },
+    "Ac0AddSnapshotCommand": {
+      "iconId": "cmdCaptureSnapshot",
+      "isGroup": false,
+      "title": "{{i18n.addSnapshot}}",
+      "description": "{{i18n.addSnapshotDesc}}"
+    },
+    "Ac0CreateDiscOnSnapshotCommand": {
+      "iconId": "cmdNewDiscussion",
+      "title": "{{i18n.createDiscussion}}",
+      "description": "{{i18n.createDiscussionDesc}}"
+    },
+    "Ac0OpenDiscOnSnapshotPGCommand": {
+      "iconId": "cmdConversationPanel",
+      "title": "{{i18n.openDiscussion}}",
+      "description": "{{i18n.openDiscussionDesc}}"
+    },
+    "Ac0CreateDiscOnSnapshotPGCommand": {
+      "iconId": "cmdNewDiscussion",
+      "title": "{{i18n.createDiscussion}}",
+      "description": "{{i18n.createDiscussionDesc}}"
+    },
+    "Ac0OpenDiscOnSnapshotCommand": {
+      "iconId": "cmdConversationPanel",
+      "title": "{{i18n.openDiscussion}}",
+      "description": "{{i18n.openDiscussionDesc}}"
+    },
+    "Ac0RemoveSnapshotFromRootCommentCommand": {
+      "iconId": "cmdRemove",
+      "title": "{{i18n.remove}}",
+      "description": "{{i18n.removeSnapshotDesc}}"
+    }
+  },
+  "commandHandlers": {
+    "Ac0UniversalConversationCommandHandler": {
+      "id": "Ac0UniversalConversationCommand",
+      "action": "Ac0UniversalConversationCommandAction",
+      "activeWhen": {
+        "condition": "conditions.univConvPanelCommandVisible"
+      },
+      "visibleWhen": {
+        "condition": "conditions.univConvPanelCommandVisible"
+      }
+    },
+    "Ac0CreateNewConvCommandHandler": {
+      "id": "Ac0CreateNewConvCommand",
+      "action": "Ac0CreateNewConvCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Ac0AddSourceObjectCommandHandler": {
+      "id": "Ac0AddSourceObjectCommand",
+      "action": "openAddSourceObjectPanel",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Ac0AddParticipantCommandHandler": {
+      "id": "Ac0AddParticipantCommand",
+      "action": "openAddParticipantPanel",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Ac0SubSrcObjCommandHandler": {
+      "id": "Ac0SubSrcObjCommand",
+      "action": "Ac0SubSrcObjCommandAction",
+      "activeWhen": {
+        "condition": "conditions.subscribeCmdButtonValid"
+      },
+      "visibleWhen": {
+        "condition": "conditions.subscribeCmdButtonValid"
+      }
+    },
+    "Ac0UnSubSrcObjCommandHandler": {
+      "id": "Ac0UnSubSrcObjCommand",
+      "action": "Ac0UnSubSrcObjCommandAction",
+      "activeWhen": {
+        "condition": "conditions.unSubscribeCmdButtonValid"
+      },
+      "visibleWhen": {
+        "condition": "conditions.unSubscribeCmdButtonValid"
+      },
+      "selectWhen": {
+        "condition": "conditions.unSubscribeCmdButtonValid"
+      }
+    },
+    "Ac0SubConvObjCommandHandler": {
+      "id": "Ac0SubConvObjCommand",
+      "action": "Ac0SubConvObjCommandAction",
+      "activeWhen": false,
+      "visibleWhen": false
+    },
+    "Ac0UnSubConvObjCommandHandler": {
+      "id": "Ac0UnSubConvObjCommand",
+      "action": "Ac0UnSubConvObjCommandAction",
+      "activeWhen": false,
+      "visibleWhen": false,
+      "selectWhen": false
+    },
+    "openConversationNotificationCommandHandler": {
+      "id": "Awp0OpenLineItem",
+      "action": "openConversationNotification",
+      "activeWhen": {
+        "condition": "conditions.enableConversationNotificationCommandCond"
+      },
+      "visibleWhen": {
+        "condition": "conditions.enableConversationNotificationCommandCond"
+      }
+    },
+    "Ac0HideEnableMultiSelectHandler": {
+      "id": "Awp0EnableMultiSelect",
+      "activeWhen": {
+        "condition": "conditions.ac0isFeedOrTrackedDiscussionView"
+      },
+      "visibleWhen": false
+    },
+    "Ac0HideDisableMultiSelectHandler": {
+      "id": "Awp0DisableMultiSelect",
+      "activeWhen": {
+        "condition": "conditions.ac0isFeedOrTrackedDiscussionView"
+      },
+      "visibleWhen": false
+    },
+    "Ac0HideSelectAllHandler": {
+      "id": "Awp0SelectAll",
+      "activeWhen": {
+        "condition": "conditions.ac0isFeedOrTrackedDiscussionView"
+      },
+      "visibleWhen": false,
+      "enableWhen": false
+    },
+    "Ac0ConvCellEditCommandHandler": {
+      "id": "Ac0ConvCellEditCommand",
+      "action": "editConversationCell",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.enableEditDiscussionCommand"
+      }
+    },
+    "Ac0ConvCellDeleteCommandHandler": {
+      "id": "Ac0ConvCellDeleteCommand",
+      "action": "deleteConversationCell",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.deleteConversationCommandVisible"
+      }
+    },
+    "Ac0feedFilterCommandHandler": {
+      "id": "Ac0FeedFilter",
+      "action": "activateFeedFilter",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ac0feedFilterCommandVisible"
+      }
+    },
+    "Ac0ActionableFilterCommandHandler": {
+      "id": "Ac0ActionableFilter",
+      "action": "activateActionableFilter",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ac0actionableFilterCommandVisible"
+      }
+    },
+    "Ac0CommentCellEditCommandHandler": {
+      "id": "Ac0CommentCellEditCommand",
+      "action": "editCommentCell",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Awp0DiscussionsHandler": {
+      "id": "Awp0Discussions",
+      "action": "feedLocation",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Ac0DiscussionMetaShowMoreCommandHandler": {
+      "id": "Ac0DiscussionMetaShowMore",
+      "action": "doShowMoreConvCellCmds",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Ac0AddSnapshotCommandHandler": {
+      "id": "Ac0AddSnapshotCommand",
+      "action": "initiateAddSnapshot",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Ac0CreateDiscOnSnapshotInMyGalleryHandler": {
+      "id": "Ac0CreateDiscOnSnapshotCommand",
+      "action": "createDiscussionsInMyGallery",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.hasNoDiscussions"
+      }
+    },
+    "Ac0OpenDiscOnSnapshotInMyGalleryHandler": {
+      "id": "Ac0OpenDiscOnSnapshotCommand",
+      "action": "openDiscussionsInMyGallery",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.hasDiscussions"
+      }
+    },
+    "Ac0CreateDiscOnSnapshotInProductGalleryHandler": {
+      "id": "Ac0CreateDiscOnSnapshotPGCommand",
+      "action": "createDiscussionsInProductGallery",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.hasNoDiscussionsInPG"
+      }
+    },
+    "Ac0OpenDiscOnSnapshotInProductGalleryHandler": {
+      "id": "Ac0OpenDiscOnSnapshotPGCommand",
+      "action": "openDiscussionsInProductGallery",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.hasDiscussionsInPG"
+      }
+    },
+    "Ac0RemoveSnapshotFromRootCommentCommandHandler": {
+      "id": "Ac0RemoveSnapshotFromRootCommentCommand",
+      "action": "removeSnapshotFromRootComment",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.snapshotHasNotBeenRemoved"
+      }
+    }
+  },
+  "commandPlacements": {
+    "Ac0UniversalConversation": {
+      "id": "Ac0UniversalConversationCommand",
+      "uiAnchor": "aw_rightWall",
+      "priority": 15
+    },
+    "Ac0CreateNewConv": {
+      "id": "Ac0CreateNewConvCommand",
+      "uiAnchor": "ac0_onObjectTabNewCmd",
+      "priority": 10
+    },
+    "Ac0AddSourceObject": {
+      "id": "Ac0AddSourceObjectCommand",
+      "uiAnchor": "ac0_createConvSourceCmds",
+      "priority": 100
+    },
+    "Ac0AddParticipant": {
+      "id": "Ac0AddParticipantCommand",
+      "uiAnchor": "ac0_createConvParticipantCmds",
+      "priority": 100
+    },
+    "Ac0SubscribeSrcObj": {
+      "id": "Ac0SubSrcObjCommand",
+      "uiAnchor": "ac0_onObjectSubCmds",
+      "priority": 10
+    },
+    "Ac0UnSubscribeSrcObj": {
+      "id": "Ac0UnSubSrcObjCommand",
+      "uiAnchor": "ac0_onObjectSubCmds",
+      "priority": 10
+    },
+    "Ac0SubConvObj": {
+      "id": "Ac0SubConvObjCommand",
+      "uiAnchor": "ac0_convCellCmds",
+      "priority": 100
+    },
+    "Ac0UnSubConvObj": {
+      "id": "Ac0UnSubConvObjCommand",
+      "uiAnchor": "ac0_convCellCmds",
+      "priority": 100
+    },
+    "Ac0ConvCellEdit": {
+      "id": "Ac0ConvCellEditCommand",
+      "uiAnchor": "ac0_moreConvCellCmds",
+      "priority": 100
+    },
+    "Ac0ConvCellDelete": {
+      "id": "Ac0ConvCellDeleteCommand",
+      "uiAnchor": "ac0_moreConvCellCmds",
+      "priority": 200
+    },
+    "Ac0FeedFilterToolbar": {
+      "id": "Ac0FeedFilter",
+      "uiAnchor": "aw_primaryWorkArea_feed",
+      "priority": 30
+    },
+    "Ac0FeedFilterFooterToolbar": {
+      "id": "Ac0FeedFilter",
+      "uiAnchor": "aw_footer",
+      "priority": 0.5
+    },
+    "Ac0ActionableFilterToolbar": {
+      "id": "Ac0ActionableFilter",
+      "uiAnchor": "aw_primaryWorkArea_actionableFeed",
+      "priority": 30
+    },
+    "Ac0ActionableFilterFooterToolbar": {
+      "id": "Ac0ActionableFilter",
+      "uiAnchor": "aw_footer",
+      "priority": 0.5
+    },
+    "Ac0CommentCellEdit": {
+      "id": "Ac0CommentCellEditCommand",
+      "uiAnchor": "ac0_moreCmtCellCmds",
+      "priority": 100
+    },
+    "Awp0DiscussionsGlobalNavigationbar": {
+      "id": "Awp0Discussions",
+      "uiAnchor": "aw_globalNavigationbar",
+      "priority": 40
+    },
+    "Ac0AddSnapshot": {
+      "id": "Ac0AddSnapshotCommand",
+      "uiAnchor": "ac0_addSnapshotCmds",
+      "priority": 100
+    },
+    "Ac0DiscussionMetaShowMoreCommand": {
+      "id": "Ac0DiscussionMetaShowMore",
+      "uiAnchor": "ac0_convMetaDetailsShowMoreCmd",
+      "priority": 40
+    },
+    "Ac0CreateDiscOnSnapshotInMyGalleryPlacement": {
+      "id": "Ac0CreateDiscOnSnapshotCommand",
+      "uiAnchor": "aw_3dProductSnapshotThumbnailGalleryCommands",
+      "priority": 50
+    },
+    "Ac0OpenDiscOnSnapshotInMyGalleryPlacement": {
+      "id": "Ac0OpenDiscOnSnapshotCommand",
+      "uiAnchor": "aw_3dProductSnapshotThumbnailGalleryCommands",
+      "priority": 60
+    },
+    "Ac0CreateDiscOnSnapshotInProductGalleryPlacement": {
+      "id": "Ac0CreateDiscOnSnapshotPGCommand",
+      "uiAnchor": "aw_3dSnapshotThumbnailViewCommands",
+      "priority": 7
+    },
+    "Ac0OpenDiscOnSnapshotInProductGalleryPlacement": {
+      "id": "Ac0OpenDiscOnSnapshotPGCommand",
+      "uiAnchor": "aw_3dSnapshotThumbnailViewCommands",
+      "priority": 7
+    },
+    "Ac0CreateDiscOnSnapshotInProductGalleryListPlacement": {
+      "id": "Ac0CreateDiscOnSnapshotPGCommand",
+      "parentGroupId": "Awv0ProductSnapshotListCommand",
+      "priority": 7
+    },
+    "Ac0OpenDiscOnSnapshotInProductGalleryListPlacement": {
+      "id": "Ac0OpenDiscOnSnapshotPGCommand",
+      "parentGroupId": "Awv0ProductSnapshotListCommand",
+      "priority": 7
+    },
+    "Ac0CreateDiscOnSnapshotInGalleryTabViewPlacement": {
+      "id": "Ac0CreateDiscOnSnapshotCommand",
+      "uiAnchor": "product_snapshot_table_cell_commands",
+      "priority": 70
+    },
+    "Ac0OpenDiscOnSnapshotInGalleryTabViewPlacement": {
+      "id": "Ac0OpenDiscOnSnapshotCommand",
+      "uiAnchor": "product_snapshot_table_cell_commands",
+      "priority": 70
+    },
+    "Ac0RemoveSnapshotFromRootCommentComamndPlacement": {
+      "id": "Ac0RemoveSnapshotFromRootCommentCommand",
+      "uiAnchor": "ac0_editCommentCommands",
+      "priority": 10
+    }
+  },
+  "actions": {
+    "Ac0UniversalConversationCommandAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ac0UniversalConversationPanel",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Ac0CreateNewConvCommandAction": {
+      "actionType": "JSFunction",
+      "method": "navigateToCreateCollabObjPanel",
+      "inputData": {
+        "sharedData": "{{commandContext.sharedData}}"
+      },
+      "outputData": {
+        "sharedData": ""
+      },
+      "deps": "js/Ac0DiscussionTileService"
+    },
+    "confirmDeleteConversationAction": {
+      "actionType": "JSFunctionAsync",
+      "method": "confirmDeleteConv",
+      "deps": "js/Ac0ConversationUtils"
+    },
+    "openAddSourceObjectPanel": {
+      "actionType": "JSFunction",
+      "method": "toAddSourceObjData",
+      "inputData": {
+        "sharedData": "{{commandContext.createContext.sharedData}}",
+        "ckEditor": "{{commandContext.createContext.ckEditor}}"
+      },
+      "outputData": {
+        "sharedData": ""
+      },
+      "deps": "js/Ac0DiscussionTileService"
+    },
+    "openAddParticipantPanel": {
+      "actionType": "JSFunction",
+      "method": "toAddParticipantObjData",
+      "inputData": {
+        "sharedData": "{{commandContext.createContext.sharedData}}",
+        "ckEditor": "{{commandContext.createContext.ckEditor}}"
+      },
+      "outputData": {
+        "sharedData": ""
+      },
+      "deps": "js/Ac0DiscussionTileService"
+    },
+    "Ac0SubSrcObjCommandAction": {
+      "actionType": "JSFunction",
+      "method": "collabSubscribeToObj",
+      "deps": "js/Ac0NotificationService",
+      "inputData": {
+        "vmo": "{{ctx.selected}}"
+      }
+    },
+    "Ac0UnSubSrcObjCommandAction": {
+      "actionType": "JSFunction",
+      "method": "collabUnSubscribeToObj",
+      "deps": "js/Ac0NotificationService",
+      "inputData": {
+        "vmo": "{{ctx.selected}}"
+      }
+    },
+    "Ac0SubConvObjCommandAction": {
+      "actionType": "JSFunctionAsync",
+      "method": "collabSubscribeToConversation",
+      "deps": "js/Ac0NotificationService",
+      "inputData": {
+        "vmo": "{{ctx.Ac0ConvCtx.currentSelectedConversation}}"
+      }
+    },
+    "Ac0UnSubConvObjCommandAction": {
+      "actionType": "JSFunctionAsync",
+      "method": "collabUnSubscribeToConversation",
+      "deps": "js/Ac0NotificationService",
+      "inputData": {
+        "vmo": "{{ctx.Ac0ConvCtx.currentSelectedConversation}}"
+      }
+    },
+    "openConversationNotification": {
+      "actionType": "JSFunction",
+      "method": "openLineItem",
+      "inputData": {
+        "notificationObject": "{{commandContext}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "NotificationMessage.markRead"
+          }
+        ]
+      },
+      "deps": "js/Ac0NotificationService"
+    },
+    "deleteConversationCell": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "Ac0.initiateDeleteConversationEvent",
+            "eventData": {
+              "data": "{{commandContext.discussionItem}}"
+            }
+          }
+        ]
+      }
+    },
+    "saveDeleteConvItemInContext": {
+      "actionType": "JSFunction",
+      "method": "saveDeleteConvItemInContext",
+      "inputData": {
+        "data": "{{data.eventMap['Ac0.initiateDeleteConversationEvent']}}"
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "message": "initiateDeleteConversationMessage"
+          }
+        ]
+      },
+      "deps": "js/Ac0ConversationUtils"
+    },
+    "editConversationCell": {
+      "actionType": "JSFunction",
+      "method": "doEditConversationCell",
+      "inputData": {
+        "data": "{{commandContext.discussionItem}}",
+        "sharedData": "{{commandContext.sharedData}}",
+        "title": "{{i18n.editDiscussion}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "Ac0EditConv.doEditConversationCellComplete"
+          }
+        ]
+      },
+      "deps": "js/Ac0EditCollabObjectService"
+    },
+    "editCommentCell": {
+      "actionType": "JSFunctionAsync",
+      "method": "doEditCommentCell",
+      "inputData": {
+        "data": "{{commandContext.discussionItem}}",
+        "sharedData": "{{commandContext.sharedData}}",
+        "commentItemObj": "{{commandContext.details}}",
+        "ctx": "{{ctx}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "Ac0EditConv.doEditCommentCellComplete"
+          }
+        ]
+      },
+      "deps": "js/Ac0EditCollabObjectService"
+    },
+    "closeMoreCellCmdPopup": {
+      "actionType": "JSFunction",
+      "method": "hide",
+      "inputData": {
+        "popupEl": "{{ctx.Ac0ConvCtx.moreCellCmdPopupRef}}"
+      },
+      "deps": "js/popupService"
+    },
+    "activateFeedFilter": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ac0FeedFilter",
+        "location": "aw_navigation"
+      }
+    },
+    "activateActionableFilter": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ac0FeedFilter",
+        "location": "aw_navigation"
+      }
+    },
+    "closeCmtMoreCellCmdPopup": {
+      "actionType": "JSFunction",
+      "method": "hide",
+      "inputData": {
+        "popupEl": "{{ctx.Ac0ConvCtx.moreCellCmtCmdPopupRef}}"
+      },
+      "deps": "js/popupService"
+    },
+    "feedLocation": {
+      "actionType": "Navigate",
+      "navigateTo": "#/discussions/feed",
+      "navigationParams": {}
+    },
+    "doShowMoreConvCellCmds": {
+      "actionType": "popup",
+      "inputData": {
+        "options": {
+          "view": "Ac0MoreConvCellCmdsPopup",
+          "placement": "bottom-start",
+          "hasArrow": true,
+          "whenParentScrolls": "close",
+          "subPanelContext": {
+            "discussionItem": "{{commandContext.dpItem}}",
+            "sharedData": "{{commandContext.sharedData}}"
+          }
+        }
+      }
+    },
+    "initiateAddSnapshot": {
+      "actionType": "JSFunction",
+      "method": "getRandObjId",
+      "deps": "js/Ac0ConversationService"
+    },
+    "createDiscussionsInMyGallery": {
+      "actionType": "JSFunction",
+      "method": "shareSnapshotInDiscussion",
+      "deps": "js/Ac0EditCollabObjectService",
+      "inputData": {
+        "commandcontext": "{{commandContext}}",
+        "mode": "create",
+        "entryPoint": "SnapshotMyGallery"
+      }
+    },
+    "openDiscussionsInMyGallery": {
+      "actionType": "JSFunction",
+      "method": "shareSnapshotInDiscussion",
+      "deps": "js/Ac0EditCollabObjectService",
+      "inputData": {
+        "commandcontext": "{{commandContext}}",
+        "mode": "open",
+        "entryPoint": "SnapshotMyGallery"
+      }
+    },
+    "createDiscussionsInProductGallery": {
+      "actionType": "JSFunction",
+      "method": "shareSnapshotInDiscussion",
+      "deps": "js/Ac0EditCollabObjectService",
+      "inputData": {
+        "commandcontext": "{{commandContext}}",
+        "mode": "create",
+        "entryPoint": "SnapshotProductGallery"
+      }
+    },
+    "openDiscussionsInProductGallery": {
+      "actionType": "JSFunction",
+      "method": "shareSnapshotInDiscussion",
+      "deps": "js/Ac0EditCollabObjectService",
+      "inputData": {
+        "commandcontext": "{{commandContext}}",
+        "mode": "open",
+        "entryPoint": "SnapshotProductGallery"
+      }
+    },
+    "removeSnapshotFromRootComment": {
+      "actionType": "JSFunction",
+      "method": "removeSnapshotFromRootComment",
+      "deps": "js/Ac0EditCollabObjectService",
+      "inputData": {
+        "commandcontext": "{{commandContext}}"
+      }
+    }
+  },
+  "conditions": {
+    "selectLikeCommand": {
+      "expression": "commandContext.vmo.isLkeSelected === true"
+    },
+    "univConvPanelCommandVisible": {
+      "expression": "ctx.selected && ctx.mselected.length === 1 && ctx.selected.type !== 'Fnd0Snapshot' && (ctx.selected.modelType.typeHierarchyArray.indexOf( 'WorkspaceObject' ) > -1 ||  (ctx.selected.modelType.typeHierarchyArray.indexOf( 'Awb0Element' ) > -1 && !ctx.aceActiveContext.context.supportedFeatures['Awb0RevisibleOccurrenceFeature']))"
+    },
+    "deleteConversationCommandVisible": {
+      "expression": "ctx.Ac0ConvCtx.deleteCommandValidForCurrentGroupRole"
+    },
+    "deleteConversationCommandEnable": {
+      "expression": "$parent.$parent.$parent.data.dataProviders.conversationDataProvider.selectedObjects.length > 0"
+    },
+    "subscribeCmdButtonValid": {
+      "expression": "ctx.Ac0ConvCtx.ac0NumSubscriptionsForSelectedObj === 0 || !ctx.Ac0ConvCtx.ac0NumSubscriptionsForSelectedObj"
+    },
+    "unSubscribeCmdButtonValid": {
+      "expression": "ctx.Ac0ConvCtx.ac0NumSubscriptionsForSelectedObj > 0"
+    },
+    "subscribeConvCmdButtonValid": {
+      "expression": "ctx.Ac0ConvCtx.ac0NumSubscriptionsForSelectedConv === 0 || !ctx.Ac0ConvCtx.ac0NumSubscriptionsForSelectedConv"
+    },
+    "unSubscribeConvCmdButtonValid": {
+      "expression": "ctx.Ac0ConvCtx.ac0NumSubscriptionsForSelectedConv > 0"
+    },
+    "enableConversationNotificationCommandCond": {
+      "expression": "commandContext.group.groupName==='ACTIVE_COLLABORATION'"
+    },
+    "ac0feedFilterCommandVisible": {
+      "expression": "ctx.sublocation.historyNameToken==='feed'"
+    },
+    "ac0actionableFilterCommandVisible": {
+      "expression": "ctx.sublocation.historyNameToken==='actionableFeed'"
+    },
+    "ac0isFeedOrTrackedDiscussionView": {
+      "expression": "conditions.ac0feedFilterCommandVisible || conditions.ac0actionableFilterCommandVisible"
+    },
+    "enableEditDiscussionCommand": {
+      "expression": "( ( !commandContext.discussionItem.props.participantUids || commandContext.discussionItem.props.participantUids.length === 0 ) && commandContext.discussionItem.props.uid.dbValue === ctx.user.uid ) || ( commandContext.discussionItem.props.participantUids.includes( ctx.user.uid ) || commandContext.discussionItem.props.uid.dbValue === ctx.user.uid )"
+    },
+    "isAc0ProductSnapshotVisibleCondition": {
+      "expression": "ctx.aceActiveContext.context.topElement.modelType.typeHierarchyArray.indexOf('Fnd0AppSession') === -1"
+    },
+    "isSnapshotSelected": {
+      "expression": "commandContext.vmo.props.object_type.dbValue === 'Fnd0Snapshot' "
+    },
+    "isAc0ProductSnapshotVisibleGallery": {
+      "expression": "conditions.isSnapshotSelected && commandContext.vmo.modelType.typeHierarchyArray.indexOf( 'Fnd0Snapshot' ) > -1"
+    },
+    "isAc0SnapshotDiscussionsEnabled": {
+      "expression": "ctx.preferences.Ac0SnapshotDiscussionsEnabled[0]==='true'"
+    },
+    "hasNoDiscussionsImageView": {
+      "expression": "commandContext.vmo.props.fnd0OwningIdentifier && commandContext.vmo.props.fnd0OwningIdentifier.dbValue === null && conditions.isAc0ProductSnapshotVisibleGallery && conditions.isAc0SnapshotDiscussionsEnabled"
+    },
+    "hasNoDiscussionsTableView": {
+      "expression": "commandContext.selected[0].props.fnd0OwningIdentifier && commandContext.selected[0].props.fnd0OwningIdentifier.dbValue === null && commandContext.selected[0].props.object_type.dbValue === 'Fnd0Snapshot' && commandContext.selected[0].modelType.typeHierarchyArray.indexOf( 'Fnd0Snapshot' ) > -1 && conditions.isAc0SnapshotDiscussionsEnabled"
+    },
+    "hasNoDiscussions": {
+      "expression": "conditions.hasNoDiscussionsImageView || conditions.hasNoDiscussionsTableView"
+    },
+    "hasDiscussionsImageView": {
+      "expression": "commandContext.vmo.props.fnd0OwningIdentifier && commandContext.vmo.props.fnd0OwningIdentifier.dbValue === 'Conversation' && conditions.isAc0ProductSnapshotVisibleGallery"
+    },
+    "hasDiscussionsTableView": {
+      "expression": "commandContext.selected[0].props.fnd0OwningIdentifier && commandContext.selected[0].props.fnd0OwningIdentifier.dbValue === 'Conversation' && commandContext.selected[0].props.object_type.dbValue === 'Fnd0Snapshot' && commandContext.selected[0].modelType.typeHierarchyArray.indexOf( 'Fnd0Snapshot' ) > -1"
+    },
+    "hasDiscussions": {
+      "expression": "conditions.hasDiscussionsImageView || conditions.hasDiscussionsTableView"
+    },
+    "hasNoDiscussionsInPG": {
+      "expression": "commandContext.vmo.props.fnd0OwningIdentifier && commandContext.vmo.props.fnd0OwningIdentifier.dbValue === null && conditions.isAc0ProductSnapshotVisibleCondition && conditions.isAc0SnapshotDiscussionsEnabled"
+    },
+    "hasDiscussionsInPG": {
+      "expression": "commandContext.vmo.props.fnd0OwningIdentifier && commandContext.vmo.props.fnd0OwningIdentifier.dbValue === 'Conversation' && conditions.isAc0ProductSnapshotVisibleCondition"
+    },
+    "snapshotHasNotBeenRemoved": {
+      "expression": "ctx.Ac0ConvCtx.cmtEdit.removedSnapshotObj === null"
+    }
+  },
+  "messages": {
+    "initiateDeleteConversationMessage": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.deleteConversationWarnMsg}}",
+      "navigationOptions": [
+        {
+          "option": "Cancel",
+          "text": "{{i18n.cancel}}",
+          "action": ""
+        },
+        {
+          "option": "Delete",
+          "text": "{{i18n.delete}}",
+          "action": "confirmDeleteConversationAction"
+        }
+      ]
+    }
+  },
+  "onEvent": [
+    {
+      "eventId": "Ac0EditConv.doEditConversationCellComplete",
+      "action": "closeMoreCellCmdPopup"
+    },
+    {
+      "eventId": "Ac0EditConv.doEditCommentCellComplete",
+      "action": "closeCmtMoreCellCmdPopup"
+    },
+    {
+      "eventId": "Ac0.initiateDeleteConversationEvent",
+      "cacheEventData": true,
+      "action": "saveDeleteConvItemInContext"
+    }
+  ],
+  "functions": {},
+  "i18n": {
+    "conversation": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "newConversation": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "newConversationDesc": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "likeCell": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "source": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "addSource": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "addParticipant": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "newDiscussion": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "editHeaderDiscussion": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "remove": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "removeSnapshotDesc": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "cancel": [
+      "ZeroCompileCommandMessages"
+    ],
+    "delete": [
+      "ZeroCompileCommandMessages"
+    ],
+    "deleteConversationWarnMsg": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "follow": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "unfollow": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "conversationDesc": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "sourceDesc": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "participantDesc": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "followObjDesc": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "unFollowObjDesc": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "deleteConvDesc": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "Awp0FeedFilterTitle": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "Awp0FeedFilterDesc": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "editDiscussion": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "editComment": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "discussions": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "addSnapshot": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "addSnapshotDesc": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "createDiscussion": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "openDiscussion": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "createDiscussionDesc": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "openDiscussionDesc": [
+      "ActiveCollabDeclarativeMessages"
+    ],
+    "more": [
+      "ActiveCollabDeclarativeMessages"
+    ]
+  }
+}

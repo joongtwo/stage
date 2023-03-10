@@ -1,0 +1,30 @@
+{
+  "slots": {
+    "senHeaderTitleSlot": {
+      "name": "aw_headerTitle",
+      "view": "senHeaderTitle",
+      "activeWhen": {
+        "condition": "conditions.isOnAlignEbomSbomPage"
+      }
+    },
+    "senTaskBarSlot": {
+      "name": "aw_taskBar",
+      "view": "senTaskBar",
+      "activeWhen": {
+        "condition": "conditions.isOnAlignEbomSbomPage"
+      }
+    },
+    "senPrimaryWorkAreaCommandBarSlot": {
+      "name": "aw_pwaCommandBar",
+      "view": "senPrimaryWorkAreaToolbar",
+      "activeWhen": {
+        "condition": "conditions.isOnAlignEbomSbomPage"
+      }
+    }
+  },
+  "conditions": {
+    "isOnAlignEbomSbomPage": {
+      "expression": "ctx.sentaskPageContext.subTaskName==='EBOM-SBOM'"
+    }
+  }
+}

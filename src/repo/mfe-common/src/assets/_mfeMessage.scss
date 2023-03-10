@@ -1,0 +1,76 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2020.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+
+
+/*========================================================================*/
+/*============================= MFE Message ==============================*/
+/*========================================================================*/
+
+.aw-mfe-messageLine {
+    font-style: italic;
+    font-size: $fontsize_large;
+    text-align: center;
+    height: 12 rem;
+    justify-content: center;
+    align-content: center;
+}
+
+/*========================================================================*/
+/*========================== 3 Dots Loading Animation ====================*/
+/*========================================================================*/
+
+.aw-mfe-loadingMessageDotsAnimation {
+    display: inline-flex;
+
+    span {
+        animation-name: mfg-blink-animation;
+        animation-duration: 2s;
+        animation-iteration-count: infinite;
+        animation-fill-mode: both;
+
+        &:nth-child(2) {
+            animation-delay: .2s;
+        }
+
+        &:nth-child(3) {
+            animation-delay: .4s;
+        }
+    }
+}
+
+@keyframes mfg-blink-animation {
+
+    0%,
+    80%,
+    100% {
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+}
+
+/*========================================================================*/
+/*=================== END of 3 Dots Loading Animation ====================*/
+/*========================================================================*/
+
+
+/*========================================================================*/
+/*=========================== MFE Message icon   ========================*/
+/*========================================================================*/
+
+.aw-mfe-messageIcon {
+    svg {
+        height: 24px;
+        width: 24px;
+        vertical-align: -10px;
+        margin-bottom: -2px;
+        margin-left: 1px;
+    }
+}

@@ -1,0 +1,34 @@
+<aw-balloon-popup-panel id="pmiMethodMenu">
+    <div class="aw-epInstructionsPmi-methodMenuContainer">
+        <div class="aw-epInstructionsPmi-methodGroup aw-widgets-propertyLabelTop aw-widgets-spaceBetween">
+            <aw-i18n class="aw-epInstructionsPmi-methodRow">i18n.partSelectionMethod</aw-i18n>
+        </div>
+        <aw-button id="pmiMethodMenuItem" size='stretched' class="aw-epInstructionsPmi-methodContainer" button-type="chromeless" action="method1BatchAction" aw-class="{'disabled': !subPanelContext.assemblyLoaded}">
+            <aw-i18n class="aw-epInstructionsPmi-methodRow">i18n.method1</aw-i18n>
+            <aw-i18n class="aw-epInstructionsPmi-methodRow aw-epInstructionsPmi-methodDetail">i18n.loadedAssembly</aw-i18n>
+        </aw-button>
+        <aw-button id="pmiMethodMenuItem" size='stretched' class="aw-epInstructionsPmi-methodContainer" button-type="chromeless" action="method2BatchAction" aw-class="{'disabled': !subPanelContext.assemblyContextDefined}">
+            <aw-i18n class="aw-epInstructionsPmi-methodRow">i18n.method2</aw-i18n>
+            <aw-i18n class="aw-epInstructionsPmi-methodRow aw-epInstructionsPmi-methodDetail">i18n.partFromLoadedAssembly</aw-i18n>
+        </aw-button>
+
+        <div class="aw-epInstructionsPmi-methodGroup aw-widgets-propertyLabelTop aw-widgets-spaceBetween">
+            <aw-i18n class="aw-epInstructionsPmi-methodRow">i18n.operationSelectionMethod</aw-i18n>
+        </div>
+        <aw-button id="pmiMethodMenuItem" size='stretched' class="aw-epInstructionsPmi-methodContainer" button-type="chromeless" action="method3BatchAction" aw-class="{'disabled': !subPanelContext.operationContextDefined}">
+            <aw-i18n class="aw-epInstructionsPmi-methodRow">i18n.method3</aw-i18n>
+            <aw-i18n class="aw-epInstructionsPmi-methodRow aw-epInstructionsPmi-methodDetail">i18n.consumptionOfAnOperation</aw-i18n>
+        </aw-button>
+        <div class="aw-epInstructionsPmi-methodGroup aw-widgets-propertyLabelTop aw-widgets-spaceBetween">
+            <aw-i18n class="aw-epInstructionsPmi-methodRow">i18n.scopeSelectionMethod</aw-i18n>
+        </div>
+        <aw-button id="pmiMethodMenuItem" size='stretched' class="aw-epInstructionsPmi-methodContainer" button-type="chromeless" action="method4BatchAction" aw-class="{'disabled': !subPanelContext.assemblyContextDefined}">
+            <aw-i18n class="aw-epInstructionsPmi-methodRow">i18n.method4</aw-i18n>
+            <aw-i18n class="aw-epInstructionsPmi-methodRow aw-epInstructionsPmi-methodDetail">i18n.assignUnderScope</aw-i18n>
+        </aw-button>
+        <aw-button id="pmiMethodMenuItem" size='stretched' class="aw-epInstructionsPmi-methodContainer" button-type="chromeless" action="method5BatchAction" aw-class="{'disabled': !subPanelContext.assemblyContextDefined}">
+            <aw-i18n class="aw-epInstructionsPmi-methodRow">i18n.method5</aw-i18n>
+            <aw-i18n class="aw-epInstructionsPmi-methodRow aw-epInstructionsPmi-methodDetail">i18n.assignUnderScopeAll</aw-i18n>
+        </aw-button>
+    </div>
+</aw-balloon-popup-panel>

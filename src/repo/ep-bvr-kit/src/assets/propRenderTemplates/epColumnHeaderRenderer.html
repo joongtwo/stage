@@ -1,0 +1,22 @@
+<%
+    let imagePath =  basePath + '/image/';
+    let columnName = _.get( column, 'field' );
+    let displayName = _.get( column, 'propertyDisplayName' );
+
+    let cellImg;
+     switch ( columnName ) {
+        case 'assignmentIndication':
+            cellImg = imagePath + 'headerCompletion16.svg';
+            break;
+        case 'missingInSource':
+            cellImg = imagePath + 'headerMismatch16.svg';
+            break;
+        case 'changeIndication':
+            cellImg = imagePath + 'headerMismatch16.svg';
+            break;
+        case 'externalFlowIndication':
+            cellImg = imagePath + 'miscTableHeaderHasExternalDependencies16.svg';
+            break;
+        }
+%>
+    <img class="aw-visual-indicator" src="<%=cellImg%>" alt="<%=displayName%>" title="<%=displayName%>">

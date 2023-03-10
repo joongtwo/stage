@@ -1,0 +1,27 @@
+<aw-panel>
+    <aw-panel-body class="aw-report-view-container">
+        <aw-flex-column justify="center">
+            <aw-flex-row  exist-when="data.showDefaultMessage">
+                <aw-row>
+                    <div class="aw-reports-defaultMessage">{{i18n.reportsTabDefaultMessage}}</div>
+                </br>
+                <aw-row>
+                    <div class="aw-reports-addButton">
+                        <aw-button action="openGenerateReport">
+                            <aw-i18n>i18n.addDashboardReportWithPanel</aw-i18n>
+                        </aw-button>
+                    </div>
+                </aw-row>
+                </aw-row>
+            </aw-flex-row>
+            <aw-flex-row align-content="center" height="63f" exist-when="!data.showAwReport">
+                <iframe title="{{i18n.reportsPage}}" class="aw-reports-frameSize"></iframe>
+            </aw-flex-row>
+            <aw-flex-row align-content="center" height="63f" exist-when="data.showAwReport">
+                <!-- <aw-include name="showReportImage" class="aw-reports-frameSize" sub-panel-context="data.selectedReport"></aw-include> -->
+                <aw-report-viewer class="aw-reports-frameSize" sub-panel-context="{...data.selectedReport, selectionData:subPanelContext.selectionData}"></aw-report-viewer>
+            </aw-flex-row>
+        </aw-flex-column>
+    </aw-panel-body>
+</aw-panel>
+

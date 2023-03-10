@@ -1,0 +1,44 @@
+{
+    "schemaVersion" : "1.0.0",
+    "data":{
+        "_provider": {
+            "breadcrumbConfig": {
+                "vm" : "AwMyGalleryBreadcrumb"
+            },
+            "nameToken": "",
+            "defaultDisplayMode": "ImageView",
+            "selectionMode": "single",
+           
+            "viewModes": {
+                "ImageView": {
+                    "primaryWorkArea": "image",
+                    "secondaryWorkArea": true
+                },
+                "TableView": {
+                    "primaryWorkArea": "table",
+                    "secondaryWorkArea": true
+                }
+            },
+            "clientScopeURI": "Awv0SnapshotSearchResults",
+            "context": {
+                "search": {
+                    "provider": "Awp0FullTextSearchProvider",
+                    "sortType": "Priority",
+                    "accessPrivilege":"sharedByMe",
+                    "hideInContentSearchBox":"true",
+                    "criteria":
+                    {
+                        "forceThreshold": "true",
+                        "limitedFilterCategoriesEnabled": "false",
+                        "listOfExpandedCategories": "",
+                        "searchFromLocation": "global",
+                        "searchString": "type:\"Fnd0Snapshot\" AND owner:$ME AND \"Owning Identifier\":Conversation"
+                    },
+                    "maxToLoad": 50,
+                    "maxToReturn": 50
+                }
+            },
+            "viewBase": "snapshotSearch"
+        }
+    }
+}

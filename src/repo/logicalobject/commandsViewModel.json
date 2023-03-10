@@ -1,0 +1,396 @@
+{
+  "commands": {
+    "Awp0DefineLogicalObject": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.defineLogicalObject}}",
+      "description": "{{i18n.Awp0DefineLogicalObjectDesc}}"
+    },
+    "Awp0SearchLogicalObject": {
+      "iconId": "cmdSearch",
+      "isGroup": false,
+      "title": "{{i18n.searchLogicalObject}}",
+      "description": "{{i18n.Awp0SearchLogicalObjectDesc}}"
+    },
+    "LO1AddMember": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.add}}",
+      "description": "{{i18n.LO1AddMemberDesc}}"
+    },
+    "LO1EditMember": {
+      "iconId": "cmdEdit",
+      "isGroup": false,
+      "title": "{{i18n.editMember}}",
+      "description": "{{i18n.LO1EditMemberDesc}}"
+    },
+    "LO1AddProperty": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.add}}",
+      "description": "{{i18n.LO1AddPropertyDesc}}"
+    },
+    "LO1AddIncludedLogicalObject": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.add}}",
+      "description": "{{i18n.LO1AddIncludedLogicalObjectDesc}}"
+    },
+    "LO1DeleteLogicalObject": {
+      "iconId": "cmdDelete",
+      "isGroup": false,
+      "title": "{{i18n.delete}}",
+      "description": "{{i18n.LO1DeleteLogicalObjectDesc}}"
+    },
+    "Awp0CreateSegmentCmd": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.addSegment}}",
+      "description": "{{i18n.Awp0CreateSegmentCmdDesc}}"
+    },
+    "Awp0RemoveSegmentCmd": {
+      "iconId": "cmdRemove",
+      "isGroup": false,
+      "title": "{{i18n.removeSegment}}",
+      "description": "{{i18n.Awp0RemoveSegmentCmdDesc}}"
+    }
+  },
+  "commandHandlers": {
+    "Awp0DefineLogicalObjectCommandHandler": {
+      "id": "Awp0DefineLogicalObject",
+      "action": "activateDefineLogicalObjectPanel",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.defineLogicalObjectVisible"
+      }
+    },
+    "LO1AddMemberCommandHandler": {
+      "id": "LO1AddMember",
+      "action": "activateAddMemberPanel",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.addMemberCommandVisible"
+      }
+    },
+    "LO1EditMemberCommandHandler": {
+      "id": "LO1EditMember",
+      "action": "activateAddMemberPanel",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.editMemberCommandVisible"
+      }
+    },
+    "LO1AddPropertyCommandHandler": {
+      "id": "LO1AddProperty",
+      "action": "activateAddPropertyPanel",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.addPropertyCommandVisible"
+      }
+    },
+    "LO1AddIncludedLogicalObjectCommandHandler": {
+      "id": "LO1AddIncludedLogicalObject",
+      "action": "activateAddIncludedLogicalObjectPanel",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.addIncludedLogicalObjectCommandVisible"
+      }
+    },
+    "LO1DeleteLogicalObjectCommandHandler": {
+      "id": "LO1DeleteLogicalObject",
+      "action": "confirmDelete",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.deleteLogicalObjectVisible"
+      }
+    },
+    "Awp0CreateSegmentCmdHandler": {
+      "id": "Awp0CreateSegmentCmd",
+      "action": "Awp0CreateSegmentCmdAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Awp0RemoveSegmentCmdHandler": {
+      "id": "Awp0RemoveSegmentCmd",
+      "action": "Awp0RemoveSegmentCmdAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    }
+  },
+  "commandPlacements": {
+    "defineLogicalObjectToolsAndInfo": {
+      "id": "Awp0DefineLogicalObject",
+      "uiAnchor": "aw_rightWall",
+      "priority": 490,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "deleteLogicalObjectOneStep": {
+      "id": "LO1DeleteLogicalObject",
+      "uiAnchor": "aw_rightWall",
+      "priority": 500,
+      "parentGroupId": "Awp0EditGroup"
+    },
+    "Awp0CreateSegmentCmdPlacement": {
+      "id": "Awp0CreateSegmentCmd",
+      "uiAnchor": "awp0_addSegmentCommands",
+      "priority": 100
+    },
+    "Awp0RemoveSegmentCmdPlacement": {
+      "id": "Awp0RemoveSegmentCmd",
+      "uiAnchor": "awp0_removeSegmentCommands",
+      "priority": 100
+    }
+  },
+  "actions": {
+    "activateDefineLogicalObjectPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Awp0DefineLogicalObject",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "activateAddMemberPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "LO1AddMember",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "activateAddPropertyPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "LO1AddProperty",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "activateAddIncludedLogicalObjectPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "LO1AddIncludedLogicalObject",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "confirmDelete": {
+      "actionType": "JSFunctionAsync",
+      "method": "confirmDeleteLogicalObject",
+      "inputData": {
+        "data": "{{data}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "awLogicalObject.deleteLogicalObject",
+            "condition": "data.confirmDelete === true"
+          }
+        ]
+      },
+      "deps": "js/Awp0LogicalObjectService"
+    },
+    "deleteLogicalObject": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-Core-2017-11-LogicalObject",
+      "method": "deleteLogicalObjectTypes",
+      "inputData": {
+        "logicalObjects": [
+          "{{data.logicalObject}}"
+        ]
+      },
+      "events": {
+        "success": [
+          {
+            "name": "primaryWorkarea.reset"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "message": "deleteSuccess"
+          }
+        ]
+      }
+    },
+    "deleteMembersOrProps": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-Core-2017-11-LogicalObject",
+      "method": "deleteMembersAndPresentedProps",
+      "inputData": {
+        "deleteMembersAndPresentedProps": [
+          {
+            "logicalObject": "{{data.logicalObject}}",
+            "memberIdsOrPresentedProps": "{{data.membersOrProps}}"
+          }
+        ]
+      },
+      "events": {
+        "success": [
+          {
+            "name": "cdm.relatedModified",
+            "eventData": {
+              "relatedModified": [
+                "{{data.logicalObject}}"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "Awp0CreateSegmentCmdAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "Awp0CreateSegmentCmdActionEvent"
+          }
+        ]
+      }
+    },
+    "Awp0RemoveSegmentCmdAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "Awp0RemoveSegmentCmdActionEvent"
+          }
+        ]
+      }
+    }
+  },
+  "conditions": {
+    "defineLogicalObjectVisible": {
+      "expression": "ctx.logicalObject"
+    },
+    "canAddMemberOrProp": {
+      "expression": "!ctx.editInProgress && ctx.selected && ctx.selected.props.fnd0RootTypeName && (!commandContext.selectionModel.selectionData.value.selected || commandContext.selectionModel.selectionData.value.selected.length === 0)"
+    },
+    "canEditMember": {
+      "expression": "!ctx.editInProgress && ctx.selected && !ctx.selected.props.fnd0Inherited.dbValue && commandContext.selectionModel.selectionData.value.selected.length === 1"
+    },
+    "addMemberCommandVisible": {
+      "expression": "conditions.canAddMemberOrProp && commandContext.objectSetSource==='fnd0Members.Fnd0LOPropPresentations'"
+    },
+    "editMemberCommandVisible": {
+      "expression": "conditions.canEditMember && commandContext.objectSetSource==='fnd0Members.Fnd0LOPropPresentations'"
+    },
+    "addPropertyCommandVisible": {
+      "expression": "conditions.canAddMemberOrProp && commandContext.objectSetSource==='fnd0PresentedProperties.Fnd0LOPropPresentations'"
+    },
+    "addIncludedLogicalObjectCommandVisible": {
+      "expression": "conditions.canAddMemberOrProp"
+    },
+    "deleteLogicalObjectVisible": {
+      "expression": "ctx.visibleServerCommands.LO1DeleteLogicalObject && !ctx.selected.props.fnd0TargetPresentedPropName"
+    }
+  },
+  "i18n": {
+    "defineLogicalObject": [
+      "LogicalObjectMessages"
+    ],
+    "searchLogicalObject": [
+      "LogicalObjectMessages"
+    ],
+    "editMember": [
+      "LogicalObjectMessages"
+    ],
+    "delete": [
+      "LogicalObjectMessages"
+    ],
+    "cancel": [
+      "LogicalObjectMessages"
+    ],
+    "deleteConfirmation": [
+      "LogicalObjectMessages"
+    ],
+    "selections": [
+      "LogicalObjectMessages"
+    ],
+    "deleteSuccess": [
+      "LogicalObjectMessages"
+    ],
+    "addRootObject": [
+      "LogicalObjectMessages"
+    ],
+    "removeRootObject": [
+      "LogicalObjectMessages"
+    ],
+    "addParentObject": [
+      "LogicalObjectMessages"
+    ],
+    "removeParentObject": [
+      "LogicalObjectMessages"
+    ],
+    "addSegment": [
+      "LogicalObjectMessages"
+    ],
+    "removeSegment": [
+      "LogicalObjectMessages"
+    ],
+    "awp0_rootCommands": [
+      "LogicalObjectMessages"
+    ],
+    "awp0_parentCommands": [
+      "LogicalObjectMessages"
+    ],
+    "awp0_addSegmentCommands": [
+      "LogicalObjectMessages"
+    ],
+    "awp0_removeSegmentCommands": [
+      "LogicalObjectMessages"
+    ],
+    "Awp0DefineLogicalObjectDesc": [
+      "LogicalObjectMessages"
+    ],
+    "LO1EditMemberDesc": [
+      "LogicalObjectMessages"
+    ],
+    "LO1DeleteLogicalObjectDesc": [
+      "LogicalObjectMessages"
+    ],
+    "LO1AddPropertyDesc": [
+      "LogicalObjectMessages"
+    ],
+    "LO1AddMemberDesc": [
+      "LogicalObjectMessages"
+    ],
+    "LO1AddIncludedLogicalObjectDesc": [
+      "LogicalObjectMessages"
+    ],
+    "Awp0CreateSegmentCmdDesc": [
+      "LogicalObjectMessages"
+    ],
+    "Awp0RemoveSegmentCmdDesc": [
+      "LogicalObjectMessages"
+    ]
+  },
+  "messages": {
+    "deleteSuccess": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.deleteSuccess}}",
+      "messageTextParams": [
+        "{{data.toDelete}}"
+      ]
+    }
+  },
+  "onEvent": [
+    {
+      "eventId": "awLogicalObject.deleteLogicalObject",
+      "condition": "data.membersOrProps.length === 0",
+      "action": "deleteLogicalObject"
+    },
+    {
+      "eventId": "awLogicalObject.deleteLogicalObject",
+      "condition": "data.membersOrProps.length > 0",
+      "action": "deleteMembersOrProps"
+    }
+  ]
+}

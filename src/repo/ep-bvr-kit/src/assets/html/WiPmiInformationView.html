@@ -1,0 +1,22 @@
+<mfe-loading-message exist-when="conditions.isLoading"></mfe-loading-message>
+<div class="sw-column w-12 aw-epInstructionsPmi-pmiInfoPanel" exist-when="!conditions.isLoading">
+    <div class="sw-row align-center aw-epInstructionsPmi-pmiInfoLabel" exist-when="data.whereDefinedLinkData.propertyDisplayName">
+        <span class="aw-widgets-propertyLabelTop" >{{i18n.definedIn}}: </span>
+        <aw-link prop="data.whereDefinedLinkData" action="openWhereDefinedObjectInNewTab"></aw-link>
+    </div>
+    <div class="sw-row aw-epInstructionsPmi-pmiInfoLabel align-left">
+        <aw-i18n class="aw-widgets-propertyLabelTop">i18n.connectedParts</aw-i18n>
+    </div>
+    <div class="sw-row aw-epInstructionsPmi-connectedPartsTable align-left">
+        <aw-splm-table gridid="connectedPartsTable"></aw-splm-table>
+    </div>
+    <div class="sw-row aw-epInstructionsPmi-pmiInfoLabel align-left">
+        <aw-i18n class="aw-widgets-propertyLabelTop">i18n.referencedDatums</aw-i18n>
+    </div>
+    <div class="sw-row aw-epInstructionsPmi-refDatumsTable align-left" exist-when="conditions.hasReferencedDatums">
+        <aw-splm-table gridid="referencedDatumsTable"></aw-splm-table>
+    </div>
+    <div class="sw-row align-center aw-epInstructionsPmi-refDatumsMessage" exist-when="!conditions.hasReferencedDatums">
+        <mfe-message sub-panel-context="data.messages.noReferencedDatums"></mfe-message>
+    </div>
+</div>

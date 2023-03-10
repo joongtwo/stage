@@ -1,0 +1,13 @@
+<aw-command-panel caption="i18n.setStepStatus">
+    <aw-panel-body>
+        <aw-listbox prop="data.ewi0ExecutionStatus" list="data.ewi0ExecutionStatusList" action="statusUpdated"></aw-listbox>
+        <aw-break> </aw-break>
+        <aw-i18n class="sw-property sw-property-name">i18n.stepProgress</aw-i18n>
+        <aw-slider prop="data.stepProgressSliderProp"></aw-slider>
+        <aw-break> </aw-break>
+        <aw-textarea prop="data.ewi0ExecutionComment"></aw-textarea>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button exist-when="true" action="saveAndClosePanel" size="auto"><aw-i18n>i18n.save</aw-i18n></aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

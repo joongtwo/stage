@@ -1,0 +1,136 @@
+// Copyright 2022 Siemens Product Lifecycle Management Software Inc.
+
+.aw-epBvrGraphics-thumbnailPanel {
+    .aw-base-scrollPanel {
+        @include align-items(center);
+        padding: 0;
+    }
+    .sw-pic-container {
+        height: rem-calc(72);
+        width: inherit;
+        margin: 0;
+        text-align: center;
+    }
+}
+
+.aw-epBvrGraphics-galleryListContainer {
+    overflow: hidden;
+    border-spacing: rem-calc(8);
+    border-collapse: separate;
+    white-space: nowrap;
+    height: 100%;
+    width: 100%;
+    .aw-base-scrollPanel{
+        overflow: hidden;
+        height: inherit;
+    }
+    .aw-widgets-cellListWidget {
+        @include flex-direction(row);
+        height: 100%;
+        align-self: center;
+        display: flex;
+        overflow-x: scroll;
+    }
+    .aw-widgets-cellListItem {
+        height: rem-calc(104);
+        margin-top: $margin_large;
+        margin-right: $margin_large;
+        border: 0;
+        padding: 0;
+        &:first-child {
+            margin-left: $margin_large;
+        }
+    }
+}
+
+.aw-epBvrGraphics-galleryCell {
+    height: rem-calc(104);
+    width: rem-calc(144);
+    cursor: pointer;
+}
+
+@media all and (max-height:575px) {
+    .aw-epBvrGraphics-galleryListContainer {
+        .aw-widgets-cellListItem {
+            height: rem-calc(52);
+            margin-top: $margin_normal;
+            margin-right: $margin_normal;
+            &:first-child {
+                margin-left: $margin_normal;
+            }
+        }
+    }
+    .aw-epBvrGraphics-galleryCell {
+        height: rem-calc(52);
+        width: rem-calc(140);
+    }
+    .aw-epBvrGraphics-thumbnailPanel {
+        .sw-pic-container {
+            height: rem-calc(42);
+        }
+    }
+    .aw-epBvrGraphics-cellContainer {
+        @include flex-direction(row);
+    }
+}
+
+.sw-popup {
+    .aw-epBvrGraphics-galleryListContainer {
+        .aw-widgets-cellListWidget {
+            .aw-widgets-cellListItem {
+                padding: 0;
+            }
+        }
+    }
+}
+
+.aw-epBvrGraphics-thumbnailLabel {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.aw-epBvrGraphics-cellContainer {
+    height: 100%;
+    padding: 6px;
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    align-items: center;
+}
+
+.aw-epGraphics-thumbnailContainer {
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    width: 100%;
+    justify-content: center;
+}
+
+.aw-epBvrGraphics-thumbnailLabelContainer {
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.aw-epImageViewer-minHeight {
+    height: rem-calc(180);
+    min-height: rem-calc(180);
+}
+
+.aw-epBvrGraphics-minHeight {
+    min-height: calc(100% - 196px);
+    max-height: calc(100% - 196px);
+}
+
+@media all and (max-height:575px) {
+    .aw-epImageViewer-minHeight {
+        height: rem-calc(128);
+        min-height: rem-calc(128);
+    }
+
+    .aw-epBvrGraphics-minHeight {
+        min-height: calc(100% - 144px);
+        max-height: calc(100% - 144px);
+    }
+}

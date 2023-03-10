@@ -1,0 +1,31 @@
+{
+  "epDeleteAction": {
+    "actionType": "JSFunction",
+    "method": "deleteObjects",
+    "inputData": {
+      "objectsToDelete": "{{inputData.objectsToDelete}}",
+      "connectToObject": "{{inputData.connectToObject}}",
+      "relatedDataset": "{{inputData.relatedDataset}}",
+      "reloadType": "{{inputData.reloadType}}",
+      "reloadProperties": "{{inputData.reloadProperties}}",
+      "connectToRelation": "{{inputData.connectToRelation}}"
+    },
+    "deps": "js/epDeleteService"
+  },
+  "epCopyAction": {
+    "actionType": "JSFunction",
+    "method": "copy",
+    "inputData": {
+      "objectToCopy": "{{inputData.objectsToCopy}}"
+    },
+    "deps": "js/epCutCopyService"
+  },
+  "epCutAction": {
+    "actionType": "JSFunction",
+    "method": "cut",
+    "inputData": {
+      "objectToCopy": "{{inputData.objectsToCopy}}"
+    },
+    "deps": "js/epCutCopyService"
+  }
+}

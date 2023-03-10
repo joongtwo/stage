@@ -1,0 +1,59 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: none">
+    <g id="<%=template_id%>" class="aw-relations-nodeSvg aw-relations-detailLevel0">
+        <g class='{SDFBooleanPropertyBinding("isSelected","aw-widgets-cellListItemSelected","aw-relations-tile-node")}'>
+            <rect transform="translate(0 0)" width='{SDFSizePropertyBinding("getWidthValue")}' height='{SDFSizePropertyBinding("getHeightValue")}' class="aw-widgets-cellListItemNode" stroke='{PropertyBinding("node_fill_color")}' fill='transparent' ></rect>
+            <rect transform="translate(0 0)" width='{SDFSizePropertyBinding("getWidthValue")}' height='{SDFSizePropertyBinding("getHeightValue")}' class='{PropertyBinding("relation_node_hovered_style_svg")}' stroke='{PropertyBinding("node_fill_color")}' ></rect>
+            <rect transform="translate(0 0)" width='{SDFSizePropertyBinding("getWidthValue")}' height='{SDFSizePropertyBinding("getHeightValue")}' class='{SDFBooleanPropertyBinding("isSelected","aw-widgets-cellListItemNodeSelected","aw-graph-noeditable-area")}' stroke='{PropertyBinding("node_fill_color")}' ></rect>
+            <rect transform="translate(0 0)" width='{PropertyBinding("barWidth")}' height='{SDFSizePropertyBinding("getHeightValue")}' fill='{PropertyBinding("node_fill_color")}'></rect>
+            <rect transform="translate(0 0)" class='{PropertyBinding("rootnode_border_style")}' width='{SDFSizePropertyBinding("getWidthValue")}' height='{SDFSizePropertyBinding("getHeightValue")}' stroke='{PropertyBinding("node_fill_color")}' ></rect>
+            <rect transform="translate(0 0)" width='{SDFSizePropertyBinding("getWidthValue")}' height='{SDFSizePropertyBinding("getHeightValue")}' class="aw-graph-noeditable-area" ></rect>
+
+            <g transform="translate(0 0)" class='{BooleanPropertyBinding("is_root", "GC_NODE_TITLE_CLASS", "GC_HIDDEN_CLASS")}'>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="17px" y="19px" width="46px" height="46px" thumbnail-id="JTThumbnail" data-sdf-content='{PropertyBinding("thumbnail_image")}'></svg>
+            </g>
+            <g transform="translate(0 0)" class='{BooleanPropertyBinding("is_root", "GC_HIDDEN_CLASS", "GC_COMMAND_CLASS")}' data-command-id="Rv1FadeNode">
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="17px" y="19px" width="46px" height="46px" thumbnail-id="JTThumbnail" data-sdf-content='{PropertyBinding("thumbnail_image")}'></svg>
+            </g>
+
+            <g transform="translate(65 11)" class='{PropertyBinding("relation_text_hovered_style_svg")}'>
+                <g class="aw-graph-wordwrap aw-widgets-cellListCellTitleBlock">
+                    <text transform="translate(0 22)" class='aw-graph-autoPosition { PropertyBinding("GC_NODE_TITLE_CLASS") }' data-width="100%-80" data-property-name="<%=title%>" data-text='{PropertyBinding("<%=title%>")}'></text>
+                    <text dy="3" transform="translate(0 44)" class="aw-graph-autoPosition sw-cell-valName" data-width="230" data-property-name="<%=sub_title%>" data-text='{PropertyBinding("<%=sub_title%>")}'></text>
+                    <g class="aw-graph-autoPosition sw-defaultCell-properties" transform="translate(0 47)">
+                        <% _.forEach(property_list, function(prop){ %>
+                            <text class='aw-graph-autoPosition sw-property-name' data-property-name="<%- prop %>" data-width="100%-80" data-text='{PropertyBinding("<%- prop %>")}'/>
+                        <% }); %>
+                    </g>
+                </g>
+                <g data-translate-y="15" transform="translate(0 80)" class="aw-graph-autoPosition">
+                    <g transform="translate(0 0)" class='{BooleanPropertyBinding("incoming_show_partial_expand_button", "GC_COMMAND_CLASS", "GC_HIDDEN_CLASS")}' data-command-id="Rv1OnNodePartialExpandIn" tabindex='0'>
+                        <title>{PropertyBinding("Rv1ExpandIn_tooltip")}</title>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="GC_COMMAND_CLASS" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="22px" data-sdf-content='{PropertyBinding("Rv1OnNodePartialExpandIn_icon")}'></svg>
+                        <rect transform="translate(0 0)" width="22px" height="22px" fill="transparent" ></rect>
+                    </g>
+                    <g transform="translate(0 0)" class='{BooleanPropertyBinding("incoming_show_expand_button", "GC_COMMAND_CLASS", "GC_HIDDEN_CLASS")}' data-command-id="Rv1ExpandIn" tabindex='0'>
+                        <title>{PropertyBinding("Rv1ExpandIn_tooltip")}</title>
+                        <rect transform="translate(0 0)" width="22px" height="22px" class='{BooleanPropertyBinding("incoming_all_shown", "GC_COMMAND_SELECTED_CLASS", "GC_HIDDEN_CLASS")}' ></rect>
+                        <svg xmlns="http://www.w3.org/2000/svg" class='{BooleanPropertyBinding("incoming_all_shown", "", "GC_HIDDEN_CLASS")} aw-widgets-cellListItemSelected' xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="22px" data-sdf-content='{PropertyBinding("Rv1ExpandIn_icon")}'></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class='{BooleanPropertyBinding("incoming_all_shown", "GC_HIDDEN_CLASS", "")}' xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="22px" data-sdf-content='{PropertyBinding("Rv1ExpandIn_icon")}'></svg>
+                        <text transform="translate(22 15)" class='{BooleanPropertyBinding("incoming_all_shown", "GC_HIDDEN_CLASS", "")} aw-widgets-propertyLabel aw-base-small aw-relations-nodeInDegreeSvg'>{PropertyBinding("filtered_in_degree")}</text>
+                        <rect transform="translate(0 0)" width="22px" height="22px" fill="transparent" ></rect>
+                    </g>
+                    <g transform="translate(55 0)" class='{BooleanPropertyBinding("outgoing_show_partial_expand_button", "GC_COMMAND_CLASS", "GC_HIDDEN_CLASS")}' data-command-id="Rv1OnNodePartialExpandOut" tabindex='0'>
+                        <title>{PropertyBinding("Rv1ExpandOut_tooltip")}</title>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="GC_COMMAND_CLASS" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="22px" data-sdf-content='{PropertyBinding("Rv1OnNodePartialExpandOut_icon")}'></svg>
+                        <rect transform="translate(0 0)" width="22px" height="22px" fill="transparent" ></rect>
+                    </g>
+                    <g transform="translate(55 0)" class='{BooleanPropertyBinding("outgoing_show_expand_button", "GC_COMMAND_CLASS", "GC_HIDDEN_CLASS")}' data-command-id="Rv1ExpandOut" tabindex='0'>
+                        <title>{PropertyBinding("Rv1ExpandOut_tooltip")}</title>
+                        <rect transform="translate(0 0)" width="22px" height="22px" class='{BooleanPropertyBinding("outgoing_all_shown", "GC_COMMAND_SELECTED_CLASS", "GC_HIDDEN_CLASS")}' ></rect>
+                        <svg xmlns="http://www.w3.org/2000/svg" class='{BooleanPropertyBinding("outgoing_all_shown", "", "GC_HIDDEN_CLASS")} aw-widgets-cellListItemSelected' xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="22px" data-sdf-content='{PropertyBinding("Rv1ExpandOut_icon")}'></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" class='{BooleanPropertyBinding("outgoing_all_shown", "GC_HIDDEN_CLASS", "")}' xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="22px" data-sdf-content='{PropertyBinding("Rv1ExpandOut_icon")}'></svg>
+                        <text transform="translate(22 15)" class='{BooleanPropertyBinding("outgoing_all_shown", "GC_HIDDEN_CLASS", "")} aw-widgets-propertyLabel aw-base-small aw-relations-nodeInDegreeSvg'>{PropertyBinding("filtered_out_degree")}</text>
+                        <rect transform="translate(0 0)" width="22px" height="22px" fill="transparent" ></rect>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,27 @@
+<g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="EwiOverviewTileNodeTemplate" data-id='{PropertyBinding("node_id")}'>
+
+    <!-- Main rectangle -->
+    <rect transform="translate(0 0)" width='{SDFSizePropertyBinding("getWidthValue")}' height="80px" stroke='{PropertyBinding("node_stroke_color")}' stroke-width='{PropertyBinding("node_stroke_width")}' class='{SDFBooleanPropertyBinding("isSelected", "aw-widgets-cellListItemNodeSelected","aw-workinstr-overviewGraphNode")}' ></rect>
+
+    <!-- image thumbnail -->
+    <image thumbnail-id="JTThumbnail" transform='{PropertyBinding("node_icon_transform")}' width='{PropertyBinding("node_icon_width")}' height='{PropertyBinding("node_icon_height")}' xlink:href='{PropertyBinding("thumbnailURL")}' preserveAspectRatio="none"></image>
+
+    <!-- 1st line of text -->
+    <g transform="translate(90 25)" class='{PropertyBinding("node_title_style")}'>
+            <title>{PropertyBinding("node_title")}</title>
+            <text data-property-name='node_title' data-width="150" class="aw-graph-autoPosition aw-graph-wordwrap"></text>
+    </g>
+
+    <!-- 2nd line of text -->
+    <g transform="translate(90 50)">
+        <title>{PropertyBinding("node_property")}</title>
+        <text data-property-name='node_property' data-width="150" class='aw-graph-autoPosition aw-graph-wordwrap {PropertyBinding("node_property_style")}'>
+        </text>
+    </g>
+
+    <g transform="translate(90 70)">
+        <title>{PropertyBinding("node_second_property")}</title>
+        <text data-property-name='node_second_property' data-width="150" class='aw-graph-autoPosition aw-graph-wordwrap {PropertyBinding("node_property_style")}'>
+        </text>
+    </g>
+</g>

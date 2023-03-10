@@ -1,0 +1,415 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "actions": {
+        "init": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getCurrentStep"
+                },
+                {
+                    "action": "getRootModelObject"
+                },
+                {
+                    "name": "drawGraph",
+                    "condition": "result.rootObject.props.Mfg0sub_elements"
+                },
+                {
+                    "action": "createTravelerTableColumns",
+                    "condition": "result.rootObject.props.Mfg0sub_elements"
+                },
+                {
+                    "action": "getOverviewPopupPropertyAction",
+                    "condition": "!result.rootObject.props.Mfg0sub_elements"
+                }
+            ]
+        },
+
+        "getCurrentStep": {
+            "actionType": "JSFunction",
+            "method": "getCurrentStep",
+            "inputData": {
+            },
+            "outputData": {
+                "currentStep": ""
+            },
+            "deps": "js/ewiService"
+        },
+
+        "getRootModelObject": {
+            "actionType": "JSFunction",
+            "method": "getTopLine",
+            "inputData": {
+            },
+            "outputData": {
+                "rootObject": ""
+            },
+            "deps": "js/ewiService"
+        },
+
+        "createTravelerTableColumns": {
+            "actionType": "JSFunction",
+            "method": "createColumns",
+            "inputData": {
+                "tableColumns": [],
+                "columnNames": "{{ctx.preferences[EWI_TableOverviewColumnShown]}}",
+                "objType": "ImanItemBOPLine"
+            },
+            "outputData": {
+                "tableColumns": ""
+            },
+            "deps": "js/workinstrTableService"
+        },
+
+        "drawGraph": {
+            "actionType": "JSFunctionAsync",
+            "method": "drawGraph",
+            "inputData": {
+                "graphModel": "{{ctx.graph.graphModel}}",
+                "rootObject": "{{data.rootObject}}",
+                "currentStepUid": "{{data.currentStep.uid}}"
+            },
+            "deps": "js/Ewi0OverviewService"
+        },
+
+        "stopLoadingIndicator": {
+            "actionType": "JSFunction",
+            "method": "setLoadingIndicator",
+            "inputData": {
+                "isLoading": false
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeMessagesService"
+        },
+
+        "applySequentialLayout": {
+            "actionType": "JSFunction",
+            "method": "applySequentialLayout",
+            "inputData": {
+                "rootObject": "{{data.rootObject}}"
+            },
+            "outputData": {
+                "displayType": ""
+            },
+            "deps": "js/Ewi0OverviewService"
+        },
+
+        "applyHierarchyLayout": {
+            "actionType": "JSFunction",
+            "method": "applyHierarchyLayout",
+            "inputData": {
+            },
+            "outputData": {
+                "displayType": ""
+            },
+            "deps": "js/Ewi0OverviewService"
+        },
+
+        "applyTableLayout": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "doGridDataProvider"
+                },
+                {
+                    "action": "displayTable"
+                },
+                {
+                    "action": "selectCurrentStepInTable"
+                }
+            ]
+        },
+
+        "displayTable": {
+            "actionType": "JSFunction",
+            "method": "applyTableLayout",
+            "deps": "js/Ewi0OverviewService",
+            "inputData": {
+            },
+            "outputData": {
+                "displayType": ""
+            }
+        },
+
+        "selectCurrentStepInTable": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "deps": "js/mfeSyncUtils",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.travelerGridDataProvider}}",
+                "newVmos": "{{data.currentStep}}"
+            }
+        },
+
+        "doubleClickOnGraphEvent": {
+            "actionType": "JSFunction",
+            "method": "navigateToObjectBasedOnGivenNode",
+            "inputData": {
+                "nodeItem": "{{parameters.eventData.item}}"
+            },
+            "deps": "js/Ewi0OverviewService",
+            "events": {
+                "success": [
+                    {
+                        "name": "ewi.closeOverviewPopup"
+                    }
+                ]
+            }
+        },
+
+        "closePopup": {
+            "actionType": "JSFunctionAsync",
+            "method": "hide",
+            "inputData": {
+                "popupEl": "{{subPanelContext.popupApi.getCurrent().id}}"
+            },
+            "deps": "js/popupService"
+        },
+
+        "doGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "travelerGridDataProvider"
+        },
+
+        "loadData": {
+            "actionType": "JSFunction",
+            "method": "getTravelerData",
+            "inputData": {
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults"
+            },
+            "deps": "js/Ewi0OverviewService"
+        },
+        "loadColumns": {
+            "actionType": "JSFunction",
+            "method": "loadColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.travelerGridDataProvider}}",
+                "colInfos": "{{data.tableColumns}}"
+            },
+            "deps": "js/workinstrTableService"
+        },
+
+        "getOverviewPopupPropertyAction": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "objects": ["{{data.rootObject}}"]
+            },
+            "policy": {
+                "types": "{{function:getOverviewPolicy}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "ewiOverview.drawGraph"
+                    },
+                    {
+                        "name": "ewiOverview.createTravelerTableColumns"
+                    }
+                ]
+            },
+            "deps": "js/Ewi0OverviewService"
+        }
+    },
+
+    "columnProviders": {
+        "travelerColumnProvider": {
+            "loadColumnAction": "loadColumns",
+            "columns": "{{data.columns}}",
+            "sortCriteria": []
+        }
+    },
+
+    "dataProviders": {
+        "travelerGridDataProvider": {
+            "action": "loadData",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "inputData": {
+                "selectionModelMode": "single"
+            },
+            "commandsAnchor": "travelerCellCommands"
+        }
+    },
+
+    "grids": {
+        "travelerGridView": {
+            "dataProvider": "travelerGridDataProvider",
+            "columnProvider": "travelerColumnProvider",
+            "addIconColumn": true
+        }
+    },
+
+    "functions": {
+        "getOverviewPolicy": {
+            "functionName": "getOverviewPolicy"
+        }
+    },
+
+    "data": {
+        "isLoading": true,
+        "displayType": "Hierarchy",
+        "graphModel": {
+            "uid": "Ewi0Overview",
+            "config": {
+                "enableEdit": false,
+                "minZoom": 0.3,
+                "maxZoom": 1,
+                "autoEdgeRoutingType": "HV_SEGMENT3",
+                "fitViewPosition": "CENTER",
+                "tooltipDelayTime": 500,
+                "nodeHeightUpdateStrategy": "FIT_WRAP",
+                "tooltipOffset": {
+                    "x": 0,
+                    "y": 20
+                },
+                "movableItems": [
+                    "Node",
+                    "Edge"
+                ],
+                "selectableItems": [
+                    "Node"
+                ],
+                "layout": {
+                    "layoutMode": "IncUpdateLayout",
+                    "defaultOption": "LeftToRight",
+                    "options": [
+                        "LeftToRight",
+                        "Snake"
+                    ]
+                },
+                "inputMode": "viewInputMode",
+                "moveWithoutSelection": false,
+                "enableAutoPan": true,
+                "enableMarqueeSelection": false,
+                "showOverview": true,
+                "enableObjectArrangement": true,
+                "snapToGridByAnchorPoint": false,
+                "showGrid": false,
+                "enableAlignment": false,
+                "defaults": {
+                    "nodeSize": {
+                        "width": 250,
+                        "height": 80
+                    },
+
+                    "nodeStyle": {
+                        "templateId": "EwiOverviewTileNodeTemplate"
+                    },
+
+                    "edgeStyle": {
+                        "color": "rgb(46,46,46)",
+                        "dashStyle": "SOLID",
+                        "isHotSpotEdge": true,
+                        "targetArrow": {
+                            "arrowShape": "TRIANGLE",
+                            "fillInterior": true,
+                            "arrowScale": 1
+                        },
+                        "thickness": 1
+                    }
+                }
+            },
+            "inputModes": {
+                "viewInputMode": {
+                    "editMode": false,
+                    "enableManualEdgeRouting": false,
+                    "enableNodeResize": false,
+                    "enableLabelEdit": false,
+                    "dragableCursorUrl": "cursor/openhand.cur",
+                    "draggingCursorUrl": "cursor/closedhand.cur"
+                }
+            }
+        }
+    },
+
+    "onEvent": [
+        {
+            "eventId": "awGraph.initialized",
+            "action": "drawGraph"
+        },
+        {
+            "eventId": "workinstrGraph.loaded",
+            "action": "stopLoadingIndicator"
+        },
+        {
+            "eventId": "ewiOverview.drawGraph",
+            "action": "drawGraph"
+        },
+        {
+            "eventId": "awGraph.doubleClicked",
+            "action": "doubleClickOnGraphEvent",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "condition": "conditions.isEWIGraphEvent"
+        },
+        {
+            "eventId": "ewiOverview.createTravelerTableColumns",
+            "action": "createTravelerTableColumns"
+        },
+        {
+            "eventId": "ewi.closeOverviewPopup",
+            "action": "closePopup"
+        }
+    ],
+
+    "conditions": {
+        "isExecutionEnabled": {
+            "expression": "ctx.preferences.EWI_ExecutionEnabled[0] === 'true'"
+        },
+        "isEWIGraphEvent": {
+            "expression": "sourceGraph.uid == data.graphModel.uid"
+        },
+        "isLoading": {
+            "expression": "data.isLoading === true"
+        },
+        "isDisplayTypeHierarchy": {
+            "expression": "data.displayType === 'Hierarchy'"
+        },
+        "isDisplayTypeSequential": {
+            "expression": "data.displayType === 'Sequential'"
+        },
+        "isDisplayTypeTable": {
+            "expression": "data.displayType === 'Table'"
+        },
+        "shouldHideGraph": {
+            "expression": "conditions.isLoading || conditions.isDisplayTypeTable"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "init"
+    },
+
+    "i18n": {
+        "hierarchy": [ "EWIMessages" ],
+        "sequential": [ "EWIMessages" ],
+        "table": [ "EWIMessages" ]
+    },
+
+    "ctx": {
+        "graph": {
+            "type": "object"
+        }
+    }
+}

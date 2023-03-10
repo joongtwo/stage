@@ -1,0 +1,32 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel-section.directive",
+        "js/aw-default-cell.directive",
+        "js/aw-include.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-section.directive"
+    ],
+
+    "actions": {
+        "render": {
+            "method": "pca0SummarySelectionsRenderFunction",
+            "deps": "js/pca0SummarySelectionsService"
+        }
+    },
+    "i18n": {},
+    "lifecycleHooks": {
+        "render": "render"
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "focused": {
+            "type": "object"
+        }
+    },
+    "conditions": {},
+    "data": {},
+    "onEvent": []
+}

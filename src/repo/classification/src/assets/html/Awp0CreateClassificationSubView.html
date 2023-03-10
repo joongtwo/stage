@@ -1,0 +1,31 @@
+<div class="h-11">
+    <awp0-create-classification-full panel-mode="props.classifyState.value.panelMode" classify-state="props.classifyState" response-state="props.responseState"
+        sub-panel-context="subPanelContext"
+        workspace-object-uid="{{props.workspaceObjectUID}}" sort-option="fields.sortOption"
+        collapsed="{{conditions.isCollapsed}}" 
+        section-title="i18n.Classes"
+        aw-class="[{'h-11': !conditions.classSectionCollapsed} ]"
+        >
+    </awp0-create-classification-full>
+    <div class="w-12" show-when="conditions.classSectionCollapsed">
+        <aw-command-bar context="props.subPanelContext" anchor= "classify_panelCommands" ></aw-command-bar>
+    </div>
+    <div collapsed="disabled" show-when="conditions.showICOProps && !conditions.showImages"
+        aw-class="[{'h-10': data.collapsed===true}]">
+        <awp0-classification-properties-full classify-state="props.classifyState" response-state="props.responseState">
+        </awp0-classification-properties-full>
+    </div>
+    <div exist-when="conditions.showClassImagesSection" show-when="conditions.showImages && !conditions.showICOProps">
+        <aw-command-panel-section caption="i18n.images">
+            <aw-full-screen include-component-name='Ics1ClassificationTabUniViewerInternal' header-title='i18n.images' header-path='{{subPanelContext.activeTab.name ? subPanelContext.activeTab.name : subPanelContext.showObjectContext.activeTab.name}}' header-context-title='{{subPanelContext.selected.props.object_string.uiValues[0]}}' context='props.classifyState.selectedClass.classUid'>
+            </aw-full-screen>
+        </aw-command-panel-section>
+    </div>
+    <div exist-when="conditions.showPropGroup" show-when="conditions.showPropTree && !conditions.showImages && !conditions.showICOProps">
+        <aw-cls-property-group-tree classify-state="props.classifyState"></aw-cls-property-group-tree>
+    </div>
+</div>
+<aw-panel-footer class="aw-clspanel-createPanelFooter">
+    <aw-cls-create-footer classify-state="props.classifyState" sub-panel-context="subPanelContext" 
+        workspace-object-uid="{{props.workspaceObjectUID}}"></aw-cls-create-footer>
+</aw-panel-footer>

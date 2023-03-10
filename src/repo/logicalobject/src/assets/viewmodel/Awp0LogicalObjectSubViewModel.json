@@ -1,0 +1,448 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports":
+    [
+        "js/aw-panel-body.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-command-panel-section.directive",
+        "js/aw-button.directive",
+        "js/aw-list.directive",
+        "js/aw-default-cell.directive",
+        "js/aw-widget.directive",
+        "js/aw-checkbox.directive",
+        "js/aw-i18n.directive"
+    ],
+
+    "actions":
+    {
+        "init":
+        {
+            "actionType": "dataProvider",
+            "methods": [ "rootSetProvider", "parentSetProvider" ]
+        },
+
+        "add":
+        {
+            "actionType": "JSFunction",
+            "method": "validate",
+            "inputData":
+            {
+                "data": "{{data}}"
+            },
+
+            "deps": "js/Awp0LogicalObjectService"
+        },
+
+        "saveEvent":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events": [
+                    {
+                        "name": "awLogicalObject.save",
+                        "condition": "!conditions.supportClassificationData"
+                    },
+                    {
+                        "name": "awLogicalObject.save2",
+                        "condition": "conditions.supportClassificationData"
+                    }
+                ]
+            }
+        },
+
+        "save":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2017-11-LogicalObject",
+            "method": "createLogicalObjectTypes",
+            "inputData":
+            {
+                "logicalObjectTypeInputs": [ {
+                    "name": "{{data.internalName.dbValue}}",
+                    "displayName": "{{data.name.dbValue}}",
+                    "description": "{{data.description.dbValue}}",
+                    "rootTypeName": "{{data.rootSet[0].props.type_name.dbValue}}",
+                    "parentTypeName": "{{data.parentSet[0].props.type_name.dbValue}}"
+                } ]
+            },
+            "outputData":
+            {
+                "ctx.logicalObject.toSelect": "loTypes"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "primaryWorkarea.reset",
+                        "condition": "ctx.logicalObject.toSelect.length>0"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages":
+            {
+                "success": [ { "message": "addSuccess" } ],
+                "failure": [
+                {
+                    "condition": "errorCode.code==39008",
+                    "message": "addAlreadyExistError"
+                },{
+                    "condition": "errorCode.code==39007",
+                    "message": "addInvalidTypeError"
+                },{
+                    "condition": "errorCode.code==39036",
+                    "message": "addInvalidParentError"
+                },{
+                    "condition": "errorCode.code==39037",
+                    "message": "addInvalidRootError"
+                } ]
+            }
+        },
+
+        "save2":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2018-06-LogicalObject",
+            "method": "createLogicalObjectTypes2",
+            "inputData":
+            {
+                "logicalObjectTypeInputs": [ {
+                    "name": "{{data.internalName.dbValue}}",
+                    "displayName": "{{data.name.dbValue}}",
+                    "description": "{{data.description.dbValue}}",
+                    "rootTypeName": "{{data.rootSet[0].props.type_name.dbValues[0]}}",
+                    "parentTypeName": "{{data.parentSet[0].props.type_name.dbValues[0]}}",
+                    "retrieveClassificationData": "{{data.retrieveClassificationData.dbValue}}"
+                } ]
+            },
+            "outputData":
+            {
+                "ctx.logicalObject.toSelect": "loTypes"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "primaryWorkarea.reset",
+                        "condition": "ctx.logicalObject.toSelect.length>0"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages":
+            {
+                "success": [ { "message": "addSuccess" } ],
+                "failure": [
+                {
+                    "condition": "errorCode.code==39008",
+                    "message": "addAlreadyExistError"
+                },{
+                    "condition": "errorCode.code==39007",
+                    "message": "addInvalidTypeError"
+                },{
+                    "condition": "errorCode.code==39036",
+                    "message": "addInvalidParentError"
+                },{
+                    "condition": "errorCode.code==39037",
+                    "message": "addInvalidRootError"
+                } ]
+            }
+        },
+
+        "setRootObject": {
+            "actionType": "JSFunction",
+            "method": "setRootObject",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "_parentSearchInput": "_parentSearchInput"
+            },
+           "deps": "js/Awp0LogicalObjectService"
+        },
+
+        "setParentObject": {
+            "actionType": "JSFunction",
+            "method": "setParentObject",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "_rootSearchInput": "_rootSearchInput"
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        }
+},
+
+    "data":
+    {
+        "rootListProp": {
+            "displayName": "{{i18n.rootObject}}",
+            "type": "STRING",
+            "hasLov": true,
+            "isRequired": "true",
+            "isEditable": true,
+            "propertyLabelDisplay": "NO_PROPERTY_LABEL"
+        },
+
+        "parentListProp": {
+            "displayName": "{{i18n.parentObject}}",
+            "type": "STRING",
+            "hasLov": true,
+            "isRequired": "true",
+            "isEditable": true,
+            "propertyLabelDisplay": "NO_PROPERTY_LABEL"
+        },
+
+        "rootSelectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "parentSelectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+
+        "_rootSearchInput": {
+            "attributesToInflate": [ "object_name", "object_desc", "parent_types", "type_name" ],
+            "internalPropertyName": "",
+            "maxToLoad": 50,
+            "maxToReturn": 50,
+            "providerName": "Fnd0TypeSearchProvider",
+            "searchCriteria":
+            {
+                "category": "Persistent",
+                "root": "",
+                "parentLO": ""
+            },
+            "searchFilterMap": {},
+            "searchSortCriteria": []
+        },
+
+        "_parentSearchInput": {
+            "attributesToInflate": [ "object_name", "object_desc", "fnd0RootTypeName", "parent_types", "type_name" ],
+            "internalPropertyName": "",
+            "maxToLoad": 50,
+            "maxToReturn": 50,
+            "providerName": "Fnd0TypeSearchProvider",
+            "searchCriteria":
+            {
+                "category": "Logical",
+                "root": "",
+                "parentLO": ""
+            },
+            "searchFilterFieldSortType": "Priority",
+            "searchFilterMap": {},
+            "searchSortCriteria": []
+        },
+
+        "internalName":
+        {
+            "displayName": "{{i18n.internalName}}",
+            "type": "STRING",
+            "dbValue": "",
+            "isRequired": "true",
+            "maxLength": 27
+        },
+
+        "name":
+        {
+            "displayName": "{{i18n.name}}",
+            "type": "STRING",
+            "dbValue": "",
+            "isRequired": "true",
+            "maxLength": 128
+        },
+
+        "description":
+        {
+            "displayName": "{{i18n.description}}",
+            "type": "STRING",
+            "dbValue": "",
+            "isRequired": "true",
+            "maxLength": 1400,
+            "numberOfLines": 3
+        },
+
+        "retrieveClassificationData":
+        {
+            "displayName": "{{i18n.retrieveClassificationData}}",
+            "type": "BOOLEAN",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "rootCommands": "awp0_rootCommands",
+        "parentCommands": "awp0_parentCommands",
+        "rootSet": [],
+        "parentSet": [],
+        "searchTip":
+        {
+            "dbValue": "{{i18n.search}}"
+        }
+    },
+
+    "dataProviders":
+    {
+        "rootSetProvider":
+        {
+            "response": "{{data.rootSet}}",
+            "totalFound": "{{data.rootSet.length}}",
+            "selectionModelMode": "single",
+            "noResultsFound": ""
+        },
+
+        "parentSetProvider":
+        {
+            "response": "{{data.parentSet}}",
+            "totalFound": "{{data.parentSet.length}}",
+            "selectionModelMode": "single",
+            "noResultsFound": ""
+        }
+    },
+
+    "conditions":
+    {
+        "isValidToAdd":
+        {
+            "expression": "data.rootSet.length && data.parentSet.length && data.name.dbValue && data.internalName.dbValue && data.description.dbValue"
+        },
+        "supportClassificationData": {
+            "expression": "(ctx.tcSessionData.tcMajorVersion > 11 || (ctx.tcSessionData.tcMajorVersion === 11 && (ctx.tcSessionData.tcMinorVersion > 2 || (ctx.tcSessionData.tcMinorVersion === 2 && ctx.tcSessionData.tcQRMNumber >= 6))))"
+        }
+    },
+
+    "i18n":
+    {
+        "add": [ "LogicalObjectMessages" ],
+        "back": [ "LogicalObjectMessages" ],
+        "logicalObject": [ "LogicalObjectMessages" ],
+        "properties": [ "LogicalObjectMessages" ],
+        "name": [ "LogicalObjectMessages" ],
+        "internalName": [ "LogicalObjectMessages" ],
+        "description": [ "LogicalObjectMessages" ],
+        "search": [ "LogicalObjectMessages" ],
+        "retrieveClassificationData": [ "LogicalObjectMessages" ],
+        "rootObject": [ "LogicalObjectMessages" ],
+        "addRootObject": [ "LogicalObjectMessages" ],
+        "removeRootObject": [ "LogicalObjectMessages" ],
+        "parentObject": [ "LogicalObjectMessages" ],
+        "addParentObject": [ "LogicalObjectMessages" ],
+        "removeParentObject": [ "LogicalObjectMessages" ],
+        "nameCharError": [ "LogicalObjectMessages" ],
+        "nameCppError": [ "LogicalObjectMessages" ],
+        "nameOpError": [ "LogicalObjectMessages" ],
+        "xmlCharError": [ "LogicalObjectMessages" ],
+        "trailingSpaceError": [ "LogicalObjectMessages" ],
+        "tabError": [ "LogicalObjectMessages" ],
+        "addSuccess": [ "LogicalObjectMessages" ],
+        "addFailue": [ "LogicalObjectMessages" ],
+        "addAlreadyExistError": [ "LogicalObjectMessages" ],
+        "addInvalidTypeError": [ "LogicalObjectMessages" ],
+        "addInvalidParentError": [ "LogicalObjectMessages" ],
+        "addInvalidRootError": [ "LogicalObjectMessages" ]
+    },
+
+    "messages":
+    {
+        "addSuccess":
+        {
+            "messageType": "INFO",
+            "messageText": "{{i18n.addSuccess}}",
+            "messageTextParams": [ "{{data.name.dbValue}}" ]
+        },
+
+        "addFailue":
+        {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.addFailue}}",
+            "messageTextParams": [ "{{data.name.dbValue}}" ]
+        },
+
+        "addAlreadyExistError":
+        {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.addAlreadyExistError}}",
+            "messageTextParams": [ "{{data.name.dbValue}}" ]
+        },
+
+        "addInvalidTypeError":
+        {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.addInvalidTypeError}}",
+            "messageTextParams": [ "{{data.name.dbValue}}" ]
+        },
+
+        "addInvalidParentError":
+        {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.addInvalidParentError}}",
+            "messageTextParams": [ "{{data.name.dbValue}}", "{{data.parentSet[0].props.type_name.dbValue}}" ]
+        },
+
+        "addInvalidRootError":
+        {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.addInvalidRootError}}",
+            "messageTextParams": [ "{{data.name.dbValue}}", "{{data.rootSet[0].props.type_name.dbValue}}" ]
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "initialize",
+        "onUpdate": [
+            {
+                "action": "setRootObject",
+                "observers": [ "viewModel.atomicData.rootSelectionData" ]
+            },
+            {
+                "action": "setParentObject",
+                "observers": [ "viewModel.atomicData.parentSelectionData" ]
+            }
+        ],
+        "onUnmount": "updateCtxVariableFalse"
+    },
+
+    "onEvent":
+    [
+        {
+           "eventId": "awPanel.reveal",
+           "action": "init",
+           "criteria": { "panelId": "Awp0LogicalObjectSub" }
+        },
+        {
+           "eventId": "awLogicalObject.saveEvent",
+           "action": "saveEvent"
+        },
+        {
+           "eventId": "awLogicalObject.save",
+           "action": "save"
+        },
+        {
+           "eventId": "awLogicalObject.save2",
+           "action": "save2"
+        },
+        {
+           "eventId": "Awp0RootRemoveCmdPanelActionEvent",
+           "action": "removeRoot"
+        },
+        {
+           "eventId": "Awp0ParentRemoveCmdPanelActionEvent",
+           "action": "removeParent"
+        }
+    ]
+}

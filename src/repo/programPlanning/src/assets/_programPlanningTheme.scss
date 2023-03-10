@@ -1,0 +1,134 @@
+/* Copyright 2019 Siemens Product Lifecycle Management Software Inc. */
+
+.prgTimeline .gantt_side_content {
+    color: $PL_Black_4;
+}
+
+.prgTimeline .gantt_highlight_selected_task_text {
+    border-color: $Siemens_Blue_18;
+    background-color: $Siemens_Blue_24;
+}
+
+.prgTimeline .gantt_highlight_task_text {
+    border-color: $Siemens_Yellow_18;
+    background-color: $Siemens_Yellow_24;
+}
+
+.prgTimeline .gantt_tooltip {
+    background-color: $balloon_popup_background_color;
+    border-color: $balloon_popup_border_color;
+    box-shadow: $balloon_popup_box_shadow;
+}
+
+.prgTimeline .gantt_container,
+.prgTimeline .gantt_scale_line {
+    border-color: $table_border_color;
+}
+
+.prgTimeline .gantt_scale_line:nth-child(2) .gantt_scale_cell,
+.prgTimeline .gantt_scale_line:nth-child(3) .gantt_scale_cell {
+    border-color: $table_border_color;
+}
+
+.prgTimeline .gantt_scale_cell {
+    border-color: $drop_shadow_table_scroll_color;
+}
+
+.prgTimeline .gantt_grid_scale {
+    border-bottom-color: $table_border_color;
+    background-color: $table_header_background_color;
+}
+
+.prgTimeline .gantt_task_text,
+.prgTimeline .gantt_task_date {
+    color: $brand_primary_accent_text;
+}
+
+.prgTimeline .gantt_task_stackedWithInfo,
+.prgTimeline .gantt_task_stackedWithoutInfo {
+    background-color: $Siemens_Blue_20;
+}
+
+.prgTimeline .gantt_task_stackedWithInfo .gantt_task_stackedCount,
+.prgTimeline .gantt_task_stackedWithoutInfo .gantt_task_stackedCount {
+    color: $PL_Black;
+}
+
+.prgTimeline .gantt_task_stackedWithInfoCompact,
+.prgTimeline .gantt_task_stackedWithoutInfoCompact,
+.prgTimeline .gantt_task_stackedWithInfoCompactAndFind {
+    background-color: $Siemens_Blue_20;
+}
+
+.prgTimeline .gantt_task_stackedWithInfoCompact .gantt_task_stackedCount,
+.prgTimeline .gantt_task_stackedWithoutInfoCompact .gantt_task_stackedCount,
+.prgTimeline .gantt_task_stackedWithInfoCompactAndFind .gantt_task_stackedCount {
+    color: $PL_Black;
+}
+
+.prgTimeline .gantt_scale_line .gantt_scale_cell {
+    color: $aw_gray_8;
+}
+
+.prgTimeline .gantt_tooltip table tr td {
+    color: $aw_gantt_grid_head_cell;
+    outline-color: $aw_gray_6;
+}
+
+.prgTimeline .gantt_task_line.gantt_milestone.gantt_selected .gantt_task_content {
+    border-color: $aw_prg_timeline_event_selection;
+}
+
+// .prgTimeline .gantt_task_line.gantt_milestone .gantt_task_content {
+//     border-color: $PL_Green_1;
+// }
+
+.prgTimeline .gantt_task_line.gantt_milestone.gantt_selected .gantt_task_content {
+    box-shadow: 0 0 5px $aw_gray_16;
+}
+
+.prgTimeline {
+    .gantt_scale_line .gantt_scale_cell {
+        color: $aw_gray_10;
+    }
+
+    .gantt_scale_line:first-child .gantt_scale_cell,
+    .gantt_scale_line:nth-child(3) .gantt_scale_cell {
+        background-color: $aw_gantt_task_content_color;
+    }
+
+    .gantt_scale_line:nth-child(2) .gantt_scale_cell {
+        background-color: $aw_gantt_cell_weekend;
+    }
+}
+
+.prgTimeline .selected_link {
+    .gantt_line_wrapper div {
+        background-color: $brand_primary_accent_button_background_hover;
+        box-shadow: $brand_primary_accent_button_background_hover;
+    }
+
+    .gantt_link_arrow_right {
+        border-left-color: $brand_primary_accent_button_background_hover;
+    }
+
+    .gantt_link_arrow_left {
+        border-right-color: $brand_primary_accent_button_background_hover;
+    }
+}
+
+.aw-programPlanning-timelineTable {
+    border-bottom-color: transparent;
+
+    .aw-splm-tableContainer {
+        background-color: $table_content_background_color;
+    }
+}
+
+.prgTimeline .gantt_task_stackedInfo {
+    background-color: $Siemens_Blue_20;
+
+    .gantt_task_stackedCount {
+        color: $PL_Black;
+    }
+}

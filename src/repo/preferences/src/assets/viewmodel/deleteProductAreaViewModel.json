@@ -1,0 +1,89 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-listbox.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-i18n.directive",
+        "js/visible-when.directive",
+        "js/aw-button.directive"
+    ],
+    "actions": {
+        "reveal": {
+            "actionType": "JSFunction",
+            "method": "populateLists",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/createPreferencesService"
+        },
+        "deleteProductArea": {
+            "actionType": "JSFunction",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "method": "deleteProductArea",
+            "events": {
+                "success": [
+                    {
+                        "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/deleteProductAreaService",
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "deleteProductAreaFailure"
+                    }
+                ]
+            }
+        }
+    },
+    "data": {
+        "fnd0ProductArea": {
+            "displayName": "{{i18n.ProductArea}}",
+            "type": "STRING",
+            "hasLov": true,
+            "dataProvider":"ProductAreaProvider",
+            "isSelectOnly": true,
+            "emptyLOVEntry": false
+        }
+    },
+    "dataProviders": {
+        "ProductAreaProvider": {
+            "action": "reveal",
+            "response": "{{data.productAreaList}}"
+        }
+    },
+    "i18n": {
+        "deleteProductAreaPanelTitle": [
+            "preferenceMessages"
+        ],
+        "deleteProductAreaBtnTitle": [
+            "preferenceMessages"
+        ],
+        "ProductArea": [
+            "preferenceMessages"
+        ]
+    },
+    "conditions": {
+        "showDeleteBtn": {
+            "expression": "data.fnd0ProductArea.dbValue != '' && data.fnd0ProductArea.dbValue !== null && data.fnd0ProductArea.dbValue !== undefined"
+        }
+    },
+    "messages": {
+        "deleteProductAreaFailure": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    }
+}

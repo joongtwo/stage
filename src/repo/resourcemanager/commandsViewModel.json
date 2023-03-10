@@ -1,0 +1,3221 @@
+{
+  "commands": {
+    "Mrm0ShowResourceView": {
+      "iconId": "cmdDiagramView",
+      "title": "{{i18n.ResourceViewModeTitle}}",
+      "description": "{{i18n.Mrm0ShowResourceViewDesc}}"
+    },
+    "Mrm0ShowResourceSummaryView": {
+      "iconId": "cmdDiagramSummaryView",
+      "title": "{{i18n.ResourceSummaryViewModeTitle}}",
+      "description": "{{i18n.Mrm0ShowResourceSummaryViewDesc}}"
+    },
+    "ShowPSPOnNode": {
+      "iconId": "indicatorPropagationStartPoint",
+      "isGroup": false,
+      "title": "{{i18n.ShowPSPOnNodeTitle}}"
+    },
+    "ShowPSPOnSubAssemblyNode": {
+      "iconId": "indicatorInactivePropagationStartPoint",
+      "isGroup": false,
+      "title": "{{i18n.ShowPSPOnSubAssemblyNodeTitle}}"
+    },
+    "MRM0ToggleChildren": {
+      "iconId": "cmdChild",
+      "isGroup": false,
+      "title": "{{i18n.MRM0ShowChildrenTitle}}"
+    },
+    "MRM0AddUpDirectionElements": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.MRM0AddUpDirectionElementsTitle}}"
+    },
+    "MRM0AddDownDirectionElements": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.MRM0AddDownDirectionElementsTitle}}"
+    },
+    "MRM0GcLayoutCommandGroup": {
+      "iconId": "cmdLayoutGroup",
+      "isGroup": true,
+      "title": "{{i18n.applyLayout}}"
+    },
+    "MRM0GcTopToBottomLayout": {
+      "iconId": "cmdDownArrow",
+      "isGroup": false,
+      "title": "{{i18n.topToBottomLayout}}",
+      "selected": {
+        "iconId": "cmdDownArrow",
+        "title": "{{i18n.topToBottomLayout}}"
+      }
+    },
+    "MRM0GcRightToLeftLayout": {
+      "iconId": "cmdLeftArrow",
+      "isGroup": false,
+      "title": "{{i18n.rightToLeftLayout}}",
+      "selected": {
+        "iconId": "cmdLeftArrow",
+        "title": "{{i18n.rightToLeftLayout}}"
+      }
+    },
+    "MRM0GcLeftToRightLayout": {
+      "iconId": "cmdRightArrow",
+      "isGroup": false,
+      "title": "{{i18n.leftToRightLayout}}",
+      "selected": {
+        "iconId": "cmdRightArrow",
+        "title": "{{i18n.leftToRightLayout}}"
+      }
+    },
+    "MRM0GcBottomToTopLayout": {
+      "iconId": "cmdUpArrow",
+      "isGroup": false,
+      "title": "{{i18n.bottomToTopLayout}}",
+      "selected": {
+        "iconId": "cmdUpArrow",
+        "title": "{{i18n.bottomToTopLayout}}"
+      }
+    },
+    "MRM0GcOrganicLayout": {
+      "iconId": "cmdLayoutGroup",
+      "isGroup": false,
+      "title": "{{i18n.organicLayout}}",
+      "selected": {
+        "iconId": "cmdLayoutGroup",
+        "title": "{{i18n.organicLayout}}"
+      }
+    },
+    "MRM0GcIncrementalLayout": {
+      "iconId": "cmdLayoutGroup",
+      "isGroup": false,
+      "title": "{{i18n.incrementalLayout}}",
+      "selected": {
+        "iconId": "cmdLayoutGroup",
+        "title": "{{i18n.incrementalLayout}}"
+      }
+    },
+    "Mrm0AddChildElementDeclarative": {
+      "iconId": "cmdAdd",
+      "title": "{{i18n.MRM0AddResourceComponentTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0AddResourceComponentExtendedTooltip"
+      }
+    },
+    "Mrm0CreateNXAssembly": {
+      "iconId": "cmdCreateNXToolAssembly",
+      "title": "{{i18n.MRM0CreateNXToolAssemblyTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0CreateNXAssemblyExtendedTooltip"
+      }
+    },
+    "Mrm0Paste": {
+      "iconId": "cmdPaste",
+      "title": "{{i18n.MRM0PasteResourceComponentTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0PasteResourceComponentExtendedTooltip"
+      }
+    },
+    "Mrm0ReplaceElementDeclarative": {
+      "iconId": "cmdAdd",
+      "title": "{{i18n.MRM0ReplaceResourceComponentTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0ReplaceResourceComponentExtendedTooltip"
+      }
+    },
+    "Mrm0PropagationStartPoint": {
+      "iconId": "cmdAddPropagationStartPoint",
+      "title": "{{i18n.Mrm0PropagationStartPointTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0PropagationStartPointExtendedTooltip"
+      }
+    },
+    "Mrm0RemoveElement": {
+      "iconId": "cmdRemove",
+      "title": "{{i18n.Mrm0RemoveElementTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0RemoveElementExtendedTooltip"
+      }
+    },
+    "Mrm0GCSAddMachineSide": {
+      "iconId": "cmdAdd",
+      "title": "{{i18n.MRM0GCSAddTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0GCSAddMachineSideExtendedTooltip"
+      },
+      "isGroup": false
+    },
+    "Mrm0GCSAddWorkpieceSide": {
+      "iconId": "cmdAdd",
+      "title": "{{i18n.MRM0GCSAddTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0GCSAddWorkpieceSideExtendedTooltip"
+      },
+      "isGroup": false
+    },
+    "Mrm0CreateSetupSheet": {
+      "iconId": "cmdCreateSetupSheet",
+      "title": "{{i18n.Mrm0CreateSetupSheetTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0CreateSetupSheetExtendedTooltip"
+      }
+    },
+    "Mrm0ExtractHolderData": {
+      "iconId": "cmdExtractHolderData",
+      "title": "{{i18n.Mrm0ExtractHolderDataTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0ExtractHolderDataExtendedTooltip"
+      }
+    },
+    "Mrm0CheckNXCAMToolRetrieve": {
+      "iconId": "cmdCheckNXCAMToolRetrieve",
+      "title": "{{i18n.Mrm0CheckNXCAMToolRetrieveTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0CheckNXCAMToolRetrieveExtendedTooltip"
+      }
+    },
+    "Mrm0ImportStep3DModels": {
+      "iconId": "cmdImportVendor3D",
+      "title": "{{i18n.mrm0ImportVemdor3DTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0ImportVendor3DExtendedTooltip"
+      }
+    },
+    "Mrm0MapClassificationObject": {
+      "iconId": "cmdMapClassificationObject",
+      "title": "{{i18n.mrm0MapClassificationObjectTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0MapClassificationObjectExtendedTooltip"
+      }
+    },
+    "Mrm0CreateAssemblyFromComp": {
+      "iconId": "cmdResourceBasedonComponent",
+      "title": "{{i18n.mrm0CreateAssemblyFromCompTitle}}",
+      "extendedTooltip": {
+        "view": "Mrm0CreateAssemblyFromCompExtendedTooltip"
+      }
+    },
+    "MrlCreateResource": {
+      "iconId": "cmdAdd",
+      "title": "{{i18n.MrlCreateResource}}"
+    },
+    "MrlCreateResourceCtxMenu": {
+      "iconId": "cmdAdd",
+      "title": "{{i18n.MrlCreateResource}}"
+    },
+    "MrlImportVendorData": {
+      "iconId": "cmdImport",
+      "title": "{{i18n.mrlImportVendorDataTitle}}",
+      "extendedTooltip": {
+        "view": "MrlImportVendorDataExtendedTooltip"
+      }
+    },
+    "MrlImportVendorHierarchy": {
+      "iconId": "cmdImport",
+      "title": "{{i18n.mrlImportVendorHierarchyTitle}}",
+      "extendedTooltip": {
+        "view": "MrlImportVendorHierarchyExtendedTooltip"
+      }
+    }
+  },
+  "commandHandlers": {
+    "Mrm0ShowResourceViewHandler": {
+      "id": "Mrm0ShowResourceView",
+      "action": "switchToResourceView",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.supportsResourceView"
+      },
+      "selectWhen": {
+        "condition": "conditions.isResourceView"
+      }
+    },
+    "Mrm0ShowResourceSummaryViewHandler": {
+      "id": "Mrm0ShowResourceSummaryView",
+      "action": "switchToResourceSummaryView",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.supportsResourceSummaryView"
+      },
+      "selectWhen": {
+        "condition": "conditions.isResourceSummaryView"
+      }
+    },
+    "ShowPSPOnNodeCommandHandler": {
+      "id": "ShowPSPOnNode",
+      "action": "",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "ShowPSPOnSubAssemblyNodeCommandHandler": {
+      "id": "ShowPSPOnSubAssemblyNode",
+      "action": "",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "MRM0ToggleChildrenCommandHandler": {
+      "id": "MRM0ToggleChildren",
+      "action": "MRM0ToggleChildrenAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "MRM0AddUpDirectionElementsHandler": {
+      "id": "MRM0AddUpDirectionElements",
+      "action": "MRM0AddUpDirectionElementsCheckLicense",
+      "activeWhen": true,
+      "visibleWhen": false
+    },
+    "MRM0CreateNXAssemblyHandler": {
+      "id": "Mrm0CreateNXAssembly",
+      "action": "MRM0ACreateNXAssemlyCheckLicense",
+      "activeWhen": {
+        "condition": "conditions.showMRM0GraphicsBuilderCommandsForItem"
+      },
+      "visibleWhen": {
+        "condition": "conditions.showMRM0GraphicsBuilderCommandsForItem"
+      }
+    },
+    "MRM0AddDownDirectionElementsHandler": {
+      "id": "MRM0AddDownDirectionElements",
+      "action": "MRM0AddDownDirectionElementsCheckLicense",
+      "activeWhen": true,
+      "visibleWhen": false
+    },
+    "MRM0GcLayoutCommandGroupHandler": {
+      "id": "MRM0GcLayoutCommandGroup",
+      "actionType": "popup",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.cmdMRM0GcLayoutCommandGroupSelected"
+      },
+      "selectWhen": {
+        "condition": "conditions.cmdMRM0GcLayoutCommandGroupSelected"
+      },
+      "action": "openCommandGroup"
+    },
+    "MRM0GcTopToBottomLayoutHandler": {
+      "id": "MRM0GcTopToBottomLayout",
+      "action": "setActiveLayoutAsTopToBottom",
+      "activeWhen": {
+        "condition": "conditions.cmdMRM0GcTopToBottomLayoutActive"
+      },
+      "visibleWhen": {
+        "condition": "conditions.cmdMRM0GcTopToBottomLayoutActive"
+      },
+      "selectWhen": {
+        "condition": "conditions.cmdGcTopToBottomLayoutSelected"
+      }
+    },
+    "MRM0GcRightToLeftLayoutHandler": {
+      "id": "MRM0GcRightToLeftLayout",
+      "action": "setActiveLayoutAsRightToLeft",
+      "activeWhen": {
+        "condition": "conditions.cmdMRM0GcRightToLeftLayoutActive"
+      },
+      "visibleWhen": {
+        "condition": "conditions.cmdMRM0GcRightToLeftLayoutActive"
+      },
+      "selectWhen": {
+        "condition": "conditions.cmdGcRightToLeftLayoutSelected"
+      }
+    },
+    "MRM0GcLeftToRightLayoutHandler": {
+      "id": "MRM0GcLeftToRightLayout",
+      "action": "setActiveLayoutAsLeftToRight",
+      "activeWhen": {
+        "condition": "conditions.cmdMRM0GcRightToLeftLayoutActive"
+      },
+      "visibleWhen": {
+        "condition": "conditions.cmdMRM0GcLeftToRightLayoutActive"
+      },
+      "selectWhen": {
+        "condition": "conditions.cmdGcLeftToRightLayoutSelected"
+      }
+    },
+    "MRM0GcBottomToTopLayoutHandler": {
+      "id": "MRM0GcBottomToTopLayout",
+      "action": "setActiveLayoutAsBottomToTop",
+      "activeWhen": {
+        "condition": "conditions.cmdMRM0GcBottomToTopLayoutActive"
+      },
+      "visibleWhen": {
+        "condition": "conditions.cmdMRM0GcBottomToTopLayoutActive"
+      },
+      "selectWhen": {
+        "condition": "conditions.cmdGcBottomToTopLayoutSelected"
+      }
+    },
+    "MRM0GcOrganicLayoutHandler": {
+      "id": "MRM0GcOrganicLayout",
+      "action": "setActiveLayoutAsOrganic",
+      "activeWhen": {
+        "condition": "conditions.cmdMRM0GcOrganicLayoutActive"
+      },
+      "visibleWhen": {
+        "condition": "conditions.cmdMRM0GcOrganicLayoutActive"
+      },
+      "selectWhen": {
+        "condition": "conditions.cmdGcOrganicLayoutSelected"
+      }
+    },
+    "MRM0GcIncrementalLayoutHandler": {
+      "id": "MRM0GcIncrementalLayout",
+      "action": "setActiveLayoutAsIncremental",
+      "activeWhen": {
+        "condition": "conditions.cmdMRM0GcIncrementalLayoutActive"
+      },
+      "visibleWhen": {
+        "condition": "conditions.cmdMRM0GcIncrementalLayoutActive"
+      },
+      "selectWhen": {
+        "condition": "conditions.cmdGcIncrementalLayoutSelected"
+      }
+    },
+    "MRM0PackAllHandler": {
+      "id": "Awb0PackAll",
+      "action": "acePackAllElements",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": false
+    },
+    "MRM0UnpackAllHandler": {
+      "id": "Awb0UnpackAll",
+      "action": "aceUnpackAllElements",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": false
+    },
+    "Mrm0ExpandBelowCommandHandler": {
+      "id": "Awb0ExpandBelow",
+      "action": "aceExpandBelow",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": false
+    },
+    "Mrm0CollapseBelowCommandHandler": {
+      "id": "Awb0CollapseBelow",
+      "action": "aceCollapseBelow",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": false
+    },
+    "MRM0AddChildElementCommandHandler": {
+      "id": "Mrm0AddChildElementDeclarative",
+      "action": "Mrm0AddChildElementDeclarativeCheckLicense",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.isMRMAddChildCommandSupported"
+      }
+    },
+    "Awb0AddChildElementCommandHandler": {
+      "id": "Awb0AddChildElementDeclarative",
+      "action": "launchAddChildElementPanel",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": false
+    },
+    "Awb0AddSiblingElementCommandHandler": {
+      "id": "Awb0AddSiblingElementDeclarative",
+      "action": "launchAddChildElementPanel",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": false
+    },
+    "Mrm0PasteResourceComponentHandler": {
+      "id": "Mrm0Paste",
+      "action": "Mrm0PasteCheckLicense",
+      "activeWhen": {
+        "condition": "conditions.mrmPasteActiveCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "enableWhen": {
+        "condition": "conditions.mrmPasteEnableCondition"
+      }
+    },
+    "Mrm0PasteHandler": {
+      "id": "Awp0Paste",
+      "action": "pasteContentsFromClipboard",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": false
+    },
+    "Mrm0PasteCtxMenuHandler": {
+      "id": "Awp0PasteContextMenu",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": false
+    },
+    "Mrm0CutCommandHandler": {
+      "id": "Awp0Cut",
+      "action": "mrmCutContentsToClipboard",
+      "activeWhen": {
+        "condition": "conditions.isMrm0CutCommandActive"
+      },
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.isMrm0CutCommandEnabled"
+      }
+    },
+    "Mrm0ReplaceElementCommandHandler": {
+      "id": "Mrm0ReplaceElementDeclarative",
+      "action": "mrmLaunchReplaceElementPanel",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "enableWhen": {
+        "condition": "conditions.isMRMReplaceCommandSupported"
+      }
+    },
+    "AceReplaceElementCommandHandler": {
+      "id": "Awb0ReplaceElementDeclarative",
+      "action": "launchReplaceElementPanel",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": false
+    },
+    "Mrm0PropagationStartPointHandler": {
+      "id": "Mrm0PropagationStartPoint",
+      "action": "mrm0PropagationStartPointAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.isPSPCommandVisible"
+      }
+    },
+    "Mrm0RemoveElementCommandHandler": {
+      "id": "Mrm0RemoveElement",
+      "action": "showConfirmationMessageForRemoveElements",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.isMRMRemoveElementCommandVisible"
+      }
+    },
+    "Mrm0AceRemoveElementCommandHandler": {
+      "id": "Awb0RemoveElement",
+      "action": "showConfirmationMessageForRemove",
+      "activeWhen": {
+        "condition": "conditions.hideACERemoveCommand"
+      },
+      "visibleWhen": false
+    },
+    "Mrm0Awp0SelectAllCommandHandler": {
+      "id": "Awp0SelectAll",
+      "action": "Awp0SelectAllCommandAction",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": false
+    },
+    "Mrm0Awp0DeselectAllCommandHandler": {
+      "id": "Awp0DeselectAll",
+      "action": "Awp0DeselectAllCommandAction",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": false
+    },
+    "Mrm0Awp0EnableMultiSelectCommandHandler": {
+      "id": "Awp0EnableMultiSelect",
+      "action": "Awp0EnableMultiSelectCommandAction",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": false
+    },
+    "Mrm0Awp0DisableMultiSelectCommandHandler": {
+      "id": "Awp0DisableMultiSelect",
+      "action": "Awp0DisableMultiSelectCommandAction",
+      "activeWhen": {
+        "condition": "conditions.isResourceOrResourceWithSummaryView"
+      },
+      "visibleWhen": false
+    },
+    "Mrm0GCSAddMachineSideCommandHandler": {
+      "id": "Mrm0GCSAddMachineSide",
+      "action": "mrmProcessGCSAddMachineSideElementInput",
+      "activeWhen": {
+        "condition": "conditions.isResourceSummaryView"
+      },
+      "visibleWhen": {
+        "condition": "conditions.isResourceSummaryView"
+      },
+      "enableWhen": {
+        "condition": "conditions.isMrm0GCSAddMachineSideCommandEnabled"
+      }
+    },
+    "Mrm0GCSAddWorkpieceSideWithoutDlgCmdHandler": {
+      "id": "Mrm0GCSAddWorkpieceSide",
+      "action": "mrmGCSAddWorkpieceSideElements",
+      "activeWhen": {
+        "condition": "conditions.isMrm0GCSAddMultiWorkpieceSideCmdEnabled"
+      },
+      "visibleWhen": {
+        "condition": "conditions.isResourceSummaryView"
+      },
+      "enableWhen": {
+        "condition": "conditions.isMrm0GCSAddMultiWorkpieceSideCmdEnabled"
+      }
+    },
+    "Mrm0GCSAddWorkpieceSideWithDlgCmdHandler": {
+      "id": "Mrm0GCSAddWorkpieceSide",
+      "action": "mrmProcessGCSAddWorkpieceSideElementInput",
+      "activeWhen": {
+        "condition": "conditions.isResourceSummaryView"
+      },
+      "visibleWhen": {
+        "condition": "conditions.isResourceSummaryView"
+      },
+      "enableWhen": {
+        "condition": "conditions.isMrm0GCSAddSingleWorkpieceSideCmdEnabled"
+      }
+    },
+    "MRM0ExtractHolderDataHandler": {
+      "id": "Mrm0ExtractHolderData",
+      "action": "MRM0ExtractHolderDataCheckLicense",
+      "activeWhen": {
+        "condition": "conditions.showMRM0GraphicsBuilderCommandsForItem"
+      },
+      "visibleWhen": {
+        "condition": "conditions.showMRM0GraphicsBuilderCommandsForItem"
+      }
+    },
+    "MRM0CreateSetupSheetHandler": {
+      "id": "Mrm0CreateSetupSheet",
+      "action": "MRM0CreateSetupSheetCheckLicense",
+      "activeWhen": {
+        "condition": "conditions.showMRM0GraphicsBuilderCommandsForItem"
+      },
+      "visibleWhen": {
+        "condition": "conditions.showMRM0GraphicsBuilderCommandsForItem"
+      }
+    },
+    "MRM0CheckNXCAMToolRetrieveHandler": {
+      "id": "Mrm0CheckNXCAMToolRetrieve",
+      "action": "MRM0ToolRetrieveCheckLicense",
+      "activeWhen": {
+        "condition": "conditions.showMRM0GraphicsBuilderCommandsForItemOrCatalogItem"
+      },
+      "visibleWhen": {
+        "condition": "conditions.showMRM0GraphicsBuilderCommandsForItemOrCatalogItem"
+      }
+    },
+    "MRM0ImportStep3DModelsHandler": {
+      "id": "Mrm0ImportStep3DModels",
+      "action": "MRM0ImportStep3DModelsCheckLicense",
+      "activeWhen": {
+        "condition": "conditions.showMRM0GraphicsBuilderCommandsForOneOrMultiSelections"
+      },
+      "visibleWhen": {
+        "condition": "conditions.showMRM0GraphicsBuilderCommandsForOneOrMultiSelections"
+      }
+    },
+    "Mrm0MapClassificationObjectHandler": {
+      "id": "Mrm0MapClassificationObject",
+      "action": "MRM0MapClassificationObjectCheckLicense",
+      "activeWhen": {
+        "condition": "conditions.showMRM0GraphicsBuilderCommandsForItemOrCatalogItem"
+      },
+      "visibleWhen": {
+        "condition": "conditions.showMRM0GraphicsBuilderCommandsForItemOrCatalogItem"
+      }
+    },
+    "Mrm0CreateAssemblyFromCompHandler": {
+      "id": "Mrm0CreateAssemblyFromComp",
+      "action": "processCreateAssemblyFromComp",
+      "activeWhen": {
+        "condition": "conditions.showMRM0CreateAssemblyCommand"
+      },
+      "visibleWhen": {
+        "condition": "conditions.showMRM0CreateAssemblyCommand"
+      }
+    },
+    "MrlCreateResourceCommandHandler": {
+      "id": "MrlCreateResource",
+      "action": "mrlCreateResourceCheckLicense",
+      "activeWhen": {
+        "condition": "conditions.isMrlCreateResourceCommandSupported"
+      },
+      "visibleWhen": {
+        "condition": "conditions.isMrlCreateResourceCommandSupported"
+      }
+    },
+    "MrlCreateResourceCtxMenuCommandHandler": {
+      "id": "MrlCreateResourceCtxMenu",
+      "action": "mrlCreateResourceCheckLicense",
+      "activeWhen": {
+        "condition": "conditions.isMrlCreateResourceCommandSupported"
+      },
+      "visibleWhen": {
+        "condition": "conditions.isMrlCreateResourceCtxMenuCommandSupported"
+      }
+    },
+    "MrlAwp0OpenVVIHandler": {
+      "id": "Awp0OpenVVI",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlAwp0OpenInSEECHandler": {
+      "id": "Awp0OpenInSEEC",
+      "activeWhen": {
+        "condition": "conditions.mrlHideAwp0OpenInSEECCmd"
+      },
+      "visibleWhen": false
+    },
+    "MrlOpenInIllustratorHandler": {
+      "id": "openInIllustrator",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlArm0CreateTraceLinkHandler": {
+      "id": "Arm0CreateTraceLink",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlArm0CreateTraceLinkCtxHandler": {
+      "id": "Arm0CreateTraceLinkCtx",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlCrt1CreateValidationContractHandler": {
+      "id": "Crt1CreateValidationContract",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlCm1ShowCreateChangeInContextHandler": {
+      "id": "Cm1ShowCreateChangeInContext",
+      "activeWhen": {
+        "condition": "conditions.mrlHideCm1ShowCreateChangeInContextCmd"
+      },
+      "visibleWhen": false
+    },
+    "MrlSc1CreateLineItemHandler": {
+      "id": "Sc1CreateLineItem",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlSc1CreateExchangeHandler": {
+      "id": "Sc1CreateExchange",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlArm0GenerateTraceabilityMatrixHandler": {
+      "id": "Arm0GenerateTraceabilityMatrix",
+      "activeWhen": {
+        "condition": "conditions.mrlHideArm0GenerateTraceabilityMatrixCmd"
+      },
+      "visibleWhen": false
+    },
+    "MrlAwp0CreateAliasIdHandler": {
+      "id": "Awp0CreateAliasId",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlSmr1CreateAsBuiltStructureHandler": {
+      "id": "Smr1CreateAsBuiltStructure",
+      "activeWhen": {
+        "condition": "conditions.mrlHideSmr1CreateAsBuiltStructureCmd"
+      },
+      "visibleWhen": false
+    },
+    "MrlEda1NewCollaborationHandler": {
+      "id": "Eda1NewCollaboration",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlCm1AddToMyChangesHandler": {
+      "id": "Cm1AddToMyChanges",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlArm0MarkAndSuspectHandler": {
+      "id": "Arm0MarkAndSuspect",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlAwp0AttachLicensesHandler": {
+      "id": "Awp0AttachLicenses",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlAwp0DigitalSignPDFHandler": {
+      "id": "Awp0DigitalSignPDF",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlArm0ExistingTraceLinkHandler": {
+      "id": "Arm0ExistingTraceLink",
+      "activeWhen": {
+        "condition": "conditions.onSelectionHideCommandsInMRLDashboard"
+      },
+      "visibleWhen": false
+    },
+    "MrlAwp0CutHandler": {
+      "id": "Awp0Cut",
+      "activeWhen": {
+        "condition": "conditions.isMrlDashboardLocation"
+      },
+      "visibleWhen": false
+    },
+    "MrlAwp0PasteHandler": {
+      "id": "Awp0Paste",
+      "activeWhen": {
+        "condition": "conditions.isMrlDashboardLocation"
+      },
+      "visibleWhen": false
+    },
+    "MrlAwp0PasteContextMenuHandler": {
+      "id": "Awp0PasteContextMenu",
+      "activeWhen": {
+        "condition": "conditions.isMrlDashboardLocation"
+      },
+      "visibleWhen": false
+    },
+    "MrlAwp0HighlightingCommandHandler": {
+      "id": "Awp0Highlighting",
+      "activeWhen": {
+        "condition": "conditions.isMrlNewResourcesSublocationSelected"
+      },
+      "visibleWhen": false
+    },
+    "MrlAwp0ColorFilteringCommandHandler": {
+      "id": "Awp0ColorFiltering",
+      "activeWhen": {
+        "condition": "conditions.isMrlNewResourcesSublocationSelected"
+      },
+      "visibleWhen": false
+    },
+    "MrlAwp0HighlightColorGroupCommandHandler": {
+      "id": "Awp0HighlightColorGroup",
+      "activeWhen": {
+        "condition": "conditions.isMrlNewResourcesSublocationSelected"
+      },
+      "visibleWhen": false
+    },
+    "MrlAwp0OpenSaveSearchHandler": {
+      "id": "Awp0OpenSaveSearch",
+      "action": "mrlExecuteSavedSearch",
+      "activeWhen": {
+        "condition": "conditions.isMrlDashboardLocation"
+      },
+      "visibleWhen": true
+    },
+    "MrlSaveAsorReviseHandler": {
+      "id": "Awp0ShowSaveAs",
+      "action": "mrlSaveAsorReviseContext",
+      "activeWhen": {
+        "condition": "conditions.MrlSaveAsorRevise"
+      },
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.MrlSaveAsorRevise"
+      }
+    },
+    "MrlImportVendorDataHandler": {
+      "id": "MrlImportVendorData",
+      "action": "mrlLaunchImportVendorDataPanel",
+      "activeWhen": {
+        "condition": "conditions.mrlImportVendorDataCommandVisible"
+      },
+      "visibleWhen": {
+        "condition": "conditions.mrlImportVendorDataCommandVisible"
+      }
+    },
+    "MrlImportVendorHierarchyHandler": {
+      "id": "MrlImportVendorHierarchy",
+      "action": "mrlLaunchImportVendorHierarchyPanel",
+      "activeWhen": {
+        "condition": "conditions.mrlImportVendorHierarchyCommandVisible"
+      },
+      "visibleWhen": {
+        "condition": "conditions.mrlImportVendorHierarchyCommandVisible"
+      }
+    }
+  },
+  "commandPlacements": {
+    "Mrm0ShowResourceViewDisplay-classic": {
+      "id": "Mrm0ShowResourceView",
+      "uiAnchor": "aw_display",
+      "priority": 7,
+      "parentGroupId": "Awp0ModelObjListDisplayToggles"
+    },
+    "Mrm0ShowResouceSummaryViewDisplay-classic": {
+      "id": "Mrm0ShowResourceSummaryView",
+      "uiAnchor": "aw_display",
+      "priority": 8,
+      "parentGroupId": "Awp0ModelObjListDisplayToggles"
+    },
+    "Mrm0ShowResourceViewDisplay": {
+      "id": "Mrm0ShowResourceView",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 130,
+      "parentGroupId": "Awp0ModelObjListDisplayToggles"
+    },
+    "Mrm0ShowResourceSummaryViewDisplay": {
+      "id": "Mrm0ShowResourceSummaryView",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 130,
+      "parentGroupId": "Awp0ModelObjListDisplayToggles"
+    },
+    "ShowPSPOnNodeTileNode": {
+      "id": "ShowPSPOnNode",
+      "uiAnchor": "aw_graph_node",
+      "priority": 50
+    },
+    "ShowPSPOnSubAssemblyNodeTileNode": {
+      "id": "ShowPSPOnSubAssemblyNode",
+      "uiAnchor": "aw_graph_node",
+      "priority": 50
+    },
+    "MRM0ToggleChildrenTileNode": {
+      "id": "MRM0ToggleChildren",
+      "uiAnchor": "aw_graph_node",
+      "priority": 50
+    },
+    "MRM0AddUpDirectionElementsTileNode": {
+      "id": "MRM0AddUpDirectionElements",
+      "uiAnchor": "aw_graph_node",
+      "priority": 50
+    },
+    "MRM0AddDownDirectionElementsTileNode": {
+      "id": "MRM0AddDownDirectionElements",
+      "uiAnchor": "aw_graph_node",
+      "priority": 50
+    },
+    "MRM0GcLayoutCommandGroupPlacement": {
+      "id": "MRM0GcLayoutCommandGroup",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 500
+    },
+    "MRM0ImportStep3DModelsPlacement": {
+      "id": "Mrm0ImportStep3DModels",
+      "uiAnchor": "aw_rightWall",
+      "priority": -10,
+      "parentGroupId": "Awp0ManageGroup"
+    },
+    "MRM0MapClassificationObjectPlacement": {
+      "id": "Mrm0MapClassificationObject",
+      "uiAnchor": "aw_rightWall",
+      "priority": -15,
+      "parentGroupId": "Awp0ManageGroup"
+    },
+    "MRM0CreateAssemblyFromCompPlacement": {
+      "id": "Mrm0CreateAssemblyFromComp",
+      "uiAnchor": "aw_rightWall",
+      "priority": 15,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "MRM0CreateSetupSheetPlacement": {
+      "id": "Mrm0CreateSetupSheet",
+      "uiAnchor": "aw_rightWall",
+      "priority": -20,
+      "parentGroupId": "Awp0ManageGroup"
+    },
+    "MRM0ExtractHolderDataPlacement": {
+      "id": "Mrm0ExtractHolderData",
+      "uiAnchor": "aw_rightWall",
+      "priority": -30,
+      "parentGroupId": "Awp0ManageGroup"
+    },
+    "MRM0CreateNXAssemblyPlacement": {
+      "id": "Mrm0CreateNXAssembly",
+      "uiAnchor": "aw_rightWall",
+      "priority": -40,
+      "parentGroupId": "Awp0ManageGroup"
+    },
+    "Mrm0CheckNXCAMToolRetrieve": {
+      "id": "Mrm0CheckNXCAMToolRetrieve",
+      "uiAnchor": "aw_rightWall",
+      "priority": -10,
+      "parentGroupId": "Awp0ManageGroup"
+    },
+    "MRM0GcTopToBottomLayoutOneStep": {
+      "id": "MRM0GcTopToBottomLayout",
+      "uiAnchor": "aw_oneStep",
+      "priority": -1,
+      "parentGroupId": "MRM0GcLayoutCommandGroup"
+    },
+    "MRM0GcBottomToTopLayoutOneStep": {
+      "id": "MRM0GcBottomToTopLayout",
+      "uiAnchor": "aw_oneStep",
+      "priority": -1,
+      "parentGroupId": "MRM0GcLayoutCommandGroup"
+    },
+    "MRM0GcRightToLeftLayoutOneStep": {
+      "id": "MRM0GcRightToLeftLayout",
+      "uiAnchor": "aw_oneStep",
+      "priority": -1,
+      "parentGroupId": "MRM0GcLayoutCommandGroup"
+    },
+    "MRM0GcLeftToRightLayoutOneStep": {
+      "id": "MRM0GcLeftToRightLayout",
+      "uiAnchor": "aw_oneStep",
+      "priority": -1,
+      "parentGroupId": "MRM0GcLayoutCommandGroup"
+    },
+    "MRM0GcIncrementalLayoutOneStep": {
+      "id": "MRM0GcIncrementalLayout",
+      "uiAnchor": "aw_oneStep",
+      "priority": -1,
+      "parentGroupId": "MRM0GcLayoutCommandGroup"
+    },
+    "MRM0GcOrganicLayoutOneStep": {
+      "id": "MRM0GcOrganicLayout",
+      "uiAnchor": "aw_oneStep",
+      "priority": -1,
+      "parentGroupId": "MRM0GcLayoutCommandGroup"
+    },
+    "MRM0AddChildElementCommandPlacement-classic": {
+      "id": "Mrm0AddChildElementDeclarative",
+      "uiAnchor": "aw_toolsAndInfo",
+      "priority": 100,
+      "parentGroupId": "Awb0AddElementGroupDeclarative"
+    },
+    "MRM0AddChildElementCommandPlacement": {
+      "id": "Mrm0AddChildElementDeclarative",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 10,
+      "parentGroupId": "Awb0AddGroup"
+    },
+    "Mrm0PasteResourceComponentCommandPlacement": {
+      "id": "Mrm0Paste",
+      "uiAnchor": "aw_rightWall",
+      "priority": 41
+    },
+    "Mrm0ReplaceElementCommandPlacement": {
+      "id": "Mrm0ReplaceElementDeclarative",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 20,
+      "parentGroupId": "Awb0RestructureGroup"
+    },
+    "Mrm0PropagationStartPointCommandPlacement-classic": {
+      "id": "Mrm0PropagationStartPoint",
+      "uiAnchor": "aw_toolsAndInfo",
+      "priority": 101,
+      "parentGroupId": "Awb0AddElementGroupDeclarative"
+    },
+    "Mrm0PropagationStartPointCommandPlacement": {
+      "id": "Mrm0PropagationStartPoint",
+      "uiAnchor": "aw_rightWall",
+      "priority": 2000
+    },
+    "Mrm0RemoveElementCommandPlacement": {
+      "id": "Mrm0RemoveElement",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 10,
+      "parentGroupId": "Awb0RestructureGroup"
+    },
+    "MrlCreateResourceCommandPlacement": {
+      "id": "MrlCreateResource",
+      "uiAnchor": "aw_rightWall",
+      "priority": 10,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "MrlCreateResourceCtxMenuCommandPlacement": {
+      "id": "MrlCreateResourceCtxMenu",
+      "uiAnchor": "aw_contextMenu2",
+      "priority": 10
+    },
+    "MrlImportVendorDataPlacement": {
+      "id": "MrlImportVendorData",
+      "uiAnchor": "aw_rightWall",
+      "priority": 515,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "MrlImportVendorHierarchyPlacement": {
+      "id": "MrlImportVendorHierarchy",
+      "uiAnchor": "aw_rightWall",
+      "priority": 514,
+      "parentGroupId": "Awp0NewGroup"
+    }
+  },
+  "actions": {
+    "switchToResourceView": {
+      "actionType": "JSFunction",
+      "method": "changeViewMode",
+      "deps": "js/viewMode.service",
+      "inputData": {
+        "viewMode": "ResourceView"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "mrmFitGraph",
+            "condition": "conditions.isMrmGraphDrawn"
+          }
+        ]
+      }
+    },
+    "switchToResourceSummaryView": {
+      "actionType": "JSFunction",
+      "method": "changeViewMode",
+      "deps": "js/viewMode.service",
+      "inputData": {
+        "viewMode": "ResourceSummaryView"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "mrmFitGraph",
+            "condition": "conditions.isMrmGraphDrawn"
+          }
+        ]
+      }
+    },
+    "MRM0ToggleChildrenAction": {
+      "actionType": "JSFunction",
+      "method": "mrmToggleChildOccurences",
+      "inputData": {
+        "graphModel": "{{ctx.graph.commandContextGraph}}",
+        "node": "{{ctx.graph.commandContextItem}}",
+        "contextKey": "occmgmtContext",
+        "data": "{{data}}",
+        "dataCtxNode": "{{ctx.occmgmtContext.resourceDataCtxNode}}"
+      },
+      "deps": "js/MrmToggleChildOccsCommandHandler"
+    },
+    "mrmLaunchAddChildElementPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Mrm0AddChildElementDeclarative",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "selectUpDirectionCommandItem": {
+      "actionType": "JSFunction",
+      "method": "selectResourceGraphCommandContextItem",
+      "inputData": {
+        "graphModel": "{{ctx.graph.commandContextGraph}}",
+        "selectUid": "{{ctx.graph.commandContextItem.appData.nodeObject.uid}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "selectedUpDirectionCommandItem"
+          }
+        ]
+      },
+      "deps": "js/MrmResourceGraphUtils"
+    },
+    "MRM0AddUpDirectionElementsCheckLicense": {
+      "actionType": "JSFunction",
+      "method": "chekMRMLicense",
+      "events": {
+        "success": [
+          {
+            "name": "selectUpDirectionCommandItem",
+            "condition": "ctx.occmgmtContext.isMRMLicenseAvailable === true"
+          }
+        ]
+      },
+      "deps": "js/MrmLicenseService"
+    },
+    "MRM0AddDownDirectionElementsCheckLicense": {
+      "actionType": "JSFunction",
+      "method": "chekMRMLicense",
+      "events": {
+        "success": [
+          {
+            "name": "selectDownDirectionCommandItem",
+            "condition": "ctx.occmgmtContext.isMRMLicenseAvailable === true"
+          }
+        ]
+      },
+      "deps": "js/MrmLicenseService"
+    },
+    "MRM0ACreateNXAssemlyCheckLicense": {
+      "actionType": "JSFunction",
+      "method": "chekMRMLicense",
+      "events": {
+        "success": [
+          {
+            "name": "processCreateNXAssembly",
+            "condition": "ctx.occmgmtContext.isMRMLicenseAvailable === true || ctx.search.isMRMLicenseAvailable === true"
+          }
+        ]
+      },
+      "deps": "js/MrmLicenseService"
+    },
+    "MRM0ExtractHolderDataCheckLicense": {
+      "actionType": "JSFunction",
+      "method": "chekMRMLicense",
+      "events": {
+        "success": [
+          {
+            "name": "processExtractHolderData",
+            "condition": "ctx.occmgmtContext.isMRMLicenseAvailable === true || ctx.search.isMRMLicenseAvailable === true"
+          }
+        ]
+      },
+      "deps": "js/MrmLicenseService"
+    },
+    "MRM0CreateSetupSheetCheckLicense": {
+      "actionType": "JSFunction",
+      "method": "chekMRMLicense",
+      "events": {
+        "success": [
+          {
+            "name": "processCreateSetupSheet",
+            "condition": "ctx.occmgmtContext.isMRMLicenseAvailable === true || ctx.search.isMRMLicenseAvailable === true"
+          }
+        ]
+      },
+      "deps": "js/MrmLicenseService"
+    },
+    "MRM0ToolRetrieveCheckLicense": {
+      "actionType": "JSFunction",
+      "method": "chekMRMLicense",
+      "events": {
+        "success": [
+          {
+            "name": "processToolRetrieve",
+            "condition": "ctx.occmgmtContext.isMRMLicenseAvailable === true || ctx.search.isMRMLicenseAvailable === true"
+          }
+        ]
+      },
+      "deps": "js/MrmLicenseService"
+    },
+    "MRM0ImportStep3DModelsCheckLicense": {
+      "actionType": "JSFunction",
+      "method": "chekMRMLicense",
+      "events": {
+        "success": [
+          {
+            "name": "processImportStep3DModels",
+            "condition": "(ctx.occmgmtContext.isMRMLicenseAvailable === true || ctx.search.isMRMLicenseAvailable === true) && ctx.pwaSelectionInfo && ctx.pwaSelectionInfo.currentSelectedCount === 1"
+          },
+          {
+            "name": "executeImportStep3DModels",
+            "condition": "(ctx.occmgmtContext.isMRMLicenseAvailable === true || ctx.search.isMRMLicenseAvailable === true) && ctx.pwaSelectionInfo && ctx.pwaSelectionInfo.currentSelectedCount > 1"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "(ctx.occmgmtContext.isMRMLicenseAvailable === true || ctx.search.isMRMLicenseAvailable === true) && ctx.pwaSelectionInfo && ctx.pwaSelectionInfo.currentSelectedCount > 1 && (ctx.tcSessionData.tcMajorVersion > 14 || (ctx.tcSessionData.tcMajorVersion === 14 && ctx.tcSessionData.tcMinorVersion >= 2))",
+            "message": "executeImportStep3DModelsAsyncMessage"
+          }
+        ]
+      },
+      "deps": "js/MrmLicenseService"
+    },
+    "MRM0MapClassificationObjectCheckLicense": {
+      "actionType": "JSFunction",
+      "method": "chekMRMLicense",
+      "events": {
+        "success": [
+          {
+            "name": "processMapClassificationObject",
+            "condition": "ctx.occmgmtContext.isMRMLicenseAvailable === true || ctx.search.isMRMLicenseAvailable === true"
+          }
+        ]
+      },
+      "deps": "js/MrmLicenseService"
+    },
+    "Mrm0AddChildElementDeclarativeCheckLicense": {
+      "actionType": "JSFunction",
+      "method": "chekMRMLicense",
+      "events": {
+        "success": [
+          {
+            "name": "mrmLaunchAddChildElementPanel",
+            "condition": "ctx.occmgmtContext.isMRMLicenseAvailable === true"
+          }
+        ]
+      },
+      "deps": "js/MrmLicenseService"
+    },
+    "Mrm0PasteCheckLicense": {
+      "actionType": "JSFunction",
+      "method": "chekMRMLicense",
+      "events": {
+        "success": [
+          {
+            "name": "mrmPasteContentsFromClipboard",
+            "condition": "ctx.occmgmtContext.isMRMLicenseAvailable === true"
+          }
+        ]
+      },
+      "deps": "js/MrmLicenseService"
+    },
+    "selectDownDirectionCommandItem": {
+      "actionType": "JSFunction",
+      "method": "selectResourceGraphCommandContextItem",
+      "inputData": {
+        "graphModel": "{{ctx.graph.commandContextGraph}}",
+        "selectUid": "{{ctx.graph.commandContextItem.appData.nodeObject.uid}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "selectedDownDirectionCommandItem"
+          }
+        ]
+      },
+      "deps": "js/MrmResourceGraphUtils"
+    },
+    "mrmLaunchAddUpDirectionElementPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "MRM0AddUpDirectionElements",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "mrmPasteContentsFromClipboard": {
+      "actionType": "JSFunction",
+      "method": "mrmPasteObjectsFromClipboard",
+      "deps": "js/MrmDefaultPasteHandler",
+      "events": {
+        "success": [
+          {
+            "name": "ace.pasteSuccessful"
+          }
+        ]
+      }
+    },
+    "mrmLaunchReplaceElementPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Mrm0ReplaceElementDeclarative",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "mrm0PropagationStartPointAction": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-ResourceManager-2020-05-ResourceOccurrencesManagement",
+      "method": "setPropagationStartPoint",
+      "inputData": {
+        "selectedComponentUID": "{{ctx.occmgmtContext.selectedModelObjects[0].uid}}",
+        "activeCutterID": "",
+        "forceUpdate": false
+      },
+      "outputData": {
+        "setPSPResponse": ""
+      },
+      "events": {
+        "success": [
+          {
+            "name": "acePwa.reset",
+            "eventData": {
+              "viewToReset": "occmgmtContext"
+            },
+            "condition": "data.setPSPResponse.actionInfo === 'add'"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.setPSPResponse.actionInfo === 'move'",
+            "message": "movePSPConfirmation"
+          },
+          {
+            "condition": "data.setPSPResponse.actionInfo === 'remove'",
+            "message": "removePSPConfirmation"
+          }
+        ],
+        "failure": [
+          {
+            "condition": "data.setPSPResponse.ServiceData.partialErrors[0].errorValues.length > 0",
+            "message": "setPropagationStartPointFailure"
+          }
+        ]
+      }
+    },
+    "forceUpdatePSPAction": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-ResourceManager-2020-05-ResourceOccurrencesManagement",
+      "method": "setPropagationStartPoint",
+      "inputData": {
+        "selectedComponentUID": "{{ctx.occmgmtContext.selectedModelObjects[0].uid}}",
+        "activeCutterID": "",
+        "forceUpdate": true
+      },
+      "outputData": {},
+      "events": {
+        "success": [
+          {
+            "name": "acePwa.reset",
+            "eventData": {
+              "viewToReset": "occmgmtContext"
+            }
+          }
+        ]
+      }
+    },
+    "showConfirmationMessageForRemoveElements": {
+      "actionType": "JSFunction",
+      "method": "getDisplayName",
+      "deps": "js/typeDisplayName.service",
+      "inputData": {
+        "modelObject": "{{ctx.selected}}"
+      },
+      "outputData": {
+        "displayNameOfSelectedElement": ""
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "ctx.mselected.length === 1",
+            "message": "removeSingleElement"
+          },
+          {
+            "condition": "ctx.mselected.length > 1",
+            "message": "removeMultipleElement"
+          }
+        ]
+      }
+    },
+    "mrm0RemoveSingleElement": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-ResourceManager-2020-12-ResourceOccurrencesManagement",
+      "method": "removeResourceElements",
+      "inputData": {
+        "resourceElementsToRemove": [
+          "{{ctx.selected}}"
+        ]
+      },
+      "outputData": {
+        "removePartialErrors": "partialErrors",
+        "errorMessage": "{{function:processPartialErrors}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "performPostRemoveSingleElementAction"
+          }
+        ]
+      },
+      "actionMessages": {
+        "failure": [
+          {
+            "condition": "(ctx.mselected && ctx.mselected.length === 1 && data.removePartialErrors.length > 0 && data.removePartialErrors[0].errorValues[0].code !== 446005)",
+            "message": "removeFailure"
+          },
+          {
+            "condition": "(ctx.mselected && ctx.mselected.length === 1 && data.removePartialErrors.length > 0 && data.removePartialErrors[0].errorValues[0].code === 446005)",
+            "message": "mrmRemoveLicenseFailure"
+          }
+        ]
+      },
+      "deps": "js/MrmRemoveResourceElementsService"
+    },
+    "mrm0RemoveMultipleElements": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-ResourceManager-2020-12-ResourceOccurrencesManagement",
+      "method": "removeResourceElements",
+      "inputData": {
+        "resourceElementsToRemove": "{{ctx.mselected}}"
+      },
+      "outputData": {
+        "removedElementsFromResponse": "{{function:getRemovedElements}}",
+        "removePartialErrors": "partialErrors",
+        "errorMessage": "{{function:processPartialErrors}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "performPostRemoveMultipleElementAction"
+          },
+          {
+            "name": "acePwa.reset",
+            "eventData": {
+              "viewToReset": "occmgmtContext"
+            }
+          }
+        ],
+        "failure": [
+          {
+            "name": "performPostRemoveMultipleElementAction"
+          },
+          {
+            "name": "acePwa.reset",
+            "eventData": {
+              "viewToReset": "occmgmtContext"
+            }
+          }
+        ]
+      },
+      "actionMessages": {
+        "failure": [
+          {
+            "condition": "(ctx.mselected && ctx.mselected.length > 1 && data.removePartialErrors.length > 0 && data.removePartialErrors[0].errorValues[0].code !== 446005)",
+            "message": "removeMessageMultipleFailure"
+          },
+          {
+            "condition": "(ctx.mselected && ctx.mselected.length > 1 && data.removePartialErrors.length > 0 && data.removePartialErrors[0].errorValues[0].code === 446005)",
+            "message": "mrmRemoveLicenseFailure"
+          }
+        ]
+      },
+      "deps": "js/removeElementService"
+    },
+    "performPostRemoveSingleElementAction": {
+      "actionType": "JSFunction",
+      "method": "performPostSingleRemoveAction",
+      "inputData": {
+        "removedElement": "{{ctx.selected}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "acePwa.reset",
+            "eventData": {
+              "viewToReset": "occmgmtContext"
+            }
+          }
+        ]
+      },
+      "deps": "js/MrmRemoveResourceElementsService"
+    },
+    "performPostRemoveMultipleElementAction": {
+      "actionType": "JSFunction",
+      "method": "performPostRemoveAction",
+      "inputData": {
+        "removedElements": "{{data.removedElementsFromResponse}}",
+        "operationName": "removeElement",
+        "occContext": "{{commandContext.occContext}}"
+      },
+      "deps": "js/removeElementService"
+    },
+    "mrmGCSAddMachineSideElement": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-ActiveWorkspaceBom-2019-06-OccurrenceManagement",
+      "method": "addObject2",
+      "inputData": {
+        "input": {
+          "objectsToBeAdded": "{{ctx.mselected}}",
+          "parentElement": "{{ctx.occmgmtContext.topElement}}",
+          "siblingElement": "{{ctx.aceActiveContext.context.addElement.siblingElement}}",
+          "inputCtxt": {
+            "productContext": "{{ctx.occmgmtContext.productContextInfo}}"
+          },
+          "sortCriteria": {
+            "propertyName": "{{ctx.aceActiveContext.context.sortCriteria[0].fieldName}}",
+            "sortingOrder": "{{ctx.aceActiveContext.context.sortCriteria[0].sortDirection}}"
+          },
+          "addObjectIntent": "{{ctx.aceActiveContext.context.addElement.addObjectIntent}}",
+          "fetchPagedOccurrences": "{{ctx.aceActiveContext.context.addElement.fetchPagedOccurrences}}",
+          "requestPref": {
+            "displayMode": [
+              "{{function:getDisplayMode}}"
+            ]
+          },
+          "numberOfElements": 1
+        }
+      },
+      "outputData": {
+        "addElementResponse": "",
+        "totalObjectsAdded": "result.selectedNewElementInfo.newElements.length"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "mrmresource.gcsAddMachineSideElementPostAction"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "message": "singleGCSAddCompMsg"
+          }
+        ],
+        "failure": [
+          {
+            "message": "mrmOperationStandardFailureMessage"
+          }
+        ]
+      },
+      "deps": "js/MrmAddElementService"
+    },
+    "mrmGCSAddWorkpieceSideElements": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-ActiveWorkspaceBom-2019-06-OccurrenceManagement",
+      "method": "addObject2",
+      "inputData": {
+        "input": {
+          "objectsToBeAdded": "{{ctx.mselected}}",
+          "parentElement": "{{ctx.occmgmtContext.topElement}}",
+          "siblingElement": "{{ctx.aceActiveContext.context.addElement.siblingElement}}",
+          "inputCtxt": {
+            "productContext": "{{ctx.occmgmtContext.productContextInfo}}"
+          },
+          "sortCriteria": {
+            "propertyName": "{{ctx.aceActiveContext.context.sortCriteria[0].fieldName}}",
+            "sortingOrder": "{{ctx.aceActiveContext.context.sortCriteria[0].sortDirection}}"
+          },
+          "addObjectIntent": "{{ctx.aceActiveContext.context.addElement.addObjectIntent}}",
+          "fetchPagedOccurrences": "{{ctx.aceActiveContext.context.addElement.fetchPagedOccurrences}}",
+          "requestPref": {
+            "displayMode": [
+              "{{function:getDisplayMode}}"
+            ]
+          },
+          "numberOfElements": 1
+        }
+      },
+      "outputData": {
+        "addElementResponse": "",
+        "totalObjectsAdded": "result.selectedNewElementInfo.newElements.length"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "mrmresource.gcsAddWorkpieceSideElementsPostAction"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.totalObjectsAdded === 1",
+            "message": "singleGCSAddCompMsg"
+          },
+          {
+            "message": "multipleClassifiedCompsAddedMsg",
+            "condition": "data.totalObjectsAdded > 1"
+          }
+        ],
+        "failure": [
+          {
+            "message": "mrmOperationStandardFailureMessage"
+          }
+        ]
+      },
+      "deps": "js/MrmAddElementService"
+    },
+    "gcsAddMachineSideElementPostAction": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-ResourceManager-2020-12-ResourceOccurrencesManagement",
+      "method": "addResourceElementsPostActions",
+      "inputData": {
+        "successorComponents": [
+          "{{ctx.occmgmtContext.selectedModelObjects[0]}}"
+        ],
+        "predecessorComponent": "{{data.addElementResponse.selectedNewElementInfo.newElements[0]}}"
+      },
+      "outputData": {
+        "serviceData": "ServiceData"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "acePwa.reset",
+            "eventData": {
+              "viewToReset": "occmgmtContext"
+            }
+          }
+        ]
+      }
+    },
+    "gcsAddWorkpieceSideElementsPostAction": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-ResourceManager-2020-12-ResourceOccurrencesManagement",
+      "method": "addResourceElementsPostActions",
+      "inputData": {
+        "successorComponents": "{{data.addElementResponse.selectedNewElementInfo.newElements}}",
+        "predecessorComponent": "{{ctx.occmgmtContext.selectedModelObjects[0]}}"
+      },
+      "outputData": {
+        "serviceData": "ServiceData"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "acePwa.reset",
+            "eventData": {
+              "viewToReset": "occmgmtContext"
+            }
+          }
+        ]
+      }
+    },
+    "mrmProcessGCSAddMachineSideElementInput": {
+      "actionType": "JSFunction",
+      "method": "mrmProcessAddElementInput",
+      "inputData": {
+        "isCompAddedAbove": true,
+        "isGCSAddWorkpieceSide": false
+      },
+      "outputData": {},
+      "events": {
+        "success": [
+          {
+            "name": "gcsAddElement.mrmGCSAddMachineSideElement"
+          }
+        ]
+      },
+      "deps": "js/MrmAddElementService"
+    },
+    "mrmProcessGCSAddWorkpieceSideElementInput": {
+      "actionType": "JSFunction",
+      "method": "mrmProcessAddElementInput",
+      "inputData": {
+        "isCompAddedAbove": false,
+        "isGCSAddWorkpieceSide": true
+      },
+      "outputData": {},
+      "events": {
+        "success": [
+          {
+            "name": "gcsAddElement.mrmLaunchGCSAddWorkpieceSidePanel",
+            "condition": "ctx.aceActiveContext.context.addElement.numberOfEmptySockets > 0 && ctx.occmgmtContext.numberOfGCSSockets > 1"
+          },
+          {
+            "name": "gcsAddElement.mrmGCSAddWorkpieceSideElements",
+            "condition": "ctx.aceActiveContext.context.addElement.numberOfEmptySockets === 1 && ctx.occmgmtContext.numberOfGCSSockets === 1"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "ctx.aceActiveContext.context.addElement.numberOfEmptySockets === 0",
+            "message": "noMoreAddGCSWorkpieceSideCompMsg"
+          }
+        ]
+      },
+      "deps": "js/MrmAddElementService"
+    },
+    "processCreateSetupSheet": {
+      "actionType": "JSFunction",
+      "method": "findClassificationInfoOfComponent",
+      "inputData": {
+        "uid": "{{function:getUidOfObject}}"
+      },
+      "outputData": {
+        "findClassificatioOutput": ""
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "data.findClassificatioOutput.parents !== 0",
+            "name": "executeCreateSetupSheet"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.findClassificatioOutput.parents === 0",
+            "message": "createSetupSheetNotClassifiedError"
+          }
+        ]
+      },
+      "deps": "js/MrmUtils"
+    },
+    "processImportStep3DModels": {
+      "actionType": "JSFunction",
+      "method": "findClassificationInfoOfComponent",
+      "inputData": {
+        "uid": "{{function:getUidOfObject}}"
+      },
+      "outputData": {
+        "findClassificatioOutput": ""
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "data.findClassificatioOutput.parents !== 0",
+            "name": "executeImportStep3DModels"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.findClassificatioOutput.parents === 0",
+            "message": "importVemdor3DNotClassifiedError"
+          }
+        ]
+      },
+      "deps": "js/MrmUtils"
+    },
+    "processMapClassificationObject": {
+      "actionType": "JSFunction",
+      "method": "findClassificationInfoOfComponent",
+      "inputData": {
+        "uid": "{{function:getUidOfObject}}"
+      },
+      "outputData": {
+        "findClassificatioOutput": ""
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "data.findClassificatioOutput.parents !== 0",
+            "name": "getICOMappingTargetClasses"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.findClassificatioOutput.parents === 0",
+            "message": "mapClassificationObjectNotClassifiedError"
+          }
+        ]
+      },
+      "deps": "js/MrmUtils"
+    },
+    "processCreateAssemblyFromComp": {
+      "actionType": "JSFunction",
+      "method": "findClassificationInfoOfComponent",
+      "inputData": {
+        "uid": "{{function:getUIDOfSelectedObject}}"
+      },
+      "outputData": {
+        "findClassificatioOutput": ""
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "data.findClassificatioOutput.parents !== 0",
+            "name": "getMappingTargetClassesForCreateAssembly"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.findClassificatioOutput.parents === 0",
+            "message": "mapClassificationObjectNotClassifiedError"
+          }
+        ]
+      },
+      "deps": "js/MrmUtils"
+    },
+    "getICOMappingTargetClasses": {
+      "actionType": "JSFunction",
+      "method": "getICOMappingTargetClasses",
+      "inputData": {
+        "uid": "{{data.findClassificatioOutput.icoUID}}",
+        "viewType": 0
+      },
+      "outputData": {
+        "icoMappingTargetClassesOutput": "",
+        "icoMappingData": "{{function:getICOMappingData}}"
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "data.icoMappingTargetClassesOutput.numOfTargetClasses > 0",
+            "name": "isICOAlreadyMapped"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.icoMappingTargetClassesOutput.numOfTargetClasses === 0",
+            "message": "mapClassificationObjectNoTargetClassesError"
+          }
+        ]
+      },
+      "deps": "js/MrmMapClassificationObjectService"
+    },
+    "isICOAlreadyMapped": {
+      "actionType": "JSFunction",
+      "method": "isICOAlreadyMapped",
+      "inputData": {
+        "sourceIcoID": "{{data.icoMappingData.sourceIcoID}}"
+      },
+      "outputData": {
+        "icoAlreadyMappedData": ""
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "data.icoAlreadyMappedData.alreadyMappedICOCount === 0",
+            "name": "launchMapClassificationObjectPanel"
+          },
+          {
+            "condition": "data.icoAlreadyMappedData.alreadyMappedICOCount > 0",
+            "name": "getMappedICODetails"
+          }
+        ]
+      },
+      "deps": "js/MrmMapClassificationObjectService"
+    },
+    "getMappedICODetails": {
+      "actionType": "JSFunction",
+      "method": "getMappedICODetails",
+      "inputData": {
+        "mappedICOUid": "{{data.icoAlreadyMappedData.existingMappedICOUID}}"
+      },
+      "outputData": {
+        "mappedICODetails": ""
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.icoAlreadyMappedData.alreadyMappedICOCount === 1",
+            "message": "icoAlreadyMappedSingleConfirmation"
+          },
+          {
+            "condition": "data.icoAlreadyMappedData.alreadyMappedICOCount > 1",
+            "message": "icoAlreadyMappedMultiConfirmation"
+          }
+        ]
+      },
+      "deps": "js/MrmMapClassificationObjectService"
+    },
+    "openExistingMappedICO": {
+      "actionType": "Navigate",
+      "navigateTo": "com_siemens_splm_clientfx_tcui_xrt_showObject",
+      "navigationParams": {
+        "uid": "{{data.mappedICODetails.existingMappedWSOUID}}",
+        "pageId": "tc_xrt_Content"
+      },
+      "navigateIn": "newTab"
+    },
+    "getMappingTargetClassesForCreateAssembly": {
+      "actionType": "JSFunction",
+      "method": "getICOMappingTargetClasses",
+      "inputData": {
+        "uid": "{{data.findClassificatioOutput.icoUID}}",
+        "viewType": 300
+      },
+      "outputData": {
+        "icoMappingTargetClassesOutput": "",
+        "icoMappingData": "{{function:getICOMappingData}}"
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "data.icoMappingTargetClassesOutput.numOfTargetClasses > 0",
+            "name": "launchCreateAssemblyFromCompPanel"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.icoMappingTargetClassesOutput.numOfTargetClasses === 0",
+            "message": "mapClassificationObjectNoTargetClassesError"
+          }
+        ]
+      },
+      "deps": "js/MrmMapClassificationObjectService"
+    },
+    "processExtractHolderData": {
+      "actionType": "JSFunction",
+      "method": "findClassificationInfoOfComponent",
+      "inputData": {
+        "uid": "{{function:getUidOfObject}}"
+      },
+      "outputData": {
+        "findClassificatioOutput": ""
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "(data.findClassificatioOutput.classifiedinToolAssy === true && !data.findClassificatioOutput.isRootTurningAssy)",
+            "name": "setPrefForExtractHolderData"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.findClassificatioOutput.parents > 1",
+            "message": "extractHolderDataMultipleClassificationError"
+          },
+          {
+            "condition": "data.findClassificatioOutput.parents === 0 || data.findClassificatioOutput.classifiedinToolAssy === false",
+            "message": "extractHolderDataNonAssemblyError"
+          },
+          {
+            "condition": "(data.findClassificatioOutput.isRootTurningAssy )",
+            "message": "extractHolderDataInvalidComponentError"
+          }
+        ]
+      },
+      "deps": "js/MrmUtils"
+    },
+    "setPrefForExtractHolderData": {
+      "actionType": "JSFunction",
+      "method": "getAccuracyPrefAndSetSimplified",
+      "inputData": {
+        "setSimplified": true
+      },
+      "outputData": {
+        "orgAccuracyPref": ""
+      },
+      "events": {
+        "success": [
+          {
+            "name": "executeExtratHolderData"
+          }
+        ]
+      },
+      "deps": "js/MrmGraphicBuilderUtils"
+    },
+    "mrmLaunchGCSAddWorkpieceSidePanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Mrm0GCSAddWorkpieceSide",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "processToolRetrieve": {
+      "actionType": "JSFunction",
+      "method": "findClassificationInfoOfComponent",
+      "inputData": {
+        "uid": "{{function:getUidOfObject}}"
+      },
+      "outputData": {
+        "findClassificatioOutput": ""
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "data.findClassificatioOutput.classifiedinToolAssy === true",
+            "name": "executeToolRetrieve"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.findClassificatioOutput.parents === 0 || data.findClassificatioOutput.classifiedinToolAssy === false",
+            "message": "toolCheckerNonAssemblyError"
+          }
+        ]
+      },
+      "deps": "js/MrmUtils"
+    },
+    "processCreateNXAssembly": {
+      "actionType": "JSFunction",
+      "method": "findClassificationInfoOfComponent",
+      "inputData": {
+        "uid": "{{function:getUidOfObject}}"
+      },
+      "outputData": {
+        "findClassificatioOutput": ""
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "data.findClassificatioOutput.classifiedinToolAssy === true && data.findClassificatioOutput.parents === 1",
+            "name": "mrmLaunchCreateNXAssemblyPanel"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.findClassificatioOutput.parents > 1",
+            "message": "nxToolMultipleClassificationErrorMessage"
+          },
+          {
+            "condition": "data.findClassificatioOutput.parents === 0 || data.findClassificatioOutput.classifiedinToolAssy === false",
+            "message": "nxToolNonAssemblyErrorMessage"
+          }
+        ]
+      },
+      "deps": "js/MrmUtils"
+    },
+    "mrmLaunchCreateNXAssemblyPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Mrm0CreateNXAssembly",
+        "location": "aw_toolsAndInfo",
+        "context": {
+          "isRootTurningAssy": "{{data.findClassificatioOutput.isRootTurningAssy}}"
+        }
+      }
+    },
+    "mrmFitGraph": {
+      "actionType": "JSFunction",
+      "method": "mrmFitGraph",
+      "inputData": {
+        "graphModel": "{{ctx.graph.graphModel}}"
+      },
+      "deps": "js/MrmResourceGraphService"
+    },
+    "executeExtratHolderData": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-Manufacturing-2016-09-ResourceManagement",
+      "method": "extractHolderData",
+      "inputData": {
+        "icoIds": [
+          "{{data.findClassificatioOutput.icoUID}}"
+        ]
+      },
+      "outputData": {
+        "extractHolderDataResponse": ""
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "conditions.isResourceSummaryView && (ctx.occmgmtContext.activeTab.id == 'tc_xrt_ClassificationInformation')",
+            "name": "aceSecondaryWorkArea.refreshTabs"
+          },
+          {
+            "name": "setOriginalHolderDataAccuracyPref"
+          }
+        ],
+        "failure": [
+          {
+            "name": "setOriginalHolderDataAccuracyPref"
+          }
+        ]
+      },
+      "actionMessages": {
+        "failure": [
+          {
+            "condition": "data.extractHolderDataResponse.partialErrors.length>0",
+            "message": "mrmOperationStandardFailureMessage"
+          }
+        ],
+        "success": [
+          {
+            "message": "extractHolderDataSuccessfulMessage"
+          }
+        ]
+      }
+    },
+    "setOriginalHolderDataAccuracyPref": {
+      "actionType": "JSFunction",
+      "method": "setAccuracyPref",
+      "inputData": {
+        "prefValue": "{{data.orgAccuracyPref}}"
+      },
+      "deps": "js/MrmGraphicBuilderUtils"
+    },
+    "executeToolRetrieve": {
+      "actionType": "TcSoaService",
+      "serviceName": "Manufacturing-2014-06-ResourceManagement",
+      "method": "checkToolParameters",
+      "inputData": {
+        "icoIds": [
+          "{{data.findClassificatioOutput.icoUID}}"
+        ],
+        "checkLevel": "all",
+        "checkTypes": [
+          "NX CAM TOOL RETRIEVE"
+        ]
+      },
+      "outputData": {
+        "checkToolParametersResponse": "{{function:formUserResponseForToolChecker}}"
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "message": "toolcheckerUserMessage"
+          }
+        ],
+        "failure": [
+          {
+            "message": "toolcheckerUserMessage"
+          }
+        ]
+      },
+      "deps": "js/MrmGraphicBuilderUtils"
+    },
+    "executeCreateSetupSheet": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-Manufacturing-2016-03-ResourceManagement",
+      "method": "createSetupSheets",
+      "inputData": {
+        "icoIds": [
+          "{{data.findClassificatioOutput.icoUID}}"
+        ]
+      },
+      "outputData": {
+        "createSetupSheetResponse": ""
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "conditions.isResourceSummaryView && (ctx.occmgmtContext.activeTab.id == 'attachments' || ctx.occmgmtContext.activeTab.id == 'tc_xrt_Overview')",
+            "name": "aceSecondaryWorkArea.refreshTabs"
+          }
+        ]
+      },
+      "actionMessages": {
+        "failure": [
+          {
+            "condition": "data.createSetupSheetResponse.partialErrors.length>0",
+            "message": "mrmOperationStandardFailureMessage"
+          }
+        ],
+        "success": [
+          {
+            "message": "createSetupSheetSuccessfulMessage"
+          }
+        ]
+      }
+    },
+    "executeImportStep3DModels": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-Manufacturing-2015-03-ResourceManagement",
+      "method": "importStep3DModels2",
+      "inputData": {
+        "icoIds": "{{function:getUidOfSelectedObjects}}"
+      },
+      "outputData": {
+        "importStep3DModelsResponse": ""
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "conditions.isResourceSummaryView && (ctx.occmgmtContext.activeTab.id == 'attachments' || ctx.occmgmtContext.activeTab.id == 'tc_xrt_Overview') && ( ctx.pwaSelectionInfo && ctx.pwaSelectionInfo.currentSelectedCount === 1 )",
+            "name": "aceSecondaryWorkArea.refreshTabs"
+          }
+        ]
+      },
+      "actionMessages": {
+        "failure": [
+          {
+            "condition": "data.importStep3DModelsResponse.ServiceData.partialErrors.length > 0",
+            "message": "mrmOperationStandardFailureMessage"
+          }
+        ],
+        "success": [
+          {
+            "condition": "ctx.pwaSelectionInfo && ctx.pwaSelectionInfo.currentSelectedCount === 1 ",
+            "message": "singleComponentImportVemdor3DSuccessfulMessage"
+          }
+        ]
+      },
+      "deps": "js/MrmUtils"
+    },
+    "launchMapClassificationObjectPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Mrm0MapClassificationObject",
+        "location": "aw_toolsAndInfo",
+        "context": {
+          "classParents": "{{data.findClassificatioOutput.classParents}}",
+          "clsObjectDefs": "{{data.findClassificatioOutput.clsObjectDefs}}",
+          "icoMappingData": "{{data.icoMappingData}}"
+        }
+      }
+    },
+    "launchCreateAssemblyFromCompPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Mrm0CreateAssemblyFromComp",
+        "location": "aw_toolsAndInfo",
+        "context": {
+          "classParents": "{{data.findClassificatioOutput.classParents}}",
+          "clsObjectDefs": "{{data.findClassificatioOutput.clsObjectDefs}}",
+          "icoMappingData": "{{data.icoMappingData}}"
+        }
+      }
+    },
+    "mrmCutContentsToClipboard": {
+      "actionType": "JSFunction",
+      "method": "mrmCutContentsToClipboard",
+      "inputData": {
+        "occContext": "{{commandContext.occContext}}"
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "(ctx.mselected && ctx.mselected.length === 1)",
+            "message": "cutSingleSuccessful"
+          }
+        ]
+      },
+      "deps": "js/MrmDefaultCutCopyService"
+    },
+    "mrlCreateResourceCheckLicense": {
+      "actionType": "JSFunction",
+      "method": "chekMRMLicense",
+      "events": {
+        "success": [
+          {
+            "name": "mrlLaunchCreateResourcePanel",
+            "condition": "ctx.search.isMRMLicenseAvailable === true"
+          }
+        ]
+      },
+      "deps": "js/MrmLicenseService"
+    },
+    "mrlLaunchCreateResourcePanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "MrlCreateResource",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "mrlExecuteSavedSearch": {
+      "actionType": "batchJob",
+      "steps": [
+        {
+          "action": "setTypeForSavedSearchObject"
+        },
+        {
+          "action": "mrlExecuteFullTextSavedSearch",
+          "condition": "data.selectedSavedSearchObjectType === 'Awp0FullTextSavedSearch'"
+        }
+      ]
+    },
+    "mrlExecuteFullTextSavedSearch": {
+      "actionType": "JSFunction",
+      "method": "mrlExecuteFullTextSavedSearch",
+      "inputData": {
+        "vmo": "{{commandContext.vmo}}"
+      },
+      "deps": "js/mrlSaveSearchService"
+    },
+    "mrlSaveAsorReviseContext": {
+      "actionType": "JSFunction",
+      "method": "updateSaveAsContextAndActivateCommandPanel",
+      "deps": "js/Awp0ShowSaveAsService",
+      "inputData": {
+        "input": {
+          "selectedObj": "{{ctx.selected}}",
+          "commandId": "MrlShowSaveAs",
+          "location": "aw_toolsAndInfo"
+        }
+      }
+    },
+    "mrlLaunchImportVendorDataPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "MrlImportVendor",
+        "location": "aw_toolsAndInfo",
+        "context": {
+          "mrlImportVendor": "mrlImportVendorData",
+          "catalogTypeFilter": 4,
+          "mrlImportVendorTitle": "{{i18n.mrlImportVendorDataTitle}}"
+        },
+        "push": false,
+        "panelType": "New",
+        "config": {
+          "width": "DOUBLEWIDE",
+          "height": "FULL"
+        }
+      }
+    },
+    "mrlLaunchImportVendorHierarchyPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "MrlImportVendor",
+        "location": "aw_toolsAndInfo",
+        "context": {
+          "mrlImportVendor": "mrlImportVendorHierarchy",
+          "catalogTypeFilter": 1,
+          "mrlImportVendorTitle": "{{i18n.mrlImportVendorHierarchyTitle}}"
+        },
+        "push": false,
+        "panelType": "New",
+        "config": {
+          "width": "DOUBLEWIDE",
+          "height": "FULL"
+        }
+      }
+    }
+  },
+  "functions": {
+    "getNewlyAddedChildElements": {
+      "functionName": "getNewlyAddedChildElements",
+      "parameters": [
+        "{{data}}"
+      ]
+    },
+    "getUidOfObject": {
+      "functionName": "getUidOfObject"
+    },
+    "getUidOfSelectedObjects": {
+      "functionName": "getUidOfSelectedObjects"
+    },
+    "getICOMappingData": {
+      "functionName": "getICOMappingData",
+      "parameters": [
+        "{{data.icoMappingTargetClassesOutput}}"
+      ]
+    },
+    "getDisplayMode": {
+      "functionName": "getDisplayMode"
+    },
+    "getUIDOfSelectedObject": {
+      "functionName": "getUIDOfSelectedObject"
+    }
+  },
+  "messages": {
+    "movePSPConfirmation": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.Mrm0MovePSPConfirmation}}",
+      "navigationOptions": [
+        {
+          "option": "Cancel",
+          "text": "{{i18n.Mrm0Cancel}}"
+        },
+        {
+          "option": "Move",
+          "text": "{{i18n.Mrm0Move}}",
+          "action": "forceUpdatePSPAction"
+        }
+      ],
+      "messageTextParams": [
+        "{{data.setPSPResponse.fromComponentName}}",
+        "{{data.setPSPResponse.toComponentName}}"
+      ]
+    },
+    "removePSPConfirmation": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.Mrm0RemovePSPConfirmation}}",
+      "navigationOptions": [
+        {
+          "option": "Cancel",
+          "text": "{{i18n.Mrm0Cancel}}"
+        },
+        {
+          "option": "Remove",
+          "text": "{{i18n.Mrm0Remove}}",
+          "action": "forceUpdatePSPAction"
+        }
+      ],
+      "messageTextParams": [
+        "{{data.setPSPResponse.fromComponentName}}"
+      ]
+    },
+    "removeSingleElement": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.removeSingleElementConfirmation}}",
+      "navigationOptions": [
+        {
+          "option": "Cancel",
+          "text": "{{i18n.Mrm0Cancel}}"
+        },
+        {
+          "option": "Remove",
+          "text": "{{i18n.Mrm0Remove}}",
+          "action": "mrm0RemoveSingleElement"
+        }
+      ],
+      "messageTextParams": [
+        "{{data.displayNameOfSelectedElement}}"
+      ]
+    },
+    "removeMultipleElement": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.removeMultipleElementConfirmation}}",
+      "navigationOptions": [
+        {
+          "option": "Cancel",
+          "text": "{{i18n.Mrm0Cancel}}"
+        },
+        {
+          "option": "Remove",
+          "text": "{{i18n.Mrm0Remove}}",
+          "action": "mrm0RemoveMultipleElements"
+        }
+      ],
+      "messageTextParams": [
+        "{{ctx.mselected.length}}"
+      ]
+    },
+    "icoAlreadyMappedSingleConfirmation": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.Mrm0ICOAlreadyMappedSingleConfirmation}}",
+      "navigationOptions": [
+        {
+          "option": "OpenExisting",
+          "text": "{{i18n.Mrm0OpenExisting}}",
+          "action": "openExistingMappedICO"
+        },
+        {
+          "option": "MapAgain",
+          "text": "{{i18n.Mrm0MapAgain}}",
+          "action": "launchMapClassificationObjectPanel"
+        },
+        {
+          "option": "Cancel",
+          "text": "{{i18n.Mrm0Cancel}}"
+        }
+      ],
+      "messageTextParams": [
+        "{{data.icoMappingData.sourceIcoID}}",
+        "{{data.mappedICODetails.existingMappedICOId}}",
+        "{{data.mappedICODetails.existingMappedICOClassId}}"
+      ]
+    },
+    "icoAlreadyMappedMultiConfirmation": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.Mrm0ICOAlreadyMappedMultiConfirmation}}",
+      "navigationOptions": [
+        {
+          "option": "OpenExisting",
+          "text": "{{i18n.Mrm0OpenExisting}}",
+          "action": "openExistingMappedICO"
+        },
+        {
+          "option": "MapAgain",
+          "text": "{{i18n.Mrm0MapAgain}}",
+          "action": "launchMapClassificationObjectPanel"
+        },
+        {
+          "option": "Cancel",
+          "text": "{{i18n.Mrm0Cancel}}"
+        }
+      ],
+      "messageTextParams": [
+        "{{data.icoMappingData.sourceIcoID}}",
+        "{{data.mappedICODetails.existingMappedICOId}}",
+        "{{data.mappedICODetails.existingMappedICOClassId}}"
+      ]
+    },
+    "setPropagationStartPointFailure": {
+      "messageType": "ERROR",
+      "messageText": "{{data.ServiceData.partialErrors[0].errorValues[0].message}}"
+    },
+    "mrmRemoveLicenseFailure": {
+      "messageType": "ERROR",
+      "messageText": "{{data.removePartialErrors[0].errorValues[0].message}}"
+    },
+    "singleClassifiedCompAddedMsg": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.Mrm0SingleClassifiedCompAdded}}",
+      "messageTextParams": [
+        "{{ctx.mrmAddResourceContext.selectedClassifiedComps[0].props.object_name.dbValues[0]}}",
+        "{{ctx.occmgmtContext.selectedModelObjects[0].props.object_string.dbValues[0]}}"
+      ]
+    },
+    "multipleClassifiedCompsAddedMsg": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.Mrm0MultiClassifiedCompsAdded}}",
+      "messageTextParams": [
+        "{{data.totalObjectsAdded}}",
+        "{{ctx.aceActiveContext.context.selectedModelObjects[0].props.object_string.dbValues[0]}}"
+      ]
+    },
+    "singleGCSAddCompMsg": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.Mrm0SingleClassifiedCompAdded}}",
+      "messageTextParams": [
+        "{{ctx.relationContext.relationInfo[0].secondaryObject.props.object_name.dbValues[0]}}",
+        "{{ctx.aceActiveContext.context.addElement.toComponent.props.object_string.dbValues[0]}}"
+      ]
+    },
+    "noMoreAddGCSWorkpieceSideCompMsg": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.noMoreAddGCSCPSocketComponentsInfo}}",
+      "messageTextParams": [
+        "{{ctx.aceActiveContext.context.addElement.numberOfGCSSockets}}"
+      ]
+    },
+    "nxToolNonAssemblyErrorMessage": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.nxToolNonAssemblyError}}"
+    },
+    "nxToolMultipleClassificationErrorMessage": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.nxToolMultipleClassificationError}}"
+    },
+    "createSetupSheetNotClassifiedError": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.createSetupSheetNotClassifiedError}}"
+    },
+    "importVemdor3DNotClassifiedError": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.importVemdor3DNotClassifiedError}}"
+    },
+    "mapClassificationObjectNotClassifiedError": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.mapClassificationObjectNotClassifiedError}}"
+    },
+    "mapClassificationObjectNoTargetClassesError": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.mapClassificationObjectNoTargetClassesError}}"
+    },
+    "extractHolderDataNonAssemblyError": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.extractHolderDataNonAssemblyError}}"
+    },
+    "extractHolderDataInvalidComponentError": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.extractHolderDataInvalidComponentError}}"
+    },
+    "extractHolderDataMultipleClassificationError": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.extractHolderDataMultipleClassificationError}}"
+    },
+    "extractHolderDataSuccessMessage": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.extractHolderDataSuccessMessage}}"
+    },
+    "toolCheckerNonAssemblyError": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.toolCheckerNonAssemblyError}}"
+    },
+    "toolcheckerUserMessage": {
+      "messageType": "INFO",
+      "messageText": "{{data.checkToolParametersResponse}}"
+    },
+    "createSetupSheetSuccessfulMessage": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.createSetupSheetSuccessMessage}}"
+    },
+    "singleComponentImportVemdor3DSuccessfulMessage": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.singleComponentImportVemdor3DSuccessfulMessage}}"
+    },
+    "extractHolderDataSuccessfulMessage": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.extractHolderDataSuccessMessage}}"
+    },
+    "mrmOperationStandardFailureMessage": {
+      "messageType": "ERROR",
+      "messageText": "{{errorCode}}"
+    },
+    "executeImportStep3DModelsAsyncMessage": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.Mrm0ExecuteImportStep3DModelsAsyncMessage}}"
+    }
+  },
+  "i18n": {
+    "ResourceViewModeTitle": [
+      "mrmMessages"
+    ],
+    "ResourceSummaryViewModeTitle": [
+      "mrmMessages"
+    ],
+    "ShowPSPOnNodeTitle": [
+      "mrmMessages"
+    ],
+    "ShowPSPOnSubAssemblyNodeTitle": [
+      "mrmMessages"
+    ],
+    "MRM0ShowChildrenTitle": [
+      "mrmMessages"
+    ],
+    "MRM0HideChildrenTitle": [
+      "mrmMessages"
+    ],
+    "MRM0AddResourceComponentTitle": [
+      "mrmMessages"
+    ],
+    "MRM0PasteResourceComponentTitle": [
+      "mrmMessages"
+    ],
+    "MRM0CreateNXToolAssemblyTitle": [
+      "mrmMessages"
+    ],
+    "MRM0ReplaceResourceComponentTitle": [
+      "mrmMessages"
+    ],
+    "Mrm0PropagationStartPointTitle": [
+      "mrmMessages"
+    ],
+    "Mrm0Cancel": [
+      "mrmMessages"
+    ],
+    "Mrm0Move": [
+      "mrmMessages"
+    ],
+    "Mrm0Remove": [
+      "mrmMessages"
+    ],
+    "Mrm0MovePSPConfirmation": [
+      "mrmMessages"
+    ],
+    "Mrm0RemovePSPConfirmation": [
+      "mrmMessages"
+    ],
+    "Mrm0RemoveElementTitle": [
+      "mrmMessages"
+    ],
+    "removeSingleElementConfirmation": [
+      "mrmMessages"
+    ],
+    "removeMultipleElementConfirmation": [
+      "mrmMessages"
+    ],
+    "Mrm0ICOAlreadyMappedSingleConfirmation": [
+      "mrmMessages"
+    ],
+    "Mrm0ICOAlreadyMappedMultiConfirmation": [
+      "mrmMessages"
+    ],
+    "Mrm0OpenExisting": [
+      "mrmMessages"
+    ],
+    "Mrm0MapAgain": [
+      "mrmMessages"
+    ],
+    "Mrm0ShowResourceViewDesc": [
+      "mrmMessages"
+    ],
+    "Mrm0ShowResourceSummaryViewDesc": [
+      "mrmMessages"
+    ],
+    "MRM0AddUpDirectionElementsTitle": [
+      "mrmMessages"
+    ],
+    "MRM0AddDownDirectionElementsTitle": [
+      "mrmMessages"
+    ],
+    "MRM0GCSAddTitle": [
+      "mrmMessages"
+    ],
+    "Mrm0SingleClassifiedCompAdded": [
+      "mrmMessages"
+    ],
+    "Mrm0MultiClassifiedCompsAdded": [
+      "mrmMessages"
+    ],
+    "noMoreAddGCSCPSocketComponentsInfo": [
+      "mrmMessages"
+    ],
+    "nxToolNonAssemblyError": [
+      "mrmMessages"
+    ],
+    "nxToolMultipleClassificationError": [
+      "mrmMessages"
+    ],
+    "createSetupSheetNotClassifiedError": [
+      "mrmMessages"
+    ],
+    "importVemdor3DNotClassifiedError": [
+      "mrmMessages"
+    ],
+    "mapClassificationObjectNotClassifiedError": [
+      "mrmMessages"
+    ],
+    "mapClassificationObjectNoTargetClassesError": [
+      "mrmMessages"
+    ],
+    "Mrm0CreateSetupSheetTitle": [
+      "mrmMessages"
+    ],
+    "Mrm0ExtractHolderDataTitle": [
+      "mrmMessages"
+    ],
+    "Mrm0CheckNXCAMToolRetrieveTitle": [
+      "mrmMessages"
+    ],
+    "extractHolderDataNonAssemblyError": [
+      "mrmMessages"
+    ],
+    "extractHolderDataMultipleClassificationError": [
+      "mrmMessages"
+    ],
+    "extractHolderDataSuccessMessage": [
+      "mrmMessages"
+    ],
+    "toolCheckerNonAssemblyError": [
+      "mrmMessages"
+    ],
+    "extractHolderDataInvalidComponentError": [
+      "mrmMessages"
+    ],
+    "createSetupSheetSuccessMessage": [
+      "mrmMessages"
+    ],
+    "singleComponentImportVemdor3DSuccessfulMessage": [
+      "mrmMessages"
+    ],
+    "mrm0ImportVemdor3DTitle": [
+      "mrmMessages"
+    ],
+    "mrm0MapClassificationObjectTitle": [
+      "mrmMessages"
+    ],
+    "Mrm0ExecuteImportStep3DModelsAsyncMessage": [
+      "mrmMessages"
+    ],
+    "mrm0CreateAssemblyFromCompTitle": [
+      "mrmMessages"
+    ],
+    "MrlCreateResource": [
+      "mrlMessages"
+    ],
+    "mrlImportVendorDataTitle": [
+      "mrlMessages"
+    ],
+    "mrlImportVendorHierarchyTitle": [
+      "mrlMessages"
+    ]
+  },
+  "onEvent": [
+    {
+      "eventId": "performPostRemoveSingleElementAction",
+      "action": "performPostRemoveSingleElementAction"
+    },
+    {
+      "eventId": "performPostRemoveMultipleElementAction",
+      "action": "performPostRemoveMultipleElementAction"
+    },
+    {
+      "eventId": "selectedUpDirectionCommandItem",
+      "action": "mrmLaunchAddUpDirectionElementPanel"
+    },
+    {
+      "eventId": "selectedDownDirectionCommandItem",
+      "action": "mrmLaunchAddChildElementPanel"
+    },
+    {
+      "eventId": "mrmLaunchAddChildElementPanel",
+      "action": "mrmLaunchAddChildElementPanel"
+    },
+    {
+      "eventId": "selectUpDirectionCommandItem",
+      "action": "selectUpDirectionCommandItem"
+    },
+    {
+      "eventId": "selectDownDirectionCommandItem",
+      "action": "selectDownDirectionCommandItem"
+    },
+    {
+      "eventId": "mrmPasteContentsFromClipboard",
+      "action": "mrmPasteContentsFromClipboard"
+    },
+    {
+      "eventId": "mrmresource.gcsAddMachineSideElementPostAction",
+      "action": "gcsAddMachineSideElementPostAction"
+    },
+    {
+      "eventId": "mrmresource.gcsAddWorkpieceSideElementsPostAction",
+      "action": "gcsAddWorkpieceSideElementsPostAction"
+    },
+    {
+      "eventId": "gcsAddElement.mrmLaunchGCSAddWorkpieceSidePanel",
+      "action": "mrmLaunchGCSAddWorkpieceSidePanel"
+    },
+    {
+      "eventId": "gcsAddElement.mrmGCSAddWorkpieceSideElements",
+      "action": "mrmGCSAddWorkpieceSideElements"
+    },
+    {
+      "eventId": "gcsAddElement.mrmGCSAddMachineSideElement",
+      "action": "mrmGCSAddMachineSideElement"
+    },
+    {
+      "eventId": "processCreateNXAssembly",
+      "action": "processCreateNXAssembly"
+    },
+    {
+      "eventId": "mrmLaunchCreateNXAssemblyPanel",
+      "action": "mrmLaunchCreateNXAssemblyPanel"
+    },
+    {
+      "eventId": "mrmFitGraph",
+      "action": "mrmFitGraph"
+    },
+    {
+      "eventId": "processExtractHolderData",
+      "action": "processExtractHolderData"
+    },
+    {
+      "eventId": "processCreateSetupSheet",
+      "action": "processCreateSetupSheet"
+    },
+    {
+      "eventId": "executeCreateSetupSheet",
+      "action": "executeCreateSetupSheet"
+    },
+    {
+      "eventId": "executeToolRetrieve",
+      "action": "executeToolRetrieve"
+    },
+    {
+      "eventId": "processToolRetrieve",
+      "action": "processToolRetrieve"
+    },
+    {
+      "eventId": "executeExtratHolderData",
+      "action": "executeExtratHolderData"
+    },
+    {
+      "eventId": "setOriginalHolderDataAccuracyPref",
+      "action": "setOriginalHolderDataAccuracyPref"
+    },
+    {
+      "eventId": "setPrefForExtractHolderData",
+      "action": "setPrefForExtractHolderData"
+    },
+    {
+      "eventId": "processImportStep3DModels",
+      "action": "processImportStep3DModels"
+    },
+    {
+      "eventId": "executeImportStep3DModels",
+      "action": "executeImportStep3DModels"
+    },
+    {
+      "eventId": "processMapClassificationObject",
+      "action": "processMapClassificationObject"
+    },
+    {
+      "eventId": "getICOMappingTargetClasses",
+      "action": "getICOMappingTargetClasses"
+    },
+    {
+      "eventId": "launchMapClassificationObjectPanel",
+      "action": "launchMapClassificationObjectPanel"
+    },
+    {
+      "eventId": "isICOAlreadyMapped",
+      "action": "isICOAlreadyMapped"
+    },
+    {
+      "eventId": "getMappedICODetails",
+      "action": "getMappedICODetails"
+    },
+    {
+      "eventId": "getMappingTargetClassesForCreateAssembly",
+      "action": "getMappingTargetClassesForCreateAssembly"
+    },
+    {
+      "eventId": "launchCreateAssemblyFromCompPanel",
+      "action": "launchCreateAssemblyFromCompPanel"
+    },
+    {
+      "eventId": "mrlLaunchCreateResourcePanel",
+      "action": "mrlLaunchCreateResourcePanel"
+    }
+  ],
+  "conditions": {
+    "isResourceView": {
+      "expression": "ctx.ViewModeContext.ViewModeContext === 'ResourceView'"
+    },
+    "isResourceSummaryView": {
+      "expression": "ctx.ViewModeContext.ViewModeContext === 'ResourceSummaryView'"
+    },
+    "isResourceOrResourceWithSummaryView": {
+      "expression": "ctx.ViewModeContext.ViewModeContext === 'ResourceView' || ctx.ViewModeContext.ViewModeContext === 'ResourceSummaryView'"
+    },
+    "showMRM0GraphicsBuilderCommandsForItem": {
+      "expression": "conditions.isResourceOrResourceWithSummaryView || conditions.showGraphicsBuilderCommandsInMRLDashBoardForItem"
+    },
+    "showMRM0GraphicsBuilderCommandsForOneOrMultiItem": {
+      "expression": "conditions.isResourceOrResourceWithSummaryView || conditions.showGraphicsBuilderCommandsInMRLDashBoardForOneOrMultiItem"
+    },
+    "showMRM0GraphicsBuilderCommandsForItemOrCatalogItem": {
+      "expression": "conditions.showMRM0GraphicsBuilderCommandsForItem || conditions.showGraphicsBuilderCommandsInMRLDashBoardForCatalogItem"
+    },
+    "showMRM0GraphicsBuilderCommandsForOneOrMultiSelections": {
+      "expression": "conditions.showMRM0GraphicsBuilderCommandsForOneOrMultiItem || conditions.showGraphicsBuilderCommandsInMRLDashBoardForOneOrMultiCatalogItem"
+    },
+    "showGraphicsBuilderCommandsInMRLDashBoardForItem": {
+      "expression": "ctx.pwaSelectionInfo && ctx.pwaSelectionInfo.currentSelectedCount === 1 && (ctx.sublocation.historyNameToken === 'manageResources' || ctx.sublocation.historyNameToken === 'mrlNewResources') && !conditions.isCatalogItemSelectedInMRLDashBoard"
+    },
+    "showGraphicsBuilderCommandsInMRLDashBoardForCatalogItem": {
+      "expression": "ctx.pwaSelectionInfo && ctx.pwaSelectionInfo.currentSelectedCount === 1 && (ctx.sublocation.historyNameToken === 'manageResources' || ctx.sublocation.historyNameToken === 'mrlNewResources') && conditions.isCatalogItemSelectedInMRLDashBoard"
+    },
+    "isCatalogItemSelectedInMRLDashBoard": {
+      "expression": "(ctx.xrtSummaryContextObject && ctx.xrtSummaryContextObject.modelType && ctx.xrtSummaryContextObject.modelType.typeHierarchyArray && (ctx.xrtSummaryContextObject.modelType.typeHierarchyArray.indexOf('Cls0Object') > -1 || ctx.xrtSummaryContextObject.modelType.typeHierarchyArray.indexOf('Cls0CstObject') > -1)) || (!ctx.xrtSummaryContextObject && ctx.selected.modelType && ctx.selected.modelType.typeHierarchyArray && (ctx.selected.modelType.typeHierarchyArray.indexOf('Cls0Object') > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf('Cls0CstObject') > -1))"
+    },
+    "showGraphicsBuilderCommandsInMRLDashBoardForOneOrMultiItem": {
+      "expression": "ctx.pwaSelectionInfo && ctx.pwaSelectionInfo.currentSelectedCount > 0 && (ctx.sublocation.historyNameToken === 'manageResources' || ctx.sublocation.historyNameToken === 'mrlNewResources') && !conditions.isCatalogItemSelectedInMRLDashBoard"
+    },
+    "showGraphicsBuilderCommandsInMRLDashBoardForOneOrMultiCatalogItem": {
+      "expression": "ctx.pwaSelectionInfo && ctx.pwaSelectionInfo.currentSelectedCount > 0 && (ctx.sublocation.historyNameToken === 'manageResources' || ctx.sublocation.historyNameToken === 'mrlNewResources') && conditions.isCatalogItemSelectedInMRLDashBoard"
+    },
+    "isMRMClassificationSubLocation": {
+      "expression": "ctx.locationContext['ActiveWorkspace:SubLocation'] === 'showClassification'"
+    },
+    "showMRM0CreateAssemblyCommand": {
+      "expression": "ctx.pwaSelectionInfo && ctx.pwaSelectionInfo.currentSelectedCount === 1 && (conditions.isResourceOrResourceWithSummaryView || conditions.showGraphicsBuilderCommandsInMRLDashBoardForItem || (conditions.isMRMClassificationSubLocation && !conditions.isCatalogItemSelectedInMRLDashBoard)) && (ctx.tcSessionData.tcMajorVersion > 14 || (ctx.tcSessionData.tcMajorVersion === 14 && ctx.tcSessionData.tcMinorVersion >= 2))"
+    },
+    "supportsResourceView": {
+      "expression": "ctx.ViewModeContext.supportedViewModes.ResourceView && conditions.notFullScreen"
+    },
+    "supportsResourceSummaryView": {
+      "expression": "ctx.ViewModeContext.supportedViewModes.ResourceSummaryView && conditions.notFullScreen"
+    },
+    "cmdMRM0GcLayoutCommandGroupSelected": {
+      "expression": "conditions.isResourceOrResourceWithSummaryView && ctx.graph.graphModel.config.layout.defaultOption"
+    },
+    "cmdMRM0GcTopToBottomLayoutActive": {
+      "expression": "ctx.graph.graphModel.config.layout.options.indexOf('TopToBottom')>-1 && conditions.isResourceOrResourceWithSummaryView"
+    },
+    "cmdMRM0GcRightToLeftLayoutActive": {
+      "expression": "ctx.graph.graphModel.config.layout.options.indexOf('RightToLeft')>-1 && conditions.isResourceOrResourceWithSummaryView"
+    },
+    "cmdMRM0GcLeftToRightLayoutActive": {
+      "expression": "ctx.graph.graphModel.config.layout.options.indexOf('LeftToRight')>-1 && conditions.isResourceOrResourceWithSummaryView"
+    },
+    "cmdMRM0GcBottomToTopLayoutActive": {
+      "expression": "ctx.graph.graphModel.config.layout.options.indexOf('BottomToTop')>-1 && conditions.isResourceOrResourceWithSummaryView"
+    },
+    "cmdMRM0GcOrganicLayoutActive": {
+      "expression": "ctx.graph.graphModel.config.layout.options.indexOf('Organic')>-1 && ctx.graph.graphModel.config.layout.layoutMode==='IncUpdateLayout' && conditions.isResourceOrResourceWithSummaryView"
+    },
+    "cmdMRM0GcIncrementalLayoutActive": {
+      "expression": "ctx.graph.graphModel.config.layout.options.indexOf('Incremental')>-1 && ctx.graph.graphModel.config.layout.layoutMode==='IncUpdateLayout' && conditions.isResourceOrResourceWithSummaryView"
+    },
+    "isMRMAddChildCommandSupported": {
+      "expression": "conditions.isResourceOrResourceWithSummaryView && (ctx.visibleServerCommands.Awb0AddChildElement || ctx.visibleServerCommands.Awb0RemoveElement) && conditions.isSingleSelectionInMainAssembly && !conditions.isPackedNodeSelected"
+    },
+    "isPackedNodeSelected": {
+      "expression": "ctx.occmgmtContext.selectedModelObjects[0] && ctx.occmgmtContext.selectedModelObjects[0].props.awb0IsPacked && ctx.occmgmtContext.selectedModelObjects[0].props.awb0IsPacked.dbValues[0] === '1'"
+    },
+    "mrmPasteActiveCondition": {
+      "expression": "conditions.isResourceOrResourceWithSummaryView && ctx.sublocation.clientScopeURI==='Awb0OccurrenceManagement'"
+    },
+    "mrmPasteEnableCondition": {
+      "expression": {
+        "$and": [
+          {
+            "$source": "conditions.isMRMPasteAllowed",
+            "$query": {
+              "$eq": true
+            }
+          },
+          {
+            "$source": "ctx.awClipBoardProvider",
+            "$query": {
+              "$source": "modelType.typeHierarchyArray",
+              "$query": {
+                "$in": "{{ctx.selectedModelTypeRelations}}"
+              }
+            }
+          },
+          {
+            "$source": "ctx.mselected.length",
+            "$query": {
+              "$eq": 1
+            }
+          },
+          {
+            "$source": "ctx.selected.props.is_modifiable.dbValues",
+            "$query": {
+              "$in": [
+                "1"
+              ]
+            }
+          },
+          {
+            "$source": "ctx.selectedModelTypeRelations.length",
+            "$query": {
+              "$gt": 0
+            }
+          },
+          {
+            "$source": "ctx.awClipBoardProvider.length",
+            "$query": {
+              "$gt": 0
+            }
+          },
+          {
+            "$source": "ctx.sublocation.clientScopeURI",
+            "$query": {
+              "$ne": "Awp0ShowObject"
+            }
+          },
+          {
+            "$source": "ctx.sublocation.clientScopeURI",
+            "$query": {
+              "$eq": "Awb0OccurrenceManagement"
+            }
+          }
+        ]
+      }
+    },
+    "isMRMReplaceCommandSupported": {
+      "expression": "conditions.isResourceOrResourceWithSummaryView && ctx.visibleServerCommands.Awb0ReplaceElement && ctx.mselected.length == 1 && !ctx.aceActiveContext.context.isRootOrSubAssemblyNodeInSelection && !conditions.isPackedNodeSelected"
+    },
+    "isPSPCommandVisible": {
+      "expression": "conditions.isResourceOrResourceWithSummaryView && ctx.occmgmtContext.selectedModelObjects.length === 1 && ctx.occmgmtContext.topElement.uid != ctx.occmgmtContext.selectedModelObjects[0].uid && ctx.occmgmtContext.topElement.uid === ctx.occmgmtContext.selectedModelObjects[0].props.awb0Parent.dbValues[0] && ( ctx.visibleServerCommands.Awb0AddChildElement || ctx.visibleServerCommands.Awb0RemoveElement )"
+    },
+    "isMRMRemoveElementCommandVisible": {
+      "expression": "conditions.isResourceOrResourceWithSummaryView && ctx.mselected.length > 0 && ctx.visibleServerCommands.Awb0RemoveElement && !ctx.aceActiveContext.context.isRootOrSubAssemblyNodeInSelection"
+    },
+    "hideACERemoveCommand": {
+      "expression": "conditions.isResourceOrResourceWithSummaryView && conditions.isRemoveCommandSupported"
+    },
+    "isMRMPasteAllowed": {
+      "expression": "(conditions.isAddChildProductToSWCVisible || conditions.isAddChildCommandSupported || ctx.visibleServerCommands.Awb0RemoveElement) && conditions.isSingleSelectionInMainAssembly && !conditions.isPackedNodeSelected"
+    },
+    "isSingleSelectionInMainAssembly": {
+      "expression": "ctx.occmgmtContext.selectedModelObjects && ctx.occmgmtContext.selectedModelObjects.length == 1 && (ctx.occmgmtContext.topElement.uid === ctx.occmgmtContext.selectedModelObjects[0].uid || ctx.occmgmtContext.topElement.uid === ctx.occmgmtContext.selectedModelObjects[0].props.awb0Parent.dbValues[0])"
+    },
+    "isMrm0GCSAddMachineSideCommandEnabled": {
+      "expression": "conditions.isResourceSummaryView && ctx.occmgmtContext.topElement.uid != ctx.selected.uid && ctx.relationContext.relationInfo.length === 1 && ctx.relationContext.relationInfo[0].relationType === 'Mrm0GcsUpwardsProvider' && !conditions.isPackedNodeSelected"
+    },
+    "isMrm0GCSAddMultiWorkpieceSideCmdEnabled": {
+      "expression": "conditions.isResourceSummaryView && ctx.relationContext.relationInfo.length > 1 && ctx.relationContext.relationInfo[0].relationType === 'Mrm0GcsDownwardsProvider' && !conditions.isPackedNodeSelected"
+    },
+    "isMrm0GCSAddSingleWorkpieceSideCmdEnabled": {
+      "expression": "conditions.isResourceSummaryView && ctx.relationContext.relationInfo.length === 1 && ctx.relationContext.relationInfo[0].relationType === 'Mrm0GcsDownwardsProvider' && !conditions.isPackedNodeSelected"
+    },
+    "isMrmGraphDrawn": {
+      "expression": "ctx.graph && ctx.graph.graphModel && ctx.graph.graphModel.nodeMap"
+    },
+    "isMrm0CutCommandActive": {
+      "expression": "conditions.isResourceOrResourceWithSummaryView && conditions.awb0CutCommandActive"
+    },
+    "isMrm0CutCommandEnabled": {
+      "expression": {
+        "$and": [
+          {
+            "$source": "conditions.isMrm0CutCommandActive",
+            "$query": {
+              "$eq": true
+            }
+          },
+          {
+            "$source": "conditions.isSingleSelectionInMainAssembly",
+            "$query": {
+              "$eq": true
+            }
+          },
+          {
+            "$source": "conditions.isRemoveCommandSupported",
+            "$query": {
+              "$eq": true
+            }
+          },
+          {
+            "$source": "ctx.mselected",
+            "$query": {
+              "$source": "modelType.typeHierarchyArray",
+              "$query": {
+                "$in": [
+                  "Awb0ConditionalElement"
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "isMrlDashboardLocation": {
+      "expression": "ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.mrm.manageResourcesLocation'"
+    },
+    "isMrlCreateResourceCommandSupported": {
+      "expression": "conditions.isMrlDashboardLocation && !conditions.isMrlSavedSublocationSelected"
+    },
+    "isMrlCreateResourceCtxMenuCommandSupported": {
+      "expression": "(ctx.pwaSelectionInfo.currentSelectedCount > 0 && !ctx.xrtSummaryContextObject) || (ctx.pwaSelectionInfo.currentSelectedCount === 1 && ctx.xrtSummaryContextObject.uid === ctx.selected.uid)"
+    },
+    "isSelectionInMRLDashboard": {
+      "expression": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'Awb0ConditionalElement' ) > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf( 'WorkspaceObject' ) > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf( 'Cls0Object' ) > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf( 'Cls0CstObject' ) > -1"
+    },
+    "onSelectionHideCommandsInMRLDashboard": {
+      "expression": "ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.mrm.manageResourcesLocation' && ctx.selected && ctx.selected.modelType && ctx.selected.modelType.typeHierarchyArray && (ctx.selected.modelType.typeHierarchyArray.indexOf( 'Mfg0MEResourceRevision' ) > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf( 'WorkspaceObject' ) > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf( 'Cls0Object' ) > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf( 'Cls0CstObject' ) > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf( 'ItemRevision' ) > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf( 'Sml0' ) > -1)"
+    },
+    "mrlHideArm0GenerateTraceabilityMatrixCmd": {
+      "expression": "conditions.isMrlDashboardLocation && (conditions.isSelectionInMRLDashboard || (!ctx.occmgmtContext && ctx.visibleServerCommands.Arm0CreateTraceLink ))"
+    },
+    "mrlHideAwp0OpenInSEECCmd": {
+      "expression": "conditions.isMrlDashboardLocation && ((ctx.selected.modelType.typeHierarchyArray.indexOf( 'Awb0ConditionalElement' ) > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf( 'WorkspaceObject' ) > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf( 'Cls0Object' ) > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf( 'Cls0CstObject' ) > -1) || (!ctx.occmgmtContext && ctx.visibleServerCommands.Awp0OpenInSEEC ))"
+    },
+    "mrlHideCm1ShowCreateChangeInContextCmd": {
+      "expression": {
+        "$and": [
+          {
+            "$source": "conditions.onSelectionHideCommandsInMRLDashboard",
+            "$query": {
+              "$eq": true
+            }
+          },
+          {
+            "$source": "conditions.Cm1ShowCreateChangeInContextCmdCond",
+            "$query": {
+              "$eq": true
+            }
+          }
+        ]
+      }
+    },
+    "mrlHideSmr1CreateAsBuiltStructureCmd": {
+      "expression": {
+        "$and": [
+          {
+            "$source": "conditions.onSelectionHideCommandsInMRLDashboard",
+            "$query": {
+              "$eq": true
+            }
+          },
+          {
+            "$source": "conditions.createAsBuiltStructureCommandActive",
+            "$query": {
+              "$eq": true
+            }
+          }
+        ]
+      }
+    },
+    "isMrlSavedSublocationSelected": {
+      "expression": "ctx.sublocation.historyNameToken === 'manageResourcesSavedSearch'"
+    },
+    "isMrlNewResourcesSublocationSelected": {
+      "expression": "ctx.sublocation.historyNameToken === 'mrlNewResources'"
+    },
+    "MrlSaveAsorRevise": {
+      "expression": "conditions.isMrlDashboardLocation && !conditions.isMrlSavedSublocationSelected && conditions.saveAsorRevise"
+    },
+    "isMRLDBAPriviledgeUser": {
+      "expression": "ctx.userSession.props.group_name.dbValue === 'dba'"
+    },
+    "isMRLClassificationSubLocation": {
+      "expression": "ctx.locationContext['ActiveWorkspace:SubLocation'] === 'showClassification'"
+    },
+    "isMRLFolderSubLocation": {
+      "expression": "(ctx.sublocation.nameToken === 'com.siemens.splm.clientfx.tcui.xrt.objectNavigationSubLocation' || ctx.sublocation.nameToken === 'com.siemens.splm.clientfx.tcui.xrt.showObjectSubLocation') && ctx.selected.modelType.typeHierarchyArray.indexOf( 'Folder' ) > -1"
+    },
+    "mrlImportVendorDataCommandVisible": {
+      "expression": "(conditions.isMrlDashboardLocation || conditions.isMRLClassificationSubLocation || conditions.isMRLFolderSubLocation) && (ctx.tcSessionData.tcMajorVersion > 14 || (ctx.tcSessionData.tcMajorVersion === 14 && ctx.tcSessionData.tcMinorVersion >= 2))"
+    },
+    "mrlImportVendorHierarchyCommandVisible": {
+      "expression": "conditions.isMRLDBAPriviledgeUser && (conditions.isMrlDashboardLocation || conditions.isMRLClassificationSubLocation || conditions.isMRLFolderSubLocation) && (ctx.tcSessionData.tcMajorVersion > 14 || (ctx.tcSessionData.tcMajorVersion === 14 && ctx.tcSessionData.tcMinorVersion >= 2))"
+    }
+  }
+}

@@ -1,0 +1,1273 @@
+{
+  "BusinessObjectInterface": [
+    {
+      "createRelease": "Awp04.1.0",
+      "description": "Interface Name for Business Object Mrm0GcsDownwardsProvider",
+      "libraryName": "mrm0mfgresourcemgraw",
+      "name": "Mrm0GcsDownwardsProvider",
+      "namespace": "mrm0mfgresourcemgraw",
+      "primaryInterface": "true",
+      "typeName": "Mrm0GcsDownwardsProvider"
+    },
+    {
+      "createRelease": "Awp04.1.0",
+      "description": "Interface Name for Business Object Mrm0GcsUpwardsProvider",
+      "libraryName": "mrm0mfgresourcemgraw",
+      "name": "Mrm0GcsUpwardsProvider",
+      "namespace": "mrm0mfgresourcemgraw",
+      "primaryInterface": "true",
+      "typeName": "Mrm0GcsUpwardsProvider"
+    }
+  ],
+  "Date": "Wed Jun 17 10:59:03 AM 2020",
+  "Library": [
+    {
+      "createRelease": "Awp04.3.0",
+      "description": "Manufacturing Resource Manager service library.",
+      "isThirdParty": "false",
+      "name": "Mrm0SoaResourceManager",
+      "namespace": "Mrm0::Soa::ResourceManager",
+      "serviceLibrary": "true"
+    },
+    {
+      "DependentOn": [
+        {
+          "name": "metaframework"
+        },
+        {
+          "name": "tccore"
+        },
+        {
+          "name": "tc"
+        },
+        {
+          "name": "cxpom"
+        },
+        {
+          "name": "awp0aws2"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "Manufacturing Resource Manager AW Library",
+      "isThirdParty": "false",
+      "name": "mrm0mfgresourcemgraw",
+      "namespace": "",
+      "serviceLibrary": "false"
+    }
+  ],
+  "Operation": [
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of Awb0Element objects of the successor components. In the corresponding BOMLine objects of those elements the predecessor information is being added.",
+          "parameterName": "successorComponents"
+        },
+        {
+          "description": "The Awb0Element object of the component the predecessor information is pointing to.",
+          "parameterName": "predecessorComponent"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Mrm0mfgresourcemgraw",
+      "createRelease": "Awp05.1.0",
+      "dependencies": "",
+      "description": "This operation perform below post actions after adding resource components to a resource assembly.<br /><br />1. Adds predecessor information (&quot;bl_predecessor_lines&quot; property) into the newly added component BOMLine objects that point to the predecessor component BOMLine.<br />The predecessor information is used in Resource Manager to define the logical parent/child relationship of components in resource assemblies.<br />If a component was added in upwards (machine side) direction, it will not just add the predecessor for new component but also adjust the predecessor of the existing component.<br /><br />2. Sets the Propagation Start Point (PSP) automatically, when resource components are added to a resource assembly.<br />The automatic PSP will be set to the newly added resource component, if the new resource component was added in downwards (workpiece side) direction and if it is classified in a class or child classes that was specified in the preference &ldquo;MRMAutoPSPClassIDs&rdquo;. In addition to above, one of the following condition has to be true:<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;The assembly does not yet have a PSP.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;There is already a component with PSP in the branch from the newly added resource component to the top resource component. In this case the PSP gets moved to the newly added resource component.<br /><br />After adding the PSP, the resource assembly is saved so that the values from newly added resource component is propagated to the top resource component.",
+      "exceptionCondition": "",
+      "id": "addResourceElementsPostActions#const,std::vector<Teamcenter::Awb0Element>,&$const,Teamcenter::Awb0Element,&",
+      "interface": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "addResourceElementsPostActions",
+      "opTemplate": "Teamcenter::Soa::Server::ServiceData#Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::addResourceElementsPostActions#const,std::vector<Teamcenter::Awb0Element>,&$const,Teamcenter::Awb0Element,&",
+      "returnDescription": "The service data containing partial error if any.<br /><br />The following partial errors may be returned:<br />446002&nbsp;&nbsp;&nbsp;&nbsp;Add resource element post actions have failed. Please contact your system administrator.<br />446003&nbsp;&nbsp;&nbsp;&nbsp;Successor components are invalid.<br />446004&nbsp;&nbsp;&nbsp;&nbsp;Predecessor component is invalid.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "The resource and the configuration rules to use to configure the resource and get back a page of resource occurrences.",
+          "parameterName": "inputData"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Mrm0mfgresourcemgraw",
+      "createRelease": "Awp04.3.0",
+      "dependencies": "",
+      "description": "Retrieves the page of configured resource occurrences for given the top-level resource and configuration parameters as input. The output also contains a cursor that defines the place to start the next page location. The cursor must be passed back in to any subsequent call to get the next page of occurrences.",
+      "exceptionCondition": "Teamcenter::Soa::Server::ServiceException",
+      "id": "getResourceOccurrences#const,Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceOccurrencesData,&",
+      "interface": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "getResourceOccurrences",
+      "opTemplate": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceOccurrencesResp#Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::getResourceOccurrences#const,Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceOccurrencesData,&",
+      "returnDescription": "A page of configured resource occurrences in the resource product configured by the specified configuration rules in the input. The response structure also contains the cursor that must be passed back to get the next page.<br /><br /><br />The following partial errors may be returned:<br /> - 126001: An internal error has occurred in the Occurrence Management module.<br /> - 126002: No Adapter could be found to handle the Product. The system has not been adequately enhanced or customised to deal with the data given to it as input.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "The list of  Awb0Element to be removed.",
+          "parameterName": "resourceElementsToRemove"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Mrm0mfgresourcemgraw",
+      "createRelease": "Awp05.1.0",
+      "dependencies": "",
+      "description": "This operation removes Awb0Element objects from the content or Awb0SavedBookmark. <br />The product is implicitly saved after removing Awb0Element objects. When products are removed from Awb0SavedBookmark, the user needs to explicitly save the changes. The user must have WRITE privilege to remove elements.<br />If a MRM Propagation Start Point (PSP) note has been set on the removing element&rsquo;s BOMLine then it sets Propagation Start Point (PSP) note on the removed element&rsquo;s BOMLine predecessor and propagate values from the sub components to the top component. In case of a multitool, if the predecessor BOMLine itself has a PSP set, then this operation merges the cutter IDs and propagates the values from the sub components to the top component accordingly.",
+      "exceptionCondition": "",
+      "id": "removeResourceElements#const,std::vector<Teamcenter::Awb0Element>,&",
+      "interface": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "removeResourceElements",
+      "opTemplate": "Teamcenter::Soa::Server::ServiceData#Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::removeResourceElements#const,std::vector<Teamcenter::Awb0Element>,&",
+      "returnDescription": "ServiceData containing removed Awb0Element objects in the deleted list.<br /><br />The following partial errors may be returned: <br />126018  The product to be removed does not exist in the Awb0AutoBookmark.<br />126215 &nbsp;&nbsp;&nbsp;&nbsp;Unable to get the lock for the Awb0AutoBookmark object associated with the Awb0SavedBookmark.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "Contains an input object with the component that should be replaced, the new component and configuration information.",
+          "parameterName": "input"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Mrm0mfgresourcemgraw",
+      "createRelease": "Awp05.0.0",
+      "dependencies": "",
+      "description": "This operation replaces the underlying objects of an Awb0Element with a new business object. It is used in Active Workspace to replace one component in an assembly with another one. After replacing the component the attribute propagation function is triggered that propagates the Classifiction attribute values from the components into the assembly root level.",
+      "exceptionCondition": "",
+      "id": "replaceResourceElement#const,Mrm0::Soa::Internal::ResourceManager::_2020_05::ResourceOccurrencesManagement::ReplaceResourceInput,&",
+      "interface": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "replaceResourceElement",
+      "opTemplate": "Teamcenter::Soa::Server::ServiceData#Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::replaceResourceElement#const,Mrm0::Soa::Internal::ResourceManager::_2020_05::ResourceOccurrencesManagement::ReplaceResourceInput,&",
+      "returnDescription": "Contains the list of Awb0Element objects in update list and partial error if any.<br /><br />The following partial errors may be returned:<br />126043 The &quot;Replace Element&quot; operation cannot be performed, because one of the mandatory inputs is not provided.<br />446001 The business object type is incorrect. The supported types are &quot;ItemRevision&quot; and its sub-types.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of Awb0Element UIDs of the newly added components. In the corresponding BOMLine objects of those elements the predecessor information is being added.",
+          "parameterName": "newAddedComponentUIDs"
+        },
+        {
+          "description": "The Awb0Element UID of the component the predecessor information is pointing to.",
+          "parameterName": "predecessorComponentUID"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Mrm0mfgresourcemgraw",
+      "createRelease": "Awp05.0.0",
+      "dependencies": "",
+      "description": "This operation adds predecessor information (&quot;bl_predecessor_lines&quot; property) into the newly added component BOM lines that points to the predecessor component BOM line.<br />The predecessor information is used in Resource Manager to define the logical parent/child relationship of components in resource assemblies.",
+      "exceptionCondition": "",
+      "id": "setBOMLinesPredecessor#const,std::vector<std::string>,&$const,std::string",
+      "interface": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "setBOMLinesPredecessor",
+      "opTemplate": "Teamcenter::Soa::Server::ServiceData#Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::setBOMLinesPredecessor#const,std::vector<std::string>,&$const,std::string",
+      "returnDescription": "The service data containing partial error if any.<br /><br />The following partial errors may be returned:<br />46000 Cannot add predecessor to packed line.<br />Cannot add packed line as predecessor.<br />Cannot add predecessor to root line.<br />Predecessor and successor do not share the same parent.<br />46001 Invalid object received by BOM Module.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "The UID of the selected Awb0Element.",
+          "parameterName": "selectedComponentUID"
+        },
+        {
+          "description": "The ID of the active cutter (in case of multi tools).",
+          "parameterName": "activeCutterID"
+        },
+        {
+          "description": "Controls if the PSP will be updated forceful.<br />If true, the PSP information will be updated in all three cases add, remove and move; otherwise, only in the add case the PSP information is added.",
+          "parameterName": "forceUpdate"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Mrm0mfgresourcemgraw",
+      "createRelease": "Awp05.0.0",
+      "dependencies": "",
+      "description": "This operation adds or removes a MRM Propagation Start Point (PSP) note onto the given component&rsquo;s BOMLine. The selected component&rsquo;s assembly is anyalized to determine  if the PSP needs to be added, removed or moved. <br />In case of add, the PSP note is added to the BOMLine of the selected component.<br />In case of remove, the PSP note is removed from the BOMLine of the selected component.<br />In case of move, the PSP note is removed from the component where it currently is and added to the selected one.<br />The remove and move cases are only executed  if the forceUpdate parameter is true.<br />In the response object the operation returns the information what type of action is required and the names of the relevant components. This allows the caller to ask for confirmation for this action and call the operation again with the force option.<br />After updating the PSP information the resource assembly is saved so that the values from sub components are propagated to the top component.",
+      "exceptionCondition": "",
+      "id": "setPropagationStartPoint#const,std::string$const,std::string$bool",
+      "interface": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "setPropagationStartPoint",
+      "opTemplate": "Mrm0::Soa::Internal::ResourceManager::_2020_05::ResourceOccurrencesManagement::SetPropagationStartPointResp#Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::setPropagationStartPoint#const,std::string$const,std::string$bool",
+      "returnDescription": "The information about PSP deletion and moving.<br /><br />The following partial errors may be returned: <br />327200&nbsp;&nbsp;&nbsp;&nbsp;Selected component UID is invalid.<br />327201&nbsp;&nbsp;&nbsp;&nbsp;Active cutter ID is invalid.",
+      "useCase": ""
+    }
+  ],
+  "OperationTemplate": [
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::Awb0Element",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of Awb0Element objects of the successor components. In the corresponding BOMLine objects of those elements the predecessor information is being added.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "successorComponents"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Teamcenter::Awb0Element",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The Awb0Element object of the component the predecessor information is pointing to.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "predecessorComponent"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Teamcenter::Soa::Server::ServiceData",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "Awp05.1.0",
+      "description": "This operation perform below post actions after adding resource components to a resource assembly.<br /><br />1. Adds predecessor information (&quot;bl_predecessor_lines&quot; property) into the newly added component BOMLine objects that point to the predecessor component BOMLine.<br />The predecessor information is used in Resource Manager to define the logical parent/child relationship of components in resource assemblies.<br />If a component was added in upwards (machine side) direction, it will not just add the predecessor for new component but also adjust the predecessor of the existing component.<br /><br />2. Sets the Propagation Start Point (PSP) automatically, when resource components are added to a resource assembly.<br />The automatic PSP will be set to the newly added resource component, if the new resource component was added in downwards (workpiece side) direction and if it is classified in a class or child classes that was specified in the preference &ldquo;MRMAutoPSPClassIDs&rdquo;. In addition to above, one of the following condition has to be true:<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;The assembly does not yet have a PSP.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;There is already a component with PSP in the branch from the newly added resource component to the top resource component. In this case the PSP gets moved to the newly added resource component.<br /><br />After adding the PSP, the resource assembly is saved so that the values from newly added resource component is propagated to the top resource component.",
+      "id": "Teamcenter::Soa::Server::ServiceData#Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::addResourceElementsPostActions#const,std::vector<Teamcenter::Awb0Element>,&$const,Teamcenter::Awb0Element,&",
+      "name": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::addResourceElementsPostActions",
+      "returnConst": "false",
+      "returnDescription": "The service data containing partial error if any.<br /><br />The following partial errors may be returned:<br />446002&nbsp;&nbsp;&nbsp;&nbsp;Add resource element post actions have failed. Please contact your system administrator.<br />446003&nbsp;&nbsp;&nbsp;&nbsp;Successor components are invalid.<br />446004&nbsp;&nbsp;&nbsp;&nbsp;Predecessor component is invalid.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "MetaException": [
+        {
+          "name": "Teamcenter::Soa::Server::ServiceException"
+        }
+      ],
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceOccurrencesData",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The resource and the configuration rules to use to configure the resource and get back a page of resource occurrences.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "inputData"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceOccurrencesResp",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "Awp04.3.0",
+      "description": "Retrieves the page of configured resource occurrences for given the top-level resource and configuration parameters as input. The output also contains a cursor that defines the place to start the next page location. The cursor must be passed back in to any subsequent call to get the next page of occurrences.",
+      "id": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceOccurrencesResp#Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::getResourceOccurrences#const,Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceOccurrencesData,&",
+      "name": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::getResourceOccurrences",
+      "returnConst": "false",
+      "returnDescription": "A page of configured resource occurrences in the resource product configured by the specified configuration rules in the input. The response structure also contains the cursor that must be passed back to get the next page.<br /><br /><br />The following partial errors may be returned:<br /> - 126001: An internal error has occurred in the Occurrence Management module.<br /> - 126002: No Adapter could be found to handle the Product. The system has not been adequately enhanced or customised to deal with the data given to it as input.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::Awb0Element",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The list of  Awb0Element to be removed.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "resourceElementsToRemove"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Teamcenter::Soa::Server::ServiceData",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "Awp05.1.0",
+      "description": "This operation removes Awb0Element objects from the content or Awb0SavedBookmark. <br />The product is implicitly saved after removing Awb0Element objects. When products are removed from Awb0SavedBookmark, the user needs to explicitly save the changes. The user must have WRITE privilege to remove elements.<br />If a MRM Propagation Start Point (PSP) note has been set on the removing element&rsquo;s BOMLine then it sets Propagation Start Point (PSP) note on the removed element&rsquo;s BOMLine predecessor and propagate values from the sub components to the top component. In case of a multitool, if the predecessor BOMLine itself has a PSP set, then this operation merges the cutter IDs and propagates the values from the sub components to the top component accordingly.",
+      "id": "Teamcenter::Soa::Server::ServiceData#Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::removeResourceElements#const,std::vector<Teamcenter::Awb0Element>,&",
+      "name": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::removeResourceElements",
+      "returnConst": "false",
+      "returnDescription": "ServiceData containing removed Awb0Element objects in the deleted list.<br /><br />The following partial errors may be returned: <br />126018  The product to be removed does not exist in the Awb0AutoBookmark.<br />126215 &nbsp;&nbsp;&nbsp;&nbsp;Unable to get the lock for the Awb0AutoBookmark object associated with the Awb0SavedBookmark.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2020_05::ResourceOccurrencesManagement::ReplaceResourceInput",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "Contains an input object with the component that should be replaced, the new component and configuration information.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "input"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Teamcenter::Soa::Server::ServiceData",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "Awp05.0.0",
+      "description": "This operation replaces the underlying objects of an Awb0Element with a new business object. It is used in Active Workspace to replace one component in an assembly with another one. After replacing the component the attribute propagation function is triggered that propagates the Classifiction attribute values from the components into the assembly root level.",
+      "id": "Teamcenter::Soa::Server::ServiceData#Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::replaceResourceElement#const,Mrm0::Soa::Internal::ResourceManager::_2020_05::ResourceOccurrencesManagement::ReplaceResourceInput,&",
+      "name": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::replaceResourceElement",
+      "returnConst": "false",
+      "returnDescription": "Contains the list of Awb0Element objects in update list and partial error if any.<br /><br />The following partial errors may be returned:<br />126043 The &quot;Replace Element&quot; operation cannot be performed, because one of the mandatory inputs is not provided.<br />446001 The business object type is incorrect. The supported types are &quot;ItemRevision&quot; and its sub-types.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "std::string",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of Awb0Element UIDs of the newly added components. In the corresponding BOMLine objects of those elements the predecessor information is being added.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "newAddedComponentUIDs"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "std::string",
+              "qualifier": ""
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The Awb0Element UID of the component the predecessor information is pointing to.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "predecessorComponentUID"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Teamcenter::Soa::Server::ServiceData",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "Awp05.0.0",
+      "description": "This operation adds predecessor information (&quot;bl_predecessor_lines&quot; property) into the newly added component BOM lines that points to the predecessor component BOM line.<br />The predecessor information is used in Resource Manager to define the logical parent/child relationship of components in resource assemblies.",
+      "id": "Teamcenter::Soa::Server::ServiceData#Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::setBOMLinesPredecessor#const,std::vector<std::string>,&$const,std::string",
+      "name": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::setBOMLinesPredecessor",
+      "returnConst": "false",
+      "returnDescription": "The service data containing partial error if any.<br /><br />The following partial errors may be returned:<br />46000 Cannot add predecessor to packed line.<br />Cannot add packed line as predecessor.<br />Cannot add predecessor to root line.<br />Predecessor and successor do not share the same parent.<br />46001 Invalid object received by BOM Module.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "std::string",
+              "qualifier": ""
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The UID of the selected Awb0Element.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "selectedComponentUID"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "std::string",
+              "qualifier": ""
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The ID of the active cutter (in case of multi tools).",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "activeCutterID"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "bool",
+              "qualifier": ""
+            }
+          ],
+          "const": "false",
+          "defaultValue": "",
+          "description": "Controls if the PSP will be updated forceful.<br />If true, the PSP information will be updated in all three cases add, remove and move; otherwise, only in the add case the PSP information is added.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "forceUpdate"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Mrm0::Soa::Internal::ResourceManager::_2020_05::ResourceOccurrencesManagement::SetPropagationStartPointResp",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "Awp05.0.0",
+      "description": "This operation adds or removes a MRM Propagation Start Point (PSP) note onto the given component&rsquo;s BOMLine. The selected component&rsquo;s assembly is anyalized to determine  if the PSP needs to be added, removed or moved. <br />In case of add, the PSP note is added to the BOMLine of the selected component.<br />In case of remove, the PSP note is removed from the BOMLine of the selected component.<br />In case of move, the PSP note is removed from the component where it currently is and added to the selected one.<br />The remove and move cases are only executed  if the forceUpdate parameter is true.<br />In the response object the operation returns the information what type of action is required and the names of the relevant components. This allows the caller to ask for confirmation for this action and call the operation again with the force option.<br />After updating the PSP information the resource assembly is saved so that the values from sub components are propagated to the top component.",
+      "id": "Mrm0::Soa::Internal::ResourceManager::_2020_05::ResourceOccurrencesManagement::SetPropagationStartPointResp#Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::setPropagationStartPoint#const,std::string$const,std::string$bool",
+      "name": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement::setPropagationStartPoint",
+      "returnConst": "false",
+      "returnDescription": "The information about PSP deletion and moving.<br /><br />The following partial errors may be returned: <br />327200&nbsp;&nbsp;&nbsp;&nbsp;Selected component UID is invalid.<br />327201&nbsp;&nbsp;&nbsp;&nbsp;Active cutter ID is invalid.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    }
+  ],
+  "ServiceInterface": [
+    {
+      "createRelease": "Awp04.3.0",
+      "dependencies": "",
+      "description": "Service for managing Occurrences in a Resource assembly.",
+      "libraryName": "Mrm0SoaResourceManager",
+      "name": "ResourceOccurrencesManagement",
+      "namespace": "Mrm0::Soa::ResourceManager",
+      "serviceLibraryRef": ""
+    }
+  ],
+  "Struct": [
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Start node id.",
+          "name": "startNodeId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "End node id.",
+          "name": "endNodeId"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "The structure of edge.",
+      "isPublished": "false",
+      "name": "Edge",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Root node id.",
+          "name": "rootId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceOccurrenceInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of resource node structures.",
+          "name": "nodes"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::Edge"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of Edges in resource graph.",
+          "name": "edges"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "Structure of resource graph data.",
+      "isPublished": "false",
+      "name": "Graph",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::DateTime"
+            }
+          ],
+          "description": "The auto saved session time for the opened product and the logged in user.",
+          "name": "autoSavedSessiontime"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::SublocationAttributes"
+            }
+          ],
+          "description": "A map (string,list of strings) of client state attribute name/value pairs. The following keys are supported: <font face=\"courier\" height=\"10\">awb0ActiveSublocation</font>. &lsquo;awb0ActiveSublocation&rsquo; refers to name of tabs like &lsquo;Overview&rsquo;, &lsquo;Viewer&rsquo;.",
+          "name": "sublocationAttributes"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "UserContextInfo contains user's working state information like active page, last saved session time for the opened product.",
+      "isPublished": "false",
+      "name": "UserContextInfo",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::Awb0Element"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of Awb0Element whose underlying objects to be replaced with replacement.",
+          "name": "resourceElements"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The BusinessObject to be replaced for input resourceElements. Supported object type are: ItemRevision and its sub types.",
+          "name": "replacement"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Awb0ProductContextInfo"
+            }
+          ],
+          "description": "The Awb0ProductContextInfo object containing configuration information.",
+          "name": "productContextInfo"
+        }
+      ],
+      "createRelease": "Awp05.0.0",
+      "description": "Contains an input object with the component that should be replaced, the new component and configuration information.",
+      "isPublished": "false",
+      "name": "ReplaceResourceInput",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2020_05::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The focus resource child Business Object for which sibling occurrences are desired. Valid Business Objects types are <b>Awb0Element</b>, <b>Cpd0DesignElement</b>, <b>Ptn0Partition</b>.",
+          "name": "element"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Clone stable id of resouce child occurrence in top-down fashion. The chain is separated by \"/\". This field is considered only when focusResourceChildOccurrence is empty.",
+          "name": "cloneStableIdChain"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "Contains input information required to set the focusResourceChildOccurrence.",
+      "isPublished": "false",
+      "name": "ResourceFocusOccurrenceInput",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Awb0ProductContextInfo"
+            }
+          ],
+          "description": "Awb0ProductContextInfo containing configuration information.",
+          "name": "productContext"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::RevisionRule"
+            }
+          ],
+          "description": "RevisionRule to configure the resource.",
+          "name": "revisionRule"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::DateTime"
+            }
+          ],
+          "description": "Specify the date effectivity to configure the resource.",
+          "name": "effectivityDate"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::ItemRevision"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of Fnd0EffGrpRevision objects to configure the resource.",
+          "name": "effectivityGroups"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Unit number to use in order to configure the resource.",
+          "name": "unitNo"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "Specify the end Item which governs the unit effectivity.",
+          "name": "endItem"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::WorkspaceObject"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of VariantRule(s) or StoredOptionSet(s) to configure the resource.",
+          "name": "variantRules"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "This indicates the resource(ItemRevision or CollaborativeDesign) associated with saved VariantRule.",
+          "name": "svrOwningProduct"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "Resource occurrence scheme associated with resource e.g Cpd0CollaborativeDesign.",
+          "name": "occurrenceScheme"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::WorkspaceObject"
+            }
+          ],
+          "description": "Source Context (Fnd0RecipeContainer or Mdl0BaselineRevision) associated with another Fnd0RecipeContainer.",
+          "name": "sourceContext"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "ResourceOcurrenceConfig specifies the complete set of configuration rules including RevisionRule, Effectivity with/without intent values, and VariantRule to configure content. When Awb0ProductContextInfo is specified all other configuration parameters are ignored.",
+      "isPublished": "false",
+      "name": "ResourceOccurrenceConfig",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "bool"
+            }
+          ],
+          "description": "If true, the first page of the results has been reached.",
+          "name": "startReached"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "bool"
+            }
+          ],
+          "description": "If true, the last page of the results has been reached.",
+          "name": "endReached"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Indicates the Cursor start position for the result occurrences returned so far.",
+          "name": "startIndex"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Indicates the Cursor end position for the result occurrences returned so far.",
+          "name": "endIndex"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Indicates the maximum number of occurrences that can be returned in one service call.",
+          "name": "pageSize"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Indicates the cursor start object for the result occurrences returned so far. This is used for flat mode only.",
+          "name": "startOccUid"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Indicates the cursor end object for the result occurrences returned so far. This is used for flat mode only.",
+          "name": "endOccUid"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "std::string"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The cursor data.",
+          "name": "cursorData"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "ResourceOccurrenceCursor is a cursor that is returned for use in subsequent call to retrieve the next page of configured resource occurrences.",
+      "isPublished": "false",
+      "name": "ResourceOccurrenceCursor",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Awb0Element"
+            }
+          ],
+          "description": "Instance of the Awb0Element.",
+          "name": "resourceOccurrence"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Session Recoverable UID of the configured resource occurrence.",
+          "name": "resourceOccurrenceId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Stable UID of Awb0Element. This strictly used for maintaining expansion state of nodes in tree view.",
+          "name": "stableId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Display name of the configured occurrence.",
+          "name": "displayName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Number of children of the configured resource occurrence.",
+          "name": "numberOfChildren"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Internal name of the underlying object that resource occurrence presents.",
+          "name": "underlyingObjectType"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::StringPropertyMap"
+            }
+          ],
+          "description": "The map contains key and value for string property.",
+          "name": "resourceProps"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "ResourceOccurrenceInfo is the information about resource occurrence.",
+      "isPublished": "false",
+      "name": "ResourceOccurrenceInfo",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The top-level resource. It may be an Resource Item Revision or it's sub type representing a resource.",
+          "name": "product"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Parent resource occurrence for which child resource occurrences is to be retrieved.",
+          "name": "parentElement"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceFocusOccurrenceInput"
+            }
+          ],
+          "description": "Contains input information required to set the focusResourceChildOccurrence.",
+          "name": "resourceFocusOccurrenceInput"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceOccurrenceConfig"
+            }
+          ],
+          "description": "Specifies the complete set of configuration rules including RevisionRule, Effectivity and VariantRule to configure content.",
+          "name": "config"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceOccurrenceCursor"
+            }
+          ],
+          "description": "Cursor that represents point to which the results have been fetched. This field is used for subsequent calls.",
+          "name": "cursor"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::RequestPreference"
+            }
+          ],
+          "description": "A map (string, string) of preference names and value pairs. Allowed preference names are: &ldquo;includeInterfaces&rdquo; , and &ldquo;includeUnconfigured&rdquo;. Allowed values are: True/False. Keys and values are case sensitive. When preference &ldquo;includeInterface&rdquo; with value true is specified the operation shall return instances of Awb0Interface objects. When preference &ldquo;includeUnconfigured&rdquo; with value true is specified the operation shall return instances of unconfigured Awb0Element objects.",
+          "name": "requestPref"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "The ResourceOccurrencesData supplies the resource and the configuration rules to configure the resource and get a page of resource occurrences.",
+      "isPublished": "false",
+      "name": "ResourceOccurrencesData",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Awb0ProductContextInfo"
+            }
+          ],
+          "description": "The Awb0ProductContextInfo for the root resource occurrence.",
+          "name": "rootProductContext"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Awb0ProductContextInfo"
+            }
+          ],
+          "description": "The Awb0ProductContextInfo for the parent resource occurrence.",
+          "name": "parentProductContext"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Contains the list of all BusinessObjects that make up the output, as well as any errors that might have occurred as part of the service invocation.",
+          "name": "serviceData"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceOccurrenceInfo"
+            }
+          ],
+          "description": "The parent resource occurrence for list of childResourceOccurrences.",
+          "name": "parentResourceOccurrence"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Awb0ProductContextInfo"
+            }
+          ],
+          "description": " The <b>Awb0ProductContextInfo</b> for the focus resource occurrence.",
+          "name": "focusProductContext"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceOccurrenceInfo"
+            }
+          ],
+          "description": "The focus resource child occurrence for which sibling resource occurrences are desired.",
+          "name": "focusResourceChildOccurrence"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ResourceOccurrenceCursor"
+            }
+          ],
+          "description": "Cursor that represents point to which the results have been fetched. This field is used for subsequent calls.",
+          "name": "cursor"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::UserContextInfo"
+            }
+          ],
+          "description": "User's working context information for opened content.",
+          "name": "userWorkingContextInfo"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::ElementToProductContextInfoMap"
+            }
+          ],
+          "description": " Map containing pair of Root Occurrence (<b>Awb0Element</b>) to its corresponding <b>Awb0ProductContextInfo</b> object in Product Set container.",
+          "name": "elementToPCIMap"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::Graph"
+            }
+          ],
+          "description": "Structure of resource graph data.",
+          "name": "graph"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement::RequestPreference"
+            }
+          ],
+          "description": "A map (string, string) of preference names and value pairs. Allowed preference names are: &ldquo;includeInterfaces&rdquo; , and &ldquo;includeUnconfigured&rdquo;. Allowed values are: True/False. Keys and values are case sensitive. When preference &ldquo;includeInterface&rdquo; with value true is specified the operation shall return instances of Awb0Interface objects. When preference &ldquo;includeUnconfigured&rdquo; with value true is specified the operation shall return instances of unconfigured Awb0Element objects.",
+          "name": "requestPref"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "Contains the resulting occurrences found for resource from which retrieval was requested. This data structure also returns a cursor to be sent back to the subsequent call to getResourceOccurrences in order to rerieve more pages of results.",
+      "isPublished": "false",
+      "name": "ResourceOccurrencesResp",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Any errors that might have occurred as part of the service invocation.",
+          "name": "serviceData"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The action that was or can be performed with the PSP.<br />Possible return values are &ldquo;add&rdquo;, &ldquo;remove&rdquo;, or &ldquo;move&rdquo;. <br />Wether the action was performed immediately depends on forceUpdate. See the operation&acute;s description for more details.",
+          "name": "actionInfo"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The name of component where the PSP will be moved to.",
+          "name": "toComponentName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The name of component where the PSP will be removed from.",
+          "name": "fromComponentName"
+        }
+      ],
+      "createRelease": "Awp05.0.0",
+      "description": "The response with service data containing partial error if any and information about PSP deletion and moving.<br /><br />The following partial errors may be returned: <br />43003&nbsp;&nbsp;&nbsp;&nbsp;If it is not an occurrence of the given parent.<br />43019&nbsp;&nbsp;&nbsp;&nbsp;If note type is not valid.",
+      "isPublished": "false",
+      "name": "SetPropagationStartPointResp",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2020_05::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    }
+  ],
+  "TcVersion": "tc13000.0.0",
+  "Typedef": [
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Awb0Element"
+            },
+            {
+              "dataType": "Teamcenter::Awb0ProductContextInfo"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "Map containing <b>Awb0Element</b> to its respective <b>Awb0ProductContextInfo</b> object.",
+      "isPublished": "false",
+      "name": "ElementToProductContextInfoMap",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "std::string"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "The map which can have a key and value pair, used for resource occurrences expansion filters or criteria or options. The key and value are case sensitive. The allowed preference names are includeInterfaces. The allowed values are True/False.",
+      "isPublished": "false",
+      "name": "RequestPreference",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "The map contains key and value for string property.",
+      "isPublished": "false",
+      "name": "StringPropertyMap",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "std::vector<std::string>"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "Map (string, list of string) of client state attribute name and value pairs. At this time only one (key) attribute name is supported: \"activeSublocation\". Supported values are: (tab names like) \"overview\", \"viewer\" . Keys and values are case in-sensitive.",
+      "isPublished": "false",
+      "name": "SublocationAttributes",
+      "namespace": "Mrm0::Soa::Internal::ResourceManager::_2019_12::ResourceOccurrencesManagement",
+      "scope": "Mrm0::Soa::ResourceManager::ResourceOccurrencesManagement"
+    }
+  ],
+  "xmlns": "http://teamcenter.com/BusinessModel/TcBusinessData"
+}

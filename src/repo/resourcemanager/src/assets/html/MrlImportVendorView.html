@@ -1,0 +1,68 @@
+<aw-command-panel caption="{{ctx.panelContext.mrlImportVendorTitle}}">
+    <aw-panel-body>
+        <aw-command-panel-section>
+            <aw-flex-row>
+                <aw-file-upload type-filter=".zip" file-change-action="updateFileSelection"></aw-file-upload>
+                <aw-button enable-when="conditions.validVendorZipFile" action="startUploadAndUnzipFile">{{i18n.mrlUpload}}</aw-button>
+            </aw-flex-row>
+        </aw-command-panel-section>
+        <aw-command-panel-section>
+            <label visible-when="conditions.isImportVendorHierarchy">{{i18n.mrlSelectVendorForImportHierarchyText}}</label>
+            <label visible-when="conditions.isImportVendorData">{{i18n.mrlSelectVendorForImportDataText}}</label>
+            <aw-flex-row height="20f">
+                    <aw-splm-table gridid="mrlVendorsTableGrid"></aw-splm-table>
+            </aw-flex-row>
+            <label visible-when="conditions.noVendorsFound">{{i18n.mrlNoVendorsFoundText}}</label>
+        </aw-command-panel-section>
+        <aw-command-panel-section visible-when="conditions.isImportVendorData">
+            <aw-flex-row>
+                <aw-checkbox prop="data.mapVendorData"></aw-checkbox>
+                <aw-checkbox prop="data.import3DModel"></aw-checkbox>
+            </aw-flex-row>
+            <aw-type-selector prop="data.targetItemTypesList" load-sub-types="false" include="{{data.defaultResourceTypes}}" preferred-type="Mfg0MENCTool" enable-when="conditions.isMapVendorProductsSelected"></aw-type-selector>
+        </aw-command-panel-section>
+        <aw-command-panel-section visible-when="conditions.showImportVendorHierarchySummanry || conditions.showImportVendorProductsSummanry">
+            <label>{{data.mrlImportVendorFeedbackText}}</label>
+            <aw-label visible-when="conditions.isImportVendorData" prop="data.vendorId"></aw-label>
+            <aw-label visible-when="conditions.isImportVendorData" prop="data.vendorName"></aw-label>
+            <aw-label visible-when="conditions.isImportVendorData" prop="data.numberOfProductsInVendor"></aw-label>
+        </aw-command-panel-section>
+        <aw-command-panel-section caption="{{data.mrlImportVendorSummary}}" visible-when="conditions.showImportVendorHierarchySummanry || conditions.showImportVendorProductsSummanry">
+            <aw-label visible-when="conditions.isImportVendorData" prop="data.numberOfProductsImported"></aw-label>
+            <div class="sw-row align-center justify-right" height="3f">
+                <div>
+                    <aw-button visible-when="conditions.isImportVendorHierarchy" enable-when="conditions.isImportVendorHierarchyLogFileCreated" action="openImportVendorHierarchyLogFile" size="auto">{{i18n.mrlOpenLogFile}}</aw-button>
+                    <aw-button visible-when="conditions.isImportVendorData" action="executeImportVendorProductsSavedSearch" size="auto">{{i18n.mrlShowImportedProducts}}</aw-button>
+                    <aw-button visible-when="conditions.isImportVendorData" enable-when="conditions.isImportVendorProductsLogFileCreated" action="openImportVendorProductsLogFile" size="auto">{{i18n.mrlOpenLogFile}}</aw-button>
+                </div>
+            </div>
+        </aw-command-panel-section>
+        <aw-command-panel-section caption="{{i18n.mrlMappedVendorProductsSummary}}" visible-when="conditions.showMapVendorProductsSummanry">
+            <aw-label visible-when="conditions.isImportVendorData" prop="data.numberOfMappedProducts"></aw-label>
+            <div class="sw-row align-center justify-right" height="3f">
+                <div>
+                    <aw-button action="executeMappedVendorProductsSavedSearch" size="auto">{{i18n.mrlShowMappedProducts}}</aw-button>
+                    <aw-button enable-when="conditions.isMapVendorProductsLogFileCreated" action="openMapVendorProductsLogFile" size="auto">{{i18n.mrlOpenLogFile}}</aw-button>
+                </div>
+            </div>
+        </aw-command-panel-section>
+        <aw-command-panel-section caption="{{i18n.mrlImport3DModelsSummary}}" visible-when="conditions.showImport3DModelsSummanry">
+            <aw-label visible-when="conditions.isImportVendorData" prop="data.numberOfProductsImported3DModels"></aw-label>
+            <div class="sw-row align-center justify-right" height="3f">
+                <div>
+                    <aw-button enable-when="conditions.isImport3DModelsLogFileCreated" action="openImport3DModelsLogFile" size="auto">{{i18n.mrlOpenLogFile}}</aw-button>
+                </div>
+            </div>
+        </aw-command-panel-section>
+    </aw-panel-body>
+    <aw-progress-indicator></aw-progress-indicator>
+    <aw-break></aw-break>
+    <label visible-when="conditions.mrlShowProgessInfo">{{data.mrlProgressInfoText}}</label>
+    <aw-panel-footer>
+        <aw-button enable-when="conditions.hasSelectedVendorDisclaimer" action="showDisclaimer" size="auto">{{i18n.mrlShowDisclaimer}}</aw-button>
+        <aw-button visible-when="conditions.isImportVendorHierarchy" enable-when="conditions.isOneVendorSelected" action="startImportVendorHierarchy"
+            size="auto">{{i18n.mrlImportVendorHierarchy}}</aw-button>
+        <aw-button visible-when="conditions.isImportVendorData" enable-when="conditions.isOneVendorSelected" action="startImportVendorProducts"
+            size="auto">{{i18n.mrlImportVendorData}}</aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

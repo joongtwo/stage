@@ -1,0 +1,119 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":[ "js/aw-panel-body.directive",
+                "js/aw-command-panel-section.directive",
+                "js/aw-list.directive",
+                "js/aw-default-cell.directive",
+                "js/aw-command-panel.directive",
+                "js/aw-init.directive"
+                ],
+    "i18n":
+    {
+        "elementEffectivityTitle": ["OccurrenceManagementConstants"],
+        "elementEffectivities": ["OccurrenceManagementConstants"]
+    },
+    "data":
+    {
+       "commandDisplayEffectivity":"awb0_commandDisplayAndRemoveEffectivity"
+    },
+
+    "dataProviders":
+    {
+        "getAppliedEffectivities":
+        {
+            "action": "searchAppliedEffectivities",
+            "response": "{{data.effectivitiesFound}}",
+            "totalFound": "{{data.effectivitiesTotalFound}}",
+            "selectionModelMode": "single"
+        }
+    },
+
+    "actions":
+    {
+        "getAppliedEffectivitiesAction":
+        {
+            "actionType": "dataProvider",
+            "method": "getAppliedEffectivities"
+        },
+
+        "searchAppliedEffectivities":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Query-2014-11-Finder",
+            "method": "performSearch",
+            "inputData":
+            {
+                "searchInput":
+                {
+                    "maxToLoad": 20,
+                    "maxToReturn": 20,
+                    "providerName": "Awb0EffectivityProvider",
+                    "searchFilterFieldSortType": "Alphabetical",
+                    "startIndex": "{{data.dataProviders.getAppliedEffectivities.startIndex}}",
+                    "searchCriteria":
+                    {
+                        "elementUid": "{{props.subPanelContext.occContext.selectedModelObjects[0].uid}}",
+                        "productContextUid": "{{props.subPanelContext.occContext.productContextInfo.uid}}"
+                    },
+
+                    "searchFilterMap":
+                    {
+                    },
+                    "searchSortCriteria":
+                    [
+                    ],
+                    "attributesToInflate":
+                    [
+                    ],
+                    "internalPropertyName": ""
+                }
+            },
+            "outputData":
+            {
+                "effectivitiesFound": "searchResults",
+                "effectivitiesTotalFound": "totalFound"
+            },
+
+            "deps": "js/sharedEffectivityService"
+        },
+        "closePanel":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+        "viewBatchJobAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getAppliedEffectivitiesAction",
+                    "condition": "props.subPanelContext.selectionData.selected[0].cellHeader1 !== undefined"
+                },
+                {
+                    "action": "closePanel",
+                    "condition": "props.subPanelContext.selectionData.selected[0].cellHeader1 === undefined"
+                }
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "viewBatchJobAction",
+                "observers": [ "props.subPanelContext.occContext.selectedModelObjects" ]
+            }
+        ]
+    }
+}

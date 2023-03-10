@@ -1,0 +1,27 @@
+<aw-command-panel caption="i18n.add" context="subPanelContext">
+    <div class="aw-layout-flexColumn" show-when="data.activeState.value.activeView==='AddObjectPrimarySub'">
+        <aw-add include-types="Item"
+            load-sub-types="true"
+            auto-select-on-unique-type="true"
+            visible-tabs="new,palette,search"
+            max-recent-count="5"
+            type-filter="Item,ItemRevision"
+            preferred-type="Item"
+            add-panel-state="fields.addPanelState"
+            active-state="data.activeState"
+            project-state="data.projectState"
+            sub-panel-context="{ ...subPanelContext, triggerCreate: data.triggerCreate }"
+            xrt-state="data.xrtState"
+            edit-handler="editHandlers.addPanelEditHandler">
+        </aw-add>
+        <aw-panel-footer>
+            <aw-button action="createAndAddAlternate" visible-when="formProp.attributes.valid && conditions.shouldShowAddButtonInNewTab">
+                <aw-i18n>i18n.add</aw-i18n>
+            </aw-button>
+            <aw-button action="addSelectionAsAlternateActionHandler" visible-when="conditions.shouldShowAddButtonInPaletteTab || conditions.shouldShowAddButtonInSearchTab">
+                <aw-i18n>i18n.add</aw-i18n>
+            </aw-button>
+        </aw-panel-footer>
+    </div>
+    <aw-add-navigate active-state="data.activeState" project-state="data.projectState" action="actions.setActiveView"></aw-add-navigate>
+</aw-command-panel>

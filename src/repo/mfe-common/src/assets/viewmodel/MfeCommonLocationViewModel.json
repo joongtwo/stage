@@ -1,0 +1,197 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "locationPanelStyle": "",
+        "layoutSummaryOnly": "false",
+        "preNarrowTitle": null
+    },
+    "actions": {
+        "checkNarrowMode": {
+            "actionType": "JSFunction",
+            "method": "checkNarrowMode",
+            "deps": "js/aw.narrowMode.service"
+        },
+        "getLocationName": {
+            "actionType": "JSFunction",
+            "method": "normalizeStateName",
+            "deps": "js/defaultLocationService",
+            "outputData": {
+                "normalizeStateName": ""
+            }
+        },
+        "registerLocationName": {
+            "actionType": "JSFunction",
+            "method": "updateCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "name": "locationContext",
+                "value": {
+                    "ActiveWorkspace:Location": "{{data.normalizeStateName}}",
+                    "ActiveWorkspace:SubLocation": "{{ctx.locationContext['ActiveWorkspace:SubLocation']}}"
+                }
+            }
+        },
+        "registerKeyBoardEvents": {
+            "actionType": "JSFunction",
+            "method": "registerKeyDownEvent",
+            "deps": "js/keyboardService"
+        },
+        "subscribeForUnloadEvent": {
+            "actionType": "JSFunction",
+            "method": "subscribeForLocationUnloadEvent",
+            "inputData": {
+                "name": "MfeCommonLocation"
+            },
+            "deps": "js/defaultLocationService"
+        },
+        "constructHeader": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getLocationName"
+                },
+                {
+                    "action": "registerLocationName"
+                },
+                {
+                    "action": "registerKeyBoardEvents"
+                },
+                {
+                    "action": "subscribeForUnloadEvent"
+                },
+                {
+                    "action": "constructTitles"
+                },
+                {
+                    "action": "setTitlesInCtx"
+                }
+            ]
+        },
+        "constructTitles": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTitles",
+            "deps": "js/awHeaderService",
+            "outputData": {
+                "browserTitle": "result.browserTitle",
+                "browserSubTitle": "result.browserSubTitle",
+                "headerTitle": "result.headerTitle"
+            }
+        },
+        "setTitlesInCtx": {
+            "actionType": "JSFunction",
+            "method": "updateCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "name": "location.titles",
+                "value": {
+                    "browserTitle": "{{data.browserTitle}}",
+                    "browserSubTitle": "{{data.browserSubTitle}}",
+                    "headerTitle": "{{data.headerTitle}}"
+                }
+            }
+        },
+        "updateBreadcrumbAction": {
+            "actionType": "JSFunction",
+            "method": "updateBreadCrumb",
+            "deps": "js/awHeaderService",
+            "inputData": {
+                "eventData": "{{parameters.eventData}}"
+            },
+            "outputData": {
+                "breadCrumbProvider": "result.breadCrumbProvider",
+                "breadcrumbConfig": "result.breadcrumbConfig",
+                "objFound": "result.objFound"
+            }
+        },
+        "resetBreadcrumbAction": {
+            "actionType": "JSFunction",
+            "method": "resetBreadCrumb",
+            "deps": "js/awHeaderService",
+            "outputData": {
+                "breadCrumbProvider": "result.breadCrumbProvider"
+            }
+        },
+        "updateTitles": {
+            "actionType": "JSFunction",
+            "method": "updateDocumentTitles",
+            "deps": "js/awHeaderService"
+        },
+        "narrowModeChangeAction": {
+            "actionType": "JSFunction",
+            "method": "narrowModeChange",
+            "deps": "js/aw.narrowMode.service",
+            "inputData": {
+                "eventData": "{{parameters.eventData}}",
+                "layoutSummaryOnlyStyle": "{{data.layoutSummaryOnlyStyle}}",
+                "headerTitle": "{{data.headerTitle}}",
+                "preNarrowTitle": "{{data.preNarrowTitle}}"
+            },
+            "outputData": {
+                "layoutSummaryOnlyStyle": "result.layoutSummaryOnlyStyle",
+                "headerTitle": "result.headerTitle",
+                "preNarrowTitle": "result.preNarrowTitle"
+            }
+        },
+        "narrowSummaryLocationTitleClickAction": {
+            "actionType": "JSFunction",
+            "method": "narrowSummaryLocationTitleClick",
+            "deps": "js/aw.narrowMode.service",
+            "inputData": {
+                "layoutSummaryOnlyStyle": "{{data.layoutSummaryOnlyStyle}}",
+                "headerTitle": "{{data.headerTitle}}",
+                "preNarrowTitle": "{{data.preNarrowTitle}}"
+            },
+            "outputData": {
+                "layoutSummaryOnlyStyle": "result.layoutSummaryOnlyStyle",
+                "headerTitle": "result.headerTitle",
+                "preNarrowTitle": "result.preNarrowTitle"
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "aw.windowResize",
+            "action": "checkNarrowMode"
+        },
+        {
+            "eventId": "refreshBreadCrumb",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "updateBreadcrumbAction"
+        },
+        {
+            "eventId": "resetBreadCrumb",
+            "action": "resetBreadcrumbAction"
+        },
+        {
+            "eventId": "appCtx.update",
+            "condition": "name === 'location.titles'",
+            "action": "updateTitles"
+        },
+        {
+            "eventId": "narrowModeChangeEvent",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "narrowModeChangeAction"
+        },
+        {
+            "eventId": "narrowSummaryLocationTitleClickEvent",
+            "action": "narrowSummaryLocationTitleClickAction"
+        }
+    ],
+    "conditions": {
+        "isTaskbarFullScreen": {
+            "expression": "ctx.taskbarfullscreen && ctx.taskbarfullscreen === 'true'"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "constructHeader"
+    }
+}

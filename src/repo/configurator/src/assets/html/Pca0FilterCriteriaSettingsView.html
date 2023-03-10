@@ -1,0 +1,33 @@
+<!-- Double layout according to use case as header or in Settings panel-->
+<div class="aw-layout-headerPropContainer aw-layout-flexRowContainer" id="vcaFilterCriteriaContainer" exist-when="subPanelContext.contextKey !== 'fscContext'">
+    <div class="sw-row aw-layout-headerProperty align-center">
+        <aw-property-label prop="data.revisionRule"></aw-property-label>
+        <aw-include name="Pca0RevisionRule" sub-panel-context="{...props.subPanelContext}"></aw-include>
+    </div>
+    <div class="sw-row aw-layout-headerProperty align-center">
+        <aw-property-label prop="data.effectivity"></aw-property-label>
+        <aw-include name="Pca0DateEffectivity" sub-panel-context="{...props.subPanelContext}" exist-when="ctx.preferences.PCA_effectivity_shown_columns[ 0 ] !== 'UnitOnly'"></aw-include>
+        <aw-include name="Pca0UnitEffectivity" sub-panel-context="{...props.subPanelContext}" exist-when="ctx.preferences.PCA_effectivity_shown_columns[ 0 ] !== 'DateOnly'"></aw-include>
+    </div>
+    <div class="sw-row aw-layout-headerProperty align-center">
+        <aw-property-label prop="data.ruleDate"></aw-property-label>
+        <aw-include name="Pca0RuleDate" sub-panel-context="{...props.subPanelContext}"></aw-include>
+    </div>
+</div>
+
+<div exist-when="subPanelContext.contextKey === 'fscContext'">
+    <aw-property-label prop="data.revisionRule"></aw-property-label>
+    <aw-include name="Pca0RevisionRule" sub-panel-context="{...props.subPanelContext}"></aw-include>
+
+    <aw-break></aw-break>
+
+    <!-- Display Date range followed by unit range -->
+    <aw-property-label prop="data.effectivity"></aw-property-label>
+    <aw-include name="Pca0DateEffectivity" sub-panel-context="{...props.subPanelContext}" exist-when="ctx.preferences.PCA_effectivity_shown_columns[ 0 ] !== 'UnitOnly'"></aw-include>
+    <aw-include name="Pca0UnitEffectivity" sub-panel-context="{...props.subPanelContext}" exist-when="ctx.preferences.PCA_effectivity_shown_columns[ 0 ] !== 'DateOnly'"></aw-include>
+
+    <aw-break></aw-break>
+
+    <aw-property-label prop="data.ruleDate"></aw-property-label>
+    <aw-include name="Pca0RuleDate" sub-panel-context="{...props.subPanelContext}"></aw-include>
+</div>

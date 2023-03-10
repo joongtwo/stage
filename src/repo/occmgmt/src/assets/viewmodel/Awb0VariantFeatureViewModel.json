@@ -1,0 +1,143 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel-section.directive",
+        "js/aw-list.directive",
+        "js/aw-default-cell.directive",
+        "js/aw-include.directive",
+        "js/exist-when.directive",
+        "js/aw-command-panel-section.directive",
+        "js/aw-property-non-edit-val.directive"
+    ],
+    "actions": {
+        "initSVROwningItems": {
+            "actionType": "JSFunction",
+            "method": "initSVROwningItems",
+            "inputData": {
+                "context": "{{props.subPanelContext.occContext}}",
+                "contextKey": "{{props.subPanelContext.contextKey}}",
+                "configSvrEndItem": "{{props.subPanelContext.configSvrEndItem}}"
+            },
+            "deps": "js/variantInfoConfigurationService"
+        },
+        "revealSVROwningItems": {
+            "actionType": "dataProvider",
+            "method": "getConfiguredSVROwningItems"
+        },
+        "fetchSVROwningItems": {
+            "actionType": "JSFunction",
+            "method": "getSVROwningItems",
+            "inputData": {
+                "configSvrEndItem": "{{props.subPanelContext.configSvrEndItem}}"
+            },
+            "outputData": {
+                "svrOwningItems": ""
+            },
+            "deps": "js/variantInfoConfigurationService"
+        },
+        "svrOwningItemSelected": {
+            "actionType": "JSFunction",
+            "method": "activateCommandPanel",
+            "deps": "js/commandPanel.service",
+            "inputData": {
+                "commandId": "SVROwningElementPanelWrapper",
+                "location": "aw_navigation"
+            },
+            "events": {
+                "success": [{
+                    "name": "awPopupWidget.close"
+                }],
+                "failure": [{
+                    "name": "awPopupWidget.close"
+                }]
+            }
+        },
+        "navigateToSVROwningElementPanel": {
+            "actionType": "JSFunction",
+            "method": "navigateToView",
+            "inputData": {
+                "nestedNavigationState": "{{props.subPanelContext.nestedNavigationState}}",
+                "view": {
+                    "panelId": "SVROwningElementPanel",
+                    "title": "{{data.i18n.configPanelEffectiveVariantForTitle}}",
+                    "subPanelContext": "{{props.subPanelContext}}"
+                }
+            },
+            "events": {
+                "success": [{
+                    "name": "awPopupWidget.close"
+                }],
+                "failure": [{
+                    "name": "awPopupWidget.close"
+                }]
+            },
+            "deps": "js/nestedNavigationPanelService"
+        },
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        }
+    },
+    "dataProviders": {
+        "getConfiguredSVROwningItems": {
+            "action": "fetchSVROwningItems",
+            "response": "{{data.svrOwningItems}}",
+            "uidInResponse": "dbValues[0]",
+            "selectionModelMode": "single"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": {
+            "action": "initSVROwningItems",
+            "observers": [
+                "props.subPanelContext.occContext.productContextInfo"
+            ]
+        }
+    },
+    "onEvent": [{
+            "eventId": "configPanel.revealSVROwningItems",
+            "action": "revealSVROwningItems"
+        },
+        {
+            "eventId": "getConfiguredSVROwningItems.selectionChangeEvent",
+            "condition": "!data.subPanelContext.nestedNavigationState && !data.subPanelContext.occContext.supportedFeatures.Awb0SupportsFullScreenVariantConfiguration",
+            "action": "svrOwningItemSelected"
+        },
+        {
+            "eventId": "getConfiguredSVROwningItems.selectionChangeEvent",
+            "condition": "data.subPanelContext.nestedNavigationState.views.length>=0 && !data.subPanelContext.occContext.supportedFeatures.Awb0SupportsFullScreenVariantConfiguration",
+            "action": "navigateToSVROwningElementPanel"
+        }
+    ],
+    "messages": {},
+    "data": {
+        "variantCommands": "awb0_variantCommands",
+        "savedVariant": {
+            "uiValue": "{{i18n.savedVariant}}",
+            "type": "STRING"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "i18n": {
+        "variant": [
+            "OccurrenceManagementConstants"
+        ],
+        "configPanelEffectiveVariantForTitle": [
+            "OccurrenceManagementConstants"
+        ],
+        "variantSectionTitle": [
+            "OccurrenceManagementConstants"
+        ],
+        "savedVariant": [
+            "OccurrenceManagementConstants"
+        ]
+    }
+}

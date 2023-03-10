@@ -1,0 +1,49 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "nestedNavigationState":{
+            "initialValues": {
+                "views": []
+            },
+            "meta": { }
+        }
+    },
+    "actions": {
+        "backToPreviousPanel": {
+            "actionType": "JSFunction",
+            "method": "goToPrevPanel",
+            "inputData": {
+                "nestedNavigationState": "{{fields.nestedNavigationState}}"
+            },
+            "outputData": {
+                "backInfo": "backInfo"
+            },
+            "deps": "js/nestedNavigationPanelService",
+            "events": {
+                "success": [
+                    {
+                        "name": "updateStateOrCtxBeforeBack",
+                        "eventData": {
+                            "viewId":"{{data.backInfo}}"
+
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "awPanel.navigate",
+            "cacheEventData": true,
+            "action": "backToPreviousPanel"
+        }
+    ],
+    "conditions": {
+    },
+    "props": {
+        "name": {
+            "type": "string"
+        }
+    }
+}

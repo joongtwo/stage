@@ -1,0 +1,1089 @@
+{
+  "BusinessObjectInterface": [
+    {
+      "createRelease": "tc11000.2.1",
+      "description": "Interface Name for Business Object Prg0AbsCriteria",
+      "libraryName": "prg0programinfra",
+      "name": "Prg0AbsCriteria",
+      "namespace": "Teamcenter::ProgramInfra::prg0programinfra",
+      "primaryInterface": "true",
+      "typeName": "Prg0AbsCriteria"
+    },
+    {
+      "createRelease": "tc11000.2.1",
+      "description": "Interface Name for Business Object Prg0AbsEvent",
+      "libraryName": "prg0programinfra",
+      "name": "Prg0AbsEvent",
+      "namespace": "Teamcenter::ProgramInfra::prg0programinfra",
+      "primaryInterface": "true",
+      "typeName": "Prg0AbsEvent"
+    },
+    {
+      "createRelease": "tc11000.2.1",
+      "description": "Interface Name for Business Object Prg0AbsPlan",
+      "libraryName": "prg0programinfra",
+      "name": "Prg0AbsPlan",
+      "namespace": "Teamcenter::ProgramInfra::prg0programinfra",
+      "primaryInterface": "true",
+      "typeName": "Prg0AbsPlan"
+    },
+    {
+      "createRelease": "tc11000.2.1",
+      "description": "Interface Name for Business Object Prg0AbsProgramPlan",
+      "libraryName": "prg0programinfra",
+      "name": "Prg0AbsProgramPlan",
+      "namespace": "Teamcenter::ProgramInfra::prg0programinfra",
+      "primaryInterface": "true",
+      "typeName": "Prg0AbsProgramPlan"
+    },
+    {
+      "createRelease": "tc11000.2.1",
+      "description": "Interface Name for Business Object Prg0AbsProjectPlan",
+      "libraryName": "prg0programinfra",
+      "name": "Prg0AbsProjectPlan",
+      "namespace": "Teamcenter::ProgramInfra::prg0programinfra",
+      "primaryInterface": "true",
+      "typeName": "Prg0AbsProjectPlan"
+    },
+    {
+      "createRelease": "tc11000.2.1",
+      "description": "Interface Name for Business Object Prg0Attachment",
+      "libraryName": "prg0programinfra",
+      "name": "Prg0Attachment",
+      "namespace": "Teamcenter::ProgramInfra::prg0programinfra",
+      "primaryInterface": "true",
+      "typeName": "Prg0Attachment"
+    },
+    {
+      "createRelease": "tc11000.2.1",
+      "description": "Interface Name for Business Object Prg0ProductContent",
+      "libraryName": "prg0programinfra",
+      "name": "Prg0ProductContent",
+      "namespace": "Teamcenter::ProgramInfra::prg0programinfra",
+      "primaryInterface": "true",
+      "typeName": "Prg0ProductContent"
+    },
+    {
+      "createRelease": "tc12000.3.0",
+      "description": "Interface Name for Business Object Prg0TargetParentPlans",
+      "libraryName": "prg0programinfra",
+      "name": "Prg0TargetParentPlans",
+      "namespace": "prg0programinfra",
+      "primaryInterface": "true",
+      "typeName": "Prg0TargetParentPlans"
+    }
+  ],
+  "Date": "Fri Jun 05 04:03:14 PM 2020",
+  "Library": [
+    {
+      "createRelease": "tc11000.2.1",
+      "description": "Service for Program Management related operations",
+      "isThirdParty": "false",
+      "name": "Prg0SoaProgramInfra",
+      "namespace": "Prg0::Soa::ProgramInfra",
+      "serviceLibrary": "true"
+    },
+    {
+      "DependentOn": [
+        {
+          "name": "metaframework"
+        },
+        {
+          "name": "tccore"
+        },
+        {
+          "name": "tc"
+        },
+        {
+          "name": "cxpom"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "Library for Program Infra module",
+      "isThirdParty": "false",
+      "name": "prg0programinfra",
+      "namespace": "",
+      "serviceLibrary": "false"
+    }
+  ],
+  "Operation": [
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of structure containing <b>ClonePlanHierarchyInputInfo</b> objects.",
+          "parameterName": "inputInfo"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Prg0ProgramInfra",
+      "createRelease": "tc11000.2.1",
+      "dependencies": "",
+      "description": "This operation clones the input <b>Prg0AbsPlan</b> object, its child <b>Prg0AbsPlan</b> objects and all the associated <b>Prg0AbsEvent</b> objects. If the input plan level is of type <b>Prg0AbsProgramPlan</b> (or its subtype), the entire Plan hierarchy is copied under a new <b>Prg0AbsProgramPlan</b> object. <br />Please note that the clone of <b>Prg0AbsProjectPlan</b> object is not supported.",
+      "exceptionCondition": "",
+      "id": "clonePlanHierarchy#const,std::vector<Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::ClonePlanHierarchyInputInfo>,&",
+      "interface": "Prg0::Soa::ProgramInfra::ProgramManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "clonePlanHierarchy",
+      "opTemplate": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::ClonePlanHierarchyResponse#Prg0::Soa::ProgramInfra::ProgramManagement::clonePlanHierarchy#const,std::vector<Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::ClonePlanHierarchyInputInfo>,&",
+      "returnDescription": "Returns the list of cloned <b>Prg0AbsPlan</b> objects. <br />The following errors may be returned:<br /><ul><ul><li type=\"disc\">177006: The cloning operation cannot be performed if input <b>Prg0AbsProgramPlan</b>   object does not have any prime events associated with it.</li><li type=\"disc\">177007: The cloning operation is only supported for objects of type <b>Prg0AbsProgramPlan</b>. This error is returned for any other object type e.g. <b>Prg0AbsProjectPlan</b>.</li></ul></ul>",
+      "useCase": "Program_1---------------------------------&gt; Event_1 (Planned Date: 01-01-2015)<br />----|----Project_1------------------------------&gt; Event_2(Planned Date: 02-02-2018)<br />--------|----SubProject_11----------------------------&gt; Event_3 (Planned Date: 03-03-2016)<br />--------|----SubProject_12----------------------------&gt; Event_4 (Planned Date: 03-03-2017)<br />--------|----SubProject_13----------------------------&gt; Event_5 (Planned Date: 03-03-2017)<br />----|----Project_2------------------------------&gt; Event_6 (Planned Date: 04-04-2018)<br />--------|----SubProject_21-----------------------------&gt; Event_7 (Planned Date: 05-05-2016)<br />--------|----SubProject_22-----------------------------&gt; Event_8 (Planned Date: 05-05-2017)<br /><br />Use Case 1: <b>Prg0ProgramPlan</b> and <font face=\"courier\" height=\"10\">primeEventDate</font> as input<br />Operation returns the cloned <b>Prg0ProgramPlan</b> object with all the Plan levels and associated <b>Prg0Event</b> objects. Input <font face=\"courier\" height=\"10\">primeEventDate</font> is set as Planned date of the Prime <b>Prg0Event</b> object for the cloned <b>Prg0ProgramPlan</b> object. Delta between the Planned date of source Prime <b>Prg0Event</b> object and input <font face=\"courier\" height=\"10\">primeEventDate</font> is used to calculate the Planned date of all the <b>Prg0Event</b> objects of all the Plan levels.<br /><br />E.g. If Program_1 is the input as <b>Prg0AbsPlan</b> and 01-01-2018 input as <font face=\"courier\" height=\"10\">primeEventDate</font> and<font face=\"courier\" height=\"10\"> object_name</font> as &quot;New_Program_1&quot; then the cloned plan hierarchy will be created as below:<br /><br />New_Program_1-----------------------------&gt; Event_1 (Planned Date: 01-01-2018)<br />----|----Project_1------------------------------&gt; Event_2(Planned Date: 02-02-2021)<br />--------|----SubProject_11----------------------------&gt; Event_3 (Planned Date: 03-03-2019)<br />--------|----SubProject_12----------------------------&gt; Event_4 (Planned Date: 03-03-2020)<br />--------|----SubProject_13----------------------------&gt; Event_5 (Planned Date: 03-03-2020)<br />----|----Project_2------------------------------&gt; Event_6 (Planned Date: 04-04-2021)<br />--------|----SubProject_21----------------------------&gt; Event_7 (Planned Date: 05-05-2019)<br />--------|----SubProject_22----------------------------&gt; Event_8 (Planned Date: 05-05-2020)<br /><br />Use Case 2: <b>Prg0ProgramPlan</b> which does not have <b>Prg0Event</b> objects associated with it<br />Operation returns an information message saying &quot;Operation cannot be completed as source <b>Prg0ProgramPlan</b> object does not have <b>Prg0Event</b> object associated with it&quot;.<br /><br />Use Case 3: <b>Prg0ProjectPlan</b> as input <br />Operation returns an information message saying &quot;Operation cannot performed for objects of type <b>Prg0ProjectPlan</b>&quot;.<br />   <br />Use Case 4: <b>Prg0SubProjectPlan</b> as input<br />Operation returns an information message saying &quot;Operation cannot performed for objects of type <b>Prg0SubProjectPlan</b>&quot;.<br /><br /><b>Notes:</b><br /><ul><ul><li type=\"disc\"><font face=\"courier\" height=\"10\">Actual date</font> and <font face=\"courier\" height=\"10\">forecast date</font> are set to null value for all the <b>Prg0Event</b> objects of all the Plan levels of cloned <b>Prg0AbsPlan</b> objects.</li><li type=\"disc\"><font face=\"courier\" height=\"10\">Prg0State</font> is set to value &quot;<font face=\"courier\" height=\"10\">Not Started</font>&quot; for all the Plan levels of cloned <b>Prg0AbsPlan</b> objects.</li><li type=\"disc\">All other attribute values are copied as it is.</li></ul></ul>"
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of <b>ClonePlanHierarchyWithProjectInput</b> structures containing information to clone the plan hierarchy.",
+          "parameterName": "cloneInfoInput"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Prg0ProgramInfra",
+      "createRelease": "tc11000.2.3",
+      "dependencies": "",
+      "description": "Clones the input <b>Prg0AbsPlan</b> object, its child <b>Prg0AbsPlan</b> objects and all the associated <b>Prg0AbsEvent</b> objects. This operation supports cloning of <b>Prg0AbsProgramPlan</b> and <b>Prg0AbsProjectPlan</b> objects.<br />&bull;If the selected plan level is of type <b>Prg0AbsProgramPlan</b> or its subtype, the entire Plan hierarchy is copied to a new <b>Prg0AbsProgramPlan</b> object. <br />&bull;If the selected plan level is of type <b>Prg0AbsProjectPlan</b> or its subtype, the entire Plan hierarchy is copied to the selected <b>Prg0AbsProgramPlan</b> object or different <b>Prg0AbsProgramPlan</b> object based on the input.",
+      "exceptionCondition": "",
+      "id": "clonePlanHierarchyWithProject#const,std::vector<Prg0::Soa::ProgramInfra::_2016_10::ProgramManagement::ClonePlanHierarchyProjectInput>,&",
+      "interface": "Prg0::Soa::ProgramInfra::ProgramManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "clonePlanHierarchyWithProject",
+      "opTemplate": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::ClonePlanHierarchyResponse#Prg0::Soa::ProgramInfra::ProgramManagement::clonePlanHierarchyWithProject#const,std::vector<Prg0::Soa::ProgramInfra::_2016_10::ProgramManagement::ClonePlanHierarchyProjectInput>,&",
+      "returnDescription": "The list of cloned <b>Prg0AbsPlan</b> objects. The ServiceData containing the list of cloned objects in the created list, the modified target program in the updated list.<br />The following errors may be returned :<br />&bull;177006: The cloning operation cannot be performed if selected or target Prg0AbsProgramPlan object does not have any prime events associated with it.<br />&bull;177007: The cloning operation is only supported for objects of type Prg0AbsProgramPlan and Prg0AbsProjectPlan. This error is returned for any other object type.",
+      "useCase": "Assume below data exists:<br />Program_1---------------------------------&gt; Event_1 (Planned Date: 01-01-2015)<br />----|----Project_1------------------------------&gt; Event_2(Planned Date: 02-02-2018)<br />--------|----SubProject_11----------------------------&gt; Event_3 (Planned Date: 03-03-2016)<br />--------|----SubProject_12----------------------------&gt; Event_4 (Planned Date: 03-03-2017)<br />--------|----SubProject_13----------------------------&gt; Event_5 (Planned Date: 03-03-2017)<br />----|----Project_2------------------------------&gt; Event_6 (Planned Date: 04-04-2018)<br />--------|----SubProject_21-----------------------------&gt; Event_7 (Planned Date: 05-05-2016)<br />--------|----SubProject_22-----------------------------&gt; Event_8 (Planned Date: 05-05-2017)<br /><br /><br />Program_2---------------------------------&gt; Event_1 (Planned Date: 01-01-2015)<br />----|----Project_1------------------------------&gt; Event_2(Planned Date: 02-02-2018)<br />--------|----SubProject_11----------------------------&gt; Event_3 (Planned Date: 03-03-2016)<br /><br />Use Case 1: SaveAs on a Prg0ProgramPlan. <br />Inputs are primeEventDate and cloneInfoMap. The operation returns the cloned Prg0ProgramPlan object with all the Plan levels and associated Prg0Event objects. Input primeEventDate is set as Planned date of the Prime Prg0Event object for the cloned Prg0ProgramPlan object. Delta between the Planned date of source Prime Prg0Event object and input primeEventDate is used to calculate the Planned date of all the Prg0Event objects of all the Plan levels.<br /><br />For example: If cloneInfoMap contains keys as CurrentSelection and TargetProgram and values as Program_1 model object for both keys. 01-01-2018 as input for primeEventDate and object_name as &quot;New_Program_1&quot;. The cloned plan hierarchy will be created as below:<br /><br />New_Program_1-----------------------------&gt; Event_1 (Planned Date: 01-01-2018)<br />----|----Project_1------------------------------&gt; Event_2(Planned Date: 02-02-2021)<br />--------|----SubProject_11----------------------------&gt; Event_3 (Planned Date: 03-03-2019)<br />--------|----SubProject_12----------------------------&gt; Event_4 (Planned Date: 03-03-2020)<br />--------|----SubProject_13----------------------------&gt; Event_5 (Planned Date: 03-03-2020)<br />----|----Project_2------------------------------&gt; Event_6 (Planned Date: 04-04-2021)<br />--------|----SubProject_21----------------------------&gt; Event_7 (Planned Date: 05-05-2019)<br />--------|----SubProject_22----------------------------&gt; Event_8 (Planned Date: 05-05-2020)<br /><br />Use Case 2: Prg0ProgramPlan which does not have Prg0Event objects associated with it<br />The operation returns an information message saying &quot;Operation cannot be completed as source Prg0ProgramPlan object does not have Prg0Event object associated with it&quot;.<br /><br />Use Case 3: SaveAs on a Prg0ProjectPlan under the same Prg0ProgramPlan. <br />Inputs are primeEventDate and cloneInfoMap. The operation returns the cloned Prg0ProjectPlan object with all the Plan levels for that Prg0ProjectPlan and associated Prg0Event objects. Delta between the Planned date of source Prime Prg0Event object and input primeEventDate is used to calculate the Planned date of all the Prg0Event objects of all the Plan levels.<br /><br />For example: If cloneInfoMap contains keys as CurrentSelection and TargetProgram and values as Project_1 model object as Program_1 model object respectively. <br />01-01-2018 as input for primeEventDate and object_name as &quot;New_Project_1&quot;, Thecloned plan hierarchy will be created as below:<br /><br />Program_1---------------------------------&gt; Event_1 (Planned Date: 01-01-2015)<br />----|----Project_1------------------------------&gt; Event_2(Planned Date: 02-02-2018)<br />--------|----SubProject_11----------------------------&gt; Event_3 (Planned Date: 03-03-2016)<br />--------|----SubProject_12----------------------------&gt; Event_4 (Planned Date: 03-03-2017)<br />--------|----SubProject_13----------------------------&gt; Event_5 (Planned Date: 03-03-2017)<br />----|----Project_2------------------------------&gt; Event_6 (Planned Date: 04-04-2018)<br />--------|----SubProject_21-----------------------------&gt; Event_7 (Planned Date: 05-05-2016)<br />--------|----SubProject_22-----------------------------&gt; Event_8 (Planned Date: 05-05-2017)<br />----|----New_Project_1------------------------------&gt; Event_2(Planned Date: 02-02-2021)<br />--------|----SubProject_11----------------------------&gt; Event_3 (Planned Date: 04-Mar-2019)<br />--------|----SubProject_12----------------------------&gt; Event_4 (Planned Date: 03-03-2020)<br />--------|----SubProject_13----------------------------&gt; Event_5 (Planned Date: 03-03-2020)<br /><br /><br />Use Case 4: SaveAs on a Prg0ProjectPlan under the different Prg0ProgramPlan. <br />Inputs are primeEventDate and cloneInfoMap. The operation returns the cloned Prg0ProjectPlan object with all the Plan levels for that Prg0ProjectPlan and associated Prg0Event objects. Delta between the Planned date of target program Prime Prg0Event object and input primeEventDate is used to calculate the Planned date of all the Prg0Event objects of all the Plan levels.<br /><br />For example: If cloneInfoMap contains keys as CurrentSelection and TargetProgram and values as Project_1 model object as Program_2 model object respectively. <br />01-01-2018 as input for primeEventDate and object_name as &quot;New_Project_1&quot;. The cloned plan hierarchy will be created and attached to Program_2 as below:<br /><br />Program_2---------------------------------&gt; Event_1 (Planned Date: 01-01-2015)<br />----|----Project_1------------------------------&gt; Event_2(Planned Date: 02-02-2018)<br />--------|----SubProject_11----------------------------&gt; Event_3 (Planned Date: 03-03-2016)<br />----|----New_Project_1------------------------------&gt; Event_2(Planned Date: 02-02-2021)<br />--------|----SubProject_11----------------------------&gt; Event_3 (Planned Date: 04-Mar-2019)<br />--------|----SubProject_12----------------------------&gt; Event_4 (Planned Date: 03-03-2020)<br />--------|----SubProject_13----------------------------&gt; Event_5 (Planned Date: 03-03-2020)<br /><br />Use Case 5: Target Prg0ProgramPlan which does not have Prg0Event objects associated with it<br />The operation returns an information message saying &quot;Operation cannot be completed as Prg0ProgramPlan object does not have Prg0Event object associated with it&quot;.<br /><br />Use Case 6: If cloneInfoMap contains keys as CurrentSelection with Prg0SubProjectPlan model object as value <br />The operation returns an information message saying &quot;This operation cannot performed for objects of type Prg0SubProjectPlan&quot;.<br /><br />Notes:<br />&bull;Actual date and forecast date are set to null value for all the Prg0Event objects of all the Plan levels of cloned Prg0AbsPlan objects. <br />&bull;Prg0State is set to value &quot;Not Started&quot; for all the Plan levels of cloned Prg0AbsPlan objects. <br />&bull;All other attribute values are copied as it is."
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of <b>Prg0AbsPlan</b> objects.",
+          "parameterName": "operationInput"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Prg0ProgramInfra",
+      "createRelease": "tc11000.2.1",
+      "dependencies": "",
+      "description": "This operation returns a list of Events associated with a Program, a Project or a Sub-Project depending upon the input.<br />The operation accepts a vector of <b>Prg0AbsPlan</b> objects  which can contain a<b> Prg0ProgramPlan</b>, <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> object as input.",
+      "exceptionCondition": "",
+      "id": "getEvents#const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan>,&",
+      "interface": "Prg0::Soa::ProgramInfra::ProgramManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "getEvents",
+      "opTemplate": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::GetEventsResponse#Prg0::Soa::ProgramInfra::ProgramManagement::getEvents#const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan>,&",
+      "returnDescription": "This<font face=\"courier\" height=\"10\"> </font>operation returns a list of the <b>Prg0AbsEvent</b> objects and their parent <b>Prg0ProgramPlan</b>, <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> objects.<br />Following are possible errors returned in <font face=\"courier\" height=\"10\">serviceData</font> while performing this operation.<br /><ul><ul><li type=\"disc\">177002: The operation could not be performed, because an invalid input object is supplied. Please check the Teamcenter server syslog file for more information. This error is returned if an invalid input parameter is passed in. e.g. a non-existent <b>Prg0AbsPlan</b> object or an object of some different type than <b>Prg0AbsPlanObject</b> or its child types</li></ul></ul>",
+      "useCase": "Plan Hierarchy<br /><br />Program1-------------------------------------------&gt;Event1 <br />-----|--------Project1------------------------------&gt;Event2<br />--------------------|------------SubProject1-------&gt;Event3<br />--------------------|------------SubProject2<br />-----|--------Project2-------------------------------&gt;Event4<br />--------------------|------------SubProject3<br />--------------------|------------SubProject4--------&gt;Event5<br /><br />Use case 1: <b>Prg0ProgramPlan</b> object is passed as input.<br />The operation returns a list of <b>Prg0AbsEvent</b> objects along with the parent <b>Prg0ProgramPlan</b> object.<br />If user specifies input as Program1, the output will be a structure containing Program1 and a list containing Event1.<br /><br />Use Case 2: <b>Prg0ProjectPlan</b> object is passed as input.<br />The operation returns a list of <b>Prg0AbsEvent</b> objects along with the parent <b>Prg0ProjectPlan</b> object.<br />If user specifies input as Project2, the output will be a structure containing Project2 and a list containing Event4. <br /><br />Use Case 3: <b>Prg0SubProjectPlan</b> object is passed as input.<br />The operation would return a list of <b>Prg0AbsEvent</b> objects along with the parent <b>Prg0SubProjectPlan</b> object.<br />If user specifies input as SubProject1, the output will be a structure containing SubProject1 and a list containing Event3."
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of <b>Prg0AbsPlan</b> objects.",
+          "parameterName": "operationInput"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Prg0ProgramInfra",
+      "createRelease": "tc11000.2.1",
+      "dependencies": "",
+      "description": "This operation returns a hierarchy of  plan objects that include the <b>Prg0AbsProgramPlan</b> object and its child <b>Prg0AbsProjectPlan</b> objects based on the input provided.<br />This operation accepts a vector of <b>Prg0AbsPlan</b> objects each of which can contain a <b>Prg0ProgramPlan</b>, <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> object as input.",
+      "exceptionCondition": "",
+      "id": "getPlanHierarchy#const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan>,&",
+      "interface": "Prg0::Soa::ProgramInfra::ProgramManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "getPlanHierarchy",
+      "opTemplate": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::GetPlanHierarchyResponse#Prg0::Soa::ProgramInfra::ProgramManagement::getPlanHierarchy#const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan>,&",
+      "returnDescription": "This operation returns a hierarchy of Plan objects i.e. <b>Prg0AbsProgramPlan</b> objects and their child <b>Prg0ProjectPlan</b> and <b>Prg0SubProjectPlan</b> object structures along with the <font face=\"courier\" height=\"10\">serviceData</font>.<br />The following errors may be returned:-<br /><ul><ul><li type=\"disc\">177001: An internal error has occurred in the ProgramInfra module. This is returned if an unexpected error occurs while trying to fetch the Plan hierarchy from the database.</li><li type=\"disc\">177002: The operation could not be performed, because an invalid input object is supplied. This error is returned if the input is not a Prg0AbsPlan object.</li></ul></ul>",
+      "useCase": "The user can pass a <b>Prg0ProgramPlan</b>, <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> object as input.<br /><br />Plan Hierarchy<br /><br />Program1<br />------|------Project1<br />----------------|------SubProject1<br />----------------|------SubProject2<br />------|------Project2<br />----------------|------SubProject3<br />----------------|------SubProject4<br /><br />Use case 1: <b>Prg0ProgramPlan</b> object is passed as input.<br />If the user passes a Program as input, this operation returns its child Projects and Sub-Projects along with the Program itself. <br />Consider Program1 is passed as input. The output would be a structure containing Program1 and a list of its child Projects and Sub-Projects in the order Program1, Project1, SubProject1, SubProject2, Project2, SubProject3 and SubProject4.<br /><br />Use Case 2: <b>Prg0ProjectPlan</b> object is passed as input.<br />If the user passes a Project as input, this operation returns its parent Program and its child Sub-Projects.<br />Consider Project2 is passed as input. The output would be a structure containing Project2 and a list of its parent Plan Program1 followed by Project2 and its child Sub-Projects, SubProject3 and SubProject4.<br /><br />Use Case 3: <b>Prg0SubProjectPlan</b> object is passed as input.<br />If the user passes a Sub-Project as input, this operation returns the input Sub-Project, its parent Project and the root Program.<br />Consider SubProject3 is passed as input. The output would be a structure containing SubProject3 and a list containing its root Plan Program1 and its parent Plan Project2 and SubProject3."
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of structures containing information to move PlanObjects.",
+          "parameterName": "movePlanObjectsInput"
+        },
+        {
+          "description": "A list of options to be considered while moving the plan objects.<br />Valid values are:<br />allowMovingUnderDifferentParent: true/false (Set true to allow plan object to be moved under a different parent.)",
+          "parameterName": "moveOptions"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Prg0ProgramInfra",
+      "createRelease": "tc13000.2.0",
+      "dependencies": "",
+      "description": "This operation moves Plan Objects to a different location in the Plan hierarchy within same level, i.e. under the common parent Plan.<br /><br />Use Case:<br />The user can pass a  <b>Prg0AbsPlan</b> or its subtypes e.g. <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> object as input.<br /><br />Plan Hierarchy<br /><br />Program1<br />------|------Project1<br />----------------|------SubProject1<br />----------------|------SubProject2<br />----------------|------SubProject3<br />------|------Project2<br />----------------|------SubProject1<br />------|------Project3<br />----------------|------SubProject1<br /><br />Use Case 1: Prg0ProjectPlan object is passed as input.<br />If the user wants to move Projects within Program this operation will update the order of the input project.<br /><br />Program1<br />------|------Project2<br />----------------|------SubProject1<br />------|------Project1<br />----------------|------SubProject1<br />----------------|------SubProject2<br />----------------|------SubProject3<br />------|------Project3<br />----------------|------SubProject1<br /><br />Use Case 2: Prg0SubProjectPlan object is passed as input.<br />If the user wants to move Subprojects within Project this operation will update the order of the input subproject.<br /><br />Program1<br />------|------Project1<br />----------------|------SubProject3<br />----------------|------SubProject2<br />----------------|------SubProject1<br />------|------Project2<br />----------------|------SubProject1<br />------|------Project3<br />----------------|------SubProject1",
+      "exceptionCondition": "",
+      "id": "movePlanObjects#const,std::vector<Prg0::Soa::ProgramInfra::_2021_06::ProgramManagement::MovePlanObjectsInputInfo>,&$const,std::vector<Prg0::Soa::ProgramInfra::_2021_06::ProgramManagement::NameValueStringPair>,&",
+      "interface": "Prg0::Soa::ProgramInfra::ProgramManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "movePlanObjects",
+      "opTemplate": "Teamcenter::Soa::Server::ServiceData#Prg0::Soa::ProgramInfra::ProgramManagement::movePlanObjects#const,std::vector<Prg0::Soa::ProgramInfra::_2021_06::ProgramManagement::MovePlanObjectsInputInfo>,&$const,std::vector<Prg0::Soa::ProgramInfra::_2021_06::ProgramManagement::NameValueStringPair>,&",
+      "returnDescription": "The modified moved plan objects i.e. <b>Prg0AbsPlan</b> or its subtypes e.g. <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> in updated objects list of ServiceData.<br /><br />The following errors may be returned: -<br /><br /><ul><ul><li type=\"disc\">177015: The plan was not moved because you do not have write access.</li><li type=\"disc\">177016: The plan was not moved down to the new parent because parent plan is different.</li><li type=\"disc\">177017: Invalid pair values for moveOptions.</li></ul></ul>",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of Prg0AbsEvent to be moved to a new date.",
+          "parameterName": "events"
+        },
+        {
+          "description": "The new date to which events will be moved to.",
+          "parameterName": "newEventDate"
+        },
+        {
+          "description": "If true, the secondary events will be moved to new date while still maintaining the offset between primary and secondary event date.If false, the secondary events will not be moved.",
+          "parameterName": "updateSecondaryEvents"
+        },
+        {
+          "description": "If true, the operation will be performed in background mode in a separate asynchronous server session; otherwise perform the operation synchronously.",
+          "parameterName": "runInBackground"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Prg0ProgramInfra",
+      "createRelease": "tc13000.3.0",
+      "dependencies": "",
+      "description": "This operation moves Prg0AbsEvent objects to a new date. The related secondary events will also be moved to the new date based on updateSecondaryEvents input. <br /><br />Use Case:<br />The user can pass a list of Prg0AbsEvent or its subtypes object as input.<br /><br />Use Case 1: <br />Inputs:<br />events &ndash; list of Prg0AbsEvent objects<br />updateSecondaryEvents -true<br /><br />Program1<br />------|------Project1<br />----------------|------SubProject1<br />--------------------------|--------Event1<br />------|------Project2<br />----------------|------SubProject2<br />--------------------------|--------Event2<br /><br />Event1&rsquo;s date will be updated with the new date and secondary event objects&rsquo; date will be updated.<br /><br />Use Case 2: <br />Inputs:<br />events &ndash; list of Prg0AbsEvent objects<br />updateSecondaryEvents -false<br /><br />Program1<br />------|------Project1<br />----------------|------SubProject1<br />--------------------------|--------Event1<br />------|------Project2<br />----------------|------SubProject2<br />--------------------------|--------Event2<br /><br />Expected Behavior:<br />Event1&rsquo;s date will be updated with the new date and secondary event objects&rsquo; date will not be updated.",
+      "exceptionCondition": "",
+      "id": "moveEvents#const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent>,&$const,Teamcenter::DateTime,&$bool$bool",
+      "interface": "Prg0::Soa::ProgramInfra::ProgramManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "moveEvents",
+      "opTemplate": "Teamcenter::Soa::Server::ServiceData#Prg0::Soa::ProgramInfra::ProgramManagement::moveEvents#const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent>,&$const,Teamcenter::DateTime,&$bool$bool",
+      "returnDescription": "The modified Prg0AbsEvent objects will be returned in updated objects list of ServiceData.<br /><br />The following errors may be returned:<br /><br />177018: The user does not have write access to move the event.<br />177019: The event was not moved because event is either in Closed or Complete state.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of Prg0AbsEvent to be moved to a new date.",
+          "parameterName": "events"
+        },
+        {
+          "description": "The new date to which events will be moved to.",
+          "parameterName": "newEventDate"
+        },
+        {
+          "description": "If true, the secondary events will be moved to new date while still maintaining the offset between primary and secondary event date.If false, the secondary events will not be moved.",
+          "parameterName": "updateSecondaryEvents"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Prg0ProgramInfra",
+      "createRelease": "tc13000.3.0",
+      "dependencies": "",
+      "description": "This operation moves Prg0AbsEvent objects to a new date. The related secondary events will also be moved to the new date based on updateSecondaryEvents input. <br /><br />Use Case:<br />The user can pass a list of Prg0AbsEvent or its subtypes object as input.<br /><br />Use Case 1: <br />Inputs:<br />events &ndash; list of Prg0AbsEvent objects<br />updateSecondaryEvents -true<br /><br />Program1<br />------|------Project1<br />----------------|------SubProject1<br />--------------------------|--------Event1<br />------|------Project2<br />----------------|------SubProject2<br />--------------------------|--------Event2<br /><br />Event1&rsquo;s date will be updated with the new date and secondary event objects&rsquo; date will be updated.<br /><br />Use Case 2: <br />Inputs:<br />events &ndash; list of Prg0AbsEvent objects<br />updateSecondaryEvents -false<br /><br />Program1<br />------|------Project1<br />----------------|------SubProject1<br />--------------------------|--------Event1<br />------|------Project2<br />----------------|------SubProject2<br />--------------------------|--------Event2<br /><br />Expected Behavior:<br />Event1&rsquo;s date will be updated with the new date and secondary event objects&rsquo; date will not be updated.",
+      "exceptionCondition": "",
+      "id": "moveEventsAsync#const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent>,&$const,Teamcenter::DateTime,&$bool",
+      "interface": "Prg0::Soa::ProgramInfra::ProgramManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "moveEventsAsync",
+      "opTemplate": "void#Prg0::Soa::ProgramInfra::ProgramManagement::moveEventsAsync#const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent>,&$const,Teamcenter::DateTime,&$bool",
+      "returnDescription": "There are no specific business errors returned.",
+      "useCase": ""
+    }
+  ],
+  "OperationTemplate": [
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::ClonePlanHierarchyInputInfo",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of structure containing <b>ClonePlanHierarchyInputInfo</b> objects.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "inputInfo"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::ClonePlanHierarchyResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc11000.2.1",
+      "description": "This operation clones the input <b>Prg0AbsPlan</b> object, its child <b>Prg0AbsPlan</b> objects and all the associated <b>Prg0AbsEvent</b> objects. If the input plan level is of type <b>Prg0AbsProgramPlan</b> (or its subtype), the entire Plan hierarchy is copied under a new <b>Prg0AbsProgramPlan</b> object. <br />Please note that the clone of <b>Prg0AbsProjectPlan</b> object is not supported.",
+      "id": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::ClonePlanHierarchyResponse#Prg0::Soa::ProgramInfra::ProgramManagement::clonePlanHierarchy#const,std::vector<Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::ClonePlanHierarchyInputInfo>,&",
+      "name": "Prg0::Soa::ProgramInfra::ProgramManagement::clonePlanHierarchy",
+      "returnConst": "false",
+      "returnDescription": "Returns the list of cloned <b>Prg0AbsPlan</b> objects. <br />The following errors may be returned:<br /><ul><ul><li type=\"disc\">177006: The cloning operation cannot be performed if input <b>Prg0AbsProgramPlan</b>   object does not have any prime events associated with it.</li><li type=\"disc\">177007: The cloning operation is only supported for objects of type <b>Prg0AbsProgramPlan</b>. This error is returned for any other object type e.g. <b>Prg0AbsProjectPlan</b>.</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Prg0::Soa::ProgramInfra::_2016_10::ProgramManagement::ClonePlanHierarchyProjectInput",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of <b>ClonePlanHierarchyWithProjectInput</b> structures containing information to clone the plan hierarchy.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "cloneInfoInput"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::ClonePlanHierarchyResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc11000.2.3",
+      "description": "Clones the input <b>Prg0AbsPlan</b> object, its child <b>Prg0AbsPlan</b> objects and all the associated <b>Prg0AbsEvent</b> objects. This operation supports cloning of <b>Prg0AbsProgramPlan</b> and <b>Prg0AbsProjectPlan</b> objects.<br />&bull;If the selected plan level is of type <b>Prg0AbsProgramPlan</b> or its subtype, the entire Plan hierarchy is copied to a new <b>Prg0AbsProgramPlan</b> object. <br />&bull;If the selected plan level is of type <b>Prg0AbsProjectPlan</b> or its subtype, the entire Plan hierarchy is copied to the selected <b>Prg0AbsProgramPlan</b> object or different <b>Prg0AbsProgramPlan</b> object based on the input.",
+      "id": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::ClonePlanHierarchyResponse#Prg0::Soa::ProgramInfra::ProgramManagement::clonePlanHierarchyWithProject#const,std::vector<Prg0::Soa::ProgramInfra::_2016_10::ProgramManagement::ClonePlanHierarchyProjectInput>,&",
+      "name": "Prg0::Soa::ProgramInfra::ProgramManagement::clonePlanHierarchyWithProject",
+      "returnConst": "false",
+      "returnDescription": "The list of cloned <b>Prg0AbsPlan</b> objects. The ServiceData containing the list of cloned objects in the created list, the modified target program in the updated list.<br />The following errors may be returned :<br />&bull;177006: The cloning operation cannot be performed if selected or target Prg0AbsProgramPlan object does not have any prime events associated with it.<br />&bull;177007: The cloning operation is only supported for objects of type Prg0AbsProgramPlan and Prg0AbsProjectPlan. This error is returned for any other object type.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of <b>Prg0AbsPlan</b> objects.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "operationInput"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::GetEventsResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc11000.2.1",
+      "description": "This operation returns a list of Events associated with a Program, a Project or a Sub-Project depending upon the input.<br />The operation accepts a vector of <b>Prg0AbsPlan</b> objects  which can contain a<b> Prg0ProgramPlan</b>, <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> object as input.",
+      "id": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::GetEventsResponse#Prg0::Soa::ProgramInfra::ProgramManagement::getEvents#const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan>,&",
+      "name": "Prg0::Soa::ProgramInfra::ProgramManagement::getEvents",
+      "returnConst": "false",
+      "returnDescription": "This<font face=\"courier\" height=\"10\"> </font>operation returns a list of the <b>Prg0AbsEvent</b> objects and their parent <b>Prg0ProgramPlan</b>, <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> objects.<br />Following are possible errors returned in <font face=\"courier\" height=\"10\">serviceData</font> while performing this operation.<br /><ul><ul><li type=\"disc\">177002: The operation could not be performed, because an invalid input object is supplied. Please check the Teamcenter server syslog file for more information. This error is returned if an invalid input parameter is passed in. e.g. a non-existent <b>Prg0AbsPlan</b> object or an object of some different type than <b>Prg0AbsPlanObject</b> or its child types</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of <b>Prg0AbsPlan</b> objects.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "operationInput"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::GetPlanHierarchyResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc11000.2.1",
+      "description": "This operation returns a hierarchy of  plan objects that include the <b>Prg0AbsProgramPlan</b> object and its child <b>Prg0AbsProjectPlan</b> objects based on the input provided.<br />This operation accepts a vector of <b>Prg0AbsPlan</b> objects each of which can contain a <b>Prg0ProgramPlan</b>, <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> object as input.",
+      "id": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::GetPlanHierarchyResponse#Prg0::Soa::ProgramInfra::ProgramManagement::getPlanHierarchy#const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan>,&",
+      "name": "Prg0::Soa::ProgramInfra::ProgramManagement::getPlanHierarchy",
+      "returnConst": "false",
+      "returnDescription": "This operation returns a hierarchy of Plan objects i.e. <b>Prg0AbsProgramPlan</b> objects and their child <b>Prg0ProjectPlan</b> and <b>Prg0SubProjectPlan</b> object structures along with the <font face=\"courier\" height=\"10\">serviceData</font>.<br />The following errors may be returned:-<br /><ul><ul><li type=\"disc\">177001: An internal error has occurred in the ProgramInfra module. This is returned if an unexpected error occurs while trying to fetch the Plan hierarchy from the database.</li><li type=\"disc\">177002: The operation could not be performed, because an invalid input object is supplied. This error is returned if the input is not a Prg0AbsPlan object.</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Prg0::Soa::ProgramInfra::_2021_06::ProgramManagement::MovePlanObjectsInputInfo",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of structures containing information to move PlanObjects.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "movePlanObjectsInput"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Prg0::Soa::ProgramInfra::_2021_06::ProgramManagement::NameValueStringPair",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of options to be considered while moving the plan objects.<br />Valid values are:<br />allowMovingUnderDifferentParent: true/false (Set true to allow plan object to be moved under a different parent.)",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "moveOptions"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Teamcenter::Soa::Server::ServiceData",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc13000.2.0",
+      "description": "This operation moves Plan Objects to a different location in the Plan hierarchy within same level, i.e. under the common parent Plan.<br /><br />Use Case:<br />The user can pass a  <b>Prg0AbsPlan</b> or its subtypes e.g. <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> object as input.<br /><br />Plan Hierarchy<br /><br />Program1<br />------|------Project1<br />----------------|------SubProject1<br />----------------|------SubProject2<br />----------------|------SubProject3<br />------|------Project2<br />----------------|------SubProject1<br />------|------Project3<br />----------------|------SubProject1<br /><br />Use Case 1: Prg0ProjectPlan object is passed as input.<br />If the user wants to move Projects within Program this operation will update the order of the input project.<br /><br />Program1<br />------|------Project2<br />----------------|------SubProject1<br />------|------Project1<br />----------------|------SubProject1<br />----------------|------SubProject2<br />----------------|------SubProject3<br />------|------Project3<br />----------------|------SubProject1<br /><br />Use Case 2: Prg0SubProjectPlan object is passed as input.<br />If the user wants to move Subprojects within Project this operation will update the order of the input subproject.<br /><br />Program1<br />------|------Project1<br />----------------|------SubProject3<br />----------------|------SubProject2<br />----------------|------SubProject1<br />------|------Project2<br />----------------|------SubProject1<br />------|------Project3<br />----------------|------SubProject1",
+      "id": "Teamcenter::Soa::Server::ServiceData#Prg0::Soa::ProgramInfra::ProgramManagement::movePlanObjects#const,std::vector<Prg0::Soa::ProgramInfra::_2021_06::ProgramManagement::MovePlanObjectsInputInfo>,&$const,std::vector<Prg0::Soa::ProgramInfra::_2021_06::ProgramManagement::NameValueStringPair>,&",
+      "name": "Prg0::Soa::ProgramInfra::ProgramManagement::movePlanObjects",
+      "returnConst": "false",
+      "returnDescription": "The modified moved plan objects i.e. <b>Prg0AbsPlan</b> or its subtypes e.g. <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> in updated objects list of ServiceData.<br /><br />The following errors may be returned: -<br /><br /><ul><ul><li type=\"disc\">177015: The plan was not moved because you do not have write access.</li><li type=\"disc\">177016: The plan was not moved down to the new parent because parent plan is different.</li><li type=\"disc\">177017: Invalid pair values for moveOptions.</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of Prg0AbsEvent to be moved to a new date.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "events"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Teamcenter::DateTime",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The new date to which events will be moved to.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "newEventDate"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "bool",
+              "qualifier": ""
+            }
+          ],
+          "const": "false",
+          "defaultValue": "",
+          "description": "If true, the secondary events will be moved to new date while still maintaining the offset between primary and secondary event date.If false, the secondary events will not be moved.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "updateSecondaryEvents"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "bool",
+              "qualifier": ""
+            }
+          ],
+          "const": "false",
+          "defaultValue": "",
+          "description": "If true, the operation will be performed in background mode in a separate asynchronous server session; otherwise perform the operation synchronously.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "runInBackground"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Teamcenter::Soa::Server::ServiceData",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc13000.3.0",
+      "description": "This operation moves Prg0AbsEvent objects to a new date. The related secondary events will also be moved to the new date based on updateSecondaryEvents input. <br /><br />Use Case:<br />The user can pass a list of Prg0AbsEvent or its subtypes object as input.<br /><br />Use Case 1: <br />Inputs:<br />events &ndash; list of Prg0AbsEvent objects<br />updateSecondaryEvents -true<br /><br />Program1<br />------|------Project1<br />----------------|------SubProject1<br />--------------------------|--------Event1<br />------|------Project2<br />----------------|------SubProject2<br />--------------------------|--------Event2<br /><br />Event1&rsquo;s date will be updated with the new date and secondary event objects&rsquo; date will be updated.<br /><br />Use Case 2: <br />Inputs:<br />events &ndash; list of Prg0AbsEvent objects<br />updateSecondaryEvents -false<br /><br />Program1<br />------|------Project1<br />----------------|------SubProject1<br />--------------------------|--------Event1<br />------|------Project2<br />----------------|------SubProject2<br />--------------------------|--------Event2<br /><br />Expected Behavior:<br />Event1&rsquo;s date will be updated with the new date and secondary event objects&rsquo; date will not be updated.",
+      "id": "Teamcenter::Soa::Server::ServiceData#Prg0::Soa::ProgramInfra::ProgramManagement::moveEvents#const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent>,&$const,Teamcenter::DateTime,&$bool$bool",
+      "name": "Prg0::Soa::ProgramInfra::ProgramManagement::moveEvents",
+      "returnConst": "false",
+      "returnDescription": "The modified Prg0AbsEvent objects will be returned in updated objects list of ServiceData.<br /><br />The following errors may be returned:<br /><br />177018: The user does not have write access to move the event.<br />177019: The event was not moved because event is either in Closed or Complete state.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of Prg0AbsEvent to be moved to a new date.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "events"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Teamcenter::DateTime",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The new date to which events will be moved to.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "newEventDate"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "bool",
+              "qualifier": ""
+            }
+          ],
+          "const": "false",
+          "defaultValue": "",
+          "description": "If true, the secondary events will be moved to new date while still maintaining the offset between primary and secondary event date.If false, the secondary events will not be moved.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "updateSecondaryEvents"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "void",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc13000.3.0",
+      "description": "This operation moves Prg0AbsEvent objects to a new date. The related secondary events will also be moved to the new date based on updateSecondaryEvents input. <br /><br />Use Case:<br />The user can pass a list of Prg0AbsEvent or its subtypes object as input.<br /><br />Use Case 1: <br />Inputs:<br />events &ndash; list of Prg0AbsEvent objects<br />updateSecondaryEvents -true<br /><br />Program1<br />------|------Project1<br />----------------|------SubProject1<br />--------------------------|--------Event1<br />------|------Project2<br />----------------|------SubProject2<br />--------------------------|--------Event2<br /><br />Event1&rsquo;s date will be updated with the new date and secondary event objects&rsquo; date will be updated.<br /><br />Use Case 2: <br />Inputs:<br />events &ndash; list of Prg0AbsEvent objects<br />updateSecondaryEvents -false<br /><br />Program1<br />------|------Project1<br />----------------|------SubProject1<br />--------------------------|--------Event1<br />------|------Project2<br />----------------|------SubProject2<br />--------------------------|--------Event2<br /><br />Expected Behavior:<br />Event1&rsquo;s date will be updated with the new date and secondary event objects&rsquo; date will not be updated.",
+      "id": "void#Prg0::Soa::ProgramInfra::ProgramManagement::moveEventsAsync#const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent>,&$const,Teamcenter::DateTime,&$bool",
+      "name": "Prg0::Soa::ProgramInfra::ProgramManagement::moveEventsAsync",
+      "returnConst": "false",
+      "returnDescription": "There are no specific business errors returned.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    }
+  ],
+  "ServiceInterface": [
+    {
+      "createRelease": "tc11000.2.1",
+      "dependencies": "",
+      "description": "This service exposes operations related to Program Management in Teamcenter. A Program represents a unit of business investment to pursue the market opportunity and meet business goals. When a new Program is defined, the Governance for that Program is also defined. Program Management begins from analysis of market requirements and alignment with corporate goals. During Program execution, detailed analysis of portfolio Projects is done and individual Projects are approved for execution. Targets are captured for the planning entities and aggregated at the architecture nodes and then rolled up based on models for each Project/Program.",
+      "libraryName": "Prg0SoaProgramInfra",
+      "name": "ProgramManagement",
+      "namespace": "Prg0::Soa::ProgramInfra",
+      "serviceLibraryRef": ""
+    }
+  ],
+  "Struct": [
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan"
+            }
+          ],
+          "description": "Source <b>Prg0AbsPlan</b> object.",
+          "name": "planObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::DateTime"
+            }
+          ],
+          "description": "Planned date for the Prime Event of target <b>Prg0AbsPlan</b> obect.<br />The Prime Event is always the first Event for the Program level even if there are Project or Subproject Events that are earlier than the Program's first event.",
+          "name": "primeEventDate"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::StringPropertyMap"
+            }
+          ],
+          "description": "Map<font face=\"courier\" height=\"10\">(String/String)</font> of input property values for the target <b>Prg0AbsPlan</b> object to be created.<br />Valid properties are:<br />1. <font face=\"courier\" height=\"10\">object_name</font><br />2. <font face=\"courier\" height=\"10\">object_desc</font>",
+          "name": "propertyValueMap"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "The structure contains source <b>Prg0AbsPlan</b> object, Prime Event date and map of property values.",
+      "isPublished": "true",
+      "name": "ClonePlanHierarchyInputInfo",
+      "namespace": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement",
+      "scope": "Prg0::Soa::ProgramInfra::ProgramManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Prg0::Soa::ProgramInfra::_2016_10::ProgramManagement::CloneInfoMap"
+            }
+          ],
+          "description": "A map (string, <b>Prg0AbsPlan</b>) used to support project cloning along with program cloning. <br />Valid keys are &quot;<b>CurrentSelection</b>&quot; and &quot;<b>TargetProgram</b>&quot;. <br />The valid values for the key &ldquo;CurrentSelection&rdquo; is either <b>Prg0AbsProgram</b> or <b>Prg0AbsProject</b> object that needs to be cloned.<br />The valid value for the key &ldquo;TargetProgram&rdquo; is <b>Prg0AbsProgram</b>, under which the newly cloned project will be attached.",
+          "name": "cloneInfoMap"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Prg0::Soa::ProgramInfra::_2016_10::ProgramManagement::CloneOptionsMap"
+            }
+          ],
+          "description": "Map (string, string) of clone options to values. The supported clone options and valid values are:<br />1. includeProgramDeliverable : &ldquo;<b>true</b>&rdquo; or &ldquo;<b>false</b>&rdquo;",
+          "name": "cloneOptionsMap"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::DateTime"
+            }
+          ],
+          "description": "Planned date for the Prime Event of target Prg0AbsPlan object.<br />The Prime Event is always the first Event for the Program level even if there are Project or Subproject Events that are earlier than the Program's first event.",
+          "name": "primeEventDate"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Prg0::Soa::ProgramInfra::_2016_10::ProgramManagement::PropertyValuesMap"
+            }
+          ],
+          "description": "Map (string, string) of input property values for the target <b>Prg0AbsPlan</b> object to be created.<br />Valid properties are:<br />1. object_name<br />2. object_desc",
+          "name": "propertyValuesMap"
+        }
+      ],
+      "createRelease": "tc11000.2.3",
+      "description": "This is a input structure that contains the below<br /><ul><ul><li type=\"disc\">Map of string and source <b>Prg0AbsPlan</b> object.</li><li type=\"disc\">Map of cloning options.</li><li type=\"disc\">Prime Event date</li><li type=\"disc\">Map of property values.</li></ul></ul>",
+      "isPublished": "true",
+      "name": "ClonePlanHierarchyProjectInput",
+      "namespace": "Prg0::Soa::ProgramInfra::_2016_10::ProgramManagement",
+      "scope": "Prg0::Soa::ProgramInfra::ProgramManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of cloned <b>Prg0AbsPlan</b> objects.",
+          "name": "planObjects"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "An object of <b>ServiceData</b> for any error information.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "The structure contains the list of cloned <b>Prg0AbsPlan</b> objects for the source <b>Prg0AbsPlan</b> objects and <font face=\"courier\" height=\"10\">serviceData</font> object.",
+      "isPublished": "true",
+      "name": "ClonePlanHierarchyResponse",
+      "namespace": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement",
+      "scope": "Prg0::Soa::ProgramInfra::ProgramManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::GetEventsResponseStruct"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of <b>Prg0AbsEvent</b> objects and their parent <b>Prg0AbsPlan</b>  objects.",
+          "name": "responseStructList"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "An object of <b>ServiceData</b> for any error information.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "Structure of a list of <font face=\"courier\" height=\"10\">GetEventsResponseStruct</font> structures encapsulating the <b>Prg0AbsPlan</b> object and its associated <b>Prg0AbsEvent</b> objects.The errors are returned via <font face=\"courier\" height=\"10\">serviceData</font> if invalid input parameters are supplied.",
+      "isPublished": "true",
+      "name": "GetEventsResponse",
+      "namespace": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement",
+      "scope": "Prg0::Soa::ProgramInfra::ProgramManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan"
+            }
+          ],
+          "description": "The input <b>Prg0AbsPlan</b> object.",
+          "name": "planObj"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of child<b> Prg0AbsEvent</b> objects associated with the input <b>Prg0AbsPlan</b> object.",
+          "name": "eventList"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "Structure of the input <b>Prg0AbsPlan</b> object and a list of its child <b>Prg0AbsEvent</b> objects.",
+      "isPublished": "true",
+      "name": "GetEventsResponseStruct",
+      "namespace": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement",
+      "scope": "Prg0::Soa::ProgramInfra::ProgramManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement::GetPlanHierarchyResponseStruct"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of input<b> Prg0AbsPlan</b> object and its respective plan hierarchy which includes its parent and child <b>Prg0AbsPlan</b> objects if any.",
+          "name": "responseStructList"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "An object of <b>ServiceData</b> for any error information.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "This structure contains a list of  <font face=\"courier\" height=\"10\">GetPlanHierarchyResponseStruct</font> structures encapsulating the input <b>Prg0AbsPlan</b> object along with its parent and child <b>Prg0AbsPlan</b> objects.",
+      "isPublished": "true",
+      "name": "GetPlanHierarchyResponse",
+      "namespace": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement",
+      "scope": "Prg0::Soa::ProgramInfra::ProgramManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan"
+            }
+          ],
+          "description": "The input<b> Prg0AbsPlan</b> object",
+          "name": "inputPlan"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The plan hierarchy for the <font face=\"courier\" height=\"10\">inputPlan</font> object. Contains the parent as well as child Plan objects. It will be empty if the <font face=\"courier\" height=\"10\">inputPlan</font> object does not have any parent or child Plan objects.",
+          "name": "planHierarchy"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "This structure contains the input<b> Prg0AbsPlan</b> object along with a list of its parent as well child <b>Prg0AbsPlan</b> objects.",
+      "isPublished": "true",
+      "name": "GetPlanHierarchyResponseStruct",
+      "namespace": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement",
+      "scope": "Prg0::Soa::ProgramInfra::ProgramManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan"
+            }
+          ],
+          "description": "The <b>Prg0AbsPlan</b> to move.",
+          "name": "plan"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan"
+            }
+          ],
+          "description": "The new parent <b>Prg0AbsPlan</b> for the plan object.<br />If the new parent is not defined, then the plan object will be moved under the same parent plan. (Optional)",
+          "name": "newParent"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan"
+            }
+          ],
+          "description": "The new previous sibling <b>Prg0AbsPlan</b> for the plan object. <br />If not provided, then the plan object will be moved to be the first child of parent. If provided, then the plan object will be moved next to new sibling. (Optional)",
+          "name": "prevSibling"
+        }
+      ],
+      "createRelease": "tc13000.2.0",
+      "description": "The input information required to perform move of plan objects based on the given plan and new previous sibling objects",
+      "isPublished": "true",
+      "name": "MovePlanObjectsInputInfo",
+      "namespace": "Prg0::Soa::ProgramInfra::_2021_06::ProgramManagement",
+      "scope": "Prg0::Soa::ProgramInfra::ProgramManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The name of key in Pair.",
+          "name": "name"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The value of key in Pair.",
+          "name": "keyValue"
+        }
+      ],
+      "createRelease": "tc13000.2.0",
+      "description": "Structure containing a pair (string, string) of name and value respectively.",
+      "isPublished": "true",
+      "name": "NameValueStringPair",
+      "namespace": "Prg0::Soa::ProgramInfra::_2021_06::ProgramManagement",
+      "scope": "Prg0::Soa::ProgramInfra::ProgramManagement"
+    }
+  ],
+  "TcVersion": "tc13000.0.0",
+  "Typedef": [
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc11000.2.3",
+      "description": "Map of string to Prg0AbsPlan objects. This will be used to support project cloning along with program cloning. <br />Valid keys are &quot;<b>CurrentSelection</b>&quot; and &quot;<b>TargetProgram</b>&quot;. <br />The valid values for the key &ldquo;CurrentSelection&rdquo; is either <b>Prg0AbsProgram</b> or <b>Prg0AbsProject</b> object that needs to be cloned.<br />The valid value for the key &ldquo;TargetProgram&rdquo; is Prg0AbsProgram, under which the newly cloned project will be attached",
+      "isPublished": "true",
+      "name": "CloneInfoMap",
+      "namespace": "Prg0::Soa::ProgramInfra::_2016_10::ProgramManagement",
+      "scope": "Prg0::Soa::ProgramInfra::ProgramManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc11000.2.3",
+      "description": "Map of clone options to values. The supported clone options and valid values are: <br />&bull;includeProgramDeliverable : &ldquo;<b>true</b>&rdquo; or &ldquo;<b>false</b>&rdquo;",
+      "isPublished": "true",
+      "name": "CloneOptionsMap",
+      "namespace": "Prg0::Soa::ProgramInfra::_2016_10::ProgramManagement",
+      "scope": "Prg0::Soa::ProgramInfra::ProgramManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc11000.2.3",
+      "description": "Map (string, string) of input property values for the target Prg0AbsPlan object to be created.<br />Valid properties are:<br />1. object_name<br />2. object_desc",
+      "isPublished": "true",
+      "name": "PropertyValuesMap",
+      "namespace": "Prg0::Soa::ProgramInfra::_2016_10::ProgramManagement",
+      "scope": "Prg0::Soa::ProgramInfra::ProgramManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "Map of properties and values.",
+      "isPublished": "true",
+      "name": "StringPropertyMap",
+      "namespace": "Prg0::Soa::ProgramInfra::_2016_04::ProgramManagement",
+      "scope": "Prg0::Soa::ProgramInfra::ProgramManagement"
+    }
+  ],
+  "xmlns": "http://teamcenter.com/BusinessModel/TcBusinessData"
+}

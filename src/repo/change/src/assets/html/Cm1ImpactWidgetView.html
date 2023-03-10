@@ -1,0 +1,77 @@
+<aw-panel>
+    <aw-panel-header>
+        <aw-row>
+            <aw-listbox class="aw-change-impactedAnalysisListBox" prop="data.selectedProblemItem" list="data.problemItems" action="handleProblemItemSelection"></aw-listbox>
+        </aw-row>
+    </aw-panel-header>
+    <aw-panel-body>
+        <div class="sw-row">
+            <div class="sw-column w-15">
+                <aw-panel-section caption="i18n.proposedImpactedTitle">
+                    <div exist-when="ctx.ImpactsViewMode === 'TableView' && data.problemItemLOVLoaded === true">
+
+                        <div class="sw-row">
+                            <div class="sw-column w-13 ">
+                                <div class="sw-row">
+
+                                    <cm1-parent-traversal sub-panel-context="{selectionModel:selectionModels.impactCandidatesSelModel,selectionData:data.candidateTable}"
+                                        change-object="subPanelContext.selected" selected-problem-item="data.selectedProblemItem.dbValue"
+                                        cm1-impact-widget-state="data.cm1ImpactWidgetState"></cm1-parent-traversal>
+
+                                </div>
+
+                                <div class="sw-row">
+                                    <cm1-related-object sub-panel-context="{selectionModel:selectionModels.relatedItemsSelModel,selectionData:data.relatedTable}"
+                                        change-object="subPanelContext.selected" cm1-impact-widget-state="data.cm1ImpactWidgetState"></cm1-related-object>
+
+                                </div>
+
+
+                            </div>
+                            <div class="sw-column flex-auto justify-right align-right w-2" >
+
+                                <div class="aw-change-impactedAnalysisArrows w-12">
+                                    <aw-command-bar class="w-12" anchor="cm1_addImpactedItemCommandsClick" context="data.cm1ImpactWidgetState"></aw-command-bar>
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div exist-when="ctx.ImpactsViewMode === 'RelationView' && data.problemItemLOVLoaded === true">
+                        <div class="sw-row">
+                            <div class="sw-column w-13">
+                                <div class="sw-row">
+                                    <aw-command-bar anchor="cm1_addImpactedItemCommandsLeftFirst" alignment="HORIZONTAL">
+                                    </aw-command-bar>
+                                </div>
+                                <div class="sw-row flex-auto">
+                                    <div class="aw-change-relationView-layout">
+                                        <rv1-relations-browser></rv1-relations-browser>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sw-column flex-auto justify-right align-right w-2">
+                                <div class="aw-change-impactedAnalysisRBArrows w-12">
+                                    <aw-command-bar class="w-12" anchor="cm1_addImpactedItemCommandsClick" context="data.cm1ImpactWidgetState"></aw-command-bar>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </aw-panel-section>
+
+            </div>
+            <aw-splitter direction="VERTICAL"></aw-splitter>
+            <div class="sw-column w-6">
+                <aw-panel-section caption="i18n.persistedImpactesTitle">
+
+                    <cm1-persisted-impacted sub-panel-context="{selectionModel:selectionModels.impactItemsSelMoel,selectionData:data.impactedItemsTable}"
+                        change-object="subPanelContext.selected" cm1-impact-widget-state="data.cm1ImpactWidgetState"></cm1-persisted-impacted>
+                </aw-panel-section>
+            </div>
+        </div>
+    </aw-panel-body>
+</aw-panel>

@@ -1,0 +1,29 @@
+<aw-panel>
+    <aw-panel-header>
+        <div aw-class="{'searchClass': data.searchBox.dbValue && data.searchBox.dbValue.length > 0 && data.ptnAncestorString.dbValue !=='' && data.prevSelectedPartitions.length }">
+            <div class="aw-partition-ancestor" exist-when="data.searchBox.dbValue && data.searchBox.dbValue.length > 0 && data.ptnAncestorString.dbValue !=='' && data.prevSelectedPartitions.length ">
+                {{data.ptnAncestorString.dbValue}}
+            </div>
+            <aw-splitter> </aw-splitter>
+            <aw-search-box class="aw-search-searchBox" prop="data.searchBox" placeholder="data.filterBox.dbValue" action="doSearch"></aw-search-box>
+        </div>
+    </aw-panel-header>
+    <aw-panel-body>
+        <aw-flex-row height="40f" justify="top">
+            <aw-splm-table gridid="partitionHierarchyTreeTable" use-tree="true" show-decorators="true" show-check-box=true></aw-splm-table>
+        </aw-flex-row>
+    </aw-panel-body>
+    <aw-panel-footer visible-when="data.totalFound > 0">
+        <aw-button size="auto" action="updateFilters" enable-when="data.prevSelectedPartitions.length > 0 ">
+            <div exist-when="data.isUpdateOperation.dbValue !== true">
+                <aw-i18n>i18n.Add</aw-i18n>
+            </div>
+            <div exist-when="data.isUpdateOperation.dbValue === true">
+                <aw-i18n>i18n.Update</aw-i18n>
+            </div>
+        </aw-button>
+        <aw-button size="auto" action="nevigateToPrevLocation">
+            <aw-i18n>i18n.Cancel</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-panel>

@@ -1,0 +1,11 @@
+<aw-panel>
+
+    <div class="sw-column h-12 w-12 justify-center" exist-when="conditions.hasParts" >
+        <aw-splm-table gridid="partsTableGrid" ></aw-splm-table>
+    </div>
+
+    <div class="sw-row demo-h-12f" align-content="center" exist-when="!conditions.hasParts">
+        <mfe-message sub-panel-context="data.messages.partNotPresent"></mfe-message>
+    </div>
+
+</aw-panel>

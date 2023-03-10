@@ -1,0 +1,174 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+
+    ],
+
+    "actions": {
+        "initializeEndItemConfigInfo": {
+            "actionType": "JSFunction",
+            "method": "getInitialEndItemConfigurationData",
+            "deps": "js/endItemUnitEffectivityConfigurationService",
+            "inputData": {
+                "data": "{{data}}",
+                "occContext":"{{props.subPanelContext.occContext}}",
+                "configUnitEndItem": "{{props.subPanelContext.configUnitEndItem}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "configPanel.revealEndItems"
+                } ]
+            }
+        },
+
+        "revealEndItems": {
+            "actionType": "dataProvider",
+            "method": "getConfiguredEndItems"
+        },
+
+        "fetchEndItems": {
+            "actionType": "JSFunction",
+            "method": "getEndItems",
+            "inputData": {
+                "occContext": "{{props.subPanelContext.occContext}}",
+                "configUnitEndItem": "{{props.subPanelContext.configUnitEndItem}}"
+            },
+
+            "outputData": {
+                "endItems": ""
+            },
+
+            "deps": "js/endItemUnitEffectivityConfigurationService"
+        },
+
+        "endItemSelected": {
+            "actionType": "JSFunction",
+            "method": "navigateToView",
+            "inputData": {
+                "nestedNavigationState": "{{props.subPanelContext.nestedNavigationState}}",
+                "view": {
+                    "panelId": "EndItemPanel",
+                    "title": "{{i18n.endItemMessage}}",
+                    "additionalSubPanelContext":
+                    {
+                        "activeView":"{{props.subPanelContext.activeView}}"
+                    }
+                }
+            },
+            "deps": "js/nestedNavigationPanelService"
+        },
+        "applyEndItemUnitEffectivityChange": {
+            "actionType": "JSFunction",
+            "method": "applyEffectivityChange",
+            "inputData": {
+                "value": {
+                    "configContext": {
+                        "r_uid": "{{props.subPanelContext.occContext.productContextInfo.props.awb0CurrentRevRule.dbValues[0]}}",
+                        "var_uids": "{{props.subPanelContext.occContext.productContextInfo.props.awb0VariantRules.dbValues}}",
+                        "iro_uid": "{{props.subPanelContext.occContext.productContextInfo.props.awb0VariantRuleOwningRev.dbValues[0]}}",
+                        "de": "{{props.subPanelContext.occContext.productContextInfo.props.awb0EffDate.dbValues[0]}}",
+                        "ue": "{{data.eventData.effectiveUnit}}",
+                        "ei_uid": "{{data.eventData.endItem.uid}}",
+                        "startFreshNavigation": true
+                    },
+                    "transientRequestPref": {
+                        "userGesture": "REVISION_RULE_CHANGE",
+                        "jitterFreePropLoad" : true
+                    }
+                },
+                "occContext": "{{props.subPanelContext.occContext}}"
+            },
+
+            "deps": "js/endItemUnitEffectivityConfigurationService"
+        },
+        "unsetEndItemToRender": {
+            "actionType": "JSFunction",
+            "method": "updateValueOnCtxOrState",
+            "inputData": {
+                "path": "",
+                "value": {
+                    "unitEndItemToRender": ""
+                },
+                "target": "{{props.subPanelContext.configUnitEndItem}}"
+            },
+            "deps": "js/occmgmtUtils"
+        }
+
+    },
+
+    "dataProviders": {
+        "getConfiguredEndItems": {
+            "action": "fetchEndItems",
+            "response": "{{data.endItems}}",
+            "uidInResponse": "dbValues[0]",
+            "selectionModelMode": "single"
+        }
+    },
+    "lifecycleHooks": {
+        "onUnmount": "unsetEndItemToRender",
+        "onUpdate":[
+        {
+            "action": "initializeEndItemConfigInfo",
+            "observers": [ "props.subPanelContext.occContext.productContextInfo" ]
+        }]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "location":{
+            "type":"string"
+        },
+        "backpanel":{
+            "type":"string"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "configPanel.revealEndItems",
+            "action": "revealEndItems"
+        },
+
+        {
+            "eventId": "getConfiguredEndItems.selectionChangeEvent",
+            "action": "endItemSelected"
+        },
+
+        {
+            "eventId": "awConfigPanel.endItemUnitEffectivityChanged",
+            "cacheEventData": true,
+            "action": "applyEndItemUnitEffectivityChange"
+        }
+    ],
+
+    "data": {
+        "effectivityUnitSectionAllUnitsTitle": {
+            "uiValue": "{{i18n.effectivityUnitSectionAllUnitsTitle}}",
+            "type": "STRING"
+        },
+        "endItemMessage": {
+            "uiValue": "{{i18n.endItemMessage}}",
+            "type": "STRING"
+        },
+        "endItem": {
+            "uiValue": "{{i18n.endItem}}",
+            "type": "STRING"
+        }
+    },
+
+    "i18n": {
+
+        "endItemMessage": [
+            "OccurrenceManagementConstants"
+        ],
+        "endItem": [
+            "OccurrenceManagementConstants"
+        ],
+        "units": [
+            "OccurrenceManagementConstants"
+        ],
+        "effectivityUnitSectionAllUnitsTitle": [
+            "OccurrenceManagementConstants"
+        ]
+    }
+}

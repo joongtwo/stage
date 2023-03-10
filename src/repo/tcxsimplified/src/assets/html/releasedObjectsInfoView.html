@@ -1,0 +1,7 @@
+<aw-message-params context="subPanelContext.context" params="subPanelContext.params"
+    message="{{i18n.confirmReleaseMixedSelectMessage}}" ></aw-message-params>
+
+<div aw-repeat="releasedObj : subPanelContext.releasedObjects">
+    <aw-message-params context="releasedObj" params='["name"]' message="{{i18n.objectReleased}}"></aw-message-params>
+</div>
+

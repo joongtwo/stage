@@ -1,0 +1,14 @@
+<div class="sw-row h-12">
+    <div class="sw-column justify-top h-11" exist-when="conditions.showChart">
+        <aw-chart chart-provider="data.chartProviders.hourlyStatChartProvider" exist-when="conditions.hourlyStatCond"></aw-chart>
+        <aw-chart chart-provider="data.chartProviders.minuteStatChartProvider" exist-when="conditions.minuteStatCond"></aw-chart>
+    </div>
+    <div class="sw-column justify-top aw-dpv-deviceAgentContainer h-11" exist-when="conditions.showChart">
+        <aw-splm-table gridid="deviceAgentHourlyGrid" exist-when="conditions.hourlyStatCond"></aw-splm-table>
+        <aw-splm-table gridid="deviceAgentMinuteGrid" exist-when="conditions.minuteStatCond"></aw-splm-table>
+    </div>
+    <div class="sw-column justify-top h-11 align-self-stretch" exist-when="!conditions.showChart">
+        <aw-splm-table gridid="deviceAgentHourlyGrid" exist-when="conditions.hourlyStatCond"></aw-splm-table>
+        <aw-splm-table gridid="deviceAgentMinuteGrid" exist-when="conditions.minuteStatCond"></aw-splm-table>
+    </div>
+</div>

@@ -1,0 +1,472 @@
+{
+    "schemaVersion" : "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions":
+    {
+        "reveal":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "ewi.registerPolicies"
+                    },
+                    {
+                        "name": "collectedAttachments.getList"
+                    }
+                ]
+            }
+        },
+
+        "getList":
+        {
+            "actionType": "dataProvider",
+            "method": "collectedAttachmentsListDataProvider"
+        },
+
+        "isTextFile":
+        {
+            "actionType": "JSFunction",
+            "method": "isTextFileFormat",
+            "inputData":
+            {
+                "data": "{{data.addPanelState.datasetVMO.props.datasetType.uiValue}}"
+            },
+            "outputData":
+            {
+                "isTextFile": ""
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "collectedAttachments.createDataset"
+                    }
+                ]
+            },
+            "deps": "js/Ewi0CollectedAttachmentsService"
+        },
+
+        "createDataset":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2010-04-DataManagement",
+            "method": "createDatasets",
+            "inputData":
+            {
+                "input":
+                [
+                    {
+                        "clientId": "{{data.addPanelState.datasetVMO.props.datasetName.dbValue}}",
+                        "container":
+                        {
+                            "uid": "AAAAAAAAAAAAAA",
+                            "type": "unknownType"
+                        },
+
+                        "datasetFileInfos":
+                        [
+                            {
+                                "fileName": "{{data.addPanelState.datasetVMO.props.datasetName.dbValue}}",
+                                "namedReferenceName": "{{data.addPanelState.datasetVMO.props.datasetType.uiValue}}",
+                                "isText": "{{data.isTextFile}}"
+                            }
+                        ],
+
+                        "relationType": "",
+                        "description": "{{data.datasetDesc.dbValue}}",
+                        "name": "{{data.addPanelState.datasetVMO.props.datasetName.dbValue}}",
+                        "type": "{{data.addPanelState.datasetVMO.props.datasetType.dbValue.props.object_string.dbValues[0]}}"
+                    }
+                ]
+            },
+
+            "outputData":
+            {
+                "fmsTicket": "datasetOutput[0].commitInfo[0].datasetFileTicketInfos[0].ticket",
+                "commitInfos": "datasetOutput[0].commitInfo[0]",
+                "relatedModified": "datasetOutput[0].dataset",
+                "createdObject": "datasetOutput[0].dataset"
+            },
+
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "collectedAttachments.updateFormData"
+                    }
+                ]
+            }
+        },
+
+        "updateFormData": {
+            "actionType": "JSFunction",
+            "method": "updateFormData",
+            "inputData": {
+                "formData": "{{data.addPanelState.formData}}",
+                "key": "fmsTicket",
+                "value": "{{data.fmsTicket}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "collectedAttachments.uploadFile"
+                    }
+                ]
+            },
+            "deps": "js/fileUploadUtils"
+        },
+
+        "uploadFile": {
+            "actionType": "RESTService",
+            "serviceName": "",
+            "method": "POST",
+            "inputData": {
+                "request": {
+                    "method": "POST",
+                    "url": "{{Constants.fmsUrl}}",
+                    "headers": {
+                        "Content-type": "undefined"
+                    },
+                    "data": "{{data.addPanelState.formData}}"
+                }
+            },
+            "events": {
+                "success": [ {
+                    "name": "collectedAttachments.fileUploaded"
+                } ]
+            }
+        },
+
+        "commitDatasetFiles":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-FileManagement",
+            "method": "commitDatasetFiles",
+            "inputData":
+            {
+                "commitInput":
+                [
+                    {
+                        "dataset": "{{data.commitInfos.dataset}}",
+                        "createNewVersion": true,
+                        "datasetFileTicketInfos":
+                        [
+                            {
+                                "datasetFileInfo":
+                                {
+                                    "clientId": "{{data.commitInfos.datasetFileTicketInfos[0].datasetFileInfo.clientId}}",
+                                    "fileName": "{{data.commitInfos.datasetFileTicketInfos[0].datasetFileInfo.fileName}}",
+                                    "namedReferencedName": "{{data.commitInfos.datasetFileTicketInfos[0].datasetFileInfo.namedReferenceName}}",
+                                    "isText": "{{data.commitInfos.datasetFileTicketInfos[0].datasetFileInfo.isText}}",
+                                    "allowReplace": "{{data.commitInfos.datasetFileTicketInfos[0].datasetFileInfo.allowReplace}}"
+                                },
+
+                                "ticket": "{{data.fmsTicket}}"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "addObject.datasetCommitted.hosting",
+                        "condition": "ctx.HostedFileNameContext.filename && data.fmsTicket",
+                        "eventData":
+                        {
+                            "createdObject": "{{data.createdObject}}",
+                            "filename": "{{data.fileName}}",
+                            "ticket" : "{{data.fmsTicket}}"
+                        }
+                    },
+                    {
+                        "name": "collectedAttachments.addNewAttachment"
+                    }
+                ]
+            }
+        },
+
+        "deleteAttachment": {
+            "actionType": "JSFunction",
+            "method": "removeArrayValueFromArrayList",
+            "deps": "js/workinstrUtilsService",
+            "inputData":
+            {
+                "theArrayList": "{{ctx.EWI0currentStep.props.ewi0ExecutionAttachment.dbValues}}",
+                "valueToRemove": "{{commandContext.vmo.uid}}"
+            },
+            "outputData":
+            {
+                "attachedDocuments": ""
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "collectedAttachments.setProperties"
+                    }
+                ]
+            }
+        },
+
+        "addNewAttachment":
+        {
+            "actionType": "JSFunction",
+            "method": "addArrayValuesToArrayList",
+            "inputData":
+            {
+                "theArrayList": "{{ctx.EWI0currentStep.props.ewi0ExecutionAttachment.dbValues}}",
+                "valuesToAdd": ["{{data.createdObject.uid}}"]
+            },
+            "outputData":
+            {
+                "attachedDocuments": ""
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "collectedAttachments.setProperties"
+                    }
+                ]
+            },
+            "deps": "js/workinstrUtilsService"
+        },
+
+        "getAllSelectedFromPalette":
+        {
+            "actionType": "JSFunction",
+            "method": "getAllSelectedFromPalette",
+            "inputData":
+            {
+                "paletteData": "{{data.addPanelState.sourceObjects}}"
+            },
+            "outputData":
+            {
+                "selectedInPalette": ""
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "collectedAttachments.addAttachmentsFromPalette"
+                    }
+                ]
+            },
+            "deps": "js/Ewi0CollectedAttachmentsService"
+        },
+
+        "addAttachmentsFromPalette":
+        {
+            "actionType": "JSFunction",
+            "method": "addArrayValuesToArrayList",
+            "inputData":
+            {
+                "theArrayList": "{{ctx.EWI0currentStep.props.ewi0ExecutionAttachment.dbValues}}",
+                "valuesToAdd": "{{data.selectedInPalette}}"
+            },
+            "outputData":
+            {
+                "attachedDocuments": ""
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "collectedAttachments.setProperties"
+                    }
+                ]
+            },
+            "deps": "js/workinstrUtilsService"
+        },
+
+        "setProperties":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2010-09-DataManagement",
+            "method": "setProperties",
+            "inputData":
+            {
+                "info":
+                [
+                    {
+                        "object": "{{ctx.EWI0currentStep}}",
+                        "timestamp": "",
+                        "vecNameVal":
+                        [
+                            {
+                                "name": "ewi0ExecutionAttachment",
+                                "values": "{{data.attachedDocuments}}"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "collectedAttachments.updateList"
+                    },
+                    {
+                        "name": "newCollectedAttachment.initForm"
+                    }
+                ]
+            }
+        },
+
+        "getCurrentAttachments":
+        {
+            "actionType": "JSFunctionAsync",
+            "method": "getCurrentAttachments",
+            "inputData":
+            {
+                "uidsToLoad": "{{data.attachedDocuments}}"
+            },
+            "outputData":
+            {
+                "datasetsToShow": ""
+            },
+            "deps": "js/Ewi0CollectedAttachmentsService"
+        }
+    },
+
+    "data": {
+        "addPanelState": {
+            "initialValues": {
+                "creationType": "",
+                "createdObject": "",
+                "sourceObjects": "",
+                "selectedTab": "",
+                "isDatasetCreate": "",
+                "isAddACopy": "",
+                "formData": "",
+                "selectedRelation": ""
+            },
+            "meta": {
+                "datasetVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        },
+        "typeFilter": "Dataset"
+    },
+
+    "dataProviders":
+    {
+        "collectedAttachmentsListDataProvider":
+        {
+            "action": "getCurrentAttachments",
+            "response": "{{data.datasetsToShow}}",
+            "totalFound": "{{data.datasetsToShow.length}}",
+            "commandsAnchor": "collectedAttachmentsCellCommands"
+        }
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "collectedAttachments.createDataset",
+            "action": "createDataset"
+        },
+        {
+            "eventId": "collectedAttachments.updateFormData",
+            "action": "updateFormData"
+        },
+        {
+            "eventId": "collectedAttachments.uploadFile",
+            "action": "uploadFile"
+        },
+        {
+            "eventId": "collectedAttachments.fileUploaded",
+            "action": "commitDatasetFiles"
+        },
+        {
+            "eventId": "collectedAttachments.deleteAttachment",
+            "action": "deleteAttachment"
+        },
+        {
+            "eventId": "collectedAttachments.addNewAttachment",
+            "action": "addNewAttachment"
+        },
+        {
+            "eventId": "collectedAttachments.addAttachmentsFromPalette",
+            "action": "addAttachmentsFromPalette"
+        },
+        {
+            "eventId": "collectedAttachments.setProperties",
+            "action": "setProperties"
+        },
+        {
+            "eventId": "collectedAttachments.getCurrentAttachments",
+            "action": "getCurrentAttachments"
+        },
+        {
+            "eventId": "collectedAttachments.updateList",
+            "action": "reveal"
+        },
+        {
+            "eventId": "collectedAttachments.getList",
+            "action": "getList"
+        },
+        {
+            "eventId": "ewi.stepChanged",
+            "action": "reveal"
+        }
+    ],
+
+    "conditions": {
+        "isNewTabSelected":
+        {
+            "expression": "addPanelState.selectedTab.view === 'NewTabPageSub'"
+        },
+        "isPaletteTabSelected":
+        {
+            "expression":"addPanelState.selectedTab.view === 'PaletteTabPageSub'"
+        },
+        "isNewTabAttachButtonVisible":
+        {
+            "expression":"conditions.isNewTabSelected && data.addPanelState.datasetVMO.props.datasetName.dbValue && data.addPanelState.datasetVMO.props.datasetType.dbValue"
+        },
+        "isPaletteTabAttachButtonVisible":
+        {
+            "expression":"conditions.isPaletteTabSelected && data.addPanelState.sourceObjects.length > 0"
+        }
+    },
+
+    "i18n":
+    {
+        "collectedAttachments": [ "EWIMessages" ],
+        "attach": [ "EWIMessages" ],
+        "palette": [ "EWIMessages" ],
+        "new": [ "EWIMessages" ],
+        "currentAttachments": ["EWIMessages"]
+    },
+    "lifecycleHooks": {
+        "onMount": "reveal"
+    }
+}

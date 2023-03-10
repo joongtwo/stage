@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "1.0.0",
+  "syncStrategies": {
+    "createToPropSyncObject": {
+      "source": {
+        "view": "Awp0CreateClassificationFull",
+        "port": "attrData"
+      },
+      "target": {
+        "view": "Awp0ClassificationPropertiesFull",
+        "port": "propData"
+      }
+    },
+    "NavigateTreeToBreadCrumbObject": {
+      "source": {
+        "view": "Awp0ClassificationTree",
+        "port": "nodeData"
+      },
+      "target": {
+        "view": "AwClsBreadCrumb",
+        "port": "nodeData"
+      }
+    },
+    "SearchNavigateToBreadCrumbObject": {
+      "source": {
+        "view": "Awp0ClassificationSearchNavigate",
+        "port": "nodeData"
+      },
+      "target": {
+        "view": "AwClsBreadCrumb",
+        "port": "nodeData"
+      }
+    },
+    "NavigateVncToBreadCrumbObject": {
+      "source": {
+        "view": "Awp0ClassificationVncsFull",
+        "port": "nodeData"
+      },
+      "target": {
+        "view": "AwClsBreadCrumb",
+        "port": "nodeData"
+      }
+    },
+    "navigateToVNC": {
+      "source": {
+        "view": "Awp0ClassificationTree",
+        "port": "nodeData"
+      },
+      "target": {
+        "view": "Awp0ClassificationVncsFull",
+        "port": "nodeData"
+      }
+    }
+  },
+  "syncStrategyHandlers": {
+    "createToPropSyncHandler": {
+      "id": "createToPropSyncObject",
+      "activeWhen": true
+    },
+    "NavigateTreeToBreadCrumbSyncHandler": {
+      "id": "NavigateTreeToBreadCrumbObject",
+      "activeWhen": true
+    },
+    "NavigateVncToBreadCrumbSyncHandler": {
+      "id": "NavigateVncToBreadCrumbObject",
+      "activeWhen": true
+    },
+    "NavigateToVncSyncHandler": {
+      "id": "navigateToVNC",
+      "activeWhen": true
+    },
+    "SearchNavigateToBreadCrumbSyncHandler": {
+      "id": "SearchNavigateToBreadCrumbObject",
+      "activeWhen": true
+    }
+  }
+}

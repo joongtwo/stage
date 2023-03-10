@@ -1,0 +1,110 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "sbomTreeContext": {
+            "tabs": [
+                {
+                    "name": "{{i18n.sbomTitle}}",
+                    "tabKey": "Ssp0SbomTree"
+                }
+            ]
+        },
+        "sbomViewerContext": {
+            "tabs": [
+                {
+                    "name": "{{i18n.graphicsTitle}}",
+                    "tabKey": "Ssp0SbomGraphics"
+                }
+            ]
+        },
+        "servicePlanContext": {
+            "tabs": [
+                {
+                    "name": "{{i18n.servicePlanTitle}}",
+                    "tabKey": "Ssp0ServicePlanTree"
+                }
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onInit": "initializerBatchJob",
+        "onUnmount": "removeCtxParams"
+    },
+    "actions": {
+        "removeCtxParams": {
+            "actionType": "JSFunction",
+            "method": "unRegisterCtx",
+            "inputData": {
+                "name": "ssp0Location"
+            },
+            "deps": "js/appCtxService"
+        },
+        "registerLocationName": {
+            "actionType": "JSFunction",
+            "method": "updateCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "name": "locationContext",
+                "value": {
+                    "ActiveWorkspace:SubLocation": "servicePlanning"
+                }
+            }
+        },
+        "registerLocationContext": {
+            "actionType": "JSFunction",
+            "method": "registerCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "name": "ssp0Location",
+                "value": {
+                    "taskName": "{{i18n.taskName}}",
+                    "taskTypeIconURL": "assets/image/typeMECollaborativeContext48.svg"
+                }
+            }
+        },
+        "initializerBatchJob": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "registerLocationName"
+                },
+                {
+                    "action": "registerLocationContext"
+                },
+                {
+                    "action": "soaCallForPLFDisplayNames"
+                },
+                {
+                    "action": "toggleSelectionSync"
+                }
+            ]
+        },
+        "soaCallForPLFDisplayNames": {
+            "actionType": "JSFunction",
+            "method": "soaCallForPLFDisplayNames",
+            "deps": "js/ssp0LoadSbomClientColumns"
+        },
+        "toggleSelectionSync": {
+            "actionType": "JSFunction",
+            "method": "setToggleStateInCtx",
+            "inputData": {
+                "toggleState": "{{data.selectionSync.dbValue}}"
+            },
+            "deps": "js/ssp0SelectionSyncService"
+        }
+    },
+    "i18n": {
+        "taskName": [
+            "ssp0Messages"
+        ],
+        "sbomTitle": [
+            "ssp0Messages"
+        ],
+        "graphicsTitle": [
+            "ssp0Messages"
+        ],
+        "servicePlanTitle": [
+            "ssp0Messages"
+        ]
+    }
+}

@@ -1,0 +1,428 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "addIntegerEnumRange": {
+            "actionType": "JSFunction",
+            "method": "addIntegerValue",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Pca0AddFreeFormOptionValue"
+        },
+        "addStringEnumRange": {
+            "actionType": "JSFunction",
+            "method": "addStringValue",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Pca0AddFreeFormOptionValue"
+        },
+        "addDoubleEnumRange": {
+            "actionType": "JSFunction",
+            "method": "addDoubleValue",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Pca0AddFreeFormOptionValue"
+        },
+        "addDateEnumRange": {
+            "actionType": "JSFunction",
+            "method": "addDateValue",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Pca0AddFreeFormOptionValue"
+        },
+        "initializeData": {
+            "actionType": "JSFunction",
+            "method": "initEnumRange",
+            "inputData": {
+                "initialData": "{{data}}"
+            },
+            "outputData": {
+                "typeOfFamily": "result.typeOfFamily",
+                "nameOfFamily": "result.nameOfFamily",
+                "isFreeFormFamily": "result.isFreeFormFamily",
+                "fromIntegerValue": "result.fromIntegerValue",
+                "toIntegerValue": "result.toIntegerValue",
+                "fromDoubleValue": "result.fromDoubleValue",
+                "toDoubleValue": "result.toDoubleValue",
+                "fromDateTime": "result.fromDateTime",
+                "fromOperator": "result.fromOperator",
+                "toOperator": "result.toOperator",
+                "fromChildListValues": "result.fromChildListValues",
+                "toChildListValues": "result.toChildListValues",
+                "enumFromListValues": "result.enumFromListValues",
+                "enumToListValues": "result.enumToListValues",
+                "fromEnumValues": "result.fromEnumValues",
+                "toEnumValues": "result.toEnumValues",
+                "preview": "result.previewValue"
+            },
+            "events": {
+                "success": [ {
+                    "name": "Pca0AddFreeFormOptionValue.loadFamilyInPanel",
+                    "eventData": {
+                        "data": "{{data}}"
+                    }
+                } ]
+            },
+            "deps": "js/Pca0AddFreeFormOptionValue"
+        },
+        "selectionChange": {
+            "actionType": "JSFunction",
+            "method": "selectionChangeEnumRange",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "preview": "previewValue",
+                "fromOperator.dbValue": "fromOperator",
+                "toChildListValues.childValues": "toChildListValues",
+                "toEnumValues": "toEnumValues"
+            },
+            "deps": "js/Pca0AddFreeFormOptionValue"
+        },
+        "loadFamilyInPanel": {
+            "actionType": "JSFunction",
+            "method": "loadFamilyInPanel",
+            "outputData": {
+                "toFamily": ""
+            },
+            "deps": "js/Pca0AddFreeFormOptionValue"
+        }
+    },
+    "data": {
+        "typeOfFamily": {
+            "type": "STRING",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "nameOfFamily": {
+            "type": "STRING",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "isFreeFormFamily": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "fromOperator": {
+            "displayName": "{{i18n.fromTitle}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": ""
+        },
+        "toOperator": {
+            "displayName": "{{i18n.toTitle}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true"
+        },
+        "fromIntegerValue": {
+            "type": "INTEGER",
+            "dbValue": "",
+            "isRequired": "true"
+        },
+        "fromEnumValues": {
+            "type": "STRING",
+            "isSelectOnly": "true",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": ""
+        },
+        "toEnumValues": {
+            "type": "STRING",
+            "isSelectOnly": "true",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": ""
+        },
+        "toIntegerValue": {
+            "type": "INTEGER",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "fromDoubleValue": {
+            "type": "DOUBLE",
+            "isRequired": "true",
+            "dbValue": ""
+        },
+        "toDoubleValue": {
+            "type": "DOUBLE",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "fromDateTime": {
+            "type": "DATETIME",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "toDateTime": {
+            "type": "DATETIME",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "fromDateValues": {
+            "OperatorValues": [ {
+                    "propInternalValue": ">=",
+                    "dispValue": ">=",
+                    "propDisplayValue": ">=",
+                    "propDisplayDescription": ""
+                },
+                {
+                    "propInternalValue": ">",
+                    "dispValue": ">",
+                    "propDisplayValue": ">",
+                    "propDisplayDescription": ""
+                },
+                {
+                    "propInternalValue": "<=",
+                    "dispValue": "<=",
+                    "propDisplayValue": "<=",
+                    "propDisplayDescription": ""
+                },
+                {
+                    "propInternalValue": "<",
+                    "dispValue": "<",
+                    "propDisplayValue": "<",
+                    "propDisplayDescription": ""
+                }
+            ]
+        },
+        "enumFromListValues": {
+            "OperatorValues": [ {
+                    "propInternalValue": ">=",
+                    "dispValue": ">=",
+                    "propDisplayValue": ">=",
+                    "propDisplayDescription": ""
+                },
+                {
+                    "propInternalValue": ">",
+                    "dispValue": ">",
+                    "propDisplayValue": ">",
+                    "propDisplayDescription": ""
+                },
+                {
+                    "propInternalValue": "<=",
+                    "dispValue": "<=",
+                    "propDisplayValue": "<=",
+                    "propDisplayDescription": ""
+                },
+                {
+                    "propInternalValue": "<",
+                    "dispValue": "<",
+                    "propDisplayValue": "<",
+                    "propDisplayDescription": ""
+                }
+            ]
+        },
+        "enumToListValues": {
+            "OperatorValues": [ {
+                    "propInternalValue": "--",
+                    "dispValue": "--",
+                    "propDisplayValue": "--",
+                    "propDisplayDescription": ""
+                },
+                {
+                    "propInternalValue": "<=",
+                    "dispValue": "<=",
+                    "propDisplayValue": "<=",
+                    "propDisplayDescription": ""
+                },
+                {
+                    "propInternalValue": "<",
+                    "dispValue": "<",
+                    "propDisplayValue": "<",
+                    "propDisplayDescription": ""
+                }
+            ]
+        },
+        "fromChildListValues": {
+            "childValues": []
+        },
+        "toChildListValues": {
+            "childValues": []
+        },
+        "previewTitle": {
+            "displayName": "{{i18n.previewTitle}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": ""
+        },
+        "preview": {
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": ""
+        }
+    },
+    "conditions": {
+        "isOfIntegerType": {
+            "expression": "data.typeOfFamily.dbValue === 'Integer'"
+        },
+        "isOfStringType": {
+            "expression": "data.typeOfFamily.dbValue === 'String'"
+        },
+        "isOfDoubleType": {
+            "expression": "data.typeOfFamily.dbValue === 'Floating Point'"
+        },
+        "isOfDateType": {
+            "expression": "data.typeOfFamily.dbValue === 'Date'"
+        },
+        "isToPartEnableForEnum": {
+            "expression": "( data.fromOperator.dbValue === '>' || data.fromOperator.dbValue === '>=' ) && data.toChildListValues.childValues.length !== 0 && data.toOperator.dbValue !== '--' "
+        },
+        "isToPartEnable": {
+            "expression": "data.fromOperator.dbValue === '>' || data.fromOperator.dbValue === '>='"
+        },
+        "isDoubleEnumeratedFamilyType": {
+            "expression": "data.typeOfFamily.dbValue === 'Floating Point' && data.isFreeFormFamily.dbValue === false"
+        },
+        "isIntegerEnumeratedFamilyType": {
+            "expression": "data.typeOfFamily.dbValue === 'Integer' && data.isFreeFormFamily.dbValue === false"
+        },
+        "isDateEnumeratedFamilyType": {
+            "expression": "conditions.isOfDateType && data.isFreeFormFamily.dbValue === false"
+        },
+        "isFreeForm": {
+            "expression": "data.isFreeFormFamily.dbValue === true"
+        },
+        "changeFromIntegerValue": {
+            "expression": "data.fromIntegerValue.dbValue",
+            "trackValues": true
+        },
+        "changeToIntegerValue": {
+            "expression": "data.toIntegerValue.dbValue",
+            "trackValues": true
+        },
+        "changeStringValue": {
+            "expression": "data.freeFormStringValue.dbValue",
+            "trackValues": true
+        },
+        "changeFromDoubleValue": {
+            "expression": "data.fromDoubleValue.dbValue",
+            "trackValues": true
+        },
+        "changeToDoubleValue": {
+            "expression": "data.toDoubleValue.dbValue",
+            "trackValues": true
+        },
+        "changeFromDateValue": {
+            "expression": "data.fromDateTime.dbValue",
+            "trackValues": true
+        },
+        "changeToDateValue": {
+            "expression": "data.toDateTime.dbValue",
+            "trackValues": true
+        },
+        "changeToOperator": {
+            "expression": "( data.toOperator.dbValue === '<' || data.toOperator.dbValue === '<=' || data.toOperator.dbValue === '--' )",
+            "trackValues": true
+        }
+    },
+    "onEvent": [ {
+            "eventId": "condition.expressionValueChanged",
+            "action": "selectionChange",
+            "criteria": {
+                "condition": "conditions.changeFromIntegerValue"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "selectionChange",
+            "criteria": {
+                "condition": "conditions.changeStringValue"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "selectionChange",
+            "criteria": {
+                "condition": "conditions.changeToIntegerValue"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "selectionChange",
+            "criteria": {
+                "condition": "conditions.changeFromDoubleValue"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "selectionChange",
+            "criteria": {
+                "condition": "conditions.changeToDoubleValue"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "selectionChange",
+            "criteria": {
+                "condition": "conditions.changeFromDateValue"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "selectionChange",
+            "criteria": {
+                "condition": "conditions.changeToDateValue"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "Pca0AddFreeFormOptionValue.loadFamilyInPanel",
+            "cacheEventData": true,
+            "action": "loadFamilyInPanel"
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "selectionChange",
+            "criteria": {
+                "condition": "conditions.changeToOperator"
+            },
+            "cacheEventData": true
+        }
+    ],
+    "i18n": {
+        "addButtonTitle": [
+            "TCUICommandPanelsMessages"
+        ],
+        "addPanelTitle": [
+            "ConfiguratorMessages"
+        ],
+        "addFreeFormSectionTitle": [
+            "ConfiguratorMessages"
+        ],
+        "toTitle": [
+            "ConfiguratorMessages"
+        ],
+        "fromTitle": [
+            "ConfiguratorMessages"
+        ],
+        "previewTitle": [
+            "ConfiguratorMessages"
+        ],
+        "Text": [
+            "ConfiguratorMessages"
+        ],
+        "Number": [
+            "ConfiguratorMessages"
+        ],
+        "date": [
+            "FullScreenConfigurationMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onInit": "initializeData"
+
+    }
+}

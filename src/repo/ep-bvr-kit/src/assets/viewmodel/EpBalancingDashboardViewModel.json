@@ -1,0 +1,147 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "EpBalancingDashboard_setBalancingInformation": {
+            "syncObject": {},
+            "onChangeAction": "updateDashboard"
+        }
+    },
+    "data": {
+        "productVariants": {
+            "displayName": "{{i18n.productVariant}}",
+            "type": "STRING",
+            "hasLov": true
+        },
+        "staticProductVariantsList": [
+            {
+                "propDisplayValue": "{{i18n.all}}",
+                "propInternalValue": "ALL"
+            },
+            {
+                "propDisplayValue": "{{i18n.maximum}}",
+                "propInternalValue": "MAXIMUM"
+            },
+            {
+                "propDisplayValue": "{{i18n.weighted}}",
+                "propInternalValue": "WEIGHTED"
+            }
+        ],
+        "information": {}
+    },
+    "actions": {
+        "saveInformation": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{ports.EpBalancingDashboard_setBalancingInformation.syncObject}}"
+            },
+            "outputData": {
+                "information": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "getProductVariantsFromCache": {
+            "actionType": "JSFunction",
+            "method": "getProductVariantsFromCache",
+            "inputData": {
+            },
+            "outputData": {
+                "productVariantsFromCache": ""
+            },
+            "deps": "js/epProductionProgramService"
+        },
+        "getProductVariants": {
+            "actionType": "JSFunction",
+            "method": "getProductVariantsList",
+            "inputData": {
+                "staticProductVariantsList": "{{data.staticProductVariantsList}}",
+                "productVariantsFromCache": "{{data.productVariantsFromCache}}"
+            },
+            "outputData": {
+                "productVariantsList": ""
+            },
+            "deps": "js/epBalancingProductVariantsService"
+        },
+        "updateDashboard": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getProductVariantsFromCache",
+                    "condition": "!data.productVariantsFromCache"
+                },
+                {
+                    "action": "saveInformation"
+                },
+                {
+                    "action": "getProductVariants",
+                    "condition": "!data.productVariantsList && conditions.hasProductVariants"
+                }
+            ]
+        },
+        "pvSelectionChanged": {
+            "actionType": "JSFunction",
+            "method": "setSelectedProductVariant",
+            "inputData": {
+                "productVariant": "{{data.productVariants.dbValue}}"
+            },
+            "deps": "js/epBalancingProductVariantsService"
+        },
+        "getProductVariantToDisplay": {
+            "actionType": "JSFunction",
+            "method": "getProductVariantToDisplay",
+            "inputData": {
+                "productVariantsList": "{{data.productVariantsList}}"
+            },
+            "outputData": {
+                "productVariants.dbValue": "result.propInternalValue",
+                "productVariants.uiValue": "result.propDisplayValue"
+            },
+            "deps": "js/epBalancingProductVariantsService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "ep.productVariant.changed",
+            "action": "getProductVariantToDisplay"
+        }
+    ],
+    "conditions": {
+        "hasProductVariants": {
+            "expression": "data.productVariantsFromCache.length > 0"
+        },
+        "isTrackingCn": {
+            "expression":
+            {
+                "$source": "ctx.state.params.tracking_cn",
+                "$query": {
+                    "$notNull": true
+                }
+            }
+        },
+        "hasInputObjectName": {
+            "expression":
+            {
+                "$and": [
+                    {
+                        "$source": "data.inputObjectName.uiValue",
+                        "$query": {
+                            "$notNull": true
+                        }
+                    },
+                    {
+                        "$source": "data.inputObjectName.uiValue",
+                        "$query": {
+                            "$ne": ""
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "i18n": {
+        "productVariant": [ "BalancingMessages" ],
+        "all": [ "BalancingMessages" ],
+        "maximum": [ "BalancingMessages" ],
+        "weighted": [ "BalancingMessages" ]
+    }
+}

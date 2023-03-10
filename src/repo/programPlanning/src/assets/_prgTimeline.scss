@@ -1,0 +1,425 @@
+/*
+   @<COPYRIGHT>@
+   ==================================================
+   Copyright 2018.
+   Siemens Product Lifecycle Management Software Inc.
+   All Rights Reserved.
+   ==================================================
+   @<COPYRIGHT>@
+*/
+/* Program Timeline default styling */
+
+.prgTimeline {
+    height: 100%;
+}
+
+.prgTimeline .gantt_highlight_task_text,
+.prgTimeline .gantt_highlight_selected_task_text {
+    border: 1px solid;
+    padding: 0px 2px;
+    line-height: 16px
+}
+
+.prgTimeline .gantt_side_content.gantt_left {
+    z-index: 1;
+    margin-right: 4px;
+}
+
+.prgTimeline .gantt_side_content.gantt_right {
+    z-index: 1;
+    overflow: visible;
+    margin-left: 4px;
+    display: flex;
+}
+
+.prgTimeline .gantt_task_date {
+    z-index: 1;
+}
+
+.prgTimeline .gantt_task_text {
+    font-size: $fontsize_normal;
+    font-family: $font-family;
+}
+
+.prgTimeline .gantt_grid_head_cell {
+    font-family: $font-family;
+    font-size: $fontsize_normal;
+    font-weight: bold;
+    text-transform: uppercase;
+    display: table-cell;
+    vertical-align: bottom;
+    line-height: 150%;
+}
+
+.prgTimeline .gantt_grid_scale {
+    height: 60px;
+    display: table;
+}
+
+.prgTimeline .gantt_tree_content {
+    font-family: $font-family;
+    font-size: $fontsize_normal;
+    padding-left: 5px
+}
+
+.prgTimeline .gantt_scale_cell {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+    height: 250%;
+    font-family: $font-family;
+    font-size: $fontsize_normal;
+}
+
+.prgTimeline .gantt_task_line {
+    -moz-border-radius: 0;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+    margin-top: -1px;
+}
+
+.prgTimeline .gantt_task_scale {
+    height: 60px;
+}
+
+.prgTimeline .gantt_scale_line {
+    height: 20px;
+}
+
+.prgTimeline .gantt_task_line .gantt_task_content {
+    font-family: $font-family;
+    font-size: $fontsize_normal;
+    content: '';
+    position: absolute;
+
+}
+
+/* timeline scales */
+/* whole rows */
+.prgTimeline .gantt_scale_line .gantt_scale_cell {
+    font-family: $font-family;
+    font-size: $fontsize_normal;
+}
+
+.prgTimeline .gantt_scale_line:nth-child(n) .gantt_scale_cell {
+    font-weight: 600;
+}
+
+.prgTimeline .gantt_scale_line:nth-child(2) .gantt_scale_cell,
+.prgTimeline .gantt_scale_line:nth-child(3) .gantt_scale_cell {
+    border-bottom: 1px solid;
+}
+
+.prgTimeline .gantt_milestone .gantt_task_content {
+    background-repeat: no-repeat;
+    background-position: left top;
+    background-size: 24px 24px;
+    transform: rotate(45deg);
+    line-height: 15px;
+    margin-left: 2px;
+}
+
+.prgTimeline .gantt_tree_icon {
+    width: 16px;
+    padding-left: 5px;
+}
+
+.gantt_tooltip {
+    border: 1px solid;
+    text-transform: capitalize;
+    overflow-x: auto;
+    border-radius: 3px;
+    padding: 0;
+}
+
+.gantt_tooltip .gantt_tooltip_icons,
+.gantt_tooltip .gantt_tooltip_text {
+    font-family: $font-family;
+    font-size: $fontsize_normal;
+    text-align: left;
+    line-height: 15px;
+}
+
+.gantt_tooltip table tr td {
+    text-transform: capitalize;
+    font-family: $font-family;
+}
+
+/* Marker style*/
+.prgTimeline .gantt_marker {
+    border-style: none;
+}
+
+.prgTimeline .gantt_marker .gantt_marker_content {
+    opacity: 1;
+}
+
+.prgTimeline .gantt_tree_open_icon,
+.gantt_tooltip_open_icon {
+    background-image: url("image/cmdOpen24.svg");
+    background-repeat: no-repeat;
+    margin-left: 5px;
+}
+
+.prgTimeline .gantt_tree_open_icon {
+    float: right;
+    width: 22px;
+    height: 22px;
+    display: none;
+    cursor: pointer;
+}
+
+.prgTimeline .gantt_last_cell:hover>.gantt_tree_open_icon {
+    display: inline-block;
+}
+
+.gantt_tooltip_open_icon {
+    float: right;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.prgTimeline .gantt_selected .gantt_task_content {
+    border-width: 2px;
+}
+
+.prgTimeline .gantt_scale_cell {
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+    height: 250%;
+    cursor: all-scroll;
+    cursor: -moz-zoom-in;
+    cursor: -webkit-zoom-in;
+}
+
+.aw-prgTimeline-splitcontext {
+    font-size: $fontsize_normal;
+    font-weight: bold;
+    padding-block-end: 1%
+}
+
+.prgTimeline .gantt_scale_line,
+.prgTimeline .gantt_grid,
+.prgTimeline .gantt_container {
+    border-radius: $table_border_radius;
+}
+
+.prgTimeline .gantt_tree_icon.gantt_close {
+    background-image: url("image/miscExpandedTree12.svg");
+    width: 12px;
+    height: 12px;
+    vertical-align: baseline;
+}
+
+.prgTimeline .gantt_tree_icon.gantt_open {
+    background-image: url("image/miscCollapsedTree12.svg");
+    width: 12px;
+    height: 12px;
+    vertical-align: baseline;
+}
+
+.prgTimeline .gantt_tree_indent {
+    vertical-align: middle;
+}
+
+.prgTimeline .gantt_scale_cell.gantt_last_cell {
+    border: none
+}
+
+.aw-prgTimeline-goToCommand {
+    .aw-command-bar:not(.aw-layout-userSessionCommands).aw-commands-commandBarHorizontal .aw-commands-showIconLabel .aw-commands-commandIconButton {
+        max-width: rem-calc(200);
+        width: rem-calc(200);
+
+        .aw-commands-commandIconButtonText {
+            margin-left: $margin_small;
+            font-size: $fontsize_large;
+        }
+    }
+
+    .aw-xrt-separator {
+        padding-bottom: 0;
+        margin: 0;
+    }
+
+    .aw-base-scrollPanel {
+        padding: rem-calc(0) rem-calc(5) rem-calc(8) rem-calc(5);
+    }
+
+    .aw-prgTimeline-goButton.sw-button {
+        width: 96%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.aw-prgTimeline-setEventColorCommand {
+    .aw-panel .aw-panelBody {
+        padding: rem-calc(0) rem-calc(10) rem-calc(0) rem-calc(10);
+        overflow-y: hidden;
+    }
+
+    .aw-layout-panelContent {
+        padding: rem-calc(0) rem-calc(5) rem-calc(0) rem-calc(5);
+        margin-bottom: 0;
+    }
+}
+
+.prgTimeline .gantt_task_stackedWithoutInfo .gantt_task_stackedCount,
+.prgTimeline .gantt_task_stackedWithInfo .gantt_task_stackedCount {
+    margin-top: -1px;
+    font-size: 10px;
+}
+
+.prgTimeline .gantt_task_stackedWithoutInfo.gantt_scheduleTask .gantt_task_stackedCount {
+    margin-top: 1px;
+    font-size: 10px;
+}
+
+.prgTimeline .gantt_task_stackedWithoutInfo {
+    vertical-align: top;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-top: -3px;
+    margin-left: -32px;
+    text-align: center;
+}
+
+.prgTimeline .gantt_task_stackedWithoutInfo.gantt_scheduleTask {
+    margin-top: -4px;
+    margin-left: -30px;
+}
+
+.prgTimeline .gantt_task_stackedWithInfo {
+    vertical-align: top;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    margin-left: -22%;
+    text-align: center;
+    margin-top: -13%;
+}
+
+.prgTimeline .gantt_task_stackedWithInfo.gantt_scheduleTask {
+    margin-left: -45%;
+    margin-top: -24%;
+}
+
+.prgTimeline .gantt_task_stackedWithInfo.gantt_scheduleTask .gantt_task_stackedCount {
+    margin-top: 1px;
+    font-size: 10px;
+}
+
+.prgTimeline .gantt_task_stackedWithoutInfoCompact {
+    vertical-align: top;
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    margin-top: -1px;
+    margin-left: -28px;
+    text-align: center;
+}
+
+.prgTimeline .gantt_task_stackedWithInfoCompact {
+    vertical-align: top;
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    margin-top: -15px;
+    margin-left: -28px;
+    text-align: center;
+}
+
+.prgTimeline .gantt_task_stackedWithoutInfoCompact.gantt_scheduleTask {
+    margin-top: -2px;
+    margin-left: -28px;
+}
+
+.prgTimeline .gantt_task_stackedWithInfoCompact .gantt_task_stackedCount,
+.prgTimeline .gantt_task_stackedWithoutInfoCompact .gantt_task_stackedCount,
+.prgTimeline .gantt_task_stackedWithInfoCompactAndFind .gantt_task_stackedCount {
+    margin-top: -1px;
+    font-size: 9px;
+}
+
+.prgTimeline .gantt_task_stackedWithInfoCompactAndFind {
+    vertical-align: top;
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    margin-top: -20px;
+    margin-left: -28px;
+    text-align: center;
+}
+
+.prgTimeline .gantt_link_arrow,
+.prgTimeline .gantt_task_link .gantt_line_wrapper {
+    cursor: pointer;
+    margin-left: 2px;
+}
+
+.prgTimeline .selected_link .gantt_line_wrapper div {
+    box-shadow: 0 0 10px 0;
+}
+
+.prgTimeline .gantt_link_control.task_right div.gantt_link_point,
+.prgTimeline .gantt_link_control.task_left div.gantt_link_point {
+    z-index: 1;
+}
+
+.prgTimeline .gantt_link_control.task_right div.gantt_link_point {
+    margin-left: 2px;
+}
+
+.prgTimeline .gantt_link_control.task_left div.gantt_link_point {
+    margin-left: 9px;
+}
+
+.prgTimelinePopUp .aw-layout-flexColumnContainer.aw-widgets-cellListWidget {
+    padding: 0;
+
+    .aw-widgets-cellListItem {
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.prgTimeline .gantt_task_stackedInfo~.gantt_task_text {
+    margin-left: rem-calc(20);
+}
+
+.prgTimeline .gantt_task_stackedInfo {
+    vertical-align: top;
+    display: inline-block;
+    border-radius: 50%;
+    text-align: center;
+
+    .gantt_task_stackedCount {
+        margin-top: -1px;
+        font-size: 10px;
+    }
+}
+
+.prgTimeline .gantt_task_stackedInfo.compact {
+    width: 11px;
+    height: 11px;
+    margin-top: -1px;
+    margin-left: -28px;
+}
+
+.prgTimeline .gantt_task_stackedInfo.comfy {
+    width: 15px;
+    height: 15px;
+    margin-top: -3px;
+    margin-left: -32px;
+}

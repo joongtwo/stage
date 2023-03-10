@@ -1,0 +1,69 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "activityTreeContext": {
+            "tabs": [
+                {
+                    "name": "{{i18n.ActivityTitle}}",
+                    "tabKey": "Ssp0ActivityTree"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "removeCtxParams": {
+            "actionType": "JSFunction",
+            "method": "unRegisterCtx",
+            "inputData": {
+                "name": "selectedActivity"
+            },
+            "deps": "js/appCtxService"
+        },
+        "registerLocationName": {
+            "actionType": "JSFunction",
+            "method": "updateCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "name": "locationContext",
+                "value": {
+                    "ActiveWorkspace:SubLocation": "servicePlanningTimeAnalysis"
+                }
+            }
+        },
+        "registerLocationContext": {
+            "actionType": "JSFunction",
+            "method": "registerCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "name": "ssp0Location",
+                "value": {
+                    "taskName": "{{i18n.taskName}}",
+                    "taskTypeIconURL": "assets/image/typeMECollaborativeContext48.svg"
+                }
+            }
+        },
+        "initializerBatchJob": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "registerLocationName"
+                },
+                {
+                    "action": "registerLocationContext"
+                }
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onUnmount": "removeCtxParams",
+        "onInit": "initializerBatchJob"
+    },
+    "i18n": {
+        "taskName": [
+            "timeAnalysisMessages"
+        ],
+        "ActivityTitle": [
+            "timeAnalysisMessages"
+        ]
+    }
+}

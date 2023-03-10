@@ -1,0 +1,39 @@
+<div class="aw-layout-flexColumn" show-when="data.activeState.value.activeView==='AddObjectPrimarySub'">
+    <aw-panel-header>
+        <aw-panel-section caption="i18n.toTitle" exist-when="props.subPanelContext.addElementState.parent">
+            <aw-default-cell item="props.subPanelContext.addElementState.parent"></aw-default-cell>
+        </aw-panel-section>
+    </aw-panel-header>
+    <aw-panel-body exist-when="props.subPanelContext.addElementState.parent">
+        <div>
+            <aw-form name="createInputsRevision">
+                <aw-add include-types="{{data.allowedPartTypesInfo.objectTypeName}}"
+                    type-filter="{{data.allowedPartTypesInfo.searchTypeName}}"
+                    load-sub-types="false" max-recent-count="5" exist-when="data.allowedPartTypesInfo && data.allowedRevOccTypeInfo"
+                    visible-tabs="new,palette,search"
+                    preferred-type="{{data.allowedPartTypesInfo.preferredType}}"
+                    is-include-sub-types="data.isIncludeSubTypes"
+                    add-panel-state="fields.addPanelState"
+                    default-tab="search"
+                    sub-panel-context="{...subPanelContext, addElementState : fields.addElementState, triggerCreate: data.triggerCreate }"
+                    xrt-state="data.xrtState"
+                    active-state="data.activeState"
+                    project-state="data.projectState"
+                    edit-handler="editHandlers.addPanelEditHandler">
+                </aw-add>
+            </aw-form>
+            <aw-panel-section caption="i18n.addUsageProperties" collapsed="false">
+                <aw-command-sub-panel panel-id="Awb0OccurrenceCreateSub" sub-panel-context="{...subPanelContext}"></aw-command-sub-panel>
+            </aw-panel-section>
+        </div>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="createAndAddElement" size="auto" visible-when="formProp.attributes.valid && conditions.isNewTabVisible">
+            <aw-i18n>i18n.addElementBtn</aw-i18n>
+        </aw-button>
+        <aw-button action="addExistingRevision" size="auto" visible-when="conditions.isPaletteTabVisible || conditions.isSearchTabVisible">
+            <aw-i18n>i18n.addElementBtn</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</div>
+<aw-add-navigate active-state="data.activeState" project-state="data.projectState" action="actions.setActiveView"></aw-add-navigate>

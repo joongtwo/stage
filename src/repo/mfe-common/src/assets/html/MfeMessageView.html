@@ -1,0 +1,8 @@
+<div class="sw-column h-12 w-12 justify-center" >
+    <div class="aw-mfe-messageLine" aw-repeat="msg : data.messages">
+        <div class="{{msg.className}}">
+            <span exist-when="msg.text">{{msg.text}}</span>
+            <span exist-when="msg.iconId"><aw-icon class="aw-mfe-messageIcon" icon-id="{{msg.iconId}}"></aw-icon></span>
+        </div>
+    </div>
+</div>

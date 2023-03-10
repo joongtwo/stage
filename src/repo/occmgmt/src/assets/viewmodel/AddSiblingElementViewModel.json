@@ -1,0 +1,54 @@
+{
+    "schemaVersion" : "1.0.0",
+    "data" : {
+        "addElementState":{
+            "initialValues":{
+                "AddOccurrencePropertiesOnCreate" : false,
+                "parentElement" : null,
+                "parentToLoadAllowedTypes" : null,
+                "siblingElement" : null,
+                "elementCreateInput" : null,
+                "fetchPagedOccurrences" : null,
+                "isCopyButtonEnabled" : null,
+                "previousSelectionUid" : "",
+                "Awb0ElementCreateSubView" : false,
+                "numberOfElements" : 1
+            },
+            "meta": {
+            }
+        }
+    },
+    "actions" : {
+        "updateCtxForAceAddSiblingPanelAction":
+        {
+            "actionType": "JSFunction",
+            "method": "updateStateForAceAddSiblingPanel",
+            "inputData":
+            {
+                "subPanelContext" : "{{subPanelContext}}",
+                "data" : "{{data}}"
+            },
+            "outputData": {
+                "addElementState" : ""
+            },
+
+            "deps": "js/addElementService"
+        }
+    },
+    "conditions" :{
+        "isParentValid" : {
+            "expression" : "addElementState.parentElement"
+        }
+    },
+    "i18n":
+    {
+       "addElementBtn": ["OccurrenceManagementConstants"]
+    },
+    "lifecycleHooks": {
+        "onMount": "updateCtxForAceAddSiblingPanelAction"
+    },
+    "onEvent":
+    [
+
+    ]
+}

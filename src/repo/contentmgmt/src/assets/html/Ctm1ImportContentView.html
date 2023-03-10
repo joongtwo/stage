@@ -1,0 +1,22 @@
+<aw-command-panel caption="i18n.Ctm1ImportContentTitle" context="subPanelContext">
+
+    <aw-panel-section caption="i18n.selectImportCommand">
+        <aw-listbox  prop="data.importMapping" list="data.importMappingList.dbValue" action="handleTypeSelection"></aw-listbox>
+    </aw-panel-section>
+
+    <aw-panel-body>
+
+        <aw-panel-section visible-when="data.importMapping.dbValue" caption="{{data.importMapping.uiValue}}">
+
+            <aw-include name="Ctm1ImportTopicSub" visible-when="data.importMapping.dbValue==='Topic'"></aw-include>
+            <aw-include name="Ctm1ImportDitaMapSub" visible-when="data.importMapping.dbValue==='DitaMap'"></aw-include>
+            <aw-include name="Ctm1ImportDMRLSub" visible-when="data.importMapping.dbValue==='DMRL'"></aw-include>
+            <aw-include name="Ctm1ImportGraphicSub" visible-when="data.importMapping.dbValue==='Graphic'"></aw-include>
+            <aw-include name="Ctm1ImportSNSSub" visible-when="data.importMapping.dbValue==='SNS'"></aw-include>
+            <aw-include name="Ctm1ImportTranslationSub" visible-when="data.importMapping.dbValue==='Translation'"></aw-include>
+
+        </aw-panel-section>
+
+    </aw-panel-body>
+
+</aw-command-panel>

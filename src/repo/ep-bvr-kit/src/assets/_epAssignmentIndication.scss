@@ -1,0 +1,130 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2020.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+
+/*=========================================================================*/
+
+
+/*========================== EP BVR =========================*/
+
+
+/*=========================================================================*/
+
+.aw-ep-assignmenIndicationLabel {
+    .sw-property-name {
+        display: none;
+    }
+    .sw-property-val {
+        margin-top: $margin_normal;
+        font-weight: $aw_notification_cell_read_title_prop_font_weight;
+    }
+}
+
+.aw-ep-assignmentIndicationToggle {
+    .sw-property-name {
+        display: none;
+    }
+    .sw-toggle-val {
+        margin-top: rem-calc(12);
+    }
+}
+
+.aw-ep-AssignmentIndicationclickableCellIcon {
+    cursor: pointer;
+    margin-left: $margin_xsmall;
+}
+
+.aw-ep-AssignmentIndicationHiddenCellIcon {
+    display: none;
+}
+
+.aw-ep-assignmentIndicationSeparator.aw-xrt-separator {
+    margin-top: 0;
+    margin-left: 0;
+}
+
+.aw-ep-italicAssignmentText {
+    font-style: italic;
+}
+
+.aw-ep-assignmentIndicationCount {
+    display: flex;
+    gap: $padding_normal;
+    align-items: center;
+    margin-left: $padding_xlarge;
+
+    .aw-mfeChip-container {
+        border: 1px solid;
+    }
+}
+
+.aw-ep-assignemntIndicationTooltipPopup {
+    .aw-layout-popup {
+        border-radius: 3px;
+        border: 1px solid;
+    }
+    .aw-layout-panelBody {
+        padding: $padding_normal;
+    }
+}
+
+.aw-layout-popup .aw-ep-assignmentIndicationAssignedInList .aw-widgets-modelObjectList {
+    margin-bottom: 0;
+    max-width: 476px;
+    .aw-widgets-cellListItem {
+        padding-left: rem-calc(14);
+    }
+    .aw-widgets-cellListItemCell {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        width: 100%;
+    }
+}
+
+.aw-ep-assignmentIndicationAssignedInSeparator.aw-xrt-separator {
+    margin: 0;
+    padding: 0;
+}
+
+.aw-layout-popup .aw-ep-AssignedToOutOfScopeListDisabled {
+    .aw-widgets-cellListItem {
+        cursor: default;
+    }
+    .aw-widgets-cellTop {
+        opacity: 0.57;
+    }
+}
+
+.aw-layout-popup .aw-ep-assignmentIndicationAssignedInList .aw-widgets-modelObjectList {
+    margin-bottom: 0;
+}
+
+.aw-ep-assignmentIndicationAssignedInSeparator.aw-xrt-separator {
+    margin: 0;
+    padding: 0;
+}
+
+.aw-ep-missingInSourceList {
+    .aw-mfe-typeAndNameCellList {
+        .aw-mfe-cellListItemName {
+            font-weight: normal;
+        }
+    }
+}
+
+.aw-ep-inScopeTitle,
+.aw-ep-outOfScopeTitle {
+    font-weight: 600;
+    font: 12px Segoe UI Semibold;
+    margin-left: $margin_normal;
+    padding:$padding_normal;
+}
+
+.aw-epAssignmentIndication-tableCellImageTooltip {
+    width: rem-calc(300);
+}

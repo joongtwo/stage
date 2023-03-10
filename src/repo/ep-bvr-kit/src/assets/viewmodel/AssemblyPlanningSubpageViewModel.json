@@ -1,0 +1,441 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+        "ports": {
+        "AssemblyPlanningSubpage_updateIndicationContextPort": {
+            "syncObject": {}
+        }
+    },
+    "actions": {
+        "clearOccContextNClosePanelCommandAction": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "clearOccContext"
+                },
+                {
+                    "action": "closeSetEffectivityPanel"
+                }
+            ]
+        },
+        "clearOccContext": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetAtomicData": "{{fields.occContext}}",
+                "updatedValues":{
+                    "selectedModelObjects":[""]
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "closeSetEffectivityPanel": {
+            "actionType": "JSFunction",
+            "method": "closeSetEffectivityPanel",
+            "inputData": {
+                "id": "aw_toolsAndInfo"
+            },
+            "deps": "js/epSetEffectivityService"
+        },
+        "setSelectionInOccContextForEffectivitySubscribe": {
+            "actionType": "JSFunctionAsync",
+            "method": "initOccContext",
+            "inputData": {
+                "occContext": "{{fields.occContext}}",
+                "value": [ "{{parameters.eventData.selectionForSetEffectivity}}" ]
+            },
+            "deps": "js/epSetEffectivityService"
+        },
+        "getProperty": {
+            "actionType": "JSFunction",
+            "method": "getProperty",
+            "inputData": {
+                "name": "{{ctx.epTaskPageContext.processStructure.uid}}",
+                "propertyName": "ChangeImpactedIndication"
+            },
+            "outputData": {
+                "isIconVisible": ""
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "mergeValue": {
+            "actionType": "JSFunction",
+            "method": "setValueInViewModel",
+            "inputData": {
+                "object": "{{data.contentPanelData.tabs.0}}",
+                "key": "iconName",
+                "value":"indicatorImpacted"
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+
+        "publishIsIconVisible": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getProperty"
+                },
+                {
+
+                    "action": "mergeValue",
+                    "condition":"data.isIconVisible !== '' && data.sharedSelectionData.isIndicationToggleOn ===true"
+                }
+            ]
+        },
+        "updateIconOnProcess": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "resetChangeIndicationIconVisibility"
+                },
+                {
+                    "action": "getChangeIndicationData"
+                },
+                {
+                    "action": "setChangeIndicationIconVisibility",
+                    "condition":"data.affectedUIds !=='' && data.sharedSelectionData.isIndicationToggleOn ===true"
+                }
+
+            ]
+        },
+        "resetChangeIndicationIconVisibility": {
+            "actionType": "JSFunction",
+            "method": "setIconOnTab",
+            "inputData": {
+                "contentPanelData": "{{data.contentPanelData}}",
+                "tabKey": "ApProcessTree",
+                "shouldBeVisible": false
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "getChangeIndicationData": {
+            "actionType": "JSFunction",
+            "method": "getProperty",
+            "inputData": {
+                "name": "{{ctx.epTaskPageContext.loadedObject.uid}}",
+                "propertyName": "ChangeLoadedProcessIndication"
+            },
+            "outputData": {
+                "affectedUIds": ""
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "setChangeIndicationIconVisibility": {
+            "actionType": "JSFunction",
+            "method": "setIconOnTab",
+            "inputData": {
+                "contentPanelData": "{{data.contentPanelData}}",
+                "tabKey": "ApProcessTree",
+                "shouldBeVisible": "{{data.affectedUIds}}",
+                "iconName": "indicatorImpacted"
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "init": {
+            "actionType": "JSFunction",
+            "method": "init",
+            "deps": "js/epLeavePlaceHandler"
+        },
+        "initializeEPPage": {
+            "actionType": "JSFunctionAsync",
+            "method": "initializeEPPage",
+            "inputData": {
+                "provider": "{{data.provider}}"
+            },
+            "outputData": {
+                "stateContext": "stateContext",
+                "propertyPolicyId": "propertyPolicyId"
+            },
+            "deps": "js/epInitializationService"
+        },
+        "destroy": {
+            "actionType": "JSFunction",
+            "method": "destroy",
+            "deps": "js/epLeavePlaceHandler"
+        },
+        "updateVisibleTabs": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "showBOPTreeView",
+                    "condition": "!data.sharedSelectionData.isPertModeActive && !data.sharedSelectionData.isPRIModeActive"
+                },
+                {
+                    "action": "showPERTSequenceView",
+                    "condition": "data.sharedSelectionData.isPertModeActive && !data.sharedSelectionData.isPRIModeActive"
+                },
+                {
+                    "action": "showPRISequenceView",
+                    "condition": "!data.sharedSelectionData.isPertModeActive && data.sharedSelectionData.isPRIModeActive"
+                }
+            ]
+        },
+        "showBOPTreeView": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "contentPanelData": {
+                    "tabs": [ {
+                            "name": "{{i18n.epProcessTreeTitle}}",
+                            "tabKey": "ApProcessTree"
+                        }
+                    ],
+                    "cmdDisplayOption": "toolbarBelowTabs",
+                    "sharedCommandAnchor": "processLayoutAreaAnchor"
+                }
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "showPERTSequenceView": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "contentPanelData": {
+                    "tabs": [ {
+                            "name": "{{i18n.epProcessTreeTitle}}",
+                            "tabKey": "EpPert",
+                            "contextObject": "{{data.sharedSelectionData.selected[0]}}"
+                        }
+                    ],
+                    "cmdDisplayOption": "toolbarBelowTabs",
+                    "sharedCommandAnchor": "processLayoutAreaAnchor"
+                }
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "showPRISequenceView": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "contentPanelData": {
+                    "tabs": [ {
+                            "name": "{{i18n.epProcessTreeTitle}}",
+                            "tabKey": "EpBalancingOperationsSequence",
+                            "contextObject": "{{data.sharedSelectionData.selected[0]}}"
+                        }
+                    ],
+                    "cmdDisplayOption": "toolbarBelowTabs",
+                    "sharedCommandAnchor": "processLayoutAreaAnchor"
+                }
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "handleInit": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initializeEPPage"
+                },
+                {
+                    "action": "init"
+                },
+                {
+                    "action": "showBOPTreeView",
+                    "condition": "!data.sharedSelectionData.isPertModeActive && !data.sharedSelectionData.isPRIModeActive"
+                },
+                {
+                    "action": "showPERTSequenceView",
+                    "condition": "data.sharedSelectionData.isPertModeActive && !data.sharedSelectionData.isPRIModeActive"
+                },
+                {
+                    "action": "showPRISequenceView",
+                    "condition": "!data.sharedSelectionData.isPertModeActive && data.sharedSelectionData.isPRIModeActive"
+                },
+                {
+                    "action": "updateSharedSelectionPort"
+                },
+                {
+                    "action": "initialiseConfigurationChips"
+                },
+                {
+                    "action": "epPageInitializeComplete"
+                }
+            ]
+        },
+
+        "epPageInitializeComplete":{
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+               "initialize":true
+            },
+            "outputData": {
+                "pageIntializeComplete": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+
+        "updateSharedSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "AssemblyPlanningSubpage_updateIndicationContextPort",
+                "syncObject": "{{fields.sharedSelectionData}}"
+            }
+        },
+        "initialiseConfigurationChips":{
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetContext":"{{fields.configurationChipsData}}",
+                "updatedValues":{
+                    "ebomStructure":"{{ctx.epPageContext.ebomStructure}}",
+                    "ebomPCI":"{{ctx.epTaskPageContext.ebomPCI}}",
+                    "ebomStructureConfigFlags":"{{ctx.epTaskPageContext.ebomStructureConfigFlags}}",
+                    "mbomStructure":"{{ctx.epPageContext.mbomStructure}}",
+                    "mbomPCI":"{{ctx.epTaskPageContext.mbomPCI}}",
+                    "mbomStructureConfigFlags":"{{ctx.epTaskPageContext.mbomStructureConfigFlags}}",
+                    "processStructure":"{{ctx.epPageContext.processStructure}}",
+                    "processPCI":"{{ctx.epTaskPageContext.processPCI}}",
+                    "processStructureConfigFlags":"{{ctx.epTaskPageContext.processStructureConfigFlags}}",
+                    "rootPlant":"{{ctx.epPageContext.rootPlant}}",
+                    "plantPCI":"{{ctx.epTaskPageContext.plantPCI}}",
+                    "rootPlantConfigFlags":"{{ctx.epTaskPageContext.rootPlantConfigFlags}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "data": {
+        "provider":{
+            "label": "{{i18n.assemblyPlanningTitle}}",
+            "priority": 3,
+            "name": "assemblyPlanning",
+            "clientScopeURI": "assemblyPlanning",
+            "nameToken": "assemblyPlanning"
+        },
+        "awSubLocationPref": {
+            "hideRightWall": true
+        },
+        "contentPanelData": {
+            "tabs": [ {
+                    "name": "{{i18n.epProcessTreeTitle}}",
+                    "tabKey": "ApProcessTree"
+
+                }
+            ],
+
+            "cmdDisplayOption": "toolbarBelowTabs",
+            "sharedCommandAnchor": "processLayoutAreaAnchor"
+        },
+        "occContext": {
+            "initialValues": {
+                "selectedModelObjects": [],
+                "viewKey": "",
+                "productContextInfo": null,
+                "elementToPCIMapCount": null,
+                "supportedFeatures": null,
+                "skipReloadOnConfigParamChange": true
+            },
+            "meta": {}
+        },
+        "sharedSelectionData": {
+            "initialValues": {
+                "isPertModeActive": false,
+                "isIndicationToggleOn": false,
+                "isPRIModeActive": false
+            },
+            "meta": {}
+        },
+        "configurationChipsData":{
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "conditions": {
+        "shouldShowActivitiesOrValidationPanel": {
+            "expression": {
+                "$or": [
+                    {
+                        "$source": "ctx.epPageContext.showActivities",
+                        "$query": {
+                            "$eq": true
+                        }
+                    },
+                    {
+                        "$source": "ctx.epPageContext.showValidationPanel",
+                        "$query": {
+                            "$eq": true
+                        }
+                    }
+                ]
+            }
+        },
+        "isValidationMode": {
+            "expression": {
+                "$source": "ctx.epPageContext.showValidationPanel",
+                "$query": {
+                    "$eq": true
+                }
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "setSelectionInOccContextForEffectivity",
+            "action": "setSelectionInOccContextForEffectivitySubscribe",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        } ,
+        {
+            "eventId": "epObjectPropertyCache.ChangeImpactedIndicationUpdated",
+            "action": "publishIsIconVisible"
+        },
+        {
+            "eventId": "epObjectPropertyCache.ChangeLoadedProcessIndicationUpdated",
+            "action": "updateIconOnProcess"
+        },
+        {
+            "eventId": "complete",
+            "action": "clearOccContextNClosePanelCommandAction"
+        },
+        {
+            "eventId": "ep.pageContext.changed",
+            "action": "initialiseConfigurationChips"
+        }
+    ],
+    "i18n": {
+        "assemblyPlanningTitle": [ "AssemblyMessages" ],
+        "epProcessTreeTitle": [ "AssemblyMessages" ]
+    },
+    "lifecycleHooks": {
+        "onMount": "handleInit",
+        "onUnmount": "destroy",
+        "onUpdate": [
+            {
+                "action": "updateVisibleTabs",
+                "observers": [
+                    "viewModel.atomicData.sharedSelectionData.isPertModeActive",
+                    "viewModel.atomicData.sharedSelectionData.isPRIModeActive"
+                ]
+            },
+            {
+                "action": "updateIconOnProcess",
+                "observers": [
+                    "viewModel.atomicData.sharedSelectionData.isIndicationToggleOn"
+                ]
+            }
+        ]
+    }
+}

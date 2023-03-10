@@ -1,0 +1,36 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "proximityTooltip": {
+            "uiValue": "{{i18n.proximityTooltip}}",
+            "type": "STRING"
+        }
+    },
+    "actions": {
+        "tempAction":
+        {
+            "actionType": "JSFunction",
+            "method": "tempAction",
+            "inputData":
+            {
+                "data": "{{props}}"
+            },
+
+            "deps": "js/PartitionToolTipViewService"
+        }
+},
+    "i18n": {
+    },
+
+    "lifecycleHooks": {
+        "onMount": "tempAction"
+    },
+    "props": {
+        "filter": {
+            "type": "object"
+        },
+        "index": {
+            "type": "STRING"
+        }
+    }
+}

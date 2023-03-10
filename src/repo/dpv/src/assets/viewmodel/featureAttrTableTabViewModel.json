@@ -1,0 +1,173 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "updateUseOrigTemplateSettings": {
+            "actionType": "JSFunction",
+            "method": "updateStatFeatAttrOrigSettings",
+            "inputData": {
+                "state": "{{props.subPanelContext.statFeatureAttrState}}",
+                "origSettingsVal":"{{data.useOrigSettingCheckbox.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadFeatAttributesCol1": {
+            "actionType": "JSFunction",
+            "method": "loadStatAttributesColumn",
+            "inputData": {
+                "index": "0"
+            },
+            "outputData": {
+                "searchResultsFeatAttrCol1": "searchResults",
+                "totalFoundFeatAttrCol1": "totalFound"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadFeatAttributesCol2": {
+            "actionType": "JSFunction",
+            "method": "loadStatAttributesColumn",
+            "inputData": {
+                "index": "1"
+            },
+            "outputData": {
+                "searchResultsFeatAttrCol2": "searchResults",
+                "totalFoundFeatAttrCol2": "totalFound"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadFeatAttributesCol3": {
+            "actionType": "JSFunction",
+            "method": "loadStatAttributesColumn",
+            "inputData": {
+                "index": "2"
+            },
+            "outputData": {
+                "searchResultsFeatAttrCol3": "searchResults",
+                "totalFoundFeatAttrCol3": "totalFound"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadFeatAttributesCol4": {
+            "actionType": "JSFunction",
+            "method": "loadStatAttributesColumn",
+            "inputData": {
+                "index": "3"
+            },
+            "outputData": {
+                "searchResultsFeatAttrCol4": "searchResults",
+                "totalFoundFeatAttrCol4": "totalFound"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadAllFeatAttributes":{
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateOrigSettingCheckBox"
+                },
+                {
+                    "action": "loadFeatAttributesCol1"
+                },
+                {
+                    "action": "loadFeatAttributesCol2"
+                },
+                {
+                    "action": "loadFeatAttributesCol3"
+                },
+                {
+                    "action": "loadFeatAttributesCol4"
+                }
+            ]
+        },
+        "selectStatFeatureCol1": {
+            "actionType": "JSFunction",
+            "method": "selectStatFeature",
+            "inputData": {
+                "searchResults": "{{data.searchResultsFeatAttrCol1}}",
+                "statFeatureState": "{{props.subPanelContext.statFeatureAttrState}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "selectStatFeatureCol2": {
+            "actionType": "JSFunction",
+            "method": "selectStatFeature",
+            "inputData": {
+                "searchResults": "{{data.searchResultsFeatAttrCol2}}",
+                "statFeatureState": "{{props.subPanelContext.statFeatureAttrState}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "selectStatFeatureCol3": {
+            "actionType": "JSFunction",
+            "method": "selectStatFeature",
+            "inputData": {
+                "searchResults": "{{data.searchResultsFeatAttrCol3}}",
+                "statFeatureState": "{{props.subPanelContext.statFeatureAttrState}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "selectStatFeatureCol4": {
+            "actionType": "JSFunction",
+            "method": "selectStatFeature",
+            "inputData": {
+                "searchResults": "{{data.searchResultsFeatAttrCol4}}",
+                "statFeatureState": "{{props.subPanelContext.statFeatureAttrState}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateOrigSettingCheckBox": {
+            "actionType": "JSFunction",
+            "method": "updateOrigSettingCheckBox",
+            "inputData": {
+                "useOrigSettingCheckbox": "{{data.useOrigSettingCheckbox}}",
+                "state": "{{props.subPanelContext.statFeatureAttrState}}"
+            },
+            "outputData":{
+                "useOrigSettingCheckbox" : "useOrigSettingCheckbox"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        }
+    },
+    "dataProviders": {},
+    "data":{
+        "useOrigSettingCheckbox": {
+            "displayName": "{{i18n.UseOrigFeatAttrStats}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.statFeatureAttrState.useOrigTempSettings}}",
+            "dispValue": "{{i18n.UseOrigFeatAttrStats}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "item": { "type": "object" }
+    },
+    "functions": {},
+    "conditions":{
+        "isQryTypeUseOrigSettingsOff": {
+            "expression": "!props.subPanelContext.qryTypeState.useOrigTempSettings"
+        },
+        "enableFeatAttrTableWidgetsCond": {
+            "expression": "conditions.isQryTypeUseOrigSettingsOff && !props.subPanelContext.statFeatureAttrState.useOrigTempSettings"
+        }
+    },
+    "i18n": {
+        "UseOrigFeatAttrStats": [ "DpvMessages" ]
+    },
+    "onEvent": [],
+    "lifecycleHooks": {
+        "onMount": "loadAllFeatAttributes",
+        "onUpdate": [
+            {
+                "action": "loadAllFeatAttributes",
+                "observers": [
+                    "props.subPanelContext.statFeatureAttrState.useOrigTempSettings"
+                    
+                ]
+            }
+        ]
+    } 
+}

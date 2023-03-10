@@ -1,0 +1,312 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-list.directive",
+        "js/aw-include.directive",
+        "js/aw-link.directive",
+        "js/aw-i18n.directive",
+        "js/aw-scrollpanel.directive",
+        "js/aw-tile-canvas.directive",
+        "js/aw-base-sublocation.directive",
+        "js/aw-default-cell.directive",
+        "js/visible-when.directive"
+    ],
+    "data": {
+        "discussionTitle":{
+            "displayName": "{{i18n.discussionsTitle}}",
+            "type": "STRING",
+            "isRequired": "false"
+        },
+        "recentsTitle":{
+            "displayName": "{{i18n.recentsTitle}}",
+            "type": "STRING",
+            "isRequired": "false"
+        },
+        "favoritesTitle":{
+            "displayName": "{{i18n.favoritesTitle}}",
+            "type": "STRING",
+            "isRequired": "false"
+        },
+        "myTasksTitle":{
+            "displayName": "{{i18n.myTasksTitle}}",
+            "type": "STRING",
+            "isRequired": "false"
+        }
+    },
+    "actions": {
+        "getDataForLandingPage": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "getTiles"
+                },
+                {
+                    "action": "loadRecentObjects"
+                },
+                {
+                    "action": "loadFavorites"
+                },
+                {
+                    "action": "loadMyTasks"
+                }
+            ]
+        },
+        "loadRecentObjects":{
+            "actionType": "dataProvider",
+            "method": "recentObjDataProvider"
+        },
+        "loadFavorites":{
+            "actionType": "dataProvider",
+            "method": "favoritesDataProvider"
+        },
+        "loadMyTasks":{
+            "actionType": "dataProvider",
+            "method": "myTasksDataProvider"
+        },
+        "getTiles":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2022-12-DataManagement",
+            "method": "getCurrentUserGateway3",
+            "inputData":
+            {
+            },
+            "outputData":
+            {
+                "tileGroups": "tileGroups"
+            },
+            "actionMessages":
+            {
+                "failure":
+                [
+                    {
+                        "message": "accessingGatewayFailed"
+                    }
+                ]
+            }
+        },
+        "updateTile":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2018-05-DataManagement",
+            "method": "updateTiles",
+            "inputData":
+            {
+                "tiles": "{{data.eventData.tiles}}",
+                "groupNames": "{{data.eventData.groupNames}}"
+            },
+            "outputData":
+            {
+                "tileGroups": "tileGroups"
+            },
+            "actionMessages":
+            {
+                "failure":
+                [
+                    {
+                        "message": "updateTileFailed"
+                    }
+                ]
+            }
+        },
+        "unpinTile":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2018-05-DataManagement",
+            "method": "unpinObjects",
+            "inputData":
+            {
+                "uidsToUnpin":
+                [
+                    "{{data.eventData.relUID}}"
+                ],
+                "returnGateway": true
+            },
+            "outputData":
+            {
+                "tileGroups": "tileGroups"
+            },
+            "actionMessages":
+            {
+                "failure":
+                [
+                    {
+                        "message": "unPinFailed"
+                    }
+                ]
+            }
+        },
+        "getRecentObjects": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "searchInput": {
+                    "attributesToInflate": [
+                        "awp0CellProperties",
+                        "awp0ThumbnailImageTicket"
+                    ],
+                    "searchCriteria": { "search": "" },
+                    "maxToLoad": 6,
+                    "maxToReturn": 6,
+                    "startIndex": "{{data.dataProviders.recentObjDataProvider.startIndex}}",
+                    "providerName": "Awp0RecentObjectsProvider"
+                }
+            },
+            "outputData": {
+                "recentTotalFound": "totalLoaded",
+                "recentSearchResults": "{{json:searchResultsJSON}}"
+            }
+        },
+        "getFavoritesObjects": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "searchInput": {
+                    "attributesToInflate": [
+                        "awp0CellProperties",
+                        "awp0ThumbnailImageTicket"
+                    ],
+                    "searchCriteria": { "search": "" },
+                    "maxToLoad": 6,
+                    "maxToReturn": 6,
+                    "startIndex":"{{data.dataProviders.favoritesDataProvider.startIndex}}",
+                    "providerName": "Awp0FavoritesProvider"
+                }
+            },
+            "outputData": {
+                "favoritesTotalFound": "totalLoaded",
+                "favoritesSearchResults": "{{json:searchResultsJSON}}"
+            }
+        },
+        "getMyTasksObjects": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "searchInput": {
+                    "attributesToInflate": [
+                        "awp0CellProperties",
+                        "awp0ThumbnailImageTicket"
+                    ],
+                    "searchCriteria": { "search": "" },
+                    "maxToLoad": 6,
+                    "maxToReturn": 6,
+                    "startIndex": "{{data.dataProviders.myTaskDataProvider.startIndex}}",
+                    "providerName": "Awp0InboxProvider"
+                }
+            },
+            "outputData": {
+                "myTasksTotalFound": "totalLoaded",
+                "myTasksSearchResults": "{{json:searchResultsJSON}}"
+            }
+        },
+        "goToDiscussionLocation": {
+            "actionType": "Navigate",
+            "navigateTo": "#/discussions/feed",
+            "navigationParams": {}
+        },
+        "goToRecentLocation": {
+            "actionType": "Navigate",
+            "navigateTo": "#/myRecentViewedObjects",
+            "navigationParams": {}
+        },
+        "goToFavoritesLocation": {
+            "actionType": "Navigate",
+            "navigateTo": "#/myFavorites",
+            "navigationParams": {}
+        },
+        "goToMyTasksLocation": {
+            "actionType": "Navigate",
+            "navigateTo": "#/myTasks",
+            "navigationParams": {}
+        },
+        "showHomeFolder": {
+            "actionType": "Navigate",
+            "navigateTo": "com_siemens_splm_clientfx_tcui_xrt_showObject",
+            "navigationParams": {
+                "uid": "{{ctx.user.props.home_folder.dbValues[0]}}",
+                "cmdId": "Awp0ShowAddObject"
+            }
+        }
+    },
+
+    "messages":
+    {
+        "accessingGatewayFailed":
+        {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.pinObjectFailedNoGateway}}"
+        },
+        "unPinFailed":
+        {
+            "messageType": "ERROR",
+            "messageText":"{{i18n.unpinTileFailed}}"
+        },
+        "updateTileFailed":
+        {
+            "messageType": "ERROR",
+            "messageText":"{{i18n.tileUpdateFailedMsg}}"
+        }
+    },
+    "dataProviders": {
+        "recentObjDataProvider": {
+            "action": "getRecentObjects",
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            },
+            "response": "{{data.recentSearchResults}}",
+            "totalFound": "{{data.recentTotalFound}}",
+            "selectionModelMode": "single"
+        },
+        "favoritesDataProvider": {
+            "action": "getFavoritesObjects",
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            },
+            "response": "{{data.favoritesSearchResults}}",
+            "totalFound": "{{data.favoritesTotalFound}}"
+        },
+        "myTasksDataProvider": {
+            "action": "getMyTasksObjects",
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            },
+            "response": "{{data.myTasksSearchResults}}",
+            "totalFound": "{{data.myTasksTotalFound}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount" : "getDataForLandingPage"
+    },
+    "onEvent": [
+        {
+            "eventId": "landingPage.showHomeFolder",
+            "action": "showHomeFolder"
+        },
+        {
+            "eventId": "gateway.updateTile",
+            "action": "updateTile",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "gateway.unpinTile",
+            "action": "unpinTile",
+            "cacheEventData": true
+        }
+    ],
+    "i18n": {
+        "discussionsTitle": ["tcxsimplifiedMessages"],
+        "noDataToDisplay": ["tcxsimplifiedMessages"],
+        "recentsTitle": ["tcxsimplifiedMessages"],
+        "favoritesTitle": ["tcxsimplifiedMessages"],
+        "myTasksTitle": ["tcxsimplifiedMessages"],
+        "pinObjectFailedNoGateway": [ "GatewayMessages" ],
+        "unpinTileFailed": [ "GatewayMessages" ],
+        "tileUpdateFailedMsg": [ "GatewayMessages" ]
+    }
+}

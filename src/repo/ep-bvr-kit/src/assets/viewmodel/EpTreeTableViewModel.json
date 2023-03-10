@@ -1,0 +1,700 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "structure-search-context":{
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpTreeTable_selectedObjects": {
+            "onChangeAction": "setSelection",
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "messages": "{{props.subPanelContext.messages}}",
+        "isLoading": true,
+        "isTableEditable": "{{props.subPanelContext.isTableEditable}}",
+        "selectionData": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "actions": {
+        "setSelection": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.epTreeTableDataProvider}}",
+                "objectsToSelect": "{{ports.EpTreeTable_selectedObjects.syncObject}}",
+                "propertyToSort": "{{props.subPanelContext.propertyToSort}}",
+                "unselectIfEmpty": true
+            },
+            "deps": "js/epTableService"
+        },
+
+        "setSelectionFromSubPanelContext": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.epTreeTableDataProvider}}",
+                "objectsToSelect": "{{props.subPanelContext.sharedSelectionData.selected}}",
+
+                "propertyToSort": "{{props.subPanelContext.propertyToSort}}",
+                "unselectIfEmpty": true
+            },
+            "deps": "js/epTableService"
+        },
+        "areSyncObjectsAndSelectedObjectsSame": {
+            "actionType": "JSFunction",
+            "method": "isObjectArraySubsetofOtherObjectArray",
+            "inputData": {
+                "objectArray1": "{{fields.selectionData.selected}}",
+                "objectArray2": "{{ports.EpTreeTable_selectedObjects.syncObject}}"
+            },
+            "outputData": {
+                "areSyncObjectAndSelectionEqual": ""
+            },
+            "deps": "js/epTableService"
+        },
+        "updateSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpTreeTable_selectedObjects",
+                "syncObject": "{{data.selectionData.selected}}"
+            }
+        },
+        "createColumns": {
+            "actionType": "JSFunctionAsync",
+            "method": "createColumns",
+            "inputData": {
+                "preferenceName": "{{props.subPanelContext.preferenceName}}",
+                "dataProvider": "{{data.dataProviders.epTreeTableDataProvider}}",
+                "columnProvider": {
+                    "enableSorting": "{{props.subPanelContext.enableSorting}}",
+                    "clientColumns": "{{props.subPanelContext.clientColumns}}"
+                },
+                "additionalPolicyObjects": "{{props.subPanelContext.additionalPolicyObjects}}",
+                "tableCmdColumnPropName": "{{props.subPanelContext.tableCmdColumnPropName}}",
+                "tableTreeNavColumnPropName": "{{props.subPanelContext.tableTreeNavColumnPropName}}",
+                "treeNavigationColumnIndex": "{{props.subPanelContext.treeNavigationColumnIndex}}"
+            },
+            "outputData": {
+                "dataProviders.epTreeTableDataProvider.columnConfig": "columnConfig",
+                "dataProviders.epTreeTableDataProvider.policy": "policy"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "updateCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{props.subPanelContext.tabContext}}",
+                "commandContext": {
+                    "inputObject": "{{data.selectionData.selected}}",
+                    "selection": "{{data.selectionData.selected}}",
+                    "tableId": "EpTreeTable",
+                    "connectToObject": "{{data.selectedObjectParent}}",
+                    "reloadType": "{{props.subPanelContext.reloadType}}",
+                    "connectToRelation": "bl_parent",
+                    "dataProvider":"{{data.dataProviders.epTreeTableDataProvider}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "getTargetAssembliesForProcess":{
+            "actionType": "JSFunctionAsync",
+            "method": "getTargetAssemblies",
+            "deps": "js/epPertGraphDataProviderService",
+            "inputData": {
+                "selectedProcessNode": "{{data.selectionData.selected[0]}}"
+            },
+            "outputData": {
+                "targetAssembly": ""
+            }
+        },
+        "updateParentSelectionData": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetObj": "{{props.subPanelContext.sharedSelectionData}}",
+                "sourceObj": {
+                    "selected": "{{data.selectionData.selected}}",
+                    "targetAssembly":"{{data.targetAssembly}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "updateSelectedObjectParent": {
+            "actionType": "JSFunction",
+            "method": "getSelectedObjectParent",
+            "inputData": {
+                "selectedObjects": "{{data.selectionData.selected}}"
+            },
+            "outputData": {
+                "selectedObjectParent": "selectedObjectParent"
+            },
+            "deps": "js/epTableService"
+        },
+        "updateSelectionPortAndUpdateCommandContext": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "areSyncObjectsAndSelectedObjectsSame"
+                },
+                {
+                    "action": "updateSelectedObjectParent"
+                },
+                {
+                    "action": "updateSelectionPort",
+                    "condition": "conditions.updatePortCondition"
+                },
+                {
+                    "action": "updateCommandContext"
+                },
+                {
+                    "action":"getTargetAssembliesForProcess",
+                    "condition":"conditions.isProcessObjectSelected"
+                },
+                {
+                    "action": "updateParentSelectionData"
+                }
+
+            ]
+        },
+        "createColumnsAndRegisterPolicy": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "createColumns"
+                },
+                {
+                    "action": "registerPolicy"
+                },
+                {
+                    "action": "renderCutIndicationWithDashedOutline"
+                }
+            ]
+        },
+        "registerPolicy": {
+            "actionType": "JSFunction",
+            "method": "register",
+            "inputData": {
+                "name": "{{props.subPanelContext.additionalPolicyObjects.name}}",
+                "policyObj": "{{data.dataProviders.epTreeTableDataProvider.policy}}"
+            },
+            "deps": "js/mfePolicyService"
+        },
+        "unregisterPolicy": {
+            "actionType": "JSFunction",
+            "method": "unregister",
+            "inputData": {
+                "name": "{{props.subPanelContext.additionalPolicyObjects.name}}"
+            },
+            "deps": "js/mfePolicyService"
+        },
+        "loadTreeTableData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableData",
+            "inputData": {
+                "treeLoadInput": "{{data.treeLoadInput}}",
+                "topNodeUid": "{{props.subPanelContext.objectUid}}",
+                "isTopNode": "{{props.subPanelContext.isTopNode}}",
+                "rootLoadInputData": {
+                    "loadTypes": "{{subPanelContext.loadTypes}}",
+                    "propertiesToLoad": "{{props.subPanelContext.propertiesToLoad}}",
+                    "targetUid": "",
+                    "additionalLoadParams": "{{props.subPanelContext.additionalLoadParamsForRootLoadInputData}}",
+                    "relatedObjectMapKey": "{{props.subPanelContext.relatedObjectMapKey}}"
+                },
+                "childLoadInputData": {
+                    "loadTypes": "{{subPanelContext.loadTypes}}",
+                    "propertiesToLoad": "{{props.subPanelContext.propertiesToLoad}}",
+                    "targetUid": "",
+                    "additionalLoadParams": "{{props.subPanelContext.additionalLoadParamsForChildLoadInputData}}",
+                    "relatedObjectMapKey": "{{props.subPanelContext.relatedObjectMapKey}}"
+                },
+                "isLeafProperty": "{{props.subPanelContext.isLeafProperty}}",
+                "sortCriteria": "{{data.columnProviders.epTreeTableColumnProvider.sortCriteria}}"
+            },
+            "outputData": {
+                "treeLoadResult": "treeLoadResult",
+                "isLoading": false
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "epTreeTable.setSearchContext"
+                    }
+                ]
+            },
+            "deps": "js/epTableService"
+        },
+        "saveResizedColumnsWidth": {
+            "actionType": "JSFunction",
+            "method": "saveResizedColumnsWidth",
+            "inputData": {
+                "preferenceName": "{{props.subPanelContext.preferenceName}}",
+                "columns": "{{parameters.eventData.columns}}"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "initializeLoadDataForTree": {
+            "actionType": "JSFunctionAsync",
+            "method": "initializeLoadDataForTree",
+            "inputData": {
+                "treeLoadInput": "{{data.treeLoadInput}}",
+                "topNodeUid": "{{props.subPanelContext.objectUid}}",
+                "rootLoadInputData": {
+                    "loadTypes": "{{subPanelContext.loadTypes}}",
+                    "propertiesToLoad": "{{props.subPanelContext.propertiesToLoad}}",
+                    "targetUid": "",
+                    "additionalLoadParams": "{{props.subPanelContext.additionalLoadParamsForRootLoadInputData}}",
+                    "relatedObjectMapKey": "{{props.subPanelContext.relatedObjectMapKey}}"
+                },
+                "childLoadInputData": {
+                    "loadTypes": "{{subPanelContext.loadTypes}}",
+                    "propertiesToLoad": "{{props.subPanelContext.propertiesToLoad}}",
+                    "targetUid": "",
+                    "additionalLoadParams": "{{props.subPanelContext.additionalLoadParamsForChildLoadInputData}}",
+                    "relatedObjectMapKey": "{{props.subPanelContext.relatedObjectMapKey}}"
+                },
+                "isLeafProperty": "{{props.subPanelContext.isLeafProperty}}"
+            },
+            "outputData": {
+                "treeLoadResult": "treeLoadResult",
+                "isLoading": false
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "epTreeTable.setInitialSelection"
+                    }
+                ]
+            },
+            "deps": "js/epTableService"
+        },
+        "handleToggleIndications": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clearCacheForChangeIndication"
+                },
+                {
+                    "action": "updateIndicationMatchPropertyOnVmos"
+                },
+                {
+                    "action": "updateChangeIndicationPropertyOnVmos"
+                },
+                {
+                    "action": "updateChangeIndicationPropertyOnInputObject",
+                    "condition": "data.isInputObjectImpacted===true"
+                },
+                {
+                    "action": "clientTableRefresh"
+                }
+            ]
+        },
+        "handleIndicationsOnCalculateImpactOnPV": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateChangeIndicationPropertyOnVmos"
+                },
+                {
+                    "action": "clientTableRefresh"
+                }
+            ]
+        },
+        "setSearchContext": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetObj": "{{props.structureSearchContext}}",
+                "sourceObj": {
+                    "searchScopeUid": "{{data.dataProviders.epTreeTableDataProvider.viewModelCollection.loadedVMObjects[0].uid}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "initializeTreeTableSelection": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setSelection",
+                    "condition": "conditions.isObjectAvailableForSelection"
+                },
+                {
+                    "action": "setSelectionFromSubPanelContext",
+                    "condition": "conditions.isObjectFromSubPanelContextAvailableForSelection"
+                },
+                {
+                    "action": "setSearchContext",
+                    "condition":"props.structureSearchContext"
+                }
+            ]
+        },
+        "updateIndicationPropertiesAndRefreshTable": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateIndicationMatchPropertyOnExpandedVmo"
+                },
+                {
+                    "action": "updateChangeIndicationPropertyOnInputObject",
+                    "condition": "data.isInputObjectImpacted===true"
+                },
+                {
+                    "action": "clientTableRefresh"
+                }
+            ]
+        },
+        "updateChangeIndicationPropertyOnVmos": {
+            "actionType": "JSFunction",
+            "method": "updateChangeIndicationPropertyOnVmos",
+            "inputData": {
+                "vmos": "{{data.dataProviders.epTreeTableDataProvider.viewModelCollection.loadedVMObjects}}",
+                "changeIndicationValue": "{{props.subPanelContext.sharedSelectionData.isIndicationToggleOn}}",
+                "propertyValue": "ChangeIndication"
+            },
+            "outputData": {
+                "isInputObjectImpacted": ""
+            },
+            "deps": "js/epChangeIndicationService"
+        },
+        "updateActionsOnExpandedVmo": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateChangeIndicationPropertyOnExpandedVmo",
+                    "condition": "conditions.isAssignmentIndicationOn"
+                },
+                {
+                    "action": "updateCutIndicationOnExpandedVmo",
+                    "condition": "conditions.isCutOperationPerformed"
+                }
+            ]
+        },
+        "updateChangeIndicationPropertyOnExpandedVmo": {
+            "actionType": "JSFunction",
+            "method": "updateChangeIndicationPropertyOnVmos",
+            "inputData": {
+                "vmos": "{{parameters.eventData.treeLoadResult.childNodes}}",
+                "changeIndicationValue": "{{props.subPanelContext.sharedSelectionData.isIndicationToggleOn}}",
+                "propertyValue": "ChangeIndication"
+            },
+            "outputData": {
+                "isInputObjectImpacted": ""
+            },
+            "deps": "js/epChangeIndicationService"
+        },
+        "updateCutIndicationOnExpandedVmo": {
+            "actionType": "JSFunction",
+            "method": "setExistingCutIndication",
+            "inputData": {
+                "vmos": "{{data.dataProviders.epTreeTableDataProvider.viewModelCollection.loadedVMObjects}}"
+            },
+            "deps": "js/epCutCopyService"
+        },
+        "updateChangeIndicationPropertyOnInputObject": {
+            "actionType": "JSFunction",
+            "method": "updateProperty",
+            "inputData": {
+                "name": "{{subPanelContext.objectUid}}",
+                "propertyName": "ChangeLoadedProcessIndication",
+                "value": true
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "updateIndicationMatchPropertyOnVmos": {
+            "actionType": "JSFunction",
+            "method": "updateIndicationMatchPropertyOnVmos",
+            "inputData": {
+                "vmos": "{{data.dataProviders.epTreeTableDataProvider.viewModelCollection.loadedVMObjects}}",
+                "assignmentIndicationValue": "{{props.subPanelContext.sharedSelectionData.isIndicationToggleOn}}",
+                "propertyValue": "matchType"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "updateIndicationMatchPropertyOnExpandedVmo": {
+            "actionType": "JSFunction",
+            "method": "updateIndicationMatchPropertyOnVmos",
+            "inputData": {
+                "vmos": "{{data.treeLoadResult.childNodes}}",
+                "assignmentIndicationValue": "{{props.subPanelContext.sharedSelectionData.isIndicationToggleOn}}",
+                "propertyValue": "matchType"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "loadAssignmentIndications": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadAssignmentIndication",
+            "inputData": {
+                "accountabilityInputObject": {
+                    "checkType": "{{function:getCheckType}}",
+                    "currentScope": "{{ctx.epPageContext.loadedObject}}",
+                    "sourceObject": "{{ctx.ep.loadedProductObject}}",
+                    "targetObject": "{{ctx.epPageContext.processStructure}}"
+                }
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "unregisterDestroyPolicy": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "unregisterPolicy"
+                },
+                {
+                    "action": "clearCacheForChangeIndication"
+                },
+                {
+                    "action": "destroyLoadedTreeCache"
+                },
+                {
+                    "action": "removeExistingCutIndication"
+                }
+            ]
+        },
+        "clearCacheForChangeIndication": {
+            "actionType": "JSFunction",
+            "method": "clearPropertyKeyCache",
+            "inputData": {
+                "name": "{{subPanelContext.objectUid}}",
+                "propertyName": "ChangeLoadedProcessIndication"
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "removeExistingCutIndication": {
+            "actionType": "JSFunction",
+            "method": "removeExistingCutIndication",
+            "deps": "js/epCutCopyService"
+        },
+        "destroyLoadedTreeCache": {
+            "actionType": "JSFunction",
+            "method": "destroy",
+            "inputData": {
+                "toggleValue": false,
+                "vmos": "{{data.dataProviders.epTreeTableDataProvider.viewModelCollection.loadedVMObjects}}"
+            },
+            "deps": "js/epChangeIndicationService"
+        },
+        "renderCutIndicationWithDashedOutline": {
+            "actionType": "JSFunction",
+            "method": "renderCutIndicationWithDashedOutline",
+            "inputData": {
+                "columns": "{{data.dataProviders.epTreeTableDataProvider.columnConfig.columns}}"
+            },
+            "deps": "js/epTableService"
+        },
+        "checkCellForEdit": {
+            "actionType": "JSFunction",
+            "method": "checkAutoRevise",
+            "inputData": {
+                "vmo": "{{parameters.eventData.vmo}}"
+            },
+            "deps": "js/epReviseHelper"
+        },
+        "updateDisplayName": {
+            "actionType": "JSFunction",
+            "method": "updateDisplayName",
+            "inputData": {
+                "eventData": "{{parameters.eventData}}"
+            },
+            "deps": "js/epTableService"
+        },
+        "clientTableRefresh": {
+            "actionType": "JSFunction",
+            "method": "refreshTable",
+            "inputData": {
+                "tableId": "EpTreeTable"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "handleSaveAndRefresh": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "handleSaveEvents"
+                },
+                {
+                    "action": "updateIndicationMatchPropertyOnVmos"
+                },
+                {
+                    "action": "clientTableRefresh"
+                }
+            ]
+        },
+        "handleSaveEvents": {
+            "actionType": "JSFunction",
+            "method": "handleSaveEvents",
+            "inputData": {
+                "saveEvents": "{{data.eventData}}",
+                "dataProvider": "{{data.dataProviders.epTreeTableDataProvider}}",
+                "tableGridId": "EpTreeTable",
+                "relationName": "{{subPanelContext.relationName}}"
+            },
+            "deps": "js/epTableService"
+        }
+    },
+    "functions": {
+        "getCheckType": {
+            "functionName": "getCheckType",
+            "parameters": [
+                "{{ctx.ep.deployedTemplates.mci0mfgcharacteristics}}"
+            ],
+            "deps": "js/epAssignmentIndicationService"
+        }
+    },
+    "columnProviders": {
+        "epTreeTableColumnProvider": {
+            "loadColumnAction": "createColumnsAndRegisterPolicy",
+            "columns": "{{epTreeTableDataProvider.columnConfig.columns}}",
+            "resetColumnAction": "saveResizedColumnsWidth",
+            "saveColumnAndLoadAction": "saveResizedColumnsWidth",
+            "frozenColumnIndex": -1
+        }
+    },
+    "grids": {
+        "EpTreeTable": {
+            "dataProvider": "epTreeTableDataProvider",
+            "columnProvider": "epTreeTableColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enablePinning": false
+            }
+        }
+    },
+    "dataProviders": {
+        "epTreeTableDataProvider": {
+            "initializeAction": "{{subPanelContext.initializeAction}}",
+            "nextAction": "loadTreeTableData",
+            "previousAction": "loadTreeTableData",
+            "focusAction": "loadTreeTableData",
+            "treeLoadResult": "{{data.treeLoadResult}}",
+            "editContext": "{{subPanelContext.editContext}}",
+            "selectionModelMode": "multiple",
+            "inputData": {
+                "accessMode": "tree",
+                "topNodeUid": "{{subPanelContext.objectUid}}",
+                "selectionData": "{{fields.selectionData}}"
+            },
+            "commandsAnchor": "{{subPanelContext.epTreeTableCommandAnchor}}"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "columnArrange",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "saveResizedColumnsWidth",
+            "criteria": {
+                "name": "EpTreeTable"
+            }
+        },
+        {
+            "eventId": "epTreeTable.plTable.cellNotEditable",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "checkCellForEdit",
+            "condition": "conditions.isTableEditable"
+        },
+        {
+            "eventId": "epPostPackOrUnpackEvent",
+            "cacheEventData": true,
+            "action": "loadAssignmentIndications",
+            "condition": "conditions.isAssignmentIndicationOn"
+        },
+        {
+            "eventId": "ep.saveEvents",
+            "cacheEventData": true,
+            "action": "handleSaveAndRefresh"
+        },
+        {
+            "eventId": "vmc.modified.epTreeTableDataProvider",
+            "action": "updateDisplayName",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+           "eventId": "epTreeTableDataProvider.treeNodesLoaded",
+           "action": "updateActionsOnExpandedVmo",
+           "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+       {
+            "eventId": "epTreeTable.setInitialSelection",
+            "action": "initializeTreeTableSelection"
+       },
+       {
+            "eventId": "epTreeTable.setSearchContext",
+            "action": "setSearchContext",
+            "condition":"props.structureSearchContext"
+       },
+       {
+            "eventId": "epObjectPropertyCache.ChangeImpactedPVIndicationUpdated",
+            "action": "handleIndicationsOnCalculateImpactOnPV"
+       }
+    ],
+    "conditions": {
+        "isProcessObjectSelected":{
+            "expression": "data.selectionData.selected[0] && data.selectionData.selected[0].modelType.typeHierarchyArray.includes('Mfg0BvrProcess')"
+        },
+        "isTableEditable": {
+            "expression": "data.isTableEditable !== 'false'"
+        },
+        "isObjectAvailableForSelection": {
+            "expression": "ports.EpTreeTable_selectedObjects.syncObject !== '' && ports.EpTreeTable_selectedObjects.syncObject[0].uid"
+        },
+        "isObjectFromSubPanelContextAvailableForSelection": {
+            "expression": "props.subPanelContext.sharedSelectionData.selected.length > 0 && props.subPanelContext.sharedSelectionData.selected[0].uid && !conditions.isObjectAvailableForSelection"
+        },
+        "isTreeDataLoaded": {
+            "expression": "!data.isLoading && dataProviders.epTreeTableDataProvider.viewModelCollection.totalObjectsLoaded > 0"
+        },
+        "isTreeDataMissing": {
+            "expression": "!data.isLoading && dataProviders.epTreeTableDataProvider.viewModelCollection.totalObjectsLoaded === 0"
+        },
+        "isAssignmentIndicationOn": {
+            "expression": "subPanelContext.sharedSelectionData.isIndicationToggleOn === true"
+        },
+        "updatePortCondition": {
+            "expression": "data.areSyncObjectAndSelectionEqual === false"
+        },
+        "isCutOperationPerformed":{
+            "expression": "ctx.cutIntent === true"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "updateSelectionPortAndUpdateCommandContext",
+                "observers": [
+                    "viewModel.atomicData.selectionData.selected"
+                ]
+            },
+            {
+                "action": "updateIndicationPropertiesAndRefreshTable",
+                "observers": [
+                    "viewModel.dataProviders.epTreeTableDataProvider.viewModelCollection.loadedVMObjects"
+                ]
+            },
+            {
+                "action": "handleToggleIndications",
+                "observers": [
+                    "props.subPanelContext.sharedSelectionData.isIndicationToggleOn"
+                ]
+            }
+        ],
+        "onUnmount": "unregisterDestroyPolicy"
+    }
+}

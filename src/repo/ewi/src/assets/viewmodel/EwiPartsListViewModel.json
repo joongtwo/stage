@@ -1,0 +1,93 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "actions":
+    {
+        "doGridDataProvider":
+        {
+            "actionType": "dataProvider",
+            "method": "partsListDataProvider"
+        },
+        "setInputAndSelectionToMyContext": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setCommandContext"
+                },
+                {
+                    "action": "listItemSelected"
+                }
+            ]
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{props.subPanelContext}}",
+                "commandContext": {
+                    "selectedObjects": "{{data.dataProviders.partsListDataProvider.selectedObjects}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "listItemSelected": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "workinstr.selectionChange",
+                        "eventData":
+                        {
+                            "dataProvider": "{{data.dataProviders.partsListDataProvider}}",
+                            "activeTab": "{{props.subPanelContext}}"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+
+    "dataProviders":
+    {
+        "partsListDataProvider":
+        {
+            "response": "{{props.subPanelContext.datasetsToShow}}",
+            "totalFound": "{{props.subPanelContext.datasetsToShow.length}}",
+            "selectionModelMode": "single",
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        }
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "partsListDataProvider.selectionChangeEvent",
+            "action": "setInputAndSelectionToMyContext"
+        }
+    ],
+
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "doGridDataProvider",
+                "observers": [
+                    "props.subPanelContext.datasetsToShow"
+                ]
+            }
+        ]
+    }
+}

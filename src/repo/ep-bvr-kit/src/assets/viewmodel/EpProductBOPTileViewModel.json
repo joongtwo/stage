@@ -1,0 +1,125 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "commandbarContext": {
+            "objectBaseType": "MEProductBOP",
+            "createProductLabelCaption": "{{i18n.createProductBOP}}",
+            "addProductLabelCaption": "{{i18n.addProductBOPToWprkpage}}",
+            "boTypeName": "",
+            "exclusionBOTypeNames": [],
+            "objectTypesToSearch": [
+                "MEProductBOPRevision"
+            ],
+            "preferenceSuffixForTypesToSearch": "",
+            "buttonName": "{{i18n.addProductBOP}}",
+            "placeHolderForSearch": "{{i18n.typeProductBOPName}}",
+            "commandTitles": {
+                "epAddStructureTitle": "{{i18n.addProductBOP}}",
+                "epCreateStructureTitle": "{{i18n.createProductBOP}}"
+            }
+        }
+    },
+    "actions": {
+        "updateStructureContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "addVMOAndRevRuleToStructureContext"
+                },
+                {
+                    "action": "setCommandContext"
+                }
+            ]
+        },
+        "addVMOAndRevRuleToStructureContext": {
+            "actionType": "JSFunction",
+            "method": "addVMOAndRevRuleToStructureContext",
+            "inputData": {
+                "contextPath": "epTaskPageContext.functionalPlanStructureContext"
+            },
+            "deps": "js/manageWorkPackageService"
+        },
+        "clearTaskPageContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "clearTaskPageContextForManagePage"
+                },
+                {
+                    "action": "clearCommandContext"
+                }
+            ]
+        },
+        "clearTaskPageContextForManagePage": {
+            "actionType": "JSFunction",
+            "method": "removeContextsFromCtx",
+            "inputData": {
+                "contextPaths": [
+                    "epTaskPageContext.functionalPlanStructureContext",
+                    "epTaskPageContext.functionalPlan",
+                    "epTaskPageContext.functionalPlanPCI",
+                    "epTaskPageContext.functionalPlanConfigFlags"
+                ]
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": "{{ctx.epTaskPageContext.functionalPlanStructureContext}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "clearCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": ""
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        }
+    },
+    "conditions": {
+        "isTileDataAvailable": {
+            "expression": "ctx.epTaskPageContext.functionalPlanStructureContext && ctx.epTaskPageContext.functionalPlanStructureContext.vmo"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "updateStructureContextAndCommandContext"
+    },
+    "onEvent": [{
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "clearTaskPageContextAndCommandContext",
+            "condition": "removedSaveEvent.includes(ctx.epTaskPageContext.functionalPlanStructureContext.uid)"
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "updateStructureContextAndCommandContext",
+            "condition": "addedSaveEvent !== undefined"
+        }
+    ],
+    "i18n": {
+        "createProductBOP": [
+            "AdminMessages"
+        ],
+        "addProductToWprkpage": [
+            "AdminMessages"
+        ],
+        "addProductBOP": [
+            "AdminMessages"
+        ],
+        "typeProductBOPName": [
+            "AdminMessages"
+        ],
+        "addProductBOPToWprkpage": [
+            "AdminMessages"
+        ]
+    }
+}

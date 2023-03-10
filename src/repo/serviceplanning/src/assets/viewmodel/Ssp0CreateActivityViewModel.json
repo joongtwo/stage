@@ -1,0 +1,154 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "reveal": {
+            "actionType": "dataProvider",
+            "method": "customActivity"
+        },
+        "loadActivityTypes": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-03-Finder",
+            "method": "performSearch",
+            "inputData": {
+                "searchInput": {
+                    "maxToLoad": 25,
+                    "maxToReturn": 25,
+                    "providerName": "Awp0TypeSearchProvider",
+                    "searchCriteria": {
+                        "searchString": "",
+                        "typeSelectorId": "",
+                        "listOfIncludeObjectTypes": "MEActivity",
+                        "loadSubTypes": "true"
+                    },
+                    "searchFilterFieldSortType": "Alphabetical",
+                    "startIndex": "{{data.dataProviders.performSearch.startIndex}}",
+                    "attributesToInflate": [
+                        "parent_types",
+                        "type_name"
+                    ]
+                }
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "ActivityList": "{{function:activityList}}"
+            },
+            "deps": "js/ssp0CreateActivityService"
+        },
+        "AddActivityBatchJob": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "AddActivity"
+                },
+                {
+                    "action": "ClosePopUpAction"
+                }
+            ]
+        },
+        "AddActivity": {
+            "actionType": "JSFunction",
+            "method": "addActivity",
+            "inputData": {
+                "data": "{{data}}",
+                "createType": "{{data.selectedType.dbValue}}"
+            },
+            "deps": "js/ssp0ActivityUtilityService"
+        },
+        "ClosePopUpAction": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        },
+        "setSelectedType": {
+            "actionType": "JSFunction",
+            "method": "changeAction",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "selectedType": "selectedType"
+            },
+            "deps": "js/ssp0CreateActivityService"
+        }
+    },
+    "lifecycleHooks": {
+        "onInit": "reveal"
+    },
+    "onEvent": [
+        {
+            "eventId": "awlinkPopup.selected",
+            "action": "setSelectedType"
+        }
+    ],
+    "functions": {
+        "activityList": {
+            "functionName": "activityList",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "messages": {
+        "newActivityCreated": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.newActivityCreated}}"
+        }
+    },
+    "data": {
+        "currentActivity": {
+            "type": "STRING",
+            "displayName": "{{i18n.currentActivity}}",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "selectedType": {
+            "type": "STRING",
+            "dbValue": "MEActivity"
+        },
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "dataProviders": {
+        "customActivity": {
+            "dataProviderType": "TcLOV",
+            "action": "loadActivityTypes",
+            "response": "{{data.activityList}}",
+            "totalFound": "{{data.totalFound}}"
+        }
+    },
+    "i18n": {
+        "addActivity": [
+            "timeAnalysisMessages"
+        ],
+        "Cancel": [
+            "ssp0Messages"
+        ],
+        "Add": [
+            "ssp0Messages"
+        ],
+        "newActivityCreated": [
+            "timeAnalysisMessages"
+        ],
+        "currentActivity": [
+            "timeAnalysisMessages"
+        ]
+    }
+}

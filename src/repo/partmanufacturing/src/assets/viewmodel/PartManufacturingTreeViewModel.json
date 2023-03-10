@@ -1,0 +1,194 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "doArrangeEvent": {
+            "actionType": "JSFunctionAsync",
+            "method": "arrangeColumns",
+            "inputData": {
+                "declViewModel": "{{data}}",
+                "eventData": "{{data.eventData}}"
+            },
+            "deps": "js/columnArrangeService"
+        },
+        "doResourcesGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "resourcesTreeDataProvider"
+        },
+        "loadResourcesData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadResourcesData",
+            "inputData": {
+                "treeLoadInput": "request.treeLoadInput",
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": "Pm1Resources"
+                },
+                "inflateProp": true,
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "ctx.search.totalFound": "result.treeLoadResult.totalChildCount",
+                "ctx.search.totalLoaded": "result.treeLoadResult.childNodes.length",
+                "searchActivitiesResults": "result.treeLoadResult.childNodes",
+                "dataProviders.resourcesTreeDataProvider.columnConfig": "result.columnConfig"
+            },
+            "deps": "js/partMfgTreeTableService"
+        },
+        "resetResourcesColumnConfig": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2022-06-UiConfig",
+            "method": "getOrResetUIColumnConfigs3",
+            "inputData": {
+                "getOrResetUiConfigsIn": [ {
+                    "scope": "LoginUser",
+                    "scopeName": "",
+                    "clientName": "AWClient",
+                    "resetColumnConfig": true,
+                    "columnConfigQueryInfos": [ {
+                        "clientScopeURI": "Pm1Resources",
+                        "operationType": "configured",
+                        "typeNames": [
+                            "ItemRevision", "BOMLine"
+                        ],
+                        "columnsToExclude": []
+                    } ],
+                    "businessObjects": [ {} ]
+                } ]
+            },
+            "outputData": {
+                "dataProviders.resourcesTreeDataProvider.columnConfig": "columnConfigurations[0].columnConfigurations[0]"
+            }
+        },
+        "saveResourcesColumnConfig": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-03-UiConfig",
+            "method": "saveUIColumnConfigs",
+            "inputData": {
+                "columnConfigurations": [ {
+                    "clientScopeURI": "Pm1Resources",
+                    "columnConfigId": "resourcesColConfig",
+                    "columns": "{{data.dataProviders.resourcesTreeDataProvider.newColumns}}",
+                    "scope": "LoginUser",
+                    "scopeName": ""
+                } ]
+            },
+            "outputData": {},
+            "events": {
+                "success": [ {
+                    "name": "resourcesColumnConfig.saved"
+                } ]
+            }
+        },
+        "loadDataForResourcesSavedColumnConfig": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTableViewModelProperties",
+            "deps": "js/tcViewModelObjectService",
+            "inputData": {
+                "vmNodes": "{{data.eventData.vmos}}",
+                "context": {
+                    "clientScopeURI": "Pm1Resources",
+                    "clientName": "AWClient"
+                }
+            }
+        },
+        "loadResourcesProperties": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableProperties",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}",
+                "propertyLoadInput": "request.propertyLoadInput"
+            },
+            "outputData": {
+
+            },
+            "deps": "js/partManufacturingService"
+        },
+        "loadResourcesColumns": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadResourcesColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.resourcesTreeDataProvider}}"
+            },
+            "deps": "js/partManufacturingService"
+        }
+    },
+    "columnProviders": {
+        "resourcesColumnProvider": {
+            "sortCriteria": [],
+            "loadColumnAction": "loadResourcesColumns",
+            "saveColumnAndLoadAction": "saveResourcesColumnConfig",
+            "resetColumnAction": "resetResourcesColumnConfig"
+        }
+    },
+    "dataProviders": {
+        "resourcesTreeDataProvider": {
+            "initializeAction": "loadResourcesData",
+            "nextAction": "loadResourcesData",
+            "previousAction": "loadResourcesData",
+            "focusAction": "loadResourcesData",
+            "editContext": "TABLE_CONTEXT",
+            "treeLoadResult": "action.result.treeLoadResult",
+            "selectionModelMode": "single",
+            "inputData": {
+                "accessMode": "tree",
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            },
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        },
+        "resourcesPropertyProvider": {
+            "action": "loadResourcesProperties",
+            "propertyLoadResult": "action.result.propertyLoadResult"
+        }
+    },
+    "grids": {
+        "ResourcesTree": {
+            "dataProvider": "resourcesTreeDataProvider",
+            "propertyProvider": "resourcesPropertyProvider",
+            "columnProvider": "resourcesColumnProvider",
+            "enableArrangeMenu": true,
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": true,
+                "enableSorting": false
+            }
+        }
+    },
+    "data": {
+        "objectsGroupedByProperty": {
+            "internalPropertyName": "WorkspaceObject.object_type"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "doResourcesGridDataProvider",
+        "onUpdate": [
+            {
+                "action": "doResourcesGridDataProvider",
+                "observers": [
+                    "props.subPanelContext.searchState.newlyAddedResourcesState"
+                ]
+            }
+        ]
+    },
+    "onEvent": [
+        {
+            "eventId": "ResourcesTree.refreshTable",
+            "action": "doResourcesGridDataProvider"
+        },
+        {
+            "eventId": "columnArrange",
+            "cacheEventData": true,
+            "action": "doArrangeEvent"
+        },
+        {
+            "eventId": "resourcesColumnConfig.saved",
+            "action": "loadDataForResourcesSavedColumnConfig"
+        }
+    ],
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

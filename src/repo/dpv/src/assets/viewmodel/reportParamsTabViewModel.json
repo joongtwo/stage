@@ -1,0 +1,82 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "updateRepExecPriority": {
+            "actionType": "JSFunction",
+            "method": "updateRepExecPriority",
+            "inputData": {
+                "repExecPriorityVal":"{{data.repExecPriority.dbValue}}",
+                "qryTypeState": "{{props.subPanelContext.qryTypeState}}"
+                
+            },
+            "deps": "js/Dpv1ScheduleService"
+        }
+    },
+    "dataProviders": {},
+    "data": {
+        "repExecPriority": {
+            "displayName": "{{i18n.repExecutionPriority}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "1",
+            "dispValue": "{{i18n.priorityNormal}}"
+        },
+        "repExecPriorityList": {
+            "type": "STRING",
+            "dbValue": [ {
+                "propDisplayValue": "{{i18n.priorityLow}}",
+                "dispValue": "Low",
+                "propInternalValue": "0"
+            },
+            {
+                "propDisplayValue": "{{i18n.priorityNormal}}",
+                "dispValue": "Normal",
+                "propInternalValue": "1"
+            },
+            {
+                "propDisplayValue": "{{i18n.priorityAboveNormal}}",
+                "dispValue": "Above Normal",
+                "propInternalValue": "2"
+            },
+            {
+                "propDisplayValue": "{{i18n.priorityHigh}}",
+                "dispValue": "High",
+                "propInternalValue": "3"
+            },
+            {
+                "propDisplayValue": "{{i18n.priorityVeryHigh}}",
+                "dispValue": "Very High",
+                "propInternalValue": "4"
+            }
+        ]
+        }
+    },
+    "onEvent": [],
+    "functions": {
+    },
+    "conditions":{
+        "showLastNJobsData":{
+            "expression": "data.queryType.dbValue === '1'"
+        },
+        "showLastJobsTimeData":{
+            "expression": "data.queryType.dbValue === '2'"
+        },
+        "showDateTimeData":{
+            "expression": "data.queryType.dbValue >= '3'"
+        }
+    },
+    "i18n": {
+        "priorityLow": ["DpvMessages"],
+        "priorityNormal": ["DpvMessages"],
+        "priorityAboveNormal": ["DpvMessages"],
+        "priorityHigh": ["DpvMessages"],
+        "priorityVeryHigh": ["DpvMessages"],
+        "repExecutionPriority": ["DpvMessages"]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

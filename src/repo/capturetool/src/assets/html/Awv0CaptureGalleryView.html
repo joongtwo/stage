@@ -1,0 +1,8 @@
+<aw-command-panel caption="i18n.captureGallery" >
+    <aw-panel-body>
+            <aw-tab-set tabs="data.tabsModel" action="setActiveTab">
+                <aw-command-sub-panel panel-id="SnapshotBaseListSub" exist-when="conditions.renderSnapshottab" sub-panel-context="{occmgmtContext: subPanelContext.occContext}"></aw-command-sub-panel>
+                <aw-command-sub-panel panel-id="Awv0ImageCapture" exist-when="conditions.renderImageCaptureTab"></aw-command-sub-panel>
+            </aw-tab-set>
+    </aw-panel-body>
+</aw-command-panel>

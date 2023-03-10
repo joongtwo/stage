@@ -1,0 +1,132 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "commandbarContext": {
+            "objectBaseType": "Mfg0MEPlantBOP",
+            "createProductLabelCaption": "{{i18n.createPlantBOP}}",
+            "addProductLabelCaption": "{{i18n.addPlantBOPToWorkPackage}}",
+            "boTypeName": "",
+            "exclusionBOTypeNames": [],
+            "objectTypesToSearch": [
+                "Mfg0MEPlantBOPRevision"
+            ],
+            "preferenceSuffixForTypesToSearch": "",
+            "buttonName": "{{i18n.addPlantBOP}}",
+            "placeHolderForSearch": "{{i18n.typePlantBOPName}}",
+            "commandTitles": {
+                "epAddStructureTitle": "{{i18n.addExistingPlantBop}}",
+                "epCreateStructureTitle": "{{i18n.createPlantBOP}}"
+            }
+        }
+    },
+    "actions": {
+        "updateStructureContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "addVMOAndRevRuleToStructureContext"
+                },
+                {
+                    "action": "setCommandContext"
+                }
+            ]
+        },
+        "addVMOAndRevRuleToStructureContext": {
+            "actionType": "JSFunction",
+            "method": "addVMOAndRevRuleToStructureContext",
+            "inputData": {
+                "contextPath": "epTaskPageContext.processStructureContext"
+            },
+            "deps": "js/manageWorkPackageService"
+        },
+        "clearTaskPageContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "clearTaskPageContextForManagePage"
+                },
+                {
+                    "action": "clearCommandContext"
+                }
+            ]
+        },
+        "clearTaskPageContextForManagePage": {
+            "actionType": "JSFunction",
+            "method": "removeContextsFromCtx",
+            "inputData": {
+                "contextPaths": [
+                    "epTaskPageContext.processStructureContext",
+                    "epTaskPageContext.processStructure",
+                    "epTaskPageContext.processPCI",
+                    "epTaskPageContext.processStructureConfigFlags"
+                ]
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": "{{ctx.epTaskPageContext.processStructureContext}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "clearCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": ""
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        }
+    },
+    "conditions": {
+        "isTileDataAvailable": {
+            "expression": "ctx.epTaskPageContext.processStructureContext && ctx.epTaskPageContext.processStructureContext.vmo"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "updateStructureContextAndCommandContext"
+    },
+    "onEvent": [{
+            "eventId": "ep.addRemoveEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "clearTaskPageContextAndCommandContext",
+            "condition": "removedSaveEvent.includes(ctx.epTaskPageContext.processStructureContext.uid)"
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "updateStructureContextAndCommandContext",
+            "condition": "addedSaveEvent !== undefined"
+        }
+    ],
+    "i18n": {
+        "typePlantBOPName": [
+            "AdminMessages"
+        ],
+        "addt": [
+            "AdminMessages"
+        ],
+        "addPlantBOP": [
+            "AdminMessages"
+        ],
+        "createPlantBOP": [
+            "AdminMessages"
+        ],
+        "addExistingPlantBop": [
+            "AdminMessages"
+        ],
+        "addPlantBOPToWorkPackage": [
+            "AdminMessages"
+        ]
+    }
+}

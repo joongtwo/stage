@@ -1,0 +1,62 @@
+[
+  {
+    "name": {
+      "source": "/i18n/ClassificationPanelMessages",
+      "key": "standAloneClassification"
+    },
+    "priority": 10,
+    "view": "Ics1ClassificationStdWrapper",
+    "visibleWhen": "context.searchState.standAlone===true && selection.length === 0 && context.searchState && ctx.sublocation.nameToken === 'com_siemens_splm_classificationLocation:showClassificationSubLocation'"
+  },
+  {
+    "name": "",
+    "priority": 10,
+    "view": "AwSecondaryWorkareaNoSkeleton",
+    "visibleWhen": "(!context.searchState.standAlone || context.searchState.standAlone===false) && selection.length === 0 && context.searchState && ctx.sublocation.nameToken === 'com_siemens_splm_classificationLocation:showClassificationSubLocation' && context.searchState.totalFound && context.clientScopeURI === 'Awp0SearchResults'"
+  },
+  {
+    "name": {
+      "source": "/i18n/ClassificationAdminMessages",
+      "key": "propertiesTitle"
+    },
+    "priority": 1000,
+    "view": "Awp0ClsPropertiesSecWorkArea",
+    "visibleWhen": "ctx.sublocation.nameToken === 'com_siemens_splm_classificationManagerLocation:propertiesSubLocation'"
+  },
+  {
+    "name": {
+      "source": "/i18n/ClassificationAdminMessages",
+      "key": "propertiesTitle"
+    },
+    "priority": 1000,
+    "view": "Awp0ClsKeyLOVSecWorkArea",
+    "visibleWhen": "ctx.sublocation.nameToken === 'com_siemens_splm_classificationManagerLocation:keyLovSubLocation'"
+  },
+  {
+    "name": {
+      "source": "/i18n/ClassificationAdminMessages",
+      "key": "classesTitle"
+    },
+    "priority": 1000,
+    "view": "Awp0ClsClassesSecWorkArea",
+    "visibleWhen": "ctx.sublocation.nameToken === 'com_siemens_splm_classificationManagerLocation:classesSubLocation'"
+  },
+  {
+    "name": {
+      "source": "/i18n/ClassificationAdminMessages",
+      "key": "overview"
+    },
+    "priority": 100,
+    "view": "Awp0ClsNodesSecWorkArea",
+    "visibleWhen": "ctx.sublocation.nameToken === 'com_siemens_splm_classificationManagerLocation:nodesSubLocation'"
+  },
+  {
+    "name": {
+      "source": "/i18n/ClassificationAdminMessages",
+      "key": "applicationClass"
+    },
+    "priority": 200,
+    "view": "Awp0NodesAppClassSecWorkArea",
+    "visibleWhen": "ctx.sublocation.nameToken === 'com_siemens_splm_classificationManagerLocation:nodesSubLocation'"
+  }
+]

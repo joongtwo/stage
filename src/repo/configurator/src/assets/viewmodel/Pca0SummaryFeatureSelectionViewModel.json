@@ -1,0 +1,37 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "render": {
+            "method": "pca0SummarySelectionsRenderFunction",
+            "deps": "js/Pca0SummaryFeatureSelectionService",
+            "options": {
+                "elementRefList": [ "Pca0SummaryFeatureSelection" ]
+            }
+        },
+        "update": {
+            "actionType": "JSFunction",
+            "inputData": {
+                "props": "{{props}}",
+                "elementRefList": "{{parameters.elementRefList}}"
+            },
+            "method": "pca0SummarySelectionComponentUpdated",
+            "deps": "js/Pca0SummaryFeatureSelectionService"
+        }
+    },
+    "i18n": {},
+    "lifecycleHooks": {
+        "render": "render",
+        "onUpdate": {
+            "action": "update",
+            "observers": [ "props.selected" ]
+        }
+    },
+    "props": {
+        "focused": {
+            "type": "object"
+        }
+    },
+    "conditions": {},
+    "data": {},
+    "onEvent": []
+}

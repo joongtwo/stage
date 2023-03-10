@@ -1,0 +1,25 @@
+{
+    "schemaVersion": "1.0.0",
+    "props":{
+        "image-src":{
+            "type":"string"
+        },
+        "tooltip-view":{
+            "type":"string"
+        },
+        "tooltip-data":{
+            "type":"object"
+        },
+        "is-clickable":{
+            "type": "boolean"
+        },
+        "image-class":{
+            "type":"string"
+        } 
+    },
+    "conditions":{
+        "showTooltip":{
+            "expression": "props.tooltipView"
+        } 
+    }
+}

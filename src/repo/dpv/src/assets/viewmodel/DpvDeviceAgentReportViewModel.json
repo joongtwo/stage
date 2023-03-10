@@ -1,0 +1,505 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "loadDeviceAgentHourlyReportData": {
+            "actionType": "JSFunction",
+            "method": "loadDeviceAgentReportData",
+            "inputData": {
+                "searchState": "{{props.subPanelContext.searchState}}",
+                "statType": "hourly"
+            },
+            "dataParsers": [
+                {
+                    "id": "deviceAgentHourlyReportDataParser",
+                    "responseObjs": "searchResults"
+                }
+            ],
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults",
+                "searchResultsWithIcon": "{{function:updateSearchResults}}",
+                "dataProviders.deviceAgentHourlyDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/Dpv1ETLDeviceAgentService"
+        },
+        "doDeviceAgentHourlyDataProvider": {
+            "actionType": "dataProvider",
+            "method": "deviceAgentHourlyDataProvider"
+        },
+        "updateStatisticsData": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "deviceAgentHourlyGrid.plTable.reload",
+                        "condition": "props.subPanelContext.searchState.deviceAgentInfo.selectedStatOption==='hourly'"
+                    },
+                    {
+                        "name": "deviceAgentMinuteGrid.plTable.reload",
+                        "condition": "props.subPanelContext.searchState.deviceAgentInfo.selectedStatOption==='minute'"
+                    }
+                ]
+            }
+        },
+        "loadDeviceAgentMinuteReportData": {
+            "actionType": "JSFunction",
+            "method": "loadDeviceAgentReportData",
+            "inputData": {
+                "searchState": "{{props.subPanelContext.searchState}}",
+                "statType": "minute"
+            },
+            "dataParsers": [
+                {
+                    "id": "deviceAgentMinuteReportDataParser",
+                    "responseObjs": "searchResults"
+                }
+            ],
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults",
+                "searchResultsWithIcon": "{{function:updateSearchResults}}",
+                "dataProviders.deviceAgentMinuteDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/Dpv1ETLDeviceAgentService"
+        },
+        "doDeviceAgentMinuteDataProvider": {
+            "actionType": "dataProvider",
+            "method": "deviceAgentMinuteDataProvider"
+        },
+        "getHourlyChartDataForFilesTransferred": {
+            "actionType": "JSFunction",
+            "method": "createHourlyFilesTransferredLineChart",
+            "inputData": {
+                "hourlyStatDataProvider": "{{data.dataProviders.deviceAgentHourlyDataProvider}}",
+                "seriesName": "{{i18n.hourlyStatisticsDesc}}"
+            },
+            "outputData": {
+                "chartProviders.hourlyStatChartProvider.chartPoints": ""
+            },
+            "deps": "js/Dpv1ETLDeviceAgentService"
+        },
+        "getMinuteChartDataForFilesTransferred": {
+            "actionType": "JSFunction",
+            "method": "createMinuteFilesTransferredLineChart",
+            "inputData": {
+                "minStatdataProvider": "{{data.dataProviders.deviceAgentMinuteDataProvider}}",
+                "seriesName": "{{i18n.minuteStatisticsDesc}}"
+            },
+            "outputData": {
+                "chartProviders.minuteStatChartProvider.chartPoints": ""
+            },
+            "deps": "js/Dpv1ETLDeviceAgentService"
+        }
+    },
+    "dataProviders": {
+        "deviceAgentHourlyDataProvider": {
+            "action": "loadDeviceAgentHourlyReportData",
+            "selectionModelMode": "single",
+            "selectionModel": {
+                "multiSelectEnabled": false
+            },
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}"
+        },
+        "deviceAgentMinuteDataProvider": {
+            "action": "loadDeviceAgentMinuteReportData",
+            "selectionModelMode": "single",
+            "selectionModel": {
+                "multiSelectEnabled": false
+            },
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}"
+        }
+    },
+    "chartProviders": {
+        "hourlyStatChartProvider": {
+            "title": "",
+            "chartType": "line",
+            "loadDataAction": "getHourlyChartDataForFilesTransferred",
+            "chartConfig": {
+                "isChartZoomable": true,
+                "isYAxisLinearOrLogarithmic": "logarithmic",
+                "xAxisLabel": "{{i18n.etlChartHours}}",
+                "yAxisLabel": "{{i18n.etlChartFilesTransferred}}",
+                "isDataLabelOnChartEnabled": true
+            }
+        },
+        "minuteStatChartProvider": {
+            "title": "",
+            "chartType": "line",
+            "loadDataAction": "getMinuteChartDataForFilesTransferred",
+            "chartConfig": {
+                "isChartZoomable": true,
+                "isYAxisLinearOrLogarithmic": "logarithmic",
+                "xAxisLabel": "{{i18n.etlChartMinutes}}",
+                "yAxisLabel": "{{i18n.etlChartFilesTransferred}}",
+                "isDataLabelOnChartEnabled": true
+            }
+        }
+    },
+    "dataParseDefinitions": {
+        "deviceAgentHourlyReportDataParser": {
+            "type": "etlDeviceAgentReport",
+            "props": {
+                "Hour": {
+                    "name": "Hour",
+                    "value": "{{response.Hour}}",
+                    "displayValue": "{{response.Hour}}",
+                    "type": "INTEGER"
+                },
+                "FilesTransferred": {
+                    "name": "FilesTransferred",
+                    "value": "{{response.NumFileXferred}}",
+                    "displayValue": "{{response.NumFileXferred}}",
+                    "type": "INTEGER"
+                },
+                "AvgFileTransferTime": {
+                    "name": "AvgFileTransferTime",
+                    "value": "{{response.AvgXferTime}}",
+                    "displayValue": "{{response.AvgXferTime}}",
+                    "type": "INTEGER"
+                },
+                "MinFileTransferTime": {
+                    "name": "MinFileTransferTime",
+                    "value": "{{response.MinXferTime}}",
+                    "displayValue": "{{response.MinXferTime}}",
+                    "type": "INTEGER"
+                },
+                "MaxFileTransferTime": {
+                    "name": "MaxFileTransferTime",
+                    "value": "{{response.MaxXferTime}}",
+                    "displayValue": "{{response.MaxXferTime}}",
+                    "type": "INTEGER"
+                },
+                "Availability": {
+                    "name": "Availability",
+                    "value": "{{response.Availability}}",
+                    "displayValue": "{{response.Availability}}",
+                    "type": "String"
+                },
+                "Error": {
+                    "name": "Error",
+                    "value": "{{response.Failures}}",
+                    "displayValue": "{{response.Failures}}",
+                    "type": "String"
+                }
+            }
+        },
+        "deviceAgentMinuteReportDataParser": {
+            "type": "etlDeviceAgentReport",
+            "props": {
+                "Minute": {
+                    "name": "Minute",
+                    "value": "{{response.Minute}}",
+                    "displayValue": "{{response.Minute}}",
+                    "type": "INTEGER"
+                },
+                "FilesTransferred": {
+                    "name": "FilesTransferred",
+                    "value": "{{response.NumFileXferred}}",
+                    "displayValue": "{{response.NumFileXferred}}",
+                    "type": "INTEGER"
+                },
+                "AvgFileTransferTime": {
+                    "name": "AvgFileTransferTime",
+                    "value": "{{response.AvgXferTime}}",
+                    "displayValue": "{{response.AvgXferTime}}",
+                    "type": "INTEGER"
+                },
+                "MinFileTransferTime": {
+                    "name": "MinFileTransferTime",
+                    "value": "{{response.MinXferTime}}",
+                    "displayValue": "{{response.MinXferTime}}",
+                    "type": "INTEGER"
+                },
+                "MaxFileTransferTime": {
+                    "name": "MaxFileTransferTime",
+                    "value": "{{response.MaxXferTime}}",
+                    "displayValue": "{{response.MaxXferTime}}",
+                    "type": "INTEGER"
+                },
+                "Availability": {
+                    "name": "Availability",
+                    "value": "{{response.Availability}}",
+                    "displayValue": "{{response.Availability}}",
+                    "type": "String"
+                },
+                "Error": {
+                    "name": "Error",
+                    "value": "{{response.Failures}}",
+                    "displayValue": "{{response.Failures}}",
+                    "type": "String"
+                }
+            }
+        }
+    },
+    "columnProviders": {
+        "deviceAgentHourlyColumnProvider": {
+            "frozenColumnIndex": -1,
+            "headerHeight": "LARGE",
+            "columns": [
+                {
+                    "name": "Hour",
+                    "typeName": "INTEGER",
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "FilesTransferred",
+                    "typeName": "INTEGER",
+                    "maxWidth": 100,
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "AvgFileTransferTime",
+                    "typeName": "INTEGER",
+                    "minWidth": 300,
+                    "width": 300,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "MinFileTransferTime",
+                    "typeName": "INTEGER",
+                    "minWidth": 300,
+                    "width": 300,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "MaxFileTransferTime",
+                    "typeName": "INTEGER",
+                    "minWidth": 300,
+                    "width": 300,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "Availability",
+                    "typeName": "String",
+                    "minWidth": 300,
+                    "width": 300,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "Error",
+                    "typeName": "String",
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                }
+            ]
+        },
+        "deviceAgentMinuteColumnProvider": {
+            "frozenColumnIndex": -1,
+            "headerHeight": "LARGE",
+            "columns": [
+                {
+                    "name": "Minute",
+                    "typeName": "INTEGER",
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "FilesTransferred",
+                    "typeName": "INTEGER",
+                    "maxWidth": 100,
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "AvgFileTransferTime",
+                    "typeName": "INTEGER",
+                    "minWidth": 300,
+                    "width": 300,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "MinFileTransferTime",
+                    "typeName": "INTEGER",
+                    "minWidth": 300,
+                    "width": 300,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "MaxFileTransferTime",
+                    "typeName": "INTEGER",
+                    "minWidth": 300,
+                    "width": 300,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "Availability",
+                    "typeName": "String",
+                    "minWidth": 300,
+                    "width": 300,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "Error",
+                    "typeName": "String",
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                }
+            ]
+        }
+    },
+    "grids": {
+        "deviceAgentHourlyGrid": {
+            "dataProvider": "deviceAgentHourlyDataProvider",
+            "columnProvider": "deviceAgentHourlyColumnProvider",
+            "enableArrangeMenu": true,
+            "gridOptions": {
+                "enableGridMenu": true,
+                "isFilteringEnabled": ""
+            }
+        },
+        "deviceAgentMinuteGrid": {
+            "dataProvider": "deviceAgentMinuteDataProvider",
+            "columnProvider": "deviceAgentMinuteColumnProvider",
+            "enableArrangeMenu": true,
+            "gridOptions": {
+                "enableGridMenu": true,
+                "isFilteringEnabled": ""
+            }
+        }
+    },
+    "data": {
+        "deviceAgentTitle": {
+            "displayName": "{{i18n.deviceAgentInfoTitle}}",
+            "type": "STRING"
+        }
+    },
+    "functions": {
+        "updateSearchResults": {
+            "functionName": "updateSearchResultsWithIcon"
+        }
+    },
+    "i18n": {
+        "deviceAgentInfoTitle": [
+            "DpvMessages"
+        ],
+        "hourlyStatistics": [
+            "DpvMessages"
+        ],
+        "minuteStatistics": [
+            "DpvMessages"
+        ],
+        "etlChartHours": [
+            "DpvMessages"
+        ],
+        "etlChartMinutes": [
+            "DpvMessages"
+        ],
+        "etlChartFilesTransferred": [
+            "DpvMessages"
+        ],
+        "hourlyStatisticsDesc": [
+            "DpvMessages"
+        ],
+        "minuteStatisticsDesc": [
+            "DpvMessages"
+        ],
+        "plantName": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "plantId": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "deviceAgent": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "timeOfLastCommunication": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "lastFileTransferred": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "timeLastFileTransferred": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "filesTransferredInLast24Hrs": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "avgFileTransferTime": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "minFileTransferTime": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "maxFileTransferTime": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "connAvailLast24Hrs": [
+            "DpvColumnConfigurationMessages"
+        ]
+    },
+    "onEvent": [
+        {
+            "eventId": "deviceAgentHourlyDataProvider.modelObjectsUpdated",
+            "action": "getHourlyChartDataForFilesTransferred",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "deviceAgentMinuteDataProvider.modelObjectsUpdated",
+            "action": "getMinuteChartDataForFilesTransferred",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "deviceAgentHourlyGrid.initialized",
+            "cacheEventData": true,
+            "action": "doDeviceAgentHourlyDataProvider"
+        },
+        {
+            "eventId": "deviceAgentHourlyGrid.refreshTable",
+            "action": "doDeviceAgentHourlyDataProvider"
+        },
+        {
+            "eventId": "deviceAgentHourlyGrid.reset",
+            "action": "doDeviceAgentHourlyDataProvider"
+        },
+        {
+            "eventId": "deviceAgentMinuteGrid.initialized",
+            "cacheEventData": true,
+            "action": "doDeviceAgentMinuteDataProvider"
+        },
+        {
+            "eventId": "deviceAgentMinuteGrid.refreshTable",
+            "action": "doDeviceAgentMinuteDataProvider"
+        },
+        {
+            "eventId": "deviceAgentMinuteGrid.reset",
+            "action": "doDeviceAgentMinuteDataProvider"
+        }
+    ],
+    "conditions": {
+        "showChart" : {
+            "expression": "props.subPanelContext.searchState.deviceAgentInfo.showGraph"
+        },
+        "minuteStatCond" : {
+            "expression": "props.subPanelContext.searchState.deviceAgentInfo.selectedStatOption==='minute'"
+        },
+        "hourlyStatCond" : {
+            "expression": "props.subPanelContext.searchState.deviceAgentInfo.selectedStatOption==='hourly'"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "updateStatisticsData",
+                "observers": [
+                    "props.subPanelContext.searchState.deviceAgentInfo.deviceAgent"
+                ]
+            }
+        ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

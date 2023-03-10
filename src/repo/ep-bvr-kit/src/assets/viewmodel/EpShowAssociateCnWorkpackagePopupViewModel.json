@@ -1,0 +1,582 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "mbmOpenWithCnOption": {
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "mbmOpenWithCnOption",
+            "vertical": true
+        },
+        "mbmOpenWithoutCnOption": {
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": null,
+            "vertical": true
+        },
+        "mbmOpenWithCnOptionValues": [{
+            "propDisplayValue": "{{i18n.mbmWpTrackOptionText}}",
+            "propInternalValue": "mbmOpenWithCnOption"
+        }],
+        "mbmOpenWithoutCnOptionValues": [{
+            "propDisplayValue": "{{i18n.mbmWpWithoutTrackOptionText}}",
+            "propInternalValue": "mbmOpenWithoutCnOption"
+        }],
+        "mbmCnListBox": {
+            "type": "STRING",
+            "isRequired": "true",
+            "dataProvider": "mbmCnListBoxDataProvider"
+        }
+    },
+    "dataProviders": {
+        "mbmCnListBoxDataProvider": {
+            "action": "prepareAssociatedCnOptions",
+            "response": "{{data.associatedCnObjects}}"
+        }
+    },
+    "actions": {
+        "mbmOpenWithCnOptionSelection": {
+            "actionType": "JSFunction",
+            "method": "mbmUpdateSelectedOption",
+            "inputData": {
+                "viewModel": "{{data}}",
+                "selectedOption": "mbmOpenWithCnOption",
+                "unSelectedOption": "mbmOpenWithoutCnOption"
+            },
+            "outputData": {
+                "mbmSelectedOption": ""
+            },
+            "deps": "js/openWPService"
+        },
+        "mbmOpenWithoutCnOptionSelection": {
+            "actionType": "JSFunction",
+            "method": "mbmUpdateSelectedOption",
+            "inputData": {
+                "viewModel": "{{data}}",
+                "selectedOption": "mbmOpenWithoutCnOption",
+                "unSelectedOption": "mbmOpenWithCnOption"
+            },
+            "outputData": {
+                "mbmSelectedOption": ""
+            },
+            "deps": "js/openWPService"
+        },
+        "prepareAssociatedCnOptions": {
+            "actionType": "JSFunction",
+            "method": "prepareAssociatedCnOptions",
+            "inputData": {
+                "wpInfo": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "associatedCnObjects": "result.associatedCnObjects",
+                "mbmOptionsDataPreapred": "result.optionPrepared",
+                "mbmSelectedOption": "result.defaultOption"
+            },
+            "deps": "js/openWPService"
+        },
+        "mbmCancelPopup": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "inputData": {
+                "popupId": "{{data.popupId}}"
+            },
+            "deps": "js/declpopupService"
+        },
+        "mbmProcessNavigation": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "loadRelatedMcnsProp"
+                },
+                {
+                    "action": "mbmProcessNavigationAction"
+                },
+                {
+                    "action": "mbmProcessToNavigateWorkpackageEvent",
+                    "condition": "!data.workPackageInfo.error"
+                },
+                {
+                    "action": "showMCNNotExistError",
+                    "condition": "data.workPackageInfo.error"
+                }
+            ]
+        },
+        "showMCNNotExistError": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {}
+                ]
+            },
+            "actionMessages": {
+                "success": [{
+                    "message": "showMCNNotExistErrorMessage"
+                }]
+            }
+        },
+        "mbmProcessToNavigateWorkpackageEvent": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [{
+                        "name": "mbm.processNavigateWorkPackageWithoutChangeNoticePopupEvent",
+                        "condition": "data.mbmSelectedOption==='mbmOpenWithoutCnOption'"
+                    },
+                    {
+                        "name": "mbm.activateSelectedChangeNoticeSuccessEvent",
+                        "condition": "data.mbmSelectedOption==='mbmOpenWithCnOption'"
+                    }
+                ]
+            }
+        },
+        "loadRelatedMcnsProp": {
+            "actionType": "JSFunction",
+            "method": "getProperties",
+            "inputData": {
+                "uids": [
+                    "{{data.mbmCnListBox.dbValue.uid}}"
+                ],
+                "propNames": [
+                    "CMImplements"
+                ],
+                "activeMCN": "{{data.mbmCnListBox.dbValue}}"
+            },
+            "deps": "soa/dataManagementService"
+        },
+        "mbmProcessNavigationAction": {
+            "actionType": "JSFunction",
+            "method": "processNavigation",
+            "inputData": {
+                "workPackage": "{{subPanelContext.workPackage}}",
+                "selectedCN": "{{data.mbmCnListBox.dbValue}}",
+                "navigationType": "{{subPanelContext.navigationType}}",
+                "mbmSelectedCnOption": "{{data.mbmSelectedOption}}"
+            },
+            "outputData": {
+                "workPackageInfo": ""
+            },
+            "deps": "js/openWPService"
+        },
+        "mbmProcessNavigateWorkPackageWithoutChangeNotice": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [{
+                        "name": "mbm.navigateToMbmAlignmentPagePopupEvent",
+                        "condition": "data.workPackageInfo.navigationType==='_self'"
+                    },
+                    {
+                        "name": "mbm.navigateToMbmAlignmentNewTabPopupEvent",
+                        "condition": "data.workPackageInfo.navigationType==='newTab'"
+                    },
+                    {
+                        "name": "mbm.navigateToMbmAlignmentNewWindowPopupEvent",
+                        "condition": "data.workPackageInfo.navigationType==='newWindow'"
+                    },
+                    {
+                        "name": "mbm.associatedCnWpOpenPopupCloseEvent"
+                    }
+                ]
+            }
+        },
+        "mbmProcessNavigateWorkPackageWithSelectedChangeNotice": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [{
+                        "name": "mbm.navigateWithCnToAlignEbomMbomPagePopupEvent",
+                        "condition": "data.workPackageInfo.navigationType==='_self'"
+                    },
+                    {
+                        "name": "mbm.navigateWithCnToAlignEbomMbomPageInNewTabPopupEvent",
+                        "condition": "data.workPackageInfo.navigationType==='newTab'"
+                    },
+                    {
+                        "name": "mbm.navigateWithCnToAlignEbomMbomPageInNewWindowPopupEvent",
+                        "condition": "data.workPackageInfo.navigationType==='newWindow'"
+                    },
+                    {
+                        "name": "mbm.associatedCnWpOpenPopupCloseEvent"
+                    }
+                ]
+            }
+        },
+        "mbmNavigateToMbmAlignmentPage": {
+            "actionType": "Navigate",
+            "navigateTo": "multiBOMManager",
+            "navigationParams": {
+                "cc_uid": "{{data.workPackageInfo.workPackage.uid}}",
+                "ebomPCI": "{{ctx.epPageContext.ebomPCI.uid}}",
+                "mbomPCI": "{{ctx.epPageContext.mbomPCI.uid}}",
+                "processPCI": "{{ctx.epPageContext.processPCI.uid}}",
+                "productPCI": "{{ctx.epPageContext.productPCI.uid}}",
+                "productionProgramPCI": "{{ctx.epPageContext.productionProgramPCI.uid}}",
+                "plantPCI": "{{ctx.epPageContext.plantPCI.uid}}",
+                "functionalPlanPCI": "{{ctx.epPageContext.functionalPlanPCI.uid}}"
+            }
+        },
+        "mbmNavigateToAlignEbomMbomPageInNewTab": {
+            "actionType": "Navigate",
+            "navigateTo": "multiBOMManager",
+            "navigationParams": {
+                "cc_uid": "{{data.workPackageInfo.workPackage.uid}}",
+                "ebomPCI": "{{ctx.epPageContext.ebomPCI.uid}}",
+                "mbomPCI": "{{ctx.epPageContext.mbomPCI.uid}}",
+                "processPCI": "{{ctx.epPageContext.processPCI.uid}}",
+                "productPCI": "{{ctx.epPageContext.productPCI.uid}}",
+                "productionProgramPCI": "{{ctx.epPageContext.productionProgramPCI.uid}}",
+                "plantPCI": "{{ctx.epPageContext.plantPCI.uid}}",
+                "functionalPlanPCI": "{{ctx.epPageContext.functionalPlanPCI.uid}}"
+            },
+            "navigateIn": "newTab"
+        },
+        "mbmNavigateToAlignEbomMbomPageInNewWindow": {
+            "actionType": "Navigate",
+            "navigateTo": "multiBOMManager",
+            "navigationParams": {
+                "cc_uid": "{{data.workPackageInfo.workPackage.uid}}",
+                "ebomPCI": "{{ctx.epPageContext.ebomPCI.uid}}",
+                "mbomPCI": "{{ctx.epPageContext.mbomPCI.uid}}",
+                "processPCI": "{{ctx.epPageContext.processPCI.uid}}",
+                "productPCI": "{{ctx.epPageContext.productPCI.uid}}",
+                "productionProgramPCI": "{{ctx.epPageContext.productionProgramPCI.uid}}",
+                "plantPCI": "{{ctx.epPageContext.plantPCI.uid}}",
+                "functionalPlanPCI": "{{ctx.epPageContext.functionalPlanPCI.uid}}"
+            },
+            "navigateIn": "newWindow"
+        },
+        "mbmNavigateWithCnToAlignEbomMbomPage": {
+            "actionType": "Navigate",
+            "navigateTo": "multiBOMManager",
+            "navigationParams": {
+                "cc_uid": "{{data.workPackageInfo.workPackage.uid}}",
+                "impacting_cn": "{{data.workPackageInfo.selectedCN.uid}}",
+                "ebomPCI": "{{ctx.epPageContext.ebomPCI.uid}}",
+                "mbomPCI": "{{ctx.epPageContext.mbomPCI.uid}}",
+                "processPCI": "{{ctx.epPageContext.processPCI.uid}}",
+                "productPCI": "{{ctx.epPageContext.productPCI.uid}}",
+                "productionProgramPCI": "{{ctx.epPageContext.productionProgramPCI.uid}}",
+                "plantPCI": "{{ctx.epPageContext.plantPCI.uid}}",
+                "functionalPlanPCI": "{{ctx.epPageContext.functionalPlanPCI.uid}}"
+            }
+        },
+        "mbmNavigateWithCnToAlignEbomMbomPageInNewTab": {
+            "actionType": "Navigate",
+            "navigateTo": "multiBOMManager",
+            "navigationParams": {
+                "cc_uid": "{{data.workPackageInfo.workPackage.uid}}",
+                "impacting_cn": "{{data.workPackageInfo.selectedCN.uid}}",
+                "ebomPCI": "{{ctx.epPageContext.ebomPCI.uid}}",
+                "mbomPCI": "{{ctx.epPageContext.mbomPCI.uid}}",
+                "processPCI": "{{ctx.epPageContext.processPCI.uid}}",
+                "productPCI": "{{ctx.epPageContext.productPCI.uid}}",
+                "productionProgramPCI": "{{ctx.epPageContext.productionProgramPCI.uid}}",
+                "plantPCI": "{{ctx.epPageContext.plantPCI.uid}}",
+                "functionalPlanPCI": "{{ctx.epPageContext.functionalPlanPCI.uid}}"
+            },
+            "navigateIn": "newTab"
+        },
+        "mbmNavigateWithCnToAlignEbomMbomPageInNewWindow": {
+            "actionType": "Navigate",
+            "navigateTo": "multiBOMManager",
+            "navigationParams": {
+                "cc_uid": "{{data.workPackageInfo.workPackage.uid}}",
+                "impacting_cn": "{{data.workPackageInfo.selectedCN.uid}}",
+                "ebomPCI": "{{ctx.epPageContext.ebomPCI.uid}}",
+                "mbomPCI": "{{ctx.epPageContext.mbomPCI.uid}}",
+                "processPCI": "{{ctx.epPageContext.processPCI.uid}}",
+                "productPCI": "{{ctx.epPageContext.productPCI.uid}}",
+                "productionProgramPCI": "{{ctx.epPageContext.productionProgramPCI.uid}}",
+                "plantPCI": "{{ctx.epPageContext.plantPCI.uid}}",
+                "functionalPlanPCI": "{{ctx.epPageContext.functionalPlanPCI.uid}}"
+            },
+            "navigateIn": "newWindow"
+        },
+        "mbmNavigateWithMCnToAlignEbomMbomPage": {
+            "actionType": "Navigate",
+            "navigateTo": "multiBOMManager",
+            "navigationParams": {
+                "cc_uid": "{{data.workPackageInfo.workPackage.uid}}",
+                "impacting_cn": "{{data.workPackageInfo.selectedCN.uid}}",
+                "tracking_cn": "{{data.workPackageInfo.selectedMCN.uid}}",
+                "ebomPCI": "{{ctx.epPageContext.ebomPCI.uid}}",
+                "mbomPCI": "{{ctx.epPageContext.mbomPCI.uid}}",
+                "processPCI": "{{ctx.epPageContext.processPCI.uid}}",
+                "productPCI": "{{ctx.epPageContext.productPCI.uid}}",
+                "productionProgramPCI": "{{ctx.epPageContext.productionProgramPCI.uid}}",
+                "plantPCI": "{{ctx.epPageContext.plantPCI.uid}}",
+                "functionalPlanPCI": "{{ctx.epPageContext.functionalPlanPCI.uid}}"
+            }
+        },
+        "mbmNavigateWithMCnToAlignEbomMbomPageInNewTab": {
+            "actionType": "Navigate",
+            "navigateTo": "multiBOMManager",
+            "navigationParams": {
+                "cc_uid": "{{data.workPackageInfo.workPackage.uid}}",
+                "impacting_cn": "{{data.workPackageInfo.selectedCN.uid}}",
+                "tracking_cn": "{{data.workPackageInfo.selectedMCN.uid}}",
+                "ebomPCI": "{{ctx.epPageContext.ebomPCI.uid}}",
+                "mbomPCI": "{{ctx.epPageContext.mbomPCI.uid}}",
+                "processPCI": "{{ctx.epPageContext.processPCI.uid}}",
+                "productPCI": "{{ctx.epPageContext.productPCI.uid}}",
+                "productionProgramPCI": "{{ctx.epPageContext.productionProgramPCI.uid}}",
+                "plantPCI": "{{ctx.epPageContext.plantPCI.uid}}",
+                "functionalPlanPCI": "{{ctx.epPageContext.functionalPlanPCI.uid}}"
+            },
+            "navigateIn": "newTab"
+        },
+        "mbmNavigateWithMCnToAlignEbomMbomPageInNewWindow": {
+            "actionType": "Navigate",
+            "navigateTo": "multiBOMManager",
+            "navigationParams": {
+                "cc_uid": "{{data.workPackageInfo.workPackage.uid}}",
+                "impacting_cn": "{{data.workPackageInfo.selectedCN.uid}}",
+                "tracking_cn": "{{data.workPackageInfo.selectedMCN.uid}}",
+                "ebomPCI": "{{ctx.epPageContext.ebomPCI.uid}}",
+                "mbomPCI": "{{ctx.epPageContext.mbomPCI.uid}}",
+                "processPCI": "{{ctx.epPageContext.processPCI.uid}}",
+                "productPCI": "{{ctx.epPageContext.productPCI.uid}}",
+                "productionProgramPCI": "{{ctx.epPageContext.productionProgramPCI.uid}}",
+                "plantPCI": "{{ctx.epPageContext.plantPCI.uid}}",
+                "functionalPlanPCI": "{{ctx.epPageContext.functionalPlanPCI.uid}}"
+            },
+            "navigateIn": "newWindow"
+        },
+        "initializeData": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "initializeHeaderMessage"
+                },
+                {
+                    "action": "initializeDataProvider"
+                }
+            ]
+        },
+        "initializeDataProvider": {
+            "actionType": "dataProvider",
+            "method": "mbmCnListBoxDataProvider"
+        },
+        "initializeHeaderMessage": {
+            "actionType": "JSFunction",
+            "method": "applyMessagesParams",
+            "inputData": {
+                "messagesData": [
+                    {
+                        "text": "{{i18n.mbmAssociateCnWpPopupDesc}}",
+                        "textParams": [
+                            "{{subPanelContext.workPackage.props.object_name.uiValues[0]}}"
+                        ]
+                    }
+                ]
+            },
+            "outputData": {
+                "mbmAssociateCnWorkpackageOpenDesc":"0.text"
+            },
+            "deps": "js/mfeMessagesService"
+        },
+        "navigateToProcessPage": {
+            "actionType": "Navigate",
+            "navigateTo": "highLevelPlanning",
+            "navigationParams": {
+                "uid": "{{ctx.epTaskPageContext.processStructure.uid}}",
+                "impacting_cn": "{{data.workPackageInfo.selectedMCN.uid}}",
+                "tracking_cn": "{{data.workPackageInfo.selectedMCN.uid}}",
+                "ebomPCI": "{{ctx.epPageContext.ebomPCI.uid}}",
+                "mbomPCI": "{{ctx.epPageContext.mbomPCI.uid}}",
+                "processPCI": "{{ctx.epPageContext.processPCI.uid}}",
+                "productPCI": "{{ctx.epPageContext.productPCI.uid}}",
+                "productionProgramPCI": "{{ctx.epPageContext.productionProgramPCI.uid}}",
+                "plantPCI": "{{ctx.epPageContext.plantPCI.uid}}",
+                "functionalPlanPCI": "{{ctx.epPageContext.functionalPlanPCI.uid}}"
+            }
+        },
+        "navigateToAssemblyPlanningPage": {
+            "actionType": "Navigate",
+            "navigateTo": "assemblyPlanning",
+            "navigationParams": {
+                "uid": "{{subPanelContext.processUid}}",
+                "impacting_cn": "{{data.workPackageInfo.selectedMCN.uid}}",
+                "tracking_cn": "{{data.workPackageInfo.selectedMCN.uid}}",
+                "ebomPCI": "{{ctx.epPageContext.ebomPCI.uid}}",
+                "mbomPCI": "{{ctx.epPageContext.mbomPCI.uid}}",
+                "processPCI": "{{ctx.epPageContext.processPCI.uid}}",
+                "productPCI": "{{ctx.epPageContext.productPCI.uid}}",
+                "productionProgramPCI": "{{ctx.epPageContext.productionProgramPCI.uid}}",
+                "plantPCI": "{{ctx.epPageContext.plantPCI.uid}}",
+                "functionalPlanPCI": "{{ctx.epPageContext.functionalPlanPCI.uid}}"
+            }
+        },
+        "navigateToProductBOPPage": {
+            "actionType": "Navigate",
+            "navigateTo": "functionalPlan",
+            "navigationParams": {
+                "uid": "{{ctx.epTaskPageContext.functionalPlan.uid}}",
+                "impacting_cn": "{{data.workPackageInfo.selectedMCN.uid}}",
+                "tracking_cn": "{{data.workPackageInfo.selectedMCN.uid}}",
+                "ebomPCI": "{{ctx.epPageContext.ebomPCI.uid}}",
+                "mbomPCI": "{{ctx.epPageContext.mbomPCI.uid}}",
+                "processPCI": "{{ctx.epPageContext.processPCI.uid}}",
+                "productPCI": "{{ctx.epPageContext.productPCI.uid}}",
+                "productionProgramPCI": "{{ctx.epPageContext.productionProgramPCI.uid}}",
+                "plantPCI": "{{ctx.epPageContext.plantPCI.uid}}",
+                "functionalPlanPCI": "{{ctx.epPageContext.functionalPlanPCI.uid}}"
+            }
+        }
+    },
+    "messages": {
+        "mbmReadOnlyMessage": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.mbmReadOnlyChangeNotice}}"
+        },
+        "showMCNNotExistErrorMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.activeMcnNotExist}}",
+            "messageTextParams": [
+                "{{data.workPackageInfo.selectedCN.props.object_string.uiValues[0]}}"
+            ]
+        }
+    },
+    "onEvent": [{
+            "eventId": "mbm.associatedCnWpOpenPopupCloseEvent",
+            "action": "mbmCancelPopup"
+        },
+        {
+            "eventId": "mbm.navigateToMbmAlignmentPagePopupEvent",
+            "action": "navigateToProcessPage",
+            "condition": "props.subPanelContext.navigateTo === 'highLevelPlanning'"
+        },
+        {
+            "eventId": "mbm.navigateToMbmAlignmentPagePopupEvent",
+            "action": "navigateToAssemblyPlanningPage",
+            "condition": "props.subPanelContext.navigateTo === 'assemblyPlanning'"
+        },
+        {
+            "eventId": "mbm.navigateToMbmAlignmentPagePopupEvent",
+            "action": "navigateToProductBOPPage",
+            "condition": "props.subPanelContext.navigateTo === 'functionalPlan'"
+        },
+        {
+            "eventId": "mbm.navigateToMbmAlignmentPagePopupEvent",
+            "action": "mbmNavigateToMbmAlignmentPage",
+            "condition": "props.subPanelContext.navigateTo === 'multiBOMManager'"
+        },
+        {
+            "eventId": "mbm.navigateToMbmAlignmentNewTabPopupEvent",
+            "action": "mbmNavigateToAlignEbomMbomPageInNewTab"
+        },
+        {
+            "eventId": "mbm.navigateToMbmAlignmentNewWindowPopupEvent",
+            "action": "mbmNavigateToAlignEbomMbomPageInNewWindow"
+        },
+        {
+            "eventId": "mbm.processNavigateWorkPackageWithoutChangeNoticePopupEvent",
+            "action": "mbmProcessNavigateWorkPackageWithoutChangeNotice"
+        },
+        {
+            "eventId": "mbm.activateSelectedChangeNoticeSuccessEvent",
+            "action": "mbmProcessNavigateWorkPackageWithSelectedChangeNotice"
+        },
+        {
+            "eventId": "mbm.navigateWithCnToAlignEbomMbomPagePopupEvent",
+            "action": "mbmNavigateWithCnToAlignEbomMbomPage",
+            "condition": "!data.workPackageInfo.selectedMCN && props.subPanelContext.navigateTo === 'multiBOMManager'"
+        },
+        {
+            "eventId": "mbm.navigateWithCnToAlignEbomMbomPagePopupEvent",
+            "action": "navigateToProcessPage",
+            "condition": "!data.workPackageInfo.selectedMCN && props.subPanelContext.navigateTo === 'highLevelPlanning'"
+        },
+        {
+            "eventId": "mbm.navigateWithCnToAlignEbomMbomPagePopupEvent",
+            "action": "navigateToAssemblyPlanningPage",
+            "condition": "!data.workPackageInfo.selectedMCN && props.subPanelContext.navigateTo === 'assemblyPlanning'"
+        },
+        {
+            "eventId": "mbm.navigateWithCnToAlignEbomMbomPagePopupEvent",
+            "action": "navigateToProductBOPPage",
+            "condition": "props.subPanelContext.navigateTo === 'functionalPlan'"
+        },
+        {
+            "eventId": "mbm.navigateWithCnToAlignEbomMbomPageInNewTabPopupEvent",
+            "action": "navigateToProcessPage",
+            "condition": "!data.workPackageInfo.selectedMCN"
+        },
+        {
+            "eventId": "mbm.navigateWithCnToAlignEbomMbomPageInNewWindowPopupEvent",
+            "action": "mbmNavigateWithCnToAlignEbomMbomPageInNewWindow",
+            "condition": "!data.workPackageInfo.selectedMCN"
+        },
+        {
+            "eventId": "mbm.navigateWithCnToAlignEbomMbomPagePopupEvent",
+            "action": "mbmNavigateWithMCnToAlignEbomMbomPage",
+            "condition": "data.workPackageInfo.selectedMCN && props.subPanelContext.navigateTo === 'multiBOMManager'"
+        },
+        {
+            "eventId": "mbm.navigateWithCnToAlignEbomMbomPagePopupEvent",
+            "action": "navigateToProcessPage",
+            "condition": "data.workPackageInfo.selectedMCN && props.subPanelContext.navigateTo === 'highLevelPlanning'"
+        },
+        {
+            "eventId": "mbm.navigateWithCnToAlignEbomMbomPagePopupEvent",
+            "action": "navigateToAssemblyPlanningPage",
+            "condition": "data.workPackageInfo.selectedMCN && props.subPanelContext.navigateTo === 'assemblyPlanning'"
+        },
+        {
+            "eventId": "mbm.navigateWithCnToAlignEbomMbomPageInNewTabPopupEvent",
+            "action": "mbmNavigateWithMCnToAlignEbomMbomPageInNewTab",
+            "condition": "data.workPackageInfo.selectedMCN"
+        },
+        {
+            "eventId": "mbm.navigateWithCnToAlignEbomMbomPageInNewWindowPopupEvent",
+            "action": "mbmNavigateWithMCnToAlignEbomMbomPageInNewWindow",
+            "condition": "data.workPackageInfo.selectedMCN"
+        }
+    ],
+    "conditions": {
+        "isDataPrepared": {
+            "expression": "data.mbmOptionsDataPreapred===true"
+        },
+        "isCnWithoutTrackOptionSelected": {
+            "expression": "data.mbmSelectedOption==='mbmOpenWithoutCnOption'"
+        },
+        "isCnWithTrackOptionSelected": {
+            "expression": "data.mbmSelectedOption==='mbmOpenWithCnOption'"
+        },
+        "isCnSelected": {
+            "expression": "conditions.isCnWithTrackOptionSelected && data.mbmCnListBox.dbValue && data.mbmCnListBox.dbValue!== ''"
+        },
+        "isSelectedCnReadOnly": {
+            "expression": "conditions.isCnSelected && data.mbmCnListBox.dbValue.props.is_modifiable.dbValues[0] === '0'"
+        }
+    },
+    "i18n": {
+        "mbmAssociateCnWpPopupDesc": [
+            "mbmMessages"
+        ],
+        "mbmWpTrackOptionText": [
+            "mbmMessages"
+        ],
+        "mbmWpWithoutTrackOptionText": [
+            "mbmMessages"
+        ],
+        "mbmContinue": [
+            "mbmMessages"
+        ],
+        "mbmCancel": [
+            "mbmMessages"
+        ],
+        "mbmReadOnlyChangeNotice": [
+            "mbmMessages"
+        ],
+        "mbmContinueWithoutTrackingButtonTitle": [
+            "mbmMessages"
+        ],
+        "activeMcnNotExist": [
+            "mbmMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onMount": "initializeData"
+    }
+}

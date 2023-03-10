@@ -1,0 +1,221 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpSearchObject_selectedObject": {
+            "syncObject": {}
+        }
+    },
+    "actions": {
+        "getPreferenceSuffixForTypesToSearch": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{subPanelContext.preferenceSuffixForTypesToSearch}}"
+            },
+            "outputData": {
+                "preferenceSuffixForTypesToSearch": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "searchObjects": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getSearchTypesFromPreference",
+                    "condition": "conditions.isSearchBasedOnPreference"
+                },
+                {
+                    "action": "getSpecifiedObjectType",
+                    "condition": "conditions.isSearchNotBasedOnPreference"
+                },
+                {
+                    "action": "fetchSubBOTypes",
+                    "condition": "conditions.isSubBusinessObjectsPresent"
+                },
+                {
+                    "action": "doSearch"
+                }
+            ]
+        },
+        "getSearchTypesFromPreference": {
+            "actionType": "JSFunctionAsync",
+            "method": "getSearchTypesFromPreference",
+            "inputData": {
+                "preferenceSuffixForTypesToSearch": "{{data.preferenceSuffixForTypesToSearch}}"
+            },
+            "outputData": {
+                "subBusinessObjects": ""
+            },
+            "deps": "js/epSearchObjectService"
+        },
+        "getSpecifiedObjectType": {
+            "actionType": "JSFunction",
+            "method": "getSpecifiedObjectType",
+            "inputData": {
+                "data": "{{data.objectSearchBox.dbValue}}",
+                "context": "{{subPanelContext.objectTypesToSearch}}"
+            },
+            "outputData": {
+                "subBusinessObjects": ""
+            },
+            "deps": "js/epSearchObjectService"
+        },
+        "fetchSubBOTypes": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2010-04-DataManagement",
+            "method": "findDisplayableSubBusinessObjectsWithDisplayNames",
+            "inputData": {
+                "input": "{{subPanelContext.boTypeWithExclusionTypeNames}}"
+            },
+            "outputData": {
+                "subBusinessObjects": "{{function:processSoaResponseForBOTypes}}"
+            },
+            "deps": "js/epSearchObjectService"
+        },
+        "updateSelection": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateSelectionOnData"
+                },
+                {
+                    "action": "updateSelectionPort"
+                }
+            ]
+        },
+        "updateSelectionOnData": {
+            "actionType": "JSFunction",
+            "method": "updateSelectionOnData",
+            "inputData": {
+                "newSelection": "{{data.eventMap['epSearchObjectProvider.selectionChangeEvent'].selectedObjects[0]}}"
+            },
+            "outputData": {
+                "selectedObject": "selectedObject"
+            },
+            "deps": "js/epSearchObjectService"
+        },
+        "updateSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpSearchObject_selectedObject",
+                "syncObject": "{{data.selectedObject}}"
+            }
+        },
+        "doSearch": {
+            "actionType": "dataProvider",
+            "method": "epSearchObjectProvider"
+        },
+        "performSearchForObject": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "inflateProperties": false,
+                "noServiceData": false,
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": "Awp0SearchResults",
+                    "columnsToExclude": [],
+                    "hostingClientName": "",
+                    "operationType": "intersection"
+                },
+                "saveColumnConfigData": {
+                    "columnConfigId": "",
+                    "clientScopeURI": "",
+                    "columns": [],
+                    "scope": "",
+                    "scopeName": ""
+                },
+                "searchInput": {
+                    "attributesToInflate": [],
+                    "cursor": {
+                        "startIndex": "{{data.dataProviders.epSearchObjectProvider.startIndex}}",
+                        "endIndex": "{{data.dataProviders.epSearchObjectProvider.endIndex}}",
+                        "startReached": false,
+                        "endReached": false
+                    },
+                    "internalPropertyName": "",
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "providerName": "Awp0FullTextSearchProvider",
+                    "searchCriteria": {
+                        "searchString": "{{data.objectSearchBox.dbValue}}"
+                    },
+                    "searchFilterFieldSortType": "Priority",
+                    "searchFilterMap6": {
+                        "WorkspaceObject.object_type": "{{data.subBusinessObjects}}"
+                    },
+                    "searchSortCriteria": []
+                }
+            },
+            "outputData": {
+                "objectsFound": "{{json:searchResultsJSON}}",
+                "totalObjectsFound": "totalFound"
+            }
+        }
+    },
+    "functions": {
+        "processSoaResponseForBOTypes": {
+            "functionName": "processSoaResponseForBOTypes",
+            "parameters": [
+                "{{data}}"
+            ],
+            "deps": "js/epSearchObjectService"
+        }
+    },
+    "dataProviders": {
+        "epSearchObjectProvider": {
+            "action": "performSearchForObject",
+            "response": "{{data.objectsFound}}",
+            "totalFound": "{{data.totalObjectsFound}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getPreferenceSuffixForTypesToSearch"
+    },
+    "onEvent": [
+        {
+            "eventId": "epSearchObjectProvider.selectionChangeEvent",
+            "action": "updateSelection",
+            "cacheEventData": true
+        }
+    ],
+    "data": {
+        "objectSearchBox": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": ""
+        }
+    },
+    "conditions": {
+        "isSearchObjectNotFound": {
+            "expression": "data.totalObjectsFound === 0"
+        },
+        "isSubBusinessObjectsPresent": {
+            "expression": "!data.subBusinessObjects"
+        },
+        "isSearchBasedOnPreference": {
+            "expression": "data.preferenceSuffixForTypesToSearch"
+        },
+        "isSearchNotBasedOnPreference": {
+            "expression": "!data.preferenceSuffixForTypesToSearch"
+        }
+    },
+    "i18n": {
+        "cancel": [
+            "EPMessages"
+        ],
+        "noObjectFound": [
+            "searchObjectMessages"
+        ]
+    }
+}

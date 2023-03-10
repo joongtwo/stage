@@ -1,0 +1,10 @@
+<aw-panel>
+    <aw-panel-body>
+        <ep-associated-processes-for-old-mbom-revision current-processes="subPanelContext" ></ep-associated-processes-for-old-mbom-revision>
+        <div class="sw-column" height="4f" exist-when="conditions.enabledShowCommand && !data.showPopupMessage && data.hideAdditionalProcessTable">
+                <aw-guidance-message message="associatedProcessGuidanceMsg" closable="false" banner-style="true" show-icon="true" show-type="false">
+                </aw-guidance-message>
+        </div>
+        <ep-additional-processes-for-mbom exist-when="data.showPopupMessage || (conditions.showAdditionalAssociatedProcesses && data.hideAdditionalProcessTable)" current-processes="subPanelContext"></ep-additional-processes-for-mbom>
+    </aw-panel-body>
+</aw-panel>

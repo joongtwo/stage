@@ -1,0 +1,26 @@
+<aw-command-panel caption="i18n.cdc">
+        <aw-panel-body>
+            <aw-panel-section caption="{{data.selectedobject.props.object_string.uiValues[0]}}">
+                <aw-label prop="data.selectedobject.props.mes0DCDDescription"></aw-label>
+                <aw-break> </aw-break>
+                <aw-textbox prop="data.dcdString" exist-when="conditions.isStringDCDType"></aw-textbox>
+                <aw-numeric prop="data.dcdInteger" exist-when="conditions.isIntegerDCDType"></aw-numeric>
+                <aw-numeric prop="data.dcdDouble" exist-when="conditions.isRealDCDType"></aw-numeric>
+                <aw-datetime prop="data.dcdDateTime" exist-when="conditions.isDateTimeDCDType"></aw-datetime>
+                <aw-listbox prop="data.dcdLov" list="data.dcdlovList" exist-when="conditions.isLOVDCDType"></aw-listbox>
+                <aw-listbox prop="data.dcdBoolean" exist-when="conditions.isBooleanDCDType" list="data.dcdBooleanList"></aw-listbox>
+                <aw-break> </aw-break>
+                <aw-label prop="data.selectedobject.props.mes0DCDMinValue" exist-when="conditions.isNumericDCDType"></aw-label>
+                <aw-label prop="data.selectedobject.props.mes0DCDMaxValue" exist-when="conditions.isNumericDCDType"></aw-label>
+                <aw-break exist-when="conditions.isNumericDCDType"> </aw-break>
+                <aw-textarea prop="data.dcdComment" ></aw-textarea>
+                <aw-break> </aw-break>
+                <aw-label prop="data.selectedobject.props.ewi0ExecutionUser" ></aw-label>
+                <aw-label prop="data.selectedobject.props.ewi0ExecutionDate" ></aw-label>
+            </aw-panel-section>
+        </aw-panel-body>
+        <aw-panel-footer>
+            <aw-button action="close" size='auto' button-type="base"><aw-i18n>i18n.close</aw-i18n></aw-button>
+            <aw-button action="validateAndSave" size='auto'><aw-i18n>i18n.save</aw-i18n></aw-button>
+        </aw-panel-footer>
+</aw-command-panel>

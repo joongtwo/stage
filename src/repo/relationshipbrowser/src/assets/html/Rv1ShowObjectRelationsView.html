@@ -1,0 +1,12 @@
+<aw-command-panel caption="{{i18n.showObjectRelationsTitle}}">
+    <aw-panel-body>
+        <aw-panel-section collapsed="disabled" caption="{{data.selectionDisplayName}}">
+            <aw-list-filter prop="data.filterBox" dataprovider="data.dataProviders.dataProviderHiddenNodeList">
+                <div aw-class="{'aw-relbrowser-partialOpacity':item.props.halfTone.dbValue}">
+                    <aw-default-cell vmo="item"></aw-default-cell>
+                </div>
+            </aw-list-filter>
+            <aw-i18n visible-when="data.nodes.length === 0">i18n.noResultsFound</aw-i18n>
+        </aw-panel-section>
+    </aw-panel-body>
+</aw-command-panel>

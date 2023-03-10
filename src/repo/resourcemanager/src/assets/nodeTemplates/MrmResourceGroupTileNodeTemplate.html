@@ -1,0 +1,71 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="display: none">
+    <g id="<%=template_id%>" class='aw-gctest-groupNode aw-gctest-detailLevel0'>
+        <g class='{SDFBooleanPropertyBinding("isSelected","aw-widgets-cellListItemSelected","aw-relations-tile-node")}'>
+            <rect width='{SDFSizePropertyBinding("getWidthValue")}' height='{SDFSizePropertyBinding("getHeightValue")}' class="aw-widgets-cellListItemNode"
+                stroke='{PropertyBinding("node_fill_color")}' ></rect>
+            <rect width='{SDFSizePropertyBinding("getWidthValue")}' height='{SDFSizePropertyBinding("getHeightValue")}' class='{PropertyBinding("relation_node_hovered_style_svg")}'
+                stroke='{PropertyBinding("node_fill_color")}' ></rect>
+            <rect width='{SDFSizePropertyBinding("getWidthValue")}' height='{PropertyBinding("HEADER_HEIGHT")}' class='{SDFBooleanPropertyBinding("isSelected","aw-widgets-cellListItemNodeSelected","aw-graph-noeditable-area")}'
+            ></rect>
+            <rect class='{PropertyBinding("rootnode_border_style")}' width='{SDFSizePropertyBinding("getWidthValue")}' height='{SDFSizePropertyBinding("getHeightValue")}'
+                stroke='{PropertyBinding("node_fill_color")}' ></rect>
+            <rect class="aw-graph-noeditable-area" width='{SDFSizePropertyBinding("getWidthValue")}' height='{SDFSizePropertyBinding("getHeightValue")}'
+            ></rect>
+            <g id="MRM0AddUpDirectionElements" transform="translate(139 0)" class='{BooleanPropertyBinding("show_addupdirectioncomponents_command", "GC_COMMAND_CLASS", "GC_HIDDEN_CLASS")}'
+                data-command-id="MRM0AddUpDirectionElements">
+                <title>{PropertyBinding("MRM0AddUpDirectionElements_tooltip")}</title>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="22px" data-sdf-content='{PropertyBinding("MRM0AddUpDirectionElements_icon")}'></svg>
+                <rect transform="translate(0 0)" width="22px" height="22px" fill="transparent" ></rect>
+            </g>
+            <g id="MRM0AddDownDirectionElements" transform="translate(139 113)" class='{BooleanPropertyBinding("show_adddowndirectioncomponents_command", "GC_COMMAND_CLASS", "GC_HIDDEN_CLASS")}'
+                data-command-id="MRM0AddDownDirectionElements">
+                <title>{PropertyBinding("MRM0AddDownDirectionElements_tooltip")}</title>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="22px" data-sdf-content='{PropertyBinding("MRM0AddDownDirectionElements_icon")}'></svg>
+                <rect transform="translate(0 0)" width="22px" height="22px" fill="transparent" ></rect>
+            </g>
+            <g>
+                <rect transform="translate(0 0)" width='{PropertyBinding("barWidth")}' height='{PropertyBinding("HEADER_HEIGHT")}' fill='{PropertyBinding("node_fill_color")}'
+                ></rect>
+                <line x1="0" y1='{PropertyBinding("HEADER_HEIGHT")}' x2='{SDFPropertyBinding("getWidthValue")}' y2='{PropertyBinding("HEADER_HEIGHT")}'
+                    stroke='{PropertyBinding("node_fill_color")}'></line>
+                <g transform="translate(65 20)" class='{PropertyBinding("relation_text_hovered_style_svg")}'>
+                    <g class="aw-graph-wordwrap aw-widgets-cellListItem">
+                        <text transform="translate(0 24)" class='aw-graph-autoPosition { BooleanPropertyBinding("<%=title_editable%>", "GC_NODE_MODIFIABLE_TITLE_CLASS", "GC_NODE_TITLE_CLASS") }'
+                            data-width="100%-80" data-property-name="<%=title%>"></text>
+                        <text dy="3" transform="translate(0 43)" class="aw-graph-autoPosition aw-widgets-cellListCellItemType aw-base-small" data-width="230"
+                            data-property-name="<%=sub_title%>"></text>
+                        <g class="aw-graph-autoPosition" transform="translate(0 67)">
+                            <% _.forEach(property_list, function(prop){ %>
+                                <text class='aw-graph-autoPosition { BooleanPropertyBinding("<%- prop %>_editable", "GC_NODE_MODIFIABLE_PROPERTY_CLASS", "GC_NODE_PROPERTY_CLASS") }'
+                                    data-property-name="<%- prop %>" data-width="100%-80"></text>
+                                <% }); %>
+                        </g>
+                    </g>
+                    <g data-translate-y="15" transform="translate(0 80)" class="aw-graph-autoPosition">
+                        <g transform="translate(0 0)" class='{BooleanPropertyBinding("show_psp_image", "GC_COMMAND_CLASS", "GC_HIDDEN_CLASS")}' data-command-id="">
+                            <title>{PropertyBinding("ShowPSPOnNode_tooltip")}</title>
+                            <svg xmlns="http://www.w3.org/2000/svg" class='{BooleanPropertyBinding("outgoing_all_shown", "GC_HIDDEN_CLASS", "")}' xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="22px" height="22px" data-sdf-content='{PropertyBinding("ShowPSPOnNode_icon")}'></svg>
+                        </g>
+                        <g transform="translate(0 0)" class='{BooleanPropertyBinding("show_subassembly_psp_image", "GC_COMMAND_CLASS", "GC_HIDDEN_CLASS")}' data-command-id="">
+                            <title>{PropertyBinding("ShowPSPOnSubAssemblyNode_tooltip")}</title>
+                            <svg xmlns="http://www.w3.org/2000/svg" class='{BooleanPropertyBinding("outgoing_all_shown", "GC_HIDDEN_CLASS", "")}' xmlns:xlink="http://www.w3.org/1999/xlink"
+                                width="22px" height="22px" data-sdf-content='{PropertyBinding("ShowPSPOnSubAssemblyNode_icon")}'></svg>
+                        </g>
+                        <g transform="translate(172 0)" class='{BooleanPropertyBinding("show_mrmtogglechildren_command", "GC_COMMAND_CLASS", "GC_HIDDEN_CLASS")}'
+                            data-command-id="MRM0ToggleChildren">
+                            <title>{PropertyBinding("MRM0ToggleChildren_tooltip")}</title>
+                            <rect transform="translate(0 0)" width="22px" height="22px" class='{ BooleanPropertyBinding("MRM0ToggleChildren_selected", "GC_COMMAND_SELECTED_CLASS", "GC_HIDDEN_CLASS") }'
+                            ></rect>
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px" height="22px" data-sdf-content='{PropertyBinding("MRM0ToggleChildren_icon")}'></svg>
+                            <text transform="translate(22 15)" class='{PropertyBinding("children_number_style_svg")}'>{PropertyBinding("child_count")}</text>
+                            <rect transform="translate(0 0)" width="22px" height="22px" fill="transparent" ></rect>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="17px" y="19px" width="46px" height="46px"
+        thumbnail-id="JTThumbnail" data-sdf-content='{PropertyBinding("thumbnail_image")}'></svg>
+    </g>
+</svg>

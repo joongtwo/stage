@@ -1,0 +1,81 @@
+{
+    "schemaVersion": "1.0.0",
+    "props":{
+        "input-object": {
+            "type": "object"
+        }
+     },
+    "actions": {
+        "createColumns": {
+            "actionType": "JSFunction",
+            "method": "createDetailColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.epValidationDetailDataProvider}}",
+                "columns": "{{data}}",
+                "render": false
+            },
+            "outputData": {
+                "columns": "columns"
+            },
+            "deps": "js/epValidationTableService"
+        },
+         "doDataProvider": {
+            "actionType": "dataProvider",
+            "method": "epValidationDetailDataProvider"
+        },
+        "loadDataForTree": {
+            "actionType": "JSFunction",
+            "method": "getDetailColumnsData",
+            "inputData": {
+                "selectedObject": "{{props.selection}}",
+                "dataProvider": "{{data.dataProviders.epValidationDetailDataProvider}}"
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults"
+            },
+            "deps": "js/epValidationTableService"
+        }
+    },
+    "data": {
+        "columns": [ "{{i18n.validationDetailTestNameColumn}}", "{{i18n.validationDetailMessageTypeColumn}}", "{{i18n.validationDetailMessageColumn}}" ]
+    },
+    "dataProviders": {
+        "epValidationDetailDataProvider": {
+            "action": "loadDataForTree",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "columnProviders": {
+        "epValidationDetailColumnProvider": {
+            "loadColumnAction": "createColumns"
+        }
+    },
+    "i18n": {
+        "validationDetailTestNameColumn": [ "epValidationMessages" ],
+        "validationDetailMessageTypeColumn": [ "epValidationMessages" ],
+        "validationDetailMessageColumn": [ "epValidationMessages" ]
+    },
+    "grids": {
+        "EpValidationDetailTable": {
+            "dataProvider": "epValidationDetailDataProvider",
+            "columnProvider": "epValidationDetailColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enablePinning": true,
+                "enableSorting": false,
+                "enableDynamicRowHeight": false,
+                "maxRowsToShow": 25
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate":[{
+             "action":"doDataProvider",
+             "observers":["props.selection[0].uid"]
+        }]
+    }
+
+}

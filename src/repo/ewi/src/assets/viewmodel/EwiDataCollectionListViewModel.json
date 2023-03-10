@@ -1,0 +1,92 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "actions":
+    {
+        "dataCollectionListDataProviderAction":
+        {
+            "actionType": "dataProvider",
+            "method": "dataCollectionListDataProvider"
+        },
+        "setInputAndSelectionToMyContext": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setCommandContext"
+                },
+                {
+                    "action": "listItemSelected"
+                }
+            ]
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{props.subPanelContext}}",
+                "commandContext": {
+                    "selectedObjects": "{{data.dataProviders.dataCollectionListDataProvider.selectedObjects}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "listItemSelected": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "workinstr.selectionChange",
+                        "eventData":
+                        {
+                            "dataProvider": "{{data.dataProviders.dataCollectionListDataProvider}}",
+                            "activeTab": "{{props.subPanelContext}}"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+
+    "dataProviders":
+    {
+        "dataCollectionListDataProvider":
+        {
+            "response": "{{props.subPanelContext.datasetsToShow}}",
+            "totalFound": "{{props.subPanelContext.datasetsToShow.length}}",
+            "selectionModelMode": "single",
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        }
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "dataCollectionListDataProvider.selectionChangeEvent",
+            "action": "setInputAndSelectionToMyContext"
+        }
+    ],
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "dataCollectionListDataProviderAction",
+                "observers": [
+                    "props.subPanelContext.datasetsToShow"
+                ]
+            }
+        ]
+    }
+}

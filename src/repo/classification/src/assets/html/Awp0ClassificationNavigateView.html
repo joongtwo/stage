@@ -1,0 +1,15 @@
+<div class="sw-column aw-clspanel-classesNavigate">
+    <div  aw-class="{'aw-clspanel-navigate': props.subPanelContext}">
+        <aw-cls-release-box exist-when="conditions.isReleasesActive" releases-state="fields.releasesState" sub-panel-context="props.subPanelContext"></aw-cls-release-box>
+        <aw-search-box data="data" prop="data.searchBox"
+            action="setSearchCriteria">
+        </aw-search-box>
+    </div>
+    <awp0-classification-tree selection="{{props.subPanelContext.searchState.selectedClassNode}}" search-string="{{data.externalSearchBox}}" releases-state="fields.releasesState"
+        sub-panel-context="props.subPanelContext" classify-state="props.classifyState" node-state="props.nodeState" sort-option="props.sortOption" navigate-state="props.navigateState" exist-when="!conditions.displayImageNavigation" ></awp0-classification-tree>
+    <awp0-classification-vncs-full selected="props.subPanelContext.selectionData"
+        navigate-state="props.navigateState"
+        releases-state="fields.releasesState"
+        exist-when="conditions.displayImageNavigation">
+    </awp0-classification-vncs-full>
+</div>

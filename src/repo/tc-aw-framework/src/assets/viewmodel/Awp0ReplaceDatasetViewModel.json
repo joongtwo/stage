@@ -1,0 +1,231 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive",
+        "js/aw-listbox.directive",
+        "js/aw-file-upload.directive",
+        "js/visible-when.directive"
+    ],
+    "actions": {
+        "getFilePickerConfiguration": {
+            "actionType": "JSFunction",
+            "method": "getFilePickerConfiguration",
+            "inputData": {
+                "fileConfigRootType": "replace"
+            },
+            "outputData": {
+                "uploadFileProvider": ""
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "cleanUp": {
+            "actionType": "JSFunction",
+            "method": "resetUploadFileSelectionData",
+            "inputData": {
+                "uploadFileSelectionData": "{{data.uploadFileSelectionData}}"
+            },
+            "outputData": {
+                "uploadFileSelectionData": ""
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "fileChangeAction": {
+            "actionType": "JSFunction",
+            "method": "setFileParameters",
+            "inputData": {
+                "fileName": "{{parameters.fileName}}",
+                "validFile": "{{parameters.validFile}}",
+                "fileNameNoExt": "{{parameters.fileNameNoExt}}",
+                "fileExt": "{{parameters.fileExt}}",
+                "formData": "{{parameters.formData}}"
+            },
+            "outputData": {
+                "fileName": "fileName",
+                "validFile": "validFile",
+                "fileNameNoExt": "fileNameNoExt",
+                "fileExt": "fileExt",
+                "formData": "formData"
+            },
+            "deps": "js/fileUploadUtils"
+        },
+        "replaceFile": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "replaceFile.usingDSM",
+                        "condition": "ctx.selectedDataset.isDSMUsable && !ctx.selectedDataset.isPlatformSupported && ctx.selectedDataset.isMultipleReference > 1"
+                    }
+                ]
+            }
+        },
+        "reveal": {
+            "actionType": "JSFunction",
+            "method": "createListModelObjectsFromStrings",
+            "inputData": {
+                "input": "{{ctx.selectedDataset.fileNames}}"
+            },
+            "outputData": {
+                "selectedDatasetFileNames": ""
+            },
+            "deps": "js/listBoxService"
+        },
+        "unregisterContext": {
+            "actionType": "JSFunction",
+            "method": "unRegisterCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "name": "selectedDataset"
+            }
+        },
+        "uploadUsingDSM": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2017-05-FileManagement",
+            "method": "getPlmdFileTicketForReplace",
+            "deps": "js/Awp0ReplaceDatasetService",
+            "inputData": {
+                "infos": "{{function:createInputForDSM}}"
+            },
+            "outputData": {
+                "fmsTicket": "ticket"
+            },
+            "events": {
+                "success": [ {
+                    "name": "ticket.openFile"
+                } ],
+                "failure": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                        "condition": "errorCode.code===14167",
+                        "message": "invalidInputObject"
+                    },
+                    {
+                        "condition": "errorCode.code===14165",
+                        "message": "uploadInProgress"
+                    },
+                    {
+                        "condition": "errorCode.code===141170",
+                        "message": "platformnotsupported"
+                    }
+                ]
+            }
+        },
+        "openFile": {
+            "actionType": "openFile",
+            "inputData": {
+                "fileTicket": "{{data.fmsTicket}}",
+                "openFileName": ""
+            },
+            "events": {
+                "success": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "complete",
+            "action": "unregisterContext"
+        },
+        {
+            "eventId": "replaceFile.usingDSM",
+            "action": "uploadUsingDSM"
+        },
+        {
+            "eventId": "ticket.openFile",
+            "action": "openFile"
+        }
+    ],
+    "data": {
+        "datasetName": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "true",
+            "dbValue": "{{ctx.selectedDataset.datasetDisplayName}}",
+            "dispValue": "{{ctx.selectedDataset.datasetDisplayName}}"
+        },
+        "datasetFileName": {
+            "displayName": "",
+            "type": "STRING",
+            "hasLov": true,
+            "dbValue": "{{ctx.selectedDataset.fileNames[0]}}",
+            "dispValue": "{{ctx.selectedDataset.fileNames[0]}}"
+        },
+        "uploadFileSelectionData": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "functions": {
+        "submitForm": {
+            "functionName": "submitForm",
+            "parameters": []
+        },
+        "createInputForDSM": {
+            "functionName": "createInputForDSM",
+            "parameters": [
+                "{{ctx.selected}}",
+                "{{data}}"
+            ]
+        }
+    },
+    "conditions": {
+        "isMultipleFiles": {
+            "expression": "ctx.selectedDataset.fileNames.length>1"
+        },
+        "isMultipleFileDSMSupport": {
+            "expression": "ctx.selectedDataset.isDSMUsable && !ctx.selectedDataset.isPlatformSupported && ctx.selectedDataset.isMultipleReference > 1"
+        },
+        "isMultipleFilesSynchronous": {
+            "expression": "!ctx.selectedDataset.isDSMUsable || !ctx.selectedDataset.isMultipleReference"
+        }
+    },
+    "messages": {
+        "invalidInputObject": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.InvalidSelectedObject}}"
+        },
+        "uploadInProgress": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.AsynUploadInProgress}}"
+        },
+        "platformnotsupported": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.PlatformNotSupported}}"
+        }
+    },
+    "i18n": {
+        "replace": [
+            "ReplaceFileMessages"
+        ],
+        "InvalidSelectedObject": [
+            "ReplaceFileMessages"
+        ],
+        "AsynUploadInProgress": [
+            "ReplaceFileMessages"
+        ],
+        "PlatformNotSupported": [
+            "ReplaceFileMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onMount": "getFilePickerConfiguration",
+        "onUnmount": "cleanUp"
+    }
+}

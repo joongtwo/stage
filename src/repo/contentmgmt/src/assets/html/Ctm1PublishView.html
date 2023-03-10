@@ -1,0 +1,42 @@
+<aw-command-panel caption="i18n.publishTopic">
+
+    <aw-panel-body>
+        <aw-panel-section>
+            <aw-listbox  prop="data.tool" list="data.toolList" ></aw-listbox>
+            <aw-listbox  prop="data.styleType" list="data.styleTypeList" ></aw-listbox>
+            <aw-listbox  prop="data.language" list="data.languageList" ></aw-listbox>
+            <aw-listbox  prop="data.composeVersion" list="data.composeVersionList" visible-when="conditions.objectIsNotCtm1Topic" ></aw-listbox>
+            <aw-listbox  prop="data.translationVersion" list="data.translationVersionList.dbValue" ></aw-listbox>
+            <aw-listbox  prop="data.registerResult" list="data.registerResultList.dbValue" ></aw-listbox>
+            <aw-listbox  prop="data.transformPolicy" list="data.transformPolicyList" ></aw-listbox>
+            
+            <aw-checkbox prop="data.doSizeEstimate" action="Ctm1GetSizeEstimate"></aw-checkbox>
+            <aw-label prop="data.publishSizeEstimate" align-content="left"></aw-label>
+
+            <div visible-when="conditions.objectIsDitaTopic">
+                <aw-panel-section caption="i18n.ditaValueFilters">
+                    <aw-list dataprovider="data.dataProviders.ditaValueFilters">
+                        <aw-checkbox prop="item" ></aw-checkbox>
+                    </aw-list>
+                </aw-panel-section>
+
+                <aw-panel-section caption="i18n.globalDitaValueFilters">
+                    <aw-list dataprovider="data.dataProviders.globalDitaValueFilters">
+                        <aw-checkbox prop="item" ></aw-checkbox>
+                    </aw-list>
+                </aw-panel-section>
+            </div>
+        </aw-panel-section>
+    </aw-panel-body>
+
+    <aw-panel-footer>
+
+        
+            
+
+        <aw-button action="Ctm1PublishAction">
+            <aw-i18n>i18n.ctm1Publish</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+
+</aw-command-panel>

@@ -1,0 +1,7 @@
+<div class="sw-column h-12 w-12 justify-center">
+    <mfe-message exist-when="!conditions.hasInput" sub-panel-context="subPanelContext.messages.noElementSelected"></mfe-message>
+    <mfe-loading-message exist-when="conditions.isLoading"></mfe-loading-message>
+    <mfe-message exist-when="conditions.noAssigned" sub-panel-context="subPanelContext.messages.noAssigned"></mfe-message>
+
+    <aw-splm-table class="aw-ep-treeTable" gridid="EpDetailsTable" exist-when="conditions.showTable"></aw-splm-table>
+</div>

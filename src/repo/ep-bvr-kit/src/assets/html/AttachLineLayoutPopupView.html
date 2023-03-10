@@ -1,0 +1,15 @@
+<aw-panel>
+    <aw-panel-body>
+        <aw-file-upload type-filter="{{data.allowedTypes}}" file-change-action="startDatasetCreation"></aw-file-upload>
+        <aw-separator></aw-separator>
+        <div enable-when="conditions.validFile">
+            <aw-textbox prop="data.datasetName"></aw-textbox>
+            <aw-textarea prop="data.datasetDesc" hint="textarea"></aw-textarea>
+            <aw-listbox prop="data.datasetType" list="data.datasetTypeList"></aw-listbox>
+        </div>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button button-type="base" action="closePopupWindow" size="auto">{{i18n.cancel}}</aw-button>
+        <aw-button enable-when="conditions.validFile" action="attachFile" size="auto">{{i18n.done}}</aw-button>
+    </aw-panel-footer>
+</aw-panel>

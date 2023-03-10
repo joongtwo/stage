@@ -1,0 +1,155 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "setStartDate": {
+            "actionType": "JSFunction",
+            "method": "setStartDate",
+            "inputData": {
+                "data": "{{data}}",
+                "commandId": "{{ctx.sidenavCommandId}}"
+            },
+            "outputData": {
+                "startDate": "startDate"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "updateStartTime": {
+            "actionType": "JSFunction",
+            "method": "updateStartTime",
+            "inputData": {
+                "cronModelState": "{{props.subPanelContext.cronModelState}}",
+                "startTimeVal": "{{data.startTime.uiValue}}"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "updateBasis": {
+            "actionType": "JSFunction",
+            "method": "updateBasis",
+            "inputData": {
+                "cronModelState": "{{props.subPanelContext.cronModelState}}",
+                "basisVal": "{{data.scheduleBasis.dbValue}}"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "updateEditSchedulePanel": {
+            "actionType": "JSFunction",
+            "method": "updateEditSchedulePanel",
+            "inputData": {
+                "cronModelState": "{{props.subPanelContext.cronModelState}}",
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "scheduleBasis": "scheduleBasis",
+                "startTime": "startTime"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        }
+    },
+    "data": {
+        "scheduleBasis": {
+            "displayName": "{{i18n.basis}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "2",
+            "dispValue": "{{i18n.basisDay}}"
+        },
+        "scheduleBasisList": {
+            "type": "STRING",
+            "dbValue": [
+                {
+                    "propDisplayValue": "{{i18n.basisHour}}",
+                    "propInternalValue": "1"
+                },
+                {
+                    "propDisplayValue": "{{i18n.basisDay}}",
+                    "propInternalValue": "2"
+                },
+                {
+                    "propDisplayValue": "{{i18n.basisMonth}}",
+                    "propInternalValue": "3"
+                },
+                {
+                    "propDisplayValue": "{{i18n.basisOnce}}",
+                    "propInternalValue": "0"
+                }
+            ]
+        },
+        "startTime": {
+            "displayName": "{{i18n.startTime}}",
+            "type": "TIME",
+            "isRequired": "false",
+            "isEditable": "true",
+            "uiValue": "{{props.subPanelContext.cronModelState.startTime}}",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "startDate": {
+            "displayName": "{{i18n.startDate}}",
+            "type": "DATE",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateStartTime",
+            "criteria": {
+                "condition": "conditions.startTimeChange"
+            },
+            "cacheEventData": true
+        }
+    ],
+    "lifecycleHooks": {
+        "onMount": "setStartDate",
+        "onUpdate": [ {
+            "action": "updateEditSchedulePanel",
+            "observers": [
+                "props.subPanelContext.cronModelState.basis"
+            ]
+        } ]
+    },
+    "functions": {
+    },
+    "messages": {},
+    "i18n": {
+        "basisHour": [
+            "DpvMessages"
+        ],
+        "basisDay": [
+            "DpvMessages"
+        ],
+        "basisMonth": [
+            "DpvMessages"
+        ],
+        "basisOnce": [
+            "DpvMessages"
+        ],
+        "scheduleStartInfo": [
+            "DpvMessages"
+        ],
+        "startDate": [
+            "DpvMessages"
+        ],
+        "startTime": [
+            "DpvMessages"
+        ],
+        "basis": [
+            "DpvMessages"
+        ]
+    },
+    "conditions": {
+        "startTimeChange": {
+            "expression": "data.startTime.dbValue",
+            "trackValues": true
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

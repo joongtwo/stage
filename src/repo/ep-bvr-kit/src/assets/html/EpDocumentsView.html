@@ -1,0 +1,26 @@
+<mfe-loading-message exist-when="conditions.isLoading"></mfe-loading-message>
+<mfe-message exist-when="!conditions.hasInput" sub-panel-context="data.messages.noInput"></mfe-message>
+<mfe-message exist-when="conditions.noDocuments" sub-panel-context="data.messages.noItems"></mfe-message>
+<div class="sw-row w-12" show-when="conditions.showDocuments">
+    <div class="sw-column w-3 aw-epDetails-filesList">
+        <aw-scrollpanel>
+            <aw-list dataprovider="data.dataProviders.documentsList" is-group-list="true">
+                <aw-default-group-cell item="item" group-by="type">
+                    <group-header-cell exist-when="item.type === 'Web Link'" class="aw-epDocuments-listSeparator">
+                        <aw-separator></aw-separator>
+                    </group-header-cell>
+                    <cell>
+                        <div class="sw-row">
+                            <img src="{{item.typeIconURL}}" class="aw-epDetails-fileIcon align-center">
+                            <strong>{{item.props.object_string.dbValues[0]}}</strong>
+                        </div>
+                    </cell>
+                </aw-default-group-cell>
+            </aw-list>
+        </aw-scrollpanel>
+    </div>
+    <aw-splitter></aw-splitter>
+    <div class="sw-column w-9 aw-epFile-preview">
+        <ep-information view-path="viewPath" view-id="EpDocuments_epInformation" sub-panel-context="{...subPanelContext, ...data.subPanelContextForInformation}"></ep-information>
+    </div>
+</div>

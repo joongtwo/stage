@@ -1,0 +1,10 @@
+<aw-flex-column width="fill" height="fill">
+    <aw-flex-column exist-when="conditions.showArrangeColumns">
+        <div class="gantt_arrange_columns_wrapper">
+            <a class="gantt_arrange_columns" aw-click="data.arrangeColumns()"></a>
+        </div>
+    </aw-flex-column>
+    <aw-flex-column>
+        <div data="tasks" class="aw-ganttInterface-ganttWrapper smgantt" aw-right-click="data.handleRightClick($event)"> </div>
+    </aw-flex-column>
+</aw-flex-column>

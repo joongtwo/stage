@@ -1,0 +1,51 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "updateYAxisToSpecLimit": {
+            "actionType": "JSFunction",
+            "method": "updateYAxisToSpecLimit",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "toSpecLimitVal": "{{data.toSpecLimit.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        }
+    },
+    "data": {
+        "toSpecLimit": {
+            "displayName": "{{i18n.yAxisLabelTo}}",
+            "type": "DOUBLE",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.toSpecLimit}}",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_LEFT"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateYAxisToSpecLimit",
+            "criteria": {
+                "condition": "conditions.toSpecLimitChange"
+            },
+            "cacheEventData": true
+        }
+    ],
+    "functions": {},
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "messages": {},
+    "conditions": {
+        "toSpecLimitChange": {
+            "expression": "data.toSpecLimit.dbValue",
+            "trackValues": true
+        }
+    },
+    "i18n": {
+        "yAxisLabelTo": [ "DpvMessages"]
+    }
+}

@@ -1,0 +1,126 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions":{
+        "selectDelayFiltering": {
+            "actionType": "JSFunction",
+            "method": "updateDelayFilteringToggle",
+            "inputData":
+            {
+                "toggle": "{{data.delayFiltering.dbValue}}"
+            },
+            "outputData":{
+                "delayedApplyUpdatedValue": ""
+            },
+
+            "deps":"js/filterSettingsService"
+        },
+        "applySettings": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setDelayedApplyPreference"
+                },
+                {
+                    "action": "updateSharedData"
+                }
+            ]
+        },
+        "getDelayedApplyPreference":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Administration-2012-09-PreferenceManagement",
+            "method": "getPreferences",
+            "inputData":
+            {
+                "preferenceNames": [ "AWC_Discovery_Delayed_Filter_Apply" ],
+                "includePreferenceDescriptions": false
+            },
+            "outputData":
+            {
+                "delayFiltering":"{{function:processPreferenceResponse}}"
+            },
+
+            "deps":"js/filterSettingsService"
+
+        },
+        "setDelayedApplyPreference":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Administration-2012-09-PreferenceManagement",
+            "method": "setPreferences2",
+            "inputData": {
+                "preferenceInput": [ {
+                    "preferenceName": "AWC_Discovery_Delayed_Filter_Apply",
+                    "values": [ "{{data.delayedApplyUpdatedValue}}" ]
+                } ]
+            }
+        },
+        "updateSharedData": {
+            "actionType": "JSFunction",
+            "method": "updateSharedData",
+            "inputData": {
+                "activeViewSharedData": "{{props.subPanelContext.activeViewSharedData}}",
+                "sharedData": "{{props.subPanelContext.sharedData}}",
+                "nextActiveView": "Awb0DiscoveryFilterCommandSubPanel",
+                "delayedApplyUpdatedValue":"{{data.delayedApplyUpdatedValue}}"
+            },
+            "deps": "js/filterSettingsService"
+        },
+        "updateDelayFilteringToggle": {
+            "actionType": "JSFunction",
+            "method": "updateDelayFilteringToggle",
+            "inputData": {
+               "delayedApplyUpdatedValue":"{{data.delayedApplyUpdatedValue}}"
+            },
+            "deps": "js/filterSettingsService"
+        }
+    },
+    "functions": {
+        "processPreferenceResponse": {
+            "functionName": "processPreferenceResponse",
+            "parameters": [
+                "{{data}}", "{{props.subPanelContext.sharedData}}", "{{response}}" ]
+        }
+    },
+    "data":
+    {
+        "delayFiltering": {
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "dbValue": false,
+            "displayName" : "{{i18n.delayFiltering}}",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "autoUpdateTooltip": {
+            "view": "ExtendedTooltipDefault"
+        },
+        "autoUpdateTooltipContext": {
+            "title": "{{i18n.delayFiltering}}",
+            "description": "{{i18n.autoUpdateDesc}}"
+        },
+        "delayedApplyUpdatedValue": "",
+        "initialToggleValue": false
+    },
+
+    "conditions": {
+        "isValidToApply": {
+            "expression": "data.delayFiltering.dbValue !== data.initialToggleValue"
+        }
+    },
+    "props":
+    {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount" : "getDelayedApplyPreference"
+    },
+    "i18n":
+    {
+        "applyButtonTitle": [ "OccurrenceManagementSubsetConstants" ],
+        "delayFiltering": ["OccurrenceManagementSubsetConstants"],
+        "autoUpdateDesc" : ["OccurrenceManagementSubsetConstants"],
+        "filter" :  ["OccurrenceManagementConstants"]
+    }
+}

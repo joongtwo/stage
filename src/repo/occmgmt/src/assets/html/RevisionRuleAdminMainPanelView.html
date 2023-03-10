@@ -1,0 +1,7 @@
+<!--aw-command-panel caption="i18n.RevisionRuleAdmin" >
+    <aw-command-sub-panel panel-id="RevisionRuleAdminPanel" sub-panel-context="subPanelContext" show-when="data.activeView=='RevisionRuleAdminPanel'" aw_init= "data.mainPanel='RevisionRuleAdminMainPanel'"></aw-command-sub-panel>
+</aw-command-panel-->
+
+<aw-command-panel caption="i18n.RevisionRuleAdmin" >
+    <aw-command-sub-panel sub-panel-context = "{...props.subPanelContext, baseView:'RevisionRuleAdminPanel'}" panel-id="AwNestedNavigation"></aw-command-sub-panel>
+</aw-command-panel>

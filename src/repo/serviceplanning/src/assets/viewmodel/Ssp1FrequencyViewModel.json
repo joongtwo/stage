@@ -1,0 +1,116 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "doGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "frequencyGridDataProvider"
+        },
+        "getParentNodeProperties": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "attributes": [
+                    "bl_child_lines"
+                ],
+                "objects": [
+                    {
+                        "uid": "{{ctx.selectedVMO.uid}}"
+                    }
+                ]
+            },
+            "outputData": {
+                "treeLoadResult":"{{function:setNodeProperties}}"
+            },
+            "policy":{
+                "types": [
+                    {
+                        "name": "SSP0BvrFrequency",
+                        "properties": [
+                            {
+                                "name": "bl_revision",
+                                "modifiers":[{
+                                    "name":"withProperties",
+                                    "Value":"true"
+                                }]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "SSP0FrequencyRevision",
+                        "properties": [
+                            {
+                                "name": "ssp0FrequencyExpression"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "deps": "js/Ssp1FrequencyService"
+        },
+        "loadFrequencyTableColumns": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadFrequencyColumns",
+            "inputData": {
+                "data":"{{data}}",
+                "dataProvider": "{{data.dataProviders.frequencyGridDataProvider}}",
+                "columnProvider": "{{data.columnProviders.frequencyColumnProvider}}"
+            },
+            "outputData": {
+                "dataProviders.frequencyGridDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/Ssp1FrequencyService"
+        }
+    },
+    "dataProviders": {
+        "frequencyGridDataProvider": {
+            "action": "getParentNodeProperties",
+            "selectionModelMode": "single",
+            "response":"{{data.treeLoadResult.response}}",
+            "totalFound":"{{data.treeLoadResult.totalFound}}"
+        }
+    },
+    "columnProviders": {
+        "frequencyColumnProvider": {
+            "loadColumnAction": "loadFrequencyTableColumns",
+            "columns": "{{data.columns}}"
+        }
+    },
+    "grids": {
+        "frequencyList": {
+            "dataProvider": "frequencyGridDataProvider",
+            "columnProvider": "frequencyColumnProvider",
+            "enableArrangeMenu": false,
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableSorting": false,
+                "maxRowsToShow": 5
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "frequency.added",
+            "action": "doGridDataProvider"
+        }
+    ],
+
+    "conditions": {},
+    "data":{
+        "projectsAnchor": "FrequencyTableAnchor"
+    },
+    "functions": {
+        "setNodeProperties":{
+            "functionName": "setNodeProperties",
+            "parameters":[]
+        }
+    },
+
+    "i18n": {
+        "noResultsFound": [ "ServicePlannerConstants" ],
+        "Frequency": ["ServicePlannerConstants"],
+        "FrequencyName":["ServicePlannerConstants"],
+        "FrequencyExpression":["ServicePlannerConstants"]
+    }
+}

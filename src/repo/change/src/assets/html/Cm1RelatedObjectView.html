@@ -1,0 +1,21 @@
+<div class="sw-column w-12">
+    <div visible-when="conditions.isRelatedObjectsToSelection">
+
+        <aw-panel-section caption="i18n.relatedImpactesTitle">
+
+            <div class="sw-row">
+                <div class="aw-xrt-objectSetToolbar">
+                    <aw-command-bar class="aw-commands-commandBarHorizontalLeft" anchor="cm1_addImpactedItemCommandsLeft" context="data.dataProviders.relationImpactedDataProvider"
+                        alignment="HORIZONTAL"></aw-command-bar>
+                </div>
+            </div>
+            <div class="sw-row">
+                <div class="aw-base-scrollPanel aw-splm-table-overflow-visible aw-layout-fill">
+                    <aw-splm-table gridid="relationProbableImpactedGrid" use-tree="false" show-check-box="data.dataProviders.relationImpactedDataProvider.selectionModel.multiSelectEnabled"></aw-splm-table>
+
+                </div>
+            </div>
+        </aw-panel-section>
+
+    </div>
+</div>

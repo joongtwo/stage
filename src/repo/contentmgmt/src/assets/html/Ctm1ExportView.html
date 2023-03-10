@@ -1,0 +1,30 @@
+<aw-command-panel caption="i18n.exportTopic">
+
+    <aw-panel-body>
+            <aw-listbox  prop="data.language" list="data.languageList" ></aw-listbox>
+
+            <aw-panel-section caption="i18n.content">
+                <aw-checkbox prop="data.includeMainContent"></aw-checkbox>
+                <aw-checkbox prop="data.includeSupportingData"></aw-checkbox>
+                <aw-checkbox prop="data.includeGraphicData"></aw-checkbox>
+                <aw-listbox  prop="data.transformPolicy" list="data.transformPolicyList" ></aw-listbox>
+            </aw-panel-section>
+
+            <aw-panel-section caption="i18n.references">
+                <aw-checkbox prop="data.includeContentReferences"></aw-checkbox>
+                <aw-checkbox prop="data.includeComposeReferences"></aw-checkbox>
+            </aw-panel-section>
+
+            <aw-panel-section caption="i18n.graphics">
+                <aw-radiobutton prop="data.graphicMode" list="data.graphicModeValues.dbValue" ></aw-radiobutton>
+                <aw-listbox  prop="data.graphicPriority" list="data.graphicPriorityList" ></aw-listbox>
+            </aw-panel-section>
+    </aw-panel-body>
+
+    <aw-panel-footer>
+        <aw-button action="Ctm1ExportAction">
+            <aw-i18n>i18n.export</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+
+</aw-command-panel>

@@ -1,0 +1,44 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "checkViolations": {
+            "actionType": "JSFunction",
+            "method": "checkViolations",
+            "inputData": {
+                "eventData": "{{data.eventData}}",
+                "data": "{{props.column}}"
+            },
+            "outputData": {
+                "violationsInColumn": "violationsInColumn",
+                "tooltipDetails": "tooltipDetails",
+                "errorIconUrl": "errorIconUrl"
+            },
+            "deps": "js/Pca0VariabilityTreeDisplayService"
+        },
+        "populateHeaderIcon": {
+            "actionType": "JSFunction",
+            "method": "populateHeaderIcon",
+            "inputData": {
+                "data": "{{props.column}}"
+            },
+            "outputData": {
+                "headerIconUrl": ""
+            },
+            "deps": "js/Pca0VariabilityTreeDisplayService"
+        }
+    },
+    "data": {},
+    "messages": {},
+    "onEvent": [ {
+        "eventId": "Pca0VariabilityTree.validationComplete",
+        "action": "checkViolations",
+        "cacheEventData": true
+    } ],
+    "lifecycleHooks": {
+        "onMount": "populateHeaderIcon"
+    },
+    "i18n": {
+        "error": [ "FullScreenConfigurationMessages" ]
+    }
+}

@@ -1,0 +1,83 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "actions": {
+        "updateEndItemAndNavigateToNewPanel":
+        {
+            "actionType": "JSFunction",
+            "method": "updateEndItemAndNavigateToNewPanel",
+            "inputData":
+            {
+                "eventData": "{{data.eventData}}",
+                "subPanelContext": "{{subPanelContext}}",
+                "data": "{{data}}"
+            },
+            "deps": "js/sharedEffectivityService"
+        },
+        "closeEndItemPanel":
+        {
+            "actionType": "JSFunction",
+            "method": "updateValueOnCtxOrState",
+            "inputData": {
+                "path": "",
+                "value": {
+                    "previousView": "{{props.subPanelContext.sharedData.activeView}}",
+                    "activeView": "{{props.subPanelContext.sharedData.previousView}}"
+                },
+                "target": "{{props.subPanelContext.sharedData}}"
+            },
+            "deps": "js/occmgmtUtils"
+        }
+
+    },
+
+    "onEvent": [
+        {
+            "eventId": "getClipboardProvider.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "updateEndItemAndNavigateToNewPanel"
+        },
+        {
+            "eventId": "getFavoriteProvider.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "updateEndItemAndNavigateToNewPanel"
+        },
+        {
+            "eventId": "getRecentObjsProvider.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "updateEndItemAndNavigateToNewPanel"
+        },
+        {
+            "eventId": "navigateAddEffectivityPanel",
+            "action": "closeEndItemPanel"
+        }
+    ],
+
+    "data": {
+        "endItemTabsModel": {
+            "isArray": "true",
+            "dbValue": [ {
+                    "tabKey": "Search",
+                    "name": "{{i18n.searchEndItemPresenterBtn}}",
+                    "selectedTab": true
+                },
+                {
+                    "tabKey": "Palette",
+                    "name": "{{i18n.paletteEndItemPresenterBtn}}"
+                }
+            ]
+        }
+    },
+
+    "i18n": {
+        "paletteEndItemPresenterBtn": [ "OccurrenceManagementConstants" ],
+        "searchEndItemPresenterBtn": [ "OccurrenceManagementConstants" ],
+        "endItemMessage": [ "OccurrenceManagementConstants" ],
+        "addElementBtn": [ "OccurrenceManagementConstants" ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

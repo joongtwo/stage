@@ -1,0 +1,72 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {},
+    "actions": {
+        "nextAction": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "nextActionEvent"
+                    }
+                ]
+            }
+        },
+        "previousAction": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "previousActionEvent"
+                    }
+                ]
+            }
+        },
+        "setNextPreviousConditionAction": {
+            "actionType": "JSFunction",
+            "method": "setNextPreviousCondition",
+            "inputData": {
+                "swiAtomicData": "{{props.subPanelContext.swiAtomicData}}"
+            },
+            "outputData": {
+                "isNext": "isNext",
+                "isPrevious": "isPrevious"
+            },
+            "deps": "js/swiService"
+        }
+    },
+    "conditions": {
+        "isPreviousButtonEnable": {
+            "expression": "ctx.selected.isPrevious===true"
+        },
+        "isNextButtonEnable": {
+            "expression": "ctx.selected.isNext===true"
+        }
+    },
+    "onEvent": [],
+    "lifecycleHooks": {
+        "onUpdate": {
+            "action": "setNextPreviousConditionAction",
+            "observers": [
+                "props.subPanelContext.swiAtomicData.selected"
+            ]
+        }
+    },
+    "functions": {},
+    "messages": {},
+    "i18n": {
+        "nextStepName": [
+            "swiMessages"
+        ],
+        "previousStepName": [
+            "swiMessages"
+        ]
+    }
+}

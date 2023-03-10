@@ -1,0 +1,14 @@
+<aw-panel class="aw-prgTimeline-goToCommand">
+    <aw-command-bar alignment="HORIZONTAL" anchor="Pgp0TimelineGoToGroup" context="data.context" show-command-labels=true>
+    </aw-command-bar>
+    <aw-separator></aw-separator>
+
+    <aw-panel-body>
+        <aw-date prop="data.enterDate"></aw-date>
+    </aw-panel-body>
+
+    <aw-button class="aw-prgTimeline-goButton" action="goToDateApply" enable-when="data.enterDate.dateApi.dateValue && !data.enterDate.error">
+        <aw-i18n>i18n.Pgp0Go</aw-i18n>
+    </aw-button>
+
+</aw-panel>

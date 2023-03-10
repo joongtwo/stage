@@ -1,0 +1,11 @@
+<div class="sw-column flex-auto aw-change-mergeCandidateTileBorder">
+    <div class="sw-row justify-right aw-change-mergeCandidatesTile">
+        <h6 class="{{props.mergeItem.mergeCandidateItem.mergeAction.internalName}}">{{props.mergeItem.mergeCandidateItem.mergeAction.displayName}}</h6>
+    </div>
+    <div class="sw-row justify-left">
+        <aw-default-cell vmo="props.mergeItem.mergeCandidateItem.objectToBeMerged"></aw-default-cell>
+    </div>
+    <div class="sw-row justify-right ">
+        <aw-button class="small aw-change-mergeButton" button-type='accent-caution' action="callMergeChangeSoa" enable-when="conditions.isNotAlreadyMerged">Merge</aw-button>
+    </div>
+</div>

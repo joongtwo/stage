@@ -1,0 +1,34 @@
+<aw-panel-header>
+    <aw-back-button title="{{data.dataProviders.getCreatableContentTypes.selectedObjects[0].cellHeader1}}"
+        action="clearSelectedType" exist-when="!conditions.isTypeSelected"></aw-back-button>
+</aw-panel-header>
+<aw-form name="contentMgntCommandPanelForm">
+    <aw-panel-body visible-when="conditions.isTypeSelected">
+        <aw-panel-section caption="i18n.objectType"></aw-panel-section>
+        <aw-list-filter prop="data.filterBox" dataprovider="data.dataProviders.getCreatableContentTypes">
+            <aw-type-cell vmo="item"></aw-type-cell>
+        </aw-list-filter>
+    </aw-panel-body>
+
+    <aw-panel-body exist-when="!conditions.isTypeSelected">
+        <aw-panel-section>
+            <aw-xrt type="CREATE" object-type="{{data.selectedType.dbValue}}" xrt-state="data.xrtState"></aw-xrt>
+        </aw-panel-section>
+
+        <aw-panel-section caption="i18n.ownProjectSectionTitle">
+            <aw-list dataprovider="data.dataProviders.getCtmOwningProjectsProvider">
+                <aw-default-cell vmo="item"></aw-default-cell>
+            </aw-list>
+        </aw-panel-section>
+        <aw-command-panel-section caption="i18n.projectsSectionTitle" anchor="data.projectSectionCommands" context="subPanelContext.activeState">
+            <aw-list dataprovider="data.dataProviders.getAssignedProjectsProvider" command-context="subPanelContext.projectState">
+                <aw-default-cell vmo="item"></aw-default-cell>
+            </aw-list>
+        </aw-command-panel-section>
+    </aw-panel-body>
+</aw-form>
+<aw-panel-footer>
+    <aw-button action="createContentObject" enable-when="formProp.attributes.valid && !conditions.isTypeSelected">
+        <aw-i18n>i18n.create</aw-i18n>
+    </aw-button>
+</aw-panel-footer>

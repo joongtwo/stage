@@ -1,0 +1,36 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "_provider": {
+            "breadcrumbConfig": {
+                "vm": "AwSearchBreadcrumb"
+            },
+            "label": {
+                "source": "/i18n/ChangeMessages",
+                "key": "actionableSubLocation"
+            },
+            "priority": 5,
+            "clientScopeURI": "Cm1ActionableChanges",
+            "nameToken": "com.siemens.splm.client.change:actionableChangesSubLocation",
+            "context": {
+                "search": {
+                    "provider": "Cm1MyChangesProvider",
+                    "criteria": {
+                        "changesProviderContentType": "Actionable",
+                        "searchFromLocation": "global"
+                    },
+                    "isFilteringEnabled": true,
+                    "sortType": "Priority",
+                    "chartTitle": {
+                        "source": "/i18n/ChangeMessages",
+                        "key": "changeResultsChartTitle"
+                    },
+                    "maxToLoad": 50,
+                    "maxToReturn": 50
+                }
+            },
+            "policy": "/policies/changeObjectPropertyPolicy.json",
+            "viewBase": "Awp0Base"
+        }
+    }
+}

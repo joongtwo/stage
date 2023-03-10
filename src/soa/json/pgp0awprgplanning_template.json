@@ -1,0 +1,891 @@
+{
+    "BusinessObjectInterface": [
+      {
+        "createRelease": "Awp05.2.0",
+        "description": "Interface Name for Business Object Pgp0PlanObjsSearchProvider",
+        "libraryName": "pgp0awprgplanning",
+        "name": "Pgp0PlanObjsSearchProvider",
+        "namespace": "pgp0awprgplanning",
+        "primaryInterface": "true",
+        "typeName": "Pgp0PlanObjsSearchProvider"
+      },
+      {
+        "createRelease": "Awp04.0.0",
+        "description": "Interface Name for Business Object Prg0AbsEvent",
+        "libraryName": "pgp0awprgplanning",
+        "name": "Prg0AbsEvent",
+        "namespace": "pgp0::pgp0awprgplanning",
+        "primaryInterface": "false",
+        "typeName": "Prg0AbsEvent"
+      },
+      {
+        "createRelease": "Awp03.4.0",
+        "description": "Interface Name for Business Object Prg0AbsPlan",
+        "libraryName": "pgp0awprgplanning",
+        "name": "Prg0AbsPlan",
+        "namespace": "pgp0::pgp0awprgplanning",
+        "primaryInterface": "false",
+        "typeName": "Prg0AbsPlan"
+      }
+    ],
+    "Date": "Mon Jul 11 08:15:07 PM 2022",
+    "Library": [
+      {
+        "createRelease": "Awp03.3.0",
+        "description": "Service for Program Management related operations on Active workspace client",
+        "isThirdParty": "false",
+        "name": "Pgp0SoaPrgPlanningAw",
+        "namespace": "Pgp0::Soa::PrgPlanningAw",
+        "serviceLibrary": "true"
+      },
+      {
+        "DependentOn": [
+          {
+            "name": "metaframework"
+          },
+          {
+            "name": "tccore"
+          },
+          {
+            "name": "tc"
+          },
+          {
+            "name": "cxpom"
+          }
+        ],
+        "createRelease": "tc11000.2.1",
+        "description": "Library for Active Workspace Program Planning Infra module",
+        "isThirdParty": "false",
+        "name": "pgp0awprgplanning",
+        "namespace": "",
+        "serviceLibrary": "false"
+      }
+    ],
+    "Operation": [
+      {
+        "ParameterInfo": [
+          {
+            "description": "The source <b>Prg0AbsPlan</b> object to copy the events from.",
+            "parameterName": "sourcePlan"
+          },
+          {
+            "description": "A list of <b>Prg0AbsEvent</b> objects to copy to the target <b>Prg0AbsPlan</b>. This list will be used if the sourcePlan is not provided.",
+            "parameterName": "sourceEvents"
+          },
+          {
+            "description": "The target <b>Prg0AbsPlan</b> object to copy the events to.",
+            "parameterName": "targetPlan"
+          },
+          {
+            "description": "The date used to offset the copied <b>Prg0AbsEvent</b> objects. If the value is null or empty, it will be ignored.",
+            "parameterName": "primeEventDate"
+          },
+          {
+            "description": "Map of proprties defined in deep copy rules to be overridden.<br />If the value is true the related objects will be copied, otherwise they will be not be copied.",
+            "parameterName": "propertiesMap"
+          },
+          {
+            "description": "If true, the operation will be performed in background mode in a separate asynchronous server session; otherwise, perform the operation synchronously.",
+            "parameterName": "runInBackground"
+          }
+        ],
+        "canOverride": "false",
+        "component": "Awp0AWS",
+        "createRelease": "Awp06.2.0",
+        "dependencies": "",
+        "description": "This operation copies the <b>Prg0AbsEvent</b> objects from the source <b>Prg0AbsPlan</b> object to the target <b>Prg0AbsPlan</b> object. The copied <b>Prg0AbsEvent</b> plan date will be offset based on the prime event date.",
+        "exceptionCondition": "",
+        "id": "copyEvents#const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent>,&$const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,Teamcenter::DateTime,&$const,Pgp0::Soa::PrgPlanningAw::_2022_12::ProgramPlanning::OverrideRelationPropMap,&$bool",
+        "interface": "Pgp0::Soa::PrgPlanningAw::ProgramPlanning",
+        "isPostActionAllowed": "false",
+        "isPreActionAllowed": "false",
+        "isPreConditionAllowed": "false",
+        "isPublished": "true",
+        "name": "copyEvents",
+        "opTemplate": "Teamcenter::Soa::Server::ServiceData#Pgp0::Soa::PrgPlanningAw::ProgramPlanning::copyEvents#const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent>,&$const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,Teamcenter::DateTime,&$const,Pgp0::Soa::PrgPlanningAw::_2022_12::ProgramPlanning::OverrideRelationPropMap,&$bool",
+        "returnDescription": "The modified <b>Prg0AbsPlan</b> objects in the updated objects list of ServiceData.<br />The list of copied <b>Prg0AbsEvent</b> objects in the created list of ServiceData.<br /><br />The following errors may be returned: -<br /><br /><b>179004</b>: Source Plan Events were not copied  because you do not have permission to 1 or more of the events.",
+        "useCase": ""
+      },
+      {
+        "ParameterInfo": [
+          {
+            "description": "The source <b>Prg0AbsPlan</b> object to copy the events from.",
+            "parameterName": "sourcePlan"
+          },
+          {
+            "description": "A list of <b>Prg0AbsEvent</b> objects to copy to the target <b>Prg0AbsPlan</b>. This list will be used if the sourcePlan is not provided.",
+            "parameterName": "sourceEvents"
+          },
+          {
+            "description": "The target <b>Prg0AbsPlan</b> object to copy the events to.",
+            "parameterName": "targetPlan"
+          },
+          {
+            "description": "The date used to offset the copied <b>Prg0AbsEvent</b> objects. If the value is null or empty, it will be ignored.",
+            "parameterName": "primeEventDate"
+          },
+          {
+            "description": "Map of proprties defined in deep copy rules to be overridden.<br />If the value is true the related objects will be copied, otherwise they will be not be copied.",
+            "parameterName": "propertiesMap"
+          }
+        ],
+        "canOverride": "false",
+        "component": "Awp0AWS",
+        "createRelease": "Awp06.2.0",
+        "dependencies": "",
+        "description": "This async operation copies the <b>Prg0AbsEvent</b> objects from the source <b>Prg0AbsPlan</b> object to the target Prg0AbsPlan object. The copied <b>Prg0AbsEvent</b> plan date will be offset based on the prime event date.",
+        "exceptionCondition": "",
+        "id": "copyEventsAsync#const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent>,&$const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,Teamcenter::DateTime,&$const,Pgp0::Soa::PrgPlanningAw::_2022_12::ProgramPlanning::OverrideRelationPropMap,&",
+        "interface": "Pgp0::Soa::PrgPlanningAw::ProgramPlanning",
+        "isPostActionAllowed": "false",
+        "isPreActionAllowed": "false",
+        "isPreConditionAllowed": "false",
+        "isPublished": "true",
+        "name": "copyEventsAsync",
+        "opTemplate": "void#Pgp0::Soa::PrgPlanningAw::ProgramPlanning::copyEventsAsync#const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent>,&$const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,Teamcenter::DateTime,&$const,Pgp0::Soa::PrgPlanningAw::_2022_12::ProgramPlanning::OverrideRelationPropMap,&",
+        "returnDescription": "There are no specific business errors returned.Notification will be sent in case of failure.",
+        "useCase": ""
+      },
+      {
+        "ParameterInfo": [
+          {
+            "description": "The context plan object to load. The object type can be <b>Prg0ProgramPlan</b>, <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> object.",
+            "parameterName": "contextPlan"
+          },
+          {
+            "description": "The reference <b>Prg0AbsPlan</b> object starting from which, the plan hierarchy is to be traversed to load the remaining plan objects.",
+            "parameterName": "referencePlan"
+          }
+        ],
+        "canOverride": "false",
+        "component": "Awp0AWS",
+        "createRelease": "Awp03.3.0",
+        "dependencies": "",
+        "description": "The service operation loads the plan hierarchy which may contain <b>Prg0ProgramPlan</b>, <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> and the associated <b>Prg0AbsEvent</b> objects based on the given context and reference plan objects.",
+        "exceptionCondition": "",
+        "id": "loadPlanHierarchy#const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&",
+        "interface": "Pgp0::Soa::PrgPlanningAw::ProgramPlanning",
+        "isPostActionAllowed": "false",
+        "isPreActionAllowed": "false",
+        "isPreConditionAllowed": "false",
+        "isPublished": "true",
+        "name": "loadPlanHierarchy",
+        "opTemplate": "Pgp0::Soa::PrgPlanningAw::_2017_06::ProgramPlanning::LoadPlanHierarchyResponse#Pgp0::Soa::PrgPlanningAw::ProgramPlanning::loadPlanHierarchy#const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&",
+        "returnDescription": "Returns an ordered list of <b>Prg0AbsPlan</b> objects and their associated <b>Prg0AbsEvent</b> objects based on the given context <b>Prg0AbsPlan</b> object and the reference <b>Prg0AbsPlan</b> object. The returned plan objects can be of type <b>Prg0ProgramPlan</b>, <b>Prg0ProjectPlan</b> and <b>Prg0SubProjectPlan</b>.<br />Also returns a flag to indicate whether there are more <b>Prg0AbsPlan</b> objects in the hierarchy which are yet to be loaded.<br />The following errors may be returned-<br /><ul><ul><li type=\"disc\">179001: An internal error has occurred in the Active Workspace Program Management module. This is returned if an unexpected error occurs while trying to fetch the Plan hierarchy and events from the database. </li><li type=\"disc\">179002: The context object is not a valid type to paginate the plan hierarchy. Valid types are Program, Project and Subproject.</li><li type=\"disc\">179003: The reference object is not a valid type to paginate the plan hierarchy. Valid types are Program, Project and Subproject.</li></ul></ul>",
+        "useCase": ""
+      },
+      {
+        "ParameterInfo": [
+          {
+            "description": "The plan level object opened or selected in timeline sublocation.",
+            "parameterName": "selectedObject"
+          },
+          {
+            "description": "True if selected plan level object is valid for showing the command.",
+            "parameterName": "isValid"
+          }
+        ],
+        "canOverride": "false",
+        "component": "",
+        "createRelease": "Awp03.4.0",
+        "dependencies": "",
+        "description": "This operation validates whether the selected object on timeline sublocation is valid for showing add event object command.",
+        "exceptionCondition": "",
+        "id": "pgp0CanAddEventObject#tag_t,&$bool,*",
+        "interface": "pgp0::pgp0awprgplanning::Prg0AbsPlan",
+        "isPostActionAllowed": "false",
+        "isPreActionAllowed": "false",
+        "isPreConditionAllowed": "false",
+        "isPublished": "false",
+        "name": "pgp0CanAddEventObject",
+        "opTemplate": "int#pgp0::pgp0awprgplanning::Prg0AbsPlan::pgp0CanAddEventObject#tag_t,&$bool,*",
+        "returnDescription": "",
+        "useCase": ""
+      },
+      {
+        "ParameterInfo": [
+          {
+            "description": "The plan level object opened or selected in timeline sublocation.",
+            "parameterName": "selectedObject"
+          },
+          {
+            "description": "True if selected plan level object is valid for showing the command.",
+            "parameterName": "isValid"
+          }
+        ],
+        "canOverride": "true",
+        "component": "",
+        "createRelease": "Awp03.4.0",
+        "dependencies": "",
+        "description": "This operation validates whether the selected object on timeline sublocation is valid for showing add plan level object command.",
+        "exceptionCondition": "",
+        "id": "pgp0CanAddPlanLevelObject#tag_t,&$bool,*",
+        "interface": "pgp0::pgp0awprgplanning::Prg0AbsPlan",
+        "isPostActionAllowed": "false",
+        "isPreActionAllowed": "false",
+        "isPreConditionAllowed": "false",
+        "isPublished": "true",
+        "name": "pgp0CanAddPlanLevelObject",
+        "opTemplate": "int#pgp0::pgp0awprgplanning::Prg0AbsPlan::pgp0CanAddPlanLevelObject#tag_t,&$bool,*",
+        "returnDescription": "",
+        "useCase": ""
+      },
+      {
+        "ParameterInfo": [
+          {
+            "description": "The event object selected in timeline sublocation.",
+            "parameterName": "selectedObject"
+          },
+          {
+            "description": "True if selected event object is valid for showing the command.",
+            "parameterName": "isValid"
+          }
+        ],
+        "canOverride": "false",
+        "component": "",
+        "createRelease": "Awp04.0.0",
+        "dependencies": "",
+        "description": "This operation validates whether the selected event object on timeline sublocation is valid for showing delete event object command.",
+        "exceptionCondition": "",
+        "id": "pgp0CanDeleteEventObject#tag_t,&$bool,*",
+        "interface": "pgp0::pgp0awprgplanning::Prg0AbsEvent",
+        "isPostActionAllowed": "false",
+        "isPreActionAllowed": "false",
+        "isPreConditionAllowed": "false",
+        "isPublished": "false",
+        "name": "pgp0CanDeleteEventObject",
+        "opTemplate": "int#pgp0::pgp0awprgplanning::Prg0AbsEvent::pgp0CanDeleteEventObject#tag_t,&$bool,*",
+        "returnDescription": "",
+        "useCase": ""
+      },
+      {
+        "ParameterInfo": [
+          {
+            "description": "True/False based on ContentSecurity of Plan object.",
+            "parameterName": "isContentSecurityFlag"
+          }
+        ],
+        "canOverride": "false",
+        "component": "",
+        "createRelease": "Awp04.0.0",
+        "dependencies": "",
+        "description": "This operation retrun True/False based on ContentSecurity of Plan object.",
+        "exceptionCondition": "",
+        "id": "pgp0IsContentSecurityEnabled#bool,*",
+        "interface": "pgp0::pgp0awprgplanning::Prg0AbsEvent",
+        "isPostActionAllowed": "false",
+        "isPreActionAllowed": "false",
+        "isPreConditionAllowed": "false",
+        "isPublished": "true",
+        "name": "pgp0IsContentSecurityEnabled",
+        "opTemplate": "int#pgp0::pgp0awprgplanning::Prg0AbsEvent::pgp0IsContentSecurityEnabled#bool,*",
+        "returnDescription": "",
+        "useCase": ""
+      },
+      {
+        "ParameterInfo": [
+          {
+            "description": "True/False based on ContentSecurity of Plan object.",
+            "parameterName": "isContentSecurityFlag"
+          }
+        ],
+        "canOverride": "false",
+        "component": "",
+        "createRelease": "Awp04.0.0",
+        "dependencies": "",
+        "description": "This operation retrun True/False based on ContentSecurity of Plan object.",
+        "exceptionCondition": "",
+        "id": "pgp0IsContentSecurityEnabled#bool,*",
+        "interface": "pgp0::pgp0awprgplanning::Prg0AbsPlan",
+        "isPostActionAllowed": "false",
+        "isPreActionAllowed": "false",
+        "isPreConditionAllowed": "false",
+        "isPublished": "true",
+        "name": "pgp0IsContentSecurityEnabled",
+        "opTemplate": "int#pgp0::pgp0awprgplanning::Prg0AbsPlan::pgp0IsContentSecurityEnabled#bool,*",
+        "returnDescription": "",
+        "useCase": ""
+      }
+    ],
+    "OperationTemplate": [
+      {
+        "OperationParameter": [
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan",
+                "qualifier": "&"
+              }
+            ],
+            "const": "true",
+            "defaultValue": "",
+            "description": "The source <b>Prg0AbsPlan</b> object to copy the events from.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "sourcePlan"
+          },
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "DataTypeRefParam": [
+                  {
+                    "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent",
+                    "qualifier": ""
+                  }
+                ],
+                "dataType": "std::vector",
+                "qualifier": "&"
+              }
+            ],
+            "const": "true",
+            "defaultValue": "",
+            "description": "A list of <b>Prg0AbsEvent</b> objects to copy to the target <b>Prg0AbsPlan</b>. This list will be used if the sourcePlan is not provided.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "sourceEvents"
+          },
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan",
+                "qualifier": "&"
+              }
+            ],
+            "const": "true",
+            "defaultValue": "",
+            "description": "The target <b>Prg0AbsPlan</b> object to copy the events to.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "targetPlan"
+          },
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "Teamcenter::DateTime",
+                "qualifier": "&"
+              }
+            ],
+            "const": "true",
+            "defaultValue": "",
+            "description": "The date used to offset the copied <b>Prg0AbsEvent</b> objects. If the value is null or empty, it will be ignored.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "primeEventDate"
+          },
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "Pgp0::Soa::PrgPlanningAw::_2022_12::ProgramPlanning::OverrideRelationPropMap",
+                "qualifier": "&"
+              }
+            ],
+            "const": "true",
+            "defaultValue": "",
+            "description": "Map of proprties defined in deep copy rules to be overridden.<br />If the value is true the related objects will be copied, otherwise they will be not be copied.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "propertiesMap"
+          },
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "bool",
+                "qualifier": ""
+              }
+            ],
+            "const": "false",
+            "defaultValue": "",
+            "description": "If true, the operation will be performed in background mode in a separate asynchronous server session; otherwise, perform the operation synchronously.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "runInBackground"
+          }
+        ],
+        "OperationReturnDataTypeRef": [
+          {
+            "dataType": "Teamcenter::Soa::Server::ServiceData",
+            "qualifier": ""
+          }
+        ],
+        "accessControl": "false",
+        "const": "false",
+        "createRelease": "Awp06.2.0",
+        "description": "This operation copies the <b>Prg0AbsEvent</b> objects from the source <b>Prg0AbsPlan</b> object to the target <b>Prg0AbsPlan</b> object. The copied <b>Prg0AbsEvent</b> plan date will be offset based on the prime event date.",
+        "id": "Teamcenter::Soa::Server::ServiceData#Pgp0::Soa::PrgPlanningAw::ProgramPlanning::copyEvents#const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent>,&$const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,Teamcenter::DateTime,&$const,Pgp0::Soa::PrgPlanningAw::_2022_12::ProgramPlanning::OverrideRelationPropMap,&$bool",
+        "name": "Pgp0::Soa::PrgPlanningAw::ProgramPlanning::copyEvents",
+        "returnConst": "false",
+        "returnDescription": "The modified <b>Prg0AbsPlan</b> objects in the updated objects list of ServiceData.<br />The list of copied <b>Prg0AbsEvent</b> objects in the created list of ServiceData.<br /><br />The following errors may be returned: -<br /><br /><b>179004</b>: Source Plan Events were not copied  because you do not have permission to 1 or more of the events.",
+        "returnFreeMemory": "false",
+        "static": "false"
+      },
+      {
+        "OperationParameter": [
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan",
+                "qualifier": "&"
+              }
+            ],
+            "const": "true",
+            "defaultValue": "",
+            "description": "The source <b>Prg0AbsPlan</b> object to copy the events from.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "sourcePlan"
+          },
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "DataTypeRefParam": [
+                  {
+                    "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent",
+                    "qualifier": ""
+                  }
+                ],
+                "dataType": "std::vector",
+                "qualifier": "&"
+              }
+            ],
+            "const": "true",
+            "defaultValue": "",
+            "description": "A list of <b>Prg0AbsEvent</b> objects to copy to the target <b>Prg0AbsPlan</b>. This list will be used if the sourcePlan is not provided.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "sourceEvents"
+          },
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan",
+                "qualifier": "&"
+              }
+            ],
+            "const": "true",
+            "defaultValue": "",
+            "description": "The target <b>Prg0AbsPlan</b> object to copy the events to.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "targetPlan"
+          },
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "Teamcenter::DateTime",
+                "qualifier": "&"
+              }
+            ],
+            "const": "true",
+            "defaultValue": "",
+            "description": "The date used to offset the copied <b>Prg0AbsEvent</b> objects. If the value is null or empty, it will be ignored.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "primeEventDate"
+          },
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "Pgp0::Soa::PrgPlanningAw::_2022_12::ProgramPlanning::OverrideRelationPropMap",
+                "qualifier": "&"
+              }
+            ],
+            "const": "true",
+            "defaultValue": "",
+            "description": "Map of proprties defined in deep copy rules to be overridden.<br />If the value is true the related objects will be copied, otherwise they will be not be copied.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "propertiesMap"
+          }
+        ],
+        "OperationReturnDataTypeRef": [
+          {
+            "dataType": "void",
+            "qualifier": ""
+          }
+        ],
+        "accessControl": "false",
+        "const": "false",
+        "createRelease": "Awp06.2.0",
+        "description": "This async operation copies the <b>Prg0AbsEvent</b> objects from the source <b>Prg0AbsPlan</b> object to the target Prg0AbsPlan object. The copied <b>Prg0AbsEvent</b> plan date will be offset based on the prime event date.",
+        "id": "void#Pgp0::Soa::PrgPlanningAw::ProgramPlanning::copyEventsAsync#const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,std::vector<Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent>,&$const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,Teamcenter::DateTime,&$const,Pgp0::Soa::PrgPlanningAw::_2022_12::ProgramPlanning::OverrideRelationPropMap,&",
+        "name": "Pgp0::Soa::PrgPlanningAw::ProgramPlanning::copyEventsAsync",
+        "returnConst": "false",
+        "returnDescription": "There are no specific business errors returned.Notification will be sent in case of failure.",
+        "returnFreeMemory": "false",
+        "static": "false"
+      },
+      {
+        "OperationParameter": [
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan",
+                "qualifier": "&"
+              }
+            ],
+            "const": "true",
+            "defaultValue": "",
+            "description": "The context plan object to load. The object type can be <b>Prg0ProgramPlan</b>, <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> object.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "contextPlan"
+          },
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan",
+                "qualifier": "&"
+              }
+            ],
+            "const": "true",
+            "defaultValue": "",
+            "description": "The reference <b>Prg0AbsPlan</b> object starting from which, the plan hierarchy is to be traversed to load the remaining plan objects.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "referencePlan"
+          }
+        ],
+        "OperationReturnDataTypeRef": [
+          {
+            "dataType": "Pgp0::Soa::PrgPlanningAw::_2017_06::ProgramPlanning::LoadPlanHierarchyResponse",
+            "qualifier": ""
+          }
+        ],
+        "accessControl": "false",
+        "const": "false",
+        "createRelease": "Awp03.3.0",
+        "description": "The service operation loads the plan hierarchy which may contain <b>Prg0ProgramPlan</b>, <b>Prg0ProjectPlan</b> or <b>Prg0SubProjectPlan</b> and the associated <b>Prg0AbsEvent</b> objects based on the given context and reference plan objects.",
+        "id": "Pgp0::Soa::PrgPlanningAw::_2017_06::ProgramPlanning::LoadPlanHierarchyResponse#Pgp0::Soa::PrgPlanningAw::ProgramPlanning::loadPlanHierarchy#const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&$const,Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan,&",
+        "name": "Pgp0::Soa::PrgPlanningAw::ProgramPlanning::loadPlanHierarchy",
+        "returnConst": "false",
+        "returnDescription": "Returns an ordered list of <b>Prg0AbsPlan</b> objects and their associated <b>Prg0AbsEvent</b> objects based on the given context <b>Prg0AbsPlan</b> object and the reference <b>Prg0AbsPlan</b> object. The returned plan objects can be of type <b>Prg0ProgramPlan</b>, <b>Prg0ProjectPlan</b> and <b>Prg0SubProjectPlan</b>.<br />Also returns a flag to indicate whether there are more <b>Prg0AbsPlan</b> objects in the hierarchy which are yet to be loaded.<br />The following errors may be returned-<br /><ul><ul><li type=\"disc\">179001: An internal error has occurred in the Active Workspace Program Management module. This is returned if an unexpected error occurs while trying to fetch the Plan hierarchy and events from the database. </li><li type=\"disc\">179002: The context object is not a valid type to paginate the plan hierarchy. Valid types are Program, Project and Subproject.</li><li type=\"disc\">179003: The reference object is not a valid type to paginate the plan hierarchy. Valid types are Program, Project and Subproject.</li></ul></ul>",
+        "returnFreeMemory": "false",
+        "static": "false"
+      },
+      {
+        "OperationParameter": [
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "tag_t",
+                "qualifier": "&"
+              }
+            ],
+            "const": "false",
+            "defaultValue": "",
+            "description": "The event object selected in timeline sublocation.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "selectedObject"
+          },
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "bool",
+                "qualifier": "*"
+              }
+            ],
+            "const": "false",
+            "defaultValue": "",
+            "description": "True if selected event object is valid for showing the command.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Output",
+            "name": "isValid"
+          }
+        ],
+        "OperationReturnDataTypeRef": [
+          {
+            "dataType": "int",
+            "qualifier": ""
+          }
+        ],
+        "accessControl": "false",
+        "const": "false",
+        "createRelease": "Awp04.0.0",
+        "description": "This operation validates whether the selected event object on timeline sublocation is valid for showing delete event object command.",
+        "id": "int#pgp0::pgp0awprgplanning::Prg0AbsEvent::pgp0CanDeleteEventObject#tag_t,&$bool,*",
+        "name": "pgp0::pgp0awprgplanning::Prg0AbsEvent::pgp0CanDeleteEventObject",
+        "returnConst": "false",
+        "returnDescription": "",
+        "returnFreeMemory": "false",
+        "static": "false"
+      },
+      {
+        "OperationParameter": [
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "bool",
+                "qualifier": "*"
+              }
+            ],
+            "const": "false",
+            "defaultValue": "",
+            "description": "True/False based on ContentSecurity of Plan object.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Output",
+            "name": "isContentSecurityFlag"
+          }
+        ],
+        "OperationReturnDataTypeRef": [
+          {
+            "dataType": "int",
+            "qualifier": ""
+          }
+        ],
+        "accessControl": "false",
+        "const": "false",
+        "createRelease": "Awp04.0.0",
+        "description": "This operation retrun True/False based on ContentSecurity of Plan object.",
+        "id": "int#pgp0::pgp0awprgplanning::Prg0AbsEvent::pgp0IsContentSecurityEnabled#bool,*",
+        "name": "pgp0::pgp0awprgplanning::Prg0AbsEvent::pgp0IsContentSecurityEnabled",
+        "returnConst": "false",
+        "returnDescription": "",
+        "returnFreeMemory": "false",
+        "static": "false"
+      },
+      {
+        "OperationParameter": [
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "tag_t",
+                "qualifier": "&"
+              }
+            ],
+            "const": "false",
+            "defaultValue": "",
+            "description": "The plan level object opened or selected in timeline sublocation.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "selectedObject"
+          },
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "bool",
+                "qualifier": "*"
+              }
+            ],
+            "const": "false",
+            "defaultValue": "",
+            "description": "True if selected plan level object is valid for showing the command.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Output",
+            "name": "isValid"
+          }
+        ],
+        "OperationReturnDataTypeRef": [
+          {
+            "dataType": "int",
+            "qualifier": ""
+          }
+        ],
+        "accessControl": "false",
+        "const": "false",
+        "createRelease": "Awp03.4.0",
+        "description": "This operation validates whether the selected object on timeline sublocation is valid for showing add event object command.",
+        "id": "int#pgp0::pgp0awprgplanning::Prg0AbsPlan::pgp0CanAddEventObject#tag_t,&$bool,*",
+        "name": "pgp0::pgp0awprgplanning::Prg0AbsPlan::pgp0CanAddEventObject",
+        "returnConst": "false",
+        "returnDescription": "",
+        "returnFreeMemory": "false",
+        "static": "false"
+      },
+      {
+        "OperationParameter": [
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "tag_t",
+                "qualifier": "&"
+              }
+            ],
+            "const": "false",
+            "defaultValue": "",
+            "description": "The plan level object opened or selected in timeline sublocation.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Input",
+            "name": "selectedObject"
+          },
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "bool",
+                "qualifier": "*"
+              }
+            ],
+            "const": "false",
+            "defaultValue": "",
+            "description": "True if selected plan level object is valid for showing the command.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Output",
+            "name": "isValid"
+          }
+        ],
+        "OperationReturnDataTypeRef": [
+          {
+            "dataType": "int",
+            "qualifier": ""
+          }
+        ],
+        "accessControl": "false",
+        "const": "false",
+        "createRelease": "Awp03.4.0",
+        "description": "This operation validates whether the selected object on timeline sublocation is valid for showing add plan level object command.",
+        "id": "int#pgp0::pgp0awprgplanning::Prg0AbsPlan::pgp0CanAddPlanLevelObject#tag_t,&$bool,*",
+        "name": "pgp0::pgp0awprgplanning::Prg0AbsPlan::pgp0CanAddPlanLevelObject",
+        "returnConst": "false",
+        "returnDescription": "",
+        "returnFreeMemory": "false",
+        "static": "false"
+      },
+      {
+        "OperationParameter": [
+          {
+            "OperationParameterDataTypeRef": [
+              {
+                "dataType": "bool",
+                "qualifier": "*"
+              }
+            ],
+            "const": "false",
+            "defaultValue": "",
+            "description": "True/False based on ContentSecurity of Plan object.",
+            "freeOutputMemory": "false",
+            "inputOutput": "Output",
+            "name": "isContentSecurityFlag"
+          }
+        ],
+        "OperationReturnDataTypeRef": [
+          {
+            "dataType": "int",
+            "qualifier": ""
+          }
+        ],
+        "accessControl": "false",
+        "const": "false",
+        "createRelease": "Awp04.0.0",
+        "description": "This operation retrun True/False based on ContentSecurity of Plan object.",
+        "id": "int#pgp0::pgp0awprgplanning::Prg0AbsPlan::pgp0IsContentSecurityEnabled#bool,*",
+        "name": "pgp0::pgp0awprgplanning::Prg0AbsPlan::pgp0IsContentSecurityEnabled",
+        "returnConst": "false",
+        "returnDescription": "",
+        "returnFreeMemory": "false",
+        "static": "false"
+      }
+    ],
+    "ServiceInterface": [
+      {
+        "createRelease": "Awp03.3.0",
+        "dependencies": "",
+        "description": "Service for Program Management related operations on Active workspace client",
+        "libraryName": "Pgp0SoaPrgPlanningAw",
+        "name": "ProgramPlanning",
+        "namespace": "Pgp0::Soa::PrgPlanningAw",
+        "serviceLibraryRef": ""
+      }
+    ],
+    "Struct": [
+      {
+        "StructElement": [
+          {
+            "DataTypeRefParam": [
+              {
+                "dataType": "bool"
+              }
+            ],
+            "description": "If true, there are more <b>Prg0AbsPlan</b> objects  in the plan hierarchy yet to be loaded.",
+            "name": "hasMorePlanObjects"
+          },
+          {
+            "DataTypeRefParam": [
+              {
+                "DataTypeRefParam": [
+                  {
+                    "dataType": "Pgp0::Soa::PrgPlanningAw::_2017_06::ProgramPlanning::PlanAndEvents"
+                  }
+                ],
+                "dataType": "std::vector"
+              }
+            ],
+            "description": "An ordered list of <b>Prg0AbsPlan</b> objects and their associated <b>Prg0AbsEvent</b> objects loaded by this operation.",
+            "name": "planEventsData"
+          },
+          {
+            "DataTypeRefParam": [
+              {
+                "dataType": "Teamcenter::Soa::Server::ServiceData"
+              }
+            ],
+            "description": "The ServiceData.",
+            "name": "serviceData"
+          }
+        ],
+        "createRelease": "Awp03.3.0",
+        "description": "The response containing an ordered list of all loaded <b>Prg0AbsPlan</b> objects and their associated <b>Prg0AbsEvent</b> objects, a flag indicating whether there are more <b>Prg0AbsPlan</b> objects to be loaded and the Service Data.",
+        "isPublished": "true",
+        "name": "LoadPlanHierarchyResponse",
+        "namespace": "Pgp0::Soa::PrgPlanningAw::_2017_06::ProgramPlanning",
+        "scope": "Pgp0::Soa::PrgPlanningAw::ProgramPlanning"
+      },
+      {
+        "StructElement": [
+          {
+            "DataTypeRefParam": [
+              {
+                "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsPlan"
+              }
+            ],
+            "description": "A <b>Prg0AbsPlan</b> object.",
+            "name": "plan"
+          },
+          {
+            "DataTypeRefParam": [
+              {
+                "DataTypeRefParam": [
+                  {
+                    "dataType": "Teamcenter::ProgramInfra::prg0programinfra::Prg0AbsEvent"
+                  }
+                ],
+                "dataType": "std::vector"
+              }
+            ],
+            "description": "A list of <b>Prg0AbsEvent</b> objects associated to the plan object.",
+            "name": "events"
+          }
+        ],
+        "createRelease": "Awp03.3.0",
+        "description": "A Structure that contains a <b>Prg0AbsPlan</b> object and its associated <b>Prg0AbsEvent</b> objects.",
+        "isPublished": "true",
+        "name": "PlanAndEvents",
+        "namespace": "Pgp0::Soa::PrgPlanningAw::_2017_06::ProgramPlanning",
+        "scope": "Pgp0::Soa::PrgPlanningAw::ProgramPlanning"
+      }
+    ],
+    "TcVersion": "tc14000.0.0",
+    "Typedef": [
+      {
+        "DataTypeRefParam": [
+          {
+            "DataTypeRefParam": [
+              {
+                "dataType": "std::string"
+              },
+              {
+                "dataType": "bool"
+              }
+            ],
+            "dataType": "std::map"
+          }
+        ],
+        "createRelease": "Awp06.2.0",
+        "description": "Map (string, bool) of properties defined in the deep copy rules for <b>Prg0AbsEvent</b> which needs to be overridden.<br />If the value is true the related objects will be copied, otherwise they will be not be copied.",
+        "isPublished": "true",
+        "name": "OverrideRelationPropMap",
+        "namespace": "Pgp0::Soa::PrgPlanningAw::_2022_12::ProgramPlanning",
+        "scope": "Pgp0::Soa::PrgPlanningAw::ProgramPlanning"
+      }
+    ],
+    "xmlns": "http://teamcenter.com/BusinessModel/TcBusinessData"
+  }

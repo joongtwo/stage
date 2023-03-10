@@ -1,0 +1,213 @@
+{
+    "schemaVersion" : "1.0.0",
+    "actions": {
+        "generateReport":{
+            "actionType": "JSFunction",
+            "method": "generateReport",
+            "inputData": {
+                "data":"{{data}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "aw.closePopup"
+                } ]
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        },
+        "loadTemplateInfo": {
+            "actionType": "JSFunction",
+            "method": "loadTemplateInfo",
+            "inputData": {
+                "statFeatureState":"{{data.statFeatureState}}",
+                "dataFilterState":"{{data.dataFilterState}}"
+            },
+            "outputData": {
+                "statFeatureState":"statFeatureState",
+                "dataFilterState":"dataFilterState"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "resetTemplateInfo": {
+            "actionType": "JSFunction",
+            "method": "resetTemplateInfo",
+            "inputData": {
+                "statFeatureState":"{{data.statFeatureState}}",
+                "dataFilterState":"{{data.dataFilterState}}"
+            },
+            "outputData": {
+                "statFeatureState":"statFeatureState",
+                "dataFilterState":"dataFilterState"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        }
+    },
+    "data": {
+        "repExecPriority": {
+            "displayName": "{{i18n.repExecutionPriority}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "1",
+            "dispValue": "{{i18n.priorityNormal}}"
+        },
+        "repExecPriorityList": {
+            "type": "STRING",
+            "dbValue": [ {
+                "propDisplayValue": "{{i18n.priorityLow}}",
+                "dispValue": "Low",
+                "propInternalValue": "0"
+            },
+            {
+                "propDisplayValue": "{{i18n.priorityNormal}}",
+                "dispValue": "Normal",
+                "propInternalValue": "1"
+            },
+            {
+                "propDisplayValue": "{{i18n.priorityAboveNormal}}",
+                "dispValue": "Above Normal",
+                "propInternalValue": "2"
+            },
+            {
+                "propDisplayValue": "{{i18n.priorityHigh}}",
+                "dispValue": "High",
+                "propInternalValue": "3"
+            },
+            {
+                "propDisplayValue": "{{i18n.priorityVeryHigh}}",
+                "dispValue": "Very High",
+                "propInternalValue": "4"
+            }
+        ]
+        },
+        "queryParamsTabs": [
+            {
+                "name": "{{i18n.queryTypeTabTitle}}",
+                "panelId": "queryTypeTab"
+            },
+            {
+                "name": "{{i18n.chartSettingsTabTitle}}",
+                "panelId": "chartSettingsTab"
+            },
+            {
+                "name": "{{i18n.statisticsTabTitle}}",
+                "panelId": "statisticsTab"
+            },
+            {
+                "name": "{{i18n.dataFilterTabTitle}}",
+                "panelId": "dataFilterTab"
+            }
+        ],
+        "qryTypeState": {
+            "initialValues": {
+                "useOrigTempSettings": true,
+                "shift": "0",
+                "qryType": "0",
+                "lastNJobs": "20",
+                "lastJobsDays": "",
+                "lastJobsHrs": "",
+                "lastJobsMins": "",
+                "fromDate": "",
+                "toDate": "",
+                "fromOrSingleJob": "",
+                "toJob": ""
+            },
+            "meta": {}
+        },
+        "chartSettingsState": {
+            "initialValues": {
+                "useOrigTempSettings": true,
+                "chartType": "1",
+                "xAxisLabels": "1",
+                "yAxisLabels": "2",
+                "toUserDefined": "",
+                "fromUserDefined": "",
+                "userDefinedOption": "0",
+                "toSpecLimit": "",
+                "autoIncludeZero": true,
+                "annotationColorBox": false,
+                "annotationGreen": "1.33",
+                "annotationRed": "1",
+                "basis": "0",
+                "barChartScopeGreen": "75",
+                "barChartScopeRed": "100",
+                "barChartScopeBlack": "200"
+            },
+            "meta": {}
+        },
+        "statFeatureAttrState": {
+            "initialValues": {
+                "useOrigTempSettings": true,
+                "selectedFeatAttributes": []
+            },
+            "meta": {}
+        },
+        "statFeatureState": {
+            "initialValues": {
+                "useOrigTempSettings": true,
+                "selectedFeatAttrTypes": [],
+                "selectedFeatOptions": [],
+                "selectedFeatAttributes": [],
+                "featAttrTypes": []
+            },
+            "meta": {}
+        },
+        "dataFilterState": {
+            "initialValues": {
+                "useOrigTempSettings": true,
+                "selectedSpecType": "",
+                "selectedDeviceType": "",
+                "selectedTraceCodes": [],
+                "specTypes":[],
+                "deviceTypes":[],
+                "traceCodes":{},
+                "routineId":""
+            },
+            "meta": {}
+        }
+    },
+    "conditions": {},
+    "onEvent":[
+        {
+            "eventId": "aw.closePopup",
+            "action": "closePopupWindow"
+        }
+    ],
+    "lifecycleHooks": {
+        "onMount": "loadTemplateInfo",
+        "onUnmount": "resetTemplateInfo"
+    },
+    "messages": {},
+    "i18n": {
+        "queryParams": ["DpvMessages"],
+        "generateReportCriteria" : ["DpvMessages"],
+        "Dpv1ReportGenerationTriggered": ["DpvMessages"],
+        "priorityLow": ["DpvMessages"],
+        "priorityNormal": ["DpvMessages"],
+        "priorityAboveNormal": ["DpvMessages"],
+        "priorityHigh": ["DpvMessages"],
+        "priorityVeryHigh": ["DpvMessages"],
+        "queryTypeTabTitle": ["DpvMessages"],
+        "chartSettingsTabTitle": ["DpvMessages"],
+        "statisticsTabTitle": ["DpvMessages"],
+        "dataFilterTabTitle": ["DpvMessages"],
+        "summaryOfChanges": ["DpvMessages"],
+        "closeBtn": ["DpvMessages"],
+        "generateReportBtn": ["DpvMessages"],
+        "repExecutionPriority": ["DpvMessages"]
+        
+    },
+    "functions": {},
+    "props": {
+        "sub-panel-context":{
+            "type":"object"
+        }
+    } 
+}

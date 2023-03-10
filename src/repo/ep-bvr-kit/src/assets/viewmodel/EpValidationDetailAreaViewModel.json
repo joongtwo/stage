@@ -1,0 +1,48 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "updateSelection": {
+            "actionType": "JSFunction",
+            "method": "updateDataToTable",
+            "inputData": {
+                "props": "{{props.inputObject}}"
+            },
+            "outputData":{
+                "selection":"selection",
+                "title.dispValue":"title.dispValue",
+                "title.displayValueUpdated":true,
+                "title.displayValues[0]":"title.dispValue",
+                "title.uiValue":"title.dispValue"
+            },
+            "deps":"js/epValidationTableService"
+        }
+    },
+    "props": {
+        "input-object": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "title": {
+            "displayName":  "{{i18n.detailTableTitle}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "epValidationMessages",
+            "dispValue": "{{props.inputObject[0].props['BOM Line'].displayName}}"
+        },
+        "selection":{
+            "inputObject": "{{props.inputObject}}"
+        }
+
+        },
+    "i18n": {
+        "detailTableTitle": [ "epValidationMessages" ]
+    },
+    "lifecycleHooks": {
+        "onUpdate":[{
+             "action":"updateSelection",
+             "observers":["props.inputObject"]
+        }]
+    }
+}

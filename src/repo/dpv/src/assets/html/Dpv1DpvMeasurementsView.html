@@ -1,0 +1,16 @@
+<aw-command-panel caption="i18n.dpvMeasurementsPanel">
+    <aw-panel-body>
+        <aw-panel-section>
+            <aw-break></aw-break>
+            <aw-datetime prop="data.fromDate" enable-when="conditions.requiredJSNEntered"></aw-datetime>
+            <aw-datetime prop="data.toDate" enable-when="conditions.requiredJSNEntered"></aw-datetime>
+            <aw-break></aw-break>
+            <aw-textbox prop="data.jsnTextbox" enable-when="conditions.requireDatesEntered"></aw-textbox>
+        </aw-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="loadUserInput">
+            <aw-i18n>i18n.dpvGetData</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

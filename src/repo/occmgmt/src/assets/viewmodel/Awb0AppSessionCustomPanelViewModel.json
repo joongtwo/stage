@@ -1,0 +1,111 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports":
+    [
+        "js/aw-checkbox.directive",
+        "js/visible-when.directive"
+    ],
+    "actions":
+    {
+        "updateDataSource": {
+            "actionType": "JSFunction",
+            "method": "addHtmlPanelInDataSource",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "{{data.subPanelContext.xrtType}}",
+                "panelID": "Awb0AppSessionCustomPanel"
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "updateReadShare": {
+            "actionType": "JSFunction",
+            "method": "updatedbValue",
+            "inputData": {
+                "par1": "{{ctx.aceActiveContext.context.workingContextObj.props.fnd0AllowReadShare.dbValues}}"
+            },
+            "outputData": {
+                "fnd0AllowReadShare.dbValue": ""
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "updateWriteShare": {
+            "actionType": "JSFunction",
+            "method": "updatedbValue",
+            "inputData": {
+                "par1": "{{ctx.aceActiveContext.context.workingContextObj.props.fnd0AllowWriteShare.dbValues}}"
+            },
+            "outputData": {
+                "fnd0AllowWriteShare.dbValue": ""
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "customPanelMount": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateDataSource"
+                },
+                {
+                    "action": "updateReadShare"
+                },
+                {
+                    "action": "updateWriteShare"
+                }
+            ]
+        }
+    },
+    "ctx" : {
+        "aceActiveContext": {
+            "type" : "object"
+        }
+    },
+    "data":
+    {
+        "fnd0AllowReadShare":
+        {
+            "type": "BOOLEAN",
+            "isEditable": "true",
+            "displayName": "{{i18n.allowReadShare}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "fnd0AllowWriteShare":
+        {
+            "type": "BOOLEAN",
+            "isEditable": "true",
+            "displayName": "{{i18n.allowWriteShare}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+
+    "conditions": {
+        "canShowReadCheckBox": {
+            "expression": "(ctx.aceActiveContext.context.workingCtxOpType === 'UPDATE' && ctx.user.uid == ctx.aceActiveContext.context.workingContextObj.props.owning_user.dbValues[0]) || (ctx.aceActiveContext.context.workingCtxOpType !== 'UPDATE')"
+        },
+        "canShowWriteCheckBox": {
+            "expression": "(ctx.aceActiveContext.context.workingCtxOpType === 'UPDATE' && ctx.user.uid == ctx.aceActiveContext.context.workingContextObj.props.owning_user.dbValues[0] && data.fnd0AllowReadShare.dbValue) || (ctx.aceActiveContext.context.workingCtxOpType !== 'UPDATE' && data.fnd0AllowReadShare.dbValue)"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "customPanelMount",
+        "onUpdate": [ {
+            "action": "updateDataSource",
+            "observers": [ "viewModel.data" ]
+        },
+        {
+            "action": "updateReadShare",
+            "observers": [ "viewModel.ctx.aceActiveContext.context.workingContextObj.props.fnd0AllowReadShare.dbValues[0]"]
+        },
+        {
+            "action": "updateWriteShare",
+            "observer": ["viewModel.ctx.aceActiveContext.context.workingContextObj.props.fnd0AllowWriteShare.dbValues[0]"]
+        }
+        ]
+    },
+
+    "i18n":
+    {
+        "allowReadShare": [ "OccurrenceManagementConstants" ],
+        "allowWriteShare": [ "OccurrenceManagementConstants" ]
+    }
+}

@@ -1,0 +1,33 @@
+<aw-panel class="aw-ep-dataCardPopupContainer">
+    <aw-panel-body exist-when="data.isCreateMoreActivity===false">
+        <aw-search-box prop="data.searchBox" placeholder="i18n.searchByCode" action="doSearch">
+        </aw-search-box>
+        <aw-list dataprovider="data.dataProviders.searchBoxDataProvider">
+            <div class="sw-row w-12 aw-ep-dataCardPanel">
+                <aw-default-cell class="w-7" vmo="item"></aw-default-cell>
+                <ep-data-card-edit-property-widget class="w-5 sw-column"
+                    is-standard-frequency="data.isStandardFrequency" shared-data-state="data.sharedDataState"
+                    exist-when="data.sharedDataState.uid ===item.uid"></ep-data-card-edit-property-widget>
+            </div>
+        </aw-list>
+    </aw-panel-body>
+    <aw-panel-body class="justify-center align-center" exist-when="data.isCreateMoreActivity===true">
+        <div class='aw-jswidgets-loading'></div>
+        <mfe-message sub-panel-context="data.messages.activityCreated"></mfe-message>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <div class="sw-row sw-button-group justify-right">
+            <aw-button size="auto" button-type="base" action="closeAction">
+                <aw-i18n>i18n.CancelButtonTitle</aw-i18n>
+            </aw-button>
+            <aw-button enable-when="data.sharedDataState.uid && data.isCreateMoreActivity===false" size="auto"
+                button-type="base" action="createAndMoreAction">
+                <aw-i18n>i18n.CreateAndAddMoreObjectButtonTitle</aw-i18n>
+            </aw-button>
+            <aw-button enable-when="data.sharedDataState.uid && data.isCreateMoreActivity===false" size="auto"
+                action="createAction">
+                <aw-i18n>i18n.CreateButtonTitle</aw-i18n>
+            </aw-button>
+        </div>
+    </aw-panel-footer>
+</aw-panel>

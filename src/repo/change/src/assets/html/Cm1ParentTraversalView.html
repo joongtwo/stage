@@ -1,0 +1,16 @@
+
+    <aw-row>
+        <aw-command-bar anchor="cm1_addImpactedItemCommandsLeftFirst" alignment="HORIZONTAL">
+        </aw-command-bar>
+        <div class="aw-xrt-objectSetToolbar">
+            <aw-command-bar class="aw-commands-commandBarHorizontalLeft" anchor="cm1_addImpactedItemCommandsLeft" context="data.dataProviders.probableImpactedDataProvider"
+                alignment="HORIZONTAL"></aw-command-bar>
+        </div>
+    </aw-row>
+    <aw-row>
+    <div class="aw-base-scrollPanel aw-splm-table-overflow-visible aw-layout-fill">
+        <!-- <label visible-when="ctx.xrtPageContext.secondaryXrtPageID !== 'tc_xrt_ImpactAnalysis' && ctx.xrtPageContext.primaryXrtPageID !== 'tc_xrt_ImpactAnalysis'" class="aw-change-revisionRuleLabel"><strong>{{i18n.revisionRuleLabel}} : </strong>{{ctx.userSession.props.awp0RevRule.uiValue}}</label> -->
+        <aw-splm-table gridid="probableImpactedGrid" use-tree="true" show-check-box="data.dataProviders.probableImpactedDataProvider.selectionModel.multiSelectEnabled"
+        ></aw-splm-table>
+    </div>
+</aw-row>

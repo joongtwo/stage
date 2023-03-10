@@ -1,0 +1,697 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+    ],
+
+    "actions": {
+        "init": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "queryLegendData"
+                },
+                {
+                    "action": "checkForAdvancedFeaturesLicenses"
+                },
+
+                {
+                    "action": "initGraphStyle"
+                }
+            ]
+        },
+        "checkForAdvancedFeaturesLicenses": {
+            "actionType": "JSFunctionAsync",
+            "method": "checkForAdvancedFeaturesLicenses",
+            "inputData": {},
+            "outputData": {
+                "hasAdvancedLicense": ""
+            },
+            "deps": "js/Rv1RelationBrowserService"
+        },
+        "queryLegendData": {
+            "actionType": "TcSoaService",
+            "serviceName": "RelationshipViewer-2019-12-NetworkEngine",
+            "method": "getViews4",
+            "inputData": {
+                "getViewsInput": {
+                    "key": ["Relations"],
+                    "objectType":["{{function:getUnderlyingObjectType}}"]
+                }
+            },
+            "outputData": {
+                "legendData": "views"
+            },
+            "deps": "js/Rv1RelationBrowserLegendService"
+        },
+
+        "handleModelObjectUpdated": {
+            "actionType": "JSFunction",
+            "method": "handleModelObjectUpdated",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "eventData": "{{data.eventData}}"
+            },
+
+            "deps": "js/Rv1RelationBrowserService"
+        },
+
+        "initLegendData": {
+            "actionType": "JSFunction",
+            "method": "initLegendData",
+            "inputData": {
+                "graphCtx": "{{ctx.graph}}",
+                "data": "{{data}}",
+                "defaultActiveView": "{{subPanelContext.defaultActiveView}}"
+            },
+            "outputData": {
+                "actionState.expandGraph": ""
+            },
+            "events": {
+                "success": [ {
+                    "name": "Rv1RelationsBrowser.getFilterMap"
+                } ]
+            },
+            "deps": "js/Rv1RelationBrowserLegendService"
+        },
+
+        "initGraphStyle": {
+            "actionType": "JSFunctionAsync",
+            "method": "initGraphStyle",
+            "inputData": {},
+            "deps": "js/Rv1RelationBrowserGraphStyles"
+        },
+        "getFilterMap": {
+            "actionType": "JSFunction",
+            "method": "getFilterMap",
+            "inputData": {
+                "filterPref": "{{ctx.preferences.RV1_DARB_Filter_Properties}}"
+            },
+            "outputData": {
+                "filterMap": "result.filterMap",
+                "queryNetworkPolicy": "result.policy"
+            },
+            "deps": "js/Rv1RelationBrowserLegendService"
+        },
+        "queryNetwork": {
+            "actionType": "TcSoaService",
+            "serviceName": "RelationshipViewer-2012-10-NetworkEngine",
+            "method": "queryNetwork2",
+            "inputData": {
+                "input": "{{function:getQueryNetworkInput}}"
+            },
+            "policy": {
+                "types": "{{data.queryNetworkPolicy}}"
+            },
+            "outputData": {
+                "actionState": "{{function:getQueryNetworkOutput}}",
+                "oauthData": "ServiceData.partialErrors"
+            },
+            "events": {
+                "success": [ {
+                    "name": "complete",
+                    "condition": "ctx.activeToolsAndInfoCommand.commandId === 'Evm1ShowRecipe'",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ],
+                "failure": [ {
+                    "condition": "oauthData[0].errorValues[0].code === 142009",
+                    "name": "Rv1RelationsBrowser.validateOauth",
+                    "eventData": {
+                        "onSuccessEvent": "Rv1RelationsBrowser.expandGraph",
+                        "onSuccessEventData": "{{data.oauthData}}"
+                    }
+                },
+                {
+                    "name": "complete",
+                    "condition": "ctx.activeToolsAndInfoCommand.commandId === 'Evm1ShowRecipe'",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            },
+            "deps": "js/Rv1RelationBrowserService"
+        },
+
+        "drawGraph": {
+            "actionType": "JSFunction",
+            "method": "drawGraph",
+            "inputData": {
+                "activeLegendView": "{{ctx.graph.legendState.activeView}}",
+                "data": "{{data}}",
+                "drawGraphState": "{{data.actionState.drawGraph}}",
+                "sortedLayoutPreferenceValue": "{{ctx.preferences.RV1_DARB_Sorted_Layouts}}",
+                "concentratedPreferenceValue": "{{ctx.preferences.RV1_DARB_Concentrated}}"
+            },
+            "outputData": {
+                "actionState": ""
+            },
+            "deps": "js/Rv1RelationBrowserDrawService"
+        },
+
+        "issueOauthRequest": {
+            "actionType": "JSFunction",
+            "method": "handleOauthRequestInternal",
+            "deps": "js/Rv1RelationBrowserUtils",
+            "inputData": {
+                "ctx": "{{ctx}}",
+                "data": "{{data}}",
+                "eventdata": "{{data.eventData}}"
+            }
+        },
+
+        "handleItemsRemovedFromGraph": {
+            "actionType": "JSFunction",
+            "method": "handleItemsRemovedFromGraph",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "items": "{{parameters.eventData}}"
+            },
+            "deps": "js/Rv1RelationBrowserService"
+        },
+
+        "handleGraphItemsMoved": {
+            "actionType": "JSFunction",
+            "method": "handleGraphItemsMoved",
+            "inputData": {
+                "items": "{{data.eventMap['awGraph.graphItemsMoved'].items}}",
+                "graphModel": "{{data.graphModel}}"
+            },
+
+            "deps": "js/Rv1RelationBrowserService"
+        },
+
+        "setNodeHeightOnWrappedHeightChanged": {
+            "actionType": "JSFunction",
+            "method": "setNodeHeightOnWrappedHeightChanged",
+            "inputData": {
+                "graphModel": "{{ctx.graph.graphModel}}",
+                "nodes": "{{data.eventMap['awGraph.wrappedHeightChanged'].wrappedHeightChangedNodes}}"
+            },
+
+            "deps": "js/Rv1RelationBrowserDrawService"
+        },
+        "updateActiveView": {
+            "actionType": "JSFunction",
+            "method": "updateActiveView",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "legendData": "{{data.legendData}}"
+            },
+            "outputData": {
+                "actionState": ""
+            },
+            "deps": "js/Rv1RelationBrowserService"
+        },
+        "edgeHotspotClicked": {
+            "actionType": "JSFunction",
+            "method": "edgeHotspotClicked",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "edge": "{{parameters.hotspotClickedEventData.edge}}"
+            },
+            "deps": "js/Rv1RelationBrowserService"
+        },
+        "graphSelectionChanged": {
+            "actionType": "JSFunction",
+            "method": "graphSelectionChanged",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "data": "{{data.eventMap['awGraph.selectionChanged']}}",
+                "selectionData": "{{subPanelContext.selectionData}}"
+            },
+            "outputData": {
+                "selectionState": ""
+            },
+            "deps": "js/Rv1RelationBrowserSelectionService"
+        },
+        "graphHoverChanged": {
+            "actionType": "JSFunction",
+            "method": "graphHoverChanged",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "data": "{{data.eventMap['awGraph.hoverChanged']}}"
+            },
+
+            "deps": "js/Rv1RelationBrowserSelectionService"
+        },
+        "graphMultiSelect": {
+            "actionType": "JSFunction",
+            "method": "graphMultiSelect",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "data": "{{data.eventMap['awGraph.selectionChanged']}}",
+                "hasAdvancedLicense": "{{data.hasAdvancedLicense}}",
+                "selectionData": "{{subPanelContext.selectionData}}"
+            },
+
+            "deps": "js/Rv1RelationBrowserSelectionService"
+        },
+        "updateRelationCounts": {
+            "actionType": "JSFunction",
+            "method": "updateRelationCounts",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "legend": "{{data.legend}}"
+            },
+
+            "deps": "js/Rv1RelationBrowserUtils"
+        },
+        "onVisibilityChanged": {
+            "actionType": "JSFunction",
+            "method": "onVisibilityChanged",
+            "inputData": {
+                "graphModel": "{{ctx.graph.graphModel}}",
+                "eventData": "{{parameters.eventData}}"
+            },
+            "deps": "js/Rv1RelationBrowserService"
+        },
+        "onFilterApplied": {
+            "actionType": "JSFunction",
+            "method": "onFilterApplied",
+            "inputData": {
+                "graphModel": "{{ctx.graph.graphModel}}"
+            },
+            "deps": "js/Rv1RelationBrowserService"
+        },
+        "toggleEdges": {
+            "actionType": "JSFunction",
+            "method": "toggleEdges",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "node": "{{data.actionState.toggleEdges.node}}",
+                "direction": "{{data.actionState.toggleEdges.direction}}"
+            },
+            "outputData": {
+                "actionState": ""
+            },
+            "deps": "js/Rv1RelationBrowserService"
+        },
+        "removeObjectsFromGraph": {
+            "actionType": "JSFunction",
+            "method": "removeObjectsFromGraph",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "nodes": "{{data.actionState.removeObjectsFromGraph.nodes}}"
+            },
+            "outputData": {
+                "actionState": ""
+            },
+            "deps": "js/Rv1RelationBrowserService"
+        },
+        "updateGraphSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "graphSelection",
+                "syncObject": "{{data.selectionState}}"
+            }
+        },
+        "filtersChanged": {
+            "actionType": "JSFunction",
+            "method": "filtersChanged",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "newFilters": "{{data.filterState}}",
+                "legendState": "{{ctx.graph.legendState}}",
+                "currentFilters": "{{data.legendFilters}}"
+            },
+            "outputData": {
+                "legendFilters": "result.legendFilters"
+            },
+            "deps": "js/Rv1RelationBrowserLegendService"
+        },
+        "fadeNodeAction": {
+            "actionType": "JSFunction",
+            "method": "fadeNodeAnimation",
+            "deps": "js/Rv1RelationBrowserFadeNode",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "node": "{{data.actionState.fadeNode.node}}"
+            },
+            "outputData": {
+                "actionState": ""
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "init",
+        "onUpdate": [ {
+            "action": "toggleEdges",
+            "observers": [ "viewModel.atomicData.actionState.toggleEdges" ]
+        },
+        {
+            "action": "queryNetwork",
+            "observers": [ "viewModel.atomicData.actionState.expandGraph" ]
+        },
+        {
+            "action": "drawGraph",
+            "observers": [ "viewModel.atomicData.actionState.drawGraph" ]
+        },
+        {
+            "action": "removeObjectsFromGraph",
+            "observers": [ "viewModel.atomicData.actionState.removeObjectsFromGraph" ]
+        },
+        {
+            "action": "fadeNodeAction",
+            "observers": [ "viewModel.atomicData.actionState.fadeNode" ]
+        },
+        {
+            "action": "filtersChanged",
+            "observers": [ "viewModel.atomicData.filterState" ]
+        },
+        {
+            "action": "updateGraphSelectionPort",
+            "observers": [ "viewModel.atomicData.selectionState" ]
+        },
+        {
+            "action": "initLegendData",
+            "observers": [ "viewModel.legendData" ]
+        } ]
+    },
+    "data": {
+        "actionState": {
+            "initialValues": {
+            },
+            "meta": {}
+        },
+        "selectionState": {
+            "initialValues": {
+                "nodes": [],
+                "edges": []
+            },
+            "meta": {}
+        },
+        "filterState": {
+            "initialValues": {
+            },
+            "meta": {}
+        },
+        "relationBrowserActive": true,
+        "legendFilters": {},
+        "filterMap": {},
+        "legend": {
+            "tabModels": [ {
+                "panelId": "Rv1LegendFilterSub",
+                "name": "{{i18n.filter}}",
+                "recreatePanel": true
+            } ]
+        },
+
+        "graphModel": {
+            "config": {
+                "shadowEffects": [],
+                "enableEdit": false,
+                "minZoom": 0.1,
+                "maxZoom": 1,
+                "autoEdgeRoutingType": "HV_SEGMENT3",
+                "fitViewPosition": "CENTER",
+                "hoverDelayTime": 500,
+                "nodeHeightUpdateStrategy": "NONE",
+                "movableItems": [ "Node" ],
+                "selectableItems": [ "Node", "Edge" ],
+                "layout": {
+                    "layoutMode": "IncUpdateLayout",
+                    "defaultOption": "TopToBottom",
+                    "options": [
+                        "TopToBottom",
+                        "RightToLeft",
+                        "LeftToRight",
+                        "BottomToTop",
+                        "Organic",
+                        "Incremental"
+                    ]
+                },
+                "showNodeOverlay": true,
+                "nodeOverlay": {
+                    "zoomThreshold": 0.7,
+                    "graphOverlayHandler": "js/Rv1RelationBrowserOverlayHandler"
+                },
+                "inputMode": "viewInputMode",
+                "tooltipHandler": "js/Rv1RelationBrowserTooltipHandler",
+                "moveWithoutSelection": true,
+                "enableAutoPan": false,
+                "enableMarqueeSelection": true,
+                "marqueeSelectionModifierKey": [ "shift" ],
+                "enableMultipleSelection": true,
+                "multipleSelectionModifierKey": [
+                    [ "ctrl" ],
+                    [ "shift" ]
+                ],
+                "showOverview": true,
+                "showFilter": true,
+                "syncGroupDescendantsVisibilityOnFilter": false,
+                "enableObjectArrangement": true,
+                "enableAutoAlignment​": true,
+                "snapToGridByAnchorPoint": false,
+                "showGrid": false,
+                "grid": {},
+                "enableAlignment": false,
+                "alignment": {
+                    "strokeColor": "rgb(0,255,0)",
+                    "strokeWidth": 2,
+                    "strokeDashStyle": "SOLID",
+                    "tolerance": 10,
+                    "separateGridSnapAndAlignment": true
+                },
+                "defaults": {
+                    "nodeSize": {
+                        "width": 300,
+                        "height": 135
+                    },
+                    "nodeStyle": {
+                        "templateId": "Rv1TileNodeTemplate",
+                        "borderColor": "rgb(138,66,8)"
+                    },
+                    "edgeStyle": {
+                        "dashStyle": "SOLID",
+                        "thickness": 1.0,
+                        "color": "(0,0,0)",
+                        "isHotSpotEdge": true,
+                        "targetArrow": {
+                            "arrowShape": "SIMPLE",
+                            "arrowScale": 1.0,
+                            "fillInterior": true
+                        },
+                        "sourceArrow": {
+                            "arrowShape": "CIRCLE",
+                            "arrowScale": 1.0,
+                            "fillInterior": true
+                        }
+                    },
+                    "portStyle": {
+                        "fillColor": "(0,0,0)",
+                        "size": 0
+                    },
+                    "edgeLabel": {
+                        "maxWidth": 128
+                    },
+
+                    "portLabel": {
+                        "maxWidth": 96
+                    },
+                    "label": {
+                        "hasBackground": true,
+                        "backgroundFillColor": "argb(1,244,244,244)",
+                        "backgroundStyleClass": "aw-graph-labelBackground",
+                        "backgroundAnchor": [ 0.5, 0.5 ],
+                        "textAnchor": [ 0.5, 0.5 ],
+                        "contentStyleClass": "aw-widgets-label aw-base-normal aw-graph-label",
+                        "allowWrapping": false,
+                        "textOverflowMode": "ELLIPSIS",
+                        "maxPortLabelWidth": 96,
+                        "maxEdgeLabelWidth": 128,
+                        "maxMoveDistance": 500
+                    }
+                },
+                "customerFilter": "js/Rv1RelationBrowserGraphFilter"
+            },
+
+            "inputModes": {
+                "viewInputMode": {
+                    "editMode": false,
+                    "enableManualEdgeRouting": false,
+                    "enableNodeResize": false,
+                    "enableLabelEdit": false,
+                    "dragableCursorUrl": "cursor/openhand.cur",
+                    "draggingCursorUrl": "cursor/closedhand.cur"
+                }
+            },
+
+            "isShowLabel": false,
+
+            "hoverStyle": {
+                "node": "aw-widgets-cellListItemNodeHovered",
+                "edge": { "thicknessScale": 1.75 }
+            }
+        }
+    },
+
+    "ports": {
+        "graphSelection": {
+            "syncObject": {}
+        }
+    },
+
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "functions": {
+        "getQueryNetworkInput": {
+            "functionName": "getQueryNetworkInput",
+            "parameters": [
+                "{{subPanelContext.selected}}",
+                "{{data.graphModel}}",
+                "{{ctx.graph.legendState.activeView}}",
+                "{{data.actionState.expandGraph}}"
+            ]
+        },
+        "getQueryNetworkOutput": {
+            "functionName": "getQueryNetworkOutput",
+            "parameters": [
+                "{{data}}",
+                "{{ctx.graph.legendState.activeView}}"
+            ]
+        },
+        "getUnderlyingObjectType": {
+            "functionName": "getUnderlyingObjectType",
+            "parameters": [
+                "{{subPanelContext.selected}}"
+            ]
+        }
+    },
+
+    "onEvent": [ {
+            "eventId": "awGraph.initialized",
+            "action": "initLegendData",
+            "condition": "sourceGraph === data.graphModel"
+        },
+        {
+            "eventId": "Rv1RelationsBrowser.getFilterMap",
+            "action": "getFilterMap"
+        },
+        {
+            "eventId": "Rv1RelationsBrowser.expandGraph",
+            "action": "queryNetwork",
+            "cacheEventData": true
+        },
+
+        {
+            "eventId": "awGraph.itemsRemoved",
+            "action": "handleItemsRemovedFromGraph",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "cacheEventData": true
+        },
+
+        {
+            "eventId": "awGraph.graphItemsMoved",
+            "action": "handleGraphItemsMoved",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "cdm.updated",
+            "action": "handleModelObjectUpdated",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "cdm.relatedModified",
+            "action": "handleModelObjectUpdated",
+            "cacheEventData": true
+        },
+
+        {
+            "eventId": "awGraph.wrappedHeightChanged",
+            "action": "setNodeHeightOnWrappedHeightChanged",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awGraphLegend.activeViewChanged",
+            "action": "updateActiveView"
+        },
+        {
+            "eventId": "awGraph.hotspotClicked",
+            "action": "edgeHotspotClicked",
+            "inputArgs": {
+                "hotspotClickedEventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "awGraph.selectionChanged",
+            "action": "graphSelectionChanged",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awGraph.selectionChanged",
+            "condition": "conditions.isShiftOrCtrlKeyDown",
+            "action": "graphMultiSelect",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awGraph.hoverChanged",
+            "action": "graphHoverChanged",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awGraph.itemsRemoved",
+            "action": "updateRelationCounts"
+        },
+        {
+            "eventId": "awGraph.itemsAdded",
+            "action": "updateRelationCounts"
+        },
+        {
+            "eventId": "awGraph.visibilityChanged",
+            "action": "updateRelationCounts"
+        },
+        {
+            "eventId": "awGraph.visibilityChanged",
+            "action": "onVisibilityChanged",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awGraph.filterApplied",
+            "action": "onFilterApplied",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "Rv1RelationsBrowser.validateOauth",
+            "action": "issueOauthRequest",
+            "cacheEventData": true
+        }
+    ],
+
+    "conditions": {
+        "isShiftKeyDown": {
+            "expression": "data.eventMap['awGraph.selectionChanged'].isShiftKeyDown"
+        },
+        "isCtrlKeyDown": {
+            "expression": "data.eventMap['awGraph.selectionChanged'].isCtrlKeyDown"
+        },
+        "isShiftOrCtrlKeyDown": {
+            "expression": "data.eventMap['awGraph.selectionChanged'].isShiftKeyDown || data.eventMap['awGraph.selectionChanged'].isCtrlKeyDown"
+        }
+    },
+
+
+
+    "i18n": {
+        "filter": [ "RelationBrowserMessages" ],
+        "objects": [ "RelationBrowserMessages" ],
+        "relations": [ "RelationBrowserMessages" ],
+        "LdfOauth_Title": ["Ldf0CommandPanelsMessages"]
+    },
+
+    "messages": {
+        "oauthError": {
+            "messageType": "NONE",
+            "messageText": ""
+        }
+    }
+}

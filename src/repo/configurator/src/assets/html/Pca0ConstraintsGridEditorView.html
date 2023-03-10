@@ -1,0 +1,25 @@
+<aw-panel-body>
+    <div class="sw-row flex-shrink">
+        <aw-server-visibility-toolbar id="constraintsGridEditorToolbar"
+            first-anchor="aw_constraintsGridEditorCommandBar"
+            second-anchor="aw_constraintsGridEditorCommandBarRight,aw_fullScreen"
+            context="{ variabilityProps: data.variabilityProps, ...props.subPanelContext }"
+            orientation="HORIZONTAL">
+        </aw-server-visibility-toolbar>
+    </div>
+    <div class="sw-row">
+        <div class="sw-column w-12">
+            <div class="sw-row aw-cfg-topTreeHeight">
+                <pca0-grid-editor top-grid-props="data.topGrid" parent-data="data.parentNode"
+                    variability-data="data.variabilityProps" use-tree="true"
+                    exist-when="conditions.isVariabilityDataLoaded"></pca0-grid-editor>
+            </div>
+            <hr/>
+            <div class="sw-row" id="bottomTreeTableContainer">
+                <aw-splm-table gridid="bottomConstraintsGrid" use-tree="true"
+                    exist-when="conditions.isVariabilityDataLoaded">
+                </aw-splm-table>
+            </div>
+        </div>
+    </div>
+</aw-panel-body>

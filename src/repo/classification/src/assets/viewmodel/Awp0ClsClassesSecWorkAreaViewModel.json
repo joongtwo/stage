@@ -1,0 +1,170 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+    ],
+    "lifecycleHooks": {
+        "onInit": "initializeClassesSWA",
+        "onUpdate": [
+            {
+                "action": "updateClassesSWA",
+                "observers": [
+                    "props.subPanelContext.context.searchState.propertiesSWA"
+                ]
+            },
+            {
+                "action":"activeClassificationPanel",
+                "observers":[
+                    "props.subPanelContext.context.searchState.isLinkClicked"
+                ]
+            }
+        ]
+    },
+    "props":{
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions":{
+        "updateClassesSWA":{
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initializeClassesSWA"
+                },
+                {
+                    "action": "reloadAttributes"
+                }
+            ]
+        },
+        "reloadAttributes":
+        {
+            "actionType": "dataProvider",
+            "method": "attributes"
+        },
+        "initializeClassesSWA": {
+            "actionType": "JSFunction",
+            "method": "initializeSWA",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext.context.searchState}}",
+                "subLocationName": "Classes"
+            },
+            "outputData": {
+                "currentSecData": "currentSecData",
+                "aspects": "aspects",
+                "property": "property",
+                "classAttributes": "classAttributes",
+                "hasClassAttributes": "hasClassAttributes",
+                "referenceLinks": "referenceLinks",
+                "attrprop": "attrprop",
+                "attrSelected": false
+            },
+            "deps":"js/classifyAdminService"
+        },
+        "selectNodeInSecWorkArea":{
+            "actionType": "JSFunction",
+            "method": "selectNodeInSecWorkArea",
+            "inputData": {
+                "data": "{{data}}",
+                "selected":"{{data.eventData.selected}}",
+                "subPanelContext": "{{props.subPanelContext.context}}"
+            },
+            "outputData": {
+                "attrSelected": "attrSelected",
+                "attrprop": "attrprop",
+                "reference": "reference"
+            },
+            "deps":"js/classifyAdminService"
+        },
+        "selectLink":{
+            "actionType": "JSFunction",
+            "method": "selectNodeForPanel",
+            "inputData": {
+                "data": "{{data}}",
+                "subPanelContext": "{{props.subPanelContext.context}}"
+            },
+            "deps":"js/classifyAdminService"
+        },
+        "activeClassificationPanel": {
+            "actionType": "JSFunction",
+            "method": "activateCommandPanel",
+            "deps": "js/commandPanel.service",
+            "inputData": {
+                "commandId": "Awp0ClsAdminLink",
+                "location": "aw_toolsAndInfo"
+            }
+        },
+        "loadDataForAttributes": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadDataForAttributes",
+            "inputData": {
+                "data": "{{data}}",
+                "type":"Attributes"
+            },
+            "outputData": {
+                "attributes":"objects",
+                "totalFound":"totalFound"
+            },
+            "deps": "js/classifyAdminService"
+        }
+    },
+    "data":{ },
+    "dataProviders": {
+        "attributes":
+        {
+            "action": "loadDataForAttributes",
+            "commands": {},
+            "response":"{{data.attributes}}",
+            "totalFound":"{{data.totalFound}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "columnProviders": {
+        "structureColumnProvider": {
+            "columns": [
+                {
+                    "name": "Name",
+                    "displayName": "Name",
+                    "minWidth": 200,
+                    "width": 600,
+                    "isTableCommand": true
+                }
+            ],
+            "frozenColumnIndex" : -1
+        }
+    },
+    "grids": {
+        "entryGrid": {
+            "dataProvider": "attributes",
+            "columnProvider": "structureColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": false,
+                "enablePinning": false,
+                "enableSorting": false,
+                "useStaticFirstCol": true,
+                "maxRowsToShow":15
+            }
+        }
+    },
+    "onEvent":[
+        {
+            "eventId":"attributes.selectionChangeEvent",
+            "cacheEventData": true,
+            "action":"selectNodeInSecWorkArea"
+        },
+        {
+            "eventId":"classifyAdmin.launchPanel",
+            "action":"activeClassificationPanel"
+        }
+    ],
+
+    "i18n": {
+        "associations":     ["ClassificationAdminMessages"],
+        "attributes":       [ "ClassificationAdminMessages" ],
+        "dataType":         [ "ClassificationAdminMessages" ],
+        "metric":           [ "ClassificationAdminMessages" ],
+        "nonMetric":        [ "ClassificationAdminMessages" ],
+        "propertiesTitle":  [ "ClassificationAdminMessages" ]
+    }
+
+}

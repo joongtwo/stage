@@ -1,0 +1,20 @@
+<aw-panel>
+    <aw-panel-body>
+        <aw-panel-section>
+            <div exist-when="conditions.isUserAdmin">{{data.adminMsg1}} </div>
+            <aw-break></aw-break>
+            <aw-break></aw-break>
+            <div aw-repeat="message : data.allUserMsg1 ">
+                <div> {{message}} </div>
+                <aw-break></aw-break>
+                <aw-break></aw-break>
+            </div>
+        </aw-panel-section>
+
+        <aw-panel-section caption="i18n.columns">
+            <aw-label prop="data.allUserMsg2"></aw-label>
+            <aw-label prop="data.allUserMsg3"></aw-label>
+            <aw-label prop="data.allUserMsg4"></aw-label>
+        </aw-panel-section>
+    </aw-panel-body>
+</aw-panel>

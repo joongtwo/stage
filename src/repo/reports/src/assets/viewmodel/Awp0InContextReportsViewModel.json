@@ -1,0 +1,208 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-sub-panel.directive",
+        "js/aw-command-panel.directive",
+        "js/aw-navigate-panel.directive"
+    ],
+    "actions": {
+        "getreports": {
+            "actionType": "TcSoaService",
+            "serviceName": "Reports-2008-06-CrfReports",
+            "method": "getReportDefinitions",
+            "inputData": {
+                "inputCriteria": "{{function:getreportdefinitionsoainput}}"
+            },
+            "policy": {
+                "types": [
+                    {
+                        "name": "ReportDefinition",
+                        "properties": [
+                            {
+                                "name": "rd_style_sheets",
+                                "modifiers": [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "rd_source"
+                            },
+                            {
+                                "name": "rd_name"
+                            },
+                            {
+                                "name": "rd_type"
+                            },
+                            {
+                                "name": "rd_id"
+                            },
+                            {
+                                "name": "rd_parameters"
+                            },
+                            {
+                                "name": "rd_param_values"
+                            },
+                            {
+                                "name": "fnd0IsAsync"
+                            },
+                            {
+                                "name": "rd_class"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "outputData": {
+                "reportdef": "{{function:processResponseToStoreReportDefs}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "updateListViewModelStatus"
+                    },
+                    {
+                        "name": "callGetLanguageList",
+                        "condition": "data.languageList === undefined"
+                    }
+                ]
+            },
+            "deps": "js/Awp0InContextReportsService"
+        },
+        "loadListViewModel": {
+            "actionType": "JSFunction",
+            "method": "loadListViewModel",
+            "inputData": {
+                "tcReportsAvailable":"{{data.tcReportsAvailable}}",
+                "tcraReportsAvailable":"{{data.tcraReportsAvailable}}",
+                "showList": "{{data.showList}}"
+            },
+            "outputData": {
+                "tcReportsAvailable": "tcReportsAvailable",
+                "tcraReportsAvailable": "tcraReportsAvailable",
+                "showList": "showList"
+            },
+            "deps": "js/Awp0InContextReportsService"
+        },
+        "cleanctxonpanelclose": {
+            "actionType": "JSFunction",
+            "method": "cleanctxonpanelclose",
+            "inputData": {},
+            "outputData": {},
+            "deps": "js/Awp0InContextReportsService"
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+        "updateActiveViewAndNavigate":{
+            "actionType": "JSFunction",
+            "method": "updateActiveViewAndNavigate",
+            "inputData": {
+                "eventData": "{{data.eventData}}"
+            },
+            "outputData": {
+                "activeView": "activeView",
+                "selectedReport": "selectedReport"
+            },
+            "deps": "js/Awp0InContextReportsService"
+        },
+        "getLanguageList": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2010-04-LanguageInformation",
+            "method": "getLanguagesList",
+            "inputData": {
+                "scenario": "supportedLanguages"
+            },
+
+            "outputData": {
+                "languageList": "{{function:prepareLanguageList}}"
+            },
+
+            "deps": "js/Awp0InContextReportsService"
+        }
+    },
+    "data": {
+        "showList":{
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "tcReportsAvailable": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "tcraReportsAvailable": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "activeView": "Awp0InContextReportsList"
+    },
+    "functions": {
+        "getreportdefinitionsoainput": {
+            "functionName": "getreportdefinitionsoainput",
+            "parameters": [
+                "{{data}}",
+                "{{ctx.mselected}}"
+            ]
+        },
+        "processResponseToStoreReportDefs": {
+            "functionName": "processResponseToStoreReportDefs",
+            "parameters": ["{{data}}"]
+        },
+        "prepareLanguageList": {
+            "functionName": "prepareLanguageList",
+            "parameters": [
+
+            ]
+        }
+    },
+    "messages": {},
+    "onEvent": [
+        {
+            "eventId": "primaryWorkArea.selectionChangeEvent",
+            "action": "closePanel"
+        },
+        {
+            "eventId": "gwt.SubLocationContentSelectionChangeEvent",
+            "action": "closePanel"
+        },
+        {
+            "eventId": "updateListViewModelStatus",
+            "action": "loadListViewModel"
+        },
+        {
+            "eventId": "Awp0InContextReports.contentUnloaded",
+            "action": "cleanctxonpanelclose"
+        },
+        {
+            "eventId": "performNavigateAction",
+            "action": "updateActiveViewAndNavigate",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "callGetLanguageList",
+            "action": "getLanguageList"
+        }
+    ],
+    "i18n": {
+        "inContextReportPanelTitle": [
+            "ReportMessages"
+        ],
+        "backButton":["ReportMessages"]
+    },
+    "lifecycleHooks": {
+        "onMount": "getreports"
+    }
+}

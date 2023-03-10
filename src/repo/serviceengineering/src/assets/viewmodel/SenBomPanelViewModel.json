@@ -1,0 +1,94 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "initializeSenBomPanel": {
+            "actionType": "JSFunction",
+            "method": "initializeSenBomPanel",
+            "deps": "js/senBomPanelService",
+            "inputData": {
+                "subPanelContext": "{{props.subPanelContext}}",
+                "data": "{{data}}"
+            },
+            "outputData" : {
+                "provider":"provider",
+                "contextKey":"contextKey"
+            }
+        },
+        "cleanupSenBomPanel": {
+            "actionType": "JSFunction",
+            "method": "cleanupSenBomPanel",
+            "deps": "js/senBomPanelService"
+        },
+        "activateCurrentView": {
+            "actionType": "JSFunction",
+            "method": "updateActiveContext",
+            "inputData": {
+                "data": "{{data.viewKey}}"
+            },
+            "deps": "js/contextStateMgmtService"
+        },
+        "initializeSenBomPanelView":{
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initializeSenBomPanel"
+                },
+                {
+                    "action": "activateCurrentView",
+                    "condition": "conditions.isActiveViewDifferent"
+                }
+            ]
+        }
+    },
+
+    "dataProviders": {},
+
+    "lifecycleHooks": {
+        "onMount": "initializeSenBomPanel",
+        "onUnmount": "cleanupSenBomPanel"
+    },
+    "data": {
+        "contextInfo":{},
+        "occContext": {
+            "initialValues": {
+                "configContext":{},
+                "supportedFeatures":{},
+                "productContextInfo":{}
+            },
+            "meta": {
+            }
+        },
+        "breadcrumbConfig": {
+            "type": "navigate",
+            "vm": "senBreadcrumb",
+            "chevronDataProvider": "breadCrumbDataProvider",
+            "crumbDataProvider": "aceBreadCrumbDataProvider",
+            "noUpdate": true,
+            "displayProperty": "object_string"
+        }
+    },
+    "onEvent": [],
+
+    "messages": {},
+
+    "conditions": {
+        "isActiveViewDifferent": {
+            "expression": "data.viewKey !== ctx.aceActiveContext.key"
+        }
+    },
+    "ctx": {
+        "requestPref":null,
+        "aceActiveContext":null,
+        "ebomContext":null,
+        "sbomContext":null
+    },
+    "props":{
+
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+
+}
+

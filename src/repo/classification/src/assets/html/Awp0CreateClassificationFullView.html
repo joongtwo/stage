@@ -1,0 +1,8 @@
+<!-- Hierarchy & Search panel -->
+<aw-command-panel-section caption="{{props.sectionTitle}}" class="aw-clspanel-treeNavigate" anchor="data.classificationTreeCommands" 
+    context="props.sortOption" collapsed="{{props.collapsed}}"
+    aw-class="[ {'h-12': !conditions.isPanel}, {'h-11': conditions.isPanel && props.collapsed===false} ]">
+    <div class="sw-row h-11">
+        <awp0-classification-navigate has-releases="true" classify-state="props.classifyState" node-state="data.classifyNodeState" sub-panel-context="subPanelContext" sort-option="props.sortOption"></awp0-classification-navigate>
+    </div>
+</aw-command-panel-section>

@@ -1,0 +1,21 @@
+<aw-command-panel panel-id="Mrm0CreateNXAssemblyPanel" caption="i18n.MRM0CreateNXToolAssemblyTitle" context="data">
+    <aw-panel-body>
+        <aw-checkbox prop="data.buildToolAsmCheckboxProp" extended-tooltip="data.tooltipbuildToolAsm">
+        </aw-checkbox>
+        <aw-checkbox prop="data.identifyCuttingNonCuttingGeometryCheckboxProp" extended-tooltip="data.tooltipidentifyCuttingNonCuttingGeometry"></aw-checkbox>
+        <aw-checkbox prop="data.generateSpinningGeometryCheckboxProp" visible-when="conditions.isRootTurningAssy" extended-tooltip="data.tooltipgenerateSpinningGeometry"></aw-checkbox>
+        <aw-checkbox prop="data.setToolJunctionsCheckboxProp" extended-tooltip="data.tooltipsetToolJunctions">
+        </aw-checkbox>
+        <aw-checkbox prop="data.writeNXPartAttributesCheckboxProp" extended-tooltip="data.tooltipwriteNXPartAttributes">
+        </aw-checkbox>
+        <aw-checkbox prop="data.extractHolderDataCheckboxProp" action="updateSimplifyHolderGeometryCheckbox" visible-when="conditions.isRootTurningAssy" extended-tooltip="data.tooltipextractHolderData"></aw-checkbox>
+        <aw-checkbox class="aw-createNXAssemblyPanel-simplifyHolderGeometryCheckBox" prop="data.simplifyHolderGeometryCheckboxProp" visible-when="conditions.isRootTurningAssy" extended-tooltip="data.tooltipsimplifyHolderGeometry"></aw-checkbox>
+        <aw-checkbox prop="data.createSetupSheetCheckboxProp" extended-tooltip="data.tooltipcreateSetupSheet">
+        </aw-checkbox>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="updateNXToolAssemblies" enable-when="data.createNXAssyInProcess.dbValue === false">
+            <aw-i18n>i18n.Mrm0Execute</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

@@ -1,0 +1,175 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-list.directive",
+        "js/aw-occmgmt-cell.directive",
+        "js/aw-scrollpanel.directive"
+    ],
+
+    "actions": {
+        "reveal": {
+            "actionType": "dataProvider",
+            "method": "listDataProvider"
+        },
+        "groupObjectsByProperties": {
+            "actionType": "JSFunction",
+            "method": "groupObjectsByProperties",
+            "deps": "js/aceColorDecoratorService",
+            "inputData": {
+                "vmos": "{{data.dataProviders.listDataProvider.viewModelCollection.loadedVMObjects}}"
+            }
+        },
+
+        "loadData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadData",
+            "deps": "js/occmgmtListDataService",
+            "inputData": {
+                "listLoadInput": "request.listLoadInput",
+                "cursorObject": "{{data.dataProviders.listDataProvider.cursorObject}}",
+                "declViewModel": "{{data}}",
+                "loadIDs": "request.loadIDs",
+                "subPanelContext": "{{props.subPanelContext.provider}}"
+            },
+            "outputData": {
+                "ctx.locationContext.modelObject": "result.listLoadResult.baseModelObject",
+                "ctx.objectQuotaContext.useObjectQuota": "result.listLoadResult.useObjectQuotatoUnload",
+                "ctx.isRedLineMode": "result.listLoadResult.isRedLineMode",
+                "ctx.changeContext": "result.listLoadResult.changeContext",
+                "ctx.occmgmtContext.modelObject": "result.listLoadResult.baseModelObject",
+                "ctx.occmgmtContext.productContextInfo": "result.listLoadResult.pciModelObject",
+                "ctx.occmgmtContext.openedElement": "result.listLoadResult.openedModelObject",
+                "ctx.occmgmtContext.topElement": "result.listLoadResult.topModelObject",
+                "ctx.occmgmtContext.sublocationAttributes": "result.listLoadResult.sublocationAttributes",
+                "ctx.occmgmtContext.autoSavedSessiontime": "result.listLoadResult.autoSavedSessiontime",
+                "ctx.occmgmtContext.searchFilterCategories": "result.listLoadResult.filter.searchFilterCategories",
+                "ctx.occmgmtContext.searchFilterMap": "result.listLoadResult.filter.searchFilterMap",
+                "ctx.occmgmtContext.recipe": "result.listLoadResult.filter.recipe",
+                "ctx.occmgmtContext.requestPref": "result.listLoadResult.requestPref",
+                "ctx.occmgmtContext.configContext": "result.listLoadResult.configContext",
+                "ctx.occmgmtContext.startFreshNavigation": "result.listLoadResult.startFreshNavigation",
+                "ctx.occmgmtContext.elementToPCIMap": "result.listLoadResult.elementToPCIMap",
+                "dataProviders.listDataProvider.openedObject": "result.listLoadResult.openedObject",
+                "dataProviders.listDataProvider.cursorObject": "result.listLoadResult.cursorObject",
+                "totalFound": "result.listLoadResult.totalChildCount",
+                "childOccurrences": "result.listLoadResult.childOccurrences",
+                "ctx.occmgmtContext.showInEffectiveOcc": "result.listLoadResult.showInEffectiveOcc",
+                "ctx.occmgmtContext.showVariantsInOcc": "result.listLoadResult.showVariantsInOcc",
+                "ctx.occmgmtContext.showSuppressedOcc": "result.listLoadResult.showSuppressedOcc",
+                "ctx.occmgmtContext.isChangeEnabled": "result.listLoadResult.isChangeEnabled"
+            },
+            "events": {
+                "success": [ {
+                    "name": "occDataLoadedEvent"
+                } ]
+            }
+        },
+        "loadNextData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadNextData",
+            "deps": "js/occmgmtListDataService",
+            "inputData": {
+                "listLoadInput": "request.listLoadInput",
+                "cursorObject": "{{data.dataProviders.listDataProvider.cursorObject}}",
+                "declViewModel": "{{data}}",
+                "loadIDs": "request.loadIDs",
+                "subPanelContext": "{{props.subPanelContext.provider}}"
+            },
+            "outputData": {
+                "ctx.locationContext.modelObject": "result.listLoadResult.baseModelObject",
+                "ctx.occmgmtContext.modelObject": "result.listLoadResult.baseModelObject",
+                "ctx.occmgmtContext.productContextInfo": "result.listLoadResult.pciModelObject",
+                "ctx.occmgmtContext.openedElement": "result.listLoadResult.openedModelObject",
+                "ctx.occmgmtContext.topElement": "result.listLoadResult.topModelObject",
+                "ctx.occmgmtContext.sublocationAttributes": "result.listLoadResult.sublocationAttributes",
+                "ctx.occmgmtContext.searchFilterCategories": "result.listLoadResult.filter.searchFilterCategories",
+                "ctx.occmgmtContext.searchFilterMap": "result.listLoadResult.filter.searchFilterMap",
+                "ctx.occmgmtContext.recipe": "result.listLoadResult.filter.recipe",
+                "ctx.occmgmtContext.requestPref": "result.listLoadResult.requestPref",
+                "ctx.occmgmtContext.configContext": "result.listLoadResult.configContext",
+                "ctx.occmgmtContext.startFreshNavigation": "result.listLoadResult.startFreshNavigation",
+                "ctx.occmgmtContext.elementToPCIMap": "result.listLoadResult.elementToPCIMap",
+                "dataProviders.listDataProvider.openedObject": "result.listLoadResult.openedObject",
+                "dataProviders.listDataProvider.cursorObject": "result.listLoadResult.cursorObject",
+                "totalFound": "result.listLoadResult.totalChildCount",
+                "childOccurrences": "result.listLoadResult.childOccurrences"
+            },
+            "events": {
+                "success": [ {
+                    "name": "occDataLoadedEvent"
+                } ]
+            }
+        },
+        "loadPrevData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadPrevData",
+            "deps": "js/occmgmtListDataService",
+            "inputData": {
+                "listLoadInput": "request.listLoadInput",
+                "cursorObject": "{{data.dataProviders.listDataProvider.cursorObject}}",
+                "declViewModel": "{{data}}",
+                "loadIDs": "request.loadIDs",
+                "subPanelContext": "{{props.subPanelContext.provider}}"
+            },
+            "outputData": {
+                "ctx.locationContext.modelObject": "result.listLoadResult.baseModelObject",
+                "ctx.occmgmtContext.modelObject": "result.listLoadResult.baseModelObject",
+                "ctx.occmgmtContext.productContextInfo": "result.listLoadResult.pciModelObject",
+                "ctx.occmgmtContext.openedElement": "result.listLoadResult.openedModelObject",
+                "ctx.occmgmtContext.topElement": "result.listLoadResult.topModelObject",
+                "ctx.occmgmtContext.sublocationAttributes": "result.listLoadResult.sublocationAttributes",
+                "ctx.occmgmtContext.searchFilterCategories": "result.listLoadResult.filter.searchFilterCategories",
+                "ctx.occmgmtContext.searchFilterMap": "result.listLoadResult.filter.searchFilterMap",
+                "ctx.occmgmtContext.recipe": "result.listLoadResult.filter.recipe",
+                "ctx.occmgmtContext.requestPref": "result.listLoadResult.requestPref",
+                "ctx.occmgmtContext.configContext": "result.listLoadResult.configContext",
+                "ctx.occmgmtContext.startFreshNavigation": "result.listLoadResult.startFreshNavigation",
+                "ctx.occmgmtContext.elementToPCIMap": "result.listLoadResult.elementToPCIMap",
+                "dataProviders.listDataProvider.openedObject": "result.listLoadResult.openedObject",
+                "dataProviders.listDataProvider.cursorObject": "result.listLoadResult.cursorObject",
+                "totalFound": "result.listLoadResult.totalChildCount",
+                "childOccurrences": "result.listLoadResult.childOccurrences"
+            },
+            "events": {
+                "success": [ {
+                    "name": "occDataLoadedEvent"
+                } ]
+            }
+        }
+    },
+
+    "dataProviders": {
+        "listDataProvider": {
+            "initializeAction": "loadData",
+            "nextAction": "loadNextData",
+            "previousAction": "loadPrevData",
+            "focusAction": "loadData",
+            "response": "action.result.listLoadResult.childNodes",
+            "totalFound": "action.result.listLoadResult.totalChildCount",
+            "selectionModelMode": "multiple",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            },
+            "commandsAnchor": "occmgmt_cell_commands"
+        }
+    },
+
+    "functions": {
+
+    },
+    "lifecycleHooks": {
+        "onMount": "reveal"
+    },
+    "onEvent": [
+        {
+            "eventId": "ace.groupObjectCategoryChanged",
+            "action": "groupObjectsByProperties",
+            "condition": "ctx.decoratorToggle"
+        },
+        {
+            "eventId": "listDataProvider.modelObjectsUpdated",
+            "action": "groupObjectsByProperties",
+            "condition": "ctx.decoratorToggle"
+        }
+    ]
+}

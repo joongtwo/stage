@@ -1,0 +1,14 @@
+<div class="aw-workinstr-mainPanel">
+    <div class="aw-layout-sublocationContainer w-12 h-12" exist-when="conditions.datasetsExists">
+        <div id="workinstrGalleryContentPanel" aw-class="[{ 'aw-workinstr-documentGalleryContentPanel': conditions.showThumbnails, 'aw-workinstr-documentGalleryContentPanelNoSlider': !conditions.showThumbnails }]">
+            <workinstr-gallery-viewer widgets="data.typeViewer" tab-model="subPanelContext" gallery-model="data.galleryModel"></workinstr-gallery-viewer>
+        </div>
+        <div class="aw-workinstr-documentGallerySliderPanel" exist-when="conditions.showThumbnails">
+            <workinstr-gallery-list datasets-list="subPanelContext.datasetsToShow" gallery-model="data.galleryModel"></workinstr-gallery-list>
+        </div>
+    </div>
+
+    <div class="sw-column h-12 w-12 justify-center" exist-when="!conditions.datasetsExists">
+        <mfe-message sub-panel-context="data.messages.noDataToDisplay"></mfe-message>
+    </div>
+</div>

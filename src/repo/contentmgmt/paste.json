@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0.0",
+  "pasteHandlers": {
+    "pasteHandlerForCtm1TopicCtm1Topic": {
+      "action": "aceDefaultPasteAction",
+      "activeWhen": {
+        "condition": "conditions.isPasteHandlerActiveForCtm1TopicCtm1Topic"
+      }
+    }
+  },
+  "actions": {},
+  "conditions": {
+    "isPasteHandlerActiveForCtm1TopicCtm1Topic": {
+      "expression": {
+        "$and": [
+          {
+            "$source": "pasteContext.targetObject",
+            "$query": {
+              "$typeOf": "Ctm1Topic"
+            }
+          },
+          {
+            "$or": [
+              {
+                "$source": "pasteContext.sourceObject",
+                "$query": {
+                  "$typeOf": "DC_TopicRevision"
+                }
+              },
+              {
+                "$source": "pasteContext.sourceObject",
+                "$query": {
+                  "$typeOf": "Ctm1Topic"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

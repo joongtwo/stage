@@ -1,0 +1,77 @@
+{
+    "schemaVersion" : "1.0.0",
+
+    "lifecycleHooks": {
+        "onMount": "activateViewPanel"
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data":{
+        "classifyPanelCommands" : "classify_panelCommands",
+        "activeView": "Awp0ClassificationSub",
+        "sortOption": {
+            "type": "INTEGER"
+        }
+    },
+
+    "actions":
+    {
+        "activateViewPanel": {
+            "actionType": "JSFunction",
+            "method": "activateViewPanel",
+            "inputData": {
+                "context": "{{props.subPanelContext}}"
+            },
+            "deps": "js/Ics1ClassificationTabService"
+        }
+    },
+
+    "conditions":{
+        "showICOProps": {
+            "expression": "props.classifyState.showProperties === true && ( props.classifyState.selectedClass.className || props.classifyState.selectedClass.displayName && props.classifyState.selectedNode.type === 'StorageClass' )"
+        },
+        "showClassImagesSection": {
+            "expression": "props.classifyState.hasImages === true && conditions.showImages && !conditions.showICOProps"
+        },
+        "showImages": {
+            "expression": "props.classifyState.showImages === true"
+        },
+        "showPropGroup": {
+            "expression": "props.classifyState.hasBlocks === true && props.classifyState.attrs.length > 0"
+        },
+        "showPropGrpSection": {
+            "expression": "conditions.showPropTree && !conditions.showImages && !conditions.showICOProps"
+        },
+        "showPropTree": {
+            "expression": "props.classifyState.hasBlocks === true && props.classifyState.showPropTree === true"
+        }
+    },
+
+    "messages":
+    {
+
+    },
+
+    "onEvent": [
+        {
+            "eventId": "performSearch.selectionChangeEvent",
+            "action": "activateViewPanel"
+        }
+    ],
+
+    "i18n":
+    {
+        "Classification": [
+            "ClassificationPanelMessages"
+        ],
+        "Classifications": [
+            "ClassificationPanelMessages"
+        ],
+        "images": [
+            "ClassificationPanelMessages"
+        ]
+    }
+}

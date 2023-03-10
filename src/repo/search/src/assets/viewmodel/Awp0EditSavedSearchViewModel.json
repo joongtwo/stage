@@ -1,0 +1,545 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "saveModifyFullTextSearch": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2018-05-FullTextSearch",
+            "method": "modifyFullTextSavedSearch",
+            "inputData": {
+                "inputs": "{{function:getInputs}}"
+            },
+            "events": {
+                "success": [ {
+                        "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "condition": "errorCode.code==141153",
+                    "message": "confirmOverwriteFullTextSearch"
+                } ],
+
+                "success": [ {
+                    "condition": "data.pinToHome.dbValue",
+                    "message": "pinToHome"
+                } ]
+            },
+            "deps": "js/Awp0SaveSearchUtils"
+        },
+        "saveCreateFullTextSearch": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Search-2022-12-FullTextSearch",
+            "method": "createFullTextSavedSearch2",
+            "inputData": {
+                "inputs": [ {
+                    "applicationName":"{{subPanelContext.searchState.applicationName}}",
+                    "applicationPinnedSavedSearchTileTemplateId":"{{subPanelContext.searchState.applicationPinnedSavedSearchTileTemplateId}}",
+                    "pinSearch": "{{function:getPinSearchValue}}",
+                    "savedSearchName": "{{data.savedSearchName.dbValue}}",
+                    "searchString": "{{data.searchString.dbValue}}",
+                    "overwriteExistingSearch": true,
+                    "receiveNotification": 0,
+                    "shareSavedSearch": "{{function:getSharedSearchValue}}",
+                    "searchFilterMap": "{{data.savedSearchFilterMap}}",
+                    "chartInputParameters": {
+                        "chartOn": "{{function:getChartOn1}}"
+                    }
+                } ]
+            },
+            "events": {
+                "success": [ {
+                        "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "condition": "errorCode.code==141152",
+                    "message": "confirmOverwriteFullTextSearch"
+                } ],
+                "success": [ {
+                    "condition": "data.pinToHome.dbValue",
+                    "message": "pinToHome"
+                } ]
+            },
+            "deps": "js/Awp0SaveSearchUtils"
+        },
+        "overwriteFullTextSavedSearch": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Search-2022-12-FullTextSearch",
+            "method": "createFullTextSavedSearch2",
+            "inputData": {
+                "inputs": [ {
+                    "applicationName":"{{subPanelContext.searchState.applicationName}}",
+                    "applicationPinnedSavedSearchTileTemplateId":"{{subPanelContext.searchState.applicationPinnedSavedSearchTileTemplateId}}",
+                    "pinSearch": "{{function:getPinSearchValue}}",
+                    "savedSearchName": "{{data.savedSearchName.dbValue}}",
+                    "searchString": "{{data.searchString.dbValue}}",
+                    "overwriteExistingSearch": true,
+                    "receiveNotification": 0,
+                    "shareSavedSearch": "{{function:getSharedSearchValue}}",
+                    "searchFilterMap": "{{data.savedSearchFilterMap}}",
+                    "chartInputParameters": {
+                        "chartOn": "{{function:getChartOn2}}"
+                    }
+                } ]
+            },
+            "events": {
+                "success": [ {
+                        "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Awp0SaveSearchUtils"
+        },
+        "saveModifyAdvancedSearch": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-AdvancedSavedSearch",
+            "method": "updateAdvancedSavedSearch",
+            "inputData": {
+                "inputs": "{{function:getSaveAndModifyAdvSearchInputs}}"
+            },
+            "events": {
+                "success": [ {
+                        "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "condition": "errorCode.code===141153",
+                    "message": "confirmOverwriteAdvancedSearch"
+                } ],
+                "success": [ {
+                    "condition": "data.pinToHome.dbValue",
+                    "message": "pinToHome"
+                } ]
+            },
+            "deps": "js/Awp0SaveSearchUtils"
+        },
+        "saveCreateAdvancedSearch": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-AdvancedSavedSearch",
+            "method": "createAdvancedSavedSearch",
+            "inputData": {
+                "inputs": "{{function:getSaveAndCreateAdvSearchInputs}}"
+            },
+            "events": {
+                "success": [ {
+                        "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "condition": "errorCode.code===141152",
+                    "message": "confirmOverwriteAdvancedSearch"
+                } ],
+                "success": [ {
+                    "condition": "data.pinToHome.dbValue===true",
+                    "message": "pinToHome"
+                } ]
+            },
+            "deps": "js/Awp0SaveSearchUtils"
+        },
+        "overwriteAdvancedSavedSearch": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-AdvancedSavedSearch",
+            "method": "createAdvancedSavedSearch",
+            "inputData": {
+                "inputs": "{{function:getOverwriteAdvSearchInputs}}"
+            },
+            "events": {
+                "success": [ {
+                        "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Awp0SaveSearchUtils"
+        },
+        "getPinSearchValue": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-03-UiConfig",
+            "method": "getVisibleCommands",
+            "inputData": {
+                "getVisibleCommandsInfo": [ {
+                    "clientScopeURI": "Awp0SavedSearch",
+                    "commandInfo": [
+                        {
+                            "commandCollectionId": "",
+                            "commandId": "Awp0PinSearch"
+                        },
+                        {
+                            "commandCollectionId": "",
+                            "commandId": "Awp0UnpinSearch"
+                        }
+                    ],
+                    "selectionInfo": [
+                        {
+                            "contextName": "",
+                            "parentSelectionIndex": -1,
+                            "selectedObjects": [
+                                {
+                                    "uid": "{{ctx.selected.uid}}",
+                                    "type": "{{ctx.selected.type}}"
+                                }
+                            ]
+                        }
+                    ]
+                } ]
+            },
+            "outputData": {
+                "pinToHome": "{{function:setPinToHome}}"
+            },
+            "deps": "js/Awp0SaveSearchUtils"
+        },
+        "getFullTextSavedSearchObjectParams": {
+            "actionType": "JSFunction",
+            "method": "getFullTextSavedSearchObjectParams",
+            "inputData": {
+                "savedSearchObject": "{{ctx.selected}}",
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "savedSearchName": "savedSearchName",
+                "searchString": "searchString",
+                "searchFilters": "searchFilters",
+                "chartProperty": "chartProperty",
+                "shareSavedSearch": "shareSavedSearch",
+                "savedSearchFilterMap": "savedSearchFilterMap"
+            },
+            "deps": "js/Awp0SaveSearchService"
+        },
+        "initializeSavedQuery": {
+            "actionType": "JSFunction",
+            "method": "initializeReviewAndExecuteSavedQuery",
+            "inputData": {
+                "savedSearchObject": "{{ctx.selected}}",
+                "savedQuery": "{{data.savedQuery}}",
+                "updateSavedSearchAttributeValues": true
+            },
+            "outputData": {
+                "savedQuery": "savedQuery",
+                "savedSearchObject": "savedSearchObject"
+            },
+            "deps": "js/Awp0SaveSearchService"
+        },
+        "getAttributeModelObjectForSavedQuery": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-12-AdvancedSearch",
+            "method": "getSelectedQueryCriteria",
+            "inputData": {
+                "selectedQuery": {
+                    "uid": "{{ctx.selected.props.savedsearch_query.dbValue}}",
+                    "type": "ImanQuery"
+                }
+            },
+            "outputData": {
+                "advSavedSearchModelObject": "{{function:updateSearchAttributesWithSelectedQuery}}"
+            },
+            "deps": "js/advancedSearchService"
+        },
+        "getSavedSearchObjectParams": {
+            "actionType": "JSFunction",
+            "method": "getSavedSearchObjectParams",
+            "inputData": {
+                "savedSearchObject": "{{ctx.selected}}",
+                "advSavedSearchModelObject": "{{data.advSavedSearchModelObject}}",
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "savedSearchName": "savedSearchName",
+                "savedSearchCriteria": "savedSearchCriteria",
+                "shareSavedSearch": "shareSavedSearch"
+            },
+            "deps": "js/Awp0SaveSearchService"
+        },
+        "updateSavedAdvSearchContext": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "initializeSavedQuery"
+                },
+                {
+                    "action": "getAttributeModelObjectForSavedQuery"
+                },
+                {
+                    "action": "getSavedSearchObjectParams",
+                    "condition": "data.advSavedSearchModelObject && data.advSavedSearchModelObject.props"
+                }
+            ]
+        },
+        "setTypeForSavedSearchObject": {
+            "actionType": "JSFunction",
+            "method": "setTypeForSavedSearchObject",
+            "inputData": {
+                "savedSearchObject": "{{ctx.selected}}"
+            },
+            "outputData": {
+                "selectedSavedSearchObjectType": ""
+            },
+            "deps": "js/Awp0SaveSearchService"
+        },
+        "initialize": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "setTypeForSavedSearchObject"
+                },
+                {
+                    "action": "getPinSearchValue"
+                },
+                {
+                    "action": "getFullTextSavedSearchObjectParams",
+                    "condition": "data.selectedSavedSearchObjectType === 'Awp0FullTextSavedSearch'"
+                },
+                {
+                    "action": "updateSavedAdvSearchContext",
+                    "condition": "data.selectedSavedSearchObjectType === 'SavedSearch'"
+                }
+            ]
+        }
+    },
+    "messages": {
+        "confirmOverwriteFullTextSearch": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.nameInUse}}",
+            "messageTextParams": [
+                "{{data.savedSearchName.dbValue}}"
+            ],
+            "navigationOptions": [ {
+                    "option": "Cancel",
+                    "text": "{{i18n.CancelText}}",
+                    "action": ""
+                },
+                {
+                    "option": "Overwrite",
+                    "text": "{{i18n.OverwriteText}}",
+                    "action": "overwriteFullTextSavedSearch"
+                }
+            ]
+        },
+        "confirmOverwriteAdvancedSearch": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.nameInUse}}",
+            "messageTextParams": [
+                "{{data.savedSearchName.dbValue}}"
+            ],
+            "navigationOptions": [ {
+                    "option": "Cancel",
+                    "text": "{{i18n.CancelText}}",
+                    "action": ""
+                },
+                {
+                    "option": "Overwrite",
+                    "text": "{{i18n.OverwriteText}}",
+                    "action": "overwriteAdvancedSavedSearch"
+                }
+            ]
+        },
+        "pinToHome": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.pinToHome}}",
+            "messageTextParams": [
+                "{{data.savedSearchName.dbValue}}"
+            ]
+        }
+    },
+    "data": {
+        "savedQuery": {
+            "displayName": "{{i18n.referencingSavedQuery}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dispValue": ""
+        },
+        "savedSearchName": {
+            "displayName": "{{i18n.Name}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "dbValue": "",
+            "dispValue": "",
+            "maxLength": 128
+        },
+        "searchString": {
+            "displayName": "{{i18n.searchString}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "searchFilters": {
+            "displayName": "{{i18n.filterString}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "savedSearchCriteria": {
+            "displayName": "{{i18n.savedSearchCriteria}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "pinToHome": {
+            "displayName": "{{i18n.pinSearch}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT",
+            "dbValue": ""
+        },
+        "shareSavedSearch": {
+            "displayName": "{{i18n.shareSavedSearch}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT",
+            "dbValue": ""
+        },
+        "chartProperty": {
+            "displayName": "{{i18n.ChartBy}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "",
+            "dispValue": ""
+        }
+    },
+    "functions": {
+        "getChartOn1": {
+            "functionName": "getChartOn",
+            "parameters": [
+                "{{ctx.selected.props.awp0ChartOn.dbValues[0]}}"
+            ]
+        },
+        "getChartOn2": {
+            "functionName": "getChartOn",
+            "parameters": [
+                "{{data.chartProperty.dbValue}}"
+            ]
+        },
+        "getPinSearchValue": {
+            "functionName": "getPinSearchValue",
+            "parameters": [
+                "{{data.pinToHome.dbValue}}"
+            ]
+        },
+        "getInputs": {
+            "functionName": "getInputs",
+            "parameters": [
+                "{{data}}",
+                "{{ctx.selected}}"
+            ]
+        },
+        "getSharedSearchValue": {
+            "functionName": "getSharedSearchValue",
+            "parameters": [
+                "{{data.shareSavedSearch.dbValue}}"
+            ]
+        },
+        "setPinToHome": {
+            "functionName": "setPinToHome",
+            "parameters": [
+                "{{data.pinToHome}}"
+            ]
+        },
+        "getSaveAndModifyAdvSearchInputs": {
+            "functionName": "getEditSavedAdvSearchInputs",
+            "parameters": [
+                "{{data}}",
+                "{{ctx.selected}}",
+                "SaveAndModify"
+            ]
+        },
+        "getSaveAndCreateAdvSearchInputs": {
+            "functionName": "getEditSavedAdvSearchInputs",
+            "parameters": [
+                "{{data}}",
+                "{{ctx.selected}}",
+                "SaveAndCreate"
+            ]
+        },
+        "getOverwriteAdvSearchInputs": {
+            "functionName": "getEditSavedAdvSearchInputs",
+            "parameters": [
+                "{{data}}",
+                "{{ctx.selected}}",
+                "Overwrite"
+            ]
+        }
+    },
+    "conditions": {
+        "isValidToEdit": {
+            "expression": "data.savedSearchName.dbValue && data.savedSearchName.dbValue.length > 0 && data.savedSearchName.dbValue !== ctx.selected.props.object_name.dbValue"
+        },
+        "isValidToSave": {
+            "expression": "!(data.savedSearchName.dbValue && data.savedSearchName.dbValue.length > 0 && data.savedSearchName.dbValue !== ctx.selected.props.object_name.dbValue) && (data.pinToHome.valueUpdated || data.shareSavedSearch.valueUpdated)"
+        }
+    },
+    "onEvent": [],
+    "lifecycleHooks": {
+        "onUpdate": {
+            "action": "initialize",
+            "observers": [
+                "props.subPanelContext.searchState.pwaSelection[0].uid"
+            ]
+        }
+    },
+    "i18n": {
+        "Name": [ "SearchMessages" ],
+        "Criteria": [ "SearchMessages" ],
+        "editSavedSearch": [ "SearchMessages" ],
+        "Save": [ "SearchMessages" ],
+        "nameInUse": [ "SearchMessages" ],
+        "CancelText": [ "SearchMessages" ],
+        "OverwriteText": [ "SearchMessages" ],
+        "pinToHome": [ "SearchMessages" ],
+        "searchString": [ "SearchMessages" ],
+        "filterString": [ "SearchMessages" ],
+        "pinSearch": [ "SearchMessages" ],
+        "shareSavedSearch": [ "SearchMessages" ],
+        "ChartProperties": [ "SearchMessages" ],
+        "ChartBy": [ "SearchMessages" ],
+        "savedSearchCriteria": [ "SearchMessages" ],
+        "referencingSavedQuery": [ "SearchMessages" ]
+    }
+}

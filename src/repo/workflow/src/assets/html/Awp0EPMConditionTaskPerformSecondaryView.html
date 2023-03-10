@@ -1,0 +1,15 @@
+<div class="aw-layout-flexColumn" aw-class="{'aw-layout-include aw-workflow-performTaskPanel': subPanelContext.xrtType==='SUMMARY'}">
+    <aw-panel-body>
+        <aw-widget  prop="data.taskName"></aw-widget>
+        <aw-widget  prop="data.description" visible-when="conditions.showInstructions"></aw-widget>
+        <aw-widget  prop="data.workflowDescription" visible-when="conditions.showWorkflowDescription"></aw-widget>
+        <aw-widget  prop="data.comments"></aw-widget>
+        <aw-password prop="data.password" visible-when="conditions.isSecureTask"></aw-password>
+    </aw-panel-body>
+    <aw-panel-footer visible-when="conditions.isValidToComplete" class="sw-column">
+        <aw-listbox prop="data.taskResult" visible-when="conditions.showConditionPathsAsList" list="data.taskResults"></aw-listbox>
+        <awp0-condition-task-result aw-repeat="taskResult : data.taskResults" visible-when="conditions.showConditionPathsAsButton && conditions.isValidToComplete" task-result-context={...data.conditionTaskResult,taskResult:taskResult}></awp0-condition-task-result>
+        <aw-button action="verifySaveTask" visible-when="conditions.showCompleteButton"><aw-i18n>i18n.complete</aw-i18n></aw-button>
+        <aw-button action="verifySaveTaskUnableToComplete" default="false" visible-when="conditions.showUnableToComplete"><aw-i18n>i18n.unableToComplete</aw-i18n></aw-button>
+    </aw-panel-footer>
+</div>

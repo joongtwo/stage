@@ -1,0 +1,62 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+        "js/aw-command-sub-panel.directive",
+        "js/aw-command-panel.directive"
+    ],
+    "data":
+    {
+        "addElementState":{
+            "initialValues":{
+                "AddOccurrencePropertiesOnCreate" : false,
+                "parentElement" : null,
+                "parentToLoadAllowedTypes" : null,
+                "siblingElement" : null,
+                "elementCreateInput" : null,
+                "fetchPagedOccurrences" : true,
+                "isCopyButtonEnabled" : false,
+                "previousSelectionUid" : "",
+                "Awb0ElementCreateSubView" : false,
+                "numberOfElements" : 1
+            },
+            "meta": {
+
+            }
+        }
+    },
+
+    "actions":
+    {
+        "setStateAddElementInputParentElementToSelectedElement":
+        {
+            "actionType": "JSFunction",
+            "method": "setStateAddElementInputParentElementToSelectedElement",
+            "inputData":
+            {
+                "data" : "{{data}}",
+                "occContext" :"{{subPanelContext.occContext}}"
+            },
+            "outputData": {
+                "addElementState" : ""
+            },
+            "deps": "js/partitionAddPartitionService"
+        }
+    },
+    "conditions" :{
+        "isParentValid" : {
+            "expression" : "addElementState.parentElement"
+        }
+    },
+    "onEvent":
+    [
+
+    ],
+    "i18n":
+    {
+       "addPartition": ["OccmgmtPartitionMessages"]
+    },
+    "lifecycleHooks": {
+        "onMount":"setStateAddElementInputParentElementToSelectedElement"
+    }
+}

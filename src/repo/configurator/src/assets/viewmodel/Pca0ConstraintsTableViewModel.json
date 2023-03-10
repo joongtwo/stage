@@ -1,0 +1,346 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-splm-table.directive"
+    ],
+    "data": {
+        "columns": [],
+        "searchResults": [],
+        "totalFound": 0,
+        "columnsToDisableSort": [ "cfg0SubjectCondition", "cfg0ApplicabilityCondition", "cfg0Effectivity", "cfg0ExpScript", "cfg0AsText", "cfg0DefaultCondition" ],
+        "columnsToDisableFilter": [ "cfg0SubjectCondition", "cfg0ApplicabilityCondition", "cfg0Effectivity", "cfg0ExpScript", "cfg0AsText", "cfg0DefaultCondition" ],
+        "lastLoadedConstraintUid": "",
+        "searchState": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "actions": {
+        "initComponentAndUpdateXrtContext": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "initComponent"
+                },
+                {
+                    "action": "updateXrtContext"
+                }
+            ]
+        },
+        "initComponent": {
+            "actionType": "JSFunctionAsync",
+            "method": "initComponent",
+            "deps": "js/pca0ConfiguratorExplorerCommonUtils"
+        },
+        "updateXrtContext": {
+            "actionType": "JSFunction",
+            "method": "updateXrtContext",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "deps": "js/pca0ConfiguratorExplorerCommonUtils"
+        },
+        "storageSyncAndFirePWAReset": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "syncSessionStorage"
+                },
+                {
+                    "action": "resetPrimaryWorkArea"
+                }
+            ]
+        },
+        "syncSessionStorage": {
+            "actionType": "JSFunction",
+            "method": "syncSessionStorage",
+            "deps": "js/pca0ContextManagementService"
+        },
+        "resetPrimaryWorkArea": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "pca0ConstraintsGrid.plTable.reload"
+                } ]
+            },
+            "outputData": {
+                "uidOfLastRule": "",
+                "data.dataProviders.pca0ConstraintsDataProvider.startIndex": 0
+            }
+        },
+        "refreshPrimaryWorkArea": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "pca0ConstraintsGrid.plTable.clientRefresh"
+                } ]
+            }
+        },
+        "loadConstraintsDataFromServer": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": "Pca0Constraints"
+                },
+                "searchInput": {
+                    "maxToLoad": 99,
+                    "maxToReturn": 50,
+                    "providerName": "Pca0ConstraintsProvider",
+                    "searchCriteria": "{{function:getInputCriteria}}",
+                    "columnFilters": "{{data.columnProviders.pca0ConstraintsColumnProvider.columnFilters}}",
+                    "searchFilterFieldSortType": "Priority",
+                    "searchSortCriteria": "{{data.columnProviders.pca0ConstraintsColumnProvider.sortCriteria}}",
+                    "cursor": {
+                        "startIndex": "{{data.dataProviders.pca0ConstraintsDataProvider.startIndex}}"
+                    }
+                },
+                "inflateProperties": true
+            },
+            "outputData": {
+                "searchResults": "{{json:searchResultsJSON}}",
+                "totalFound": "totalFound",
+                "lastLoadedConstraintUid": "{{function:getLastUid}}",
+                "dataProviders.pca0ConstraintsDataProvider.columnConfig": "{{function:getColumnConfig}}"
+            },
+            "deps": "js/pca0ConfiguratorExplorerCommonUtils"
+        },
+        "saveColumnConfigAndReloadData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": "Pca0Constraints"
+                },
+                "saveColumnConfigData": {
+                    "clientScopeURI": "Pca0Constraints",
+                    "columnConfigId": "{{data.dataProviders.pca0ConstraintsDataProvider.columnConfig.columnConfigId}}",
+                    "columns": "{{data.dataProviders.pca0ConstraintsDataProvider.newColumns}}",
+                    "scope": "LoginUser",
+                    "scopeName": ""
+                },
+                "searchInput": {
+                    "maxToLoad": 99,
+                    "maxToReturn": 50,
+                    "providerName": "Pca0ConstraintsProvider",
+                    "searchCriteria": "{{function:getInputCriteria}}",
+                    "columnFilters": "{{data.columnProviders.pca0ConstraintsColumnProvider.columnFilters}}",
+                    "searchSortCriteria": "{{data.columnProviders.pca0ConstraintsColumnProvider.sortCriteria}}",
+                    "cursor": {
+                        "startIndex": "{{data.dataProviders.pca0ConstraintsDataProvider.startIndex}}"
+                    }
+                },
+                "inflateProperties": true
+            },
+            "outputData": {
+                "searchResults": "{{json:searchResultsJSON}}",
+                "totalFound": "totalFound",
+                "dataProviders.pca0ConstraintsDataProvider.columnConfig": "{{function:getColumnConfig}}"
+            },
+            "deps": "js/pca0ConfiguratorExplorerCommonUtils"
+        },
+        "resetColumnConfig": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2022-06-UiConfig",
+            "method": "getOrResetUIColumnConfigs3",
+            "inputData": {
+                "getOrResetUiConfigsIn": [ {
+                    "scope": "LoginUser",
+                    "scopeName": "",
+                    "clientName": "AWClient",
+                    "resetColumnConfig": true,
+                    "columnConfigQueryInfos": [ {
+                        "clientScopeURI": "Pca0Constraints",
+                        "operationType": "union",
+                        "typeNames": "{{data.dataProviders.pca0ConstraintsDataProvider.columnConfig.typesForArrange}}",
+                        "columnsToExclude": []
+                    } ],
+                    "businessObjects": [ {} ]
+                } ]
+            },
+            "outputData": {
+                "dataProviders.pca0ConstraintsDataProvider.resetColumnConfigs": "{{function:getColumnConfig}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "Pca0ConstraintsGrid.plTable.reload"
+                } ]
+            },
+            "deps": "js/pca0ConfiguratorExplorerCommonUtils"
+        },
+        "doArrangeEvent": {
+            "actionType": "JSFunctionAsync",
+            "method": "arrangeColumns",
+            "inputData": {
+                "declViewModel": "{{data}}",
+                "eventData": "{{data.eventData}}"
+            },
+            "deps": "js/columnArrangeService"
+        },
+        "deleteConstraints": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2019-06-DataManagement",
+            "method": "unlinkAndDeleteObjects",
+            "inputData": {
+                "deleteInput": "{{function:unlinkAndDeleteFunction}}"
+            },
+            "outputData": {
+                "unlinkAndDeleteObjectsResponse": ""
+            },
+            "events": {
+                "failure": [ {
+                    "name": "Pca0ConstraintsTableViewModel.processPartialErrors",
+                    "eventData": {
+                        "ServiceData": "{{data.unlinkAndDeleteObjectsResponse}}"
+                    }
+                } ],
+                "success": [ {
+                "name": "pca0ConstraintsGrid.plTable.reload"
+                } ]}
+            ,
+            "deps": "js/pca0ConfiguratorExplorerCommonUtils"
+        },
+        "processPartialErrors": {
+            "actionType": "JSFunction",
+            "method": "processPartialErrors",
+            "inputData": {
+                "eventData": "{{data.eventData.ServiceData}}"
+            },
+            "deps": "js/pca0CommonUtils"
+        }
+    },
+    "dataProviders": {
+        "pca0ConstraintsDataProvider": {
+            "action": "loadConstraintsDataFromServer",
+            "nextAction": "loadConstraintsDataFromServer",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "inputData": {
+                "accessMode": "table",
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            }
+        }
+    },
+    "columnProviders": {
+        "pca0ConstraintsColumnProvider": {
+            "saveColumnAndLoadAction": "saveColumnConfigAndReloadData",
+            "resetColumnAction": "resetColumnConfig"
+        }
+    },
+    "grids": {
+        "pca0ConstraintsGrid": {
+            "dataProvider": "pca0ConstraintsDataProvider",
+            "columnProvider": "pca0ConstraintsColumnProvider",
+            "enableArrangeMenu": true,
+            "gridOptions": {
+                "enableSorting": true,
+                "enableGridMenu": true,
+                "isFilteringEnabled": true,
+                "enableExpandAndPaginationInEdit": false
+            }
+        }
+    },
+    "messages": {
+        "deleteMultipleConstraintsConfirmationMessage": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.deleteMultipleConstraintsConfirmationMsg}}",
+            "messageTextParams": [
+                "{{commandContext.selectionData.selected.length}}"
+            ],
+            "navigationOptions": [ {
+                    "option": "Cancel",
+                    "text": "{{i18n.cancel}}"
+                },
+                {
+                    "option": "Delete",
+                    "text": "{{i18n.deleteText}}",
+                    "action": "deleteConstraints"
+                }
+            ]
+        },
+        "deleteSingleConstraintConfirmationMessage": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.deleteSingleConstraintsConfirmationMsg}}",
+            "messageTextParams": [
+                "{{commandContext.selectionData.selected[0].props.object_name.uiValues[0]}}"
+            ],
+            "navigationOptions": [ {
+                    "option": "Cancel",
+                    "text": "{{i18n.cancel}}"
+                },
+                {
+                    "option": "Delete",
+                    "text": "{{i18n.deleteText}}",
+                    "action": "deleteConstraints"
+                }
+            ]
+        }
+    },
+    "onEvent": [ {
+            "eventId": "columnArrange",
+            "cacheEventData": true,
+            "action": "doArrangeEvent"
+        },
+        {
+            "eventId": "Pca0FilterCriteriaSettings.filterCriteriaUpdated",
+            "action": "storageSyncAndFirePWAReset"
+        },
+        {
+            "eventId": "primaryWorkarea.multiSelectAction",
+            "action": "refreshPrimaryWorkArea"
+        },
+        {
+            "eventId": "Pca0ConstraintsTable.deleteMultipleConstraints",
+            "message": "deleteMultipleConstraintsConfirmationMessage"
+        },
+        {
+            "eventId": "Pca0ConstraintsTable.deleteSingleConstraint",
+            "message": "deleteSingleConstraintConfirmationMessage"
+        },
+        {
+            "eventId": "Pca0ConstraintsTableViewModel.processPartialErrors",
+            "action": "processPartialErrors",
+            "cacheEventData": true
+        }
+    ],
+    "functions": {
+        "getInputCriteria": {
+            "functionName": "getInputCriteria",
+            "parameters": [ "{{data.lastLoadedConstraintUid}}" ]
+        },
+        "getLastUid": {
+            "functionName": "getLastUid"
+        },
+        "getColumnConfig": {
+            "functionName": "getColumnConfig",
+            "parameters": [
+                "{{data.columnsToDisableSort}}",
+                "{{data.columnsToDisableFilter}}",
+                "{{data.dataProviders.pca0ConstraintsDataProvider.columnConfig.typesForArrange}}"
+            ]
+        },
+        "unlinkAndDeleteFunction": {
+            "functionName": "unlinkAndDelete",
+            "parameters": [
+                "{{commandContext.selectionData.selected}}"
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initComponentAndUpdateXrtContext",
+        "onUpdate": [ {
+            "action": "updateXrtContext",
+            "observers": [ "props.subPanelContext.selectionData" ]
+        } ]
+    },
+    "i18n": {
+        "deleteSingleConstraintsConfirmationMsg": [ "ConfiguratorExplorerMessages" ],
+        "deleteMultipleConstraintsConfirmationMsg": [ "ConfiguratorExplorerMessages" ],
+        "cancel": [ "ConfiguratorExplorerMessages" ],
+        "deleteText": [ "ConfiguratorExplorerMessages" ]
+    }
+}

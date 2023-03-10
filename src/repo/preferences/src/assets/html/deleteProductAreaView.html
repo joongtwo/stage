@@ -1,0 +1,14 @@
+<aw-command-panel caption="i18n.deleteProductAreaPanelTitle">
+    <aw-panel-body>
+        <aw-panel-section>
+             <!-- Product Area -->
+             <aw-listbox prop="data.fnd0ProductArea"></aw-listbox>
+        </aw-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer>
+         <!-- Delete -->
+        <aw-button action='deleteProductArea' visible-when="conditions.showDeleteBtn">
+            <aw-i18n>i18n.deleteProductAreaBtnTitle</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

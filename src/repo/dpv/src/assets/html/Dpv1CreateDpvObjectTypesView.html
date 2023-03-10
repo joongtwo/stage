@@ -1,0 +1,20 @@
+<div class="aw-layout-flexColumn" show-when="data.activeState.value.activeView==='AddObjectPrimarySub'">
+    <aw-panel-body>
+            <aw-add
+                include-types="MEPrPlantProcess,MEPrLineProcess,MEPrZoneProcess,MEPrStatnProcess,MEPrPlant,MEPrLine,MEPrZone,MEPrStation,MEInspection"
+                type-filter="MEPrPlantProcess,MEPrLineProcess,MEPrZoneProcess,MEPrStatnProcess,MEPrPlant,MEPrLine,MEPrZone,MEPrStation,MEInspection"
+                load-sub-types="true"
+                visible-tabs="new"
+                active-state="data.activeState"
+                project-state="data.projectState"
+                add-panel-state="fields.addPanelState"
+                xrt-state="data.xrtState"
+                edit-handler="editHandlers.addPanelEditHandler">
+            </aw-add>
+            <aw-panel-footer>
+                <aw-button action="createDpvObject"><aw-i18n>i18n.create</aw-i18n></aw-button>
+            </aw-panel-footer>
+
+    </aw-panel-body>
+</div>
+<aw-add-navigate active-state="data.activeState" project-state="data.projectState" action="actions.setActiveView"></aw-add-navigate>

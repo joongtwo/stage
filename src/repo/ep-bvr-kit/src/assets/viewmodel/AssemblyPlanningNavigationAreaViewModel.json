@@ -1,0 +1,167 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "getMissingInSrcData": {
+            "actionType": "JSFunction",
+            "method": "getProperty",
+            "inputData": {
+                "name": "{{ctx.epPageContext.loadedObject.uid}}",
+                "propertyName": "accountabilityResponse"
+            },
+            "outputData": {
+                "missingInSrc": "result.missingInSrc"
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "initializeAssemblyTabName": {
+            "actionType": "JSFunction",
+            "method": "initializeAssemblyTabName",
+            "deps": "js/epAssemblyPlanningService",
+            "inputData": {
+                "assemlyTabContext": "{{data.assemblyTreeContext.tabs[0]}}"
+            }
+        },
+        "initializeBatchAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initializeAssemblyTabName"
+
+                },
+                {
+                    "action": "updateContentPanelData"
+
+                }
+            ]
+        },
+        "updateContentPanelData": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "showEpAssemblyTreeView",
+                    "condition": "!data.manageConsumptionMode.isEnabled"
+                },
+                {
+                    "action": "showEpManageConsumptionView",
+                    "condition": "data.manageConsumptionMode.isEnabled"
+                }
+            ]
+        },
+        "showEpAssemblyTreeView": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "assemblyTreeContext": {
+                    "tabs": [{
+                        "name": "{{i18n.assemblyTreeTitle}}",
+                        "tabKey": "EpAssemblyTree"
+                    },
+                    {
+                        "name": "{{i18n.boeTreeTitle}}",
+                        "tabKey": "AssemblyPlanningBoeTree"
+                    },
+                    {
+                        "name": "{{i18n.backgroundPartsTitle}}",
+                        "tabKey": "EpBackgroundPartsTree"
+                    }],
+                    "cmdDisplayOption": "menu"
+                }
+            },
+            "outputData": {
+                "assemblyTreeContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "showEpManageConsumptionView": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "assemblyTreeContext": {
+                    "tabs": [{
+                        "name": "{{i18n.assemblyTreeTitle}}",
+                        "tabKey": "EpManageConsumption"
+                    },
+                    {
+                        "name": "{{i18n.boeTreeTitle}}",
+                        "tabKey": "AssemblyPlanningBoeTree"
+                    }],
+                    "cmdDisplayOption": "menu"
+                }
+            },
+            "outputData": {
+                "assemblyTreeContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "data": {
+        "assemblyTreeContext": {
+            "tabs": [{
+                "name": "{{i18n.assemblyTreeTitle}}",
+                "tabKey": "EpAssemblyTree"
+            },
+            {
+                "name": "{{i18n.boeTreeTitle}}",
+                "tabKey": "AssemblyPlanningBoeTree"
+            },
+            {
+                "name": "{{i18n.backgroundPartsTitle}}",
+                "tabKey": "EpBackgroundPartsTree"
+            }
+        ],
+            "cmdDisplayOption": "menu"
+        },
+        "missingInSourceTableContext": {
+            "tabs": [{
+                "name": "{{i18n.missingInSource}}",
+                "tabKey": "EpMissingInSource"
+            }]
+        },
+        "manageConsumptionMode": {
+            "initialValues": {
+                "isEnabled": false
+            },
+            "meta": {}
+        }
+    },
+    "i18n": {
+        "assemblyTreeTitle": [
+            "AssemblyMessages"
+        ],
+        "missingInSource": [
+            "assignmentIndicationMessages"
+            ],
+        "boeTreeTitle": [
+            "AssemblyMessages"
+        ],
+        "backgroundPartsTitle": [
+            "BackgroundPartsMessages"
+        ]
+    },
+    "onEvent": [{
+        "eventId": "epObjectPropertyCache.accountabilityResponseUpdated",
+        "action": "getMissingInSrcData"
+    }],
+    "lifecycleHooks": {
+        "onMount": "initializeBatchAction",
+        "onUpdate": [
+            {
+                "action": "updateContentPanelData",
+                "observers": [
+                    "viewModel.atomicData.manageConsumptionMode.isEnabled"
+                ]
+            },
+            {
+                "action": "getMissingInSrcData",
+                "observers": [
+                    "props.subPanelContext.sharedSelectionData.isIndicationToggleOn"
+                ]
+            }
+        ]
+    }
+}

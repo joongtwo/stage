@@ -1,0 +1,107 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "skillListPort": {
+            "syncObject": {}
+        }
+
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "dataProviders": {
+        "skillsDataProvider": {
+            "action": "getSkillNamesForSelectedObject",
+            "response": "{{data.skillNameObjects}}",
+            "totalFound": "{{data.totalSkillNames}}"
+        }
+    },
+    "actions": {
+        "doGridDataProvider":
+        {
+            "actionType": "dataProvider",
+            "method": "skillsDataProvider"
+        },
+
+        "getSkillNamesForSelectedObject": {
+            "actionType": "JSFunction",
+            "method": "getSkillNamesForSelectedObject",
+            "outputData":{
+                "skillNameObjects":"skillNameObjects",
+                "totalSkillNames" : "totalSkillNames"
+            },
+            "deps": "js/swiSkillsService",
+            "events": {
+                "success": [
+                    {
+                        "name": "selectFirstSkillByDefault"
+                    }
+                ]
+            }
+        },
+        "selectFirstSkill": {
+            "actionType": "JSFunction",
+            "method": "updateDataprovider",
+            "inputData":{
+                "dataProvider": "{{data.dataProviders.skillsDataProvider}}",
+                "ObjectToUpdate":"{{data.skillNameObjects[0]}}"
+
+            },
+
+            "deps": "js/swiSkillsService"
+        },
+        "updateCtxandPort": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateSkillInCtx"
+                },
+                {
+                    "action": "updateSkillListPort"
+                }
+            ]
+        },
+        "updateSkillInCtx": {
+            "actionType": "JSFunction",
+            "method": "updateSkillInCtx",
+            "inputData": {
+                "eventData": "{{eventData}}"
+            },
+            "deps": "js/swiSkillsService"
+        },
+        "updateSkillListPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "skillListPort",
+                "syncObject": "{{ctx.selectedSkill}}"
+            }
+        }
+    },
+
+    "onEvent": [
+        {
+            "eventId": "selectFirstSkillByDefault",
+            "action": "selectFirstSkill"
+        },
+        {
+            "eventId": "skillsDataProvider.selectionChangeEvent",
+            "action": "updateCtxandPort",
+            "cacheEventData": true
+        }
+    ],
+
+    "lifecycleHooks": {
+        "onUpdate": {
+            "action": "doGridDataProvider",
+            "observers": [
+                "props.subPanelContext.swiAtomicData.selected"
+            ]
+        }
+
+    }
+
+}
+
+

@@ -1,0 +1,1710 @@
+{
+  "Date": "Thu Aug 29 04:04:32 PM 2019",
+  "Library": [
+    {
+      "DependentOn": [
+        {
+          "name": "Rv1relationshipviewer"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "relationship viewer for TC object.",
+      "isThirdParty": "false",
+      "name": "Rv1SoaRelationshipViewer",
+      "namespace": "Rv1::Soa::RelationshipViewer",
+      "serviceLibrary": "true"
+    },
+    {
+      "DependentOn": [
+        {
+          "name": "metaframework"
+        },
+        {
+          "name": "tccore"
+        },
+        {
+          "name": "tc"
+        },
+        {
+          "name": "cxpom"
+        },
+        {
+          "name": "ae"
+        },
+        {
+          "name": "bom"
+        },
+        {
+          "name": "tie"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "Relationship Viewer library",
+      "isThirdParty": "false",
+      "name": "Rv1relationshipviewer",
+      "namespace": "",
+      "serviceLibrary": "false"
+    }
+  ],
+  "MetaEnum": [
+    {
+      "MetaEnumLiteral": [
+        {
+          "description": "Only calculate node degree without return graph.",
+          "name": "DegreeOnly"
+        },
+        {
+          "description": "Only expand graph without calculate node degree.",
+          "name": "ExpandOnly"
+        },
+        {
+          "description": "Expand graph and calculate node degree together.",
+          "name": "ExpandAndDegree"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The query mode enumeration.",
+      "isPublished": "true",
+      "name": "QueryModeEnum",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    }
+  ],
+  "Operation": [
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of CreateRelationInput structure.",
+          "parameterName": "inputs"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Awp0AWS",
+      "createRelease": "tc9000.1.2",
+      "dependencies": "",
+      "description": "The operation will create the specified relation between the input objects (primary and secondary objects) for each input structure.",
+      "exceptionCondition": "",
+      "id": "createRelations#const,std::vector<Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::CreateRelationInput>,&",
+      "interface": "Rv1::Soa::RelationshipViewer::NetworkEngine",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "createRelations",
+      "opTemplate": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::CreateRelationsResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::createRelations#const,std::vector<Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::CreateRelationInput>,&",
+      "returnDescription": "The response contains a list of created network edges which are encapsulation of the created relation. Any failure will be returned with the input clientId mapped to the error message in the ServiceData list of partial errors.<br />\n116001 (error):&nbsp;&nbsp;&nbsp;&nbsp; The specified relation can not be created between the selected two business objects.<br />116002 (error):&nbsp;&nbsp;&nbsp;&nbsp; Primary or secondary object is not specified.<br />116003 (error):&nbsp;&nbsp;&nbsp;&nbsp; The specified relation type is not supported in Teamcenter.",
+      "useCase": "You can create relations that can be represented as edges in network graph. Such as GRM (General Relation Management) relation, BOM structure and PS Connection."
+    },
+    {
+      "canOverride": "false",
+      "component": "",
+      "createRelease": "tc9000.1.2",
+      "dependencies": "",
+      "description": "Provides a style definition which can be used for client to render graph data. For example, it returns style definition of node shape and color,edge type and color.",
+      "exceptionCondition": "",
+      "id": "getGraphStyleDef#",
+      "interface": "Rv1::Soa::RelationshipViewer::NetworkEngine",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "getGraphStyleDef",
+      "opTemplate": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphStyleDefResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::getGraphStyleDef",
+      "returnDescription": "Graph style definition in XML string. The caller of this method need parse XML to get style definition.",
+      "useCase": ""
+    },
+    {
+      "DeprecationInfo": [
+        {
+          "deprecatedDescription": "Use getViews3 instead",
+          "deprecatedRelease": "tc10000.1.2"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Fnd0DiagramManagement",
+      "createRelease": "tc9000.1.2",
+      "dependencies": "",
+      "description": "The RelationShipViewer library provides graph (nodes connected via edges) views of data elements. Each graph has a defined view type. The view type is a container for the rules that determine what should be included in a graph and how it should be represented. The choice of graph view is determined based on business need. <br /><br />This API provides a list of the available graph view types. A graph view is a set of configuration that can be used for network expansion. For example: view name, graph parameters, inquires, graph presentation rules. The view list is role based, different role may get different view list.",
+      "exceptionCondition": "",
+      "id": "getViews#",
+      "interface": "Rv1::Soa::RelationshipViewer::NetworkEngine",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "getViews",
+      "opTemplate": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphTypeListResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::getViews",
+      "returnDescription": "The list of supported views",
+      "useCase": ""
+    },
+    {
+      "DeprecationInfo": [
+        {
+          "deprecatedDescription": "Use getViews3 instead",
+          "deprecatedRelease": "tc10000.1.2"
+        }
+      ],
+      "ParameterInfo": [
+        {
+          "description": "The key to identify a list of views. Each graph view have a key field, but not the identifier.",
+          "parameterName": "key"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Awp0AWS",
+      "createRelease": "tc9000.1.2",
+      "dependencies": "",
+      "description": "This operation provides a list of the available graph view types identified by the input key. A graph view is a set of configuration that can be used for network expansion. For example: view name, graph parameters, inquires, graph presentation rules. The view list is role based, different role may get different view list.<br /><br />The RelationShipViewer library provides graph (nodes connected via edges) views of data elements. Each graph has a defined view type. The view type is a container for the rules that determine what should be included in a graph and how it should be represented. The choice of graph view is determined based on business need.",
+      "exceptionCondition": "",
+      "id": "getViews2#const,std::string,&",
+      "interface": "Rv1::Soa::RelationshipViewer::NetworkEngine",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "getViews2",
+      "opTemplate": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphTypeListResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::getViews2#const,std::string,&",
+      "returnDescription": "The list of supported views identified by input key. If no view match the input key, a empty view list will be returned.",
+      "useCase": ""
+    },
+    {
+      "DeprecationInfo": [
+        {
+          "deprecatedDescription": "Use getViews4 instead",
+          "deprecatedRelease": "Awp04.3.0"
+        }
+      ],
+      "ParameterInfo": [
+        {
+          "description": "The key to identify a list of views. Each graph view have a key field, but not the identifier.",
+          "parameterName": "key"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Awp0AWS",
+      "createRelease": "tc9000.1.3",
+      "dependencies": "",
+      "description": "This operation provides a list of the available graph view types identified by the input key. A graph view is a set of configuration that can be used for network expansion. For example: localized view name and category types which classify a list of supported Teamcenter Business Object types, legend color of each category types. The view list is role based, different role may get different view list.",
+      "exceptionCondition": "",
+      "id": "getViews3#const,std::string,&",
+      "interface": "Rv1::Soa::RelationshipViewer::NetworkEngine",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "getViews3",
+      "opTemplate": "Rv1::Soa::RelationshipViewer::_2014_11::NetworkEngine::GraphTypeListResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::getViews3#const,std::string,&",
+      "returnDescription": "The list of supported views identified by input key. If no view match the input key, a empty view list will be returned. Partial Errors are returned when: \n#142003 (error)   The view configuration does not exist. \n#142004 (error)   The view configuration file could not be parsed.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A map of parameter name and parameter value list (string / list of string), such as key and object type to identify the list of views supported.",
+          "parameterName": "getViewsInput"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Awp0AWS",
+      "createRelease": "Awp04.3.0",
+      "dependencies": "",
+      "description": "This operation provides a list of the available graph view types identified by the input key and the object type. A graph view is a set of configuration that can be used for network expansion. For example: localized view name and category types which classify a list of supported Teamcenter Business Object types, legend color of each category types. The view list is role based, different role may get different view list.",
+      "exceptionCondition": "",
+      "id": "getViews4#const,Rv1::Soa::RelationshipViewer::_2019_12::NetworkEngine::GetViewsParamMap,&",
+      "interface": "Rv1::Soa::RelationshipViewer::NetworkEngine",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "getViews4",
+      "opTemplate": "Rv1::Soa::RelationshipViewer::_2014_11::NetworkEngine::GraphTypeListResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::getViews4#const,Rv1::Soa::RelationshipViewer::_2019_12::NetworkEngine::GetViewsParamMap,&",
+      "returnDescription": "The list of supported views identified by input key and object type. If no view match the input key and object type, a empty view list will be returned. Partial Errors are returned when: <br />#142003 (error)   The view configuration does not exist. <br />#142004 (error)   The view configuration file could not be parsed.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of object IDs that input as network root nodes. If data source is Teamcenter, it is the UID list of Teamcenter business objects.",
+          "parameterName": "rootIds"
+        },
+        {
+          "description": "The name of graph view that will be used for network expansion. Call getViews() service method to get available view names.",
+          "parameterName": "viewName"
+        },
+        {
+          "description": "A (string, list(string)) map of graph parameter name and parameter values, such as expansion level, expansion direction. Parameters are inputs leveraged by the graph generation logic. Call getViews() service method to get available graph parameters supported by the specified view.",
+          "parameterName": "graphParamMap"
+        },
+        {
+          "description": "A list of inquiries. Inquiries identify calculations that are performed using the graph contents as inputs. The full supported inquires can be got by calling getView() method. Currently supported inquires: numOfNodes, numOfEdges.",
+          "parameterName": "inquiries"
+        }
+      ],
+      "canOverride": "false",
+      "component": "",
+      "createRelease": "tc9000.1.2",
+      "dependencies": "",
+      "description": "This API produces a graph of data corresponding to the input parameters. For Teamcenter data source, the graph nodes are Teamcenter business objects, the relation between the returns objects and the input root objects may be Teamcenter Relation class (GRM) relationships, TraceLink and its sub types, Where used, where referenced, BOM relation and Tag reference.",
+      "exceptionCondition": "",
+      "id": "queryNetwork#const,std::vector<std::string>,&$const,std::string,&$const,Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphParamMap,&$const,std::vector<std::string>,&",
+      "interface": "Rv1::Soa::RelationshipViewer::NetworkEngine",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "queryNetwork",
+      "opTemplate": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::NetworkResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::queryNetwork#const,std::vector<std::string>,&$const,std::string,&$const,Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphParamMap,&$const,std::vector<std::string>,&",
+      "returnDescription": "Return network data of the input root object, answers to the inqures and soa service data. If data source is TC, the nodes of graph is Teamcenter business objects list, they are filled in serviceData as plain objects.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "Input parameter for querying network.",
+          "parameterName": "input"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Awp0AWS",
+      "createRelease": "tc9000.1.2",
+      "dependencies": "",
+      "description": "This operation produces a graph of data corresponding to the input parameters. The graph nodes are Teamcenter business objects, the relation between the returned objects and the input root objects may be Teamcenter Relation class (GRM) relationships, TraceLink and its sub types, Where used, where referenced, BOM relation and Tag reference.\nYou can query relations supported in Teamcenter for the input root Business Objects, such as GRM (General Relationship Management) relation, BOM structure, Connectility, etc.",
+      "exceptionCondition": "",
+      "id": "queryNetwork2#const,Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::QueryNetworkInputs,&",
+      "interface": "Rv1::Soa::RelationshipViewer::NetworkEngine",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "queryNetwork2",
+      "opTemplate": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::NetworkResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::queryNetwork2#const,Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::QueryNetworkInputs,&",
+      "returnDescription": "Return network data of the input root object and answers to the inqures . The nodes of the graph are returned as plain objects in the ServiceData . <br />\n116011(error):&nbsp;&nbsp;&nbsp;&nbsp;  Not all input root Ids can identify valid business objects.<br />116012(error):&nbsp;&nbsp;&nbsp;&nbsp;  Configuration data doesn't exist for the specified graph view.<br />116013(error):&nbsp;&nbsp;&nbsp;&nbsp;  Query service index out of range.<br />116014(error):&nbsp;&nbsp;&nbsp;&nbsp;  Expansion direction isn't supported.",
+      "useCase": ""
+    }
+  ],
+  "OperationTemplate": [
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::CreateRelationInput",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of CreateRelationInput structure.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "inputs"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::CreateRelationsResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc9000.1.2",
+      "description": "The operation will create the specified relation between the input objects (primary and secondary objects) for each input structure.",
+      "id": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::CreateRelationsResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::createRelations#const,std::vector<Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::CreateRelationInput>,&",
+      "name": "Rv1::Soa::RelationshipViewer::NetworkEngine::createRelations",
+      "returnConst": "false",
+      "returnDescription": "The response contains a list of created network edges which are encapsulation of the created relation. Any failure will be returned with the input clientId mapped to the error message in the ServiceData list of partial errors.<br />\n116001 (error):&nbsp;&nbsp;&nbsp;&nbsp; The specified relation can not be created between the selected two business objects.<br />116002 (error):&nbsp;&nbsp;&nbsp;&nbsp; Primary or secondary object is not specified.<br />116003 (error):&nbsp;&nbsp;&nbsp;&nbsp; The specified relation type is not supported in Teamcenter.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphStyleDefResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc9000.1.2",
+      "description": "Provides a style definition which can be used for client to render graph data. For example, it returns style definition of node shape and color,edge type and color.",
+      "id": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphStyleDefResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::getGraphStyleDef",
+      "name": "Rv1::Soa::RelationshipViewer::NetworkEngine::getGraphStyleDef",
+      "returnConst": "false",
+      "returnDescription": "Graph style definition in XML string. The caller of this method need parse XML to get style definition.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphTypeListResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc9000.1.2",
+      "description": "The RelationShipViewer library provides graph (nodes connected via edges) views of data elements. Each graph has a defined view type. The view type is a container for the rules that determine what should be included in a graph and how it should be represented. The choice of graph view is determined based on business need. <br /><br />This API provides a list of the available graph view types. A graph view is a set of configuration that can be used for network expansion. For example: view name, graph parameters, inquires, graph presentation rules. The view list is role based, different role may get different view list.",
+      "id": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphTypeListResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::getViews",
+      "name": "Rv1::Soa::RelationshipViewer::NetworkEngine::getViews",
+      "returnConst": "false",
+      "returnDescription": "The list of supported views",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "std::string",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The key to identify a list of views. Each graph view have a key field, but not the identifier.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "key"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphTypeListResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc9000.1.2",
+      "description": "This operation provides a list of the available graph view types identified by the input key. A graph view is a set of configuration that can be used for network expansion. For example: view name, graph parameters, inquires, graph presentation rules. The view list is role based, different role may get different view list.<br /><br />The RelationShipViewer library provides graph (nodes connected via edges) views of data elements. Each graph has a defined view type. The view type is a container for the rules that determine what should be included in a graph and how it should be represented. The choice of graph view is determined based on business need.",
+      "id": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphTypeListResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::getViews2#const,std::string,&",
+      "name": "Rv1::Soa::RelationshipViewer::NetworkEngine::getViews2",
+      "returnConst": "false",
+      "returnDescription": "The list of supported views identified by input key. If no view match the input key, a empty view list will be returned.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "std::string",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The key to identify a list of views. Each graph view have a key field, but not the identifier.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "key"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Rv1::Soa::RelationshipViewer::_2014_11::NetworkEngine::GraphTypeListResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc9000.1.3",
+      "description": "This operation provides a list of the available graph view types identified by the input key. A graph view is a set of configuration that can be used for network expansion. For example: localized view name and category types which classify a list of supported Teamcenter Business Object types, legend color of each category types. The view list is role based, different role may get different view list.",
+      "id": "Rv1::Soa::RelationshipViewer::_2014_11::NetworkEngine::GraphTypeListResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::getViews3#const,std::string,&",
+      "name": "Rv1::Soa::RelationshipViewer::NetworkEngine::getViews3",
+      "returnConst": "false",
+      "returnDescription": "The list of supported views identified by input key. If no view match the input key, a empty view list will be returned. Partial Errors are returned when: \n#142003 (error)   The view configuration does not exist. \n#142004 (error)   The view configuration file could not be parsed.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2019_12::NetworkEngine::GetViewsParamMap",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A map of parameter name and parameter value list (string / list of string), such as key and object type to identify the list of views supported.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "getViewsInput"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Rv1::Soa::RelationshipViewer::_2014_11::NetworkEngine::GraphTypeListResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "Awp04.3.0",
+      "description": "This operation provides a list of the available graph view types identified by the input key and the object type. A graph view is a set of configuration that can be used for network expansion. For example: localized view name and category types which classify a list of supported Teamcenter Business Object types, legend color of each category types. The view list is role based, different role may get different view list.",
+      "id": "Rv1::Soa::RelationshipViewer::_2014_11::NetworkEngine::GraphTypeListResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::getViews4#const,Rv1::Soa::RelationshipViewer::_2019_12::NetworkEngine::GetViewsParamMap,&",
+      "name": "Rv1::Soa::RelationshipViewer::NetworkEngine::getViews4",
+      "returnConst": "false",
+      "returnDescription": "The list of supported views identified by input key and object type. If no view match the input key and object type, a empty view list will be returned. Partial Errors are returned when: <br />#142003 (error)   The view configuration does not exist. <br />#142004 (error)   The view configuration file could not be parsed.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "std::string",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of object IDs that input as network root nodes. If data source is Teamcenter, it is the UID list of Teamcenter business objects.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "rootIds"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "std::string",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The name of graph view that will be used for network expansion. Call getViews() service method to get available view names.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "viewName"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphParamMap",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A (string, list(string)) map of graph parameter name and parameter values, such as expansion level, expansion direction. Parameters are inputs leveraged by the graph generation logic. Call getViews() service method to get available graph parameters supported by the specified view.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "graphParamMap"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "std::string",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of inquiries. Inquiries identify calculations that are performed using the graph contents as inputs. The full supported inquires can be got by calling getView() method. Currently supported inquires: numOfNodes, numOfEdges.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "inquiries"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::NetworkResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc9000.1.2",
+      "description": "This API produces a graph of data corresponding to the input parameters. For Teamcenter data source, the graph nodes are Teamcenter business objects, the relation between the returns objects and the input root objects may be Teamcenter Relation class (GRM) relationships, TraceLink and its sub types, Where used, where referenced, BOM relation and Tag reference.",
+      "id": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::NetworkResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::queryNetwork#const,std::vector<std::string>,&$const,std::string,&$const,Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphParamMap,&$const,std::vector<std::string>,&",
+      "name": "Rv1::Soa::RelationshipViewer::NetworkEngine::queryNetwork",
+      "returnConst": "false",
+      "returnDescription": "Return network data of the input root object, answers to the inqures and soa service data. If data source is TC, the nodes of graph is Teamcenter business objects list, they are filled in serviceData as plain objects.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::QueryNetworkInputs",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "Input parameter for querying network.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "input"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::NetworkResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc9000.1.2",
+      "description": "This operation produces a graph of data corresponding to the input parameters. The graph nodes are Teamcenter business objects, the relation between the returned objects and the input root objects may be Teamcenter Relation class (GRM) relationships, TraceLink and its sub types, Where used, where referenced, BOM relation and Tag reference.\nYou can query relations supported in Teamcenter for the input root Business Objects, such as GRM (General Relationship Management) relation, BOM structure, Connectility, etc.",
+      "id": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::NetworkResponse#Rv1::Soa::RelationshipViewer::NetworkEngine::queryNetwork2#const,Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::QueryNetworkInputs,&",
+      "name": "Rv1::Soa::RelationshipViewer::NetworkEngine::queryNetwork2",
+      "returnConst": "false",
+      "returnDescription": "Return network data of the input root object and answers to the inqures . The nodes of the graph are returned as plain objects in the ServiceData . <br />\n116011(error):&nbsp;&nbsp;&nbsp;&nbsp;  Not all input root Ids can identify valid business objects.<br />116012(error):&nbsp;&nbsp;&nbsp;&nbsp;  Configuration data doesn't exist for the specified graph view.<br />116013(error):&nbsp;&nbsp;&nbsp;&nbsp;  Query service index out of range.<br />116014(error):&nbsp;&nbsp;&nbsp;&nbsp;  Expansion direction isn't supported.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    }
+  ],
+  "ServiceInterface": [
+    {
+      "createRelease": "tc9000.1.2",
+      "dependencies": "",
+      "description": "network engine",
+      "libraryName": "Rv1SoaRelationshipViewer",
+      "name": "NetworkEngine",
+      "namespace": "Rv1::Soa::RelationshipViewer",
+      "serviceLibraryRef": ""
+    }
+  ],
+  "Struct": [
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Unique client identifier, optional.",
+          "name": "clientId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The relation type to create between the two input Business Objects. For example: FND_TraceLink, PSConnection, Content. You can get all the supported relation type decriptions by service opertion NetworkEngine .getView2().",
+          "name": "relationType"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The primary object to create relation from.",
+          "name": "primaryObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The secondary object to create relation to.",
+          "name": "secondaryObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::StringPropertyMap"
+            }
+          ],
+          "description": "The (string, string) map contains properties for relation creation.",
+          "name": "props"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "Input struct for createRelations operation.",
+      "isPublished": "true",
+      "name": "CreateRelationInput",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Identifier that helps the client to track the relation(s) created.",
+          "name": "clientId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::Edge"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of new created network edges which representing the relation between Business Objects.",
+          "name": "edges"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::NodeUpdateMap"
+            }
+          ],
+          "description": "The (string,Node) map contains the uid of input node and output node to be updated. This is especially useful for BOM struction creation, as the input is uid of ItemRevision, while the output is a BomLine node, so client can update network if necessary.",
+          "name": "nodeUpdates"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Service data including partial errors.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "Output struct for createRelations operation.",
+      "isPublished": "true",
+      "name": "CreateRelationsResponse",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "XML string contains graph style definition.",
+          "name": "styleXMLStr"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Service data contains the list of created or modified objects and also the partial errors is used to report any partial failures.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "graph style definition",
+      "isPublished": "true",
+      "name": "GraphStyleDefResponse",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphViewDescription"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of  role based avaliable graph views. Different role may get different view list.",
+          "name": "views"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Service data contains the partial errors which used to report any partial failures.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "Graph type response.",
+      "isPublished": "true",
+      "name": "GraphTypeListResponse",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2014_11::NetworkEngine::GraphViewDescription"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of  role based avaliable graph views. Different role may get different view list.",
+          "name": "views"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Service data contains the partial errors which used to report any partial failures.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "tc9000.1.3",
+      "description": "Graph type response.",
+      "isPublished": "true",
+      "name": "GraphTypeListResponse",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2014_11::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Name of the graph view. It is also the identifier of graph view.",
+          "name": "name"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Display name of the graph view. It is also the identifier of graph view.",
+          "name": "displayName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "the default layout of the view. The possible values are: IncrementalHierarchic, Top-to-Bottom, Left-to-Right, Bottom-to-Top, Right-to-Left.",
+          "name": "defaultLayout"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "the default expansion direction of the view. The possibile values are: forward, backward, all.",
+          "name": "defaultExpandDirection"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "bool"
+            }
+          ],
+          "description": "Flag to indicate whether the view is visible on graph control panel.",
+          "name": "visible"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "bool"
+            }
+          ],
+          "description": "Flag to indicate whether the graph view is in diagram mode by default.",
+          "name": "diagramMode"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2014_11::NetworkEngine::GraphGroup"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of graph view groups.",
+          "name": "groups"
+        }
+      ],
+      "createRelease": "tc9000.1.3",
+      "description": "The description of a graph view",
+      "isPublished": "true",
+      "name": "GraphViewDescription",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2014_11::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Name of the graph view. It is also the identifier of graph view.",
+          "name": "name"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "the default layout of the view",
+          "name": "defaultLayout"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "the default expansion direction of the view",
+          "name": "defaultExpandDirection"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "bool"
+            }
+          ],
+          "description": "Flag to indicate whether the view is visible on graph control panel.",
+          "name": "visible"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "bool"
+            }
+          ],
+          "description": "Flag to indicate whether the graph view is in diagram mode by default.",
+          "name": "diagramMode"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphParameterInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of graph view parameters.",
+          "name": "parameters"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphInquiry"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of supported graph view inquiries. For example: numOfNodes, numOfEdges.",
+          "name": "inquiries"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphGroup"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of graph view groups.",
+          "name": "groups"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The description of a graph view",
+      "isPublished": "true",
+      "name": "GraphViewDescription",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::Graph"
+            }
+          ],
+          "description": "Graph data of the network.",
+          "name": "graph"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Service data contains the list of Teamcenter business objects and also the partial errors is used to report any partial failures.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "network response",
+      "isPublished": "true",
+      "name": "NetworkResponse",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Node id. A unique immutable identifier of the node. It is business object UID for Teamcenter data source.",
+          "name": "id"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Name of node",
+          "name": "name"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "Underlying Teamcenter object. For example: BomLine, Item, ItemRevision, Function etc. Can be null. For external data source, it can be RuntimeObject.",
+          "name": "metaObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::StringPropertyMap"
+            }
+          ],
+          "description": "A map of property name and property value pairs (string/string). For example, [in_degree, 2], [out_degree, 4].",
+          "name": "props"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "node of the graph",
+      "isPublished": "true",
+      "name": "Node",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "std::string"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of object IDs that input as network root nodes. If data source is Teamcenter, it is the UID list of Teamcenter business objects.",
+          "name": "rootIds"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The name of graph view that will be used for network expansion. Call getViews() service method to get available view names.",
+          "name": "viewName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::QueryModeEnum"
+            }
+          ],
+          "description": "The query mode that applied to this query operation.",
+          "name": "queryMode"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "The cursor of the start service index in service list. It's set to 0 for initial call. If client get a partial graph by queryNetwork2 operation, it can be set great than 0 to get remaining part of graph.",
+          "name": "serviceCursor"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphParamMap"
+            }
+          ],
+          "description": "A map of graph parameter name and parameter value list (string / list of string), such as expansion level, expansion direction. Parameters are inputs leveraged by the graph generation logic. Call getViews() service method to get available graph parameters supported by the specified view.",
+          "name": "graphParamMap"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "std::string"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of inquiries.. Inqueries identify calculations that are performed using the graph contents as inputs. The full supported inquires can be got by calling getView() method. Currently supported inquires: numOfNodes, numOfEdges.",
+          "name": "inquiries"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The input structure containing parameters for query network.",
+      "isPublished": "true",
+      "name": "QueryNetworkInputs",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "double"
+            }
+          ],
+          "description": "The red component of color.",
+          "name": "redValue"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "double"
+            }
+          ],
+          "description": "The green component of color.",
+          "name": "greenValue"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "double"
+            }
+          ],
+          "description": "The blue component of color.",
+          "name": "blueValue"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "Structure for representing color using RGB values, used in structure GraphFilter.",
+      "isPublished": "true",
+      "name": "RGBValue",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The internal type name.",
+          "name": "internalName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The display name of type.",
+          "name": "displayName"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The graph element type structure, used in structure GraphFilter.",
+      "isPublished": "true",
+      "name": "Type",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Left node id",
+          "name": "leftId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Right node id.",
+          "name": "rightId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The logical type of the edge. It is localized.",
+          "name": "relationType"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "Underlining Teamcenter object.",
+          "name": "metaObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The start port object associated with the meta object.",
+          "name": "startPortObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The end port object associated with the meta object.",
+          "name": "endPortObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::StringPropertyMap"
+            }
+          ],
+          "description": "A map of property name and property value pairs  (string/string).",
+          "name": "props"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The structure of edge.",
+      "isPublished": "true",
+      "name": "Edge",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Graph name of the network.",
+          "name": "viewName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "std::string"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of graph root IDs. If data source is Teamcenter, it is the UID list of Teamcenter business objects.",
+          "name": "rootIds"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "The cursor point to query service that going to be called. For initial query, set service cursor to 0.",
+          "name": "serviceCursor"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::Node"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of Node structures.",
+          "name": "nodes"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::Edge"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of Edge structures.",
+          "name": "edges"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphInquiryMap"
+            }
+          ],
+          "description": "A (string,string) map of inquery and answer pairs.",
+          "name": "analysisResult"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "bool"
+            }
+          ],
+          "description": "The flag indicates whether it's a partial graph.",
+          "name": "isPartial"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "Structure of network graph data.",
+      "isPublished": "true",
+      "name": "Graph",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "name of the filter",
+          "name": "name"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "display name of the filter",
+          "name": "displayName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::RGBValue"
+            }
+          ],
+          "description": "The color used for legend of this filter at client side",
+          "name": "color"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::Type"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of types belong to this category.",
+          "name": "types"
+        }
+      ],
+      "createRelease": "tc9000.1.3",
+      "description": "Structure for representing information of a filter item, including filter name, RGB values to color the legend of the filter at client side. It is used in structure GraphGroup.",
+      "isPublished": "true",
+      "name": "GraphFilter",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2014_11::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "name of the filter",
+          "name": "name"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::RGBValue"
+            }
+          ],
+          "description": "The color used for legend of this filter at client side",
+          "name": "color"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::Type"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of types belong to this category.",
+          "name": "types"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "Structure for representing information of a filter item, including filter name, RGB values to color the legend of the filter at client side. It is used in structure GraphGroup.",
+      "isPublished": "true",
+      "name": "GraphFilter",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Backend name of the group. Currently, there are two available groups, relations and objects.",
+          "name": "name"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::GraphFilter"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of graph group filter names. For example: the relations graph group may have Attach, Tracability, Structure, Folder, Connectivity as filters. The objects graph group may have Requirement, Functional, Logical, Physical, Dataset, Plant as filters.",
+          "name": "filters"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The graph group is a group name with a list of filters. A filter take effect either on node or edge, it filts out graph that fall into its type. It is used in structure GraphViewDescription.",
+      "isPublished": "true",
+      "name": "GraphGroup",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Backend name of the group. Currently, there are two available groups, relations and objects.",
+          "name": "name"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Rv1::Soa::RelationshipViewer::_2014_11::NetworkEngine::GraphFilter"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of graph group filter names. For example: the relations graph group may have Attach, Tracability, Structure, Folder, Connectivity as filters. The objects graph group may have Requirement, Functional, Logical, Physical, Dataset, Plant as filters.",
+          "name": "filters"
+        }
+      ],
+      "createRelease": "tc9000.1.3",
+      "description": "The graph group is a group name with a list of filters. A filter take effect either on node or edge, it filts out graph that fall into its type. It is used in structure GraphViewDescription.",
+      "isPublished": "true",
+      "name": "GraphGroup",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2014_11::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Backend name of the inquiry. A inquery is a short query clause that can be used to retrieve information from network graph.",
+          "name": "name"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Description of the inquiry. Not localized.",
+          "name": "description"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The supported inquiry of graph.",
+      "isPublished": "true",
+      "name": "GraphInquiry",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Backend name of the parameter.",
+          "name": "name"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The regular expression that used to validate the parameter value.",
+          "name": "valueMask"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The value type of the parameter. Currently supported types: int, double, string.",
+          "name": "type"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Default value of the parameter",
+          "name": "defaultValue"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "the description of the parameter. Not localized.",
+          "name": "description"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The info of graph parameter",
+      "isPublished": "true",
+      "name": "GraphParameterInfo",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    }
+  ],
+  "TcVersion": "tc12000.0.0",
+  "Typedef": [
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "std::string"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "Get views Input parameter map",
+      "isPublished": "true",
+      "name": "GetViewsParamMap",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2019_12::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "the inquiry/answer map",
+      "isPublished": "true",
+      "name": "GraphInquiryMap",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "std::string"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "Network graph parameter map",
+      "isPublished": "true",
+      "name": "GraphParamMap",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine::Node"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The map with the key of input node uid to output node.",
+      "isPublished": "true",
+      "name": "NodeUpdateMap",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The map contains key and value for string property.",
+      "isPublished": "true",
+      "name": "StringPropertyMap",
+      "namespace": "Rv1::Soa::RelationshipViewer::_2012_10::NetworkEngine",
+      "scope": "Rv1::Soa::RelationshipViewer::NetworkEngine"
+    }
+  ],
+  "xmlns": "http://teamcenter.com/BusinessModel/TcBusinessData"
+}

@@ -1,0 +1,13 @@
+<aw-command-panel caption="i18n.brexValidation">
+    <aw-panel-body>
+        <aw-panel-section caption="i18n.brexTargetHeader">
+            <aw-default-cell vmo="ctx.xrtSummaryContextObject"></aw-default-cell>
+            <aw-checkbox prop="data.brexIsSync" visible-when="conditions.ctm1VersionCondition13_2" ></aw-checkbox>
+        </aw-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="brexValidate">
+            <aw-i18n>i18n.brexValidationBtn</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

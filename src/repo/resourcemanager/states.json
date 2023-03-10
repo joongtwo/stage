@@ -1,0 +1,72 @@
+{
+  "com_siemens_splm_client_mrm_manageResourcesLocation": {
+    "data": {
+      "browserSubTitle": {
+        "source": "/i18n/mrlMessages",
+        "key": "MrlTitle"
+      },
+      "headerTitle": {
+        "source": "/i18n/mrlMessages",
+        "key": "MrlTitle"
+      },
+      "propertyPolicy": "/policies/searchObjectPropertyPolicy.json"
+    },
+    "view": "AwSearchLocation",
+    "parent": "root"
+  },
+  "manageResources": {
+    "data": {
+      "priority": 100,
+      "label": {
+        "source": "/i18n/SearchMessages",
+        "key": "resultsText"
+      }
+    },
+    "parent": "com_siemens_splm_client_mrm_manageResourcesLocation",
+    "url": "/manageResources",
+    "view": "manageResourcesDashboard",
+    "params": {
+      "searchCriteria": "",
+      "filter": "",
+      "chartBy": "",
+      "refresh": ""
+    }
+  },
+  "mrlNewResources": {
+    "data": {
+      "priority": 150,
+      "label": {
+        "source": "/i18n/mrlMessages",
+        "key": "mrlNewResourcesText"
+      }
+    },
+    "parent": "com_siemens_splm_client_mrm_manageResourcesLocation",
+    "url": "/mrlNewResources",
+    "view": "mrlNewResourcesDashboard",
+    "params": {
+      "searchCriteria": "",
+      "filter": "",
+      "sortCriteria": ""
+    }
+  },
+  "manageResourcesSavedSearch": {
+    "data": {
+      "priority": 200,
+      "label": {
+        "source": "/i18n/mrlMessages",
+        "key": "mrlSavedSearches"
+      }
+    },
+    "parent": "com_siemens_splm_client_mrm_manageResourcesLocation",
+    "url": "/manageResourcesSavedSearch",
+    "params": {
+      "filter": ""
+    },
+    "view": "MrlSavedSearch"
+  },
+  "ctx": {
+    "mrlDashboard": {
+      "mrlNewResourcesFolderUid": "null"
+    }
+  }
+}

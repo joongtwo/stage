@@ -1,0 +1,109 @@
+{
+  "sbomTraceableColumn_template": {
+    "grids": [
+      "sbomTree"
+    ],
+    "columns": [
+      "traceableValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/ssp0PLFTablePropertyRenderer"
+  },
+  "sbomSerializedColumn_template": {
+    "grids": [
+      "sbomTree"
+    ],
+    "columns": [
+      "serializedValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/ssp0PLFTablePropertyRenderer"
+  },
+  "sbomLotColumn_template": {
+    "grids": [
+      "sbomTree"
+    ],
+    "columns": [
+      "lotValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/ssp0PLFTablePropertyRenderer"
+  },
+  "sbomPQuantityColumn_template": {
+    "grids": [
+      "sbomTree"
+    ],
+    "columns": [
+      "pQuantityValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/ssp0PLFTablePropertyRenderer"
+  },
+  "sbomRotableColumn_template": {
+    "grids": [
+      "sbomTree"
+    ],
+    "columns": [
+      "rotableValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/ssp0PLFTablePropertyRenderer"
+  },
+  "sbomConsumableColumn_template": {
+    "grids": [
+      "sbomTree"
+    ],
+    "columns": [
+      "consumableValueColumn"
+    ],
+    "renderFunction": "getPLFValueRenderer",
+    "deps": "js/ssp0PLFTablePropertyRenderer"
+  },
+  "sbomPLFColumnHeader_template": {
+    "grids": [
+      "sbomTree"
+    ],
+    "columns": [
+      "traceableValueColumn",
+      "serializedValueColumn",
+      "lotValueColumn",
+      "pQuantityValueColumn",
+      "rotableValueColumn",
+      "consumableValueColumn"
+    ],
+    "headerTemplateUrl": "/propRenderTemplates/ssp0PLFColumnHeaderRenderer.html"
+  },
+  "spVisibilityIndicationColumn_template": {
+    "grids": [
+      "sbomTree"
+    ],
+    "columns": [
+      "graphicVisibility"
+    ],
+    "renderFunction": "rendererGraphicVisibilityIndicationBasedOnSBOMViewer",
+    "deps": "js/ssp0GraphicVisibilityTablePropertyRenderer",
+    "headerTemplateUrl": "/propRenderTemplates/ssp0ColumnHeaderRenderer.html"
+  },
+  "partsVisibilityIndicationColumn_template": {
+    "grids": [
+      "partsTree"
+    ],
+    "columns": [
+      "graphicVisibility"
+    ],
+    "renderFunction": "rendererGraphicVisibilityIndicationBasedOnPartsViewer",
+    "deps": "js/ssp0GraphicVisibilityTablePropertyRenderer",
+    "headerTemplateUrl": "/propRenderTemplates/ssp0ColumnHeaderRenderer.html"
+  },
+  "servicePlanTreeVisibilityIndicationColumn_template": {
+    "grids": [
+      "servicePlanTreeTable"
+    ],
+    "columns": [
+      "graphicVisibility"
+    ],
+    "renderFunction": "rendererSPGraphicVisibilityIndicationBasedOnPartsViewer",
+    "deps": "js/ssp0GraphicVisibilityTablePropertyRenderer",
+    "headerTemplateUrl": "/propRenderTemplates/ssp0ColumnHeaderRenderer.html"
+  }
+}

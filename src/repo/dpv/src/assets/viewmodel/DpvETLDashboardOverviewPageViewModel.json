@@ -1,0 +1,72 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "_provider": {
+            "label": {
+                "source": "/i18n/DpvMessages",
+                "key": "etlDashboard"
+            },
+            "isXrtApplicable": false,
+            "clientScopeURI": "",
+            "nameToken": "com.siemens.splm.client.dpv:etlDashboard",
+            "viewModes": {
+                "DetailsView": {
+                    "primaryWorkArea": "details",
+                    "secondaryWorkArea": true
+                }
+            },
+            "defaultDisplayMode": "DetailsView",
+            "context": {
+                "search": {
+                    "isFilteringEnabled": false,
+                    "hideInContentSearchBox": true,
+                    "sortType": "Priority",
+                    "maxToLoad": 50,
+                    "maxToReturn": 50
+                }
+            },
+            "viewBase": "Dpv1ETL",
+            "awSubLocationPref": {
+                "orientation": "HORIZONTAL",
+                "flipLayout": true
+            }
+        },
+        "searchState": {
+            "initialValues": {
+                "selectedPlants": [],
+                "healthInfo": {
+                    "deviceName": "",
+                    "deviceId": "",
+                    "plantName": "",
+                    "failedCount": -1,
+                    "successCount": -1,
+                    "partialSuccessCount": -1,
+                    "selectedFileReports": [],
+                    "fileType": -1
+                },
+                "deviceAgentInfo": {
+                    "plantId": "",
+                    "deviceAgent": "",
+                    "plantName": "",
+                    "selectedStatOption": "hourly",
+                    "showGraph": true
+                }
+            },
+            "meta": {}
+        }
+    },
+    "actions": {
+        "initSearchState": {
+            "actionType": "JSFunction",
+            "method": "initSearchState",
+            "inputData": {
+                "searchStateAtomicData": "{{data.atomicDataRef.searchState}}",
+                "searchStateUpdater": "{{data.updateAtomicData}}"
+            },
+            "deps": "js/Dpv1ETLDashboardService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initSearchState"
+    }
+}

@@ -1,0 +1,31 @@
+<aw-command-panel caption="i18n.pgp0CopyFromPlanTitle" context="subPanelContext">
+    <div class="aw-layout-flexColumn" show-when="data.activeState.value.activeView ==='Pgp0CopyFromPlan'">
+        <aw-add
+            visible-tabs="palette,search"
+            include-types="Prg0AbsPlan"
+            auto-select-on-unique-type=true
+            type-filter="Prg0AbsPlan"
+            search-filter="Prg0AbsPlan.prg0IsTemplate=true"
+            type-override-id="PP"
+            add-panel-state="fields.addPanelState"
+            active-state="data.activeState"
+            project-state="data.projectState"
+            sub-panel-context="{ ...subPanelContext, addPanelState : data.addPanelState, activeState: data.activeState}"
+            xrt-state="data.xrtState"
+            edit-handler="editHandlers.addPanelEditHandler">
+        </aw-add>
+        <!-- Panel footer-->
+        <aw-panel-footer visible-when="data.activeState.value.activeView==='Pgp0CopyFromPlan'">
+            <!-- panel-footer button for Add a Copy sub Panel -->
+            <aw-button size="auto" default="true" action="copyFromPlanSubPanelAction" enable-when="conditions.isPaletteSearchTabAddACopyButtonEnable" >
+                <aw-i18n>i18n.copy</aw-i18n>
+            </aw-button>
+        </aw-panel-footer>
+    </div>
+    <aw-navigate-panel title="i18n.copy" exist-when="data.activeState.value.activeView === 'Pgp0CopyFromPlanSub'"
+        pre-panel-id="Pgp0CopyFromPlan" panel-id="Pgp0CopyFromPlanSub" active-state="data.activeState"
+        action="actions.setActiveView"
+        sub-panel-context="{ ...subPanelContext, addPanelState : data.addPanelState}">
+    </aw-navigate-panel>
+
+</aw-command-panel>

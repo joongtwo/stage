@@ -1,0 +1,20 @@
+<ep-configuration-chip-area exist-when="ctx.epTaskPageContext.loadedObject.uid && ctx.ep.scopeObject.uid" configuration-chips-data = "data.configurationChipsData"></ep-configuration-chip-area>
+<aw-sublocation sub-location-preference="data.awSubLocationPref" sub-panel-context="{provider : data.provider, occContext:data.occContext}">
+    <mfe-loading-message exist-when="!ctx.epPageContext.loadedObject.uid || !ctx.ep.scopeObject.uid"></mfe-loading-message>
+    <mfe-content-container container-direction="HORIZONTAL" container-name="BackgroundPartsPage" class="h-12" exist-when="ctx.epPageContext.loadedObject.uid && ctx.ep.scopeObject.uid">
+        <mfe-content-container container-direction="VERTICAL" container-name="BackgroundPartsPageLeftArea" class="w-3">
+            <mfe-content-panel sub-panel-context="data.backgroundPartsEbomTreeContext"></mfe-content-panel>
+        </mfe-content-container>
+
+        <mfe-content-container container-direction="VERTICAL" container-name="BackgroundPartsPageMiddleArea" class="flex-auto">
+            <ep-graphics-area></ep-graphics-area>
+        </mfe-content-container>
+
+        <mfe-content-container container-direction="VERTICAL" container-name="BackgroundPartsPageRightArea" class="w-3">
+            <mfe-content-panel sub-panel-context="data.backgroundPartsTableContext"></mfe-content-panel>
+        </mfe-content-container>
+    </mfe-content-container>
+    <mfe-sync-manager view-id="epBackgroundPartsSelectionManager"></mfe-sync-manager>
+    <aw-layout-slot exist-when="data.pageIntializeComplete" name="ep_singleVisGraphicsViewer"></aw-layout-slot>
+</aw-sublocation>
+

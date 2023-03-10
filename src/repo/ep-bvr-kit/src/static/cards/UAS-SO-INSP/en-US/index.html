@@ -1,0 +1,663 @@
+<HTML>
+
+<HEAD>
+    <SCRIPT language="JavaScript">
+    function nocontextmenu(){
+          if (window.Event) {
+                document.captureEvents(Event.MOUSEUP);
+          }
+          event.cancelBubble = true;
+          event.returnValue = false;
+          return false;
+    }
+    function norightclick(e)
+    {
+          if (window.Event)
+          {
+                if(e.which!=1)
+                      return false;
+          }
+          else if (event.button !=1)
+          {
+                event.cancelBubble = true;
+                event.returnValue = false;
+                return false;
+          }
+    }
+    // Block backspace onKeyDown
+    function onKeyDown() {
+          if ( (event.altKey) || ((event.keyCode == 8) && (event.srcElement.type != "text" &&
+                event.srcElement.type != "textarea" && event.srcElement.type != "password")) ||
+                ((event.ctrlKey) && ((event.keyCode == 78) || (event.keyCode == 82)) ) ||
+                (event.keyCode == 116) )
+          {
+                event.keyCode = 0;
+                event.returnValue = false;
+          }
+    }
+    </SCRIPT>
+
+    <META name="author" content="JUL">
+    <META name="date" content="2004-10-04">
+
+        <STYLE type="text/css">
+.MTMLink {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt
+    color: #6F5415;
+    }
+
+.MTMGeneral {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt
+    }
+
+.MTMElement {
+    }
+
+.MTMInfo {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    font-style: italic;
+    color: #31247B;
+    }
+
+.MTMEmptyText {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt
+    }
+
+A {
+    font-family: Arial;
+    font-size: 8pt;
+    color: #6F5415;
+    width: 200px;
+    }
+
+A:visited {
+    color: #6F5415;
+    }
+
+A:hover {
+    color: #AE1111;
+    }
+
+BODY {
+    background-color: ButtonFace;
+}
+
+.MEKHeaderRed {
+    font-weight: bold;
+    color: #FF0000
+    }
+
+.MEKHeaderLightBlue {
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #3333CC
+    }
+
+.MEKHeaderBlue {
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #000080;
+}
+.SDBHeaderRed { font-weight: bold; color: #FF0000 }
+.SDBHeaderBlue { font-weight: bold; color: #FFFFFF; background-color: #0000FF; }
+.SDBHeaderLightBlue { font-weight: bold; color: #FFFFFF; background-color: #3333CC }
+.UASHeaderLightBlue { font-weight: bold; color: #FFFFFF; background-color: #000080}
+.UASHeaderRed { font-weight: bold; color: #FF0000 }
+.MTMSPHeaderGreen { font-weight: bold; color: #FFFFFF; background-color: #006600}
+.MTM1HeaderRed { font-weight: bold; color: #FF0000 }
+.MTM2HeaderRed { font-weight: bold; color: #FF0000 }
+.MTM2HeaderGreen { font-weight: bold; color: #FFFFFF; background-color: #009966}
+
+.MTMTooltip {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    color: #31247B;
+    background-color: #FFFFE1
+    width: 200px;
+    }
+
+#tipBox {
+    position: absolute;
+    z-index: 100;
+    border: 1px #663333 solid;
+    padding: 2px 2px 2px 2px;
+    background-color: #FFFFE1;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    color: #663333;
+    visibility: hidden;
+    filter:            progid:DXImageTransform.Microsoft.Gradient(StartColorStr=#fffcfcfe, EndColorStr=#fff4f3ee, GradientType=0)
+                    progid:DXImageTransform.Microsoft.Shadow(Color=#ff919899, Strength=2, Direction=135);
+}
+#tipBoxWidth {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    z-index: 0;
+    border: 1px #663333 solid;
+    padding: 2px 2px 2px 2px;
+    background-color: #FFFFE1;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    color: #663333;
+    visibility: hidden;
+    filter:            progid:DXImageTransform.Microsoft.Gradient(StartColorStr=#fffcfcfe, EndColorStr=#fff4f3ee, GradientType=0)
+                    progid:DXImageTransform.Microsoft.Shadow(Color=#ff919899, Strength=2, Direction=135);
+}
+.LOGHeader {  font-weight: bold; color: #993300}
+
+    </STYLE>
+
+        <SCRIPT language="JavaScript">
+// Copyright 2004 MTM Softwarehaus Dresden
+// Hilfsfunktionen fuer HTML-Datenkarten
+// 2004-04-26 TOM
+
+
+var MTMcolorSelect = '#FFCC00';  // Farbe für Hervorhebungen beim Ueberstreichen mit der Maus
+var MTMcolorDeselect;            // Hier wird waehrend der Hervorhebung die urspruengliche Farbe gespeichert
+var MTMdragging = 0;             // Wird beim Linksklick auf 1 gesetzt und beim Verlassen einer Zelle geprueft
+
+
+function MTMhighlightOn(object)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorSelect;
+       parentObj.style.background = MTMcolorSelect;
+       //alert(parentObj.nodeName + " = " + parentObj.style.background);
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        MTMcolorDeselect = parentObj.bgColor;
+        parentObj.bgColor = MTMcolorSelect;
+    }
+}
+
+// Wird beim Ueberstreichen einer Zelle mit der Maus aufgerufen
+// 1. Parameter object ist ein HTML-Objekt, dessen Hintergrundfarbe geaendert wird (idR = this)
+// 2. Parameter Text der in einer Infozeile ausgegeben werden soll (wird nicht mehr verwendet)
+// 3. bis 5. Parameter, Daten zu dem Element
+function MTMselect(object, text, code, index, variant)
+{
+    MTMhighlightOn(object);
+}
+
+function MTMhighlightOff(object)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorDeselect;
+       parentObj.style.background = MTMcolorDeselect;
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        parentObj.bgColor = MTMcolorDeselect;
+    }
+}
+// Wird beim Verlassen einer Zelle mit der Maus aufgerufen (wenn beim Verlassen immer noch die linke
+// Maustaste gedrueckt ist, wird ein Drag&Drop Event im TiCon erzeugt
+// 1. Parameter object ist ein HTML-Objekt, dessen Hintergrundfarbe zurueckgesetzt werden soll (idR = this)
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMdeselect(object, code, index, variant)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorDeselect;
+       parentObj.style.background = MTMcolorDeselect;
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        parentObj.bgColor = MTMcolorDeselect;
+    }
+
+    //    MTMInfo.innerHTML = '<SPAN class="MTMInfo" align="left">&nbsp;</SPAN>';
+
+    if(MTMdragging) {
+        MTMnavigate(2, code, index, variant);
+        MTMdragging=0;
+    }
+}
+
+// Loest einen Navigationsevent im TiCon aus
+// 1. Parameter Navigationscode: 1 = mit linker Maustaste angeklickt, 2 Drag & Drop, 3 Rechte Maustaste
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMnavigate(navcode, code, index, variant, time, descr)
+{
+    document.location.href=encodeURI("usercode://"+ code + "|" + index + "|" + variant + "|" + time + "|" + descr);
+}
+
+
+// Wird beim Pressen einer beliebigen Maustaste aufgerufen
+// es wird geprueft ob Drag & Drop gestartet werden soll oder ein Rechtsklick ausgeloest werden soll
+// 1. Event der ausgeloest wurde (idR = event)
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMmouseDown(e, code, index, variant)
+{
+    if(e.button == 1) { // linke Maustaste
+       // vorbereiten zum Drag & Drop
+        MTMdragging=1;
+    } else if(e.button == 2) { // rechte Maustaste
+       // Navigieren mit NavCode 3
+       MTMnavigate(3, code, index, variant);
+    }
+}
+
+
+// Tooltip///////////////////////////////////////////////////////////
+/*    Your are permitted to reuse this code as long as the following copyright
+    notice is not removed:
+
+    The    HTML tip handling code is copyright 1998 by insideDHTML.com, LLC. More information about this
+    code can be found at Inside Dynamic HTML: HTTP://www.insideDHTML.com
+*/
+
+// Support for all collection
+var    allSupport = document.all!=null
+
+function setupEventObject(e)
+{
+    // Map NS event object to IEs
+    if (e==null) return // IE returns
+    window.event = e
+    window.event.fromElement = e.target
+    window.event.toElement = e.target
+    window.event.srcElement = e.target
+    window.event.x = e.x
+    window.event.y = e.y
+    // Route the event to the original element
+    // Necessary to make sure _tip is set.
+    //window.event.srcElement.handleEvent(e);
+}
+
+
+function checkName(src)
+{
+    // Look for tooltip in IE
+    while ((src!=null) && (src._tip==null))
+        src = src.parentElement
+    return src
+}
+
+function getElement(elName)
+{
+    // Get an element from its ID
+    if (allSupport)
+        return document.all[elName]
+    else
+        return document.layers[elName]
+}
+
+function writeContents(el, tip)
+{
+    // Replace the contents    of the tooltip
+    if (allSupport)
+        el.innerHTML = tip
+    else {
+        // In NS, insert a table to work around
+        // stylesheet rendering bug.
+        // NS fails to apply style sheets when writing
+        // contents    into a positioned element.
+        el.document.open()
+        el.document.write('<TABLE BORDER=1 bordercolor=black><TR><TD WIDTH=100% class="MTMTooltip">')
+        el.document.write(tip)
+        el.document.write("</TD></TR></TABLE>")
+        el.document.close()
+    }
+}
+
+function getOffset(el, which)
+{
+    // Function for IE to calculate position
+    // of an element.
+    var amount = el["offset"+which]
+    if (which=="Top")
+        amount+=el.offsetHeight
+    el = el.offsetParent
+    while (el!=null) {
+        amount+=el["offset"+which]
+        el = el.offsetParent
+    }
+    return amount
+}
+
+
+function setPosition(el)
+{
+    // Set the position of an element
+    src = window.event.srcElement
+    if (allSupport) {
+        el.style.pixelTop = getOffset(src, "Top")
+        el.style.pixelLeft = getOffset(src, "Left") - 10
+    } else {
+        el.top = src.y + 20
+        el.left = src.x - 10
+    }
+}
+
+function getScrollLeft()
+{
+    // achtung nur für ie
+    var scrollPos;
+    if (typeof window.pageXOffset != 'undefined') {
+       scrollPos = window.pageXOffset;
+    }
+    else if (typeof document.compatMode != 'undefined' &&
+         document.compatMode != 'BackCompat') {
+       scrollPos = document.documentElement.scrollLeft;
+    }
+    else if (typeof document.body != 'undefined') {
+       scrollPos = document.body.scrollLeft;
+    }
+
+    return(scrollPos);
+}
+
+function getScrollTop()
+{
+    // achtung nur für ie
+    var scrollPos;
+    if (typeof window.pageYOffset != 'undefined') {
+       scrollPos = window.pageYOffset;
+    }
+    else if (typeof document.compatMode != 'undefined' &&
+         document.compatMode != 'BackCompat') {
+       scrollPos = document.documentElement.scrollTop;
+    }
+    else if (typeof document.body != 'undefined') {
+       scrollPos = document.body.scrollTop;
+    }
+
+    return(scrollPos);
+}
+
+function setPosition(el, xpos, ypos, tip)
+{
+    var width
+    var scrollLeft
+    var scrollTop
+    var visWidth
+    var    elhidden = getElement("tipBoxWidth")
+
+    // Set the position of an element
+    src = window.event.srcElement
+    if (allSupport) {
+        elhidden.innerHTML = tip
+        width = elhidden.offsetWidth
+        scrollLeft = getScrollLeft()
+        scrollTop = getScrollTop()
+        visWidth = document.body.offsetWidth
+
+        el.style.pixelTop = ypos + scrollTop
+//        alert("xpos: " + xpos + " -- width: " + width + " -- visWidth: " + visWidth + " -- scrollLeft: " + scrollLeft)
+        if(xpos + width + 35> visWidth) xpos = visWidth - width - 35
+        el.style.pixelLeft = xpos + 10 + scrollLeft
+        el.style.width = width
+    } else {
+        el.top = ypos
+        el.left = xpos + 10
+    }
+}
+
+
+function setVisibility(el, bDisplay)
+{
+    // Hide    or show    to tip
+    if (bDisplay)
+        if (allSupport)
+            el.style.visibility = "visible"
+        else
+            el.visibility = "show";
+    else
+        if (allSupport)
+            el.style.visibility = "hidden"
+        else
+            el.visibility = "hidden"
+}
+
+
+function displayContents(tip, xpos, ypos)
+{
+    // Display the tooltip.
+    var    el = getElement("tipBox")
+    writeContents(el, tip)
+    setPosition(el, xpos, ypos, tip)
+    setVisibility(el, true)
+}
+
+
+function doMouseOver(e)
+{
+    // Mouse moves over an element
+    setupEventObject(e)
+    var el, tip
+    if((el = checkName(window.event.srcElement))!=null)
+        if(!el._display) {
+            displayContents(el._tip, window.event.x, window.event.y)
+            //MTMcolorSelect = '#663333';
+            //MTMhighlightOn(window.event.srcElement);
+            //MTMcolorSelect = '#FFCC00';
+            el._display = true
+        }
+}
+
+function doMouseOut(e)
+{
+    // Mouse leaves    an element
+    setupEventObject(e)
+    el = checkName(window.event.srcElement)
+    var el, tip
+    if ((el = checkName(window.event.srcElement))!=null)
+        if (el._display)
+            if ((el.contains==null) || (!el.contains(window.event.toElement))) {
+                setVisibility(getElement("tipBox"), false)
+                //MTMhighlightOff(window.event.srcElement);
+                el._display = false
+            }
+}
+
+function doLoad()
+{
+    // Do Loading
+    if ((window.document.captureEvents==null) && (!allSupport))
+        return //Not IE4 or NS4
+    if (window.document.captureEvents!=null) // NS-capture events
+        window.document.captureEvents(Event.MOUSEOVER | Event.MOUSEOUT)
+    window.document.onmouseover = doMouseOver;
+    window.document.onmouseout = doMouseOut;
+}
+
+window.onload = doLoad
+
+
+    </SCRIPT>
+
+
+    <TITLE>UAS</TITLE>
+</HEAD>
+
+<BODY bgcolor="#FCF6DA" leftmargin="6" topmargin="6" marginwidth="6" marginheight="6">
+<DIV ID=tipBox></DIV>
+<DIV ID=tipBoxWidth></DIV>
+<TABLE border="1" cellpadding="0" cellspacing="0" width="100%" bgcolor="#000000"><TR><TD>
+<TABLE  border="1" cellpadding="1" cellspacing="1" width="100%" class="MTMGeneral">
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="55%" colspan="3" rowspan="4" class="UASHeaderRed"><SPAN class="MTMText">Inspect or<BR> Measure</SPAN></TD>
+        <TD width="12%" rowspan="4" class="UASHeaderRed"><SPAN class="MTMText">Code</SPAN></TD>
+        <TD width="11%" rowspan="4">TMU</TD>
+        <TD width="6%" rowspan="4">EH</TD>
+        <TD width="4%" rowspan="20">&nbsp;</TD>
+        <TD width="12%" colspan="3" class="MTMText">Additional time</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="12%" colspan="3" class="MTMText">Aid</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="12%" colspan="3" class="UASHeaderRed">M-EH</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="4%" class="UASHeaderRed" title="&lt;= 20 cm">1</TD>
+        <TD width="4%" class="UASHeaderRed" title="&gt; 20 to &lt;= 50">2</TD>
+        <TD width="4%" class="UASHeaderRed" title="&gt; 50 to &lt;= 80">3</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="21%" rowspan="5" class="UASHeaderLightBlue" align="left"><SPAN class="MTMText">Gauges</SPAN></TD>
+        <TD width="13%" rowspan="3" align="left" class="MTMText" style="border-top: 2px solid #3333CC;">Dimension<BR>or shape</TD>
+        <TD width="21%" align="right" style="border-top: 2px solid #3333CC;">&lt;= 150 mm</TD>
+        <TD width="12%" class="UASHeaderRed" style="border-top: 2px solid #3333CC;">M-PAA</TD>
+        <TD width="11%" class="MTMElement" style="border-top: 2px solid #3333CC;" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PAA...25', '', '');" title="Inspect or measure, gauges,  measurement/shape, <= 150 mm" onmouseout="MTMdeselect(this, '50M-PAA...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PAA...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PAA...25', '', '',80,'Inspect or measure, gauges,  measurement/shape, <= 150 mm');">80</TD>
+        <TD width="6%" style="border-top: 2px solid #3333CC;">+</TD>
+        <TD width="4%" rowspan="16" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-EH1...25', '', '');" title="Supplementary values,  tool in area of removal 1" onmouseout="MTMdeselect(this, '50M-EH1...25', '', '');" onmousedown="MTMmouseDown(event, '50M-EH1...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-EH1...25', '', '',20,'Supplementary values,  tool in area of removal 1');">20</TD>
+        <TD width="4%" rowspan="16" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-EH2...25', '', '');" title="Supplementary values,  tool in area of removal 2" onmouseout="MTMdeselect(this, '50M-EH2...25', '', '');" onmousedown="MTMmouseDown(event, '50M-EH2...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-EH2...25', '', '',40,'Supplementary values,  tool in area of removal 2');">40</TD>
+        <TD width="4%" rowspan="16" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-EH3...25', '', '');" title="Supplementary values,  tool in area of removal 3" onmouseout="MTMdeselect(this, '50M-EH3...25', '', '');" onmousedown="MTMmouseDown(event, '50M-EH3...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-EH3...25', '', '',55,'Supplementary values,  tool in area of removal 3');">55</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="21%" align="right">&gt;150 &lt;= 500 mm</TD>
+        <TD width="12%" class="UASHeaderRed">M-PAB</TD>
+        <TD width="11%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PAB...25', '', '');" title="Inspect or measure, gauges,  measurement/shape, > 150 mm <= 500 mm" onmouseout="MTMdeselect(this, '50M-PAB...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PAB...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PAB...25', '', '',150,'Inspect or measure, gauges,  measurement/shape, > 150 mm <= 500 mm');">150</TD>
+        <TD width="6%">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="21%" align="right">&gt;500&nbsp;&lt;=&nbsp;2000&nbsp;mm</TD>
+        <TD width="12%" class="UASHeaderRed">M-PAC</TD>
+        <TD width="11%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PAC...25', '', '');" title="Inspect or measure, gauges,  measurement/shape, > 500 mm <= 2000 mm" onmouseout="MTMdeselect(this, '50M-PAC...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PAC...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PAC...25', '', '',195,'Inspect or measure, gauges,  measurement/shape, > 500 mm <= 2000 mm');">195</TD>
+        <TD width="6%">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="13%" rowspan="2" align="left" class="MTMText">Threads</TD>
+        <TD width="21%" align="right">&lt;= 150 mm</TD>
+        <TD width="12%" class="UASHeaderRed">M-PBA</TD>
+        <TD width="11%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PBA...25', '', '');" title="Inspect or measure, gauges,  thread, <= 150 mm" onmouseout="MTMdeselect(this, '50M-PBA...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PBA...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PBA...25', '', '',270,'Inspect or measure, gauges,  thread, <= 150 mm');">270</TD>
+        <TD width="6%">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="21%" align="right">&gt;150 &lt;= 500 mm</TD>
+        <TD width="12%" class="UASHeaderRed">M-PBB</TD>
+        <TD width="11%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PBB...25', '', '');" title="Inspect or measure, gauges,  thread, > 150 mm  <= 500 mm" onmouseout="MTMdeselect(this, '50M-PBB...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PBB...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PBB...25', '', '',270,'Inspect or measure, gauges,  thread, > 150 mm  <= 500 mm');">270</TD>
+        <TD width="6%">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="21%" rowspan="4" class="UASHeaderLightBlue" align="left" style="border-top: 2px solid #FFFFFF;"><SPAN class="MTMText">Dial.<BR>measure instrument</SPAN></TD>
+        <TD width="13%" rowspan="2" align="left" class="MTMText" style="border-top: 2px solid #3333CC;">Check<BR>dimension</TD>
+        <TD width="21%" align="right" style="border-top: 2px solid #3333CC;">&lt;= 150 mm</TD>
+        <TD width="12%" class="UASHeaderRed" style="border-top: 2px solid #3333CC;">M-PCA</TD>
+        <TD width="11%" class="MTMElement" style="border-top: 2px solid #3333CC;" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PCA...25', '', '');" title="Inspect or measure, digital gauge,  check measurement, <= 150 mm" onmouseout="MTMdeselect(this, '50M-PCA...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PCA...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PCA...25', '', '',80,'Inspect or measure, digital gauge,  check measurement, <= 150 mm');">80</TD>
+        <TD width="6%" style="border-top: 2px solid #3333CC;">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="21%" align="right">&gt;150 &lt;= 500 mm</TD>
+        <TD width="12%" class="UASHeaderRed">M-PCB</TD>
+        <TD width="11%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PCB...25', '', '');" title="Inspect or measure, digital gauge,  check measurement, >150 mm <= 500 mm" onmouseout="MTMdeselect(this, '50M-PCB...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PCB...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PCB...25', '', '',110,'Inspect or measure, digital gauge,  check measurement, >150 mm <= 500 mm');">110</TD>
+        <TD width="6%">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="13%" rowspan="2" align="left" class="MTMText">Calculate<BR>dimension</TD>
+        <TD width="21%" align="right">&lt;= 150 mm</TD>
+        <TD width="12%" class="UASHeaderRed">M-PDA</TD>
+        <TD width="11%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PDA...25', '', '');" title="Inspect or measure, digital gauge,  establish measurement, <= 150 mm" onmouseout="MTMdeselect(this, '50M-PDA...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PDA...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PDA...25', '', '',95,'Inspect or measure, digital gauge,  establish measurement, <= 150 mm');">95</TD>
+        <TD width="6%">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="21%" align="right">&gt;150 &lt;= 500 mm</TD>
+        <TD width="12%" class="UASHeaderRed">M-PDB</TD>
+        <TD width="11%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PDB...25', '', '');" title="Inspect or measure, digital gauge,  establish measurement,  > 150 mm <= 500 mm" onmouseout="MTMdeselect(this, '50M-PDB...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PDB...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PDB...25', '', '',125,'Inspect or measure, digital gauge,  establish measurement,  > 150 mm <= 500 mm');">125</TD>
+        <TD width="6%">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="21%" rowspan="5" class="UASHeaderLightBlue" align="left" style="border-top: 2px solid #FFFFFF;"><SPAN class="MTMText">Scale<BR>measure instrument</SPAN></TD>
+        <TD width="13%" rowspan="3" align="left" class="MTMText" style="border-top: 2px solid #3333CC;">without<BR>moveable<BR>parts</TD>
+        <TD width="21%" align="right" style="border-top: 2px solid #3333CC;">&lt;= 150 mm</TD>
+        <TD width="12%" class="UASHeaderRed" style="border-top: 2px solid #3333CC;">M-PEA</TD>
+        <TD width="11%" class="MTMElement" style="border-top: 2px solid #3333CC;" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PEA...25', '', '');" title="Inspect or measure, scale measuring instruments, without transferring parts, <= 150 mm" onmouseout="MTMdeselect(this, '50M-PEA...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PEA...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PEA...25', '', '',75,'Inspect or measure, scale measuring instruments, without transferring parts, <= 150 mm');">75</TD>
+        <TD width="6%" style="border-top: 2px solid #3333CC;">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="21%" align="right">&gt;150 &lt;= 500 mm</TD>
+        <TD width="12%" class="UASHeaderRed">M-PEB</TD>
+        <TD width="11%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PEB...25', '', '');" title="Inspect or measure, scale measuring instruments, without transferring parts, > 150 mm <= 500 mm" onmouseout="MTMdeselect(this, '50M-PEB...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PEB...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PEB...25', '', '',75,'Inspect or measure, scale measuring instruments, without transferring parts, > 150 mm <= 500 mm');">75</TD>
+        <TD width="6%">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="21%" align="right">&gt;500 &lt;= 2000 mm</TD>
+        <TD width="12%" class="UASHeaderRed">M-PEC</TD>
+        <TD width="11%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PEC...25', '', '');" title="Inspect or measure, scale measuring instruments, without transferring parts, > 500 mm <= 2000 mm" onmouseout="MTMdeselect(this, '50M-PEC...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PEC...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PEC...25', '', '',175,'Inspect or measure, scale measuring instruments, without transferring parts, > 500 mm <= 2000 mm');">175</TD>
+        <TD width="6%">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="13%" rowspan="2" align="left" class="MTMText">with move-<BR>able parts</TD>
+        <TD width="21%" align="right">&lt;= 150 mm</TD>
+        <TD width="12%" class="UASHeaderRed">M-PFA</TD>
+        <TD width="11%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PFA...25', '', '');" title="Inspect or measure, scale measuring instruments, with transferring parts, <= 150 mm" onmouseout="MTMdeselect(this, '50M-PFA...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PFA...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PFA...25', '', '',190,'Inspect or measure, scale measuring instruments, with transferring parts, <= 150 mm');">190</TD>
+        <TD width="6%">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="21%" align="right">&gt;150 &lt;= 500 mm</TD>
+        <TD width="12%" class="UASHeaderRed">M-PFB</TD>
+        <TD width="11%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PFB...25', '', '');" title="Inspect or measure, scale measuring instruments, with transferring parts, > 150 mm <= 500 mm" onmouseout="MTMdeselect(this, '50M-PFB...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PFB...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PFB...25', '', '',205,'Inspect or measure, scale measuring instruments, with transferring parts, > 150 mm <= 500 mm');">205</TD>
+        <TD width="6%">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="21%" rowspan="2" class="UASHeaderLightBlue" align="left" style="border-top: 2px solid #FFFFFF;"><SPAN class="MTMText">Set<BR>range</SPAN></TD>
+        <TD width="34%" colspan="2" class="MTMText" align="left" style="border-top: 2px solid #3333CC;">Meas.range &lt;= 150 mm</TD>
+        <TD width="12%" class="UASHeaderRed" style="border-top: 2px solid #3333CC;">M-PZF</TD>
+        <TD width="11%" class="MTMElement" style="border-top: 2px solid #3333CC;" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PZF...25', '', '');" title="Inspect or measure, gauge/digital gauge, set supplement  <= 150 mm" onmouseout="MTMdeselect(this, '50M-PZF...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PZF...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PZF...25', '', '',105,'Inspect or measure, gauge/digital gauge, set supplement  <= 150 mm');">105</TD>
+        <TD width="6%" style="border-top: 2px solid #3333CC;">+</TD>
+    </TR>
+
+    <TR bgcolor="#FCF6DA" align="center">
+        <TD width="34%" colspan="2" class="MTMText" align="left">Meas.range &gt;150 &lt;= 500 mm</TD>
+        <TD width="12%" class="UASHeaderRed">M-PZG</TD>
+        <TD width="11%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50M-PZG...25', '', '');" title="Inspect or measure, gauge/digital gauge, set supplement  >150 mm <= 500 mm" onmouseout="MTMdeselect(this, '50M-PZG...25', '', '');" onmousedown="MTMmouseDown(event, '50M-PZG...25','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50M-PZG...25', '', '',125,'Inspect or measure, gauge/digital gauge, set supplement  >150 mm <= 500 mm');">125</TD>
+        <TD width="6%">+</TD>
+    </TR>
+</TABLE>
+</TD></TR></TABLE>
+<SCRIPT language="JavaScript">
+    window.document.oncontextmenu = nocontextmenu;
+    window.document.onmousedown = norightclick;
+    window.document.onkeydown = onKeyDown;
+</SCRIPT>
+</BODY>
+
+</HTML>
+

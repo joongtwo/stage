@@ -1,0 +1,10 @@
+<div class="sw-column flex-auto">
+    <div class="sw-row h-12">
+        <mfe-content-panel sub-panel-context="{...data.assemblyTreeContext, manageConsumptionMode: data.manageConsumptionMode, ...props.subPanelContext}"></mfe-content-panel>
+    </div>
+    <aw-splitter direction="HORIZONTAL" class="aw-mfe-transparentSplitter" visible-when="props.subPanelContext.sharedSelectionData.isIndicationToggleOn === true && data.missingInSrc.length > 0">
+    </aw-splitter>
+    <div class="sw-row h-12" visible-when="props.subPanelContext.sharedSelectionData.isIndicationToggleOn === true && data.missingInSrc.length > 0">
+        <mfe-content-panel class="aw-ep-missingInSourcePanel" sub-panel-context="{...data.missingInSourceTableContext, ...props.subPanelContext}"></mfe-content-panel>
+    </div>
+</div>

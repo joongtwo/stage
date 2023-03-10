@@ -1,0 +1,35 @@
+<ep-configuration-chip-area exist-when="ctx.epTaskPageContext.loadedObject.uid && ctx.ep.scopeObject.uid" configuration-chips-data = "data.configurationChipsData"></ep-configuration-chip-area>
+<aw-sublocation sub-location-preference="data.awSubLocationPref" sub-panel-context="{provider : data.provider, occContext:data.occContext}">
+    <mfe-loading-message exist-when="!ctx.epPageContext.loadedObject.uid || !ctx.ep.scopeObject.uid"></mfe-loading-message>
+    <mfe-content-container container-direction="HORIZONTAL" container-name="AssemblyPlanningPage" class="h-12" exist-when="ctx.epPageContext.loadedObject.uid && ctx.ep.scopeObject.uid">
+        <mfe-content-container container-direction="VERTICAL" container-name="AssemblyPlanningPageLeftArea" class="w-3">
+            <assembly-planning-navigation-area sub-panel-context="{sharedSelectionData:data.sharedSelectionData}"></assembly-planning-navigation-area>
+        </mfe-content-container>
+        <mfe-content-container container-direction="VERTICAL" container-name="AssemblyPlanningPageMiddleArea" class="w-4">
+            <mfe-content-container container-direction="HORIZONTAL" container-name="AssemblyPlanningPageMiddleTopArea" class="h-7">
+                <mfe-content-panel occ-context="data.occContext" sub-panel-context="{...data.contentPanelData, sharedSelectionData: data.sharedSelectionData}"></mfe-content-panel>
+            </mfe-content-container>
+            <mfe-content-container container-direction="HORIZONTAL" container-name="AssemblyPlanningPageMiddleButtomArea" class="h-5">
+                <ep-details-area sub-panel-context="{sharedSelectionData:data.sharedSelectionData}" occ-context="data.occContext"></ep-details-area>
+            </mfe-content-container>
+        </mfe-content-container>
+        <mfe-content-container container-direction="VERTICAL" container-name="AssemblyPlanningPageRightArea" class="flex-auto">
+            <mfe-content-container container-direction="HORIZONTAL" container-name="AssemblyPlanningPageActivitiesArea" class="h-12" exist-when="ctx.epPageContext.showActivities">
+                <ep-activities-area></ep-activities-area>
+            </mfe-content-container><mfe-content-container container-direction="HORIZONTAL" container-name="AssemblyPlanningPageValidationArea" class="h-12" show-when="conditions.isValidationMode">
+                <ep-validation></ep-validation>
+            </mfe-content-container>
+            <mfe-content-container container-direction="HORIZONTAL" container-name="AssemblyPlanningPageGraphicsArea" class="aw-epBvrGraphics-minHeight flex-auto" show-when="!conditions.shouldShowActivitiesOrValidationPanel">
+                <ep-graphics-area></ep-graphics-area>
+            </mfe-content-container>
+            <mfe-content-container container-direction="HORIZONTAL" container-name="AssemblyPlanningPageVisualsArea" class="aw-epImageViewer-minHeight" show-when="!conditions.shouldShowActivitiesOrValidationPanel">
+                <ep-visuals-area sub-panel-context="{sharedSelectionData:data.sharedSelectionData}" occ-context="data.occContext"></ep-visuals-area>
+            </mfe-content-container>
+        </mfe-content-container>
+    </mfe-content-container>
+
+    <mfe-sync-manager view-id="EpSelectedProcessInAssemblyPlanningPageSyncMgr"></mfe-sync-manager>
+    <mfe-sync-manager view-id="EpSelectedAssemblyInAssemblyPlanningPageSyncMgr"></mfe-sync-manager>
+    <aw-layout-slot exist-when="data.pageIntializeComplete" context="{sharedSelectionData:data.sharedSelectionData}" name="ep_singleVisGraphicsViewer"></aw-layout-slot>
+</aw-sublocation>
+

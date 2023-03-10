@@ -1,0 +1,25 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "setProductVariantsModel": {
+            "actionType": "JSFunctionAsync",
+            "method": "getProductVariantsStructuresList",
+            "outputData": {
+                "productVariantsTiles": ""
+            },
+            "deps": "js/manageWorkPackageService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "setProductVariantsModel",
+        "onUpdate": [ {
+            "action": "setProductVariantsModel",
+            "observers": [ "viewModel.ctx.epTaskPageContext" ]
+        } ]
+    }
+}

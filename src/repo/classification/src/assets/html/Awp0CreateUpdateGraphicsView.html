@@ -1,0 +1,26 @@
+<aw-command-panel caption="i18n.updateGraphics">
+    <aw-panel-header>
+      <aw-radiobutton prop="data.updateTargetBtn">
+      </aw-radiobutton>
+    </aw-panel-header>
+    <aw-panel-body>
+        <aw-panel-body visible-when="conditions.showPartFamily">
+                <aw-listbox prop="data.templateListPartFamilyBox" list="data.partFamilyTemplatesList"></aw-listbox>
+        </aw-panel-body>
+        <aw-panel-body visible-when="conditions.showTemplatePart">
+            <aw-listbox prop="data.templatePartListBox" list="data.templatePartsList" action="tableContentsUpdate"></aw-listbox>
+            <aw-flex-row visible-when="conditions.templatePartAvailable && data.emptyPropsList.length">
+                <aw-splm-table gridid="templatePartTable"></aw-splm-table>
+            </aw-flex-row>
+        </aw-panel-body>
+      <aw-checkbox visible-when="conditions.panelEnabled" prop="data.createPartFileBtn" action="dealWithJTBox">
+      </aw-checkbox>
+      <aw-checkbox exist-when="conditions.panelEnabled && conditions.canCreateJTFile" prop="data.createJTFileBtn">
+      </aw-checkbox>
+    </aw-panel-body>
+    <aw-panel-footer>
+      <aw-button size="stretched" action="handleSaveData" visible-when="conditions.submitValid">
+        <aw-i18n>i18n.updateGraphicsLbl</aw-i18n>
+      </aw-button>
+    </aw-panel-footer>
+  </aw-command-panel>

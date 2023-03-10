@@ -1,0 +1,173 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "nodeData": {
+            "syncObject": {}
+        }
+    },
+    "lifecycleHooks": {
+        "render": "render",
+        "onUpdate": [
+        {
+            "action": "handleSelectionChange",
+            "observers": [ "ports.nodeData.syncObject",
+                "props.selected",
+                "props.navigateState.selectedNode"
+            ]
+        },
+        {
+            "action": "render",
+            "observers": [ "props.classifyState.sortOption"
+            ]
+        },
+        {
+            "action": "setSuggestedClassification",
+            "observers": [
+                "props.suggestion"
+            ]
+        },
+        {
+            "action": "redirectVnc",
+            "observers": [ "props.navigateState.vncUpdate"]
+        },
+        {
+            "action": "releasesUpdate",
+            "observers": [ "props.releasesState",
+            "props.navigateState.searchCriteria" ]
+        },{
+            "action": "handlePreviousSelectionMark",
+            "observers": [ "props.selected.selectedClassNode"]
+        }
+    ]
+    },
+    "props": {
+        "selected": {
+            "type": "object"
+        },
+        "classifystate": {
+            "type": "object"
+        },
+        "navigate-state": {
+            "type": "object"
+        },
+        "suggestion": {
+            "type": "object"
+        },
+        "releases-state": {
+            "type": "object"
+        }
+    },
+    "dataParseDefinitions": {
+    },
+    "actions": {
+        "render": {
+            "method": "Awp0ClassificationVncsFullRenderFunction",
+            "deps": "js/Awp0ClassificationVncsFullService"
+        },
+        "handleSelectionChange": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "handleSelectionChange2"
+                },
+                {
+                    "action": "updateNodeDataSync",
+                    "condition": "conditions.inClassificationLocation"
+                }
+            ]
+        },
+        "handlePreviousSelectionMark": {
+            "actionType": "JSFunction",
+            "method": "handlePreviousSelectionMark",
+            "inputData": {
+                "selected": "{{props.selected}}"
+            },
+            "deps": "js/Awp0ClassificationVncsFullService"
+        },
+        "releasesUpdate": {
+            "actionType": "JSFunction",
+            "method": "respondToReleases",
+            "inputData": {
+                "selectedClass": "{{navigateState.selectedNode}}",
+                "origSelected": "{{props.selected}}",
+                "classifyState": "{{props.classifyState}}",
+                "releasesOptions": "{{props.releasesState}}",
+                "searchString": "{{props.navigateState.searchCriteria}}"
+            },
+            "deps": "js/Awp0ClassificationVncsFullService"
+        },
+        "handleSelectionChange2": {
+            "actionType": "JSFunction",
+            "method": "handleSelectionChange",
+            "inputData": {
+                "selectionData": "{{props.selected}}",
+                "parentSelectionData": "{{props}}"
+            },
+            "deps": "js/Awp0ClassificationVncsFullService"
+        },
+        "updateNodeDataSync": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "nodeData",
+                "syncObject": {
+                    "selectedNode": "{{props.navigateState.selectedNode}}"
+                }
+            }
+        },
+        "setSuggestedClassification": {
+            "actionType": "JSFunction",
+            "method": "setSuggestedClassification",
+            "inputData": {
+                "response": "{{props.suggestion}}",
+                "classifyState": "{{props.classifystate}}"
+            },
+            "deps": "js/Awp0ClassificationVncsFullService"
+        },
+        "redirectVnc": {
+            "actionType": "JSFunction",
+            "method": "redirectVnc",
+            "inputData": {
+                "selectionData": "{{props.selected}}",
+                "uid": "{{props.navigateState}}"
+            },
+            "deps": "js/Awp0ClassificationVncsFullService"
+        }
+    },
+    "functions": {
+    },
+    "dataProviders": {
+    },
+    "columnProviders": {
+    },
+    "grids": {
+    },
+    "data": {
+        "rootstate": {
+            "initialValues": {
+                "rootString": "Root Class"
+            },
+            "meta": {
+                "rootString": {
+                    "field": "true",
+                    "type": "STRING"
+                }
+            }
+        }
+    },
+    "conditions": {
+        "inClassificationLocation": {
+            "expression": "props.navigateState"
+        },
+        "showHierarchy": {
+            "expression": "data.hierarchyVisible"
+        }
+    },
+    "onEvent": [
+    ],
+    "messages":
+    {
+    },
+    "i18n": {
+        "assignedClasses": [ "ClassificationPanelMessages" ],
+        "more": [ "ClassificationPanelMessages" ]
+    }
+}

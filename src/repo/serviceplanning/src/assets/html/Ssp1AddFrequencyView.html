@@ -1,0 +1,79 @@
+<aw-popup2>
+    <aw-panel-body>
+        <aw-flex-row height="6f" align-content="end">
+            <aw-flex-column width="3" offset-right="1f">
+                <aw-textbox prop="data.frequencyId"></aw-textbox>                                  
+            </aw-flex-column>
+            <aw-flex-column width="3" offset-right="1f">
+                <aw-textbox prop="data.frequencyName"></aw-textbox>                                    
+            </aw-flex-column>
+            <aw-flex-column width="fill">
+                <aw-textbox prop="data.frequencyDesc"></aw-textbox>                                    
+            </aw-flex-column>
+        </aw-flex-row> 
+        <aw-flex-row>
+            <aw-flex-column width="7">
+                <aw-panel-section caption="i18n.FrequencyClause" collapsed="disabled">
+                    <aw-flex-column justify="right" align-content="end">
+                        <aw-command-bar anchor="freq_expressions_barCommands" alignment="HORIZONTAL" context="data"></aw-command-bar>    
+                    </aw-flex-column>
+                    <aw-flex-row>                    
+                        <aw-flex-column width="6">
+                            <aw-listbox prop="data.phraseSeperator" action="resetFieldsOnChangePhaseSeperator" enable-when="conditions.enablePhraseSeperator"></aw-listbox>
+                            <aw-listbox prop="data.keywords" action="resetFieldsOnChangeKeywords" enable-when="conditions.isPhraseSeperatorSelected"></aw-listbox>
+                            <aw-numeric prop="data.frequencyValue" enable-when="conditions.enableFrequencyValue" visible-when="conditions.isValueVisible"></aw-numeric> 
+                            <aw-listbox prop="data.frequencyCharacteristics" action="resetFieldsOnChangeCharacteristics" enable-when="conditions.isKeywordSelected"></aw-listbox> 
+                            <aw-datetime prop="data.frequencyDateTime" visible-when="conditions.isDateCharacteristic"></aw-datetime>
+                            <aw-listbox prop="data.frequencyOperators" visible-when="conditions.isObservationCharacteristic"></aw-listbox> 
+                            <aw-numeric prop="data.operatorsValue" visible-when="conditions.isObservationCharacteristic"></aw-numeric> 
+                            <aw-flex-row height="6f" align-content="end">
+                                <aw-flex-column width="fill" offset-right="1f">
+                                    <aw-listbox prop="data.toleranceSign" enable-when="conditions.enableTolerance" visible-when="conditions.isToleranceVisible"></aw-listbox>
+                                </aw-flex-column>
+                                <aw-flex-column width="4">
+                                    <aw-numeric prop="data.toleranceValue" enable-when="conditions.enableTolerance" visible-when="conditions.isToleranceVisible"></aw-numeric>
+                                </aw-flex-column>
+                                <aw-flex-column width="fill" offset="1f">
+                                    <aw-listbox prop="data.toleranceType" enable-when="conditions.enableTolerance" visible-when="conditions.isToleranceVisible"></aw-listbox>
+                                </aw-flex-column>
+                            </aw-flex-row> 
+                        </aw-flex-column>
+                        <aw-splitter direction="VERTICAL"></aw-splitter>
+                        <aw-flex-column width="fill" offset-right="1f">
+                            <aw-panel-section caption="i18n.Advanced" collapsed="disabled">  
+                                <aw-listbox prop="data.afterUntil" action="resetFieldsOnChangeAfterUntil" enable-when="conditions.isCharacteristicSelected"></aw-listbox>
+                                <aw-numeric prop="data.afterUntilValue" enable-when="conditions.enableAfterUntilValue" visible-when="conditions.isAdvancedValueVisible"></aw-numeric>
+                                <aw-listbox prop="data.afterUntilCharacteristic" action="resetFieldsOnChangeAdvancedCharacteristics" enable-when="conditions.isAfterUntilSelected"></aw-listbox>
+                                <aw-datetime prop="data.advancedDateTime" visible-when="conditions.isDateCharacteristicAdvanced"></aw-datetime>
+                                <aw-listbox prop="data.advancedOperators" visible-when="conditions.isObservationCharacteristicAdvanced"></aw-listbox> 
+                                <aw-numeric prop="data.advancedOperatorsValue" visible-when="conditions.isObservationCharacteristicAdvanced"></aw-numeric>    
+                            </aw-panel-section>  
+                        </aw-flex-column>
+                    </aw-flex-row>
+                </aw-panel-section>
+            </aw-flex-column>
+            <aw-splitter direction="VERTICAL"></aw-splitter>
+            <aw-flex-column width="5"> 
+                <aw-panel-section caption="i18n.FrequencyExpression" collapsed="disabled">
+                    <aw-flex-column justify="right" align-content="end">
+                        <aw-command-bar anchor="freq_expressions_listCommands" alignment="HORIZONTAL" context="data"></aw-command-bar>    
+                    </aw-flex-column>
+                    <aw-flex-row height="30f" align-content="center" visible-when="!conditions.enablePhraseSeperator">
+                        <mfe-message sub-panel-context="data.messages.noExpressionAdded"></mfe-message>
+                    </aw-flex-row>
+                    <aw-list dataprovider="dataProviders.fetchExpressions">
+                        <aw-default-cell vmo="item"></aw-default-cell>
+                    </aw-list>
+                </aw-panel-section>
+            </aw-flex-column>
+        </aw-flex-row>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-flex-column align-content="end" offset-right="1f">
+            <aw-button button-type="base" action="ClosePopUpAction" size="auto"><aw-i18n>i18n.Cancel</aw-i18n></aw-button> 
+        </aw-flex-column>
+        <aw-flex-column align-content="start">
+            <aw-button size="auto" action="addFrequency" enable-when="conditions.requiredFieldsEntered"><aw-i18n>i18n.CreateButtonTitle</aw-i18n></aw-button>   
+        </aw-flex-column>
+    </aw-panel-footer>
+</aw-popup2>

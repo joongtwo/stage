@@ -1,0 +1,10 @@
+<aw-balloon-popup-panel>
+    <aw-panel>
+        <aw-panel-body>
+            <aw-label prop="data.scheduleId"></aw-label>
+            <aw-label prop="data.scheduleName" visible-when="data.scheduleName.dbValue"></aw-label>
+            <aw-label prop="data.scheduleType"></aw-label>
+            <aw-label prop="data.nextOccurrence" visible-when="conditions.isSharedOrSpecificSchedule"></aw-label>
+        </aw-panel-body>
+    </aw-panel>
+</aw-balloon-popup-panel>

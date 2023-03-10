@@ -1,0 +1,158 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "actions":
+    {
+        "closePanel":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+        "backAction":
+        {
+            "actionType": "JSFunction",
+            "method": "setActiveView",
+            "inputData":
+            {
+                "destinationPanelId":"DisplayAndRemoveEffectivitiesForRelStatus",
+                "data": "{{data}}"
+
+            },
+            "outputData": {
+                "sharedData":""
+            },
+            "deps": "js/aceEffectivityService"
+        },
+        "backToPrevious":
+        {
+            "actionType": "JSFunction",
+            "method": "setActiveView",
+            "inputData":
+            {
+                "destinationPanelId":"AddReleaseStatusEffectivities",
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "sharedData":""
+            },
+            "deps": "js/aceEffectivityService"
+        },
+        "closePanelBatchAction":
+        {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "closePanel",
+                    "condition": "conditions.isSelectedItemWithNoReleaseStatusOrMultipleItemSelectedForHome"
+            }]
+        }
+    },
+
+    "i18n": {
+        "effectivityTitle": ["OccurrenceManagementConstants"],
+        "addElementBtn": ["OccurrenceManagementConstants"],
+        "cancel": ["OccurrenceManagementConstants"],
+        "saveButtonText": ["OccurrenceManagementConstants"],
+        "addEffectivities": ["OccurrenceManagementConstants"],
+        "edit": ["OccurrenceManagementConstants"],
+        "endItemMessage":[ "OccurrenceManagementConstants"],
+        "dateEffectivity":[ "OccurrenceManagementConstants"],
+        "unitEffectivity":[ "OccurrenceManagementConstants"]
+    },
+
+    "lifecycleHooks": {
+        "onUpdate": [ {
+            "action": "closePanelBatchAction",
+            "observers": [ "props.subPanelContext.selectionData.selected" ]
+        }]
+    },
+
+    "data": {
+        "sharedData": {
+            "initialValues": {
+                "activeView": "DisplayAndRemoveEffectivitiesForRelStatus",
+                "previousView": "",
+                "dateOrUnitEffectivityTypeRadioButton":{
+                    "type": "BOOLEAN",
+                    "dbValue": true
+                },
+                "endItemVal":{
+                    "dbValue": null,
+                    "uiValue": null
+                },
+                "releaseStatus":{
+                    "uid": null,
+                    "type": null,
+                    "uiValue": null,
+                    "dbValue": null
+                },
+                "nameBox" : {
+                    "dbValue": null
+                },
+                "nameBoxForUnit" : {
+                    "dbValue": null
+                },
+                "unitRangeText": {
+                    "dbValue": null
+                },
+                "isShared": {
+                    "type": "BOOLEAN",
+                    "dbValue": false
+                },
+                "isSharedForUnit": {
+                    "type": "BOOLEAN",
+                    "dbValue": false
+                },
+                "startDate": {
+                    "type": "DATETIME",
+                    "dbValue": null
+                },
+                "endDate": {
+                    "type": "DATETIME",
+                    "dbValue": null
+                },
+                "endDateOptions": {
+                    "dbValue": "Date",
+                    "uiValue": "Date"
+                },
+                "isProtected": {
+                    "type": "BOOLEAN",
+                    "dbValue": false
+                },
+                "selectedCell": {
+                    "uid": null,
+                    "type": null
+                },
+                "isTimeEnabled": {
+                    "type": "BOOLEAN",
+                    "value": false
+                }
+            },
+            "meta": { }
+        }
+    },
+
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "conditions": {
+        "isSelectedItemWithNoReleaseStatusOrMultipleItemSelectedForHome": {
+            "expression": "props.subPanelContext.selectionData.selected.length > 1 || props.subPanelContext.selectionData.selected[0].props.date_released.dbValues[0] === null"
+        }
+    }
+}

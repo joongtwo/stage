@@ -1,0 +1,540 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-command-panel-section.directive",
+        "js/aw-widget.directive",
+        "js/aw-checkbox.directive",
+        "js/aw-repeat.directive",
+        "js/aw-radiobutton.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive",
+        "js/visible-when.directive"
+    ],
+    "actions": {
+        "reveal": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "awLogicalObject.clearAllSegments"
+                    },
+                    {
+                        "name": "awLogicalObject.createSegment"
+                    }
+                ]
+            }
+        },
+        "createSegment": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-12-DataManagement",
+            "method": "getDeclarativeStyleSheets",
+            "inputData": {
+                "input": [
+                    {
+                        "businessObjectType": "Fnd0TraversalSegment",
+                        "businessObject": {
+                            "uid": "AAAAAAAAAAAAAA",
+                            "type": "Fnd0TraversalSegment"
+                        },
+                        "styleSheetLastModDate": "",
+                        "styleSheetType": "CREATE",
+                        "targetPage": "",
+                        "clientContext": {
+                            "ActiveWorkspace:Location": "com.siemens.splm.client.logicalobject.configurationLocation",
+                            "ActiveWorkspace:SubLocation": "com.siemens.splm.client.logicalobject:logicalObjectsSubLocation"
+                        }
+                    }
+                ],
+                "processEntireXRT": true
+            },
+            "outputData": {
+                "loContext.segment": "{{dataParseDefinitions:convertNvObject}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "awLogicalObject.addSegment"
+                    }
+                ]
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "addSegment": {
+            "actionType": "JSFunction",
+            "method": "addSegment",
+            "inputData": {
+                "data": "{{data}}",
+                "commandContext": "{{commandContext}}",
+                "panelName": "Members"
+            },
+            "outputData": {
+                "loContext": "loContext",
+                "logicalObject": "logicalObject",
+                "logicalObjectName": "logicalObjectName",
+                "logicalObjectInternalName": "logicalObjectInternalName",
+                "addSegmentCaption": "addSegmentCaption",
+                "caption": "caption",
+                "existingSegmentCount": "existingSegmentCount"
+            },
+           "deps": "js/Awp0LogicalObjectService"
+        },
+        "removeSegment": {
+            "actionType": "JSFunction",
+            "method": "removeSegment",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData":
+            {
+                "loContext": "loContext",
+                "addSegmentCaption": "addSegmentCaption",
+                "segmentRemoved": "segmentRemoved"
+
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "clearAllSegments": {
+            "actionType": "JSFunction",
+            "method": "clearAllSegments",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData":
+            {
+                "loContext": "loContext"
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "specialCharacterCheckAddMember": {
+            "actionType": "JSFunction",
+            "method": "specialCharacterCheck",
+            "inputData": {
+                "data": "{{data}}",
+                "idName": "Add Member",
+                "idValue": "{{data.memberId.dbValue}}"
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "specialCharacterCheckSaveMember": {
+            "actionType": "JSFunction",
+            "method": "specialCharacterCheck",
+            "inputData": {
+                "data": "{{data}}",
+                "idName": "Edit Member",
+                "idValue": "{{data.memberId.dbValue}}"
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "updateDestTypeAndCriteria": {
+            "actionType": "JSFunction",
+            "method": "updateDestTypeAndCriteria",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "loContext": "loContext"
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "updateRelOrRefAndDestCriteria": {
+            "actionType": "JSFunction",
+            "method": "updateRelOrRefAndDestCriteria",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "loContext": "loContext"
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "addMemberEvent": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "awLogicalObject.addMember2"
+                    }
+                ]
+            }
+        },
+        "addMember": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2017-11-LogicalObject",
+            "method": "addMembersAndPresentedProps",
+            "inputData": {
+                "addMembersAndPresentedProps": {
+                    "logicalObjectType": "{{data.logicalObject}}",
+                    "memberDefinitions": [
+                        {
+                            "memberPropertyName": "{{data.memberId.dbValue}}",
+                            "displayName": "{{data.displayName.dbValue}}",
+                            "traversalPath": "{{function:getTraversalPath}}"
+                        }
+                    ]
+                }
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "cdm.relatedModified",
+                        "eventData": {
+                            "relatedModified": [
+                                "{{data.logicalObject}}"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "addMemberSuccess"
+                    }
+                ],
+                "failure": [
+                    {
+                        "condition": "errorCode.code==39015",
+                        "message": "addEntryAlreadyExistError"
+                    }
+                ]
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "addMember2": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2018-06-LogicalObject",
+            "method": "addMembersAndPresentedProps2",
+            "inputData": {
+                "addMembersAndPresentedProps": {
+                    "logicalObjectType": "{{data.logicalObject}}",
+                    "memberPropertiesDefinitions": [
+                        {
+                            "memberPropertyName": "{{data.memberId.dbValue}}",
+                            "displayName": "{{data.displayName.dbValue}}",
+                            "retrieveClassificationData": "{{data.retrieveClassificationData.dbValue}}",
+                            "traversalPath": "{{function:getTraversalPath}}"
+                        }
+                    ]
+                }
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "cdm.relatedModified",
+                        "eventData": {
+                            "relatedModified": [
+                                "{{data.logicalObject}}"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "addMemberSuccess"
+                    }
+                ],
+                "failure": [
+                    {
+                        "message": "addMember2Failure"
+                    }
+                ]
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "saveMember": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2018-06-LogicalObject",
+            "method": "updateMembers",
+            "inputData": {
+                "updateMemberInputStruct": {
+                    "logicalObjectType": "{{data.logicalObject}}",
+                    "membersToBeUpdated": "{{function:getMemberDefMap}}"
+                }
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "cdm.relatedModified",
+                        "eventData": {
+                            "relatedModified": [
+                                "{{data.logicalObject}}"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "updateMemberSuccess"
+                    }
+                ]
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "data": {
+        "caption": "{{i18n.add}}",
+        "memberId": {
+            "displayName": "{{i18n.memberId}}",
+            "type": "STRING",
+            "dbValue": "",
+            "isRequired": "true",
+            "maxLength": 27
+        },
+        "displayName": {
+            "displayName": "{{i18n.displayName}}",
+            "type": "STRING",
+            "dbValue": "",
+            "isRequired": "true",
+            "maxLength": 128
+        },
+        "retrieveClassificationData": {
+            "displayName": "{{i18n.retrieveClassificationData}}",
+            "type": "BOOLEAN",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "destinationObjectCriteria": {
+            "displayName": "{{i18n.destinationObjectCriteria}}",
+            "type": "BOOLEAN",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "addSegmentCommands": "awp0_addSegmentCommands",
+        "removeSegmentCommands": "awp0_removeSegmentCommands",
+        "loContext": {
+            "initialValues": {
+                "segments": [],
+                "segment": ""
+            },
+            "meta": {
+                "segments":[{
+                    "type": "viewModelObject",
+                    "field": true
+                }]
+            }
+        }
+    },
+    "dataParseDefinitions": {
+        "convertNvObject": {
+            "outputFormatType": "ViewModelObject",
+            "dataInput": "ServiceData.plain[0]",
+            "operationType": "CREATE"
+        }
+    },
+    "functions": {
+        "getTraversalPath": {
+            "functionName": "getTraversalPath",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getMemberDefMap": {
+            "functionName": "getMemberDefMap",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "conditions": {
+        "isValidLOVSelections": {
+            "expression": "!fields.loContext.segment.props.fnd0DestinationType.hasServerValidationError && !fields.loContext.segment.props.fnd0RelationOrReference.hasServerValidationError && !fields.loContext.segment.props.fnd0DestinationCriteria.hasServerValidationError"
+        },
+        "isValidToAddSegment": {
+            "expression": "data.loContext.segment.props.fnd0DestinationType.dbValue && data.loContext.segment.props.fnd0RelationOrReference.dbValue && conditions.isValidLOVSelections"
+        },
+        "isValidToAddOrSaveMember": {
+            "expression": "data.memberId.dbValue && data.displayName.dbValue && conditions.isValidToAddSegment"
+        },
+        "isValidToAddMember": {
+            "expression": "ctx.selected.props.fnd0RootTypeName && conditions.isValidToAddOrSaveMember"
+        },
+        "isValidToSaveMember": {
+            "expression": "ctx.selected.props.fnd0TraversalSegments && conditions.isValidToAddOrSaveMember"
+        }
+    },
+    "i18n": {
+        "add": [
+            "LogicalObjectMessages"
+        ],
+        "save": [
+            "LogicalObjectMessages"
+        ],
+        "editMember": [
+            "LogicalObjectMessages"
+        ],
+        "member": [
+            "LogicalObjectMessages"
+        ],
+        "memberId": [
+            "LogicalObjectMessages"
+        ],
+        "displayName": [
+            "LogicalObjectMessages"
+        ],
+        "retrieveClassificationData": [
+            "LogicalObjectMessages"
+        ],
+        "segment": [
+            "LogicalObjectMessages"
+        ],
+        "addSegment": [
+            "LogicalObjectMessages"
+        ],
+        "removeSegment": [
+            "LogicalObjectMessages"
+        ],
+        "forward": [
+            "LogicalObjectMessages"
+        ],
+        "backward": [
+            "LogicalObjectMessages"
+        ],
+        "addEntryLOSuccess": [
+            "LogicalObjectMessages"
+        ],
+        "addEntryAlreadyExistError": [
+            "LogicalObjectMessages"
+        ],
+        "addEntryMemberSpecialCharacterError": [
+            "LogicalObjectMessages"
+        ],
+        "updateMemberPropSuccess": [
+            "LogicalObjectMessages"
+        ],
+        "updateMemberAlreadyExistError": [
+            "LogicalObjectMessages"
+        ],
+        "destinationObjectCriteria": [
+            "LogicalObjectMessages"
+        ]
+    },
+    "messages": {
+        "addMemberSuccess": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.addEntryLOSuccess}}",
+            "messageTextParams": [
+                "{{data.memberId.dbValue}}",
+                "{{data.logicalObjectName}}"
+            ]
+        },
+        "addMemberAlreadyExistError": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.addEntryAlreadyExistError}}",
+            "messageTextParams": [
+                "{{data.memberId.dbValue}}",
+                "{{data.logicalObjectName}}"
+            ]
+        },
+        "updateMemberSuccess": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.updateMemberPropSuccess}}",
+            "messageTextParams": [
+                "{{data.memberId.dbValue}}",
+                "{{data.logicalObjectName}}"
+            ]
+        },
+        "updateMemberAlreadyExistError": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.updateMemberAlreadyExistError}}",
+            "messageTextParams": [
+                "{{data.memberId.dbValue}}",
+                "{{data.logicalObjectName}}"
+            ]
+        },
+        "addMember2Failure": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "awLogicalObject.addSegment",
+            "action": "addSegment"
+        },
+        {
+            "eventId": "awLogicalObject.createSegment",
+            "action": "createSegment"
+        },
+        {
+            "eventId": "awLogicalObject.clearAllSegments",
+            "action": "clearAllSegments"
+        },
+        {
+            "eventId": "awLogicalObject.addMemberEvent",
+            "action": "addMemberEvent"
+        },
+        {
+            "eventId": "awLogicalObject.addMember",
+            "action": "addMember"
+        },
+        {
+            "eventId": "awLogicalObject.addMember2",
+            "action": "addMember2"
+        },
+        {
+            "eventId": "awLogicalObject.saveMember",
+            "action": "saveMember"
+        },
+        {
+            "eventId": "Awp0CreateSegmentCmdActionEvent",
+            "action": "createSegment"
+        },
+        {
+            "eventId": "Awp0RemoveSegmentCmdActionEvent",
+            "action": "removeSegment"
+        },
+        {
+            "eventId": "fnd0RelationOrReference.lovValueChanged",
+            "action": "updateDestTypeAndCriteria"
+        },
+        {
+            "eventId": "fnd0DestinationType.lovValueChanged",
+            "action": "updateRelOrRefAndDestCriteria"
+        },
+        {
+            "eventId": "primaryWorkArea.selectionChangeEvent",
+            "action": "closePanel"
+        }
+    ]
+}

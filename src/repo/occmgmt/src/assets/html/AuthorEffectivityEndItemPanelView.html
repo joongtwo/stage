@@ -1,0 +1,10 @@
+<aw-panel-body >
+    <aw-tab-set tabs='data.endItemTabsModel.dbValues'>
+        <aw-include name='AuthorEffectivityEndItemSearchTab' sub-panel-context='{...subPanelContext}'
+            exist-when="data.selectedTab.tabKey==='Search'">
+        </aw-include>
+       <aw-include name='PaletteTabPageSub' sub-panel-context='{...subPanelContext}'
+            exist-when="data.selectedTab.tabKey==='Palette'">
+        </aw-include>
+    </aw-tab-set>
+</aw-panel-body>

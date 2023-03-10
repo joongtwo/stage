@@ -1,0 +1,25 @@
+<aw-command-panel caption="i18n.filterString">
+    <aw-panel-body>
+        <!-- Start of the 'navigation' section which contains the hierarchy filters. -->
+        <aw-panel-section visible-when="data.categories.navigateCategories && data.categories.navigateCategories.length > 0  && ctx.mySnapshotGallery.totalFound > 0">
+            <aw-filter-category
+                 category-action="selectHierarchyCategory"
+                 search-action="selectHierarchyFilter"
+                 category="item"
+                 aw-repeat="item : data.categories.navigateCategories track by $index" >
+            </aw-filter-category>
+
+            <!-- Separator between the Navigate and Refine filters. Only visible when there are navigation filters present.-->
+            <aw-filter-separator visibleWhen="data.categories.navigateCategories.length > 0"><aw-i18n>i18n.refine</aw-i18n></aw-filter-separator>
+        </aw-panel-section>
+        <!-- Start of the 'refine' section. -->
+        <aw-panel-section visible-when="ctx.mySnapshotGallery.totalFound > 0">
+            <aw-filter-category
+                 category-action="selectCategory"
+                 search-action="selectFilter"
+                 category="item"
+                 aw-repeat="item : data.categories.refineCategories track by $index" >
+            </aw-filter-category>
+        </aw-panel-section>
+    </aw-panel-body>
+</aw-command-panel>

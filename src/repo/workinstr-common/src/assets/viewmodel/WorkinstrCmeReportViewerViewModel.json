@@ -1,0 +1,33 @@
+{
+    "schemaVersion" : "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "data":
+    {
+    },
+
+    "actions":
+    {
+        "render": {
+            "method": "cmeReportViewerRenderFn",
+            "deps": "js/workinstrCmeReportViewerService"
+        },
+        "setFrameContent": {
+            "actionType": "JSFunctionAsync",
+            "method": "setFrameContent",
+            "inputData": {
+                "viewerData": "{{props.subPanelContext}}"
+            },
+            "deps": "js/workinstrCmeReportViewerService"
+        }
+    },
+
+    "lifecycleHooks": {
+        "render": "render",
+        "onMount": "setFrameContent"
+    }
+}

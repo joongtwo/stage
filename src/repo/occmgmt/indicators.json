@@ -1,0 +1,54 @@
+{
+  "Awb0IndexedStructure_Indicator": {
+    "iconName": "IndexedStructure",
+    "tooltip": {
+      "showPropDisplayName": true,
+      "propNames": [
+        "awb0DiscoveryIndexTime"
+      ]
+    },
+    "modelTypes": [
+      "ItemRevision"
+    ],
+    "conditions": {
+      "awb0IsDiscoveryIndexed": {
+        "$eq": true
+      }
+    }
+  },
+  "cba_primary_cad": {
+    "iconName": "PrimaryDesign",
+    "tooltip": {
+      "showPropDisplayName": false,
+      "propNames": [
+        "fnd0Primary"
+      ]
+    },
+    "modelTypes": [
+      "Fnd0AlignedDesign",
+      "Fnd0AlignedPart"
+    ],
+    "conditions": {
+      "fnd0IsPrimary": {
+        "$eq": true
+      }
+    }
+  },
+  "cba_alignment_mismatch": {
+    "iconName": "Mismatch",
+    "tooltip": {
+      "showPropDisplayName": false,
+      "propNames": [
+        "fnd0AlignedStatus"
+      ]
+    },
+    "modelTypes": [
+      "Fnd0AlignedPart"
+    ],
+    "conditions": {
+      "fnd0IsAlignmentCurrent": {
+        "$eq": null
+      }
+    }
+  }
+}

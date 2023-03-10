@@ -1,0 +1,296 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "loadDeviceOverviewData": {
+            "actionType": "JSFunction",
+            "method": "loadDeviceOverviewData",
+            "inputData": {
+                "selection": "{{props.subPanelContext.context.searchState.selectedPlants}}"
+            },
+            "dataParsers": [
+                {
+                    "id": "etlDeviceOverviewDataParser",
+                    "responseObjs": "searchResults"
+                }
+            ],
+            "outputData": {
+                "totalFound ": "totalFound",
+                "searchResults": "searchResults",
+                "searchResultsWithIcon": "{{function:updateSearchResults}}"
+            },
+            "deps": "js/Dpv1ETLDeviceAgentService"
+        },
+        "updateDeviceAgentInfo": {
+            "actionType": "JSFunction",
+            "method": "updateDeviceAgentInfo",
+            "inputData": {
+                "gridSelection": "{{data.eventMap['deviceReportDataProvider.selectionChangeEvent'].selectedObjects}}",
+                "searchState": "{{props.subPanelContext.context.searchState}}"
+            },
+            "deps": "js/Dpv1ETLDeviceAgentService"
+        },
+        "selectTableRow":{
+            "actionType": "JSFunction",
+            "method": "selectTableRow",
+            "inputData": {
+                "searchState": "{{props.subPanelContext.context.searchState}}",
+                "dataProvider": "{{dataProviders.deviceReportDataProvider}}"
+            },
+            "deps": "js/Dpv1ETLDeviceAgentService"
+        }
+    },
+    "data": {},
+    "functions": {
+        "updateSearchResults": {
+            "functionName": "updateSearchResultsWithIcon",
+            "parameters": [
+                "typeMEProcessRevision48.svg"
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "deviceReportDataProvider.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "updateDeviceAgentInfo"
+        },
+        {
+            "eventId": "deviceReportDataProvider.modelObjectsUpdated",
+            "action": "selectTableRow"
+        }
+    ],
+    "dataProviders": {
+        "deviceReportDataProvider": {
+            "action": "loadDeviceOverviewData",
+            "selectionModelMode": "single",
+            "selectionModel": {
+                "multiSelectEnabled": false
+            },
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            },
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}"
+        }
+    },
+    "dataParseDefinitions": {
+        "etlDeviceOverviewDataParser": {
+            "type": "etlDeviceOverview",
+            "props": {
+                "PlantName": {
+                    "name": "PlantName",
+                    "value": "{{response.PlantName}}",
+                    "displayValue": "{{response.PlantName}}",
+                    "type": "String"
+                },
+                "PlantID": {
+                    "name": "PlantID",
+                    "value": "{{response.PlantId}}",
+                    "displayValue": "{{response.PlantId}}",
+                    "type": "String"
+                },
+                "DeviceAgent": {
+                    "name": "MeasDevice",
+                    "value": "{{response.AgentName}}",
+                    "displayValue": "{{response.AgentName}}",
+                    "type": "String"
+                },
+                "TimeOfLastCommunication": {
+                    "name": "TimeOfLastCommunication",
+                    "value": "{{response.LastCommunication}}",
+                    "displayValue": "{{response.LastCommunication}}",
+                    "type": "String"
+                },
+                "LastFileTransferred": {
+                    "name": "LastFileTransferred",
+                    "value": "{{response.LastFileXfer}}",
+                    "displayValue": "{{response.LastFileXfer}}",
+                    "type": "String"
+                },
+                "TimeOfLastFileTransferred": {
+                    "name": "TimeOfLastFileTransferred",
+                    "value": "{{response.LastFileXferTime}}",
+                    "displayValue": "{{response.LastFileXferTime}}",
+                    "type": "INTEGER"
+                },
+                "FilesTransferredinLast24hrs": {
+                    "name": "FilesTransferredinLast24hrs",
+                    "value": "{{response.NumFileXferred}}",
+                    "displayValue": "{{response.NumFileXferred}}",
+                    "type": "INTEGER"
+                },
+                "AverageFileTransferTime": {
+                    "name": "AverageFileTransferTime",
+                    "value": "{{response.AvgXferTime}}",
+                    "displayValue": "{{response.AvgXferTime}}",
+                    "type": "String"
+                },
+                "MinFileTransferTime": {
+                    "name": "MinFileTransferTime",
+                    "value": "{{response.MinXferTime}}",
+                    "displayValue": "{{response.MinXferTime}}",
+                    "type": "String"
+                },
+                "MaxFileTransferTime": {
+                    "name": "MaxFileTransferTime",
+                    "value": "{{response.MaxXferTime}}",
+                    "displayValue": "{{response.MaxXferTime}}",
+                    "type": "String"
+                },
+                "ConnectionAvailabilityinLast24hrs": {
+                    "name": "ConnectionAvailabilityinLast24hrs",
+                    "value": "{{response.Availability}}",
+                    "displayValue": "{{response.Availability}}",
+                    "type": "String"
+                }
+            }
+        }
+    },
+    "columnProviders": {
+        "deviceReportColumnProvider": {
+            "frozenColumnIndex": -1,
+            "headerHeight": "LARGE",
+            "columns": [
+                {
+                    "name": "PlantName",
+                    "displayName": "{{i18n.plantName}}",
+                    "typeName": "String",
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "DeviceAgent",
+                    "displayName": "{{i18n.deviceAgent}}",
+                    "typeName": "String",
+                    "minWidth": 110,
+                    "width": 110,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "TimeOfLastCommunication",
+                    "displayName": "{{i18n.timeOfLastCommunication}}",
+                    "typeName": "String",
+                    "minWidth": 140,
+                    "width": 140,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "LastFileTransferred",
+                    "displayName": "{{i18n.lastFileTransferred}}",
+                    "typeName": "String",
+                    "minWidth": 140,
+                    "width": 140,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "TimeOfLastFileTransferred",
+                    "displayName": "{{i18n.timeLastFileTransferred}}",
+                    "typeName": "Integer",
+                    "minWidth": 140,
+                    "width": 140,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "FilesTransferredinLast24hrs",
+                    "displayName": "{{i18n.filesTransferredInLast24Hrs}}",
+                    "typeName": "Integer",
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "AverageFileTransferTime",
+                    "displayName": "{{i18n.avgFileTransferTime}}",
+                    "typeName": "String",
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "MinFileTransferTime",
+                    "displayName": "{{i18n.minFileTransferTime}}",
+                    "typeName": "String",
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "MaxFileTransferTime",
+                    "displayName": "{{i18n.maxFileTransferTime}}",
+                    "typeName": "String",
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "ConnectionAvailabilityinLast24hrs",
+                    "displayName": "{{i18n.connAvailLast24Hrs}}",
+                    "typeName": "String",
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                }
+            ]
+        }
+    },
+    "grids": {
+        "deviceReportGrid": {
+            "dataProvider": "deviceReportDataProvider",
+            "columnProvider": "deviceReportColumnProvider",
+            "enableArrangeMenu": true,
+            "gridOptions": {
+                "enableGridMenu": true
+            }
+        }
+    },
+    "i18n": {
+        "plantName": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "plantId": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "deviceAgent": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "timeOfLastCommunication": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "lastFileTransferred": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "timeLastFileTransferred": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "filesTransferredInLast24Hrs": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "avgFileTransferTime": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "minFileTransferTime": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "maxFileTransferTime": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "connAvailLast24Hrs": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "noPlantSelectedMsg":[
+            "DpvMessages"
+        ]
+    },
+    "messages": {
+        "noPlantSelectedMsg": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.noPlantSelectedMsg}}"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

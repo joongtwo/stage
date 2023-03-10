@@ -1,0 +1,10 @@
+<mfe-message sub-panel-context="data.highLevelPlanningMbomTreeContext.noMBOMStructureAssociated" exist-when="!conditions.isMBOMExist"></mfe-message>
+<div class="sw-column w-12" exist-when="data.highLevelPlanningMbomTreeContext.objectUid && conditions.isMBOMExist">
+    <ep-high-level-planning-guidance-message sub-panel-context="{...data.highLevelPlanningMbomTreeContext,...props.subPanelContext}" exist-when="conditions.isClassicBOPLoaded"></ep-high-level-planning-guidance-message>
+    <div class="sw-row aw-ep-searchBoxStyle">
+        <ep-structure-search sub-panel-context="fields.epMbomTreeSearchContext"></ep-structure-search>
+    </div>
+    <div class="sw-row h-12">
+        <ep-tree-table view-id="EpHighLevelPlanningMbomTree_EpTreeTable" sub-panel-context="{...data.highLevelPlanningMbomTreeContext, ...props.subPanelContext}" structure-search-context="fields.epMbomTreeSearchContext"></ep-tree-table>
+    </div>
+</div>

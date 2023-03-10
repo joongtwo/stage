@@ -1,0 +1,12 @@
+
+<div class="sw-column w-12" exist-when="conditions.isObjectUidAvailable">
+    <aw-guidance-message exist-when="!conditions.isManageConsumptionModeEnabled && conditions.isProductStructureDefined" message="guidanceMessageAssemblyTree" closable="false" banner-style="false" show-icon="true" show-type="false">
+    </aw-guidance-message>
+    <div class="sw-row aw-ep-searchBoxStyle" exist-when="conditions.isProductStructureDefined">
+        <ep-structure-search sub-panel-context="fields.epAssemblyTreeSearchContext"></ep-structure-search>
+    </div>
+    <div class="sw-row h-12">
+        <ep-tree-table view-id="EpAssemblyTree_EpTreeTable"
+            sub-panel-context="{...data.assemblyTreeContext, ...props.subPanelContext}" structure-search-context="fields.epAssemblyTreeSearchContext"></ep-tree-table>
+    </div>
+</div>

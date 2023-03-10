@@ -1,0 +1,1479 @@
+<HTML>
+<HEAD>
+    <SCRIPT language="JavaScript">
+    function nocontextmenu(){
+          if (window.Event) {
+                document.captureEvents(Event.MOUSEUP);
+          }
+          event.cancelBubble = true;
+          event.returnValue = false;
+          return false;
+    }
+    function norightclick(e)
+    {
+          if (window.Event)
+          {
+                if(e.which!=1)
+                      return false;
+          }
+          else if (event.button !=1)
+          {
+                event.cancelBubble = true;
+                event.returnValue = false;
+                return false;
+          }
+    }
+    // Block backspace onKeyDown
+    function onKeyDown() {
+          if ( (event.altKey) || ((event.keyCode == 8) && (event.srcElement.type != "text" &&
+                event.srcElement.type != "textarea" && event.srcElement.type != "password")) ||
+                ((event.ctrlKey) && ((event.keyCode == 78) || (event.keyCode == 82)) ) ||
+                (event.keyCode == 116) )
+          {
+                event.keyCode = 0;
+                event.returnValue = false;
+          }
+    }
+    </SCRIPT>
+
+    <META name="author" content="JUL">
+    <META name="date" content="2004-10-04">
+
+        <STYLE type="text/css">
+.MTMLink {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt
+    color: #6F5415;
+    }
+
+.MTMGeneral {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+
+    }
+
+.MTMElement {
+    }
+
+.MTMInfo {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    font-style: italic;
+    color: #31247B;
+    }
+
+.MTMEmptyText {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt
+    }
+
+A {
+    font-family: Arial;
+    font-size: 8pt;
+    color: #6F5415;
+    width: 200px;
+    }
+
+A:visited {
+    color: #6F5415;
+    }
+
+A:hover {
+    color: #AE1111;
+    }
+
+BODY {
+    background-color: ButtonFace;
+}
+
+.MEKHeaderRed {
+    font-weight: bold;
+    color: #FF0000
+    }
+
+.MEKHeaderLightBlue {
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #3333CC
+    }
+
+.MEKHeaderBlue {
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #000080;
+}
+.SDBHeaderRed { font-weight: bold; color: #FF0000 }
+.SDBHeaderBlue { font-weight: bold; color: #FFFFFF; background-color: #0000FF; }
+.SDBHeaderLightBlue { font-weight: bold; color: #FFFFFF; background-color: #3333CC }
+.UASHeaderLightBlue { font-weight: bold; color: #FFFFFF; background-color: #000080}
+.UASHeaderRed { font-weight: bold; color: #FF0000 }
+.MTMSPHeaderGreen { font-weight: bold; color: #FFFFFF; background-color: #006600}
+.MTM1HeaderRed { font-weight: bold; color: #FF0000 }
+.MTM2HeaderRed { font-weight: bold; color: #FF0000 }
+.MTM2HeaderGreen { font-weight: bold; color: #FFFFFF; background-color: #009966}
+
+.MTMTooltip {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    color: #31247B;
+    background-color: #FFFFE1
+    width: 200px;
+    }
+
+#tipBox {
+    position: absolute;
+    z-index: 100;
+    border: 1px #663333 solid;
+    padding: 2px 2px 2px 2px;
+    background-color: #FFFFE1;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    color: #663333;
+    visibility: hidden;
+    filter:            progid:DXImageTransform.Microsoft.Gradient(StartColorStr=#fffcfcfe, EndColorStr=#fff4f3ee, GradientType=0)
+                    progid:DXImageTransform.Microsoft.Shadow(Color=#ff919899, Strength=2, Direction=135);
+}
+#tipBoxWidth {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    z-index: 0;
+    border: 1px #663333 solid;
+    padding: 2px 2px 2px 2px;
+    background-color: #FFFFE1;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    color: #663333;
+    visibility: hidden;
+    filter:            progid:DXImageTransform.Microsoft.Gradient(StartColorStr=#fffcfcfe, EndColorStr=#fff4f3ee, GradientType=0)
+                    progid:DXImageTransform.Microsoft.Shadow(Color=#ff919899, Strength=2, Direction=135);
+}
+.LOGHeader {  font-weight: bold; color: #993300}
+
+    </STYLE>
+
+        <STYLE type="text/css">
+.dynamic-tab-pane-control.tab-pane {
+    position:    relative;
+    width:        100%;        /* width needed weird IE bug */
+    margin-right:    -2px;    /* to make room for the shadow */
+}
+
+.dynamic-tab-pane-control .tab-row .tab {
+
+    width:                160px;
+    height:                16px;
+    background-image:    url( "tab.png" );
+
+    position:        relative;
+    top:            0;
+    display:        inline;
+    float:            left;
+    overflow:        hidden;
+
+    cursor:            Default;
+
+    margin:            1px -1px 1px 2px;
+    padding:        2px 0px 0px 6px;
+    border:            0;
+
+    z-index:        1;
+    font:            11px Tahoma;
+    white-space:    nowrap;
+    text-align:        left;
+}
+
+.dynamic-tab-pane-control .tab-row .tab.selected {
+    width:                164px !important;
+    height:                18px !important;
+    background-image:    url( "tab.active.png" ) !important;
+    background-repaet:    no-repeat;
+
+    border-bottom-width:    0;
+    z-index:        3;
+    padding:        2px 0px 0px 6px;
+    margin:            1px -3px -3px 0px;
+    top:            -2px;
+    font:                11px Tahoma;
+}
+
+.dynamic-tab-pane-control .tab-row .tab a {
+    font:                11px Tahoma;
+    color:                Black;
+    text-decoration:    none;
+    cursor:                default;
+}
+
+.dynamic-tab-pane-control .tab-row .tab.hover {
+    font:                11px Tahoma;
+    width:                160px;
+    height:                16px;
+    background-image:    url( "tab.hover.png" );
+    background-repaet:    no-repeat;
+}
+
+
+.dynamic-tab-pane-control .tab-page {
+    clear:            both;
+    border:            1px solid rgb( 145, 155, 156 );
+    background:        rgb( 252, 252, 254 );
+    z-index:        2;
+    position:        relative;
+    top:            -2px;
+
+    font:                11px Tahoma;
+    color:                Black;
+
+    filter:            progid:DXImageTransform.Microsoft.Gradient(StartColorStr=#fffcfcfe, EndColorStr=#fff4f3ee, GradientType=0)
+                    progid:DXImageTransform.Microsoft.Shadow(Color=#ff919899, Strength=2, Direction=135);
+
+    /*244, 243, 238*/
+    /* 145, 155, 156*/
+
+    padding:        2px 0px 0px 0px;
+}
+
+.dynamic-tab-pane-control .tab-row {
+    z-index:        1;
+    white-space:    nowrap;
+}
+    </STYLE>
+
+        <SCRIPT language="JavaScript">
+// Copyright 2004 MTM Softwarehaus Dresden
+// Hilfsfunktionen fuer HTML-Datenkarten
+// 2004-04-26 TOM
+
+
+var MTMcolorSelect = '#FFCC00';  // Farbe für Hervorhebungen beim Ueberstreichen mit der Maus
+var MTMcolorDeselect;            // Hier wird waehrend der Hervorhebung die urspruengliche Farbe gespeichert
+var MTMdragging = 0;             // Wird beim Linksklick auf 1 gesetzt und beim Verlassen einer Zelle geprueft
+
+
+function MTMhighlightOn(object)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorSelect;
+       parentObj.style.background = MTMcolorSelect;
+       //alert(parentObj.nodeName + " = " + parentObj.style.background);
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        MTMcolorDeselect = parentObj.bgColor;
+        parentObj.bgColor = MTMcolorSelect;
+    }
+}
+
+// Wird beim Ueberstreichen einer Zelle mit der Maus aufgerufen
+// 1. Parameter object ist ein HTML-Objekt, dessen Hintergrundfarbe geaendert wird (idR = this)
+// 2. Parameter Text der in einer Infozeile ausgegeben werden soll (wird nicht mehr verwendet)
+// 3. bis 5. Parameter, Daten zu dem Element
+function MTMselect(object, text, code, index, variant)
+{
+    MTMhighlightOn(object);
+}
+
+function MTMhighlightOff(object)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorDeselect;
+       parentObj.style.background = MTMcolorDeselect;
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        parentObj.bgColor = MTMcolorDeselect;
+    }
+}
+// Wird beim Verlassen einer Zelle mit der Maus aufgerufen (wenn beim Verlassen immer noch die linke
+// Maustaste gedrueckt ist, wird ein Drag&Drop Event im TiCon erzeugt
+// 1. Parameter object ist ein HTML-Objekt, dessen Hintergrundfarbe zurueckgesetzt werden soll (idR = this)
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMdeselect(object, code, index, variant)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorDeselect;
+       parentObj.style.background = MTMcolorDeselect;
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        parentObj.bgColor = MTMcolorDeselect;
+    }
+
+    //    MTMInfo.innerHTML = '<SPAN class="MTMInfo" align="left">&nbsp;</SPAN>';
+
+    if(MTMdragging) {
+        MTMnavigate(2, code, index, variant);
+        MTMdragging=0;
+    }
+}
+
+// Loest einen Navigationsevent im TiCon aus
+// 1. Parameter Navigationscode: 1 = mit linker Maustaste angeklickt, 2 Drag & Drop, 3 Rechte Maustaste
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMnavigate(navcode, code, index, variant, time, descr)
+{
+    document.location.href=encodeURI("usercode://"+ code + "|" + index + "|" + variant + "|" + time + "|" + descr);
+}
+
+
+// Wird beim Pressen einer beliebigen Maustaste aufgerufen
+// es wird geprueft ob Drag & Drop gestartet werden soll oder ein Rechtsklick ausgeloest werden soll
+// 1. Event der ausgeloest wurde (idR = event)
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMmouseDown(e, code, index, variant)
+{
+    if(e.button == 1) { // linke Maustaste
+       // vorbereiten zum Drag & Drop
+        MTMdragging=1;
+    } else if(e.button == 2) { // rechte Maustaste
+       // Navigieren mit NavCode 3
+       MTMnavigate(3, code, index, variant);
+    }
+}
+
+
+// Tooltip///////////////////////////////////////////////////////////
+/*    Your are permitted to reuse this code as long as the following copyright
+    notice is not removed:
+
+    The    HTML tip handling code is copyright 1998 by insideDHTML.com, LLC. More information about this
+    code can be found at Inside Dynamic HTML: HTTP://www.insideDHTML.com
+*/
+
+// Support for all collection
+var    allSupport = document.all!=null
+
+function setupEventObject(e)
+{
+    // Map NS event object to IEs
+    if (e==null) return // IE returns
+    window.event = e
+    window.event.fromElement = e.target
+    window.event.toElement = e.target
+    window.event.srcElement = e.target
+    window.event.x = e.x
+    window.event.y = e.y
+    // Route the event to the original element
+    // Necessary to make sure _tip is set.
+    //window.event.srcElement.handleEvent(e);
+}
+
+
+function checkName(src)
+{
+    // Look for tooltip in IE
+    while ((src!=null) && (src._tip==null))
+        src = src.parentElement
+    return src
+}
+
+function getElement(elName)
+{
+    // Get an element from its ID
+    if (allSupport)
+        return document.all[elName]
+    else
+        return document.layers[elName]
+}
+
+function writeContents(el, tip)
+{
+    // Replace the contents    of the tooltip
+    if (allSupport)
+        el.innerHTML = tip
+    else {
+        // In NS, insert a table to work around
+        // stylesheet rendering bug.
+        // NS fails to apply style sheets when writing
+        // contents    into a positioned element.
+        el.document.open()
+        el.document.write('<TABLE BORDER=1 bordercolor=black><TR><TD WIDTH=100% class="MTMTooltip">')
+        el.document.write(tip)
+        el.document.write("</TD></TR></TABLE>")
+        el.document.close()
+    }
+}
+
+function getOffset(el, which)
+{
+    // Function for IE to calculate position
+    // of an element.
+    var amount = el["offset"+which]
+    if (which=="Top")
+        amount+=el.offsetHeight
+    el = el.offsetParent
+    while (el!=null) {
+        amount+=el["offset"+which]
+        el = el.offsetParent
+    }
+    return amount
+}
+
+
+function setPosition(el)
+{
+    // Set the position of an element
+    src = window.event.srcElement
+    if (allSupport) {
+        el.style.pixelTop = getOffset(src, "Top")
+        el.style.pixelLeft = getOffset(src, "Left") - 10
+    } else {
+        el.top = src.y + 20
+        el.left = src.x - 10
+    }
+}
+
+function getScrollLeft()
+{
+    // achtung nur für ie
+    var scrollPos;
+    if (typeof window.pageXOffset != 'undefined') {
+       scrollPos = window.pageXOffset;
+    }
+    else if (typeof document.compatMode != 'undefined' &&
+         document.compatMode != 'BackCompat') {
+       scrollPos = document.documentElement.scrollLeft;
+    }
+    else if (typeof document.body != 'undefined') {
+       scrollPos = document.body.scrollLeft;
+    }
+
+    return(scrollPos);
+}
+
+function getScrollTop()
+{
+    // achtung nur für ie
+    var scrollPos;
+    if (typeof window.pageYOffset != 'undefined') {
+       scrollPos = window.pageYOffset;
+    }
+    else if (typeof document.compatMode != 'undefined' &&
+         document.compatMode != 'BackCompat') {
+       scrollPos = document.documentElement.scrollTop;
+    }
+    else if (typeof document.body != 'undefined') {
+       scrollPos = document.body.scrollTop;
+    }
+
+    return(scrollPos);
+}
+
+function setPosition(el, xpos, ypos, tip)
+{
+    var width
+    var scrollLeft
+    var scrollTop
+    var visWidth
+    var    elhidden = getElement("tipBoxWidth")
+
+    // Set the position of an element
+    src = window.event.srcElement
+    if (allSupport) {
+        elhidden.innerHTML = tip
+        width = elhidden.offsetWidth
+        scrollLeft = getScrollLeft()
+        scrollTop = getScrollTop()
+        visWidth = document.body.offsetWidth
+
+        el.style.pixelTop = ypos + scrollTop
+//        alert("xpos: " + xpos + " -- width: " + width + " -- visWidth: " + visWidth + " -- scrollLeft: " + scrollLeft)
+        if(xpos + width + 35> visWidth) xpos = visWidth - width - 35
+        el.style.pixelLeft = xpos + 10 + scrollLeft
+        el.style.width = width
+    } else {
+        el.top = ypos
+        el.left = xpos + 10
+    }
+}
+
+
+function setVisibility(el, bDisplay)
+{
+    // Hide    or show    to tip
+    if (bDisplay)
+        if (allSupport)
+            el.style.visibility = "visible"
+        else
+            el.visibility = "show";
+    else
+        if (allSupport)
+            el.style.visibility = "hidden"
+        else
+            el.visibility = "hidden"
+}
+
+
+function displayContents(tip, xpos, ypos)
+{
+    // Display the tooltip.
+    var    el = getElement("tipBox")
+    writeContents(el, tip)
+    setPosition(el, xpos, ypos, tip)
+    setVisibility(el, true)
+}
+
+
+function doMouseOver(e)
+{
+    // Mouse moves over an element
+    setupEventObject(e)
+    var el, tip
+    if((el = checkName(window.event.srcElement))!=null)
+        if(!el._display) {
+            displayContents(el._tip, window.event.x, window.event.y)
+            //MTMcolorSelect = '#663333';
+            //MTMhighlightOn(window.event.srcElement);
+            //MTMcolorSelect = '#FFCC00';
+            el._display = true
+        }
+}
+
+function doMouseOut(e)
+{
+    // Mouse leaves    an element
+    setupEventObject(e)
+    el = checkName(window.event.srcElement)
+    var el, tip
+    if ((el = checkName(window.event.srcElement))!=null)
+        if (el._display)
+            if ((el.contains==null) || (!el.contains(window.event.toElement))) {
+                setVisibility(getElement("tipBox"), false)
+                //MTMhighlightOff(window.event.srcElement);
+                el._display = false
+            }
+}
+
+function doLoad()
+{
+    // Do Loading
+    if ((window.document.captureEvents==null) && (!allSupport))
+        return //Not IE4 or NS4
+    if (window.document.captureEvents!=null) // NS-capture events
+        window.document.captureEvents(Event.MOUSEOVER | Event.MOUSEOUT)
+    window.document.onmouseover = doMouseOver;
+    window.document.onmouseout = doMouseOut;
+}
+
+window.onload = doLoad
+
+
+    </SCRIPT>
+
+        <SCRIPT language="JavaScript">
+/*----------------------------------------------------------------------------\
+|                               Tab Pane 1.02                                 |
+|-----------------------------------------------------------------------------|
+|                         Created by Erik Arvidsson                           |
+|                  (http://webfx.eae.net/contact.html#erik)                   |
+|                      For WebFX (http://webfx.eae.net/)                      |
+|-----------------------------------------------------------------------------|
+|                  Copyright (c) 1998 - 2003 Erik Arvidsson                   |
+|-----------------------------------------------------------------------------|
+| This software is provided "as is", without warranty of any kind, express or |
+| implied, including  but not limited  to the warranties of  merchantability, |
+| fitness for a particular purpose and noninfringement. In no event shall the |
+| authors or  copyright  holders be  liable for any claim,  damages or  other |
+| liability, whether  in an  action of  contract, tort  or otherwise, arising |
+| from,  out of  or in  connection with  the software or  the  use  or  other |
+| dealings in the software.                                                   |
+| - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+| This  software is  available under the  three different licenses  mentioned |
+| below.  To use this software you must chose, and qualify, for one of those. |
+| - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+| The WebFX Non-Commercial License          http://webfx.eae.net/license.html |
+| Permits  anyone the right to use the  software in a  non-commercial context |
+| free of charge.                                                             |
+| - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+| The WebFX Commercial license           http://webfx.eae.net/commercial.html |
+| Permits the  license holder the right to use  the software in a  commercial |
+| context. Such license must be specifically obtained, however it's valid for |
+| any number of  implementations of the licensed software.                    |
+| - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - |
+| GPL - The GNU General Public License    http://www.gnu.org/licenses/gpl.txt |
+| Permits anyone the right to use and modify the software without limitations |
+| as long as proper  credits are given  and the original  and modified source |
+| code are included. Requires  that the final product, software derivate from |
+| the original  source or any  software  utilizing a GPL  component, such  as |
+| this, is also licensed under the GPL license.                               |
+|-----------------------------------------------------------------------------|
+| 2002-01-?? | First working version                                          |
+| 2002-02-17 | Cleaned up for 1.0 public version                              |
+| 2003-02-18 | Changed from javascript uri for anchors to return false        |
+| 2003-03-03 | Added dispose methods to release IE memory                     |
+|-----------------------------------------------------------------------------|
+| Dependencies: *.css           a css file to define the layout               |
+|-----------------------------------------------------------------------------|
+| Created 2002-01-?? | All changes are in the log above. | Updated 2003-03-03 |
+\----------------------------------------------------------------------------*/
+
+var WebFXNav = new Array();
+var WebFXInitialSelected = 0;
+
+// This function is used to define if the browser supports the needed
+// features
+function hasSupport() {
+
+    if (typeof hasSupport.support != "undefined")
+        return hasSupport.support;
+
+    var ie55 = /msie 5\.[56789]/i.test( navigator.userAgent );
+
+    hasSupport.support = ( typeof document.implementation != "undefined" &&
+            document.implementation.hasFeature( "html", "1.0" ) || ie55 )
+
+    // IE55 has a serious DOM1 bug... Patch it!
+    if ( ie55 ) {
+        document._getElementsByTagName = document.getElementsByTagName;
+        document.getElementsByTagName = function ( sTagName ) {
+            if ( sTagName == "*" )
+                return document.all;
+            else
+                return document._getElementsByTagName( sTagName );
+        };
+    }
+
+    return hasSupport.support;
+}
+
+///////////////////////////////////////////////////////////////////////////////////
+// The constructor for tab panes
+//
+// el : HTMLElement        The html element used to represent the tab pane
+// bUseCookie : Boolean    Optional. Default is true. Used to determine whether to us
+//                        persistance using cookies or not
+//
+function WebFXTabPane( el, bUseCookie ) {
+    if ( !hasSupport() || el == null ) return;
+
+    this.element = el;
+    this.element.tabPane = this;
+    this.pages = [];
+    this.selectedIndex = null;
+    this.useCookie = bUseCookie != null ? bUseCookie : true;
+
+    // add class name tag to class name
+    this.element.className = this.classNameTag + " " + this.element.className;
+
+    // add tab row
+    this.tabRow = document.createElement( "div" );
+    this.tabRow.className = "tab-row";
+    el.insertBefore( this.tabRow, el.firstChild );
+
+    var tabIndex = 0;
+    if ( this.useCookie ) {
+        tabIndex = Number( WebFXTabPane.getCookie( "webfxtab_" + this.element.id ) );
+        if ( isNaN( tabIndex ) )
+            tabIndex = 0;
+    }
+    this.selectedIndex = tabIndex;
+    if(WebFXInitialSelected > 0) this.selectedIndex = WebFXInitialSelected;
+
+    // loop through child nodes and add them
+    var cs = el.childNodes;
+    var n;
+    for (var i = 0; i < cs.length; i++) {
+        if (cs[i].nodeType == 1 && cs[i].className == "tab-page") {
+            this.addTabPage( cs[i] );
+        }
+    }
+}
+
+WebFXTabPane.prototype.classNameTag = "dynamic-tab-pane-control";
+
+WebFXTabPane.prototype.setSelectedIndex = function ( n ) {
+    if (this.selectedIndex != n) {
+        if (this.selectedIndex != null && this.pages[ this.selectedIndex ] != null )
+            this.pages[ this.selectedIndex ].hide();
+        this.selectedIndex = n;
+        this.pages[ this.selectedIndex ].show();
+
+        if ( this.useCookie )
+            WebFXTabPane.setCookie( "webfxtab_" + this.element.id, n );    // session cookie
+    }
+};
+
+WebFXTabPane.prototype.getSelectedIndex = function () {
+    return this.selectedIndex;
+};
+
+WebFXTabPane.prototype.addTabPage = function ( oElement ) {
+    if ( !hasSupport() ) return;
+
+    if ( oElement.tabPage == this )    // already added
+        return oElement.tabPage;
+
+    var n = this.pages.length;
+    var tp = this.pages[n] = new WebFXTabPage( oElement, this, n );
+    tp.tabPane = this;
+
+    // move the tab out of the box
+    this.tabRow.appendChild( tp.tab );
+
+    if ( n == this.selectedIndex )
+        tp.show();
+    else
+        tp.hide();
+
+    return tp;
+};
+
+WebFXTabPane.prototype.dispose = function () {
+    this.element.tabPane = null;
+    this.element = null;
+    this.tabRow = null;
+
+    for (var i = 0; i < this.pages.length; i++) {
+        this.pages[i].dispose();
+        this.pages[i] = null;
+    }
+    this.pages = null;
+};
+
+
+
+// Cookie handling
+WebFXTabPane.setCookie = function ( sName, sValue, nDays ) {
+    var expires = "";
+    if ( nDays ) {
+        var d = new Date();
+        d.setTime( d.getTime() + nDays * 24 * 60 * 60 * 1000 );
+        expires = "; expires=" + d.toGMTString();
+    }
+
+    document.cookie = sName + "=" + sValue + expires + "; path=/";
+};
+
+WebFXTabPane.getCookie = function (sName) {
+    var re = new RegExp( "(\;|^)[^;]*(" + sName + ")\=([^;]*)(;|$)" );
+    var res = re.exec( document.cookie );
+    return res != null ? res[3] : null;
+};
+
+WebFXTabPane.removeCookie = function ( name ) {
+    setCookie( name, "", -1 );
+};
+
+
+
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////
+// The constructor for tab pages. This one should not be used.
+// Use WebFXTabPage.addTabPage instead
+//
+// el : HTMLElement            The html element used to represent the tab pane
+// tabPane : WebFXTabPane    The parent tab pane
+// nindex :    Number            The index of the page in the parent pane page array
+//
+function WebFXTabPage( el, tabPane, nIndex ) {
+    if ( !hasSupport() || el == null ) return;
+
+    this.element = el;
+    this.element.tabPage = this;
+    this.index = nIndex;
+
+    var cs = el.childNodes;
+    for (var i = 0; i < cs.length; i++) {
+        if (cs[i].nodeType == 1 && cs[i].className == "tab") {
+            this.tab = cs[i];
+            break;
+        }
+    }
+
+    // insert a tag around content to support keyboard navigation
+
+
+    var a = document.createElement( "A" );
+    this.aElement = a;
+    a.href = "#";
+    a.onclick = function () { return false; };
+    while ( this.tab.hasChildNodes() )
+        a.appendChild( this.tab.firstChild );
+    this.tab.appendChild( a );
+
+
+    // hook up events, using DOM0
+    var oThis = this;
+    this.tab.onclick = function () { oThis.select(); };
+    this.tab.onmouseover = function () { WebFXTabPage.tabOver( oThis ); };
+    this.tab.onmouseout = function () { WebFXTabPage.tabOut( oThis ); };
+}
+
+WebFXTabPage.prototype.show = function () {
+    var el = this.tab;
+    var s = el.className + " selected";
+    s = s.replace(/ +/g, " ");
+    el.className = s;
+
+    this.element.style.display = "block";
+};
+
+WebFXTabPage.prototype.hide = function () {
+    var el = this.tab;
+    var s = el.className;
+    s = s.replace(/ selected/g, "");
+    el.className = s;
+
+    this.element.style.display = "none";
+};
+
+WebFXTabPage.prototype.select = function () {
+    this.tabPane.setSelectedIndex( this.index );
+    if(WebFXNav.length > this.index) eval(WebFXNav[this.index]);
+};
+
+WebFXTabPage.prototype.dispose = function () {
+    this.aElement.onclick = null;
+    this.aElement = null;
+    this.element.tabPage = null;
+    this.tab.onclick = null;
+    this.tab.onmouseover = null;
+    this.tab.onmouseout = null;
+    this.tab = null;
+    this.tabPane = null;
+    this.element = null;
+};
+
+WebFXTabPage.tabOver = function ( tabpage ) {
+    var el = tabpage.tab;
+    var s = el.className + " hover";
+    s = s.replace(/ +/g, " ");
+    el.className = s;
+};
+
+WebFXTabPage.tabOut = function ( tabpage ) {
+    var el = tabpage.tab;
+    var s = el.className;
+    s = s.replace(/ hover/g, "");
+    el.className = s;
+};
+
+
+// This function initializes all uninitialized tab panes and tab pages
+function setupAllTabs() {
+    if ( !hasSupport() ) return;
+
+    var all = document.getElementsByTagName( "*" );
+    var l = all.length;
+    var tabPaneRe = /tab\-pane/;
+    var tabPageRe = /tab\-page/;
+    var cn, el;
+    var parentTabPane;
+
+    for ( var i = 0; i < l; i++ ) {
+        el = all[i]
+        cn = el.className;
+
+        // no className
+        if ( cn == "" ) continue;
+
+        // uninitiated tab pane
+        if ( tabPaneRe.test( cn ) && !el.tabPane )
+            new WebFXTabPane( el, false );
+
+        // unitiated tab page wit a valid tab pane parent
+        else if ( tabPageRe.test( cn ) && !el.tabPage &&
+                    tabPaneRe.test( el.parentNode.className ) ) {
+            el.parentNode.tabPane.addTabPage( el );
+        }
+    }
+}
+
+function disposeAllTabs() {
+    if ( !hasSupport() ) return;
+
+    var all = document.getElementsByTagName( "*" );
+    var l = all.length;
+    var tabPaneRe = /tab\-pane/;
+    var cn, el;
+    var tabPanes = [];
+
+    for ( var i = 0; i < l; i++ ) {
+        el = all[i]
+        cn = el.className;
+
+        // no className
+        if ( cn == "" ) continue;
+
+        // tab pane
+        if ( tabPaneRe.test( cn ) && el.tabPane )
+            tabPanes[tabPanes.length] = el.tabPane;
+    }
+
+    for (var i = tabPanes.length - 1; i >= 0; i--) {
+        tabPanes[i].dispose();
+        tabPanes[i] = null;
+    }
+}
+
+
+// initialization hook up
+
+// DOM2
+if ( typeof window.addEventListener != "undefined" )
+    window.addEventListener( "load", setupAllTabs, false );
+
+// IE
+else if ( typeof window.attachEvent != "undefined" ) {
+    window.attachEvent( "onload", setupAllTabs );
+    window.attachEvent( "onunload", disposeAllTabs );
+}
+
+else {
+    if ( window.onload != null ) {
+        var oldOnload = window.onload;
+        window.onload = function ( e ) {
+            oldOnload( e );
+            setupAllTabs();
+        };
+    }
+    else
+        window.onload = setupAllTabs;
+}
+    </SCRIPT>
+
+
+    <TITLE>SDB</TITLE>
+</HEAD>
+
+<BODY bgcolor="#FFFFFF" leftmargin="6" topmargin="6" marginwidth="6" marginheight="6">
+<DIV ID=tipBox></DIV>
+<DIV ID=tipBoxWidth></DIV>
+
+
+
+
+
+<DIV class="tab-pane" id="tab-pane-1">
+    <DIV class="tab-page">
+        <H2 class="tab"><SPAN class="MTMText">Get and Place</SPAN></H2>
+        <TABLE border="1" width="98%"  cellpadding="0" cellspacing="0" bgcolor="#000000" align="center"><TR><TD>
+        <TABLE border="1" width="100%"   cellspacing="1" cellpadding="1" class="MTMGeneral">
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="37%" colspan="4" class="MTMText">Movement length<BR>in<BR>cm</TD>
+                <TD width="9%">0<BR><SPAN class="MTMText">to</SPAN><BR>&lt; 3</TD>
+                <TD width="9%">&gt;= 3<BR><SPAN class="MTMText">to</SPAN><BR>&lt;= 9</TD>
+                <TD width="9%">&gt; 9<BR><SPAN class="MTMText">to</SPAN><BR>&lt;= 22</TD>
+                <TD width="9%">&gt; 22<BR><SPAN class="MTMText">to</SPAN><BR>&lt;= 37</TD>
+                <TD width="9%">&gt; 37<BR><SPAN class="MTMText">to</SPAN><BR>&lt;= 52</TD>
+                <TD width="9%">&gt; 52<BR><SPAN class="MTMText">to</SPAN><BR>&lt;= 67</TD>
+                <TD width="9%">&gt; 67<BR><SPAN class="MTMText">to</SPAN><BR>&lt;= 82</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="37%" colspan="4"><SPAN class="MTMText">Distance</SPAN> (<B><SPAN class="MTMText">DT</SPAN></B>)</TD>
+                <TD width="9%"><B>02</B></TD>
+                <TD width="9%"><B>05</B></TD>
+                <TD width="9%"><B>15</B></TD>
+                <TD width="9%"><B>30</B></TD>
+                <TD width="9%"><B>45</B></TD>
+                <TD width="9%"><B>60</B></TD>
+                <TD width="9%"><B>75</B></TD>
+            </TR>
+        </TABLE>
+        </TD></TR></TABLE>
+
+        <BR>
+
+        <TABLE border="1" width="98%"  cellpadding="0" cellspacing="0" bgcolor="#000000" align="center"><TR><TD>
+        <TABLE border="1" width="100%"   cellspacing="1" cellpadding="2" class="MTMGeneral">
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="100%" colspan="11" class="SDBHeaderBlue"><SPAN class="MTMText">Get</SPAN></TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" rowspan="3" class="MTMText">DT</TD>
+                <TD width="18%" colspan="2" class="MTMText">Contact</TD>
+                <TD width="18%" colspan="2" class="MTMText">Easy</TD>
+                <TD width="18%" colspan="2" class="MTMText">Average</TD>
+                <TD width="18%" colspan="2" class="MTMText">Difficult</TD>
+                <TD width="18%" colspan="2" class="MTMText">Handfull</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="9%" class="MTMText">1 hand</TD>
+                <TD width="9%" class="MTMText">2 hands</TD>
+                <TD width="9%" class="MTMText">1 hand</TD>
+                <TD width="9%" class="MTMText">2 hands</TD>
+                <TD width="9%" class="MTMText">1 hand</TD>
+                <TD width="9%" class="MTMText">2 hands</TD>
+                <TD width="9%" class="MTMText">1 hand</TD>
+                <TD width="9%" class="MTMText">2 hands</TD>
+                <TD width="9%" class="MTMText">stacked</TD>
+                <TD width="9%" class="MTMText">mixed</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="9%" class="MEKHeaderRed">AKE</TD>
+                <TD width="9%" class="MEKHeaderRed">AKZ</TD>
+                <TD width="9%" class="MEKHeaderRed">ALE</TD>
+                <TD width="9%" class="MEKHeaderRed">ALZ</TD>
+                <TD width="9%" class="MEKHeaderRed">AME</TD>
+                <TD width="9%" class="MEKHeaderRed">AMZ</TD>
+                <TD width="9%" class="MEKHeaderRed">ASE</TD>
+                <TD width="9%" class="MEKHeaderRed">ASZ</TD>
+                <TD width="9%" class="MEKHeaderRed">AHG</TD>
+                <TD width="9%" class="MEKHeaderRed">AHV</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" class="MEKHeaderRed">02</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKE02..4', '', '');" title="Pick up, contact, 1 hand, EB 02" onmouseout="MTMdeselect(this, '2000AKE02..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKE02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKE02..4', '', '',2,'Pick up, contact, 1 hand, EB 02');">2</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKZ02..4', '', '');" title="Pick up, contact, 2 hands, EB 02" onmouseout="MTMdeselect(this, '2000AKZ02..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKZ02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKZ02..4', '', '',2,'Pick up, contact, 2 hands, EB 02');">2</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALE02..4', '', '');" title="Pick up, easy, 1 hand, EB 02" onmouseout="MTMdeselect(this, '2000ALE02..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALE02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALE02..4', '', '',6,'Pick up, easy, 1 hand, EB 02');">6</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALZ02..4', '', '');" title="Pick up, easy, 2 hands, EB 02" onmouseout="MTMdeselect(this, '2000ALZ02..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALZ02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALZ02..4', '', '',6,'Pick up, easy, 2 hands, EB 02');">6</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AME02..4', '', '');" title="Pick up, medium, 1 hand, EB 02" onmouseout="MTMdeselect(this, '2000AME02..4', '', '');" onmousedown="MTMmouseDown(event, '2000AME02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AME02..4', '', '',8,'Pick up, medium, 1 hand, EB 02');">8</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AMZ02..4', '', '');" title="Pick up, medium, 2 hands, EB 02" onmouseout="MTMdeselect(this, '2000AMZ02..4', '', '');" onmousedown="MTMmouseDown(event, '2000AMZ02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AMZ02..4', '', '',11,'Pick up, medium, 2 hands, EB 02');">11</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASE02..4', '', '');" title="Pick up, difficult, 1 hand, EB 02" onmouseout="MTMdeselect(this, '2000ASE02..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASE02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASE02..4', '', '',13,'Pick up, difficult, 1 hand, EB 02');">13</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASZ02..4', '', '');" title="Pick up, difficult, 2 hands, EB 02" onmouseout="MTMdeselect(this, '2000ASZ02..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASZ02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASZ02..4', '', '',27,'Pick up, difficult, 2 hands, EB 02');">27</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHG02..4', '', '');" title="Pick up, hand full, stacked, EB 02" onmouseout="MTMdeselect(this, '2000AHG02..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHG02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHG02..4', '', '',16,'Pick up, hand full, stacked, EB 02');">16</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHV02..4', '', '');" title="Pick up, hand full, mixed, EB 02" onmouseout="MTMdeselect(this, '2000AHV02..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHV02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHV02..4', '', '',33,'Pick up, hand full, mixed, EB 02');">33</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" class="MEKHeaderRed">05</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKE05..4', '', '');" title="Pick up, contact, 1 hand, EB 05" onmouseout="MTMdeselect(this, '2000AKE05..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKE05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKE05..4', '', '',4,'Pick up, contact, 1 hand, EB 05');">4</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKZ05..4', '', '');" title="Pick up, contact, 2 hands, EB 05" onmouseout="MTMdeselect(this, '2000AKZ05..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKZ05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKZ05..4', '', '',4,'Pick up, contact, 2 hands, EB 05');">4</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALE05..4', '', '');" title="Pick up, easy, 1 hand, EB 05" onmouseout="MTMdeselect(this, '2000ALE05..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALE05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALE05..4', '', '',8,'Pick up, easy, 1 hand, EB 05');">8</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALZ05..4', '', '');" title="Pick up, easy, 2 hands, EB 05" onmouseout="MTMdeselect(this, '2000ALZ05..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALZ05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALZ05..4', '', '',8,'Pick up, easy, 2 hands, EB 05');">8</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AME05..4', '', '');" title="Pick up, medium, 1 hand, EB 05" onmouseout="MTMdeselect(this, '2000AME05..4', '', '');" onmousedown="MTMmouseDown(event, '2000AME05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AME05..4', '', '',10,'Pick up, medium, 1 hand, EB 05');">10</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AMZ05..4', '', '');" title="Pick up, medium, 2 hands, EB 05" onmouseout="MTMdeselect(this, '2000AMZ05..4', '', '');" onmousedown="MTMmouseDown(event, '2000AMZ05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AMZ05..4', '', '',13,'Pick up, medium, 2 hands, EB 05');">13</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASE05..4', '', '');" title="Pick up, difficult, 1 hand, EB 05" onmouseout="MTMdeselect(this, '2000ASE05..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASE05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASE05..4', '', '',17,'Pick up, difficult, 1 hand, EB 05');">17</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASZ05..4', '', '');" title="Pick up, difficult, 2 hands, EB 05" onmouseout="MTMdeselect(this, '2000ASZ05..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASZ05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASZ05..4', '', '',31,'Pick up, difficult, 2 hands, EB 05');">31</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHG05..4', '', '');" title="Pick up, hand full, stacked, EB 05" onmouseout="MTMdeselect(this, '2000AHG05..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHG05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHG05..4', '', '',18,'Pick up, hand full, stacked, EB 05');">18</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHV05..4', '', '');" title="Pick up, hand full, mixed, EB 05" onmouseout="MTMdeselect(this, '2000AHV05..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHV05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHV05..4', '', '',35,'Pick up, hand full, mixed, EB 05');">35</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%"  class="MEKHeaderRed">15</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKE15..4', '', '');" title="Pick up, contact, 1 hand, EB 15" onmouseout="MTMdeselect(this, '2000AKE15..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKE15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKE15..4', '', '',9,'Pick up, contact, 1 hand, EB 15');">9</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKZ15..4', '', '');" title="Pick up, contact, 2 hands, EB 15" onmouseout="MTMdeselect(this, '2000AKZ15..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKZ15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKZ15..4', '', '',9,'Pick up, contact, 2 hands, EB 15');">9</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALE15..4', '', '');" title="Pick up, easy, 1 hand, EB 15" onmouseout="MTMdeselect(this, '2000ALE15..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALE15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALE15..4', '', '',13,'Pick up, easy, 1 hand, EB 15');">13</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALZ15..4', '', '');" title="Pick up, easy, 2 hands, EB 15" onmouseout="MTMdeselect(this, '2000ALZ15..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALZ15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALZ15..4', '', '',13,'Pick up, easy, 2 hands, EB 15');">13</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AME15..4', '', '');" title="Pick up, medium, 1 hand, EB 15" onmouseout="MTMdeselect(this, '2000AME15..4', '', '');" onmousedown="MTMmouseDown(event, '2000AME15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AME15..4', '', '',14,'Pick up, medium, 1 hand, EB 15');">14</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AMZ15..4', '', '');" title="Pick up, medium, 2 hands, EB 15" onmouseout="MTMdeselect(this, '2000AMZ15..4', '', '');" onmousedown="MTMmouseDown(event, '2000AMZ15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AMZ15..4', '', '',18,'Pick up, medium, 2 hands, EB 15');">18</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASE15..4', '', '');" title="Pick up, difficult, 1 hand, EB 15" onmouseout="MTMdeselect(this, '2000ASE15..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASE15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASE15..4', '', '',21,'Pick up, difficult, 1 hand, EB 15');">21</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASZ15..4', '', '');" title="Pick up, difficult, 2 hands, EB 15" onmouseout="MTMdeselect(this, '2000ASZ15..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASZ15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASZ15..4', '', '',35,'Pick up, difficult, 2 hands, EB 15');">35</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHG15..4', '', '');" title="Pick up, hand full, stacked, EB 15" onmouseout="MTMdeselect(this, '2000AHG15..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHG15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHG15..4', '', '',23,'Pick up, hand full, stacked, EB 15');">23</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHV15..4', '', '');" title="Pick up, hand full, mixed, EB 15" onmouseout="MTMdeselect(this, '2000AHV15..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHV15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHV15..4', '', '',40,'Pick up, hand full, mixed, EB 15');">40</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" class="MEKHeaderRed">30</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKE30..4', '', '');" title="Pick up, contact, 1 hand, EB 30" onmouseout="MTMdeselect(this, '2000AKE30..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKE30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKE30..4', '', '',13,'Pick up, contact, 1 hand, EB 30');">13</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKZ30..4', '', '');" title="Pick up, contact, 2 hands, EB 30" onmouseout="MTMdeselect(this, '2000AKZ30..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKZ30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKZ30..4', '', '',13,'Pick up, contact, 2 hands, EB 30');">13</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALE30..4', '', '');" title="Pick up, easy, 1 hand, EB 30" onmouseout="MTMdeselect(this, '2000ALE30..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALE30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALE30..4', '', '',17,'Pick up, easy, 1 hand, EB 30');">17</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALZ30..4', '', '');" title="Pick up, easy, 2 hands, EB 30" onmouseout="MTMdeselect(this, '2000ALZ30..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALZ30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALZ30..4', '', '',17,'Pick up, easy, 2 hands, EB 30');">17</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AME30..4', '', '');" title="Pick up, medium, 1 hand, EB 30" onmouseout="MTMdeselect(this, '2000AME30..4', '', '');" onmousedown="MTMmouseDown(event, '2000AME30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AME30..4', '', '',18,'Pick up, medium, 1 hand, EB 30');">18</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AMZ30..4', '', '');" title="Pick up, medium, 2 hands, EB 30" onmouseout="MTMdeselect(this, '2000AMZ30..4', '', '');" onmousedown="MTMmouseDown(event, '2000AMZ30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AMZ30..4', '', '',22,'Pick up, medium, 2 hands, EB 30');">22</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASE30..4', '', '');" title="Pick up, difficult, 1 hand, EB 30" onmouseout="MTMdeselect(this, '2000ASE30..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASE30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASE30..4', '', '',25,'Pick up, difficult, 1 hand, EB 30');">25</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASZ30..4', '', '');" title="Pick up, difficult, 2 hands, EB 30" onmouseout="MTMdeselect(this, '2000ASZ30..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASZ30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASZ30..4', '', '',39,'Pick up, difficult, 2 hands, EB 30');">39</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHG30..4', '', '');" title="Pick up, hand full, stacked, EB 30" onmouseout="MTMdeselect(this, '2000AHG30..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHG30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHG30..4', '', '',27,'Pick up, hand full, stacked, EB 30');">27</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHV30..4', '', '');" title="Pick up, hand full, mixed, EB 30" onmouseout="MTMdeselect(this, '2000AHV30..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHV30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHV30..4', '', '',44,'Pick up, hand full, mixed, EB 30');">44</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" class="MEKHeaderRed">45</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKE45..4', '', '');" title="Pick up, contact, 1 hand, EB 45" onmouseout="MTMdeselect(this, '2000AKE45..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKE45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKE45..4', '', '',17,'Pick up, contact, 1 hand, EB 45');">17</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKZ45..4', '', '');" title="Pick up, contact, 2 hands, EB 45" onmouseout="MTMdeselect(this, '2000AKZ45..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKZ45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKZ45..4', '', '',17,'Pick up, contact, 2 hands, EB 45');">17</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALE45..4', '', '');" title="Pick up, easy, 1 hand, EB 45" onmouseout="MTMdeselect(this, '2000ALE45..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALE45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALE45..4', '', '',21,'Pick up, easy, 1 hand, EB 45');">21</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALZ45..4', '', '');" title="Pick up, easy, 2 hands, EB 45" onmouseout="MTMdeselect(this, '2000ALZ45..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALZ45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALZ45..4', '', '',21,'Pick up, easy, 2 hands, EB 45');">21</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AME45..4', '', '');" title="Pick up, medium, 1 hand, EB 45" onmouseout="MTMdeselect(this, '2000AME45..4', '', '');" onmousedown="MTMmouseDown(event, '2000AME45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AME45..4', '', '',23,'Pick up, medium, 1 hand, EB 45');">23</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AMZ45..4', '', '');" title="Pick up, medium, 2 hands, EB 45" onmouseout="MTMdeselect(this, '2000AMZ45..4', '', '');" onmousedown="MTMmouseDown(event, '2000AMZ45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AMZ45..4', '', '',26,'Pick up, medium, 2 hands, EB 45');">26</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASE45..4', '', '');" title="Pick up, difficult, 1 hand, EB 45" onmouseout="MTMdeselect(this, '2000ASE45..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASE45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASE45..4', '', '',29,'Pick up, difficult, 1 hand, EB 45');">29</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASZ45..4', '', '');" title="Pick up, difficult, 2 hands, EB 45" onmouseout="MTMdeselect(this, '2000ASZ45..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASZ45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASZ45..4', '', '',44,'Pick up, difficult, 2 hands, EB 45');">44</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHG45..4', '', '');" title="Pick up, hand full, stacked, EB 45" onmouseout="MTMdeselect(this, '2000AHG45..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHG45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHG45..4', '', '',31,'Pick up, hand full, stacked, EB 45');">31</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHV45..4', '', '');" title="Pick up, hand full, mixed, EB 45" onmouseout="MTMdeselect(this, '2000AHV45..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHV45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHV45..4', '', '',48,'Pick up, hand full, mixed, EB 45');">48</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" class="MEKHeaderRed">60</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKE60..4', '', '');" title="Pick up, contact, 1 hand, EB 60" onmouseout="MTMdeselect(this, '2000AKE60..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKE60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKE60..4', '', '',21,'Pick up, contact, 1 hand, EB 60');">21</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKZ60..4', '', '');" title="Pick up, contact, 2 hands, EB 60" onmouseout="MTMdeselect(this, '2000AKZ60..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKZ60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKZ60..4', '', '',21,'Pick up, contact, 2 hands, EB 60');">21</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALE60..4', '', '');" title="Pick up, easy, 1 hand, EB 60" onmouseout="MTMdeselect(this, '2000ALE60..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALE60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALE60..4', '', '',25,'Pick up, easy, 1 hand, EB 60');">25</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALZ60..4', '', '');" title="Pick up, easy, 2 hands, EB 60" onmouseout="MTMdeselect(this, '2000ALZ60..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALZ60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALZ60..4', '', '',25,'Pick up, easy, 2 hands, EB 60');">25</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AME60..4', '', '');" title="Pick up, medium, 1 hand, EB 60" onmouseout="MTMdeselect(this, '2000AME60..4', '', '');" onmousedown="MTMmouseDown(event, '2000AME60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AME60..4', '', '',27,'Pick up, medium, 1 hand, EB 60');">27</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AMZ60..4', '', '');" title="Pick up, medium, 2 hands, EB 60" onmouseout="MTMdeselect(this, '2000AMZ60..4', '', '');" onmousedown="MTMmouseDown(event, '2000AMZ60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AMZ60..4', '', '',30,'Pick up, medium, 2 hands, EB 60');">30</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASE60..4', '', '');" title="Pick up, difficult, 1 hand, EB 60" onmouseout="MTMdeselect(this, '2000ASE60..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASE60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASE60..4', '', '',33,'Pick up, difficult, 1 hand, EB 60');">33</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASZ60..4', '', '');" title="Pick up, difficult, 2 hands, EB 60" onmouseout="MTMdeselect(this, '2000ASZ60..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASZ60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASZ60..4', '', '',48,'Pick up, difficult, 2 hands, EB 60');">48</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHG60..4', '', '');" title="Pick up, hand full, stacked, EB 60" onmouseout="MTMdeselect(this, '2000AHG60..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHG60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHG60..4', '', '',35,'Pick up, hand full, stacked, EB 60');">35</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHV60..4', '', '');" title="Pick up, hand full, mixed, EB 60" onmouseout="MTMdeselect(this, '2000AHV60..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHV60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHV60..4', '', '',53,'Pick up, hand full, mixed, EB 60');">53</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" class="MEKHeaderRed">75</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKE75..4', '', '');" title="Pick up, contact, 1 hand, EB 75" onmouseout="MTMdeselect(this, '2000AKE75..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKE75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKE75..4', '', '',26,'Pick up, contact, 1 hand, EB 75');">26</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AKZ75..4', '', '');" title="Pick up, contact, 2 hands, EB 75" onmouseout="MTMdeselect(this, '2000AKZ75..4', '', '');" onmousedown="MTMmouseDown(event, '2000AKZ75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AKZ75..4', '', '',26,'Pick up, contact, 2 hands, EB 75');">26</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALE75..4', '', '');" title="Pick up, easy, 1 hand, EB 75" onmouseout="MTMdeselect(this, '2000ALE75..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALE75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALE75..4', '', '',30,'Pick up, easy, 1 hand, EB 75');">30</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ALZ75..4', '', '');" title="Pick up, easy, 2 hands, EB 75" onmouseout="MTMdeselect(this, '2000ALZ75..4', '', '');" onmousedown="MTMmouseDown(event, '2000ALZ75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ALZ75..4', '', '',30,'Pick up, easy, 2 hands, EB 75');">30</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AME75..4', '', '');" title="Pick up, medium, 1 hand, EB 75" onmouseout="MTMdeselect(this, '2000AME75..4', '', '');" onmousedown="MTMmouseDown(event, '2000AME75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AME75..4', '', '',31,'Pick up, medium, 1 hand, EB 75');">31</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AMZ75..4', '', '');" title="Pick up, medium, 2 hands, EB 75" onmouseout="MTMdeselect(this, '2000AMZ75..4', '', '');" onmousedown="MTMmouseDown(event, '2000AMZ75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AMZ75..4', '', '',35,'Pick up, medium, 2 hands, EB 75');">35</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASE75..4', '', '');" title="Pick up, difficult, 1 hand, EB 75" onmouseout="MTMdeselect(this, '2000ASE75..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASE75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASE75..4', '', '',38,'Pick up, difficult, 1 hand, EB 75');">38</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000ASZ75..4', '', '');" title="Pick up, difficult, 2 hands, EB 75" onmouseout="MTMdeselect(this, '2000ASZ75..4', '', '');" onmousedown="MTMmouseDown(event, '2000ASZ75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000ASZ75..4', '', '',52,'Pick up, difficult, 2 hands, EB 75');">52</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHG75..4', '', '');" title="Pick up, hand full, stacked, EB 75" onmouseout="MTMdeselect(this, '2000AHG75..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHG75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHG75..4', '', '',40,'Pick up, hand full, stacked, EB 75');">40</TD>
+                <TD width="9%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000AHV75..4', '', '');" title="Pick up, hand full, mixed, EB 75" onmouseout="MTMdeselect(this, '2000AHV75..4', '', '');" onmousedown="MTMmouseDown(event, '2000AHV75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000AHV75..4', '', '',57,'Pick up, hand full, mixed, EB 75');">57</TD>
+            </TR>
+        </TABLE>
+        </TD></TR></TABLE>
+
+        <BR>
+
+        <TABLE border="1" width="98%" cellpadding="0" cellspacing="0" bgcolor="#000000" align="center"><TR><TD>
+        <TABLE border="1" width="100%"   cellspacing="1" cellpadding="1" class="MTMGeneral">
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="100%" colspan="8" class="SDBHeaderBlue"><SPAN class="MTMText">Place</SPAN></TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" rowspan="3" class="MTMText">DT</TD>
+                <TD width="12%" class="MTMText">Other</TD>
+                <TD width="26%" colspan="2" class="MTMText">aprox. pos.</TD>
+                <TD width="26%" colspan="2" class="MTMText">loose</TD>
+                <TD width="26%" colspan="2" class="MTMText">tight</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="12%" class="MTMText">hand</TD>
+                <TD width="13%" class="MTMText">1 hand</TD>
+                <TD width="13%" class="MTMText">2 hands</TD>
+                <TD width="13%" class="MTMText">1 point</TD>
+                <TD width="13%" class="MTMText">2 points</TD>
+                <TD width="13%" class="MTMText">1 point</TD>
+                <TD width="13%" class="MTMText">2 points</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="12%" class="MEKHeaderRed">PAE</TD>
+                <TD width="13%" class="MEKHeaderRed">PUE</TD>
+                <TD width="13%" class="MEKHeaderRed">PUZ</TD>
+                <TD width="13%" class="MEKHeaderRed">PLE</TD>
+                <TD width="13%" class="MEKHeaderRed">PLZ</TD>
+                <TD width="13%" class="MEKHeaderRed">PEE</TD>
+                <TD width="13%" class="MEKHeaderRed">PEZ</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" class="MEKHeaderRed">02</TD>
+                <TD width="12%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PAE02..4', '', '');" title="Place, other hand, EB 02" onmouseout="MTMdeselect(this, '2000PAE02..4', '', '');" onmousedown="MTMmouseDown(event, '2000PAE02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PAE02..4', '', '',4,'Place, other hand, EB 02');">4</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUE02..4', '', '');" title="Place, approx.e position, 1 hand, EB 02" onmouseout="MTMdeselect(this, '2000PUE02..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUE02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUE02..4', '', '',2,'Place, approx.e position, 1 hand, EB 02');">2</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUZ02..4', '', '');" title="Place, approx.e position, 2 hands, EB 02" onmouseout="MTMdeselect(this, '2000PUZ02..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUZ02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUZ02..4', '', '',2,'Place, approx.e position, 2 hands, EB 02');">2</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLE02..4', '', '');" title="Place, loose, 1 point, EB 02" onmouseout="MTMdeselect(this, '2000PLE02..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLE02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLE02..4', '', '',8,'Place, loose, 1 point, EB 02');">8</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLZ02..4', '', '');" title="Place, loose, 2 points, EB 02" onmouseout="MTMdeselect(this, '2000PLZ02..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLZ02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLZ02..4', '', '',13,'Place, loose, 2 points, EB 02');">13</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEE02..4', '', '');" title="Place, close, 1 point, EB 02" onmouseout="MTMdeselect(this, '2000PEE02..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEE02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEE02..4', '', '',18,'Place, close, 1 point, EB 02');">18</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEZ02..4', '', '');" title="Place, close, 2 points, EB 02" onmouseout="MTMdeselect(this, '2000PEZ02..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEZ02..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEZ02..4', '', '',34,'Place, close, 2 points, EB 02');">34</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" class="MEKHeaderRed">05</TD>
+                <TD width="12%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PAE05..4', '', '');" title="Place, other hand, EB 05" onmouseout="MTMdeselect(this, '2000PAE05..4', '', '');" onmousedown="MTMmouseDown(event, '2000PAE05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PAE05..4', '', '',7,'Place, other hand, EB 05');">7</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUE05..4', '', '');" title="Place, approx.e position, 1 hand, EB 05" onmouseout="MTMdeselect(this, '2000PUE05..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUE05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUE05..4', '', '',5,'Place, approx.e position, 1 hand, EB 05');">5</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUZ05..4', '', '');" title="Place, approx.e position, 2 hands, EB 05" onmouseout="MTMdeselect(this, '2000PUZ05..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUZ05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUZ05..4', '', '',5,'Place, approx.e position, 2 hands, EB 05');">5</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLE05..4', '', '');" title="Place, loose, 1 point, EB 05" onmouseout="MTMdeselect(this, '2000PLE05..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLE05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLE05..4', '', '',11,'Place, loose, 1 point, EB 05');">11</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLZ05..4', '', '');" title="Place, loose, 2 points, EB 05" onmouseout="MTMdeselect(this, '2000PLZ05..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLZ05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLZ05..4', '', '',16,'Place, loose, 2 points, EB 05');">16</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEE05..4', '', '');" title="Place, close, 1 point, EB 05" onmouseout="MTMdeselect(this, '2000PEE05..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEE05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEE05..4', '', '',21,'Place, close, 1 point, EB 05');">21</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEZ05..4', '', '');" title="Place, close, 2 points, EB 05" onmouseout="MTMdeselect(this, '2000PEZ05..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEZ05..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEZ05..4', '', '',38,'Place, close, 2 points, EB 05');">38</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" class="MEKHeaderRed">15</TD>
+                <TD width="12%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PAE15..4', '', '');" title="Place, other hand, EB 15" onmouseout="MTMdeselect(this, '2000PAE15..4', '', '');" onmousedown="MTMmouseDown(event, '2000PAE15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PAE15..4', '', '',11,'Place, other hand, EB 15');">11</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUE15..4', '', '');" title="Place, approx.e position, 1 hand, EB 15" onmouseout="MTMdeselect(this, '2000PUE15..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUE15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUE15..4', '', '',9,'Place, approx.e position, 1 hand, EB 15');">9</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUZ15..4', '', '');" title="Place, approx.e position, 2 hands, EB 15" onmouseout="MTMdeselect(this, '2000PUZ15..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUZ15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUZ15..4', '', '',9,'Place, approx.e position, 2 hands, EB 15');">9</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLE15..4', '', '');" title="Place, loose, 1 point, EB 15" onmouseout="MTMdeselect(this, '2000PLE15..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLE15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLE15..4', '', '',16,'Place, loose, 1 point, EB 15');">16</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLZ15..4', '', '');" title="Place, loose, 2 points, EB 15" onmouseout="MTMdeselect(this, '2000PLZ15..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLZ15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLZ15..4', '', '',21,'Place, loose, 2 points, EB 15');">21</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEE15..4', '', '');" title="Place, close, 1 point, EB 15" onmouseout="MTMdeselect(this, '2000PEE15..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEE15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEE15..4', '', '',26,'Place, close, 1 point, EB 15');">26</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEZ15..4', '', '');" title="Place, close, 2 points, EB 15" onmouseout="MTMdeselect(this, '2000PEZ15..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEZ15..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEZ15..4', '', '',43,'Place, close, 2 points, EB 15');">43</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" class="MEKHeaderRed">30</TD>
+                <TD width="12%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PAE30..4', '', '');" title="Place, other hand, EB 30" onmouseout="MTMdeselect(this, '2000PAE30..4', '', '');" onmousedown="MTMmouseDown(event, '2000PAE30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PAE30..4', '', '',15,'Place, other hand, EB 30');">15</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUE30..4', '', '');" title="Place, approx.e position, 1 hand, EB 30" onmouseout="MTMdeselect(this, '2000PUE30..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUE30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUE30..4', '', '',13,'Place, approx.e position, 1 hand, EB 30');">13</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUZ30..4', '', '');" title="Place, approx.e position, 2 hands, EB 30" onmouseout="MTMdeselect(this, '2000PUZ30..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUZ30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUZ30..4', '', '',13,'Place, approx.e position, 2 hands, EB 30');">13</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLE30..4', '', '');" title="Place, loose, 1 point, EB 30" onmouseout="MTMdeselect(this, '2000PLE30..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLE30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLE30..4', '', '',21,'Place, loose, 1 point, EB 30');">21</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLZ30..4', '', '');" title="Place, loose, 2 points, EB 30" onmouseout="MTMdeselect(this, '2000PLZ30..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLZ30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLZ30..4', '', '',26,'Place, loose, 2 points, EB 30');">26</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEE30..4', '', '');" title="Place, close, 1 point, EB 30" onmouseout="MTMdeselect(this, '2000PEE30..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEE30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEE30..4', '', '',31,'Place, close, 1 point, EB 30');">31</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEZ30..4', '', '');" title="Place, close, 2 points, EB 30" onmouseout="MTMdeselect(this, '2000PEZ30..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEZ30..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEZ30..4', '', '',48,'Place, close, 2 points, EB 30');">48</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" class="MEKHeaderRed">45</TD>
+                <TD width="12%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PAE45..4', '', '');" title="Place, other hand, EB 45" onmouseout="MTMdeselect(this, '2000PAE45..4', '', '');" onmousedown="MTMmouseDown(event, '2000PAE45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PAE45..4', '', '',19,'Place, other hand, EB 45');">19</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUE45..4', '', '');" title="Place, approx.e position, 1 hand, EB 45" onmouseout="MTMdeselect(this, '2000PUE45..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUE45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUE45..4', '', '',17,'Place, approx.e position, 1 hand, EB 45');">17</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUZ45..4', '', '');" title="Place, approx.e position, 2 hands, EB 45" onmouseout="MTMdeselect(this, '2000PUZ45..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUZ45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUZ45..4', '', '',17,'Place, approx.e position, 2 hands, EB 45');">17</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLE45..4', '', '');" title="Place, loose, 1 point, EB 45" onmouseout="MTMdeselect(this, '2000PLE45..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLE45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLE45..4', '', '',26,'Place, loose, 1 point, EB 45');">26</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLZ45..4', '', '');" title="Place, loose, 2 points, EB 45" onmouseout="MTMdeselect(this, '2000PLZ45..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLZ45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLZ45..4', '', '',31,'Place, loose, 2 points, EB 45');">31</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEE45..4', '', '');" title="Place, close, 1 point, EB 45" onmouseout="MTMdeselect(this, '2000PEE45..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEE45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEE45..4', '', '',36,'Place, close, 1 point, EB 45');">36</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEZ45..4', '', '');" title="Place, close, 2 points, EB 45" onmouseout="MTMdeselect(this, '2000PEZ45..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEZ45..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEZ45..4', '', '',53,'Place, close, 2 points, EB 45');">53</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" class="MEKHeaderRed">60</TD>
+                <TD width="12%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PAE60..4', '', '');" title="Place, other hand, EB 60" onmouseout="MTMdeselect(this, '2000PAE60..4', '', '');" onmousedown="MTMmouseDown(event, '2000PAE60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PAE60..4', '', '',22,'Place, other hand, EB 60');">22</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUE60..4', '', '');" title="Place, approx.e position, 1 hand, EB 60" onmouseout="MTMdeselect(this, '2000PUE60..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUE60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUE60..4', '', '',20,'Place, approx.e position, 1 hand, EB 60');">20</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUZ60..4', '', '');" title="Place, approx.e position, 2 hands, EB 60" onmouseout="MTMdeselect(this, '2000PUZ60..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUZ60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUZ60..4', '', '',20,'Place, approx.e position, 2 hands, EB 60');">20</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLE60..4', '', '');" title="Place, loose, 1 point, EB 60" onmouseout="MTMdeselect(this, '2000PLE60..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLE60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLE60..4', '', '',31,'Place, loose, 1 point, EB 60');">31</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLZ60..4', '', '');" title="Place, loose, 2 points, EB 60" onmouseout="MTMdeselect(this, '2000PLZ60..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLZ60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLZ60..4', '', '',36,'Place, loose, 2 points, EB 60');">36</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEE60..4', '', '');" title="Place, close, 1 point, EB 60" onmouseout="MTMdeselect(this, '2000PEE60..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEE60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEE60..4', '', '',41,'Place, close, 1 point, EB 60');">41</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEZ60..4', '', '');" title="Place, close, 2 points, EB 60" onmouseout="MTMdeselect(this, '2000PEZ60..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEZ60..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEZ60..4', '', '',58,'Place, close, 2 points, EB 60');">58</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="10%" class="MEKHeaderRed">75</TD>
+                <TD width="12%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PAE75..4', '', '');" title="Place, other hand, EB 75" onmouseout="MTMdeselect(this, '2000PAE75..4', '', '');" onmousedown="MTMmouseDown(event, '2000PAE75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PAE75..4', '', '',26,'Place, other hand, EB 75');">26</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUE75..4', '', '');" title="Place, approx.e position, 1 hand, EB 75" onmouseout="MTMdeselect(this, '2000PUE75..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUE75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUE75..4', '', '',24,'Place, approx.e position, 1 hand, EB 75');">24</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PUZ75..4', '', '');" title="Place, approx.e position, 2 hands, EB 75" onmouseout="MTMdeselect(this, '2000PUZ75..4', '', '');" onmousedown="MTMmouseDown(event, '2000PUZ75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PUZ75..4', '', '',24,'Place, approx.e position, 2 hands, EB 75');">24</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLE75..4', '', '');" title="Place, loose, 1 point, EB 75" onmouseout="MTMdeselect(this, '2000PLE75..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLE75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLE75..4', '', '',36,'Place, loose, 1 point, EB 75');">36</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PLZ75..4', '', '');" title="Place, loose, 2 points, EB 75" onmouseout="MTMdeselect(this, '2000PLZ75..4', '', '');" onmousedown="MTMmouseDown(event, '2000PLZ75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PLZ75..4', '', '',42,'Place, loose, 2 points, EB 75');">42</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEE75..4', '', '');" title="Place, close, 1 point, EB 75" onmouseout="MTMdeselect(this, '2000PEE75..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEE75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEE75..4', '', '',47,'Place, close, 1 point, EB 75');">47</TD>
+                <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000PEZ75..4', '', '');" title="Place, close, 2 points, EB 75" onmouseout="MTMdeselect(this, '2000PEZ75..4', '', '');" onmousedown="MTMmouseDown(event, '2000PEZ75..4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000PEZ75..4', '', '',63,'Place, close, 2 points, EB 75');">63</TD>
+            </TR>
+
+            <TR align="center" bgcolor="#FFFFFF">
+                <TD width="100%" colspan="8" class="MTMText">Caution: Allowances for weight, fitting class, symmetry,<BR>difficult handling and eye travel</TD>
+            </TR>
+        </TABLE>
+        </TD></TR></TABLE>
+        <BR>
+    </DIV>
+
+
+
+    <DIV class="tab-page">
+        <H2 class="tab"><SPAN class="MTMText">General data/body movem. & R+W</SPAN></H2>
+        <TABLE border="1" width="98%" cellpadding="0" cellspacing="0" bgcolor="#000000" align="center"><TR><TD>
+        <TABLE border="1" width="100%"   cellspacing="1" cellpadding="1" class="MTMGeneral">
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="68%" colspan="2" class="SDBHeaderLightBlue"><SPAN class="MTMText">General Data</SPAN></TD>
+                <TD width="16%" class="SDBHeaderRed"><SPAN class="MTMText">Code</SPAN></TD>
+                <TD width="16%"><B>TMU</B></TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="68%" colspan="2" class="MTMText" align="left">Weight allowance - energy expenditure per 1 daN</TD>
+                <TD width="16%" class="SDBHeaderRed">GGZ</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000GGZ....4', '', '');" title="General values, additional weight bzw. expenditure of energy per 1daN" onmouseout="MTMdeselect(this, '2000GGZ....4', '', '');" onmousedown="MTMmouseDown(event, '2000GGZ....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000GGZ....4', '', '',1,'General values, additional weight bzw. expenditure of energy per 1daN');">1</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="68%" colspan="2" class="MTMText" align="left">Regrasp ^ transfergrasp</TD>
+                <TD width="16%" class="SDBHeaderRed">GNV</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000GNV....4', '', '');" title="General values, regrasp or pause or hand over" onmouseout="MTMdeselect(this, '2000GNV....4', '', '');" onmousedown="MTMmouseDown(event, '2000GNV....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000GNV....4', '', '',6,'General values, regrasp or pause or hand over');">6</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="16%" rowspan="2" class="MTMText" align="left">Force<BR>application</TD>
+                <TD width="52%" class="MTMText" align="left">Light</TD>
+                <TD width="16%" class="SDBHeaderRed">GKK</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000GKK....4', '', '');" title="General values, use of energy, small" onmouseout="MTMdeselect(this, '2000GKK....4', '', '');" onmousedown="MTMmouseDown(event, '2000GKK....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000GKK....4', '', '',11,'General values, use of energy, small');">11</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="52%" class="MTMText" align="left">Heavy</TD>
+                <TD width="16%" class="SDBHeaderRed">GKG</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000GKG....4', '', '');" title="General values, use of energy, large" onmouseout="MTMdeselect(this, '2000GKG....4', '', '');" onmousedown="MTMmouseDown(event, '2000GKG....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000GKG....4', '', '',16,'General values, use of energy, large');">16</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="16%" rowspan="2" class="MTMText" align="left">Disengage</TD>
+                <TD width="52%" class="MTMText" align="left">Close fit</TD>
+                <TD width="16%" class="SDBHeaderRed">GTE</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000GTE....4', '', '');" title="General values, separate, tight  fit" onmouseout="MTMdeselect(this, '2000GTE....4', '', '');" onmousedown="MTMmouseDown(event, '2000GTE....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000GTE....4', '', '',8,'General values, separate, tight  fit');">8</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="52%" class="MTMText" align="left">Exact fit</TD>
+                <TD width="16%" class="SDBHeaderRed">GTF</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000GTF....4', '', '');" title="General values, separate, secure  fit" onmouseout="MTMdeselect(this, '2000GTF....4', '', '');" onmousedown="MTMmouseDown(event, '2000GTF....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000GTF....4', '', '',23,'General values, separate, secure  fit');">23</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="16%" rowspan="3" class="MTMText" align="left">Turn</TD>
+                <TD width="52%" class="MTMText" align="left">Small angle &lt;= 90&deg;</TD>
+                <TD width="16%" class="SDBHeaderRed">GDK</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000GDK....4', '', '');" title="General values, turn, smaller angle <=90°" onmouseout="MTMdeselect(this, '2000GDK....4', '', '');" onmousedown="MTMmouseDown(event, '2000GDK....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000GDK....4', '', '',4,'General values, turn, smaller angle <=90°');">4</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="52%" class="MTMText" align="left">Large angle &gt;  90&deg;</TD>
+                <TD width="16%" class="SDBHeaderRed">GDG</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000GDG....4', '', '');" title="General values, turn, larger  angle >90°" onmouseout="MTMdeselect(this, '2000GDG....4', '', '');" onmousedown="MTMmouseDown(event, '2000GDG....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000GDG....4', '', '',7,'General values, turn, larger  angle >90°');">7</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="52%" class="MTMText" align="left">per turn</TD>
+                <TD width="16%" class="SDBHeaderRed">GDT</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000GDT....4', '', '');" title="General values, turn, per rotation" onmouseout="MTMdeselect(this, '2000GDT....4', '', '');" onmousedown="MTMmouseDown(event, '2000GDT....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000GDT....4', '', '',16,'General values, turn, per rotation');">16</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="16%" rowspan="2" class="MTMText" align="left">Rotate<BR>crank</TD>
+                <TD width="52%" class="MTMText" align="left">Start and stop</TD>
+                <TD width="16%" class="SDBHeaderRed">GRS</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000GRS....4', '', '');" title="General values, rotate handle, start and stop" onmouseout="MTMdeselect(this, '2000GRS....4', '', '');" onmousedown="MTMmouseDown(event, '2000GRS....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000GRS....4', '', '',5,'General values, rotate handle, start and stop');">5</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="52%" class="MTMText" align="left">per revolution</TD>
+                <TD width="16%" class="SDBHeaderRed">GRU</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000GRU....4', '', '');" title="General values, rotate handle, per rotation" onmouseout="MTMdeselect(this, '2000GRU....4', '', '');" onmousedown="MTMmouseDown(event, '2000GRU....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000GRU....4', '', '',14,'General values, rotate handle, per rotation');">14</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="16%" rowspan="2" class="MTMText" align="left">Eye function</TD>
+                <TD width="52%" class="MTMText" align="left"> Eye travel per 10 cm</TD>
+                <TD width="16%" class="SDBHeaderRed">GBV</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000GBV....4', '', '');" title="General values, visual function, scan per 10cm" onmouseout="MTMdeselect(this, '2000GBV....4', '', '');" onmousedown="MTMmouseDown(event, '2000GBV....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000GBV....4', '', '',4,'General values, visual function, scan per 10cm');">4</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="52%" class="MTMText" align="left">Eye focus</TD>
+                <TD width="16%" class="SDBHeaderRed">GBP</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000GBP....4', '', '');" title="General values, visual function, inspect" onmouseout="MTMdeselect(this, '2000GBP....4', '', '');" onmousedown="MTMmouseDown(event, '2000GBP....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000GBP....4', '', '',7,'General values, visual function, inspect');">7</TD>
+            </TR>
+        </TABLE>
+        </TD></TR></TABLE>
+
+        <BR>
+
+        <TABLE border="1" width="98%" cellpadding="0" cellspacing="0" bgcolor="#000000" align="center"><TR><TD>
+        <TABLE border="1" width="100%"   cellspacing="1" cellpadding="1" class="MTMGeneral">
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="68%" colspan="2" class="SDBHeaderLightBlue"><SPAN class="MTMText">Body Motions</SPAN></TD>
+                <TD width="16%" class="SDBHeaderRed"><SPAN class="MTMText">Code</SPAN></TD>
+                <TD width="16%"><B>TMU</B></TD>
+            </TR>
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="68%" colspan="2" class="MTMText" align="left">Foot adjustment (foot or small leg movement)</TD>
+                <TD width="16%" class="SDBHeaderRed">KFV</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000KFV....4', '', '');" title="Body mvmt., foot transfer (foot or small leg movement)" onmouseout="MTMdeselect(this, '2000KFV....4', '', '');" onmousedown="MTMmouseDown(event, '2000KFV....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000KFV....4', '', '',9,'Body mvmt., foot transfer (foot or small leg movement)');">9</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="16%" rowspan="2" class="MTMText" align="left">Body<BR>displacement</TD>
+                <TD width="52%" class="MTMText" align="left">Step, side-step, body-turn</TD>
+                <TD width="16%" class="SDBHeaderRed">KVS</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000KVS....4', '', '');" title="Body mvmt., transfer of body, step/side step/body rotation" onmouseout="MTMdeselect(this, '2000KVS....4', '', '');" onmousedown="MTMmouseDown(event, '2000KVS....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000KVS....4', '', '',17,'Body mvmt., transfer of body, step/side step/body rotation');">17</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="52%" class="MTMText" align="left">Bend, stoop, kneel incl. stand up</TD>
+                <TD width="16%" class="SDBHeaderRed">KVB</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000KVB....4', '', '');" title="Body mvmt., transfer of body, bend/stoop/kneel on one knee incl. standing" onmouseout="MTMdeselect(this, '2000KVB....4', '', '');" onmousedown="MTMmouseDown(event, '2000KVB....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000KVB....4', '', '',61,'Body mvmt., transfer of body, bend/stoop/kneel on one knee incl. standing');">61</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="16%" rowspan="2" class="MTMText" align="left">Stand up and<BR>sit down</TD>
+                <TD width="52%" class="MTMText" align="left">Normal seat</TD>
+                <TD width="16%" class="SDBHeaderRed">KSN</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000KSN....4', '', '');" title="Body mvmt., sit and stand, normal seat" onmouseout="MTMdeselect(this, '2000KSN....4', '', '');" onmousedown="MTMmouseDown(event, '2000KSN....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000KSN....4', '', '',108,'Body mvmt., sit and stand, normal seat');">108</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="52%" class="MTMText" align="left">Seated / standing</TD>
+                <TD width="16%" class="SDBHeaderRed">KSS</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000KSS....4', '', '');" title="Body mvmt., sit and stand, sitting-standing room" onmouseout="MTMdeselect(this, '2000KSS....4', '', '');" onmousedown="MTMmouseDown(event, '2000KSS....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000KSS....4', '', '',246,'Body mvmt., sit and stand, sitting-standing room');">246</TD>
+            </TR>
+        </TABLE>
+        </TD></TR></TABLE>
+
+        <BR>
+
+        <TABLE border="1" width="98%" cellpadding="0" cellspacing="0" bgcolor="#000000" align="center"><TR><TD>
+        <TABLE border="1" width="100%"   cellspacing="1" cellpadding="1" class="MTMGeneral">
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="68%" class="SDBHeaderLightBlue"><SPAN class="MTMText">Read</SPAN></TD>
+                <TD width="16%" class="SDBHeaderRed"><SPAN class="MTMText">Code</SPAN></TD>
+                <TD width="16%"><B>TMU</B></TD>
+            </TR>
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="68%" class="MTMText" align="left">per word in complex sentence</TD>
+                <TD width="16%" class="SDBHeaderRed">LWS</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000LWS....4', '', '');" title="Read, per word in complex sentence" onmouseout="MTMdeselect(this, '2000LWS....4', '', '');" onmousedown="MTMmouseDown(event, '2000LWS....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000LWS....4', '', '',5,'Read, per word in complex sentence');">5</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="68%" class="MTMText" align="left">up to 3 digits, characters, letters; single word</TD>
+                <TD width="16%" class="SDBHeaderRed">LZB</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000LZB....4', '', '');" title="Read, up to 3 digits, characters, letters; single word" onmouseout="MTMdeselect(this, '2000LZB....4', '', '');" onmousedown="MTMmouseDown(event, '2000LZB....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000LZB....4', '', '',7,'Read, up to 3 digits, characters, letters; single word');">7</TD>
+            </TR>
+        </TABLE>
+        </TD></TR></TABLE>
+
+        <BR>
+
+        <TABLE border="1" width="98%" cellpadding="0" cellspacing="0" bgcolor="#000000" align="center"><TR><TD>
+        <TABLE border="1" width="100%"   cellspacing="1" cellpadding="1" class="MTMGeneral">
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="68%" colspan="2" class="SDBHeaderLightBlue"><SPAN class="MTMText">Write</SPAN></TD>
+                <TD width="16%" class="SDBHeaderRed"><SPAN class="MTMText">Code</SPAN></TD>
+                <TD width="16%"><B>TMU</B></TD>
+            </TR>
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="16%" rowspan="2" align="left" class="MTMText">lower case<BR>letter</TD>
+                <TD width="52%" class="MTMText" align="left">Handwriting</TD>
+                <TD width="16%" class="SDBHeaderRed">SKH</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000SKH....4', '', '');" title="Write, small letter, handwriting" onmouseout="MTMdeselect(this, '2000SKH....4', '', '');" onmousedown="MTMmouseDown(event, '2000SKH....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000SKH....4', '', '',15,'Write, small letter, handwriting');">15</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="52%" class="MTMText" align="left">Print</TD>
+                <TD width="16%" class="SDBHeaderRed">SKD</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000SKD....4', '', '');" title="Write, small letter, printing" onmouseout="MTMdeselect(this, '2000SKD....4', '', '');" onmousedown="MTMmouseDown(event, '2000SKD....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000SKD....4', '', '',20,'Write, small letter, printing');">20</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="68%" colspan="2" class="MTMText" align="left">Upper case letter, handwriting or print</TD>
+                <TD width="16%" class="SDBHeaderRed">SGB</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000SGB....4', '', '');" title="Writing, large letter, handwriting or printing" onmouseout="MTMdeselect(this, '2000SGB....4', '', '');" onmousedown="MTMmouseDown(event, '2000SGB....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000SGB....4', '', '',25,'Writing, large letter, handwriting or printing');">25</TD>
+            </TR>
+
+            <TR bgcolor="#FFFFFF" align="center">
+                <TD width="68%" colspan="2" class="MTMText" align="left">Symbols, numbers, punctuation</TD>
+                <TD width="16%" class="SDBHeaderRed">SZZ</TD>
+                <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '2000SZZ....4', '', '');" title="Write, character, digit, punctuation" onmouseout="MTMdeselect(this, '2000SZZ....4', '', '');" onmousedown="MTMmouseDown(event, '2000SZZ....4','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '2000SZZ....4', '', '',20,'Write, character, digit, punctuation');">20</TD>
+            </TR>
+        </TABLE>
+        </TD></TR></TABLE>
+        <BR>
+    </DIV>
+</DIV>
+
+<SCRIPT type="text/javascript">
+setupAllTabs();
+</SCRIPT>
+
+<SCRIPT language="JavaScript">
+    window.document.oncontextmenu = nocontextmenu;
+    window.document.onmousedown = norightclick;
+    window.document.onkeydown = onKeyDown;
+</SCRIPT>
+</BODY>
+</HTML>
+

@@ -1,0 +1,85 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "WiAssignedInOperationsPopup_navigateToOutOfScopeNode": {
+            "onChangeAction": "navigateToOutOfScopeNode",
+            "syncObject": {}
+        }
+    },
+    "actions": {
+        "navigateToOutOfScopeNode":{
+            "actionType": "batchJob",
+            "steps":[
+                {
+                    "action":"getParentOfSelectedObj",
+                    "condition":"conditions.hasOutScopeSelectedObject"
+                },
+                {
+                    "action":"cacheSelectionObjectToLocalStorage",
+                    "condition":"conditions.hasOutScopeSelectedObject"
+                },
+                {
+                    "action":"navigate",
+                    "condition":"conditions.hasOutScopeSelectedObject"
+                },
+                {
+                    "action":"closeAssignedInListPopup",
+                    "condition":"conditions.hasOutScopeSelectedObject"
+                }
+            ]
+        },
+        "getParentOfSelectedObj":{
+            "actionType": "JSFunction",
+            "method": "getSelectedObjectParent",
+            "inputData": {
+                "selectedObjects": ["{{ports.WiAssignedInOperationsPopup_navigateToOutOfScopeNode.syncObject.vmo}}"]
+            },
+            "outputData": {
+                "selectedObjectParent": "selectedObjectParent"
+            },
+            "deps": "js/epTableService"
+        },
+        "cacheSelectionObjectToLocalStorage":{
+            "actionType": "JSFunction",
+            "method": "cacheSelectionObjectToLocalStorage",
+            "inputData": {
+                "processToBeSelected": "{{ports.WiAssignedInOperationsPopup_navigateToOutOfScopeNode.syncObject.vmo.uid}}",
+                "partsToBeSelected": "{{ports.WiAssignedInOperationsPopup_navigateToOutOfScopeNode.syncObject.vmo.uid}}",
+                "key": "epAssignmentIndicationFindInAnotherScope",
+                "scopedObject":"{{ctx.epPageContext.processStructure.uid}}"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "navigate":{
+            "actionType": "JSFunction",
+            "method": "navigteToSameStateWithDifferentConfiguration",
+            "inputData": {
+                "objectToNavigateUid": "{{data.selectedObjectParent.uid}}",
+                "navigateIn": "newTab"
+            },
+            "deps": "js/epNavigationService"
+        },
+        "closeAssignedInListPopup": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "inputData": {
+                "popupEl": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        }
+    },
+    "conditions": {
+        "hasOutScopeSelectedObject": {
+            "expression": "ports.WiAssignedInOperationsPopup_navigateToOutOfScopeNode.syncObject && ports.WiAssignedInOperationsPopup_navigateToOutOfScopeNode.syncObject.vmo"
+        }
+    },
+    "i18n": {
+        "assignmentIndicationPopupTitle": [ "wiPmiMessages" ],
+        "assignedOutOfScope": [ "wiPmiMessages" ]
+    }
+}

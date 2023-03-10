@@ -1,0 +1,12 @@
+<aw-command-panel caption="i18n.addContentTitle" context="subPanelContext">
+    <div class="aw-layout-flexColumn" show-when="data.activeState.value.activeView==='Ctm1CreateContentSub'">
+        <aw-command-sub-panel panel-id="Ctm1CreateContentSub" visible-when="data.activeView=='Ctm1CreateContentSub'"
+            sub-panel-context="{ ...subPanelContext, activeState: data.activeState, projectState: data.projectState }"></aw-command-sub-panel>
+    </div>
+    <div class="aw-layout-flexColumn" exist-when="data.activeState.value.activeView==='AddReferenceSub'">
+        <aw-navigate-panel title="i18n.BACK_BUTTON_TITLE" pre-panel-id="Ctm1CreateContent" panel-id="AddReferenceSub" action="updateActiveView" sub-panel-context="fields.activeState.value.context" active-state="data.activeState"></aw-navigate-panel>
+    </div>
+    <div class="aw-layout-flexColumn" exist-when="data.activeState.value.activeView==='AssignProjectSub'">
+        <aw-navigate-panel title="i18n.BACK_BUTTON_TITLE" pre-panel-id="Ctm1CreateContent" panel-id="AssignProjectSub" action="updateActiveView" sub-panel-context="{ ...subPanelContext, projectState: data.projectState }" active-state="data.activeState"></aw-navigate-panel>
+    </div>
+</aw-command-panel>

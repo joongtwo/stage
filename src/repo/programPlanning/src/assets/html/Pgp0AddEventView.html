@@ -1,0 +1,35 @@
+<aw-command-panel caption="i18n.addEventCommandTitle" context="subPanelContext">
+    <div class="aw-layout-flexColumn" show-when="data.activeState.value.activeView ==='AddObjectPrimarySub'">
+        <aw-add
+            include-types="Prg0AbsEvent"
+            auto-select-on-unique-type=true
+            type-filter="Prg0AbsEvent"
+            type-override-id="PP"
+            add-panel-state="fields.addPanelState"
+            active-state="data.activeState"
+            project-state="data.projectState"
+            sub-panel-context="{ ...subPanelContext, triggerCreate: data.triggerCreate, triggerAddACopy: data.triggerAddACopy }"
+            xrt-state="data.xrtState"
+            edit-handler="editHandlers.addPanelEditHandler">
+        </aw-add>
+            <!-- Panel footer-->
+        <aw-panel-footer visible-when="data.activeView!='AssignProjectSub'&&data.activeView!='addReferenceSub' && data.activeState.value.activeView==='AddObjectPrimarySub'">
+            <aw-button default="true" action="CreateEventJob" enable-when="!ctx.addItemEventProgressing && formProp.attributes.valid && conditions.isNewTabAddButtonEnable" visible-when="conditions.isTypeNotNull">
+                <aw-i18n>i18n.addButtonCommandTitle</aw-i18n>
+            </aw-button>
+            <!-- panel-footer button for Add a Copy sub Panel -->
+             <aw-button size="auto" button-type="base" default="true" action="toggleAddACopy" visible-when="conditions.isPaletteSearchAddCopyButtonVisible" enable-when="conditions.isPaletteSearchTabAddACopyButtonEnable" >
+                <aw-i18n>i18n.addACopy</aw-i18n>
+            </aw-button>
+            <!-- panel-footer button for cancel Add a Copy sub Panel -->
+            <aw-button size="auto" button-type="base" default="true" action="toggleAddACopy" visible-when="conditions.isPaletteSearchTabAddACopyCancelButtonVisible" >
+                <aw-i18n>i18n.cancel</aw-i18n>
+            </aw-button>
+            <!-- panel-footer button for Add, Add a Copy sub Panel -->
+            <aw-button size="auto" default="true" action="saveAsEvent" visible-when="conditions.isPaletteSearchTabAddACopyCancelButtonVisible">
+                <aw-i18n>i18n.ADD_BUTTON_TITLE</aw-i18n>
+            </aw-button>
+        </aw-panel-footer>
+    </div>
+    <aw-add-navigate active-state="data.activeState" project-state="data.projectState" action="actions.setActiveView"></aw-add-navigate>
+</aw-command-panel>

@@ -1,0 +1,730 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-splm-table.directive"
+    ],
+    "data":{
+        "columns": [
+            {
+                "name": "assignmentIndication",
+                "displayName": "{{i18n.assignmentColumnTitle}}",
+                "clientColumn":true,
+                "columnOrder":10,
+                "maxWidth": 30,
+                "minWidth": 30,
+                "width": 30,
+                "enableColumnMenu": false,
+                "enableSorting": false,
+                "enableColumnMoving": false,
+                "enableColumnHiding":false,
+                "pinnedLeft":false
+            },
+            {
+                "name": "mismatchIndication",
+                "displayName": "{{i18n.mismatchColumnTitle}}",
+                "clientColumn":true,
+                "columnOrder":20,
+                "maxWidth": 30,
+                "minWidth": 30,
+                "width": 30,
+                "enableColumnMenu": false,
+                "enableSorting": false,
+                "enableColumnMoving": false,
+                "enableColumnHiding":false,
+                "pinnedLeft":false
+            }
+        ],
+        "supportedStatusToColumn":[
+            {
+                "columnName":"assignmentIndication",
+                "statuses":[2, 3, 4, 5, 6, 51, 52, 53, 54, 56, 57, 58]
+            },
+            {
+                "columnName":"mismatchIndication",
+                "statuses":[2, 3, 4, 5, 6, 51, 52, 53, 54, 56, 57, 58]
+            }
+        ]
+    },
+    "actions": { 
+        "doArrangeEvent": {
+            "actionType": "JSFunctionAsync",
+            "method": "arrangeColumns",
+            "inputData": {
+                "declViewModel": "{{data}}",
+                "eventData": "{{data.eventData}}"
+            },
+            "deps": "js/senColumnArrangeService"
+        },
+        "loadDataForSavedColumnConfig": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTableViewModelProperties",
+            "deps": "js/tcViewModelObjectService",
+            "inputData": {
+                "vmNodes": "{{data.dataProviders.ebomDataProvider.viewModelCollection.loadedVMObjects}}",
+                "context": {
+                    "clientScopeURI": "{{ctx.sublocation.clientScopeURI}}",
+                    "clientName": "AWClient",
+                    "columnsToExclude": "{{ctx.ebomContext.columnsToExclude}}",
+                    "operationType": "{{eventData.operationType}}"
+                }
+            },
+            "outputData": {
+                "newColumnConfig": "result.output.columnConfig"
+            }
+        },
+        "updateTreeNodeStates":{
+            "actionType": "JSFunction",
+            "method": "updateTreeNodeStates",
+            "inputData": {
+                "vmNodes": "{{data.dataProviders.ebomDataProvider.viewModelCollection.loadedVMObjects}}",
+                "data": "{{data}}",
+                "subPanelContext": "{{props.subPanelContext.provider}}"
+            },
+            "deps": "js/occmgmtTreeTableStateService"
+        },
+        "loadEbomData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableData",
+            "inputData": {
+                "methodArgument": {
+                    "treeLoadInput": "request.treeLoadInput",
+                    "dataProviderActionType": "initializeAction",
+                    "loadIDs": "request.loadIDs",
+                    "grid": "{{data.grids.senEbomTreeTable}}",
+                    "uwDataProvider": "{{data.dataProviders.ebomDataProvider}}",
+                    "declViewModel": "{{data}}",
+                    "sortCriteria": "{{data.columnProviders.ebomColumnProvider.sortCriteria}}",
+
+                    "subPanelContext":   "{{props.subPanelContext.provider}}"
+                }
+            },
+            "outputData": {
+                "ctx.ebomContext.showTopNode": "result.treeLoadResult.showTopNode",
+                "ctx.ebomContext.modelObject": "result.treeLoadResult.topElement",
+                "ctx.ebomContext.openedElement": "result.treeLoadResult.openedModelObject",
+                "ctx.ebomContext.sublocationAttributes": "result.treeLoadResult.sublocationAttributes",
+                "ctx.ebomContext.productContextInfo": "result.treeLoadResult.productContextInfo",
+                "ctx.ebomContext.configContext": "result.treeLoadResult.configContext",
+                "ctx.ebomContext.topElement": "result.treeLoadResult.topElement",
+                "dataProviders.ebomDataProvider.objectSetUri": "result.treeLoadResult.productContextInfo.props.awb0ClientScopeUri.dbValues[0]",
+                "dataProviders.ebomDataProvider.columnConfig": "result.treeLoadResult.columnConfig",
+                "ctx.ebomContext.treeDataProvider": "result.treeLoadResult.treeDataProvider",
+                "ctx.ebomContext.requestPref": "result.treeLoadResult.requestPref",
+                "ctx.ebomContext.startFreshNavigation": "result.treeLoadResult.startFreshNavigation",
+                "ctx.ebomContext.vmc": "result.treeLoadResult.vmc",
+                "ctx.ebomContext.sublocation.clientScopeURI": "result.treeLoadResult.productContextInfo.props.awb0ClientScopeUri.dbValues[0]",
+                "ctx.ebomContext.context.productContextInfo": "result.treeLoadResult.productContextInfo"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "occDataLoadedEvent",
+                        "eventData": {
+
+                            "dataProviderActionType": "initializeAction",
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}",
+                            "occContext" :"{{props.subPanelContext.provider.occContext}}"
+                        }
+                    },{
+
+                        "name": "updateActiveContextEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadNextEbomData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadNextOccurrencesInTreeTable",
+            "inputData": {
+                "methodArgument": {
+                    "treeLoadInput": "request.treeLoadInput",
+                    "dataProviderActionType": "nextAction",
+                    "loadIDs": "request.loadIDs",
+                    "grid": "{{data.grids.senEbomTreeTable}}",
+                    "uwDataProvider": "{{data.dataProviders.ebomDataProvider}}",
+                    "declViewModel": "{{data}}",
+                    "sortCriteria": "{{data.columnProviders.ebomColumnProvider.sortCriteria}}",
+                    "subPanelContext": "{{props.subPanelContext.provider}}"
+                }
+            },
+            "outputData": {
+                "ctx.ebomContext.modelObject": "result.treeLoadResult.topElement",
+                "ctx.ebomContext.productContextInfo": "result.treeLoadResult.productContextInfo",
+                "ctx.ebomContext.topElement": "result.treeLoadResult.topElement",
+                "ctx.ebomContext.configContext": "result.treeLoadResult.configContext",
+                "ctx.ebomContext.requestPref": "result.treeLoadResult.requestPref"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "occDataLoadedEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}",
+                            "dataProviderActionType": "nextAction"
+                        }
+                    },{
+
+                        "name": "updateActiveContextEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadPreviousEbomData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadPreviousOccurrencesInTreeTable",
+            "inputData": {
+                "methodArgument": {
+                    "treeLoadInput": "request.treeLoadInput",
+                    "dataProviderActionType": "previousAction",
+                    "loadIDs": "request.loadIDs",
+                    "grid": "{{data.grids.senEbomTreeTable}}",
+                    "uwDataProvider": "{{data.dataProviders.ebomDataProvider}}",
+                    "declViewModel": "{{data}}",
+                    "sortCriteria": "{{data.columnProviders.ebomColumnProvider.sortCriteria}}",
+                    "subPanelContext": "{{props.subPanelContext.provider}}"
+                }
+            },
+            "outputData": {
+                "ctx.ebomContext.modelObject": "result.treeLoadResult.topElement",
+                "ctx.ebomContext.productContextInfo": "result.treeLoadResult.productContextInfo",
+                "ctx.ebomContext.topElement": "result.treeLoadResult.topElement",
+                "ctx.ebomContext.configContext": "result.treeLoadResult.configContext",
+                "ctx.ebomContext.requestPref": "result.treeLoadResult.requestPref"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "occDataLoadedEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}",
+                            "dataProviderActionType": "previousAction"
+                        }
+                    },{
+
+                        "name": "updateActiveContextEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadEbomDataWithFocus": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadOccurrencesWithFocusInTreeTable",
+            "inputData": {
+                "methodArgument": {
+                    "treeLoadInput": "request.treeLoadInput",
+                    "dataProviderActionType": "focusAction",
+                    "loadIDs": "request.loadIDs",
+                    "grid": "{{data.grids.senEbomTreeTable}}",
+                    "uwDataProvider": "{{data.dataProviders.ebomDataProvider}}",
+                    "declViewModel": "{{data}}",
+                    "sortCriteria": "{{data.columnProviders.ebomColumnProvider.sortCriteria}}",
+                    "subPanelContext": "{{props.subPanelContext.provider}}"
+                }
+            },
+            "outputData": {
+                "ctx.ebomContext.modelObject": "result.treeLoadResult.topElement",
+                "ctx.ebomContext.productContextInfo": "result.treeLoadResult.productContextInfo",
+                "ctx.ebomContext.topElement": "result.treeLoadResult.topElement",
+                "ctx.ebomContext.configContext": "result.treeLoadResult.configContext",
+                "ctx.ebomContext.requestPref": "result.treeLoadResult.requestPref"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "occDataLoadedEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}",
+                            "dataProviderActionType": "focusAction"
+                        }
+                    },{
+
+                        "name": "updateActiveContextEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadEbomDataPage": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableDataPage",
+            "inputData": {
+                "methodArgument": {
+                    "treeLoadInput": "request.treeLoadInput",
+                    "loadIDs": "request.loadIDs",
+                    "grid": "{{data.grids.senEbomTreeTable}}",
+                    "uwDataProvider": "{{data.dataProviders.ebomDataProvider}}",
+                    "declViewModel": "{{data}}",
+                    "sortCriteria": "{{data.columnProviders.ebomColumnProvider.sortCriteria}}",
+
+                    "subPanelContext":   "{{props.subPanelContext.provider}}"
+                }
+            },
+            "outputData": {
+                "ctx.ebomContext.modelObject": "result.treeLoadResult.topElement",
+                "ctx.ebomContext.productContextInfo": "result.treeLoadResult.productContextInfo",
+                "ctx.ebomContext.topElement": "result.treeLoadResult.topElement",
+                "ctx.ebomContext.configContext": "result.treeLoadResult.configContext",
+                "ctx.ebomContext.requestPref": "result.treeLoadResult.requestPref"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "occDataLoadedEvent",
+                        "eventData": {
+
+                            "contextKey": "{{props.subPanelContext.provider.viewKey}}",
+                            "dataProviderActionType": "nextAction",
+                            "occContext" :"{{props.subPanelContext.provider.occContext}}"
+                        }
+                    },{
+
+                        "name": "updateActiveContextEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadEbomProperties": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableProperties",
+            "inputData": {
+                "methodArgument": {
+                    "propertyLoadInput": "request.propertyLoadInput",
+                    "propertyLoadContext": {
+                        "clientName": "AWClient",
+                        "clientScopeURI": "{{props.subPanelContext.provider.clientScopeURI}}",
+                        "typesForArrange": "{{data.dataProviders.ebomDataProvider.columnConfig.typesForArrange}}"
+                    },
+                    "contextKey": "{{props.subPanelContext.provider.viewKey}}",
+                    "declViewModel": "{{data}}",
+                    "uwDataProvider": "{{data.dataProviders.ebomDataProvider}}",
+                    "subPanelContext": "{{props.subPanelContext.provider}}"
+                }
+            },
+            "outputData": {
+                "dataProviders.ebomDataProvider.columnConfig": "result.propertyLoadResult.columnConfig",
+                "ctx.searchResponseInfo.columnConfig": "result.propertyLoadResult.columnConfig"
+            },
+            "events":{
+                "success":[
+                    {
+                        "name": "occMgmt.visibilityStateChanged",
+                        "eventData": {
+                            "viewToReact": "ebomContext"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadEbomColumns": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.ebomDataProvider}}",
+                "columnProvider": "{{data.columnProviders.ebomColumnProvider}}",
+                "contextKey": "{{props.subPanelContext.provider.viewKey}}"
+            },
+            "outputData": {
+                "dataProviders.ebomDataProvider.columnConfig": "columnConfig"
+            }
+            ,
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "saveColumnConfigLoadData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-03-UiConfig",
+            "method": "saveUIColumnConfigs",
+            "inputData": {
+                "columnConfigurations": [ {
+                    "clientScopeURI": "{{data.dataProviders.ebomDataProvider.objectSetUri}}",
+                    "columnConfigId": "{{data.dataProviders.ebomDataProvider.columnConfig.columnConfigId}}",
+                    "columns": "{{data.dataProviders.ebomDataProvider.newColumns}}",
+                    "scope": "LoginUser",
+                    "scopeName": ""
+                } ]
+            },
+            "outputData": {},
+            "events": {
+                "success": [
+                    {
+                        "name": "sen.ebomColumnConfig.saved"
+                    }
+                ]
+            }
+        },
+        "resetColumnConfig": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2022-06-UiConfig",
+            "method": "getOrResetUIColumnConfigs3",
+            "inputData": {
+                "getOrResetUiConfigsIn": [ {
+                    "scope": "LoginUser",
+                    "scopeName": "",
+                    "clientName": "AWClient",
+                    "resetColumnConfig": true,
+                    "columnConfigQueryInfos": [ {
+                        "clientScopeURI": "{{props.subPanelContext.provider.clientScopeURI}}",
+                        "operationType": "union",
+                        "typeNames": "{{data.dataProviders.ebomDataProvider.columnConfig.typesForArrange}}",
+                        "columnsToExclude": "{{ctx.ebomContext.columnsToExclude}}"
+                    } ],
+                    "businessObjects": [ {} ]
+                } ]
+            },
+            "outputData": {
+                "dataProviders.ebomDataProvider.columnConfig": "{{function:postResetFunction}}"
+            },
+            "deps": "js/tcarrange.service"
+        },
+        "updateDisplayNames": {
+            "actionType": "JSFunction",
+            "method": "updateDisplayNames",
+            "inputData": {
+                "eventData": "{{data.eventData}}"
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "processVMC": {
+            "actionType": "JSFunction",
+            "method": "processViewModelCollectionEvent",
+            "inputData": {
+                "vmc": "{{data.dataProviders.ebomDataProvider.viewModelCollection}}",
+                "eventInfo": "{{data}}"
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "toggleEbomTreeNodeHierarchy": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "toggleTreeNodeHierarchy",
+                    "eventData": {
+                        "data": "{{data}}",
+                        "row": "{{data.eventData}}"
+                    }
+                } ]
+            }
+        },
+        "updateEbomTableVisibility": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "senEbomTreeTable.plTable.visibilityStateChanged"
+                } ]
+            }
+        },
+        "setEbomVisibility": {
+            "actionType": "JSFunction",
+            "method": "setOccVisibility",
+            "inputData": {
+                "loadedVMObjects": "{{data.dataProviders.ebomDataProvider.viewModelCollection.loadedVMObjects}}",
+                "contextKey": "ebomContext"
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadCompareInfo":{
+            "actionType": "JSFunctionAsync",
+            "method": "performCompare",
+            "inputData": {
+                "vmos": "{{data.dataProviders.ebomDataProvider.viewModelCollection.loadedVMObjects}}",
+                "contextKey":"ebomContext"
+            },
+            "deps": "js/senCompareService"
+        },
+        "senGetTargetObjectsForSource": {
+            "actionType": "JSFunction",
+            "method": "findDifferencesFor",
+            "inputData": {
+               "contextKey":"ebomContext",
+               "source":"{{data.eventData.vmo.uid}}"
+            },
+            "outputData": {
+                "objectsTofind":""
+            },
+            "events":{
+                "success":[
+                    {
+                        "name":"sen.findInTargetContextEvent",
+                        "eventData":{
+                            "targetContext":"sbomContext",
+                            "objectsTofind":"{{data.objectsTofind}}"
+                        },
+                        "condition": "data.eventData.contextName==='ebomContext' && data.objectsTofind.length === 1"
+                    },
+                    {
+                        "name":"sen.findMultipleInTargetContextEvent",
+                        "eventData":{
+                            "objectsToShow":"{{data.objectsTofind}}",
+                            "sourceEvent":"{{data.eventData.event}}"
+                        },
+                        "condition": "data.eventData.contextName==='ebomContext' && data.objectsTofind.length>1"
+                    }
+                ]
+            },
+            "deps": "js/senCompareUtils"
+        },
+        "senLoadObjectsToFind": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadObjects",
+            "inputData": {
+                "uids":"{{data.eventData.objectsTofind}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "sen.loadObjectsSbomSuccess",
+                    "eventData": {
+                        "objectsTofind":"{{data.eventData.objectsTofind}}"
+                    }
+                } ]
+            },
+            "deps": "soa/dataManagementService"
+        },
+        "senGetObjectsToFind":{
+            "actionType": "JSFunction",
+            "method": "getObjects",
+            "deps": "soa/kernel/clientDataModel",
+            "inputData": {
+               "uids":"{{data.eventData.objectsTofind}}"
+            },
+            "outputData": {
+                "modelObjects": ""
+            },
+            "events": {
+                "success": [ {
+                    "name": "sen.loadModelObjectsSbomSuccess",
+                    "eventData": {
+                        "objectsTofind":"{{data.modelObjects}}"
+                    }
+                } ]
+            }
+        },
+        "senFindInTargetContext": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "aceElementsSelectedEvent",
+                    "eventData": {
+                        "elementsToSelect":"{{data.eventData.objectsTofind}}",
+                        "viewToReact":"sbomContext",
+                        "fullData":"{{data}}"
+                    }
+
+                }
+
+            ]
+            }
+        },
+        "senGetMultipleTargetObjectsForSource": {
+            "actionType": "JSFunction",
+            "method": "show",
+            "inputData": {
+                "data": {
+                    "declView": "SenFindMultipleAssignedPopup",
+                    "subPanelContext":{
+                        "objectsToShow":"{{data.eventData.objectsToShow}}"
+                    },
+                    "options":{
+                        "targetEvent":"{{data.eventData.sourceEvent}}",
+                        "clickOutsideToClose": true
+                    }
+                }
+            },
+            "outputData": {
+                "popupId":"id"
+            },
+            "deps": "js/popupService"
+        },
+        "updateCompareStatus":{
+            "actionType": "JSFunction",
+            "method": "updateCompareStatus",
+            "inputData": {
+                "contextKey": "ebomContext",
+                "uids":"{{data.eventData.sourceIdsToUpdate}}",
+                "supportedColumnTostatus":"{{data.supportedStatusToColumn}}"
+
+            },
+            "deps": "js/senCompareUtils"
+        }
+    },
+    "functions": {
+        "getContextKeyFromParentScope": {
+            "functionName": "getContextKeyFromParentScope",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "postResetFunction": {
+            "functionName": "postResetFunction",
+            "parameters": [
+                "{{data.dataProviders.ebomDataProvider.columnConfig}}"
+            ]
+        }
+    },
+    "ctx": {
+        "ebomContext": {
+            "type": "object"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "columnArrange",
+            "cacheEventData": true,
+            "action": "doArrangeEvent"
+        },
+        {
+            "eventId": "sen.ebomColumnConfig.saved",
+            "cacheEventData": true,
+            "action": "loadDataForSavedColumnConfig",
+            "condition": "!ctx.editInProgress"
+        },
+        {
+            "eventId": "ebomDataProvider.modelObjectsUpdated",
+            "cacheEventData": true,
+            "action": "updateDisplayNames"
+        },
+        {
+            "eventId": "vmc.modified.ebomDataProvider",
+            "cacheEventData": true,
+            "action": "updateDisplayNames"
+        },
+        {
+            "eventId": "vmc.modified.ebomDataProvider",
+            "cacheEventData": true,
+            "action": "updateTreeNodeStates"
+        },
+        {
+            "eventId": "vmc.modified.ebomDataProvider",
+            "cacheEventData": true,
+            "action": "processVMC"
+        },
+        {
+            "eventId": "ebomDataProvider.toggleTreeNodeHierarchy",
+            "cacheEventData": true,
+            "action": "toggleEbomTreeNodeHierarchy"
+        },
+        {
+            "eventId": "occMgmt.visibilityStateChanged",
+            "condition": "viewToReact ? viewToReact === 'ebomContext' : true",
+            "action": "updateEbomTableVisibility"
+        },
+        {
+            "eventId": "occMgmt.visibilityStateChanged",
+            "condition": "viewToReact ? viewToReact === 'ebomContext' : true",
+            "action": "setEbomVisibility"
+        },
+        {
+            "eventId": "senEbomTreeTable.plTable.loadProps",
+            "action": "loadCompareInfo"
+        },
+        {
+            "eventId": "sen.compareComplete",
+            "cacheEventData": true,
+            "action": "updateCompareStatus"
+        },
+        {
+            "eventId": "sen.assignmentClickEvent",
+            "cacheEventData": true,
+            "action": "senGetTargetObjectsForSource"
+        },
+        {
+            "eventId": "sen.findInTargetContextEvent",
+            "cacheEventData": true,
+            "action": "senLoadObjectsToFind"
+        },
+        {
+            "eventId": "sen.loadObjectsSbomSuccess",
+            "cacheEventData": true,
+            "action": "senGetObjectsToFind"
+        },
+        {
+            "eventId": "sen.loadModelObjectsSbomSuccess",
+            "cacheEventData": true,
+            "action": "senFindInTargetContext"
+        },
+        {
+            "eventId": "sen.findMultipleInTargetContextEvent",
+            "cacheEventData": true,
+            "action": "senGetMultipleTargetObjectsForSource"
+        }
+    ],
+    "dataProviders": {
+        "ebomDataProvider": {
+            "initializeAction": "loadEbomData",
+            "nextAction": "loadNextEbomData",
+            "previousAction": "loadPreviousEbomData",
+            "focusAction": "loadEbomDataWithFocus",
+            "editContext": "ebomDataProvider",
+            "treeLoadResult": "action.result.treeLoadResult",
+            "selectionModelMode": "multiple",
+            "treePageSize": 250,
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}",
+                "accessMode": "tree",
+                "topNodeUid": "{{ctx.aceActiveContext.context.currentState.uid}}"
+            }
+        },
+        "ebomPropertyProvider": {
+            "action": "loadEbomProperties",
+            "propertyLoadResult": "action.result.propertyLoadResult"
+        }
+    },
+    "columnProviders": {
+        "ebomColumnProvider": {
+            "loadColumnAction": "loadEbomColumns",
+            "clientColumns":"{{data.columns}}",
+            "saveColumnAndLoadAction": "saveColumnConfigLoadData",
+            "resetColumnAction": "resetColumnConfig",
+            "sortCriteria": [],
+            "frozenColumnIndex":2
+        }
+    },
+    "grids": {
+        "senEbomTreeTable": {
+            "dataProvider": "ebomDataProvider",
+            "propertyProvider": "ebomPropertyProvider",
+            "columnProvider": "ebomColumnProvider",
+            "enableArrangeMenu": true,
+            "addIconColumn": false,
+            "gridOptions": {
+                "useStaticFirstCol": false,
+                "enableDragAndDrop":false
+            }
+        }
+    },
+
+
+    "i18n": {
+        "assignmentColumnTitle":["senMessages"],
+        "mismatchColumnTitle": ["senMessages"]
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+        {
+            "action": "updateTreeNodeStates",
+            "observers": [ "viewModel.dataProviders.ebomDataProvider.viewModelCollection.loadedVMObjects" ]
+        } ]
+    }
+
+}

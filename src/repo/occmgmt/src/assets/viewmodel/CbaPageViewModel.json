@@ -1,0 +1,122 @@
+{
+    "schemaVersion": "1.0.0",
+    "data":{
+        "cbaContext":{
+            "initialValues":{
+            "srcStructure" : "",
+            "trgStructure" : "",
+            "isCBAFirstLaunch" : false,
+            "ImpactAnalysis": {},
+            "linkedBOM": {}
+        },
+        "meta": {
+        }
+    }
+    }, 
+    "ports": {
+        "updateCBAContextPage": {
+            "syncObject": {}
+        }
+    },
+    "actions":{
+        "initCBAPage":{
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initializeServiceForCBA"
+                },
+                {
+                    "action": "getData"
+                }
+            ]
+        },
+        "getData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadCBAData",
+            "inputData":{
+                "context":"{{fields.cbaContext}}"
+            },
+            "deps": "js/CadBomOccurrenceAlignmentService",
+            "outputData": {
+                "data.modelObjectsToOpen": "result.modelObjectsToOpen",
+                "cbaContext.srcStructure" : "result.srcStructure",
+                "cbaContext.trgStructure" : "result.trgStructure",
+                "cbaContext.isCBAFirstLaunch" : "result.isCBAFirstLaunch",
+                "cbaContext.ImpactAnalysis" : "result.ImpactAnalysis",
+                "cbaContext.isImpactAnalysisMode" : "result.isImpactAnalysisMode"
+
+            }
+        },
+        "initializeServiceForCBA": {
+            "actionType": "JSFunction",
+            "method": "initializeServiceForCBA",
+            "deps": "js/CadBomOccurrenceAlignmentService"
+        },
+        "destroyCBASplitView": {
+            "actionType": "JSFunction",
+            "method": "destroyCbaPageView",
+            "deps": "js/cbaPageViewService",
+            "inputData": {
+            }
+        },
+        "clearCbaContext": {
+            "actionType": "JSFunction",
+            "method": "clearCbaContext",
+            "deps": "js/CadBomOccurrenceAlignmentService",
+            "outputData":{
+                "cbaContext":""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "refreshCbaPage.getData",
+                        "eventData": {
+                            "urlParams": "{{data.eventData}}"
+                        }
+                    }
+                ]
+            }
+        },
+        "refreshCbaSublocation": {
+            "actionType": "JSFunction",
+            "method": "refreshCba",
+            "deps": "js/CadBomOccurrenceAlignmentService",
+            "inputData": {
+                "data":"{{data}}",
+                "context":"{{fields.cbaContext}}"
+            }
+        },
+        "updateCbaContextInTaskBar": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "updateCBAContextPage",
+                "syncObject": 
+                {
+                    "cbaContext": "{{fields.cbaContext}}"
+                }
+            } 
+        }
+    },
+    "lifecycleHooks": {
+        "onInit": "initCBAPage",
+        "onUnmount": "destroyCBASplitView",
+        "onUpdate": [
+            {
+                "action": "updateCbaContextInTaskBar",
+                "observers": [ "viewModel.data.cbaContext" ]
+            }
+        ]   
+    },
+    "onEvent": [ {
+        "eventId": "refreshCbaPage",
+        "cacheEventData": true,
+        "action": "clearCbaContext"
+    },
+    {
+        "eventId": "refreshCbaPage.getData",
+        "cacheEventData": true,
+        "action": "refreshCbaSublocation"
+    }]
+
+
+}

@@ -1,0 +1,124 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+    ],
+    "ports": {
+
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+
+            {
+                "action": "updateLovValue",
+                "observers": [ "props.attr.value"]
+            }
+        ]
+    },
+    "props": {
+        "attr": {
+            "type": "object"
+        },
+        "classify-state": {
+            "type": "object"
+        },
+        "prop-details": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "loadInterDep": {
+            "actionType": "dataProvider",
+            "method": "attrLOV"
+        },
+        "updateLovValue": {
+            "actionType": "JSFunction",
+            "method": "updateLovValue",
+            "inputData": {
+                "data": "{{data}}",
+                "attr": "{{props.attr}}"
+            },
+            "outputData": {
+                "data": ""
+            },
+            "deps": "js/classifyLOVService"
+        },
+        "validateLOVValueSelections": {
+            "actionType": "JSFunction",
+            "method": "validateLOVValueSelections",
+            "inputData": {
+                "data":"{{data}}",
+                "attr":"{{props.attr}}",
+                "classifyState": "{{props.classifyState}}",
+                "selected":"request.selected"
+            },
+            "deps": "js/classifyLOVService"
+        },
+        "initializeInterdepLOV": {
+            "actionType": "JSFunctionAsync",
+            "method": "initializeInterdepLOV",
+            "inputData": {
+                "data":"{{data}}",
+                "attr":"{{props.attr}}",
+                "classifyState": "{{props.classifyState}}"
+            },
+            "outputData":{
+                "attrLOVList":"attrLOVList",
+                "attrName": "attrName"
+            },
+            "actionMessages": {
+                "success": [{
+                    "message": "inValidLOVError",
+                    "condition": "data.attrLOVList.length === 0"
+                }]
+            },
+            "deps": "js/classifyLOVService"
+        }
+    },
+    "functions": {
+
+    },
+    "dataProviders": {
+        "attrLOV": {
+            "initializeAction": "initializeInterdepLOV",
+            "response": "{{data.attrLOVList}}",
+            "totalFound": "{{data.attrLOVList.length}}",
+            "validateAction":"validateLOVValueSelections"
+        }
+    },
+    "columnProviders": {
+    },
+    "grids": {
+    },
+    "data": {
+        "lovInitialized": false,
+        "attrLOVList": [],
+        "attrLovLink": {
+            "propertyDisplayName": "{{props.attr.fielddata.uiValue}}",
+            "displayValues": [],
+            "name": "attrLovName",
+            "type": "STRING",
+            "dataProvider": "attrLOV",
+            "uiValue": "{{props.attr.fielddata ? props.attr.fielddata.uiValue : []}}"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "attrLovLink.lovValueChanged",
+            "action": "loadInterDep"
+        }
+    ],
+    "conditions": {
+    },
+    "messages": {
+        "inValidLOVError": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.inValidKeyError}}",
+            "messageTextParams": [
+                "{{props.attr.label}}"
+            ]
+        }
+    },
+    "i18n": {
+        "inValidKeyError": [ "ClassificationPanelMessages" ]
+    }
+}

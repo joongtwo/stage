@@ -1,0 +1,131 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "dataProviders":
+    {
+        "operatorContextLinkLOV":
+        {
+            "dataProviderType": "TcLOV",
+            "action": "updateLOVEntries",
+            "response": "{{data.listofEcns}}",
+            "totalFound": "{{data.listofEcns.length}}"
+        }
+    },
+
+    "actions":
+    {
+        "doOperatorsDataProvider":
+        {
+            "actionType": "dataProvider",
+            "method": "operatorContextLinkLOV"
+        },
+
+        "updateLOVEntries":
+        {
+            "actionType": "JSFunction",
+            "method": "generateOperatorContextList",
+            "inputData":
+            {
+            },
+            "outputData": {
+                "listofEcns": "operatorsList"
+            },
+            "deps": "js/Ewi0OperatorContextService",
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "Ewi0OperatorContext.setSelectedOperator"
+                    }
+                ]
+            }
+        },
+        "setOperatorContext":
+        {
+            "actionType": "JSFunction",
+            "method": "setOperatorContext",
+            "inputData":
+            {
+                "operatorData": "{{data.ewi0GlobalOperatorContext}}",
+                "operatorItemId": "{{parameters.eventData.property.dbValue.propInternalValue}}",
+                "operatorsList": "{{data.listofEcns}}"
+            },
+
+            "deps": "js/Ewi0OperatorContextService"
+        },
+        "setSelectedOperator":
+        {
+            "actionType": "JSFunction",
+            "method": "setSelectedOperator",
+            "inputData":
+            {
+                "operatorData": "{{data.ewi0GlobalOperatorContext}}",
+                "operatorsList": "{{data.listofEcns}}"
+            },
+
+            "deps": "js/Ewi0OperatorContextService"
+        }
+    },
+
+    "data":
+    {
+        "operator":
+        {
+            "isNull": false,
+            "propertyDisplayName": "{{i18n.operatorTitle}}",
+            "uiValue": "{{i18n.operatorTitle}}"
+        },
+        "ewi0GlobalOperatorContext": {
+            "displayName": "{{i18n.all}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "dbValue": ""
+        }
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "ewi.stepChanged",
+            "action": "doOperatorsDataProvider"
+        },
+        {
+            "eventId": "Ewi0OperatorContext.setSelectedOperator",
+            "action": "setSelectedOperator"
+        },
+        {
+            "eventId": "awlinkPopup.selected",
+            "condition": "conditions.isOperatorContextSelected",
+            "action": "setOperatorContext",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        }
+    ],
+
+    "conditions":
+    {
+        "isOperatorContextSelected":
+        {
+            "expression": "property.propertyName === 'ewi0GlobalOperatorContext'"
+        }
+    },
+
+    "i18n":
+    {
+        "operatorTitle": ["EWIMessages"],
+        "all": ["EWIMessages"]
+    }
+}

@@ -1,0 +1,20 @@
+<aw-panel-body>
+    <aw-row exist-when="!subPanelContext.hideFilterSettings">
+        <aw-include name="Pca0FilterCriteriaSettings" sub-panel-context="data.subPanelContextInfo"></aw-include>
+    </aw-row>
+    <aw-row height="fill">
+        <aw-column width="fill">
+            <div>
+                <div class="aw-xrt-objectSetCommandPanel" aw-transclude>
+                    <aw-server-visibility-command-bar anchor="aw_Vca_CommandBar" context="{ variabilityProps: fields.variabilityProps, vcaEditState: fields.vcaEditState, gridSelectionState: fields.gridSelectionState, subPanelContext: subPanelContext }" alignment="HORIZONTAL"></aw-server-visibility-command-bar>
+                </div>
+            </div>
+            <aw-splm-table class="aw-cfg-variantgrid" gridid="variantConditionAuthoringGrid" use-tree="true" show-decorators="true"></aw-splm-table>
+        </aw-column>
+    </aw-row>
+    <aw-splitter exist-when="ctx.variantConditionContext.formulaEditorProps.isFormulaEditorOpen" direction="HORIZONTAL" min-size-1="6" min-size-2="6"> </aw-splitter>
+    <aw-row exist-when="ctx.variantConditionContext.formulaEditorProps.isFormulaEditorOpen">
+        <aw-break></aw-break>
+        <pca0-variant-formula-editor sub-panel-context="{ ...subPanelContext, contextKey: 'variantConditionContext', configPerspectiveUid: data.treeMaps.cachedSoaResponse.configPerspective.uid, selectedExpressions: data.treeMaps.cachedSoaResponse.selectedExpressions }" vca-edit-state="data.vcaEditState"></pca0-variant-formula-editor>
+    </aw-row>
+</aw-panel-body>

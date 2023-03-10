@@ -1,0 +1,223 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-click.directive",
+        "js/aw-flex-row.directive",
+        "js/aw-default-cell.directive",
+        "js/aw-cell-command-bar.directive",
+        "js/aw-icon.directive",
+        "js/aw-textbox.directive",
+        "js/aw-widget.directive",
+        "js/aw-date.directive",
+        "js/exist-when.directive"
+    ],
+    "props": {
+        "group": {
+            "type": "object"
+        },
+        "family": {
+            "type": "object"
+        },
+        "updateValue": {
+            "type": "action"
+        },
+        "value": {
+            "type": "field",
+            "optValue": {
+                "field": "true",
+                "type": "field",
+                "indicators": [
+                    {
+                        "field": "true",
+                        "type": "object"
+                    }
+                ]
+            }
+        },
+        "action": {
+            "type": "action"
+        },
+        "valueaction": {
+            "type": "string"
+        },
+        "variantcontext": {
+            "type": "string"
+        },
+        "path": {
+            "type": "object"
+        },
+        "fscState": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "handleValueClick": {
+            "actionType": "JSFunction",
+            "method": "handleValueClick",
+            "inputData": {
+                "data": "{{data}}",
+                "props": "{{props}}"
+            },
+            "outputData": {
+                "clickCount": "result.clickCount"
+            },
+            "deps": "js/pca0FscValueService"
+        },
+        "updateIndicators": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateIcon",
+                    "condition": "!data.isDestroyed()"
+                },
+                {
+                    "action": "updateValueIndicators",
+                    "condition": "!data.isDestroyed()"
+                },
+                {
+                    "action": "updateViolationIcon", 
+                    "condition": "!data.isDestroyed()"
+                }
+            ]
+        },
+        "updateValueIndicators": {
+            "actionType": "JSFunction",
+            "method": "updateValueIndicators",
+            "deps": "js/pca0FscValueService",
+            "inputData": {
+                "props": "{{props}}"
+            },
+            "outputData": {
+                "systemSelection": "result.systemSelection"
+            }
+        },
+        "updateIcon": {
+            "actionType": "JSFunction",
+            "method": "updateIcon",
+            "deps": "js/pca0FscValueService",
+            "inputData": {
+                "props": "{{props}}"
+            },
+            "outputData": {
+                "selectionImage": "result.selectionImage"
+            }
+        },
+        "updateViolationIcon": {
+            "actionType": "JSFunction",
+            "method": "updateViolationIcon",
+            "deps": "js/pca0FscValueService",
+            "inputData": {
+                "props": "{{props}}"
+            },
+            "outputData": {
+                "violationImage": "result.violationImage",
+                "violationClass": "result.violationClass"
+            }
+        },
+        "handleValueChange": {
+            "actionType": "JSFunction",
+            "method": "handleValueChange",
+            "deps": "js/pca0FscValueService",
+            "inputData": {
+                "data": "{{data}}",
+                "props": "{{props}}"
+            },
+            "outputData": {
+                "currentValue": "currentValue"
+            }
+        },
+        "updateTextValue": {
+            "actionType": "JSFunction",
+            "method": "updateTextValue",
+            "deps": "js/pca0FscValueService",
+            "inputData": {
+                "data": "{{data}}",
+                "props": "{{props}}"
+            },
+            "outputData": {
+                "textValue": "textValue",
+                "dateValue": "dateValue"
+            }
+        },
+        "textValueChanged": {
+            "actionType": "JSFunction",
+            "method": "textValueChange",
+            "deps": "js/pca0FscValueService",
+            "inputData": {
+                "data": "{{data}}",
+                "props": "{{props}}",
+                "newValue": "{{data.textValue.newValue}}"
+            }
+        },
+        "resetTempState": {
+            "actionType": "JSFunction",
+            "method": "resetTempState",
+            "inputData": {
+                "props": "{{props.value.selectionState}}"
+            },
+             "outputData": {
+                "tempSelection": ""
+            },
+            "deps": "js/pca0FscValueService"
+        },
+             
+        "render": {
+            "method": "pca0FscValueRenderFunction",
+            "deps": "js/pca0FscValueService"
+        }
+    },
+    "i18n": {},
+    "lifecycleHooks": {
+        "render": "render",
+        "onUpdate": [ 
+            {
+            "action": "updateTextValue",
+            "observers": [
+                "props.value.dbValue",
+                "props.value.selectionState"
+            ]
+        },
+        {
+            "action": "resetTempState",
+            "observers": [
+                "props.value.selectionState"
+            ]
+        }
+    ]
+    },
+    "conditions": {},
+    "data": {
+        "selection": {
+            "displayName": "",
+            "type": "STRING",
+            "dispValue": "",
+            "dbValue": "",
+            "value": ""
+        },
+        "textValue": {
+            "displayName": "",
+            "type": "STRING",
+            "dbValue": "",
+            "isRequired": "",
+            "isEditable": "",
+            "dispValue": ""
+        },
+        "dateValue": {
+            "displayName": "",
+            "uiValue": "",
+            "type": "DATE"
+        }
+      
+    },
+    "onEvent": [
+        {
+            "eventId": "awCustomVariantPanel.updateViolationIcon",
+            "action": "updateViolationIcon"
+        },
+        {
+            "eventId": "customVariantRule.variantRuleDirty",
+            "action": "updateIndicators"
+        }
+       
+    ]
+}

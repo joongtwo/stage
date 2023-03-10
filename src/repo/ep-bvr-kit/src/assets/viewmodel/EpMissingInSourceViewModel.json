@@ -1,0 +1,105 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "EpMissingInSource_inputObject": {
+            "syncObject": {}
+        }
+    },
+    "actions": {
+        "initAction": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "setLoadingIndicator"
+                },
+                {
+                    "action": "initializeDataProvider"
+                },
+                {
+                    "action": "clearLoadingIndicator"
+                }
+            ]
+        },
+        "setLoadingIndicator": {
+            "actionType": "JSFunction",
+            "method": "setLoadingIndicator",
+            "inputData": {
+                "isLoading": true
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeMessagesService"
+        },
+        "clearLoadingIndicator": {
+            "actionType": "JSFunction",
+            "method": "setLoadingIndicator",
+            "inputData": {
+                "isLoading": false
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeMessagesService"
+        },
+        "initializeDataProvider": {
+            "actionType": "dataProvider",
+            "methods": [
+                "epMissingInSrcListDataProvider"
+            ]
+        },
+        "loadMissingInSrcData": {
+            "actionType": "JSFunction",
+            "method": "getProperty",
+            "inputData": {
+                "name": "{{ctx.epPageContext.loadedObject.uid}}",
+                "propertyName": "accountabilityResponse"
+            },
+            "outputData": {
+                "missingInSrc": "result.missingInSrc"
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "updateSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpMissingInSource_inputObject",
+                "syncObject": "{{parameters.eventData.selectedObjects}}"
+            }
+        }
+    },
+    "dataProviders": {
+        "epMissingInSrcListDataProvider": {
+            "action": "loadMissingInSrcData",
+            "response": "{{data.missingInSrc}}",
+            "totalFound": "{{data.missingInSrc.length}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "conditions": {
+        "hasMissingInSrc": {
+            "expression": "data.dataProviders.epMissingInSrcListDataProvider.viewModelCollection.loadedVMObjects.length > 0"
+        },
+        "isLoading": {
+            "expression": "data.isLoading"
+        },
+        "isMissingInSrcSelected": {
+            "expression": "data.dataProviders.epMissingInSrcListDataProvider.selectedObjects.length > 0"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "epObjectPropertyCache.accountabilityResponseUpdated",
+            "action": "initAction"
+        },
+        {
+            "eventId": "epMissingInSrcListDataProvider.selectionChangeEvent",
+            "action": "updateSelectionPort",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        }
+    ],
+    "lifecycleHooks": {
+        "onMount": "initAction"
+    }
+}

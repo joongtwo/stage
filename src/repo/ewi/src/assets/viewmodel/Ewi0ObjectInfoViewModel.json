@@ -1,0 +1,220 @@
+{
+    "schemaVersion" : "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data":
+    {
+    },
+    "actions":
+    {
+        "getData": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getPopupTabsFromPreference"
+                },
+                {
+                    "action": "getRelatedPopup"
+                }
+            ]
+        },
+        "getPopupTabsFromPreference":
+        {
+            "actionType": "JSFunctionAsync",
+            "method": "getLayoutTabsFromPreference",
+            "inputData":
+            {
+                "layoutName": "PartToolSinglePanelLayout"
+            },
+            "outputData":
+            {
+                "workareasTabs": "workareasTabs",
+                "allRelationsToLoad": "allRelationsToLoad",
+                "allPropPolicy": "allPropPolicy",
+                "policyIds": "policyIds",
+                "hiddenComponents": "hiddenComponents",
+                "layoutName": "layoutName",
+                "views": "views"
+            },
+            "deps": "js/ewiService"
+        },
+
+        "getRelatedPopup":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Ewia-2012-10-DataManagement",
+            "method": "getRelated",
+            "inputData":
+            {
+                "input":
+                {
+                    "businessObjects": ["{{props.subPanelContext}}"],
+                    "relations": "{{data.allRelationsToLoad}}"
+                }
+            },
+            "policy": {
+                "types":
+                [
+
+                    {
+                        "name":"ItemRevision",
+                        "properties":
+                        [
+                            {
+                                "name":"object_name"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Dataset",
+                        "properties":
+                        [
+                            {
+                                "name": "ref_list",
+                                "modifiers":
+                                [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "object_name"
+                            },
+                            {
+                                "name": "ref_names"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "ImanFile",
+                        "properties":
+                        [
+                            {
+                                "name": "original_file_name"
+                            },
+                            {
+                                "name": "file_ext"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "FullText",
+                        "properties": [ {
+                            "name": "body_text"
+                        }]
+                    },
+                    {
+                        "name": "Web Link",
+                        "properties":
+                        [
+                            {
+                                "name": "data_file",
+                                "modifiers":
+                                [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "WebLink",
+                        "properties":
+                        [
+                            {
+                                "name": "url"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mfg0BvrProcess",
+                        "properties":
+                            [
+                            {
+                                "name": "ewi0cortona_app_ref"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mfg0BvrOperation",
+                        "properties":
+                            [
+                            {
+                                "name": "ewi0cortona_app_ref"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "outputData":
+            {
+                "relatedObjectsInfo": "relatedObjectsInfo"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "ewi.setPopupRelatedData"
+                    }
+
+                ]
+            }
+        },
+
+        "setPopupRelatedData":
+        {
+            "actionType": "JSFunction",
+            "method": "setRelatedData",
+            "inputData":
+            {
+                "workareasTabs": "{{data.workareasTabs}}",
+                "allRelatedObjects": "{{function:loadRelations}}"
+            },
+            "outputData": {
+                "workareasTabsData": "workareasTabsData"
+            },
+            "deps": "js/ewiService",
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "ewi.unregisterPolicies"
+                    }
+                ]
+            }
+        }
+    },
+
+    "functions":
+    {
+        "loadRelations":
+        {
+            "functionName": "loadRelations",
+            "parameters":
+            [
+                "{{data}}"
+            ]
+        }
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "ewi.setPopupRelatedData",
+            "action": "setPopupRelatedData"
+        }
+    ],
+
+    "lifecycleHooks": {
+        "onMount": "getData"
+    }
+}

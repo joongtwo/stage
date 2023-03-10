@@ -1,0 +1,19 @@
+<aw-command-panel caption="i18n.importPreferencesPanelTitle">
+    <aw-panel-body>
+       <aw-panel-section>
+           <aw-label prop="data.file"></aw-label>
+           <aw-file-upload type-filter=".xml" is-required="true" file-change-action="fileChangeAction"></aw-file-upload>
+           <aw-break></aw-break>
+           <aw-listbox prop="data.fnd0Location" is-required="true"></aw-listbox>
+           <aw-break></aw-break>
+           <aw-label prop="data.conflictResolution"></aw-label>
+           <!-- <aw-radiobutton prop="data.fnd0ImportAction" > </aw-radiobutton> -->
+           <aw-radiobutton class="aw-importPreferences" prop="data.fnd0ImportAction" list="data.importActions.dbValue" ></aw-radiobutton>
+       </aw-panel-section>
+   </aw-panel-body>
+   <aw-panel-footer>
+       <aw-button action="getTransientFileTicketsForUpload" visible-when="conditions.showImportBtn">
+           <aw-i18n>i18n.importPreferencesBtn</aw-i18n>
+       </aw-button>
+   </aw-panel-footer>
+</aw-command-panel>

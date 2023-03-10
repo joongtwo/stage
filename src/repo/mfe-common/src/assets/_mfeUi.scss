@@ -1,0 +1,359 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2020.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+$font_weight_400: 400;
+@mixin full-size {
+    width: 100%;
+    height: 100%;
+}
+
+@mixin ellipsis {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/*========================================================================*/
+/*============================= MFE Common Location ======================*/
+/*========================================================================*/
+
+
+.aw-mfe-subpageContentWithLeftPanelOpened {
+    .aw-layout-workarea {
+        padding: 0 0 0 $padding_normal;
+    }
+}
+
+
+/*========================================================================*/
+/*=========================== MFE Splitter ==========================*/
+/*========================================================================*/
+
+.aw-mfe-thinSplitter.aw-mfe-transparentSplitter{
+    flex:0 0 2px;
+
+    >.aw-layout-splitterLine{
+        left: 1px;
+    }
+
+    >.aw-layout-splitterLineHorizontal{
+        top: 0;
+    }
+}
+/*========================================================================*/
+/*============================= MFE Gallery Scroll Location ======================*/
+/*========================================================================*/
+
+.aw-mfe-galleryPanel{
+    display: flex;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    margin: 0 $margin_small;
+    height: rem-calc(32);
+    .sw-row{
+        overflow: initial;
+        min-width: max-content;
+        max-width: max-content;
+    }
+    .aw-row{
+        width: auto;
+
+    }
+    .aw-column{
+        overflow: initial;
+    }
+    .aw-vertical-separator {
+        margin: rem-calc(3) rem-calc(6);
+        opacity: 1;
+        height: rem-calc(18) !important;
+    }
+    .aw-mfe-galleryButtonLeft{
+        margin-left: $margin_normal;
+    }
+
+    .aw-mfe-galleryButtonRight{
+        margin-right: $margin_normal;
+    }
+}
+
+.aw-mfe-galleryButton{
+    height: rem-calc(24);
+    width: rem-calc(24);
+    margin: 0;
+    padding:$padding_xsmall;
+    svg{
+        height: rem-calc(16);
+        width: rem-calc(16);
+    }
+}
+/*========================================================================*/
+/*=========================== MFE Content Panel ==========================*/
+/*========================================================================*/
+
+.aw-mfe-tabs {
+    padding-left: rem-calc(8);
+    padding-top: rem-calc(8);
+    .aw-jswidget-tabPage{
+        display: none;
+    }
+}
+
+.aw-mfe-singleTabTitle {
+    .sw-tabContainer .sw-tab {
+        a.sw-tab-selected {
+            &:hover {
+                cursor: default;
+            }
+        }
+    }
+}
+
+.aw-mfe-tabTitleWithIcon {
+    box-sizing: border-box;
+    font-size: $tab_font_size;
+    font-weight: $tab_font_weight;
+    padding: 0 0 $padding_small $padding_small;
+    @include ellipsis;
+}
+
+.aw-mfe-contentPanelContainer {
+    .aw-advanced-bar-horizontal.aw-advanced-bar[type="TOOLBAR"] {
+        z-index: 100;
+        margin: 0;
+        height: auto;
+        flex-shrink: 0;
+
+		.aw-mfe-contentPanelToolbar{
+			height: 3.4rem;
+			position: relative;
+
+            &:first-child {
+                z-index: 1;
+            }
+		}
+    }
+
+	.aw-mfe-contentPanel {
+		border-width: rem-calc(1);
+		border-top-width: 0;
+		border-style: solid;
+	}
+}
+
+.aw-mfe-mfeContentPanelPinCommandBar {
+    min-width: min-content;
+    .aw-commands-wrapper.aw-use-commandOverflow, .aw-commands-wrapper.aw-no-overflow {
+        width: 0;
+    }
+}
+
+.aw-mfe-activeContentPanel {
+    border-top-width: rem-calc(2);
+    border-style: solid;
+}
+
+.aw-mfe-contentPanelTabIcon {
+    width: 1.4rem;
+}
+
+/*========================================================================*/
+/*=========================== MFE Large Popup ============================*/
+/*========================================================================*/
+
+%largeHeaderElement {
+    font-weight: $font_weight_400;
+    flex-wrap: nowrap;
+    @include ellipsis;
+}
+
+.aw-mfe-largeHeader {
+    height: 100%;
+    .aw-mfe-largeHeaderIcon {
+        padding: rem-calc(5);
+    }
+
+    .aw-mfe-largeHeaderTitle {
+        font-size: $fontsize_5x_large;
+        @extend %largeHeaderElement;
+    }
+    .aw-mfe-largeHeaderSeparator {
+        margin: 0 $margin_normal;
+    }
+    .aw-mfe-largeHeaderSubtitle {
+        font-size: $fontsize_x_large;
+        @extend %largeHeaderElement;
+    }
+}
+
+.aw-mfe-largePopup {
+    border-top: 4px solid;
+    >.popupInner {
+        @include full-size;
+        >div {
+            @include full-size;
+            >div {
+                @include full-size;
+                >.aw-popup-contentContainer {
+                    @include full-size;
+                }
+            }
+        }
+    }
+    .sw-popup-contentContainer {
+        padding: rem-calc(32);
+        box-sizing: border-box;
+        @include full-size;
+        max-width: 100%;
+        max-height: 100%;
+
+        >.sw-flex-column{
+            @include full-size;
+        }
+    }
+    .aw-layout-panelHeader,
+    .aw-layout-panelBody,
+    .aw-layout-panelFooter {
+        padding: 0;
+    }
+
+    .aw-mfe-largePopupCloseCommand{
+        padding: rem-calc(10);
+    }
+}
+
+.aw-mfe-largeHeaderIcon {
+    height: inherit;
+    >aw-icon,
+    >img {
+        height: inherit;
+    }
+}
+
+
+/*========================================================================*/
+/*=========================== MFE Extended Tooltip ============================*/
+/*========================================================================*/
+
+.aw-mfe-genericTooltipContainer{
+    max-width: rem-calc(320);
+
+    .aw-mfe-tooltipContent{
+        div:last-child {
+            margin-bottom: 0;
+        }
+    }
+    .aw-mfe-tooltipTitle {
+
+        &.aw-mfe-tooltipTitleOnly {
+            margin-bottom: 0;
+        }
+
+        margin-bottom: 6px;
+        font-size: $fontsize_normal;
+        font-weight: bold;
+        line-height: $link_line_height;
+    }
+
+    .aw-mfe-tooltipRowMessage {
+        margin-bottom: rem-calc(12);
+        display: block;
+        line-height: $command_bar_command_decorator_line_height;
+    }
+
+    .aw-mfe-tooltipInstruction {
+        font-style: italic;
+        font-size: $fontsize_normal;
+        padding-top: rem-calc(10);
+    }
+
+    .aw-mfe-informationWarning {
+        line-height: $command_bar_command_decorator_line_height;
+        border-top: solid rem-calc(1);
+        border-bottom: solid rem-calc(1);
+        &.aw-mfe-tooltipInformation {
+            margin-top: $margin_large;
+            padding: $padding_normal $padding_xlarge;
+        }
+    }
+}
+
+.aw-mfe-genericTooltipPopup {
+    padding: $padding_normal $padding_xlarge;
+}
+
+/*========================================================================*/
+/*=================== MFE Type and Name Cell List ========================*/
+/*========================================================================*/
+
+.aw-mfe-typeAndNameCellList {
+    width: 100%;
+
+
+    .aw-mfe-cellListItemTypeIcon {
+        height: 24px;
+        margin-right: 8px;
+    }
+}
+
+/*========================================================================*/
+/*=========================== MFE Taskbar ============================*/
+/*========================================================================*/
+
+.aw-mfe-taskbar {
+    height: 4rem;
+    align-items: center;
+
+    &.aw-advanced-bar-horizontal.aw-advanced-bar {
+        margin: 0;
+        border: none;
+
+        .aw-command-bar.aw-commands-commandBarHorizontal.aw-use-commandOverflow .aw-commands-wrapper {
+            max-height: none;
+        }
+    }
+}
+
+.aw-mfe-taskbarLeftSlot {
+    margin-left: 1rem;
+}
+
+.aw-mfe-clickableTableCellIcon{
+    cursor: pointer;
+}
+
+/*========================================================================*/
+/*=========================== MFE Chip ============================*/
+/*========================================================================*/
+
+
+
+.aw-mfeChip-container {
+    display: flex;
+    align-items: center;
+    height: rem-calc(24);
+    border-radius: rem-calc(12);
+    padding: 0 rem-calc(10);
+    font-size: $fontsize_normal;
+    box-sizing: border-box;
+
+    &>*:not(:first-child) {
+        margin-left: $margin_small;
+    }
+
+    .aw-mfeChip-icon {
+        width: rem-calc(16);
+        height: rem-calc(16);
+    }
+
+    .aw-mfeChip-value {
+        font-weight: bold;
+    }
+}
+
+.aw-mfe-tableCellImage {
+    display: flex;
+}

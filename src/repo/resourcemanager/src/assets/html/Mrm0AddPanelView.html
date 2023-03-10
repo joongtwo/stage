@@ -1,0 +1,37 @@
+<div class="aw-layout-flexColumn" show-when="data.activeState.value.activeView==='AddObjectPrimarySub'">
+    <aw-panel-header>
+        <aw-panel-section caption="i18n.toTitle" exist-when="props.subPanelContext.addElementState.parent">
+            <aw-default-cell item="props.subPanelContext.addElementState.toComponent"></aw-default-cell>
+        </aw-panel-section>
+    </aw-panel-header>
+    <aw-form name="createInputsFormValidator" aw-form-validator="">
+        <aw-add include-types="{{data.allowedTypeInfo.objectTypeName}}"
+            type-filter="{{data.allowedTypeInfo.searchTypeName}}"
+            load-sub-types="false"
+            max-recent-count="5"
+            exist-when="data.allowedTypeInfo"
+            visible-tabs="{{data.allowedTypeInfo.allowedTabs}}"
+            preferred-type="{{data.allowedTypeInfo.preferredType}}"
+            is-include-sub-types="{{data.isIncludeSubTypes}}"
+            add-panel-state="fields.addPanelState"
+            active-state="data.activeState"
+            project-state="data.projectState"
+            sub-panel-context="{...subPanelContext, triggerCreate: data.triggerCreate}"
+            xrt-state="data.xrtState"
+            edit-handler="editHandlers.addPanelEditHandler">
+        </aw-add>
+        <aw-widget prop="data.numberOfElements" visible-when="(!props.subPanelContext.addElementState.AddOccurrencePropertiesOnCreate || ctx.occmgmtContext.isMarkupEnabled ) && subPanelContext.occContext.supportedFeatures.Awb0BulkAddFeature && conditions.isSingleElementSelected"></aw-widget>
+        <aw-panel-footer>
+            <aw-button action="createAndAddElement" visible-when="formProp.attributes.valid && conditions.isNewTabAddButtonVisible">
+                <aw-i18n>i18n.addElementBtn</aw-i18n>
+            </aw-button>
+            <aw-button action="addElements" visible-when="conditions.areNumberOfElementsValid && !conditions.isNewTabAddButtonVisible && conditions.hasAnySelection">
+                <aw-i18n>i18n.addElementBtn</aw-i18n>
+            </aw-button>
+            <aw-button default="false" action="getPropertiesToCopy" visible-when="conditions.areNumberOfElementsValid && !conditions.isNewTabAddButtonVisible && conditions.hasAnySelection && props.subPanelContext.addElementState.isCopyButtonEnabled">
+                <aw-i18n>i18n.addElementCopyButtonText</aw-i18n>
+            </aw-button>
+        </aw-panel-footer>
+    </aw-form>
+</div>
+<aw-add-navigate active-state="data.activeState" project-state="data.projectState" action="actions.setActiveView"></aw-add-navigate>

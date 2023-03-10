@@ -1,0 +1,16 @@
+<aw-panel>
+    <aw-panel-body>
+        <aw-radiobutton prop="data.allowAlternateProcedures" visible-when="conditions.isAllowAlternateProcedures" action="getValidTemplates"></aw-radiobutton>
+        <aw-listbox prop="data.workflowsListBox" list="data.workflowsList"></aw-listbox>
+        <aw-textbox prop="data.workflowName"></aw-textbox>
+        <aw-textarea prop="data.workflowDescription"></aw-textarea>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button size="auto" button-type="base" action="closePopup">
+            <aw-i18n>{{i18n.cancel}}</aw-i18n>
+        </aw-button>
+        <aw-button size="auto" action="submitToWorkflowAndClosePopup" enable-when="formProp.attributes.valid && data.workflowsListBox.dbValue!==''">
+            <aw-i18n>{{i18n.submit}}</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-panel>

@@ -1,0 +1,12 @@
+<aw-panel>
+
+    <div class="sw-column h-12 w-12 justify-center" exist-when="conditions.hasTools" >
+        <aw-splm-table gridid="toolsTableGrid" ></aw-splm-table>
+    </div>
+
+    <div class="sw-row demo-h-12f" align-content="center" exist-when="!conditions.hasTools">
+        <mfe-message sub-panel-context="data.messages.ToolsNotAssigned" ></mfe-message>
+    </div>
+
+</aw-panel>
+

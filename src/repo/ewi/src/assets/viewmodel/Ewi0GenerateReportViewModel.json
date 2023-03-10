@@ -1,0 +1,280 @@
+{
+    "schemaVersion" : "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "actions":
+    {
+        "updateFormatList":
+        {
+            "actionType": "JSFunction",
+            "method": "updateFormatList",
+            "inputData":
+            {
+                "preferences": "{{ctx.preferences}}",
+                "formatPreferenceName": "{{function:getFormatPreferenceName}}"
+            },
+            "outputData":
+            {
+                "formatList": "list",
+                "format.dbValue": "selected",
+                "format.uiValue": "selected"
+            },
+            "deps": "js/Ewi0GenerateReport"
+        },
+
+        "generate":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                 "events":
+                 [
+                    {
+                        "name": "generateReport.setProgressFlag"
+                    },
+                    {
+                        "name": "generateReport.generateFile"
+                    }
+                 ]
+            }
+        },
+
+        "generateFile":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Ewia-2012-10-DataManagement",
+            "method": "generatePrintableReport",
+            "inputData":
+            {
+                "input":
+                [
+                    {
+                        "reportScope": "{{function:createReportScope}}",
+                        "contextObject": "{{function:getSelectedBusinessObjectUid}}"
+                    }
+                ]
+            },
+            "outputData":
+            {
+                "m_fileTicket": "reportFilesInfo[0].ticket"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "generateReport.resetProgressFlag"
+                    },
+                    {
+                        "name": "generateReport.openFile",
+                        "condition": "data.m_fileTicket != 0"
+                    }
+                ],
+                "failure":
+                [
+                    {
+                        "name": "generateReport.resetProgressFlag"
+                    }
+                ]
+            },
+            "actionMessages":
+            {
+                "failure":
+                [
+                    {
+                        "message": "failureGeneratingReport"
+                    }
+                ]
+            },
+            "deps": "js/Ewi0GenerateReport"
+        },
+
+        "openFile":
+        {
+            "actionType": "JSFunction",
+            "method": "openFile",
+            "inputData":
+            {
+                "fileTicket": "{{data.m_fileTicket}}"
+            },
+            "deps": "js/fmsUtils"
+        },
+
+        "setProgressFlag":
+        {
+            "actionType": "JSFunction",
+            "method": "setProgressFlag",
+            "inputData":
+            {
+                "flag": true
+            },
+            "outputData":
+            {
+                "isReportGenerating": ""
+            },
+            "deps": "js/Ewi0GenerateReport"
+        },
+
+        "resetProgressFlag":
+        {
+            "actionType": "JSFunction",
+            "method": "setProgressFlag",
+            "inputData":
+            {
+                "flag": false
+            },
+            "outputData":
+            {
+                "isReportGenerating": ""
+            },
+            "deps": "js/Ewi0GenerateReport"
+        }
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "generateReport.openFile",
+            "action": "openFile"
+        },
+        {
+            "eventId": "generateReport.setProgressFlag",
+            "action": "setProgressFlag"
+        },
+        {
+            "eventId": "generateReport.resetProgressFlag",
+            "action": "resetProgressFlag"
+        },
+        {
+            "eventId": "generateReport.generateFile",
+            "action": "generateFile"
+        }
+    ],
+
+    "data":
+    {
+        "generatingReportLabel":
+        {
+            "uiValue": "{{i18n.generatingReportLabel}}",
+            "type": "STRING"
+        },
+
+        "reportMode":
+        {
+            "displayName": "{{i18n.reportOptionsLabel}}",
+            "type": "BOOLEAN",
+            "propertyRadioTrueText": "{{i18n.fullReport}}",
+            "propertyRadioFalseText": "{{i18n.currentStepReport}}",
+            "vertical": true,
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+
+        "format":
+        {
+            "displayName": "{{i18n.formatLabel}}",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP",
+            "type": "STRING",
+            "hasLov": true
+        },
+
+        "formatList":
+        {
+            "displayName": "{{i18n.formatLabel}}",
+            "type": "STRING"
+        }
+    },
+
+    "messages":
+    {
+        "failureGeneratingReport":
+        {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.failureGeneratingReport}}"
+        }
+    },
+
+    "functions":
+    {
+        "createReportScope":
+        {
+            "functionName": "createReportScope",
+            "parameters":
+            [
+                "{{data.reportMode.dbValue}}",
+                "{{data.format.dbValue}}",
+                "{{ctx.preferences}}"
+            ]
+        },
+        "getSelectedBusinessObjectUid":
+        {
+            "functionName": "getSelectedBusinessObjectUid"
+        },
+        "getFormatPreferenceName":
+        {
+            "functionName": "getFormatPreferenceName",
+            "parameters":
+            [
+                "{{data.reportMode.dbValue}}"
+            ]
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "updateFormatList"
+    },
+
+    "i18n":
+    {
+        "generate":
+        [
+            "EWIMessages"
+        ],
+
+        "generateReport":
+        [
+            "EWIMessages"
+        ],
+
+        "reportOptionsLabel":
+        [
+            "EWIMessages"
+        ],
+
+        "fullReport":
+        [
+            "EWIMessages"
+        ],
+
+        "currentStepReport":
+        [
+            "EWIMessages"
+        ],
+
+        "formatLabel":
+        [
+            "EWIMessages"
+        ],
+
+        "failureGeneratingReport":
+        [
+            "EWIMessages"
+        ],
+
+        "generatingReportLabel":
+        [
+            "EWIMessages"
+        ]
+    }
+}

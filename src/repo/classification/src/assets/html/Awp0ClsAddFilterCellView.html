@@ -1,0 +1,7 @@
+<div class="aw-clsadmin-cellListCellContent">
+    <aw-flex-column width="fill">
+        <div exist-when="subPanelContext.item.showAnd === true">{{i18n.and}}</div>
+        <aw-listbox class="aw-clsadmin-filterCellLov" prop="data.operationType"  list="data.operationTypeValues.dbValue"></aw-listbox>
+        <aw-textbox class="aw-clsadmin-filterCellValue" prop="data.operationValues"></aw-textbox>
+    </aw-flex-column>
+</div>

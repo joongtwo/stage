@@ -1,0 +1,12 @@
+<div class="aw-layout-flexColumn">
+    <div class="aw-layout-alignItemsTop aw-snapshotgallery-searchPanel">
+        <aw-listbox class="aw-layout-flexRow aw-snapshotgallery-searchCriteriaList" prop="data.sortOrder"
+            list="data.sortOrderList" action="setSelectedSortOrder" is-select-only="true"></aw-listbox>
+    </div>
+    <aw-scrollpanel>
+        <aw-list class="aw-viewersnapshot-snapshotPanel" has-floating-cell-commands="false"
+            dataprovider="data.dataProviders.productSnapshotCardViewDataProvider">
+            <aw-product-snapshot-card vmo="{{item}}" command-anchor="aw_3dProductSnapshotThumbnailGalleryCommands" context="{{{ data:data}}}"></aw-product-snapshot-card>
+        </aw-list>
+    </aw-scrollpanel>
+</div>

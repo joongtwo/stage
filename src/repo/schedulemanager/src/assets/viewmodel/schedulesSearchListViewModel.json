@@ -1,0 +1,130 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+        "privilege": {
+            "type": "STRING",
+            "hasLov": true,
+            "dbValue": "",
+            "displayName": "{{i18n.role}}"
+        }
+    },
+    "actions": {
+        "setSelectedPrivilege": {
+            "actionType": "JSFunction",
+            "method": "setSelectedPrivilege",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Saw1SearchFilterService"
+        },
+        "populatePrivilegeList": {
+            "actionType": "JSFunction",
+            "method": "populatePrivilegeList",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "privilegeList" : "privilegeList",
+                "privilege" : "privilege"
+            },
+            "deps": "js/Saw1SearchFilterService"
+        },
+        "reveal": {
+            "actionType": "dataProvider",
+            "method": "listDataProvider"
+        },
+        "loadData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "searchInput": {
+                    "maxToLoad": "{{subPanelContext.searchState.maxToLoad}}",
+                    "maxToReturn": "{{subPanelContext.searchState.maxToReturn}}",
+                    "providerName": "{{subPanelContext.searchState.provider}}",
+                    "searchCriteria": "{{subPanelContext.searchState.criteria}}",
+                    "searchFilterFieldSortType": "{{subPanelContext.searchState.sortType}}",
+                    "startIndex": "{{data.dataProviders.listDataProvider.startIndex}}",
+                    "searchFilterMap6": "{{subPanelContext.searchState.activeFilterMap}}",
+                    "searchSortCriteria": "{{subPanelContext.searchState.sortCriteria}}"
+                },
+                "inflateProperties": false
+            },
+            "policy": {
+                "types": [ {
+                    "name": "BusinessObject",
+                    "properties": [ {
+                        "name": "awp0CellProperties"
+                    } ]
+                } ]
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "{{json:searchResultsJSON}}",
+                "output": "{{function:processOutput}}"
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "schSearchListErrorMsg"
+                } ]
+            },
+            "deps": "js/Saw1SearchFilterService"
+        }
+    },
+    "functions": {
+        "processOutput": {
+            "functionName": "processOutput",
+            "parameters": [
+                "{{data}}",
+                "{{subPanelContext.searchState}}"
+            ]
+        }
+    },
+    "dataProviders": {
+        "listDataProvider": {
+            "action": "loadData",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            },
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "schedulesSearchList.contentLoaded",
+            "action": "populatePrivilegeList"
+        }
+    ],
+    "messages": {
+        "schSearchListErrorMsg": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "i18n": {
+        "coordinator": [ "ScheduleManagerMessages" ],
+        "participant": [ "ScheduleManagerMessages" ],
+        "observer": [ "ScheduleManagerMessages" ],
+        "role": [ "ScheduleManagerMessages" ]
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "reveal",
+                "observers": [
+                    "props.subPanelContext.searchState.criteria.searchString",
+                    "props.subPanelContext.searchState.filterString"
+                ]
+            },
+            {
+                "action": "setSelectedPrivilege",
+                "observers": [
+                    "props.subPanelContext.searchState.criteria.privilege"
+                ]
+            }
+        ]
+    }
+}

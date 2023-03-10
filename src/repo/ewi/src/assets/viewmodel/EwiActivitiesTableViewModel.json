@@ -1,0 +1,84 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "actions": {
+        "doGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "activitiesGridDataProvider"
+        },
+        "loadData": {
+            "actionType": "JSFunction",
+            "method": "loadData",
+            "inputData": {
+                "activeTab": "{{props.subPanelContext}}",
+                "sortCriteria": "{{data.columnProviders.staticColumnProvider.sortCriteria}}"
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults"
+            },
+            "deps": "js/workinstrTableService"
+        },
+        "loadColumns": {
+            "actionType": "JSFunction",
+            "method": "loadColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.activitiesGridDataProvider}}",
+                "colInfos": "{{subPanelContext.viewMode.columns}}"
+            },
+            "outputData": {
+                "staticColumnProvider.columnConfig": ""
+            },
+            "deps": "js/workinstrTableService"
+        }
+    },
+
+    "columnProviders": {
+        "staticColumnProvider": {
+            "loadColumnAction": "loadColumns",
+            "columns": "{{staticColumnProvider.columnConfig.columns}}",
+            "sortCriteria": []
+        }
+    },
+
+    "dataProviders": {
+        "activitiesGridDataProvider": {
+            "action": "loadData",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "inputData": {
+                "selectionModelMode": "single"
+            },
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        }
+    },
+
+    "grids": {
+        "activitiesGridView": {
+            "dataProvider": "activitiesGridDataProvider",
+            "columnProvider": "staticColumnProvider",
+            "addIconColumn": true
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "doGridDataProvider",
+                "observers": [
+                    "props.subPanelContext.datasetsToShow"
+                ]
+            }
+        ]
+    }
+}

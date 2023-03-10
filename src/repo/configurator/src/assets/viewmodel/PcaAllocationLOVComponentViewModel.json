@@ -1,0 +1,119 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "render": {
+            "method": "awPcaAllocationLOVComponentRenderFunction",
+            "deps": "js/PcaAllocationLOVComponentService"
+        },
+        "getApplicableAllocations": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "searchInput": {
+                    "columnFilters": "{{function:getAllocationFilterData}}",
+                    "noServiceData": false,
+                    "cursor": {
+                        "startIndex": "{{data.dataProviders.pca0AllocationDataProvider.startIndex}}"
+                    },
+                    "attributesToInflate": [ "object_name", "cfg0ObjectId" ],
+                    "searchCriteria": {
+                        "searchString": "{{function:getFilterString}}",
+                        "configPerspective": "{{ctx.ConfiguratorCtx.configPerspective.uid}}",
+                        "parentUid" : "{{function:getParent}}",
+                        "boName": "{{function:getBOName}}",
+                        "uidOfLastObject":"{{data.lastLoadedObjectUid}}"
+                    },
+                    "searchFilterFieldSortType": "Priority",
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "providerName": "Pca0AllocationsProvider"
+
+                },               
+                "inflateProperties": true
+            },
+            "outputData": {
+                "searchResults": "{{function:processSoaResponseForBONames}}",
+                "totalFound": "totalFound",
+                "lastLoadedObjectUid": "{{function:getLastUid}}"
+            },
+            "deps": "js/PcaAllocationLOVComponentService"
+        }
+        
+    },
+    "data":{
+        "listBoxName": {
+            "type": "STRINGARRAY",
+            "isArray": true,
+            "dataProvider": "pca0AllocationDataProvider"
+        },
+        "searchColumnName":"",
+        "searchResults": [],
+        "totalFound": 0,
+        "lastLoadedObjectUid": ""
+    },
+    "conditions": {},
+    "onEvent": [],
+    "dataProviders": {
+        "pca0AllocationDataProvider": {
+            "action": "getApplicableAllocations",
+            "initializeAction": "getApplicableAllocations",
+            "nextAction": "getApplicableAllocations",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}"
+        }
+    },
+    "functions": {
+        "getInputForApplicableNames": {
+            "functionName": "getInputForApplicableNames",
+            "parameters": [
+                "{{data.ctx.selected.type}}"
+            ],
+            "deps": "js/pca0InlineAuthoringHandler"
+        },
+        "processSoaResponseForBONames": {
+            "functionName": "processSoaResponseForBONames",
+            "parameters": [
+                "{{data.searchColumnName}}"
+            ]
+        },
+        "getFilterString": {
+            "functionName": "getFilterString",
+            "parameters": [
+                "{{data.ctx.selected.props}}"
+            ]
+        },
+        "getParent": {
+            "functionName": "getParent",
+            "parameters": [
+                "{{props}}"
+            ]
+        },
+        "getBOName": {
+            "functionName": "getBOName",
+            "parameters": [
+                "{{props}}"
+            ]
+        },
+        "getLastUid": {
+            "functionName": "getLastUid",
+            "parameters": []
+        },
+        "getAllocationFilterData": {
+            "functionName": "getAllocationFilterData",
+            "parameters": [
+                "{{data.ctx.selected.props}}",
+                "{{data.searchColumnName}}"
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "render": "render"
+        
+    },
+    "props": {
+        "prop": {
+            "type": "field"
+        }
+    }
+}

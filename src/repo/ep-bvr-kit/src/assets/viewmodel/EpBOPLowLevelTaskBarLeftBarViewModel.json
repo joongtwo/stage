@@ -1,0 +1,70 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "ports": {
+        "changeScopeLabel_inputObject": {
+            "onChangeAction": "setLabelValue",
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "inputObjectName": {
+            "displayName": "{{i18n.selected}}",
+            "type": "STRING"
+        }
+    },
+    "actions": {
+        "setLabelValue": {
+            "actionType": "JSFunction",
+            "method": "updateDisplayValue",
+            "inputData": {
+                "vmProp": "{{data.inputObjectName}}",
+                "displayValues": ["{{ports.changeScopeLabel_inputObject.syncObject.props.object_string.displayValues ? ports.changeScopeLabel_inputObject.syncObject.props.object_string.displayValues[0] : ports.changeScopeLabel_inputObject.syncObject.props.object_string.uiValues[0]}}"]
+            },
+            "outputData": {
+                "inputObjectName": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+
+    },
+    "conditions": {
+        "isTrackingCn": {
+            "expression":
+            {
+                "$source": "ctx.state.params.tracking_cn",
+                "$query": {
+                    "$notNull": true
+                }
+            }
+        },
+        "hasInputObjectName": {
+            "expression":
+            {
+                "$and": [
+                    {
+                        "$source": "data.inputObjectName.uiValue",
+                        "$query": {
+                            "$notNull": true
+                        }
+                    },
+                    {
+                        "$source": "data.inputObjectName.uiValue",
+                        "$query": {
+                            "$ne": ""
+                        }
+                    }
+                ]
+            }
+        },
+        "showAssignmentIndication": {
+            "expression":
+            {
+                "$source": "ctx.epTaskPageContext.processStructure.uid",
+                "$query": {
+                    "$notNull": true
+                }
+            }
+        }
+    }
+}

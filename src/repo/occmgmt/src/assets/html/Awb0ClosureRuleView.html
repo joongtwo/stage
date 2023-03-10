@@ -1,0 +1,4 @@
+<aw-property-non-edit-val exist-when="props.subPanelContext.occContext.supportedFeatures.Awb0FullTextSearchFeature && props.subPanelContext.occContext.productContextInfo.props.awb0IndexUpdateDate !== ''" prop="data.currentClosureRule"></aw-property-non-edit-val>
+<aw-link-with-popup prop="data.currentClosureRule" exist-when="!props.subPanelContext.occContext.supportedFeatures.Awb0FullTextSearchFeature || props.subPanelContext.occContext.productContextInfo.props.awb0IndexUpdateDate == ''">
+    <aw-include name="AceClosureRulePopupContent" sub-panel-context="{...props.subPanelContext, currentClosureRule:data.currentClosureRule}"></aw-include>
+</aw-link-with-popup>

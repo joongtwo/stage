@@ -1,0 +1,36 @@
+<ep-configuration-chip-area exist-when="ctx.epTaskPageContext.loadedObject.uid && ctx.ep.scopeObject.uid" configuration-chips-data = "data.configurationChipsData"></ep-configuration-chip-area>
+<aw-sublocation sub-location-preference="data.awSubLocationPref" sub-panel-context="{provider : data.provider, occContext:data.occContext, sharedSelectionData:data.sharedSelectionData}">
+    <mfe-loading-message exist-when="!ctx.epPageContext.loadedObject.uid || !ctx.ep.scopeObject.uid"></mfe-loading-message>
+    <mfe-content-container container-direction="HORIZONTAL" container-name="WorkInstructionsAuthorPage" class="h-12" exist-when="ctx.epPageContext.loadedObject.uid && ctx.ep.scopeObject.uid">
+        <mfe-content-container container-direction="VERTICAL" container-name="WorkInstructionsAuthorPageLeftArea" class="w-3">
+            <wi-navigation-area sub-panel-context="{sharedSelectionData:data.sharedSelectionData}"></wi-navigation-area>
+        </mfe-content-container>
+
+        <mfe-content-container container-direction="VERTICAL" container-name="WorkInstructionsAuthorPageMiddleArea" class="w-4" aw-class="[conditions.isSyncedWithEditor ? 'aw-ep-wiEditorArea aw-mfe-activeContentPanel' : 'aw-ep-wiEditorArea']">
+            <mfe-content-container container-direction="HORIZONTAL" container-name="WorkInstructionsAuthorPageMiddleTopArea" class="h-7">
+            <wi-editor-area sub-panel-context="{sharedSelectionData:data.sharedSelectionData}" occ-context="data.occContext"></wi-editor-area>
+            </mfe-content-container>
+            <mfe-content-container container-direction="HORIZONTAL" container-name="WorkInstructionsAuthorPageMiddleButtomArea" class="h-5">
+                <ep-details-area sub-panel-context="{sharedSelectionData:data.sharedSelectionData}" occ-context="data.occContext"></ep-details-area>
+            </mfe-content-container>
+        </mfe-content-container>
+
+        <mfe-content-container container-direction="VERTICAL" container-name="WorkInstructionsAuthorPageRightArea" class="flex-auto">
+            <mfe-content-container container-direction="HORIZONTAL" container-name="WorkInstructionsAuthorPageActivitiesArea" class="h-12" exist-when="ctx.epPageContext.showActivities">
+            <ep-activities-area></ep-activities-area>
+            </mfe-content-container>
+            <mfe-content-container container-direction="HORIZONTAL" container-name="WorkInstructionsAuthorPageValidationArea" class="h-12" show-when="conditions.isValidationMode">
+                <ep-validation></ep-validation>
+            </mfe-content-container>
+            <mfe-content-container container-direction="HORIZONTAL" container-name="WorkInstructionsAuthorPageGraphicsArea" class="aw-epBvrGraphics-minHeight flex-auto" aw-class="[conditions.isSyncedWithViewer ? 'aw-ep-epGraphicsArea aw-mfe-activeContentPanel' : 'aw-ep-epGraphicsArea']" show-when="!conditions.shouldShowActivitiesOrValidationPanel">
+                <ep-graphics-area></ep-graphics-area>
+            </mfe-content-container>
+            <mfe-content-container container-direction="HORIZONTAL" container-name="WorkInstructionsAuthorPageVisualsArea" class="aw-epImageViewer-minHeight" show-when="!conditions.shouldShowActivitiesOrValidationPanel">
+                <ep-visuals-area sub-panel-context="{sharedSelectionData:data.sharedSelectionData}" occ-context="data.occContext"></ep-visuals-area>
+            </mfe-content-container>
+        </mfe-content-container>
+    </mfe-content-container>
+    <mfe-sync-manager view-id="epAssemblyTreeSelectionManager"></mfe-sync-manager>
+    <mfe-sync-manager view-id="epSelectedProcessInWIPageSyncManager"></mfe-sync-manager>
+    <aw-layout-slot  exist-when="data.pageIntializeComplete" context="{sharedSelectionData:data.sharedSelectionData}" name="ep_singleVisGraphicsViewer"></aw-layout-slot>
+</aw-sublocation>

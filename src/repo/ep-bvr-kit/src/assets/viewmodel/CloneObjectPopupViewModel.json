@@ -1,0 +1,70 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpCloneObject_selectedRevRule": {
+            "syncObject": {}
+        },
+        "EpCloneObject_selectedObject": {
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "boTypeWithExclusionTypeNames": "{{subPanelContext.boTypeWithExclusionTypeNames}}",
+        "objectTypesToSearch": "{{subPanelContext.objectTypesToSearch}}",
+        "placeHolderForSearch": "{{i18n.cloneOperationSearchPlaceHolder}}",
+        "additionalCellWidget": "EpRevisionRuleListWidget"
+    },
+    "actions": {
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": "{{subPanelContext.popupId}}"
+            },
+            "deps": "js/popupService"
+        },
+        "cloneObject": {
+            "method": "cloneObject",
+            "actionType": "JSFunction",
+            "inputData": {
+                "selectedObject": "{{subPanelContext.selectedObject}}",
+                "objectToClone": "{{ports.EpCloneObject_selectedObject.syncObject}}",
+                "revisionRule": "{{ports.EpCloneObject_selectedRevRule.syncObject}}",
+                "newObjectID": "{{subPanelContext.newObjectID}}",
+                "reloadTable": "{{subPanelContext.reloadTableName}}"
+            },
+            "deps": "js/epBOPClonePasteService"
+        },
+        "EpCloneObject": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "cloneObject"
+                },
+                {
+                    "action": "closePopupWindow"
+                }
+            ]
+        }
+    },
+    "conditions": {
+        "isObjectSelectedToAdd": {
+            "expression": "ports.EpCloneObject_selectedObject.syncObject && ports.EpCloneObject_selectedObject.syncObject.uid"
+        }
+    },
+    "i18n": {
+        "clone": [ "clonePasteObjectMessages" ],
+        "cancel": [ "clonePasteObjectMessages" ],
+        "cloneOperationSearchPlaceHolder": ["clonePasteObjectMessages"]
+    }
+}

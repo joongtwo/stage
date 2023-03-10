@@ -1,0 +1,281 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive",
+        "js/aw-panel-header.directive",
+        "js/aw-default-cell.directive",
+        "js/aw-form.directive",
+        "js/aw-numeric.directive"
+    ],
+    "actions": {
+        "gcsAddSingleWorkpieceSide": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2019-06-OccurrenceManagement",
+            "method": "addObject2",
+            "inputData": {
+                "input": {
+                    "objectsToBeAdded": [{
+                        "type":"{{ctx.relationContext.relationInfo[0].secondaryObject.type}}",
+                        "uid":"{{ctx.relationContext.relationInfo[0].secondaryObject.uid}}"
+                    }],
+                    "parentElement": "{{ctx.aceActiveContext.context.addElement.parent}}",
+                    "inputCtxt": {
+                        "productContext": "{{ctx.aceActiveContext.context.productContextInfo}}"
+                    },
+                    "sortCriteria": {
+                        "propertyName": "{{ctx.aceActiveContext.context.sortCriteria[0].fieldName}}",
+                        "sortingOrder": "{{ctx.aceActiveContext.context.sortCriteria[0].sortDirection}}"
+                    },
+                    "requestPref": {
+                        "displayMode": [
+                            "{{function:getDisplayMode}}"
+                        ]
+                    },
+                    "numberOfElements": "{{data.numberOfComponents.dbValue}}"
+                }
+            },
+            "outputData": {
+                "addElementResponse": "",
+                "totalObjectsAdded": "result.selectedNewElementInfo.newElements.length"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "mrmresource.gcsAddSingleWorkpieceSideElementsPostAction"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "gcsAddElement.clearCreatedElementField"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "condition": "data.totalObjectsAdded === 1",
+                        "message": "singleAddGCSWorkpieceSideCompMsg"
+                    },
+                    {
+                        "message": "multipleAddGCSWorkpieceSideCompMsg",
+                        "condition": "data.totalObjectsAdded > 1"
+                    }
+                ],
+                "failure": [
+                    {
+                        "message": "gcsAddElementsFailureMessage"
+                    }
+                ]
+            },
+            "deps": "js/MrmAddElementService"
+        },
+        "gcsAddSingleWorkpieceSideElementsPostAction": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ResourceManager-2020-12-ResourceOccurrencesManagement",
+            "method": "addResourceElementsPostActions",
+            "inputData": {
+                "successorComponents": "{{data.addElementResponse.selectedNewElementInfo.newElements}}",
+                "predecessorComponent": "{{ctx.occmgmtContext.selectedModelObjects[0]}}"
+            },
+            "outputData": {
+                "serviceData": "ServiceData"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "gcsAddElement.clearCreatedElementField"
+                    },
+                    {
+                        "name": "acePwa.reset",
+                        "eventData": {
+                            "viewToReset": "occmgmtContext"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "gcsAddElementsFailureMessage"
+                    }
+                ]
+            },
+            "deps": "js/MrmAddElementService"
+        },
+        "clearCreatedElementField": {
+            "actionType": "JSFunction",
+            "method": "clearCreatedElementField",
+            "inputData": { },
+            "outputData": {
+                "createdObject" : ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "gcsAddElement.closePanel"
+                    }
+                ]
+            },
+            "deps": "js/addElementService"
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "complete",
+                        "condition": "!data._internal.isDestroyed && (!conditions.isPanelPinned || conditions.isPwaSelectionChanged)",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "data": {
+        "totalNumberOfComps": {
+            "displayName": "{{ctx.aceActiveContext.context.addElement.totalNumberOfComponentsLabel}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "numberOfComponents": {
+            "displayName": "{{i18n.numberOfComponents}}",
+            "type": "INTEGER",
+            "isRequired": "true",
+            "isEditable": "true",
+            "autofocus":"true",
+            "dbValue": "{{ctx.aceActiveContext.context.addElement.numberOfEmptySockets}}",
+            "dispValue": "{{ctx.aceActiveContext.context.addElement.numberOfEmptySockets}}",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE",
+            "validationCriteria": [
+                {
+                    "condition": "conditions.isNumberOfComponentsZeroOrLessThanZero",
+                    "value": "{{ctx.aceActiveContext.context.addElement.numberOfComponentsZeroOrLessThanZero}}"
+                },
+                {
+                    "condition": "conditions.isNumberOfComponentsGreaterThanMax",
+                    "value": "{{ctx.aceActiveContext.context.addElement.numberOfComponentsGreaterThanMaxError}}"
+                },
+                {
+                    "condition": "conditions.isNumberOfComponentsGreaterThanDefaultMax",
+                    "value": "{{ctx.aceActiveContext.context.addElement.numberOfComponentsGreaterThanDefaultMaxError}}"
+                }
+            ]
+        }
+    },
+    "functions": {
+        "getDisplayMode": {
+            "functionName": "getDisplayMode"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "addChildElement.awb0SetPin",
+            "cacheEventData": true,
+            "action": "awb0SetPin"
+        },
+        {
+            "eventId": "addChildElement.awb0SetUnPin",
+            "cacheEventData": true,
+            "action": "awb0SetUnPin"
+        },
+        {
+            "eventId": "mrmresource.gcsAddSingleWorkpieceSideElementsPostAction",
+            "action": "gcsAddSingleWorkpieceSideElementsPostAction"
+        },
+        {
+            "eventId": "gcsAddElement.clearCreatedElementField",
+            "action": "clearCreatedElementField"
+        },
+        {
+            "eventId": "gcsAddElement.closePanel",
+            "action": "closePanel"
+        }
+    ],
+    "conditions": {
+        "isNumberOfComponentsValid": {
+            "expression": "data.numberOfComponents.dbValue <= ctx.aceActiveContext.context.addElement.numberOfEmptySockets && data.numberOfComponents.dbValue > 0"
+        },
+        "isNumberOfComponentsZeroOrLessThanZero": {
+            "expression": "data.numberOfComponents.dbValue <= 0"
+        },
+        "isNumberOfComponentsGreaterThanMax": {
+            "expression": "ctx.aceActiveContext.context.addElement.numberOfEmptySockets === ctx.aceActiveContext.context.addElement.numberOfGCSSockets && data.numberOfComponents.dbValue > ctx.aceActiveContext.context.addElement.numberOfGCSSockets"
+        },
+        "isNumberOfComponentsGreaterThanDefaultMax": {
+            "expression": "ctx.aceActiveContext.context.addElement.numberOfEmptySockets < ctx.aceActiveContext.context.addElement.numberOfGCSSockets && data.numberOfComponents.dbValue > ctx.aceActiveContext.context.addElement.numberOfEmptySockets"
+        },
+        "isPanelPinned": {
+            "expression": "subPanelContext.panelPinned"
+        },
+        "isPwaSelectionChanged": {
+            "expression": "ctx.aceActiveContext.context.addElement.previousSelectionUid !== ctx.selected.uid"
+        }
+    },
+    "messages": {
+        "gcsAddElementsFailureMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        },
+        "singleAddGCSWorkpieceSideCompMsg": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Mrm0SingleClassifiedCompAdded}}",
+            "messageTextParams": [
+                "{{ctx.relationContext.relationInfo[0].secondaryObject.props.object_name.dbValues[0]}}",
+                "{{ctx.aceActiveContext.context.addElement.toComponent.props.object_string.dbValues[0]}}"
+            ]
+        },
+        "multipleAddGCSWorkpieceSideCompMsg": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Mrm0MultiClassifiedCompsAdded}}",
+            "messageTextParams": [
+                "{{data.totalObjectsAdded}}",
+                "{{ctx.aceActiveContext.context.addElement.toComponent.props.object_string.dbValues[0]}}"
+            ]
+        }
+    },
+    "ctx":{
+        "aceActiveContext":{
+            "context" : {
+                "addElement" : {}
+            }
+        },
+        "relationContext":{}
+    },
+    "i18n": {
+        "workpieceSideConnection": [
+            "mrmMessages"
+        ],
+        "addComponents": [
+            "mrmMessages"
+        ],
+        "totalNumberOfComps": [
+            "mrmMessages"
+        ],
+        "numberOfComponents": [
+            "mrmMessages"
+        ],
+        "addElementBtn": [
+            "OccurrenceManagementConstants"
+        ],
+        "toTitle": [
+            "OccurrenceManagementConstants"
+        ],
+        "Mrm0SingleClassifiedCompAdded": [
+            "mrmMessages"
+        ],
+        "Mrm0MultiClassifiedCompsAdded": [
+            "mrmMessages"
+        ]
+    }
+}

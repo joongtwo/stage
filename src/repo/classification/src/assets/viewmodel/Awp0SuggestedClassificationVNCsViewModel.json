@@ -1,0 +1,68 @@
+{
+    "schemaVersion" : "1.0.0",
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "fetchSuggested",
+                "observers": [
+                    "props.classifystate.value.selectedSuggestion"
+                ]
+            }
+        ]
+    },
+    "imports": [
+    ],
+    "actions": {
+        "fetchSuggested": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-IcsAw-2019-12-Classification",
+            "method": "findClassificationInfo3",
+            "inputData": {
+                "workspaceObjects": [
+                    {
+                        "uid" : "{{props.wso}}"
+                    }
+                ],
+                "searchCriterias": [
+                    {
+                        "searchAttribute": "CLASS_ID",
+                        "searchString": "{{props.classifystate.value.selectedSuggestion.uid}}",
+                        "sortOption": -600
+                    }
+                ],
+                "classificationDataOptions": 43012
+            },
+            "outputData": {
+                "suggestedSelectionResponse": ""
+            }
+        }
+
+    },
+    "props": {
+        "suggestions": {
+            "type": "object"
+        },
+        "classifystate": {
+            "type": "object"
+        },
+        "wso": {
+            "type": "STRING"
+        }
+    },
+    "data":
+    {
+        "suggestedSectionCollapse": false
+    },
+    "onEvent":[
+    ],
+    "functions": {},
+    "messages": { },
+    "conditions": {
+
+    },
+    "i18n":
+    {
+        "suggestedClassification": [ "ClassificationPanelMessages" ],
+        "assignClass": [ "ClassificationPanelMessages" ]
+    }
+}

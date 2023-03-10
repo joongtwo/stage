@@ -1,0 +1,13 @@
+<aw-command-panel caption="i18n.createSharedScheduleTitle">
+    <aw-panel-body>
+        <aw-panel-section>
+            <aw-widget prop="data.scheduleName" hint="textbox"></aw-widget>
+        </aw-panel-section>
+        <dpv-schedule sub-panel-context='{...subPanelContext,cronModelState:data.cronModelState}'></dpv-schedule>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="createSharedSchedule" visible-when="conditions.isCreateButtonVisible">
+            <aw-i18n>i18n.create</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

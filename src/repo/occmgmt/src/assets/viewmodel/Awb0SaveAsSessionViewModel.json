@@ -1,0 +1,254 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-form.directive",
+        "js/aw-xrt.directive",
+        "js/aw-button.directive",
+        "js/visible-when.directive",
+        "js/aw-i18n.directive",
+        "js/aw-break.directive",
+        "js/aw-label.directive",
+        "js/aw-column.directive",
+        "js/aw-row.directive"
+    ],
+    "data":
+    {
+        "sessionType": {
+            "type": "STRING",
+            "hasLov": false,
+            "dbValue": "{{ctx.aceActiveContext.context.modelObject.modelType.name}}",
+            "uiValue" : "{{ctx.aceActiveContext.context.modelObject.modelType.displayName}}",
+            "displayName": "{{i18n.type}}"
+        },
+        "savedAsWorkingContextObject":"",
+        "xrtState": {
+            "initialValues": {
+                "xrtTypeLoaded": "",
+                "deepCopyDatas":""
+            },
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "editHandlers": {
+        "saveasPanelEditHandler": {
+            "context": "SAVEAS_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "actions":
+    {
+        "updateSaveAsContext": {
+            "actionType": "JSFunctionAsync",
+            "method": "updateSaveAsContext",
+            "deps": "js/createWorksetService",
+            "inputData": {
+                "selectedObj": "{{ctx.aceActiveContext.context.modelObject}}"
+            },
+            "outputData": {
+                "saveAsContext": ""
+            }
+        },
+        "triggerBackgroundSBM": {
+            "actionType": "JSFunction",
+            "method": "saveUserWorkingContextState",
+            "inputData": {
+                "shouldFireEventOnSuccess": true
+            },
+            "deps": "js/backgroundWorkingContextService"
+        },
+        "saveAsSessionAction" :{
+            "actionType": "batchJob",
+            "steps":[
+                {
+                    "action":"callSaveAsSOAAction"
+                },
+                {
+                    "action":"callUpdateWorkingContextSOAAction"
+                },
+                {
+                    "action":"showSaveAsWorkingContextObjectAction"
+                }
+            ]
+        },
+        "callSaveAsSOAAction": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2012-09-DataManagement",
+            "method": "saveAsObjectAndRelate",
+            "inputData": {
+                "saveAsInput": "{{function:getSaveAsInput}}",
+                "relateInfo": [ {
+                    "relate": false
+                } ]
+            },
+            "outputData": {
+                "savedAsWorkingContextObject": "{{dataParseDefinitions:convertSavedAsObject}}"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "swc.objectCreated",
+                        "eventData": {
+                            "createdObject": "{{data.savedAsWorkingContextObject}}"
+                        }
+                    }
+
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "sessionSaveAsSuccess"
+                    }
+                ]
+            },
+            "deps": "js/Awp0ShowSaveAsService"
+        },
+        "callUpdateWorkingContextSOAAction" :
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2020-05-OccurrenceManagement",
+            "method": "updateWorkingContext",
+            "inputData": {
+                "input":
+                    [{
+                        "productInfo": "{{ctx.aceActiveContext.context.productContextInfo}}",
+                        "workingContext": "{{data.savedAsWorkingContextObject}}",
+                        "saveResult": true,
+                        "operation": "SaveAs"
+                    }]
+            }
+        },
+        "showSaveAsWorkingContextObjectAction":
+        {
+            "actionType": "JSFunction",
+            "method": "go",
+            "inputData": {
+                "showObject": "com_siemens_splm_clientfx_tcui_xrt_showObject",
+                "toParams": {
+                    "uid": "{{data.savedAsWorkingContextObject.uid}}"
+                },
+                "option": {
+                    "inherit": false
+                }
+            },
+            "deps": "js/locationNavigation.service"
+        },
+        "prePopulateNameField":{
+            "actionType": "JSFunction",
+            "method": "prePopulateNameField",
+            "inputData":
+            {
+                "createType": "{{ctx.aceActiveContext.context.modelObject.modelType.name}}",
+                "containerName": "{{i18n.saveAsSessionPrefix}}",
+                "xrtType ":"SAVEAS",
+                "editHandler": "{{editHandlers.saveasPanelEditHandler}}",
+                "occContext": "{{props.subPanelContext.occContext}}"
+            },
+            "deps": "js/createWorksetService"
+        },
+        "performPostProcessingAfterXRTLoaded": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "prePopulateNameField",
+                    "condition": "conditions.isXRTTypeLoaded"
+                }
+            ]
+        }
+    },
+    "dataParseDefinitions": {
+        "convertSavedAsObject": {
+            "outputFormatType": "ViewModelObject",
+            "dataInput": "saveAsTrees[0].objectCopy.uid",
+            "operationType": "CREATE"
+        }
+    },
+    "ctx": {
+        "aceActiveContext.context.topElement": {
+            "type": "Object"
+        }
+    },
+    "functions":
+    {
+        "getSaveAsInput": {
+            "functionName": "getSaveAsInput",
+            "parameters": [
+                "{{data}}",
+                "{{data.saveAsContext}}",
+                "{{xrtState.deepCopyDatas}}",
+                "{{editHandlers.saveasPanelEditHandler}}"
+
+            ]
+        }
+    },
+    "conditions": {
+        "isXRTTypeLoaded": {
+            "expression": "xrtState.xrtTypeLoaded"
+        }
+    },
+    "messages":
+    {
+        "createSWCValidationFailure":
+        {
+            "messageType": "INFO",
+            "messageText": "{{i18n.autoSaveOfBookmarkNotYetComplete}}"
+        },
+        "sessionSaveAsSuccess":
+        {
+            "messageType": "INFO",
+            "messageText": "{{i18n.saveAsOfSessionSuccessful}}",
+            "messageTextParams":
+            [
+                "{{data.savedAsWorkingContextObject.props.object_string.dbValues[0]}}"
+            ]
+        }
+    },
+    "onEvent":
+    [
+        {
+            "eventId": "saveBWC.success",
+            "action": "saveAsSessionAction"
+        },
+        {
+            "eventId": "saveBWC.failure",
+            "cacheEventData": true,
+            "message": "createSWCValidationFailure"
+        }
+    ],
+    "i18n":
+    {
+        "SaveAsSessionTitle": [ "OccurrenceManagementSubsetConstants" ],
+        "SaveAsSessionCmd": [ "OccurrenceManagementSubsetConstants" ],
+        "saveButtonText": [ "OccurrenceManagementConstants" ],
+        "autoSaveOfBookmarkNotYetComplete": [ "OccurrenceManagementMessages" ],
+        "saveOfWorkingContextSuccessful": [ "OccurrenceManagementMessages" ],
+        "saveAsSessionPrefix":["OccurrenceManagementSubsetConstants"],
+        "saveAsOfSessionSuccessful":["OccurrenceManagementSubsetConstants"],
+        "type": [ "OccurrenceManagementConstants" ]
+    },
+    "lifecycleHooks": {
+        "onMount":"updateSaveAsContext",
+        "onUpdate": {
+            "action": "performPostProcessingAfterXRTLoaded",
+            "observers": [ "viewModel.atomicData.xrtState.xrtTypeLoaded" ]
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

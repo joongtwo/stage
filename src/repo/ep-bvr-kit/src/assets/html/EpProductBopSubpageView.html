@@ -1,0 +1,19 @@
+<aw-sublocation sub-location-preference="data.awSubLocationPref" sub-panel-context="{provider : data.provider}">
+    <mfe-loading-message exist-when="!conditions.hasLoadedObject"></mfe-loading-message>
+    <mfe-content-container container-direction="HORIZONTAL" container-name="WorkInstructionsAuthorPage" class="h-12" exist-when="conditions.hasLoadedObject">
+        <mfe-content-container container-direction="VERTICAL" container-name="ProductBOPPageLeftArea" class="w-4">
+            <mfe-content-panel sub-panel-context="{...data.productBopStructureTreeData}"></mfe-content-panel>
+        </mfe-content-container>
+
+        <mfe-content-container container-direction="VERTICAL" container-name="ProductBOPPageRightArea" class="w-8">
+            <mfe-content-container container-direction="HORIZONTAL" container-name="ProductBOPPageRightTopArea" class="h-7">
+                <mfe-content-panel sub-panel-context="{...data.operationsTableData}"></mfe-content-panel>
+            </mfe-content-container>
+
+            <mfe-content-container container-direction="HORIZONTAL" container-name="ProductBOPPageRightButtomArea" class="h-5">
+                <ep-product-bop-operation-details></ep-product-bop-operation-details>
+            </mfe-content-container>
+        </mfe-content-container>
+    </mfe-content-container>
+    <mfe-sync-manager view-id="EpSelectedOperationInProductBopSyncManager"></mfe-sync-manager>
+</aw-sublocation>

@@ -1,0 +1,205 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {},
+    "actions": {
+        "loadRepExecHistory": {
+            "actionType": "JSFunction",
+            "method": "loadRepExecHistory",
+            "inputData": {
+                "searchInput": {
+                    "attributesToInflate": "{{subPanelContext.searchState.tableViewProperties}}",
+                    "maxToLoad": "{{subPanelContext.searchState.maxToLoad}}",
+                    "maxToReturn": "{{subPanelContext.searchState.maxToReturn}}",
+                    "providerName": "{{subPanelContext.searchState.provider}}",
+                    "searchCriteria": "{{subPanelContext.searchState.criteria}}",
+                    "searchFilterFieldSortType": "{{subPanelContext.searchState.sortType}}",
+                    "searchFilterMap6": "{{subPanelContext.searchState.activeFilterMap}}",
+                    "searchSortCriteria": "{{data.columnProviders.clientScopeUI.sortCriteria}}",
+                    "startIndex": "{{data.dataProviders.gridDataProvider.startIndex}}",
+                    "columnFilters": "{{data.columnProviders.clientScopeUI.columnFilters}}"
+                },
+                "reportId": "{{ctx.selected.props.ReportId.uiValues[0]}}"
+            },
+            "dataParsers": [
+                {
+                    "id": "repExecHistoryDataParser",
+                    "responseObjs": "searchResults"
+                }
+            ],
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults",
+                "execHistoryTitle": "execHistoryTitle",
+                "dataProviders.repExecHistoryProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/Dpv1GraphicalReportService"
+        },
+        "doReportExecutionHistoryProvider": {
+            "actionType": "dataProvider",
+            "method": "repExecHistoryProvider"
+        }
+    },
+    "dataProviders": {
+        "repExecHistoryProvider": {
+            "action": "loadRepExecHistory",
+            "selectionModelMode": "single",
+            "selectionModel": {
+                "multiSelectEnabled": false
+            },
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}"
+        }
+    },
+    "columnProviders": {
+        "repExecHistoryColumnProvider": {
+            "frozenColumnIndex": -1,
+            "headerHeight": "LARGE",
+            "columns": [
+                {
+                    "name": "JobId",
+                    "typeName": "INTEGER",
+                    "minWidth": 60,
+                    "width": 60,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "Status",
+                    "typeName": "String",
+                    "minWidth": 60,
+                    "width": 60,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "StartedAt",
+                    "typeName": "String",
+                    "minWidth": 100,
+                    "width": 125,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "FinishedAt",
+                    "typeName": "String",
+                    "minWidth": 100,
+                    "width": 125,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "duration",
+                    "typeName": "String",
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "NumPdfPages",
+                    "typeName": "String",
+                    "minWidth": 100,
+                    "width": 100,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "scheduleName",
+                    "typeName": "String",
+                    "minWidth": 70,
+                    "width": 70,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "WorkerAddress",
+                    "typeName": "String",
+                    "minWidth": 60,
+                    "width": 60,
+                    "enableColumnMenu": false
+                }
+            ]
+        }
+    },
+    "grids": {
+        "repExecHistory": {
+            "dataProvider": "repExecHistoryProvider",
+            "columnProvider": "repExecHistoryColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enablePinning": true,
+                "enableSorting": false
+            }
+        }
+    },
+    "dataParseDefinitions": {
+        "repExecHistoryDataParser": {
+            "type": "ReportJob",
+            "props": {
+                "JobId": {
+                    "name": "JobId",
+                    "value": "{{response.JobId}}",
+                    "displayValue": "{{response.JobId}}",
+                    "type": "INTEGER"
+                },
+                "Status": {
+                    "name": "Status",
+                    "value": "{{response.Status}}",
+                    "displayValue": "{{response.Status}}",
+                    "type": "String"
+                },
+                "StartedAt": {
+                    "name": "StartedAt",
+                    "value": "{{response.StartedAt}}",
+                    "displayValue": "{{response.StartedAt}}",
+                    "type": "String"
+                },
+                "FinishedAt": {
+                    "name": "FinishedAt",
+                    "value": "{{response.FinishedAt}}",
+                    "displayValue": "{{response.FinishedAt}}",
+                    "type": "String"
+                },
+                "Duration": {
+                    "name": "Duration",
+                    "value": "{{response.Duration}}",
+                    "displayValue": "{{response.Duration}}",
+                    "type": "String"
+                },
+                "NumPdfPages": {
+                    "name": "NumPdfPages",
+                    "value": "{{response.NumPdfPages}}",
+                    "displayValue": "{{response.NumPdfPages}}",
+                    "type": "String"
+                },
+                "ScheduleName": {
+                    "name": "Schedule",
+                    "value": "{{response.ScheduleName}}",
+                    "displayValue": "{{response.ScheduleName}}",
+                    "type": "String"
+                },
+                "WorkerAddress": {
+                    "name": "WorkerAddress",
+                    "value": "{{response.WorkerAddress}}",
+                    "displayValue": "{{response.WorkerAddress}}",
+                    "type": "String"
+                }
+            }
+        }
+    },
+    "conditions": {},
+    "i18n": {
+        "executionHistoryTitle": [
+            "DpvMessages"
+        ]
+    },
+    "onEvent": [
+        {
+            "eventId": "repExecHistory.initialized",
+            "cacheEventData": true,
+            "action": "doReportExecutionHistoryProvider"
+        },
+        {
+            "eventId": "repExecHistory.refreshTable",
+            "action": "doReportExecutionHistoryProvider"
+        },
+        {
+            "eventId": "repExecHistory.reset",
+            "action": "doReportExecutionHistoryProvider"
+        }
+    ]
+}

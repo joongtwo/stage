@@ -1,0 +1,48 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "EpValidation_inputObject": {
+            "onChangeAction": "",
+            "syncObject": {}
+        }
+    },
+    "conditions": {
+        "isSingleObjectSelected": {
+            "expression": {
+                "$source": "ports.EpValidation_inputObject.syncObject.length",
+                "$query": {
+                    "$eq": 1
+                }
+            }
+        }
+    },
+    "actions": {
+        "cleanUpValidations": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clearValidationContext"
+                },
+                {
+                    "action": "clearValidationInput"
+                }
+            ]
+        },
+        "clearValidationContext": {
+            "actionType": "JSFunction",
+            "method": "unRegisterCtx",
+            "inputData":{
+                "name": "epPageContext.showValidationPanel"
+            },
+            "deps": "js/appCtxService"
+        },
+        "clearValidationInput": {
+            "actionType": "JSFunction",
+            "method": "clearContext",
+            "deps": "js/epValidationContextService"
+        }
+    },
+    "lifecycleHooks": {
+        "onUnmount": "cleanUpValidations"
+    }
+}

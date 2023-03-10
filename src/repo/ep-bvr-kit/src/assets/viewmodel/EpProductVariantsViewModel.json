@@ -1,0 +1,358 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "createPVSIfEmptyMessage": {
+            "type": "STRING",
+            "isRequired": "false"
+        },
+        "isLoading": true,
+        "totalProductionRate": 0
+    },
+    "actions": {
+        "loadColumns": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "createColumnsFromPreference"
+                },
+                {
+                    "action": "addProbabilityColumn"
+                }
+            ]
+        },
+        "createColumnsFromPreference": {
+            "actionType": "JSFunctionAsync",
+            "method": "createColumns",
+            "inputData": {
+                "preferenceName": "EP_ProductionProgramGridColumnConfiguration",
+                "dataProvider": "{{data.dataProviders.productVariantsDataProvider}}",
+                "columnProvider": "{{data.grids.productVariantsColumnProvider}}"
+            },
+            "outputData": {
+                "dataProviders.productVariantsDataProvider.columnConfig": "columnConfig",
+                "dataProviders.productVariantsDataProvider.policy": "policy"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "generateProductVariantsFromSVRs": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "showLoadingMessage"
+                },
+                {
+                    "action": "generateProductVariants"
+                },
+                {
+                    "action": "hideLoadingMessage"
+                }
+            ]
+        },
+        "showLoadingMessage": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": true
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "generateProductVariants": {
+            "actionType": "JSFunctionAsync",
+            "method": "generateProductVariants",
+            "deps": "js/epProductionProgramService"
+        },
+        "openEditPPPopup": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "registerPolicy"
+                },
+                {
+                    "action": "loadProductionProgram"
+                },
+                {
+                    "action": "getProductVariantsFromCache"
+                },
+                {
+                    "action": "getProductVariantsVMOs"
+                },
+                {
+                    "action": "updateTotalProductionRate"
+                },
+                {
+                    "action": "hideLoadingMessage"
+                },
+                {
+                    "action": "updateCreatePVSIfEmptyMessage"
+                }
+            ]
+        },
+        "hideLoadingMessage": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": false
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "updatePPPopup": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getProductVariantsFromEventData"
+                },
+                {
+                    "action": "getProductVariantsVMOs"
+                }
+            ]
+        },
+        "registerPolicy": {
+            "actionType": "JSFunction",
+            "method": "register",
+            "inputData": {
+                "name": "productVariantsResultsTable",
+                "policyObjects": {
+                    "types": [
+                        {
+                            "name": "Mfg0BvrProductVariant",
+                            "properties": [
+                                {
+                                    "name": "Mfg0productionRate"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "deps": "js/mfePolicyService"
+        },
+        "unregisterPolicy": {
+            "actionType": "JSFunction",
+            "method": "unregister",
+            "inputData": {
+                "name": "productVariantsResultsTable"
+            },
+            "deps": "js/mfePolicyService"
+        },
+        "getProductVariantsFromEventData": {
+            "actionType": "JSFunction",
+            "method": "getProductVariantsFromEventData",
+            "inputData": {
+                "saveEvent": "{{data.eventData}}"
+            },
+            "outputData": {
+                "uidList": ""
+            },
+            "deps": "js/epProductionProgramService"
+        },
+        "loadProductionProgram": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadProductionProgram",
+            "inputData": {
+                "objectUid": "{{ctx.epTaskPageContext.productionProgramCollection.uid}}"
+            },
+            "outputData": {
+                "productionProgramScope": ""
+            },
+            "deps": "js/epProductionProgramService"
+        },
+        "getProductVariantsFromCache": {
+            "actionType": "JSFunction",
+            "method": "getProductVariantsFromCache",
+            "outputData": {
+                "uidList": ""
+            },
+            "deps": "js/epProductionProgramService"
+        },
+        "getProductVariantsVMOs": {
+            "actionType": "JSFunction",
+            "method": "getProductVariantsVMOS",
+            "inputData": {
+                "productVariantsFromCache": "{{data.uidList}}"
+            },
+            "outputData": {
+                "productVariantsList": ""
+            },
+            "deps": "js/epProductionProgramService"
+        },
+        "updateCreatePVSIfEmptyMessage": {
+            "actionType": "JSFunction",
+            "method": "updateCreatePVSIfEmptyMessage",
+            "inputData": {
+                "vmProp": "{{data.createPVSIfEmptyMessage}}"
+            },
+            "outputData": {
+                "createPVSIfEmptyMessage": ""
+            },
+            "deps": "js/epProductionProgramService"
+        },
+        "updateTotalProductionRate": {
+            "actionType": "JSFunction",
+            "method": "getTotalProductionRate",
+            "inputData": {
+                "productVariants": "{{data.productVariantsList}}"
+            },
+            "outputData": {
+                "totalProductionRate": ""
+            },
+            "deps": "js/epProductionProgramService"
+        },
+        "handleSaveEvents": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "parseSaveEvent",
+                    "outputArg": [
+                        "eventType"
+                    ]
+                },
+                {
+                    "action": "updatePPPopup",
+                    "condition": "response.actionData.eventType === 'CREATED'"
+                },
+                {
+                    "action": "handlePvsDeleted",
+                    "condition": "response.actionData.eventType === 'DELETED'"
+                },
+                {
+                    "action": "updateTotalProductionRate",
+                    "condition": "conditions.areProductVariantsAvailable"
+                },
+                {
+                    "action": "refreshTable"
+                }
+            ]
+        },
+        "parseSaveEvent": {
+            "actionType": "JSFunction",
+            "method": "parseSaveEvent",
+            "inputData": {
+                "saveEvents": "{{data.eventData}}"
+            },
+            "outputData": {
+                "eventType": ""
+            },
+            "deps": "js/epProductionProgramService"
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{props.subPanelContext}}",
+                "commandContext": {
+                    "selectedObjects": "{{data.dataProviders.productVariantsDataProvider.selectedObjects}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "handlePvsDeleted": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "removeProductVariants"
+                },
+                {
+                    "action": "doGridDataProvider"
+                },
+                {
+                    "action": "hideLoadingMessage",
+                    "condition": "!conditions.areProductVariantsAvailable"
+                }
+            ]
+        },
+        "doGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "productVariantsDataProvider"
+        },
+        "removeProductVariants": {
+            "actionType": "JSFunction",
+            "method": "removeProductVariants",
+            "inputData": {
+                "saveEvents": "{{data.eventData}}",
+                "productVariantsList": "{{data.productVariantsList}}"
+            },
+            "outputData": {
+                "productVariantsList": ""
+            },
+            "deps": "js/epProductionProgramService"
+        },
+        "addProbabilityColumn": {
+            "actionType": "JSFunction",
+            "method": "addProbabilityColumn",
+            "inputData": {
+                "columns": "{{data.dataProviders.productVariantsDataProvider.columnConfig.columns}}"
+            },
+            "outputData": {
+                "dataProviders.productVariantsDataProvider.columnConfig.columns": ""
+            },
+            "deps": "js/epProductionProgramService"
+        },
+        "refreshTable": {
+            "actionType": "JSFunction",
+            "method": "refreshTable",
+            "inputData": {
+                "tableId": "productVariantsResultsTable"
+            },
+            "deps": "js/mfeTableService"
+        }
+    },
+    "dataProviders": {
+        "productVariantsDataProvider": {
+            "editContext": "{{ctx.mfgReadOnlyMode.readOnlyMode === true ? '': 'EP_PRODUCT_VARIANTS_TABLE_EDIT_CONTEXT'}}",
+            "response": "{{data.productVariantsList}}",
+            "totalFound": "{{data.productVariantsList.length}}",
+            "selectionModelMode": "multiple",
+            "inputData": {}
+        }
+    },
+    "columnProviders": {
+        "productVariantsColumnProvider": {
+            "frozenColumnIndex": -1,
+            "loadColumnAction": "loadColumns",
+            "columns": "{{data.columns}}"
+        }
+    },
+    "grids": {
+        "productVariantsResultsTable": {
+            "dataProvider": "productVariantsDataProvider",
+            "columnProvider": "productVariantsColumnProvider",
+            "enableArrangeMenu": false,
+            "addIconColumn": false
+        }
+    },
+    "conditions": {
+        "areProductVariantsAvailable": {
+            "expression": "data.productVariantsList.length > 0"
+        },
+        "isLoading": {
+            "expression": "data.isLoading === true"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "openEditPPPopup",
+        "onUnmount": "unregisterPolicy"
+    },
+    "onEvent": [
+        {
+            "eventId": "ep.multipleAddRemoveEvents",
+            "cacheEventData": true,
+            "action": "handleSaveEvents"
+        },
+        {
+            "eventId": "productVariantsDataProvider.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "setCommandContext"
+        }
+    ],
+    "i18n": {
+        "totalProductionRate": [
+            "AdminMessages"
+        ]
+    }
+}

@@ -1,0 +1,7 @@
+<aw-icon-button class="aw-mfe-galleryButton aw-mfe-galleryButtonLeft" id="mfeGalleryLeftButton"  command="data.buttonCommandLeft" visible-when="conditions.isGalleryLeftButtonEnabled"></aw-icon-button>
+<div  class="aw-mfe-galleryPanel">
+    <div class="sw-row" aw-repeat="structureConfigData : props.galleryContext">
+        <ep-configuration-chip chip-data="structureConfigData"></ep-configuration-chip>
+    </div>
+</div>
+<aw-icon-button class="aw-mfe-galleryButton aw-mfe-galleryButtonRight" id="mfeGalleryRightButton" command="data.buttonCommandRight" visible-when="conditions.isGalleryRightButtonEnabled"></aw-icon-button>

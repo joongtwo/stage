@@ -1,0 +1,197 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/visible-when.directive",
+        "js/aw-list-filter.directive",
+        "js/exist-when.directive"
+    ],
+    "data": {
+        "revRulefilterBox": {
+            "displayName": "filter",
+            "type": "STRING",
+            "dbValue": ""
+        }
+    },
+    "actions": {
+        "initializeView": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getAllRevisionRulesAction"
+                },
+                {
+                    "action": "activateCurrentView",
+                    "condition": "conditions.isActiveViewDifferent"
+                },
+                {
+                    "action": "populateRuleDateFeatureInfo"
+                }
+            ]
+        },
+        "getAllRevisionRulesAction": {
+            "actionType": "dataProvider",
+            "method": "getRevisionRules"
+        },
+        "getAllRevisionRules": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2019-12-OccurrenceConfiguration",
+            "method": "getConfigurationRules2",
+            "inputData": {
+                "input": {
+                    "maxToLoad": 20,
+                    "startIndex": "{{function:evaluateStartIndex}}",
+                    "searchCriteria": "{{data.revRulefilterBox.dbValue}}",
+                    "productContext": {
+                        "type": "Awb0ProductContextInfo",
+                        "uid": "{{data.subPanelContext.occContext.productContextInfo.uid}}"
+                    },
+                    "typeToFetch": "RevisionRule",
+                    "fetchOnlyPreferredConfiguration": false
+                }
+            },
+            "policy": {
+                "types": [ {
+                    "name": "RevisionRule",
+                    "properties": [
+                        {
+                            "name": "rule_date"
+                        },
+                        {
+                            "name": "object_name"
+                        }
+                    ]
+                } ]
+            },
+            "outputData": {
+                "revisionRules": "{{function:processRevisionRules}}",
+                "totalFound": "totalFound",
+                "globalRevisionRule": "globalRevisionRule"
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "errorInGettingPreferredConfigInfo"
+                } ]
+            },
+            "deps": "js/revisionRuleConfigurationService"
+        },
+        "populateRuleDateFeatureInfo": {
+            "actionType": "JSFunction",
+            "method": "populateRuleDateFeatureInfo",
+            "inputData": {
+                "data": "{{data}}",
+                "occContext":"{{data.subPanelContext.occContext}}"
+            },
+            "outputData":{
+                "data.dataProviders.getRevisionRules.isRuleDateVisible":"isRuleDateVisible"
+            },
+            "deps": "js/revisionRuleConfigurationService"
+        },
+        "applyRevisionRuleChangeBatchJob": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "updateJitterFreePropLoadOnCurrentContext"
+                },{
+                    "action": "applyRevisionRuleChange"
+                }
+            ]
+        },
+        "updateJitterFreePropLoadOnCurrentContext": {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "inputData": {
+                "path": "aceActiveContext.context.transientRequestPref.jitterFreePropLoad",
+                "value": true
+            },
+            "deps": "js/appCtxService"
+        },
+        "applyRevisionRuleChange": {
+            "actionType": "JSFunction",
+            "method": "applyRevisionRuleChange",
+            "inputData": {
+                "data":"{{data}}",
+                "occContext":"{{data.subPanelContext.occContext}}"
+            },
+            "deps": "js/revisionRuleConfigurationService"
+        },
+        "updateRevisionRule": {
+            "actionType": "JSFunction",
+            "method": "updateRevisionRule",
+            "inputData": {
+                "eventData": "{{data.eventData}}",
+                "data": "{{data}}",
+                "occContext":"{{data.subPanelContext.occContext}}"
+            },
+            "deps": "js/revisionRuleConfigurationService"
+        },
+        "selectRevisionRule": {
+            "actionType": "JSFunction",
+            "method": "selectRevisionRule",
+            "inputData": {
+                "data": "{{data.subPanelContext.occContext}}",
+                "dataprovider": "{{data.dataProviders.getRevisionRules}}"
+            },
+            "deps": "js/revisionRuleConfigurationService"
+        },
+        "activateCurrentView": {
+            "actionType": "JSFunction",
+            "method": "updateActiveContext",
+            "inputData": {
+                "data": "{{data.subPanelContext.contextKey}}"
+            },
+            "deps": "js/contextStateMgmtService"
+        }
+    },
+    "dataProviders": {
+        "getRevisionRules": {
+            "action": "getAllRevisionRules",
+            "response": "{{data.revisionRules}}",
+            "totalFound": "{{data.totalFound}}",
+            "selectionModelMode": "single",
+            "isRuleDateVisible": false,
+            "commandsAnchor": "occmgmt_revrule_admin_cell_commands"
+        }
+    },
+    "messages": {
+        "errorInGettingPreferredConfigInfo": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.errorInGettingPreferredConfigInfo}}"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initializeView"
+    },
+    "onEvent": [
+        {
+            "eventId": "getRevisionRules.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "updateRevisionRule"
+        },
+        {
+            "eventId": "getRevisionRules.modelObjectsUpdated",
+            "cacheEventData": true,
+            "action": "selectRevisionRule"
+        },
+        {
+            "eventId": "awConfigPanel.revisionRuleChanged",
+            "cacheEventData": true,
+            "action": "applyRevisionRuleChangeBatchJob"
+        }
+    ],
+    "conditions": {
+        "isActiveViewDifferent": {
+            "expression": "data.subPanelContext.contextKey !== ctx.aceActiveContext.key"
+        }
+    },
+    "functions": {
+        "processRevisionRules": {
+            "functionName": "processRevisionRules",
+            "parameters": [ "{{data.subPanelContext.occContext}}" ]
+        },
+        "evaluateStartIndex": {
+            "functionName": "evaluateStartIndexForRevisionRuleDataProvider",
+            "parameters": [ "{{data.dataProviders.getRevisionRules}}", "{{data.subPanelContext.occContext}}" ]
+
+        }
+    },
+    "i18n": {}
+}

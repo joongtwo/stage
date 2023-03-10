@@ -1,0 +1,28 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "selectionSync": {
+            "displayName": "{{i18n.selectionSync}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+    "actions": {
+        "toggleSelectionSync": {
+            "actionType": "JSFunction",
+            "method": "setToggleStateInCtx",
+            "inputData": {
+                "toggleState": "{{data.selectionSync.dbValue}}"
+            },
+            "deps": "js/ssp0SelectionSyncService"
+        }
+    },
+    "i18n": {
+        "selectionSync": [
+            "ssp0Messages"
+        ]
+    }
+}

@@ -1,0 +1,57 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-command-sub-panel.directive",
+        "js/visible-when.directive",
+        "js/aw-init.directive"
+    ],
+    "actions": {
+        "launchConfigurationPanelOnBack": {
+            "actionType": "JSFunction",
+            "method": "activateCommandPanel",
+            "deps": "js/commandPanel.service",
+            "inputData": {
+                "commandId": "Awb0ConfigurationFilter",
+                "location": "aw_navigation"
+            }
+        },        
+        "backToDefineClassicVariantRule": {
+            "actionType": "JSFunction",
+            "method": "updateValueOnCtxOrState",
+            "inputData": {
+                "path": "",
+                "value": {
+                    "activeView": "Awb0DefineClassicVariantRule"
+                },
+                "target": "{{fields.customVariantState}}"
+            },
+            "deps": "js/occmgmtUtils"
+        }
+    },
+    "data": {
+        "customVariantState": {
+            "initialValues": {
+                "activeView": "Awb0DefineClassicVariantRule"
+            },
+            "meta": { }
+        }
+    },
+    "messages": {},
+    "conditions": {
+    },
+    "onEvent": [
+          
+    ],
+    "i18n": {
+        "occmgmtConfigurationFilterTitle": [
+            "OccurrenceManagementConstants"
+        ],
+        "customCVConfigurationTitle": [
+            "OccurrenceManagementConstants"
+        ],
+        "saveButtonText": [
+            "OccurrenceManagementConstants"
+        ]           
+    }    
+}

@@ -1,0 +1,147 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "createAlternativeAction": {
+            "actionType": "JSFunction",
+            "method": "createAlternative",
+            "inputData": {
+                "inData": "{{data}}"
+            },
+            "deps": "js/mfeAlternativeService"
+        },
+        "AlternativePopupCloseAction": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "inputData": {
+                "popupId": "{{data.popupId}}"
+            },
+            "deps": "js/declpopupService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "AlternativePopupClose",
+            "action": "AlternativePopupCloseAction"
+        }
+    ],
+    "data": {
+        "currentNode": "{{ctx.ep.scopeObject.props.object_string.dbValue}}",
+        "packageName": {
+            "displayName": "{{i18n.packageName}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "plantBOPName": {
+            "displayName": "{{i18n.plantBOPName}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "description": {
+            "displayName": "{{i18n.descriptionName}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "openOnActionBoxCreate": {
+            "displayName": "{{i18n.openOnActionBoxNameCreate}}",
+            "type": "BOOLEAN",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": true,
+            "dispValue": ""
+        },
+        "openOnActionBoxClone": {
+            "displayName": "{{i18n.openOnActionBoxNameClone}}",
+            "type": "BOOLEAN",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": true,
+            "dispValue": ""
+        }
+    },
+    "conditions": {
+        "isValidtoCreate": {
+            "expression": "(data.packageName.dbValue && data.plantBOPName.dbValue)"
+        },
+        "Create": {
+            "expression": "!(ctx.epPageContext.collaborationContext.props.mbc0masterCC.dbValues[0])"
+        },
+        "Clone": {
+            "expression": "ctx.epPageContext.collaborationContext.props.mbc0masterCC.dbValues[0]"
+        },
+        "isManageWorkPackagePage": {
+            "expression": "ctx.sublocation.nameToken == 'manageWorkPackageNewSubLocation'"
+        },
+        "createPartialAlternative": {
+            "expression": "(!conditions.isManageWorkPackagePage) && conditions.Create "
+        },
+        "createAlternative": {
+            "expression": "conditions.isManageWorkPackagePage && conditions.Create"
+        }
+    },
+    "i18n": {
+        "alternativeCreated": [
+            "AlternativeMessages"
+        ],
+        "descriptionName": [
+            "AlternativeMessages"
+        ],
+        "openOnActionBoxNameCreate": [
+            "AlternativeMessages"
+        ],
+        "Create": [
+            "AlternativeMessages"
+        ],
+        "Clone": [
+            "AlternativeMessages"
+        ],
+        "titleDescriptionClone": [
+            "AlternativeMessages"
+        ],
+        "createAlternativeTitle": [
+            "AlternativeMessages"
+        ],
+        "createPartialAlternativeTitle": [
+            "AlternativeMessages"
+        ],
+        "packageName": [
+            "AlternativeMessages"
+        ],
+        "plantBOPName": [
+            "AlternativeMessages"
+        ],
+        "titleDescriptionPartial": [
+            "AlternativeMessages"
+        ],
+        "closeBtnText": [
+            "AlternativeMessages"
+        ],
+        "titleDescriptionCreate": [
+            "AlternativeMessages"
+        ],
+        "openOnActionBoxNameClone": [
+            "AlternativeMessages"
+        ],
+        "descriptionRequiredText": [
+            "AlternativeMessages"
+        ],
+        "cloneAlternativeTitle": [
+            "AlternativeMessages"
+        ]
+    }
+}

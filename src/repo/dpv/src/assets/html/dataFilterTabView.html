@@ -1,0 +1,8 @@
+<div class="sw-column w-4">
+        <aw-checkbox prop="data.useOrigSettingCheckbox" action="updateUseOrigTemplateSettings" enable-when="conditions.isQryTypeUseOrigSettingsOff"></aw-checkbox>
+        <aw-widget prop="data.specType" action="updateSpecType" enable-when="conditions.enableDataFilterWidgetsCond"></aw-widget>
+        <aw-widget prop="data.deviceType" action="updateDeviceType" enable-when="conditions.enableDataFilterWidgetsCond"></aw-widget>
+        <div class="sw-row h-8" enable-when="conditions.enableDataFilterWidgetsCond">
+                <aw-splm-table gridid="traceCodeTree" use-tree="true" show-decorators="true" show-check-box="true"></aw-splm-table>
+        </div>
+</div>

@@ -1,0 +1,20 @@
+<aw-panel-body class="aw-layout-flexColumnContainer">
+    <aw-flex-row height="4f">
+        <aw-flex-column width="fill">
+            <aw-flex-row height="3f" class="aw-layout-breadCrumbContainer">
+                <sen-breadcrumb sub-panel-context="{occContext:subPanelContext.occContext}">
+                </sen-breadcrumb>
+            </aw-flex-row>
+        </aw-flex-column>
+    </aw-flex-row>
+    <div class="sw-row">
+        <div class="aw-layout-flexRowContainer aw-layout-headerContribution">
+            <ace-split-header sub-panel-context="subPanelContext"></ace-split-header>
+            </div>
+        </div>
+        <br>
+    <aw-data-navigator
+        sub-panel-context="{...subPanelContext, occContext: subPanelContext.occContext, selectionQueryParamKey : subPanelContext.provider.selectionQueryParamKey }"
+        provider="subPanelContext.provider" contextKey="subPanelContext.provider.contextKey"
+        baseSelection="subPanelContext.baseSelection"></aw-data-navigator>
+</aw-panel-body>

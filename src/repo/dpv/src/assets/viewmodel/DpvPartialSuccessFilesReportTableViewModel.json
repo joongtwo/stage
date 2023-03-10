@@ -1,0 +1,180 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {   
+        "loadPartialSuccessFiles": {
+            "actionType": "JSFunction",
+            "method": "loadPartialSuccessFiles",
+            "inputData": {
+                "searchInput": {
+                    "maxToLoad": "{{subPanelContext.searchState.maxToLoad}}",
+                    "maxToReturn": "{{subPanelContext.searchState.maxToReturn}}",
+                    "searchCriteria": {
+                        "plant": "{{subPanelContext.searchState.healthInfo.plantName}}",
+                        "deviceId": "{{subPanelContext.searchState.healthInfo.deviceId}}",
+                        "deviceName": "{{subPanelContext.searchState.healthInfo.deviceName}}",
+                        "fileType": "{{subPanelContext.searchState.healthInfo.fileType}}"
+                    },
+                    "cursor": {
+                        "startIndex": "{{data.dataProviders.partialSuccessFileReportGridDataProvider.startIndex}}"
+                    },
+                    "searchFilterFieldSortType": "{{subPanelContext.searchState.sortType}}",
+                    "searchFilterMap6": "{{subPanelContext.searchState.activeFilterMap}}"
+                }
+            },
+            "dataParsers": [
+                {
+                    "id": "partialSuccessFileReportDataParser",
+                    "responseObjs": "searchResults"
+                }
+            ],
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults",
+                "searchResultsWithIcon": "{{function:updateSearchResults}}",
+                "dataProviders.partialSuccessFileReportGridDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/Dpv1ETLHealthService"
+        },
+        "dopartialSuccessFileReportGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "partialSuccessFileReportGridDataProvider"
+        },
+        "updateFileReport":{
+            "actionType": "JSFunction",
+            "method": "updateFileReport",
+            "inputData": {
+                "selection": "{{parameters.eventData.selectedObjects}}",
+                "searchState": "{{props.subPanelContext.searchState}}"
+            },
+            "deps": "js/Dpv1ETLHealthService"
+        },
+        "enableAutomaticMultiSelection": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "partialSuccessFileReportGridDataProvider.multiSelectModeAction",
+                        "eventData": {
+                            "multiSelect": true
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "functions":{
+        "updateSearchResults":{
+            "functionName": "updateSearchResultsWithIcon"
+        }        
+    },
+    "onEvent": [
+        {
+            "eventId": "partialSuccessFileReportGridDataProvider.selectionChangeEvent",
+            "action": "updateFileReport",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        }
+    ],
+    "dataProviders":{
+        "partialSuccessFileReportGridDataProvider": {
+            "action": "loadPartialSuccessFiles",
+            "selectionModelMode": "single",
+            "selectionModel": {
+                "multiSelectEnabled": false
+            },
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            }
+        }    
+    },
+    "dataParseDefinitions":{
+        "partialSuccessFileReportDataParser":{
+            "type": "etlpartialSuccessFileReport",
+            "props":{
+                "FileName": {
+                    "name": "FileName",
+                    "value": "{{response.DataFileName}}",
+                    "displayValue": "{{response.DataFileName}}",
+                    "type": "String"
+                },
+                "DataFile": {
+                    "name": "DataFile",
+                    "value": "{{response.DataFile}}",
+                    "displayValue": "{{response.DataFile}}",
+                    "type": "String"
+                },
+                "WarningFile": {
+                    "name": "WarningFile",
+                    "value": "{{response.WarningFile}}",
+                    "displayValue": "{{response.WarningFile}}",
+                    "type": "String"
+                },
+                "ProcessTime":{
+                    "name": "ProcessTime",
+                    "value": "{{response.ProcessedTime}}",
+                    "displayValue": "{{response.ProcessedTime}}",
+                    "type": "String"
+                }
+            }
+        }
+    },
+    "columnProviders": {
+        "partialSuccessFileReportGridColumnProvider": {
+            "frozenColumnIndex": -1,
+            "headerHeight": "LARGE",
+            "columns": [
+                {
+                    "name": "FileName",
+                    "typeName": "String", 
+                    "minWidth": 450,
+                    "width": 450,
+                    "enableColumnMenu": false,
+                    "isTableCommand": true
+                },
+                {
+                    "name": "DataFile",
+                    "typeName": "String", 
+                    "minWidth": 450,
+                    "width": 450,
+                    "enableColumnMenu": false
+                },             
+                {
+                    "name": "WarningFile",
+                    "typeName": "String", 
+                    "minWidth": 450,
+                    "width": 450,
+                    "enableColumnMenu": false
+                },             
+                {
+                    "name": "ProcessTime",
+                    "typeName": "String", 
+                    "minWidth": 450,
+                    "width": 450,
+                    "enableColumnMenu": false
+                }
+             ]
+         } 
+    },    
+    "grids": {
+        "partialSuccessFileReportGrid":{
+            "dataProvider": "partialSuccessFileReportGridDataProvider",
+            "columnProvider": "partialSuccessFileReportGridColumnProvider",
+            "enableArrangeMenu": true,
+            "gridOptions": {
+                "enableGridMenu": true
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "enableAutomaticMultiSelection"
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

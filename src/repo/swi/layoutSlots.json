@@ -1,0 +1,16 @@
+{
+  "slots": {
+    "swiHeaderTitleSlot": {
+      "name": "aw_headerTitle",
+      "view": "SwiHeaderTitle",
+      "activeWhen": {
+        "condition": "conditions.isOnSWIPage"
+      }
+    }
+  },
+  "conditions": {
+    "isOnSWIPage": {
+      "expression": "ctx.swiContext && ctx.swiContext.uid"
+    }
+  }
+}

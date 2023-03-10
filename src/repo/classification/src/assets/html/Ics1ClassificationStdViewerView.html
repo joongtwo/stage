@@ -1,0 +1,8 @@
+<!-- Dedicated component for 'Create Classification Object' feature -->
+<!-- Ics1ClassfiicationTabViewer was consisting of VNC, Hierarchy . They are not required in this componet-->
+<!-- This components relies upon fundamental assumption that there is no selected WSO and still it should display properties-->
+<div class="aw-clspanel-fullViewClassify aw-base-scrollPanel" visible-when="conditions.isStandAloneCmdSelected">
+    <aw-toolbar first-anchor="standAlone_tabCommands" second-anchor="classify_tabCommandsRight,aw_fullScreen" context="{classifyState: fields.classifyState,fullScreenState:subPanelContext.fullScreenState}"></aw-toolbar>
+    <awp0-classification-class-details classify-state="fields.classifyState" sub-panel-context="subPanelContext" response-state="fields.responseState" exist-when="fields.classifyState.selectedNode">
+    </awp0-classification-class-details>
+</div>

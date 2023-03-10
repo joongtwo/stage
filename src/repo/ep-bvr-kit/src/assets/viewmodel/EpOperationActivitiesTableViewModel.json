@@ -1,0 +1,114 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "activities-model": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpOperationActivities_inputObject": {
+            "onChangeAction": "handleInput",
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "preferenceName": "EP_OperationPageActivitiesTabActivitiesGridAreaColumnConfiguration",
+        "additionalPolicyObjects": {
+            "types": [
+                {
+                    "name": "Mfg0BvrOperation",
+                    "properties": [
+                        {
+                            "name": "Mfg0AllocatedTimeConverted"
+                        }
+                    ]
+                },
+                {
+                    "name": "Ept0InstanceActivityLine",
+                    "properties": [
+                        {
+                            "name": "ept0Predecessors"
+                        }
+                    ]
+                }
+            ]
+        },
+        "messages": {
+            "noOperationSelected": [
+                {
+                    "text": "{{i18n.selectOperation}}"
+                }
+            ]
+        },
+        "addIconColumn": true,
+        "orderByPredecessor": true
+    },
+    "actions": {
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "handleInput": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getValidInput"
+                },
+                {
+                    "action": "resetTabTitle",
+                    "condition": "!data.inputObject"
+                }
+            ]
+        },
+        "getValidInput": {
+            "actionType": "JSFunction",
+            "method": "getValidInputForDetailsTable",
+            "inputData": {
+                "portsEpDetailsInputObject": "{{ports.EpOperationActivities_inputObject.syncObject}}",
+                "typesToExclude": [
+                    "Mfg0BvrProcessLine",
+                    "Mfg0BvrProcessArea",
+                    "Mfg0BvrProcessStation"
+                ]
+            },
+            "outputData": {
+                "inputObject": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "resetTabTitle": {
+            "actionType": "JSFunction",
+            "method": "resetTabTitle",
+            "inputData": {
+                "tabData": "{{subPanelContext.tabContext}}"
+            },
+            "deps": "js/epTabsService"
+        }
+    },
+    "conditions": {
+        "isOperationSelected": {
+            "expression": "data.inputObject && data.inputObject.uid"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getValueInViewModel"
+    },
+    "i18n": {
+        "selectOperation": [
+            "ActivitiesMessages"
+        ]
+    }
+}

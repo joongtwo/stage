@@ -1,0 +1,282 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-label.directive",
+        "js/aw-listbox.directive",
+        "js/aw-date.directive",
+        "js/aw-break.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-checkbox.directive"
+    ],
+    "data": {
+        "addPanelState": {
+            "initialValues": {
+                "creationType": "",
+                "createdObject": "",
+                "sourceObjects": "",
+                "selectedTab": "",
+                "xrtTypeLoaded": ""
+            },
+            "meta": {}
+        },
+        "xrtState": {
+            "initialValues": {
+                "deepCopyDatas": ""
+            },
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        },
+        "source": {
+            "displayName": "{{i18n.Pgp0Source}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.addPanelState.sourceObjects[0]}}",
+            "dispValue": "{{props.subPanelContext.addPanelState.sourceObjects[0]}}"
+        },
+        "target":{
+            "displayName": "{{i18n.Pgp0Target}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "{{ctx.mselected[0].props.object_string.dbValues[0]}}",
+            "dispValue": "{{ctx.mselected[0].props.object_string.dbValues[0]}}"
+        },
+        "displayDate": {
+            "displayName": "{{i18n.Pgp0PrimeEventDate}}",
+            "type": "DATE",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "categoryIncludeChecklists": {
+            "displayName": "{{i18n.Pgp0IncludeChecklist}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "categoryIncludeDeliverables": {
+            "displayName": "{{i18n.Pgp0IncludeDeliverables}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "runInBackgroundCheckBox": {
+            "displayName": "{{i18n.Pgp0RunInBackground}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+    "actions": {
+        "moveScrollBarToFirstEvent":
+        {
+            "actionType": "JSFunction",
+            "method": "scrollToSelectedObject",
+            "inputData": {
+                "createdObject" : "{{data.response.created}}"
+            },
+            "deps": "js/Timeline/prgTimelineUtils"
+        },
+        "saveAsPlan": {
+            "actionType": "TcSoaService",
+            "serviceName": "PrgPlanningAw-2022-12-ProgramPlanning",
+            "method": "copyEvents",
+            "inputData": {
+                "sourcePlan": "{{data.source.dbValue}}",
+                "sourceEvents": [],
+                "targetPlan": "{{ctx.mselected[0]}}",
+                "primeEventDate": "{{function:getDateStringPrimeEventDate}}",
+                "propertiesMap": {
+                    "Psi0EventChecklistRelation": "{{data.categoryIncludeChecklists.dbValue}}",
+                    "Psi0EventPrgDel": "{{data.categoryIncludeDeliverables.dbValue}}"
+                },
+                "runInBackground": "{{data.runInBackgroundCheckBox.dbValue}}"
+            },
+            "outputData": {
+                "response": ""
+            },
+            "events":
+            {
+                "success":[
+                    {
+                        "condition": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'Prg0AbsEvent' ) === -1",
+                        "name": "cdm.relatedModified",
+                        "eventData": {
+                            "relatedModified": [
+                                "{{ctx.selected}}"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "moveScrollBarToFirstEvent",
+                        "eventData": {
+                            "createdObject": "response.created",
+                            "updatedObject": "response.updated"
+                        }
+                    },
+                    {
+                        "name": "complete",
+                        "condition": "!subPanelContext.panelPinned",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [ {
+                    "condition": "!data.runInBackgroundCheckBox.dbValue && data.response.created.length > 0",
+                    "message": "copyEventSuccess"
+                },
+                {
+                    "condition": "!data.runInBackgroundCheckBox.dbValue && (data.response.created.length === 0 || data.response.created.length === undefined)",
+                    "message": "copyEventSuccessNoEvents"
+                } ],
+                "failure": [ {
+                    "message": "SOAFailureMessage"
+                } ]
+            },
+            "deps": "js/Pgp0CopyFromPlanService"
+        },
+        "populatingDate": {
+            "actionType": "JSFunction",
+            "method": "getCurrentDate",
+            "deps": "js/Pgp0CopyFromPlanService",
+            "outputData": {
+                "displayDate.dbValue" : ""
+            }
+        },
+        "checkForPsi0BOTypes": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2015-10-Session",
+            "method": "getTypeDescriptions2",
+            "inputData": {
+                "typeNames": [ "Psi0PrgDel" ]
+            },
+            "outputData": {
+                "response": "{{function:checkForPsi0BOTypesfun}}"
+            },
+            "deps": "js/Pgp0CopyFromPlanService"
+        },
+        "onMountBatchJob": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "checkForPsi0BOTypes"
+                },
+                {
+                    "action": "populatingDate"
+                }
+            ]
+        }
+    },
+    "onEvent":
+    [
+        {
+            "eventId": "moveScrollBarToFirstEvent",
+            "action": "moveScrollBarToFirstEvent"
+        }
+    ],
+    "dataProviders":{
+
+    },
+    "conditions": {
+
+    },
+    "lifecycleHooks": {
+        "onMount": "onMountBatchJob"
+    },
+    "i18n": {
+        "paste": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0Source": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0Target": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0PrimeEventDate": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0IncludeChecklist": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0IncludeDeliverables": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0RunInBackground": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "copyEventSuccessInfoMsg": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "copyEventSuccessNoEventsInfoMsg": [
+            "ProgramPlanningCommandPanelsMessages"
+        ]
+    },
+    "editHandlers": {
+
+    },
+    "functions": {
+        "checkForPsi0BOTypesfun": {
+            "functionName": "checkForPsi0BOTypesfun",
+            "parameters": [
+                "{{data}}",
+                "{{fields}}"
+            ]
+        },
+        "passPropertiesMapFun": {
+            "functionName": "passPropertiesMapFun",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getDateStringPrimeEventDate": {
+            "functionName": "getDateStringPrimeEventDate",
+            "parameters": [
+                "{{data.displayDate.dateApi.dateObject}}"
+            ]
+        }
+    },
+    "dataParseDefinitions": {
+
+    },
+    "messages": {
+        "SOAFailureMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        },
+        "copyEventSuccess": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.copyEventSuccessInfoMsg}}",
+            "messageTextParams": [
+                "{{data.response.created.length}}",
+                "{{ctx.mselected[0].props.object_string.dbValues[0]}}"
+            ]
+        },
+        "copyEventSuccessNoEvents": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.copyEventSuccessNoEventsInfoMsg}}"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

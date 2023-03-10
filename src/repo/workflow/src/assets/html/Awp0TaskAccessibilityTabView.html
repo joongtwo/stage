@@ -1,0 +1,12 @@
+<aw-panel>
+    <aw-panel-body scrollable="true">
+            <aw-widget prop="data.selectedACLValue" exist-when="!conditions.isTemplateInEditMode && conditions.isTcRelease132OrLessThan142"></aw-widget>
+            <aw-radiobutton prop="data.aclType" list="data.aclTypeValues.dbValue" action="changeAclType" exist-when="conditions.isTemplateInEditMode && conditions.isTCReleaseAtLeast142" ></aw-radiobutton>
+            <aw-radiobutton prop="data.aclType" list="data.aclTypeValues.dbValue" action="changeAclTypeForLesserversions" exist-when="conditions.isTemplateInEditMode && conditions.isTcRelease132OrLessThan142" ></aw-radiobutton>
+            <aw-listbox prop="data.aclList" list="data.aclNameInfoObjects" exist-when="conditions.isTemplateInEditMode && conditions.isTcRelease132OrLessThan142"></aw-listbox>
+            <am0-acl-table acl-prop="data.selectedACLValue" exist-when="conditions.isTCReleaseAtLeast142" sub-panel-context="{...subPanelContext, aclType:data.aclType}" is-editing="conditions.isTemplateInEditMode" named-acl-state="fields.namedAclState" ></am0-acl-table>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="Am0SaveACEEntriesAction" exist-when="conditions.isTCReleaseAtLeast142 && conditions.isValidWrkflwDesignerLocationWithEditCriteria" size='auto'><aw-i18n>i18n.save</aw-i18n></aw-button>
+    </aw-panel-footer>
+</aw-panel>

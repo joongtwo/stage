@@ -1,0 +1,263 @@
+{
+  "newInboxComponentLocation": {
+    "params": {
+      "componentId": null,
+      "embeddedLocationView": null,
+      "uid": null
+    },
+    "url": "/newInboxComponentLocation"
+  },
+  "newReassignComponentLocation": {
+    "params": {
+      "componentId": null,
+      "embeddedLocationView": null,
+      "uid": null
+    },
+    "url": "/newReassignComponentLocation",
+    "view": "Awp0ReassignTask"
+  },
+  "com_siemens_splm_client_inbox_tasksLocation": {
+    "data": {
+      "browserSubTitle": {
+        "source": "/i18n/InboxMessages",
+        "key": "tasksAppDisplayName"
+      },
+      "headerTitle": {
+        "source": "/i18n/InboxMessages",
+        "key": "tasksAppDisplayName"
+      },
+      "propertyPolicy": "/policies/tasksLocationPropertyPolicy.json"
+    },
+    "params": {
+      "userId": null
+    },
+    "view": "AwInboxLocation",
+    "parent": "root"
+  },
+  "myTasks": {
+    "data": {
+      "priority": 0,
+      "label": {
+        "source": "/i18n/InboxMessages",
+        "key": "myTasks"
+      }
+    },
+    "params": {
+      "userId": null,
+      "searchCriteria": null,
+      "filter": null
+    },
+    "parent": "com_siemens_splm_client_inbox_tasksLocation",
+    "view": "AwMyTasks",
+    "url": "/myTasks"
+  },
+  "teamTasks": {
+    "data": {
+      "priority": 1,
+      "label": {
+        "source": "/i18n/InboxMessages",
+        "key": "teamTasks"
+      }
+    },
+    "params": {
+      "userId": null,
+      "searchCriteria": null,
+      "filter": null
+    },
+    "parent": "com_siemens_splm_client_inbox_tasksLocation",
+    "view": "AwTeamTasks",
+    "url": "/teamTasks"
+  },
+  "taskToTrack": {
+    "data": {
+      "priority": 2,
+      "label": {
+        "source": "/i18n/InboxMessages",
+        "key": "tasksToTrack"
+      }
+    },
+    "params": {
+      "userId": null,
+      "searchCriteria": null,
+      "filter": null
+    },
+    "parent": "com_siemens_splm_client_inbox_tasksLocation",
+    "view": "AwTaskToTrack",
+    "url": "/taskToTrack"
+  },
+  "showTasks": {
+    "data": {
+      "priority": 3,
+      "label": {
+        "source": "/i18n/InboxMessages",
+        "key": "allTasks"
+      }
+    },
+    "params": {
+      "userId": null,
+      "searchCriteria": null,
+      "filter": null
+    },
+    "parent": "com_siemens_splm_client_inbox_tasksLocation",
+    "view": "AwShowTasks",
+    "url": "/showTasks"
+  },
+  "surrogateTasks": {
+    "data": {
+      "priority": 4,
+      "label": {
+        "source": "/i18n/InboxMessages",
+        "key": "surrogateTasks"
+      }
+    },
+    "params": {
+      "userId": null,
+      "searchCriteria": null,
+      "filter": null
+    },
+    "parent": "com_siemens_splm_client_inbox_tasksLocation",
+    "view": "AwSurrogateTasks",
+    "url": "/surrogateTasks"
+  },
+  "remoteInboxes": {
+    "data": {
+      "priority": 5,
+      "label": {
+        "source": "/i18n/InboxMessages",
+        "key": "remoteInboxes"
+      }
+    },
+    "params": {
+      "userId": null,
+      "searchCriteria": null,
+      "filter": null
+    },
+    "parent": "com_siemens_splm_client_inbox_tasksLocation",
+    "view": "AwRemoteInboxes",
+    "url": "/remoteInboxes",
+    "visibleWhen": {
+      "expression": "preferences.AWC_Enable_Multisite[0] === 'true' && preferences.AWC_REMOTE_SITE_URL[0]"
+    }
+  },
+  "newWorkflowProcessComponent": {
+    "params": {
+      "componentId": null,
+      "embeddedLocationView": null,
+      "uid": null
+    },
+    "url": "/newWorkflowProcessComponentLocation",
+    "view": "Awp0NewWorkflowProcess"
+  },
+  "workflowDesignerLocation": {
+    "data": {
+      "browserTitle": {
+        "source": "/i18n/WorkflowDesignerMessages",
+        "key": "workflowdesignerBrowserTitle"
+      },
+      "browserSubTitle": {
+        "source": "/i18n/WorkflowDesignerMessages",
+        "key": "workflowdesignerBrowserSubTitle"
+      },
+      "headerTitle": {
+        "source": "/i18n/WorkflowDesignerMessages",
+        "key": "workflowdesignerHeaderTitle"
+      },
+      "propertyPolicy": "/policies/workflowTemplateLocationPropertyPolicy.json"
+    },
+    "view": "AwSearchLocation",
+    "parent": "root"
+  },
+  "availableTemplates": {
+    "data": {
+      "priority": 0,
+      "label": {
+        "source": "/i18n/WorkflowDesignerMessages",
+        "key": "availableTemplatesTitle"
+      }
+    },
+    "params": {
+      "searchCriteria": null,
+      "filter": null,
+      "uid": null,
+      "sc_uid": null,
+      "ttab_name": null,
+      "source_uid": null,
+      "target_uid": null
+    },
+    "parent": "workflowDesignerLocation",
+    "reloadOnSearch": false,
+    "view": "AvailableTemplatesPage",
+    "url": "/availableTemplates"
+  },
+  "com_siemens_splm_clientfx_tcui_xrt_showObject": {
+    "params": {
+      "uid": null,
+      "sc_uid": null,
+      "ttab_name": null,
+      "source_uid": null,
+      "target_uid": null
+    },
+    "type": "parameter"
+  },
+  "assignmentListLocation": {
+    "data": {
+      "browserSubTitle": {
+        "source": "/i18n/WorkflowPalMgmtMessages",
+        "key": "appDisplayName"
+      },
+      "headerTitle": {
+        "source": "/i18n/WorkflowPalMgmtMessages",
+        "key": "appDisplayName"
+      },
+      "propertyPolicy": "/policies/palmgmtLocationPropertyPolicy.json"
+    },
+    "view": "AwSearchLocation",
+    "parent": "root"
+  },
+  "myPalLists": {
+    "data": {
+      "priority": 0,
+      "label": {
+        "source": "/i18n/WorkflowPalMgmtMessages",
+        "key": "myPalLists"
+      }
+    },
+    "params": {
+      "filter": null
+    },
+    "parent": "assignmentListLocation",
+    "view": "processAssignMyPal",
+    "url": "/myPalLists"
+  },
+  "myGroupPalLists": {
+    "data": {
+      "priority": 1,
+      "label": {
+        "source": "/i18n/WorkflowPalMgmtMessages",
+        "key": "myGroupPalLists"
+      }
+    },
+    "params": {
+      "filter": null
+    },
+    "parent": "assignmentListLocation",
+    "view": "processAssignMyGroupPal",
+    "url": "/myGroupPalLists"
+  },
+  "otherPalLists": {
+    "data": {
+      "priority": 2,
+      "label": {
+        "source": "/i18n/WorkflowPalMgmtMessages",
+        "key": "otherPalLists"
+      }
+    },
+    "params": {
+      "filter": null
+    },
+    "parent": "assignmentListLocation",
+    "reloadOnSearch": false,
+    "view": "processAssignOtherPal",
+    "url": "/otherPalLists"
+  }
+}

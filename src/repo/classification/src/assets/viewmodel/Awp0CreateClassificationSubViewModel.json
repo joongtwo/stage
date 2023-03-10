@@ -1,0 +1,129 @@
+{
+    "schemaVersion" : "1.0.0",
+
+    "lifecycleHooks": {
+        "onMount": "initialize",
+        "onUpdate": [
+            {
+                "action": "checkAndCollapse",
+                "observers": [
+                    "props.classifyState.value.selectedNode.uid"
+                ]
+            }
+        ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data":{
+        "activeView": "Awp0CreateClassificationSub",
+        "classifyPanelCommands" : "classify_panelCommands",
+        "sortOption": {
+            "type": "object"
+        },
+        "collapsed": false,
+        "prevSelectedUid": ""
+    },
+
+    "actions":
+    {
+        "initialize": {
+            "actionType": "JSFunction",
+            "method": "initializeSelectedUid",
+            "inputData": {
+                "selectedNode": "{{props.classifyState.selectedNode}}",
+                "prevSelectedUid": "{{data.prevSelectedUid}}",
+                "sectionName": "{{i18n.Classes}}"
+            },
+            "outputData": {
+                "prevSelectedUid": ""
+            },
+            "deps": "js/classifyViewService"
+        },
+        "checkAndCollapse": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initialize",
+                    "condition": "conditions.shouldCollapse"
+                }
+            ]
+        },
+        "collapseClassesSection": {
+            "actionType": "JSFunction",
+            "method": "collapseClassesSection",
+            "inputData": {
+                "viewName": "{{data.eventMap['awCommandPanelSection.collapse'].caption}}",
+                "isCollapsed": "{{data.eventMap['awCommandPanelSection.collapse'].isCollapsed}}",
+                "sectionName": "{{i18n.Classes}}",
+                "currentClassCollapsed": "{{data.collapsed}}",
+                "classifyState": "{{props.classifyState}}"
+            },
+            "outputData": {
+                "collapsed": ""
+            },
+            "deps": "js/classifyViewService"
+        }
+    },
+
+    "conditions":{
+        "showICOProps": {
+            "expression": "conditions.classSectionCollapsed && props.classifyState.value.showProperties === true && ( props.classifyState.value.selectedClass.className || props.classifyState.value.selectedClass.displayName && props.classifyState.value.selectedNode.type === 'StorageClass' )"
+        },
+        "showClassImagesSection": {
+            "expression": "props.classifyState.value.hasImages === true && conditions.showImages && !conditions.showICOProps"
+        },
+        "showImages": {
+            "expression": "conditions.classSectionCollapsed && props.classifyState.value.showImages === true"
+        },
+        "showPropGroup": {
+            "expression": "props.classifyState.value.hasBlocks === true"
+        },
+        "showPropTree": {
+            "expression": "conditions.classSectionCollapsed && props.classifyState.value.hasBlocks === true && props.classifyState.value.showPropTree === true"
+        },
+        "isStorageClass": {
+            "expression": "props.classifyState.value.selectedNode && props.classifyState.value.selectedNode.type === 'StorageClass'"
+        },
+        "classSectionCollapsed": {
+            "expression": "data.collapsed === true"
+        },
+        "isCollapsed": {
+            "expression": "conditions.isStorageClass && data.collapsed === true"
+        },
+        "shouldCollapse": {
+            "expression": "conditions.isStorageClass && props.classifyState.value.selectedNode.uid !== prevSelectedUid"
+        }
+    },
+
+    "messages":
+    {
+
+    },
+
+    "onEvent": [
+        {
+            "eventId": "awCommandPanelSection.collapse",
+            "action":"collapseClassesSection",
+            "cacheEventData": true
+        }
+    ],
+
+    "i18n":
+    {
+        "Classification": [
+            "ClassificationPanelMessages"
+        ],
+        "Classifications": [
+            "ClassificationPanelMessages"
+        ],
+        "Classes": [
+            "ClassificationPanelMessages"
+        ],
+        "images": [
+            "ClassificationPanelMessages"
+        ]
+    }
+}

@@ -1,0 +1,59 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "provider":{
+            "label":"{{i18n.ProductBOPTitle}}",
+            "priority": 1,
+            "name": "functionalPlan",
+            "clientScopeURI": "functionalPlan",
+            "nameToken": "functionalPlan"
+        },
+        "awSubLocationPref": {
+            "hideRightWall": true
+        },
+        "productBopStructureTreeData": {
+            "tabs": [
+                {
+                    "name": "{{i18n.structureTitle}}",
+                    "tabKey": "EpProductBopStructureTree"
+                }
+            ]
+        },
+        "operationsTableData": {
+            "tabs": [
+                {
+                    "name": "{{i18n.operationsTableTitle}}",
+                    "tabKey": "EpProductBopOperationsTable"
+                }
+            ]
+        }
+    },
+    "actions":{
+        "initializeEPPage": {
+            "actionType": "JSFunctionAsync",
+            "method": "initializeEPPage",
+            "inputData": {
+                "provider": "{{data.provider}}"
+            },
+            "outputData": {
+                "stateContext": "stateContext",
+                "propertyPolicyId": "propertyPolicyId"
+            },
+            "deps": "js/epInitializationService"
+        }
+    },
+    "conditions": {
+        "hasLoadedObject":
+        {
+            "expression": "ctx.epPageContext.loadedObject.uid && ctx.ep.scopeObject.uid"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initializeEPPage"
+    },
+    "i18n": {
+        "ProductBOPTitle":["FunctionalPlanMessages"],
+        "structureTitle": ["FunctionalPlanMessages"],
+        "operationsTableTitle": ["FunctionalPlanMessages"]
+    }
+}

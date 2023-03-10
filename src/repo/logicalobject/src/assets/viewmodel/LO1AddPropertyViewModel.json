@@ -1,0 +1,291 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports":
+    [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-widget.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive",
+        "js/visible-when.directive"
+    ],
+
+    "actions":
+    {
+        "reveal":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-12-DataManagement",
+            "method": "getDeclarativeStyleSheets",
+            "inputData":
+            {
+                "input":
+                [
+                    {
+                        "businessObjectType": "Fnd0LOPropPresentations",
+                        "businessObject":
+                        {
+                            "uid": "AAAAAAAAAAAAAA",
+                            "type": "Fnd0LOPropPresentations"
+                        },
+
+                        "styleSheetLastModDate": "",
+                        "styleSheetType": "CREATE",
+                        "targetPage": "",
+                        "clientContext":
+                        {
+                            "ActiveWorkspace:Location": "com.siemens.splm.client.logicalobject.configurationLocation",
+                            "ActiveWorkspace:SubLocation": "com.siemens.splm.client.logicalobject:logicalObjectsSubLocation"
+                        }
+                    }
+                ],
+                "processEntireXRT": true
+            },
+            "outputData":
+            {
+                "propDef": "{{dataParseDefinitions:convertNvObject}}"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "awLogicalObject.addPropDef"
+                    }
+                ]
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "addPropDef":
+        {
+            "actionType": "JSFunction",
+            "method": "addPropDef",
+            "inputData":
+            {
+                "data": "{{data}}"
+            },
+            "outputData":
+            {
+                "data": ""
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "updatePropDef":
+        {
+            "actionType": "JSFunction",
+            "method": "updatePropDef",
+            "inputData":
+            {
+                "data": "{{data}}"
+            },
+            "outputData":
+            {
+                "data": ""
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "addPropertyEvent":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events": [
+                    {
+                        "name": "awLogicalObject.addProperty2"
+                    }
+                ]
+            }
+        },
+        "addProperty":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2017-11-LogicalObject",
+            "method": "addMembersAndPresentedProps",
+            "inputData":
+            {
+                "addMembersAndPresentedProps": {
+                    "logicalObjectType": "{{data.logicalObject}}",
+                    "presentedPropertiesDefinitions": "{{function:getPropDefs}}"
+                }
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "cdm.relatedModified",
+                        "eventData": {
+                            "relatedModified": ["{{data.logicalObject}}"]
+                        }
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages":
+            {
+                "success": [
+                {
+                    "condition": "data.propDefs.length==1",
+                    "message": "addPropSuccess"
+                },
+                {
+                    "condition": "data.propDefs.length>1",
+                    "message": "addPropsSuccess"
+                } ]
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "addProperty2":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2018-06-LogicalObject",
+            "method": "addMembersAndPresentedProps2",
+            "inputData":
+            {
+                "addMembersAndPresentedProps": {
+                    "logicalObjectType": "{{data.logicalObject}}",
+                    "presentedPropertiesDefinitions": "{{function:getPropDefs}}"
+                }
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "cdm.relatedModified",
+                        "eventData": {
+                            "relatedModified": ["{{data.logicalObject}}"]
+                        }
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages":
+            {
+                "success": [
+                {
+                    "condition": "data.propDefs.length==1",
+                    "message": "addPropSuccess"
+                },
+                {
+                    "condition": "data.propDefs.length>1",
+                    "message": "addPropsSuccess"
+                } ]
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "closePanel":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+
+    "dataParseDefinitions": {
+        "convertNvObject": {
+            "outputFormatType": "ViewModelObject",
+            "dataInput": "ServiceData.plain[0]",
+            "operationType": "CREATE"
+        }
+    },
+
+    "conditions":
+    {
+        "isValidToAddProperty":
+        {
+            "expression": "data.propDef.props.fnd0RootOrMemberID.dbValue && !data.propDef.props.fnd0RootOrMemberID.hasServerValidationError && data.propDef.props.fnd0MemberProperties.dbValue.length>0"
+        }
+    },
+
+   "functions": {
+        "getPropDefs": {
+            "functionName": "getPropDefs",
+            "parameters": [ "{{data}}" ]
+        }
+    },
+
+    "data":
+    {
+        "caption": "{{i18n.add}}"
+    },
+
+    "i18n":
+    {
+        "add": [ "LogicalObjectMessages" ],
+        "presentedProperties": [ "LogicalObjectMessages" ],
+        "addEntryLOSuccess": [ "LogicalObjectMessages" ],
+        "addPropertiesSuccess": [ "LogicalObjectMessages" ]
+    },
+
+    "messages":
+    {
+        "addPropSuccess":
+        {
+            "messageType": "INFO",
+            "messageText": "{{i18n.addEntryLOSuccess}}",
+            "messageTextParams": [
+                "{{data.propDef0.presentedPropertyName}}",
+                "{{data.logicalObjectName}}"
+            ]
+        },
+        "addPropsSuccess":
+        {
+            "messageType": "INFO",
+            "messageText": "{{i18n.addPropertiesSuccess}}",
+            "messageTextParams": [
+                "{{data.propDefs.length}}",
+                "{{data.logicalObjectName}}"
+            ]
+        }
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "awLogicalObject.addPropDef",
+            "action": "addPropDef"
+        },
+        {
+            "eventId": "fnd0RootOrMemberID.lovValueChanged",
+            "action": "updatePropDef"
+        },
+        {
+            "eventId": "awLogicalObject.addProperty",
+            "action": "addProperty"
+        },
+        {
+            "eventId": "awLogicalObject.addProperty2",
+            "action": "addProperty2"
+        },
+        {
+            "eventId": "primaryWorkArea.selectionChangeEvent",
+            "action": "closePanel"
+        }
+    ]
+}

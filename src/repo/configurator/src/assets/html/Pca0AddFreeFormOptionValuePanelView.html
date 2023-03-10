@@ -1,0 +1,117 @@
+<aw-command-panel caption="i18n.addPanelTitle" context="subPanelContext">
+    <aw-panel-body>
+        <aw-panel-section caption="i18n.toTitle" exist-when="data.toFamily">
+            <aw-default-cell item="data.toFamily"></aw-default-cell>
+        </aw-panel-section>
+        <aw-panel-section caption="{{data.nameOfFamily.dbValue}}" exist-when="conditions.isOfIntegerType">
+             <div class="sw-row">
+                 <div class="sw-column aw-cfg-fscFreeFormToFromRange">
+                    <aw-listbox class="aw-cfg-fromOperatorListBox" prop="data.fromOperator" list="data.fromListValues.OperatorValues" action="selectionChange" exist-when="conditions.isFreeForm"></aw-listbox>
+                 </div>
+
+                <div class="sw-column w-11 aw-cfg-fscFreeFormRangeExpEnumValue">
+                    <aw-widget class="aw-cfg-fromValueListBox" prop="data.fromIntegerValue" exist-when="conditions.isFreeForm"></aw-widget>
+                </div>
+             </div>
+
+             <div class="sw-row">
+                 <div class="sw-column aw-cfg-fscFreeFormToFromRange">
+                    <aw-listbox class="aw-cfg-toOperatorListBox" prop="data.toOperator" list="data.toListValues.OperatorValues" action="selectionChange" enable-when="conditions.isToPartEnable"></aw-listbox>
+                </div>
+                <div class="sw-column w-11 aw-cfg-fscFreeFormRangeExpEnumValue">
+                    <aw-widget class="aw-cfg-toValueListBox" prop="data.toIntegerValue" enable-when="conditions.isToFreeFormEnable" exist-when="conditions.isFreeForm"></aw-widget>
+                </div>
+             </div>
+
+            <div>
+                <aw-property-label prop="data.previewTitle"></aw-property-label>
+
+                <aw-property-non-edit-val class="aw-cfg-previewText" prop="data.preview"></aw-property-non-edit-val>
+            </div>
+        </aw-panel-section>
+
+        <aw-panel-section exist-when="conditions.isOfStringType">
+            <div class="sw-row">
+                <aw-label prop="data.numberLabelForStringFreeForm" class="aw-cfg-fscPropLabel aw-cfg-freeFormStringValue"></aw-label>
+            </div>
+             <div class="sw-row">
+                 <div class="sw-column">
+                    <strong class="aw-cfg-freeFormEqualsOperator">=</strong>
+                </div>
+                 <div class="sw-column w-12">
+                    <aw-textbox prop="data.freeFormStringValue" exist-when="conditions.isFreeForm" action="selectionChange"></aw-textbox>
+                </div>
+             </div>
+
+            <div>
+                <aw-property-label prop="data.previewTitle"></aw-property-label>
+                <aw-property-non-edit-val class="aw-cfg-previewText" prop="data.preview"></aw-property-non-edit-val>
+            </div>
+        </aw-panel-section>
+        <aw-panel-section caption="{{data.nameOfFamily.dbValue}}" exist-when="conditions.isOfDoubleType">
+             <div class="sw-row">
+                 <div class="sw-column aw-cfg-fscFreeFormToFromRange">
+                    <aw-listbox class="aw-cfg-fromOperatorListBox" prop="data.fromOperator" list="data.fromListValues.OperatorValues" action="selectionChange" exist-when="conditions.isFreeForm"></aw-listbox>
+                </div>
+                <div class="sw-column w-11 aw-cfg-fscFreeFormRangeExpEnumValue">
+                    <aw-widget class="aw-cfg-fromValueListBox" prop="data.fromDoubleValue" exist-when="conditions.isFreeForm"></aw-widget>
+                </div>
+             </div>
+
+             <div class="sw-row">
+                 <div class="sw-column aw-cfg-fscFreeFormToFromRange">
+                    <aw-listbox class="aw-cfg-toOperatorListBox" prop="data.toOperator" list="data.toListValues.OperatorValues" action="selectionChange" enable-when="conditions.isToPartEnable"></aw-listbox>
+                </div>
+                <div class="sw-column w-11 aw-cfg-fscFreeFormRangeExpEnumValue">
+                    <aw-widget class="aw-cfg-toValueListBox" prop="data.toDoubleValue" enable-when="conditions.isToFreeFormEnable" exist-when="conditions.isFreeForm"></aw-widget>
+                 </div>
+             </div>
+
+            <div>
+                <aw-property-label prop="data.previewTitle"></aw-property-label>
+
+                <aw-property-non-edit-val class="aw-cfg-previewText" prop="data.preview"></aw-property-non-edit-val>
+            </div>
+        </aw-panel-section>
+
+        <aw-panel-section caption="{{data.nameOfFamily.dbValue}}" exist-when="conditions.isOfDateType">
+             <div class="sw-row">
+                 <div class="sw-column aw-cfg-fscFreeFormToFromRange">
+                    <aw-listbox class="aw-cfg-fromOperatorListBox" prop="data.fromOperator" list="data.fromDateValues.OperatorValues" action="selectionChange" exist-when="conditions.isFreeForm"></aw-listbox>
+                 </div>
+                 <div class="sw-column aw-cfg-fscFreeFormRangeExpDateWidget" exist-when="conditions.isFreeForm">
+                    <aw-date prop="data.fromDateTime"></aw-date>
+                </div>
+             </div>
+
+             <div class="sw-row">
+                 <div class="sw-column aw-cfg-fscFreeFormToFromRange">
+                    <aw-listbox class="aw-cfg-toOperatorListBox" prop="data.toOperator" list="data.toListValues.OperatorValues" action="selectionChange" enable-when="conditions.isToPartEnable"></aw-listbox>
+                </div>
+                 <div class="sw-column aw-cfg-fscFreeFormRangeExpDateWidget" exist-when="conditions.isFreeForm">
+                    <aw-date prop="data.toDateTime" enable-when="conditions.isToFreeFormEnable"></aw-date>
+                </div>
+              </div>
+
+            <div>
+                <aw-property-label prop="data.previewTitle"></aw-property-label>
+
+                <aw-property-non-edit-val class="aw-cfg-previewText" prop="data.preview"></aw-property-non-edit-val>
+            </div>
+        </aw-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="addIntegerFreeForm" visible-when="(data.fromIntegerValue.uiValue !== '' ) && data.fromOperator.dbValue !== '' && conditions.isOfIntegerType">
+            <aw-i18n>i18n.addButtonTitle</aw-i18n>
+        </aw-button>
+        <aw-button action="addStringFreeForm" visible-when="data.freeFormStringValue.uiValue !== '' && conditions.isOfStringType">
+            <aw-i18n>i18n.addButtonTitle</aw-i18n>
+        </aw-button>
+        <aw-button action="addDoubleFreeForm" visible-when="(data.fromDoubleValue.uiValue !== '' ) && data.fromOperator.dbValue !== '' && conditions.isOfDoubleType">
+            <aw-i18n>i18n.addButtonTitle</aw-i18n>
+        </aw-button>
+        <aw-button action="addDateFreeForm" visible-when="(data.fromDateTime.uiValue !== '' ) && data.fromOperator.dbValue !== '' && conditions.isOfDateType">
+            <aw-i18n>i18n.addButtonTitle</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

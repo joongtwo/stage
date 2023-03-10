@@ -1,0 +1,289 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "updateAddContextClosePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                {
+                    "name": "complete",
+                    "condition": "!data.isDestroyed()",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                }
+                ]
+            }
+        },
+        "createObject": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2012-10-DataManagement",
+            "method": "createRelateAndSubmitObjects",
+            "inputData": {
+                "inputs": "{{function:getCreateInput}}"
+            },
+            "events":
+            {
+                "success":[
+                     {
+                        "condition": "!subPanelContext.panelPinned",
+                        "name": "complete",
+                        "eventData": {
+                        "source": "toolAndInfoPanel"
+                         }
+                    },
+                    {
+                        "condition": "subPanelContext.panelPinned",
+                        "name": "awPanel.loadNextValues"
+                    }
+                 ]
+            },
+            "actionMessages": {
+                "failure": [ {
+
+                    "message": "SOAFailureMessage"
+                } ]
+
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "prepareExtensionVMOProps":{
+            "actionType": "JSFunction",
+            "method": "getCreateInput",
+            "inputData": {
+                "data":"{{data}}",
+                "parentPlan": "{{ctx.panelContext.targetObject.uid}}",
+                "editHandler": "{{editHandlers.addPanelEditHandler}}"
+            },
+            "outputData": {
+                "extensionVMProps": "extensionVMProps",
+                "objCreateInfo": "objCreateInfo"
+            },
+            "deps": "js/Pgp0AddPlanLevelService"
+        },
+
+        "CreatePlanObject": {
+            "actionType": "batchJob",
+            "steps": [ {
+
+                    "action": "prepareExtensionVMOProps"
+                },
+                {
+                    "action": "createObject"
+                }
+            ]
+        },
+        "toggleAddACopy": {
+            "actionType": "JSFunction",
+            "method": "toggleAddACopyState",
+            "inputData": {
+                "addPanelState": "{{data.addPanelState}}"
+            },
+            "outputData": {
+                "addPanelState": "addPanelState"
+            },
+            "deps": "js/addObjectUtils"
+        },
+
+        "saveAsPlan": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2012-09-DataManagement",
+            "method": "saveAsObjectAndRelate",
+            "inputData": {
+                "saveAsInput": "{{function:getSaveAsInputForAddCopy}}",
+                "relateInfo": [ {
+
+                    "relate": true
+                } ]
+
+            },
+            "outputData": {
+                "newObject": "{{dataParseDefinitions:convertSavedAsObject}}",
+                "newObjectCreated": "{{function:getRevToSelectForAddCopy}}"
+            },
+            "events":
+            {
+                "success":[
+                    {
+                        "name": "complete",
+                        "condition": "!subPanelContext.panelPinned",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [ {
+
+                    "message": "SOAFailureMessage"
+                } ]
+
+            },
+            "deps": "js/Awp0ShowSaveAsService"
+        },
+        "performPostProcessingAfterSaveAsXRTLoaded": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "initializeDefaultProps",
+                    "condition": "conditions.isAddACopy"
+                }
+            ]
+        },
+        "initializeDefaultProps": {
+            "actionType": "JSFunction",
+            "method": "initializeDefaultProps",
+            "inputData": {
+                "fields": "{{fields}}",
+                "subPanelContext":"{{props.subPanelContext}}"
+            },
+            "deps": "js/Pgp0AddPlanLevelService"
+        }
+    },
+    "data": {
+        "activeView": "AddObjectPrimarySub",
+        "addPanelState": {
+            "initialValues": {
+                "creationType": "",
+                "createdObject": "",
+                "sourceObjects": "",
+                "selectedTab": "",
+                "xrtTypeLoaded": ""
+            },
+            "meta": {}
+        },
+        "activeState": {
+            "initialValues": {
+                "activeView": "AddObjectPrimarySub",
+                "context": {}
+            },
+            "meta": {}
+        },
+        "projectState": {
+            "initialValues": {
+                "selectedProjects": [],
+                "triggerAssign": false
+            },
+            "meta": {
+                "selectedProjects": {
+                    "field": "true",
+                    "type": "OBJECT"
+                },
+                "triggerAssign": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        },
+        "triggerCreate": {
+            "dbValue": false,
+            "type": "BOOLEAN"
+        },
+        "triggerAddACopy": {
+            "dbValue": false,
+            "type": "BOOLEAN"
+        },
+        "xrtState": {
+            "initialValues": {
+                "deepCopyDatas": ""
+            },
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "conditions": {
+        "isNewTabAddButtonVisible": {
+            "expression": "addPanelState.creationType"
+        },
+        "isPaletteSearchTabAddACopyButtonVisible": {
+            "expression": "addPanelState.sourceObjects && addPanelState.sourceObjects.length === 1 && ( addPanelState.selectedTab.view==='SearchTabPageSub' || addPanelState.selectedTab.view==='PaletteTabPageSub' ) && !addPanelState.isAddACopy"
+        },
+        "isPaletteSearchTabAddACopyCancelButtonVisible": {
+            "expression": "addPanelState.sourceObjects && addPanelState.sourceObjects.length === 1 && addPanelState.isAddACopy"
+        },
+        "isAddACopy": {
+            "expression": "addPanelState.isAddACopy === true"
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        },
+        "saveAsNewEditHandler": {
+            "context": "SAVEAS_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "dataParseDefinitions": {
+        "convertSavedAsObject": {
+            "outputFormatType": "ViewModelObject",
+            "dataInput": "saveAsTrees[0].objectCopy.uid",
+            "operationType": "CREATE"
+        }
+    },
+    "messages": {
+        "SOAFailureMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [ {
+            "action": "performPostProcessingAfterSaveAsXRTLoaded",
+            "observers": [ "viewModel.atomicData.xrtState.xrtTypeLoaded" ]
+        }
+    ],
+        "onUnmount": "unRegisterActivePin"
+    },
+    "functions": {
+        "getCreateInput": {
+            "functionName": "getCreateInput",
+            "parameters":
+            [
+                "{{data}}",
+                "{{data.extensionVMProps}}",
+                "",
+                "{{editHandlers.addPanelEditHandler}}"
+            ]
+        },
+        "getSaveAsInputForAddCopy": {
+            "functionName": "getSaveAsInputForAddCopy",
+            "parameters": [
+                "{{data}}",
+                "{{data.addPanelState}}",
+                "{{data.xrtState.deepCopyDatas}}",
+                "{{editHandlers.saveAsNewEditHandler}}"
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "appCtx.register",
+            "condition": "name === 'mselected'",
+            "action": "updateAddContextClosePanel"
+        }
+    ],
+    "i18n": {
+        "addButtonCommandTitle": [ "ProgramPlanningCommandPanelsMessages" ],
+        "addPlanLevelCommandTitle": [ "ProgramPlanningCommandPanelsMessages" ],
+        "ADD_BUTTON_TITLE": [
+            "BaseMessages"
+        ],
+        "addACopy": [
+            "addObjectMessages"
+        ],
+        "cancel": [
+            "addObjectMessages"
+        ]
+    }
+}

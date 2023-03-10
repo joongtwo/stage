@@ -1,0 +1,115 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports":{
+        "EpBackgroundPartsTable_updateFindInPort":{
+            "syncObject": {}
+        }
+    },
+    "actions": {
+        "init": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "backgroundPartsTableContext.tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "destroyCacheBatchAction": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "destroyCache"
+                },
+                {
+                    "action": "destroyEpBackgroundPartsToEBOMCache"
+                }
+            ]
+        },
+
+        "destroyCache": {
+            "actionType": "JSFunction",
+            "method": "clearPropertyKeyCache",
+            "inputData": {
+                "name": "{{ctx.epPageContext.loadedObject.uid}}",
+                "propertyName": "backgroundParts"
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "destroyEpBackgroundPartsToEBOMCache": {
+            "actionType": "JSFunction",
+            "method": "clearEpBackgroundPartsToEBOMCacheService",
+            "deps": "js/epBackgroundPartsToEBOMCacheService"
+        },
+        "updatePortOnFindInEbomEvent": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpBackgroundPartsTable_updateFindInPort",
+                "syncObject": "{{data.eventData.selectionObject}}"
+            }
+        }
+    },
+    "data": {
+        "backgroundPartsTableContext": {
+            "relationName": [
+                "backgroundPart"
+            ],
+            "preferenceName": "EP_BackgroundPartsTableColumnConfiguration",
+            "inputObject": "{{ctx.epPageContext.loadedObject}}",
+            "loadInputObject": {
+                "loadTypes": "GetBackgroundParts",
+                "relatedObjectMapKey": "backgroundParts"
+            },
+            "isTableEditable": true,
+            "messages": {
+                "noAssigned": [{
+                    "text": "{{i18n.noAssigned}}",
+                    "textParams": [
+                        "{{i18n.backgroundParts}}"
+                    ]
+                }]
+            },
+            "customColumns": [
+                {
+                "clientColumn": true,
+                "name": "graphicVisibility",
+                "propertyDisplayName": "{{i18n.GraphicVisibilityColumnName}}"
+                }
+            ],
+            "tableCommandColumnName":"object_string",
+            "epDetailsTableCommandAnchor":"backgroundParts_onHoverUiAnchor"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "init",
+        "onUnmount": "destroyCacheBatchAction"
+    },
+    "onEvent": [
+        {
+            "eventId": "ep.setSelectionInMBOMTree",
+            "cacheEventData": true,
+            "action": "updatePortOnFindInEbomEvent"
+        }
+    ],
+    "i18n": {
+        "noAssigned": [
+            "DetailsMessages"
+        ],
+        "backgroundParts": [
+            "BackgroundPartsMessages"
+        ],
+        "GraphicVisibilityColumnName":["BvrGraphicsMessages"]
+    }
+}

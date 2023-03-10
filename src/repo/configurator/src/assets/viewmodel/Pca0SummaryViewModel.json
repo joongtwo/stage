@@ -1,0 +1,531 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-break.directive",
+        "js/aw-class.directive",
+        "js/aw-chip.directive",
+        "js/aw-command-panel-section.directive",
+        "js/aw-default-cell.directive",
+        "js/aw-default-cell-content.directive",
+        "js/aw-default-group-cell.directive",
+        "js/exist-when.directive",
+        "js/aw-guidance-message.directive",
+        "js/aw-icon.directive",
+        "js/aw-icon-button.directive",
+        "js/aw-image.directive",
+        "js/aw-list.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-section.directive",
+        "js/visible-when.directive"
+    ],
+    "actions": {
+        "syncUserSelections": {
+            "actionType": "JSFunction",
+            "method": "syncUserSelections",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "focused": ""
+            },
+            "events": {
+                "success": [ {
+                    "name": "Pca0Summary.displaySummarySelections"
+                } ]
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "reviewConfiguredOptions": {
+            "actionType": "JSFunction",
+            "method": "reviewConfiguredOptions",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "displayProductAndUserModelsSelectionsListBatch": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "displayProductModelsSelectionsList"
+                },
+                {
+                    "action": "displayUserSelectionsList"
+                }
+            ],
+            "deps": "js/pca0SummaryService"
+        },
+        "displayProductModelsSelectionsList": {
+            "actionType": "dataProvider",
+            "method": "productModelsSelectionsDataProvider"
+        },
+        "getProductModelsSelectionsList": {
+            "actionType": "JSFunction",
+            "method": "getProductModelsSelectionsList",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "productSelections": ""
+            },
+            "events": {
+                "success": [ {
+                    "name": "Pca0FullScreenSummary.updateUserSelectionsSectionExpansion"
+                } ]
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "displayUserSelectionsList": {
+            "actionType": "dataProvider",
+            "method": "userSelectionsDataProvider"
+        },
+        "getUserSelectionsList": {
+            "actionType": "JSFunction",
+            "method": "getUserSelectionsList",
+            "inputData": {
+                "data": "{{data.data}}"
+            },
+            "outputData": {
+                "userSelectionsList": ""
+            },
+            "events": {
+                "success": [ {
+                    "name": "Pca0FullScreenSummary.updateUserSelectionsSectionExpansion"
+                } ]
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "updateUserSelectionsSectionExpansion": {
+            "actionType": "JSFunction",
+            "method": "updateUserSelectionsSectionExpansion",
+            "inputData": {
+                "data": "{{data.data}}"
+            },
+            "outputData": {
+                "userSelectionsSectionExpand": ""
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "refreshSavedVariantsListAfterInit": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "refreshSavedVariantsList",
+                    "condition": "conditions.isInitialized"
+                }
+            ],
+            "deps": "js/pca0SummaryService"
+        },
+        "refreshSavedVariantsList": {
+            "actionType": "dataProvider",
+            "method": "loadedSavedVariantsProvider"
+        },
+        "getLoadedSavedVariants": {
+            "actionType": "JSFunction",
+            "method": "getLoadedSavedVariants",
+            "inputData": {
+                "summarystate": "{{props.summarystate}}",
+                "dataProvider": "{{data.dataProviders.loadedSavedVariantsProvider}}"
+            },
+            "outputData": {
+                "loadedVariantsList": ""
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "loadVariantData": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "loadNewVariantData"
+                },
+                {
+                    "action": "showViolationInfoInFscSummary"
+                },
+                {
+                    "action": "updateCompletenessStatus"
+                }
+            ]
+        },
+        "loadNewVariantData": {
+            "actionType": "JSFunction",
+            "method": "loadVariantData",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "showViolationInfoInFscSummary": {
+            "actionType": "JSFunction",
+            "method": "showViolationInfoInFscSummary",
+            "inputData": {
+                "eventData": "{{data.eventData}}",
+                "summarystate": "{{props.summarystate}}"
+            },
+            "outputData": {
+                "violationLabel": ""
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "displaySummarySelections": {
+            "actionType": "JSFunction",
+            "method": "displaySummarySelections",
+            "outputData": {
+                "productSelections": "result.productSelections",
+                "userSelectionsList": "result.userSelectionsList"
+            },
+            "events": {
+                "success": [ {
+                        "name": "Pca0FullScreenSummary.displayProductModelsSelections",
+                        "eventData": {
+                            "productSelections": "{{data.data.productSelections}}"
+                        }
+                    },
+                    {
+                        "name": "Pca0FullScreenSummary.displayUserSelections"
+                    }
+                ]
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "toggleVariantsSectionExpansion": {
+            "actionType": "JSFunction",
+            "method": "toggleVariantsSectionExpansion",
+            "inputData": {
+                "data": "{{data.data}}"
+            },
+            "outputData": {
+                "variantsSectionExpand": ""
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "toggleUserSelectionsSectionExpansion": {
+            "actionType": "JSFunction",
+            "method": "toggleUserSelectionsSectionExpansion",
+            "inputData": {
+                "data": "{{data.data}}"
+            },
+            "outputData": {
+                "userSelectionsSectionExpand": ""
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "updateCompletenessStatus": {
+            "actionType": "JSFunction",
+            "method": "updateCompletenessStatus",
+            "inputData": {
+                "data": "{{data}}",
+                "summarystate": "{{props.summarystate}}"
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "disableCompletenessStatusChip": {
+            "actionType": "JSFunction",
+            "method": "disableCompletenessStatusChip",
+            "inputData": {
+                "summarystate": "{{props.summarystate}}"
+            },
+
+            "deps": "js/pca0SummaryService"
+        },
+        "onMountedInitializer": {
+            "actionType": "batchJob",
+            "steps": [ 
+                {
+                    "action": "refreshSavedVariantsList"
+                },
+                {
+                    "action": "displaySummarySelections"
+                },
+                {
+                    "action": "initSummaryState"
+                }
+            ]
+        },
+        "handleAllSelectionsCleared": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                        "name": "Pca0FullScreenSummary.loadVariantData",
+                        "eventData": {
+                            "response": {}
+                        }
+                    },
+                    {
+                        "name": "Pca0FullScreenSummary.updateCompletenessStatus",
+                        "eventData": {
+                            "CompletenessStatus": ""
+                        }
+                    }
+                ]
+            }
+        },
+        "initSummaryState": {
+            "actionType": "JSFunction",
+            "method": "initSummaryState",
+            "inputData": {
+                "summarystate": "{{props.summarystate}}"
+            },
+            "outputData": {
+                "isInitialized": ""
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "displayValidationInProgressLabel": {
+            "actionType": "JSFunction",
+            "method": "displayValidationInProgressLabel",
+            "inputData": {
+                "violationLabel": "{{data.violationLabel}}",
+                "summarystate": "{{props.summarystate}}"
+            },
+            "outputData": {
+                "violationLabel": ""
+            },
+            "deps": "js/pca0SummaryService"
+        },
+        "removeDuplicates": {
+            "actionType": "JSFunction",
+            "method": "removeDuplicates",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.loadedSavedVariantsProvider}}"
+            },
+            "outputData": {
+                "loadedVariantsList": ""
+            },
+            "deps": "js/pca0SummaryService"
+        }
+    },
+    "dataProviders": {
+        "loadedSavedVariantsProvider": {
+            "action": "getLoadedSavedVariants",
+            "response": "{{data.loadedVariantsList}}",
+            "totalFound": "{{data.totalFound}}",
+            "showDecorators": "true",
+            "commandsAnchor": "aw_removeVariant_cellCommand",
+            "selectionModelMode": "none"
+        },
+        "productModelsSelectionsDataProvider": {
+            "action": "getProductModelsSelectionsList",
+            "response": "{{data.productSelections.productModelsSelectionsList}}",
+            "showDecorators": "false",
+            "selectionModelMode": "none"
+        },
+        "userSelectionsDataProvider": {
+            "action": "getUserSelectionsList",
+            "response": "{{data.userSelectionsList}}",
+            "showDecorators": "false",
+            "selectionModelMode": "none"
+        }
+    },
+    "functions": {
+        "getActiveVariantRules": {
+            "functionName": "getActiveVariantRules",
+            "parameters": []
+        }
+    },
+    "onEvent": [ {
+            "eventId": "customVariantRule.userSelectionChanged",
+            "cacheEventData": true,
+            "action": "syncUserSelections"
+        },
+        {
+            "eventId": "Pca0FullScreenSummary.reviewConfiguredOptions",
+            "cacheEventData": true,
+            "action": "reviewConfiguredOptions"
+        },
+        {
+            "eventId": "Pca0FullScreenSummary.displayProductModelsSelections",
+            "cacheEventData": true,
+            "action": "displayProductModelsSelectionsList"
+        },
+        {
+            "eventId": "Pca0FullScreenSummary.displayUserSelections",
+            "action": "displayUserSelectionsList"
+        },
+
+        {
+            "eventId": "Pca0FullScreenConfiguration.updateSVRListInSummary",
+            "action": "onMountedInitializer"
+        },
+        {
+            "eventId": "Pca0FullScreenSummary.loadVariantData",
+            "cacheEventData": true,
+            "action": "loadVariantData"
+        },
+        {
+            "eventId": "Pca0Summary.updateViolationIcon",
+            "cacheEventData": true,
+            "action": "showViolationInfoInFscSummary"
+        },
+        {
+            "eventId": "Pca0FullScreenSummary.updateCompletenessStatus",
+            "cacheEventData": true,
+            "action": "updateCompletenessStatus"
+        },
+        {
+            "eventId": "Pca0Summary.disableCompletenessStatusChip",
+            "action": "disableCompletenessStatusChip"
+        },
+        {
+            "eventId": "Pca0Summary.displaySummarySelections",
+            "action": "displaySummarySelections"
+        },
+        {
+            "eventId": "Pca0FullScreenSummary.updateUserSelectionsSectionExpansion",
+            "action": "updateUserSelectionsSectionExpansion"
+        },
+        {
+            "eventId": "Pca0FullScreenSummary.getUserSelectionsList",
+            "action": "getUserSelectionsList"
+        },
+        {
+            "eventId": "Pca0Summary.initSummaryState",
+            "action": "initSummaryState"
+        },
+        {
+            "eventId": "Pca0Features.allSelectionsCleared",
+            "action": "handleAllSelectionsCleared"
+        }
+    ],
+    "messages": {
+        "completenessStatusGuidanceInfo": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.completenessStatusGuidanceMessage}}"
+        }
+    },
+    "i18n": {
+        "excludedSelectionLabel": [ "FullScreenConfigurationMessages" ],
+        "productsTitle": [ "FullScreenConfigurationMessages" ],
+        "summaryTitle": [ "FullScreenConfigurationMessages" ],
+        "userSelectionsTitle": [ "FullScreenConfigurationMessages" ],
+        "variant": [ "FullScreenConfigurationMessages" ],
+        "invalidStatus": [ "FullScreenConfigurationMessages" ],
+        "validAndInCompleteStatus": [ "FullScreenConfigurationMessages" ],
+        "validAndCompleteStatus": [ "FullScreenConfigurationMessages" ],
+        "completenessStatusGuidanceMessage": [ "FullScreenConfigurationMessages" ],
+        "EXPAND": [ "BaseMessages" ],
+        "COLLAPSE":[ "BaseMessages" ]
+
+    },
+    "data": {
+        "isConfigurationReadOnly": {
+            "dbValue": true,
+            "type": "BOOLEAN"
+        },
+        "variantsExpandCommand": {
+            "action": "toggleVariantsSectionExpansion",
+            "iconName": "miscExpand",
+            "tooltip": "{{i18n.EXPAND}}"
+        },
+        "variantsCollapseCommand": {
+            "action": "toggleVariantsSectionExpansion",
+            "iconName": "miscCollapse",
+            "tooltip": "{{i18n.COLLAPSE}}"
+        },
+        "variantsSectionExpand": true,
+        "userSelectionsExpandCommand": {
+            "action": "toggleUserSelectionsSectionExpansion",
+            "iconName": "miscExpand",
+            "tooltip": "{{i18n.EXPAND}}"
+        },
+        "userSelectionsCollapseCommand": {
+            "action": "toggleUserSelectionsSectionExpansion",
+            "iconName": "miscCollapse",
+            "tooltip": "{{i18n.COLLAPSE}}"
+        },
+        "userSelectionsSectionExpand": false,
+        "validAndIncompletenessStatusChipData": {
+            "chipType": "STATIC",
+            "iconId": "indicatorValidButIncompleteConfiguration",
+            "labelDisplayName": "{{i18n.validAndInCompleteStatus}}",
+            "labelInternalName": "validAndIncomplete",
+            "enableWhen": {
+                "condition": "conditions.isCompletenessStatusChipEnabled"
+            }
+        },
+        "validAndCompletenessStatusChipData": {
+            "chipType": "STATIC",
+            "iconId": "indicatorValidConfiguration",
+            "labelDisplayName": "{{i18n.validAndCompleteStatus}}",
+            "labelInternalName": "validAndComplete",
+            "enableWhen": {
+                "condition": "conditions.isCompletenessStatusChipEnabled"
+            }
+        },
+        "invalidStatusChipData": {
+            "chipType": "STATIC",
+            "iconId": "indicatorInvalidConfiguration",
+            "labelDisplayName": "{{i18n.invalidStatus}}",
+            "labelInternalName": "invalid",
+            "enableWhen": {
+                "condition": "conditions.isCompletenessStatusChipEnabled"
+            }
+        }
+    },
+    "conditions": {
+        "isCompletenessStatusChipEnabled": {
+            "expression": "props.summarystate.isCompletenessStatusChipEnabled === true"
+        },
+        "isSwitchingFromGridToListView": {
+            "expression": "props.summarystate.isSwitchingFromGridToListView === true"
+        },
+        "ValidAndInComplete": {
+            "expression": "props.summarystate.completenessStatus === 'ValidAndInComplete'"
+        },
+        "ValidAndComplete": {
+            "expression": "props.summarystate.completenessStatus === 'ValidAndComplete'"
+        },
+        "InValid": {
+            "expression": "props.summarystate.completenessStatus === 'InValid'"
+        },
+        "ViolationSeverityError": {
+            "expression": "props.summarystate.violationSeverity === 'error'"
+        },
+        "ViolationSeverityWarning": {
+            "expression": "props.summarystate.violationSeverity === 'warning'"
+        },
+        "ViolationSeverityInfo": {
+            "expression": "props.summarystate.violationSeverity === 'info'"
+        },
+        "isInitialized": {
+            "expression": "data.isInitialized"
+        }
+    },
+       "props": {
+        "summarystate": {
+            "type": "object",
+            "variantRuleDirty": {
+                "type": "boolean"
+            }
+        },
+        "variant-rule-data": {
+            "type": "object"
+        }
+    },
+    "ctx": {
+        "fscContext": {
+            "type": "object"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "onMountedInitializer",
+        "onUpdate": [ {
+                "action": "refreshSavedVariantsListAfterInit",
+                "observers": [ "props.summarystate.variantRuleDirty" ]
+            },
+            {
+                "action": "refreshSavedVariantsList",
+                "observers": [ "viewModel.ctx.fscContext.initialVariantRule" ]
+            },
+            {
+                "action": "displayProductAndUserModelsSelectionsListBatch",
+                "observers": [ "props.summarystate.isManualConfiguration" ]
+            },
+            {
+                "action": "displayValidationInProgressLabel",
+                "observers": [ "props.summarystate.isValidationInProgress" ]
+            },
+            {
+                "action": "removeDuplicates",
+                "observers": [ "viewModel.dataProviders.loadedSavedVariantsProvider.viewModelCollection.loadedVMObjects.length" ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,71 @@
+{
+  "fnd0TaskExecutionStatus": {
+    "iconName": "Failed",
+    "tooltip": {
+      "showPropDisplayName": false,
+      "propNames": [
+        "fnd0TaskExecutionErrors"
+      ]
+    },
+    "modelTypes": [
+      "EPMTask",
+      "Signoff"
+    ],
+    "conditions": {
+      "fnd0TaskExecutionStatus": {
+        "$eq": 2
+      }
+    }
+  },
+  "fnd0InProcess": {
+    "iconName": "Workflow",
+    "tooltip": {
+      "showPropDisplayName": true,
+      "propNames": [
+        "fnd0InProcess"
+      ]
+    },
+    "conditions": {
+      "fnd0InProcess": {
+        "$eq": true
+      }
+    },
+    "modelTypes": [
+      "WorkspaceObject"
+    ]
+  },
+  "fnd0OfflineTaskTemplateIndiactor": {
+    "iconName": "Incomplete",
+    "tooltip": {
+      "showPropDisplayName": true,
+      "propNames": [
+        "stage"
+      ]
+    },
+    "conditions": {
+      "stage": {
+        "$eq": "1"
+      }
+    },
+    "modelTypes": [
+      "EPMTaskTemplate"
+    ]
+  },
+  "fnd0OnlineTaskTemplateIndiactor": {
+    "iconName": "ApprovedPass",
+    "tooltip": {
+      "showPropDisplayName": true,
+      "propNames": [
+        "stage"
+      ]
+    },
+    "conditions": {
+      "stage": {
+        "$eq": "2"
+      }
+    },
+    "modelTypes": [
+      "EPMTaskTemplate"
+    ]
+  }
+}

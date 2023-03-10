@@ -1,0 +1,24 @@
+<div class="aw-layout-column aw-layout-flexbox">
+        <aw-flex-row height="30f" offset-bottom="1f">
+                <aw-flex-column width="fill">
+                        <aw-flex-row height="auto">
+                                <aw-tab-set tabs="data.tabDocAndRes"></aw-tab-set>
+                        </aw-flex-row>
+                        <aw-flex-row height="fill">
+                                <aw-splm-table gridid="ResourcesTable" exist-when="!ctx.PartMfg || ctx.PartMfg.activeTabIndex===0"></aw-splm-table>
+                                <aw-splm-table gridid="AttachmentsTable" exist-when="ctx.PartMfg && ctx.PartMfg.activeTabIndex===1"></aw-splm-table>
+                        </aw-flex-row>
+                </aw-flex-column>
+        </aw-flex-row>
+        <aw-splitter isprimarysplitter="false" direction="HORIZONTAL"></aw-splitter>
+        <aw-flex-row height="30f" offset-bottom="1f">
+                <aw-flex-column width="fill">
+                        <aw-flex-row height="auto">
+                                <aw-tab-set tabs="data.tabAct"></aw-tab-set>
+                        </aw-flex-row>
+                        <aw-flex-row height="fill">
+                                <aw-splm-table gridid="activitiesTree" use-tree="true"></aw-splm-table>
+                        </aw-flex-row>
+                </aw-flex-column>
+        </aw-flex-row>
+</div>

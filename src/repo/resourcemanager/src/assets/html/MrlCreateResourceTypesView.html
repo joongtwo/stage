@@ -1,0 +1,31 @@
+<aw-panel-section caption="i18n.mrlClassification" visible-when="data.icoCells && data.icoCells.length === 1">
+    <aw-list dataprovider="data.dataProviders.performSearch" has-floating-cell-commands="false">
+        <aw-default-cell  vmo="item" hideoverlay="true" extended-tooltip-context="item" extended-tooltip="data.icoCellTooltip"></aw-default-cell>
+    </aw-list>
+    <aw-flex-row height="3f">
+        <aw-checkbox prop="data.classifyInSameClass" action="updateCopyValuesOption"></aw-checkbox>
+        <aw-checkbox prop="data.copyValues"></aw-checkbox>
+    </aw-flex-row>
+</aw-panel-section>
+<aw-form name="createInputsFormValidator" aw-form-validator="" visible-when="data.activeState.value.activeView === 'AddObjectPrimarySub'">
+    <aw-add include-types="{{data.createNewResourceData.createDefaultResourceTypes}}"
+        type-filter="WorkspaceObject"
+        load-sub-types="{{data.createNewResourceData.loadSubTypes}}"
+        preferred-type="{{data.createNewResourceData.preferredType}}"
+        visible-tabs="new"
+        max-recent-count="5"
+        xrt-state="data.xrtState"
+        edit-handler="editHandlers.addPanelEditHandler"
+        active-state="data.activeState"
+        project-state="data.projectState"
+        add-panel-state="fields.addPanelState"
+        exist-when="data.createNewResourceData">
+    </aw-add>
+</aw-form>
+<aw-checkbox prop="data.onCreateResourceOpenInNewTab"></aw-checkbox>
+<aw-panel-footer>
+    <aw-button action="createResourceObject" visible-when="data.createNewResourceData && formProp.attributes.valid">
+        <aw-i18n>i18n.create</aw-i18n>
+    </aw-button>
+</aw-panel-footer>
+<aw-add-navigate active-state="data.activeState" project-state="data.projectState" action="actions.setActiveView"></aw-add-navigate>

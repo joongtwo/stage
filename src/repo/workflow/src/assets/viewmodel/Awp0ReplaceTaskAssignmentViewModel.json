@@ -1,0 +1,159 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-command-sub-panel.directive",
+        "js/aw-init.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive",
+        "js/visible-when.directive",
+        "js/enable-when.directive"
+    ],
+    "actions": {
+        "updateSearchCriteriaState": {
+            "actionType": "JSFunction",
+            "method": "updateUserPanelSearchStateCriteria",
+            "inputData": {
+                "AtomicObj": "{{fields.addUserPanelState}}",
+                "value" : {
+                    "selectedObject": "{{props.subPanelContext.selectionData.value.selected[0]._childObj.uid}}"
+                },
+                "signoffProfile": "{{props.subPanelContext.selectionData.value.selected[0].assignmentObject.signoffProfile}}",
+                "criteria" : {
+                    "providerContentType": "User,GroupMember,ResourcePool",
+                    "searchString": "*"
+                }
+            },
+            "deps": "js/Awp0WorkflowUtils"
+        },
+        "replaceTaskAssignment": {
+            "actionType": "JSFunction",
+            "method": "replaceTaskAssignment",
+            "inputData": {
+                "selectedAssignment": "{{ctx.panelContext.selectedAssignemnt}}",
+                "taskObject": "{{addUserPanelState.selectedUsers[0]}}",
+                "subPanelContent": "{{ctx.panelContext.assignmentState}}"
+            },
+            "outputData": {
+                "assignmentState": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Awp0WorkflowAssignmentService"
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+        "closePanelOnSelectionChange": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "cacheInitialSelection",
+                    "condition": "!data.initialSelectionUids"
+                },
+                {
+                    "action": "closePanel",
+                    "condition": "data.initialSelectionUids[0] !== props.subPanelContext.selectionData.selected[0].uid || data.initialSelectionCount !== props.subPanelContext.selectionData.selected.length"
+                }
+            ]
+        },
+        "cacheInitialSelection": {
+            "actionType": "JSFunction",
+            "method": "cacheMultiSelection",
+            "inputData": {
+                "selectedUid": "{{props.subPanelContext.selectionData.selected}}"
+            },
+            "outputData": {
+                "initialSelectionUids": "selectedObjectUids",
+                "initialSelectionCount": "selectionCount"
+            },
+            "deps": "js/Awp0WorkflowUtils"
+        }
+    },
+    "data": {
+        "isAddButtonVisible": false,
+        "activeView": "Users",
+        "addUserPanelState": {
+            "initialValues": {
+                "provider": "Awp0PeoplePickerProvider",
+                "selectionModelMode": "single",
+                "criteria": {
+                    "providerContentType": "User,GroupMember,ResourcePool",
+                    "searchString": "*",
+                    "selectedObject": "",
+                    "searchSubGroup": "true"
+                },
+                "preferenceCriteria": [
+                    "WRKFLW_user_panel_content_display",
+                    "WRKFLW_allow_resourcepool_assignments",
+                    "WRKFLW_show_user_assignment_options"
+                ],
+                "selectedUsers": "",
+                "isAddButtonNeeded": false
+            },
+            "meta": {
+                "selectedUsers": {
+                    "field": "true",
+                    "type": "OBJECTARRAY"
+                }
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "updateSearchCriteriaState",
+        "onUpdate": {
+            "action": "closePanelOnSelectionChange",
+            "observers": [ "props.subPanelContext.selectionData.selected" ]
+        }
+    },
+    "ctx": {
+        "panelContext": null
+    },
+    "functions": {},
+    "conditions": {
+        "isValidToAdd": {
+            "expression": "addUserPanelState.selectedUsers && addUserPanelState.selectedUsers.length > 0"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "Workflow.closeOpenedPanel",
+            "action": "closePanel"
+        }
+    ],
+    "i18n": {
+        "Replace_Title": [
+            "WorkflowCommandPanelsMessages"
+        ],
+        "modify": [
+            "WorkflowCommandPanelsMessages"
+        ],
+        "duplicateReviewerMsg": [
+            "WorkflowCommandPanelsMessages"
+        ],
+        "multipleDuplicateMsg": [
+            "WorkflowCommandPanelsMessages"
+        ]
+    }
+}

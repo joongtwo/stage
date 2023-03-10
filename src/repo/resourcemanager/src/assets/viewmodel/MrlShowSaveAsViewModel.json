@@ -1,0 +1,261 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-form.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive",
+        "js/visible-when.directive",
+        "js/exist-when.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-command-panel-section.directive",
+        "js/aw-list.directive",
+        "js/aw-default-cell.directive",
+        "js/aw-tab-container.directive",
+        "js/aw-tab.directive",
+        "js/aw-include.directive"
+    ],
+    "actions": {
+        "initialize": {
+            "actionType": "JSFunction",
+            "method": "loadPanelTabs",
+            "inputData": {
+                "customVisibleTabs": "{{data.MrlSaveAsTabsModel}}",
+                "panelContext": "{{ctx.panelContext}}",
+                "reviseTitle": "{{i18n.revision}}",
+                "newTitle": "{{i18n.newTabTitle}}"
+            },
+            "outputData": {
+                "tabModels": "visibleTabs",
+                "tabApiCallback": "api"
+            },
+            "deps": "js/Awp0ShowSaveAsService"
+        },
+        "handleTabChange": {
+            "actionType": "JSFunction",
+            "method": "handleTabChange",
+            "inputData": {
+                "tabs": "{{data.tabModels}}",
+                "pageId": "{{data.eventData.pageId}}",
+                "tabTitle": "{{data.eventData.tabTitle}}"
+            },
+            "outputData": {
+                "activeTab": "activeTab"
+            },
+            "deps": "js/Awp0ShowSaveAsService"
+        },
+        "navigateToSaveAsNewTabPage": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "awPanel.navigate",
+                    "eventData": {
+                        "destPanelId": "MrlSaveAsNew"
+                    }
+                } ]
+            }
+        },
+        "navigateToReviseTabPage": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "awPanel.navigate",
+                    "eventData": {
+                        "destPanelId": "MrlSaveAsRevision"
+                    }
+                } ]
+            }
+        },
+        "loadUserProjects": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadObjects",
+            "inputData": {
+                "data": [
+                    "{{ctx.userSession.props.project.dbValues[0]}}"
+                ]
+            },
+            "events": {
+                "success": [ {
+                    "name": "getOwningProj.event"
+                } ]
+            },
+            "deps": "soa/dataManagementService"
+        },
+
+        "clearAddEventProgContext": {
+            "actionType": "JSFunction",
+            "method": "unRegisterCtx",
+            "inputData": {
+                "0": "addItemEventProgressing"
+            },
+            "deps": "js/appCtxService"
+        },
+        "setActiveView": {
+            "actionType": "JSFunction",
+            "method": "setActiveView",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Awp0ShowSaveAsService"
+        },
+        "updateActiveView":{
+            "actionType": "JSFunction",
+            "method": "resetActiveView",
+            "inputData": {
+                "stateName": "{{data.activeState}}",
+                "destPanelId": "MrlShowSaveAs"
+            },
+            "outputData": {
+                "activeState": ""
+            },
+            "deps": "js/addObjectUtils"
+        }
+    },
+    "dataParseDefinitions": {
+        "convertRevisedObject": {
+            "outputFormatType": "ViewModelObject",
+            "dataInput": "reviseTrees[0].objectCopy.uid",
+            "operationType": "CREATE"
+        },
+        "convertSavedAsObject": {
+            "outputFormatType": "ViewModelObject",
+            "dataInput": "saveAsTrees[0].objectCopy.uid",
+            "operationType": "CREATE"
+        }
+    },
+    "functions": {
+    },
+    "data": {
+        "widgetProjectSectionCommands": "uiwidget_projectSectionCommands",
+        "activeState": {
+            "initialValues": {
+                "activeView": "MrlShowSaveAs",
+                "context": {}
+            },
+            "meta": {
+                "activeView": {
+                    "field": "true",
+                    "type": "STRING"
+                },
+                "context": {
+                    "field": "true",
+                    "type": "OBJECT"
+                }
+            }
+        },
+        "projectState": {
+            "initialValues": {
+                "selectedProjects": [],
+                "triggerAssign": false
+            },
+            "meta": {
+                "selectedProjects": {
+                    "field": "true",
+                    "type": "OBJECT"
+                },
+                "triggerAssign": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        },
+        "MrlSaveAsTabsModel": [
+            {
+                "tabKey": "MrlSaveAsRevision",
+                "pageId": "MrlSaveAsRevision",
+                "view": "MrlSaveAsRevision",
+                "name": "{{i18n.revision}}",
+                "recreatePanel": true,                
+                "priority": 0
+            },
+            {
+                "tabKey": "MrlSaveAsNew",
+                "pageId": "MrlSaveAsNew",
+                "view": "MrlSaveAsNew",
+                "name": "{{i18n.newTabTitle}}",
+                "recreatePanel": true,                
+                "priority": 0
+            }
+        ]
+    },
+    "props": {
+        "sub-panel-context":{
+            "type":"object"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "awPanel.reveal",
+            "action": "loadUserProjects"
+        },
+        {
+            "eventId": "userProjects.assignProjects",
+            "action": "getAssignedProjectsProvider"
+        },
+        {
+            "eventId": "userProjects.assignProjects",
+            "condition": "data.activeTab.panelId === 'MrlSaveAsNew'",
+            "action": "navigateToSaveAsNewTabPage"
+        },
+        {
+            "eventId": "userProjects.assignProjects",
+            "condition": "data.activeTab.panelId === 'MrlSaveAsRevision'",
+            "action": "navigateToReviseTabPage"
+        },
+        {
+            "eventId": "getOwningProj.event",
+            "action": "getOwningProjectsProvider"
+        },
+
+        {
+            "eventId": "MrlShowSaveAs.contentUnloaded",
+            "action": "clearAddEventProgContext"
+        },
+        {
+            "eventId": "awTab.selected",
+            "action": "setActiveView"
+        },
+        {
+            "eventId": "saveAsObject.tabChange",
+            "action": "handleTabChange",
+            "cacheEventData": true
+        }
+    ],
+    "messages": {
+
+    },
+    "dataProviders": {},
+    "conditions": {
+    },
+    "lifecycleHooks": {
+        "onMount": "initialize",
+        "onUnmount": "clearAddEventProgContext"
+    },
+    "i18n": {
+        "saveas": [
+            "TCUICommandPanelsMessages"
+        ],
+        "reviseOperationFailed": [
+            "TCUICommandPanelsMessages"
+        ],
+        "revision": [
+            "TCUICommandPanelsMessages"
+        ],
+        "newTabTitle": [
+            "awAddDirectiveMessages"
+        ],
+        "projectsSectionTitle": [
+            "awAddDirectiveMessages"
+        ],
+        "ownProjectSectionTitle": [
+            "awAddDirectiveMessages"
+        ],
+        "BACK_BUTTON_TITLE": [
+            "BaseMessages"
+        ]
+    }
+}

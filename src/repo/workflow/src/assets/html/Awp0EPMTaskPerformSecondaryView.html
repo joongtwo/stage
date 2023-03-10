@@ -1,0 +1,16 @@
+<div class="aw-layout-flexColumn" aw-class="{'aw-layout-include aw-workflow-performTaskPanel': subPanelContext.xrtType==='SUMMARY'}">
+    <aw-form name="epmTaskPanelForm">
+        <aw-panel-body>
+            <aw-widget  prop="data.taskName"></aw-widget>
+            <aw-widget  prop="data.description"  visible-when="conditions.showInstructions"></aw-widget>
+            <aw-widget  prop="data.workflowDescription" visible-when="conditions.showWorkflowDescription"></aw-widget>
+            <aw-xrt type="SAVEAS" vmo="data.formObject" exist-when="data.formObject" xrt-state="data.xrtState"></aw-xrt>
+            <aw-widget  prop="data.comments"></aw-widget>
+            <aw-password prop="data.password" exist-when="conditions.isSecureTask"></aw-password>
+        </aw-panel-body>
+    </aw-form>
+    <aw-panel-footer visible-when="conditions.isValidToComplete">
+        <aw-button button-type="base" size="auto" action="verifyUnableToCompleteAction" visible-when="conditions.showUnableToComplete"><aw-i18n>i18n.unableToComplete</aw-i18n></aw-button>
+        <aw-button size="auto" action="verifyCompleteAction"><aw-i18n>i18n.complete</aw-i18n></aw-button>
+    </aw-panel-footer>
+</div>

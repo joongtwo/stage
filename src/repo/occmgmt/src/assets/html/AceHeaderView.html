@@ -1,0 +1,55 @@
+<aw-header-contribution
+    exist-when="(props.subPanelContext.occContext.currentState.incontext_uid != undefined) && (props.subPanelContext.occContext.currentState.incontext_uid != null)">
+    <awb0-override-context sub-panel-context="props.subPanelContext"></awb0-override-context>
+</aw-header-contribution>
+
+<aw-header-contribution>
+    <aw-property-label prop="data.revisionRule"></aw-property-label>
+    <awb0-revision-rule sub-panel-context="props.subPanelContext"></awb0-revision-rule>
+</aw-header-contribution>
+
+<aw-header-contribution exist-when="props.subPanelContext.occContext.supportedFeatures.Awb0DateEffectivityConfigFeature">
+    <aw-property-label prop="data.effectiveDate"></aw-property-label>
+    <awb0-date-effectivity location="aw_navigation" sub-panel-context="props.subPanelContext"></awb0-date-effectivity>
+</aw-header-contribution>
+
+<aw-header-contribution exist-when="props.subPanelContext.occContext.supportedFeatures.Awb0UnitEffectivityConfigFeature">
+    <aw-property-label prop="data.units" class="effectivityUnitLink"></aw-property-label>
+    <awb0-unit-effectivity location="aw_navigation" sub-panel-context="{configUnitEndItem: fields.configUnitEndItem, ...subPanelContext, activeView: data.activeView}"></awb0-unit-effectivity>
+    <div>&nbsp;&nbsp;</div>
+    <aw-property-non-edit-val prop="data.effectivityEndItem" exist-when="data.effectivityEndItem.dbValue">
+    </aw-property-non-edit-val>
+</aw-header-contribution>
+
+<aw-header-contribution exist-when="props.subPanelContext.occContext.supportedFeatures.Awb0VariantFeature">
+    <aw-property-label prop="data.svrLabel"></aw-property-label>
+    <awb0-variant-rule sub-panel-context="{configSvrEndItem: fields.configSvrEndItem, ...props.subPanelContext,'variantInHeader':true}"></awb0-variant-rule>
+    <div>&nbsp;&nbsp;</div>
+    <aw-property-non-edit-val prop="data.SVROwningItemRev"
+        exist-when="!props.subPanelContext.occContext.supportedFeatures.Awb0HideSVROwningItem && data.SVROwningItemRev.dbValue">
+    </aw-property-non-edit-val>
+</aw-header-contribution>
+
+<aw-header-contribution
+    exist-when="props.subPanelContext.occContext.productContextInfo.props.awb0AppliedArrangement.dbValues[0] != null && props.subPanelContext.occContext.productContextInfo.props.awb0AppliedArrangement.dbValues[0] != ''">
+    <aw-property-label prop="data.arrangementLabel"></aw-property-label>
+    <awb0-arrangements sub-panel-context="props.subPanelContext"></awb0-arrangements>
+</aw-header-contribution>
+
+<aw-header-contribution
+    exist-when="(!props.subPanelContext.occContext.supportedFeatures.Awb0FullTextSearchFeature || props.subPanelContext.occContext.productContextInfo.props.awb0IndexUpdateDate == '') && props.subPanelContext.occContext.supportedFeatures.Awb0ClosureRuleFeature">
+    <aw-property-label prop="data.closureRuleLabel"></aw-property-label>
+    <awb0-closure-rule sub-panel-context="props.subPanelContext"></awb0-closure-rule>
+</aw-header-contribution>
+
+<aw-header-contribution
+    exist-when="props.subPanelContext.occContext.productContextInfo.props.awb0ViewType.dbValues[0]!=null && (!props.subPanelContext.occContext.supportedFeatures.Awb0FullTextSearchFeature || props.subPanelContext.occContext.productContextInfo.props.awb0IndexUpdateDate == '')">
+    <aw-property-label prop="data.viewTypeLabel"></aw-property-label>
+    <awb0-view-type sub-panel-context="props.subPanelContext"></awb0-view-type>
+</aw-header-contribution>
+
+<aw-header-contribution exist-when="props.subPanelContext.occContext.supportedFeatures.Fgf0OrganizationSchemeFeature === true &&
+!(props.subPanelContext.openedObject.modelType.typeHierarchyArray.indexOf('Awb0SavedBookmark') > -1 )">
+    <aw-property-label prop="data.Organization"></aw-property-label>
+    <fgf0-organization-scheme-feature sub-panel-context="props.subPanelContext"></fgf0-organization-scheme-feature>
+</aw-header-contribution>

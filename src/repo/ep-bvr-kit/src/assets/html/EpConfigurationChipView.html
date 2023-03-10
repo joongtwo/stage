@@ -1,0 +1,17 @@
+<div class="sw-row aw-epChip-container">
+    <span class="aw-epChip-label">{{props.chipData.chipLabel.dispValue}}</span>
+    <div class="aw-epHeader-separator aw-theme-separator aw-vertical-separator"></div>
+    <span extended-tooltip="data.configurationChipTooltipView" extended-tooltip-context="data.revisionTooltip" class="aw-epChip-data">{{props.chipData.revision.dispValue}}</span>
+    <div  exist-when="props.chipData.date" class="aw-epHeader-separator aw-theme-separator aw-vertical-separator"></div>
+    <span exist-when="props.chipData.date" extended-tooltip="data.configurationChipTooltipView" extended-tooltip-context="data.dateEffectivityTooltip" class="aw-epChip-data">{{props.chipData.date.dispValue}}</span>
+    <div exist-when="props.chipData.units" class="aw-epHeader-separator aw-theme-separator aw-vertical-separator"></div>
+    <span exist-when="props.chipData.units" extended-tooltip="data.configurationChipTooltipView" extended-tooltip-context="data.unitEffectivityTooltip" class="aw-epChip-data">{{props.chipData.units.dispValue}}</span>
+    <div exist-when="props.chipData.variant" class="aw-epHeader-separator aw-theme-separator aw-vertical-separator"></div>
+    <span exist-when="props.chipData.variant" extended-tooltip="data.configurationChipTooltipView" extended-tooltip-context="data.variantRuleTooltip" class="aw-epChip-data">{{props.chipData.variant.dispValue}}</span>
+    <div exist-when="props.chipData.excludedByEffectivityFlag" class="aw-epHeader-separator aw-theme-separator aw-vertical-separator"></div>
+    <aw-icon exist-when="props.chipData.excludedByEffectivityFlag" extended-tooltip="data.configurationChipTooltipView" extended-tooltip-context="data.excludedEffectivityTooltip" class="aw-epChip-icon" icon-id="indicatorShowExcludedByEffectivity"></aw-icon>
+    <div exist-when="props.chipData.excludedByVariantFlag" class="aw-epHeader-separator aw-theme-separator aw-vertical-separator"></div>
+    <aw-icon exist-when="props.chipData.excludedByVariantFlag" extended-tooltip="data.configurationChipTooltipView" extended-tooltip-context="data.excludedVariantTooltip" class="aw-epChip-icon" icon-id="indicatorShowExcludedByVariant"></aw-icon>
+    <div exist-when="props.chipData.excludedByAssignmentFlag" class="aw-epHeader-separator aw-theme-separator aw-vertical-separator"></div>
+    <aw-icon exist-when="props.chipData.excludedByAssignmentFlag" extended-tooltip="data.configurationChipTooltipView" extended-tooltip-context="data.excludedAssignmentTooltip"class="aw-epChip-icon" icon-id="indicatorShowExcludedAssignments"></aw-icon>
+</div>

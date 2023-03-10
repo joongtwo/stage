@@ -1,0 +1,13 @@
+<aw-command-panel caption="i18n.editSharedScheduleTitle">
+    <aw-panel-body>
+        <aw-panel-section>
+            <aw-label prop="data.scheduleName"></aw-label>
+        </aw-panel-section>
+        <dpv-schedule sub-panel-context='{...subPanelContext,cronModelState:data.cronModelState}'></dpv-schedule>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="updateSharedSchedule">
+            <aw-i18n>i18n.update</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

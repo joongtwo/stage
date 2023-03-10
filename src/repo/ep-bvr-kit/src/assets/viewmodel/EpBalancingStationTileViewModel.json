@@ -1,0 +1,64 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "vmo": {
+            "type": "viewModelObject"
+        },
+        "max": {
+            "type": "string"
+        },
+        "selection-data": {
+            "type": "object"
+        },
+        "prs": {
+            "type": "boolean"
+        },
+        "problematic": {
+            "type": "boolean"
+        }
+    },
+    "actions": {
+        "updateCycleTime": {
+            "actionType": "JSFunction",
+            "method": "stringToFloat",
+            "inputData": {
+                "value": "{{props.vmo.props.elb0cycleTime.displayValues[0]}}"
+            },
+            "outputData": {
+                "stationCycleTime": ""
+            },
+            "deps": "js/epBalancingLabelsService"
+        },
+        "getTimeUnits": {
+            "actionType": "JSFunction",
+            "method": "getCurrentTimeUnitShort",
+            "outputData": {
+                "timeUnits": ""
+            },
+            "deps": "js/epTimeUnitsService"
+        },
+        "updateTimeParams": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateCycleTime"
+                },
+                {
+                    "action": "getTimeUnits"
+                }
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "updateTimeParams"
+    },
+    "i18n": {
+        "cycleTimeChip": [ "BalancingMessages" ]
+    },
+    "onEvent": [ {
+        "eventId": "ep.saveEvents",
+        "cacheEventData": true,
+        "action": "updateCycleTime"
+    } ]
+
+}

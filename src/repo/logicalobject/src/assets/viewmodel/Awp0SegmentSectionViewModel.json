@@ -1,0 +1,45 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+    },
+    "actions": {
+        "render": {
+            "method": "awp0SegmentSectionRenderFunction",
+            "deps": "js/Awp0LogicalObjectService"
+        },
+        "actionClearSegment": {
+            "actionType": "JSFunction",
+            "method": "clearSegment",
+            "inputData": {
+                "seg": "{{props.traverseSegment}}",
+                "loContext": "{{subPanelContext.loContext}}"
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        }
+    },
+    "i18n": {
+    },
+    "lifecycleHooks": {
+        "render": "render"
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "traverse-segment": {
+            "type": "object"
+        },
+        "traverse-direction": {
+            "type": "object"
+        },
+        "traverse-relation": {
+            "type": "object"
+        },
+        "traverse-destination": {
+            "type": "object"
+        }
+    },
+    "messages": {},
+    "conditions": {}
+}

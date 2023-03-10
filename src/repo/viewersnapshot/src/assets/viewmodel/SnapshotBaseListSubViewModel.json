@@ -1,0 +1,11 @@
+{
+    "schemaVersion": "1.0.0",
+    "conditions": {
+        "isProductSnapshotVisibleCond": {
+            "expression": "((ctx.tcSessionData.tcMajorVersion === 13 && ctx.tcSessionData.tcMinorVersion >= 3 ) || ( ctx.tcSessionData.tcMajorVersion > 13 )) && subPanelContext.occmgmtContext.topElement.modelType.typeHierarchyArray.indexOf('Fnd0AppSession') === -1"
+        },
+        "isSessionSnapshotVisibleCond": {
+            "expression": "ctx.tcSessionData.tcMajorVersion >= 13 && subPanelContext.occmgmtContext.topElement.modelType.typeHierarchyArray.indexOf('Fnd0AppSession') !== -1"
+        }
+    }
+}

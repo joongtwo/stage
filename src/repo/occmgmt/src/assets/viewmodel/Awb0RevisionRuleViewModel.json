@@ -1,0 +1,101 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-link-with-popup.directive",
+        "js/aw-property-non-edit-val.directive",
+        "js/aw-include.directive"
+    ],
+
+    "actions": {
+        "initializeRevisionRuleConfigurationInfo": {
+            "actionType": "JSFunction",
+            "method": "getInitialRevisionRuleConfigurationData",
+            "inputData": {
+                "data": "{{data}}",
+                "occContext":"{{props.subPanelContext.occContext}}"
+            },
+            "outputData":{
+                "currentRevisionRule":"currentRevisionRule",
+                "currentRevisionRuleDescription" : "currentRevisionRuleDescription",
+                "globalRuleValue":"globalRevRuleProperty"
+            },
+            "deps": "js/revisionRuleConfigurationService"
+        },
+        "updateCurrentRevisionRule": {
+            "actionType": "JSFunction",
+            "method": "updateCurrentRevisionRule",
+            "inputData": {
+                "eventData": "{{data.eventData}}"
+            },
+            "outputData":{
+                "currentRevisionRule":"currentRevisionRule"
+            },
+            "deps": "js/revisionRuleConfigurationService"
+        },
+        "updateGlobalRevisionRule": {
+            "actionType": "JSFunction",
+            "method": "updateGlobalRevisionRule",
+            "inputData": {
+                "occContext":"{{props.subPanelContext.occContext}}"
+            },
+            "outputData":{},
+            "deps": "js/revisionRuleConfigurationService"
+        }
+    },
+    "conditions": {
+        "isUpdateApplicable": {
+            "expression": "subPanelContext.contextKey === viewKey"
+        },
+        "isGlobalRevRuleUpdateApplicable": {
+            "expression": "props.subPanelContext.contextKey === viewKey"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initializeRevisionRuleConfigurationInfo",
+        "onUpdate":
+        {
+            "action": "initializeRevisionRuleConfigurationInfo",
+            "observers": [ "props.subPanelContext.occContext.productContextInfo.props.awb0CurrentRevRule" ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "awConfigPanel.revisionRuleChanged",
+            "cacheEventData": true,
+            "condition": "conditions.isUpdateApplicable",
+            "action": "updateCurrentRevisionRule"
+        },
+        {
+            "eventId": "aw.revisionRuleChangeEvent",
+            "condition": "conditions.isGlobalRevRuleUpdateApplicable",
+            "action": "updateGlobalRevisionRule"
+        }
+    ],
+
+    "data": {
+        "globalLabel": {
+            "uiValue": "{{i18n.globalLabel}}",
+            "type": "STRING"
+        },
+        "globalRuleValue": {
+            "dbValue": "{{data.globalRuleValue}}",
+            "type": "STRING"
+        },
+        "currentRevisionRule": {
+            "uiValue": "{{data.currentRevisionRule}}",
+            "type": "STRING"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "i18n": {
+        "revision": [ "OccurrenceManagementConstants" ],
+        "currentRevisionRule": [ "OccurrenceManagementConstants" ],
+        "globalLabel": [ "OccurrenceManagementConstants" ],
+        "occurrenceManagementLoadingMsg": [ "OccurrenceManagementConstants" ],
+        "errorInGettingPreferredConfigInfo": [ "OccurrenceManagementMessages" ]
+    }
+}

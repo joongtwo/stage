@@ -1,0 +1,37 @@
+{
+    "schemaVersion" : "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "data":
+    {
+    },
+
+    "actions":
+    {
+        "setFrameContent": {
+            "actionType": "JSFunction",
+            "method": "setFrameContent",
+            "inputData": {
+                "fileUrl": "{{subPanelContext.fileData.fileUrl}}"
+            },
+            "outputData": {
+                "mhtContent": ""
+            },
+            "deps": "js/workinstrMhtService"
+        }
+    },
+
+    "conditions": {
+        "isContentLoaded": {
+            "expression": "data.mhtContent"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "setFrameContent"
+    }
+}

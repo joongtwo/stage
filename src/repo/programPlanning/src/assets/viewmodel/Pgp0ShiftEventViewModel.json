@@ -1,0 +1,156 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "getInitialValuesForPanel": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "checkForSecondaryEvents"
+                },
+                {
+                    "action": "callToGetTypeConstantValue"
+                }
+            ]
+        },
+        "unregisterContext": {
+            "actionType": "JSFunction",
+            "method": "unRegisterCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "name": "isSecondaryEventPresent"
+            }
+        },
+        "callToGetTypeConstantValue": {
+            "actionType": "JSFunction",
+            "method": "checkAndSetBOConstantValue",
+            "inputData": {
+                "ctx": "{{props.subPanelContext.selectionData.selected[0]}}",
+                "shiftSecondary": "{{fields.Pgp0ShiftSecondary}}"
+            },
+            "deps": "js/Pgp0ShiftEventService"
+        },
+        "checkForSecondaryEvents": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "objects": [ "{{ctx.selected}}" ],
+                "attributes": [
+                    "Prg0EventDependencyRel"
+                ]
+            },
+            "events": {
+                "success": [ {
+                    "name": "getViewModelObjEvent"
+                } ]
+            }
+        },
+        "getViewModelObj": {
+            "actionType": "JSFunction",
+            "method": "createViewModelObject",
+            "inputData": {
+                "selectedEvent": "{{ctx.selected}}"
+            },
+            "outputData": {
+                "selectedEvent": ""
+            },
+            "deps": "js/viewModelObjectService"
+        },
+        "shiftEvent": {
+            "actionType": "TcSoaService",
+            "serviceName": "ProgramInfra-2021-12-ProgramManagement",
+            "method": "moveEvents",
+            "inputData": {
+                "events": "{{props.subPanelContext.selectionData.selected}}",
+                "newEventDate": "{{function:formatNewEventDate}}",
+                "updateSecondaryEvents": "{{function:getUpdateSecondaryEventsFlag}}",
+                "runInBackground": false
+            },
+            "events": {
+                "success": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ],
+                "failure": [ {
+                    "name": "cdm.updated",
+                    "eventData": {
+                        "updatedObjects": [ "{{data.eventData.event}}" ]
+                    }
+                } ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "SOAFailureMessage"
+                } ]
+            },
+            "deps": "js/Pgp0ShiftEventService"
+        }
+    },
+    "data": {
+        "Pgp0NewPlannedDate": {
+            "displayName": "{{i18n.Pgp0PlannedDate}}",
+            "dbValue": "",
+            "type": "DATE",
+            "isRequired": "true"
+        },
+        "Pgp0ShiftSecondary": {
+            "type": "BOOLEAN",
+            "displayName": "{{i18n.Pgp0ShiftSecondary}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+    "functions": {
+        "getUpdateSecondaryEventsFlag": {
+            "functionName": "getUpdateSecondaryEventsFlag",
+            "parameters": [
+                "{{data.Pgp0ShiftSecondary}}"
+            ]
+        },
+        "formatNewEventDate": {
+            "functionName": "formatNewEventDate",
+            "parameters": [
+                "{{data.Pgp0NewPlannedDate}}",
+                "{{data.eventData}}",
+                "{{ctx.mselected[0]}}"
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getInitialValuesForPanel",
+        "onUnmount": "unregisterContext"
+    },
+    "messages": {
+        "SOAFailureMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "onEvent": [ {
+        "eventId": "getViewModelObjEvent",
+        "action": "getViewModelObj"
+    } ],
+    "i18n": {
+        "Pgp0PlannedDate": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0ShiftEvent": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "addEventOnTimelineCommandTitle": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0ShiftText": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0ShiftSecondary": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0ShiftSecondaryDesc": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "isRunAsync": [
+            "ProgramPlanningCommandPanelsMessages"
+        ]
+    }
+}

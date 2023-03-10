@@ -1,0 +1,100 @@
+/*
+   @<COPYRIGHT>@
+   ==================================================
+   Copyright 2021.
+   Siemens Product Lifecycle Management Software Inc.
+   All Rights Reserved.
+   ==================================================
+   @<COPYRIGHT>@
+*/
+
+@mixin epNavigationHoverMenu {
+    aw-popup-command-cell {
+        margin-left: 8px;
+        margin-right: 16px;
+    }
+    li {
+        .aw-popup-cellContentContainer {
+            .aw-widget-thumbnail {
+                width: 24px;
+                height: 24px;
+                margin-right: 8px;
+            }
+        }
+        .aw-widget-thumbnail {
+            .aw-base-icon {
+                height: 24px;
+                width: 24px;
+            }
+        }
+    }
+}
+
+.aw-navigation-openAssociatedProcessPopup .sw-popup-contentContainer{
+    max-height: rem-calc(750);
+    max-width:  rem-calc(600);
+    min-height: rem-calc(400);
+}
+
+.aw-navigation-selectionMessage {
+    font-size: $fontsize_large;
+    font-style: italic;
+    margin-bottom: $margin_small;
+}
+
+.aw-navigation-messageWithEllipsis {
+    display: inline-block;
+    vertical-align: bottom;
+    max-width: 540px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.aw-mbomRevisiontable-parent{
+    .aw-splm-table{
+        height: inherit;
+    }
+}
+
+aw-popup-command-bar[anchor='epNavigationHoverMenuWithAssociatedProcessCheckCommand'] {
+    @include epNavigationHoverMenu;
+}
+
+aw-popup-command-bar[anchor='epNavigationHoverMenuCommand'] {
+    @include epNavigationHoverMenu;
+}
+
+.aw-epProcess-title{
+    margin-bottom: $margin_small;
+    font-size: $fontsize_large;
+    font-weight: $bold_font_weight;
+}
+
+.aw-epProcess-errorMessage{
+    border: 1px solid;
+    display: grid;
+    place-items: center;
+    height : rem-calc(170);
+}
+
+.aw-epNavigation-aligntext{
+    font-size: $fontsize_large;
+    font-style:  italic;
+    width: rem-calc(250);
+    text-align: center;
+}
+
+.aw-epfooter-btn{
+    margin-top: $margin_normal;
+    margin-bottom: $margin_normal;
+    padding: $padding_small;
+}
+
+.aw-epAssociatedProcessTable-height{
+    height: rem-calc(200);
+}
+
+
+
+

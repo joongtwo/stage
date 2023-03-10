@@ -1,0 +1,64 @@
+{
+  "commands": {
+    "Awp0ShowReactiveLogging": {
+      "iconId": "cmdLogging",
+      "title": "{{i18n.reactiveLogging}}",
+      "description": "{{i18n.Awp0ShowReactiveLoggingDesc}}"
+    }
+  },
+  "commandHandlers": {
+    "Awp0ShowReactiveLoggingHandler": {
+      "id": "Awp0ShowReactiveLogging",
+      "action": "setReactiveLogging",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "selectWhen": {
+        "condition": "conditions.isLoggingProgress"
+      }
+    }
+  },
+  "commandPlacements": {
+    "Awp0ShowReactiveLoggingPlacement": {
+      "id": "Awp0ShowReactiveLogging",
+      "priority": 6,
+      "parentGroupId": "Awp0ChangeTheme"
+    }
+  },
+  "actions": {
+    "setReactiveLogging": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "awsidenav.openClose",
+            "eventData": {
+              "id": "globalNavigationSideNav",
+              "includeView": "ReactiveLogging",
+              "keepOthersOpen": true,
+              "config": {
+                "width": "WIDE",
+                "height": "FULL"
+              }
+            }
+          }
+        ]
+      }
+    }
+  },
+  "onEvent": [],
+  "messages": {},
+  "conditions": {
+    "isLoggingProgress": {
+      "expression": "ctx.loggingInProgress === true"
+    }
+  },
+  "i18n": {
+    "reactiveLogging": [
+      "ReactiveLoggingMessages"
+    ],
+    "Awp0ShowReactiveLoggingDesc": [
+      "ReactiveLoggingMessages"
+    ]
+  }
+}

@@ -1,0 +1,243 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-cls-properties.directive",
+        "js/aw-command-panel-section.directive",
+        "js/aw-search-box.directive",
+        "js/exists-when.directive"
+    ],
+    "ports": {
+
+    },
+    "lifecycleHooks": {
+        "render": "render",
+        "onMount": "initialize",
+        "onUpdate": [
+            {
+                "action": "reloadTable",
+                "observers": [ "viewModel.atomicData.selectedBlockAttr" ]
+            },
+            {
+                "action": "reloadTableRows",
+                "observers": [ "props.propFilter" ]
+            }
+        ]
+    },
+    "ctx": {
+        "clsLocation": {
+            "type": "object"
+        },
+        "clsTab": {
+            "type": "object"
+        }
+    },
+    "props": {
+        "attributes": {
+            "type": "array"
+        },
+        "classify-state": {
+            "type": "object"
+        },
+        "prop-filter": {
+            "type": "object"
+        },
+        "response-state": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "render": {
+            "method": "awClsPropsServiceRenderFunction",
+            "deps": "js/AwClsPropertiesService"
+        },
+        "initialize": {
+            "actionType": "JSFunction",
+            "method": "initialize",
+            "inputData": {
+                "attributes": "{{props.attributes}}"
+            },
+            "outputData": {
+                "attr_anno": ""
+            },
+            "deps": "js/AwClsPropertiesService"
+        },
+        "propTableStartEdit": {
+            "actionType": "JSFunction",
+            "method": "dummyAction",
+            "inputData": {
+            },
+            "deps": "js/AwClsPropertiesService"
+        },
+        "loadTableColumns": {
+            "actionType": "JSFunction",
+            "method": "loadColumns",
+            "inputData": {
+                "data": "{{data}}",
+                "dataProvider": "{{data.dataProviders.PropDataProvider}}",
+                "columnProvider": "{{data.columnProviders.PropColProvider}}",
+                "attribute": "{{data.atomicData.selectedBlockAttr}}"
+            },
+            "deps": "js/classifyFullviewTableService"
+        },
+        "loadData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadFlatTableData",
+            "inputData": {
+                "data": "{{data}}",
+                "dataProvider": "{{data.dataProviders.PropDataProvider}}",
+                "attribute": "{{fields.selectedBlockAttr}}",
+                "classifyState": "{{props.classifyState}}"
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults",
+                "searchIndex": "searchIndex"
+            },
+            "deps": "js/classifyFullviewTableService"
+        },
+        "copyBlockTableData": {
+            "actionType": "JSFunction",
+            "method": "copyBlockTableData",
+            "inputData":
+            {
+                "attribute": "{{data.atomicData.selectedBlockAttr}}",
+                "dataProvider": "{{data.dataProviders.PropDataProvider}}",
+                "classifyState": "{{props.classifyState}}"
+            },
+            "deps": "js/AwClsPropertiesService"
+        },
+        "updateTableColumns": {
+            "actionType": "JSFunction",
+            "method": "updateTableColumns",
+            "inputData":
+            {
+                "cardinalAttribute": "{{data.eventData.cardinalAttribute}}",
+                "attribute": "{{fields.selectedBlockAttr}}",
+                "dataProvider": "{{data.dataProviders.PropDataProvider}}"
+            },
+            "deps": "js/AwClsPropertiesService"
+        },
+        "loadDataRows": {
+            "actionType": "dataProvider",
+            "method": "PropDataProvider"
+        },
+        "reloadTable": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "loadTableColumns"
+                },
+                {
+                    "action": "loadDataRows"
+                }
+            ]
+        },
+        "reloadTableRows": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "loadDataRows",
+                    "condition": "data.atomicData.selectedBlockAttr.tableView === true"
+                }
+            ]
+        },
+        "updateInstanceData": {
+            "actionType": "JSFunction",
+            "method": "updateInstanceData",
+            "inputData":
+            {
+                "attribute": "{{fields.selectedBlockAttr}}",
+                "dataProvider": "{{data.dataProviders.PropDataProvider}}",
+                "classifyState": "{{props.classifyState}}"
+            },
+            "deps": "js/AwClsPropertiesService"
+        },
+        "reorderInstances": {
+            "actionType": "JSFunction",
+            "method": "reorderInstances",
+            "inputData":
+            {
+                "attribute": "{{data.atomicData.selectedBlockAttr}}",
+                "dataProvider": "{{data.dataProviders.PropDataProvider}}",
+                "classifyState": "{{props.classifyState}}"
+            },
+            "deps": "js/AwClsPropertiesService"
+        }
+
+    },
+    "functions": {
+
+    },
+    "dataProviders": {
+        "PropDataProvider": {
+            "action": "loadData",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "editConfig": {
+                "startEditAction": "propTableStartEdit",
+                "saveEditAction": "propTableSaveEdit",
+                "identifier": "uid"
+            },
+            "selectionModelMode": "none"
+        }
+    },
+    "columnProviders": {
+        "PropColProvider": {
+            "loadColumnAction": "loadTableColumns",
+            "resetColumnAction": "dummyAction",
+            "saveColumnAndLoadAction": "saveColumnAction",
+            "columns": "{{data.columns}}",
+            "soaEnabled": false,
+            "sortCriteria": []
+        }
+    },
+    "grids": {
+        "gridView": {
+            "dataProvider": "PropDataProvider",
+            "columnProvider": "PropColProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": false,
+                "enablePinning": false,
+                "enableSorting": false
+            }
+        }
+    },
+    "data": {
+        "selectedBlockAttr": {
+            "initialValues": {
+            },
+            "meta": {
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "classify.copyBlockTableData",
+            "action": "copyBlockTableData",
+            "condition": "data.atomicData.selectedBlockAttr.tableView === true"
+        },
+        {
+            "eventId": "classify.updateInstances",
+            "cacheEventData": true,
+            "action": "updateTableColumns",
+            "condition": "cardinalAttribute.blockId === data.atomicData.selectedBlockAttr.blockId && data.atomicData.selectedBlockAttr.tableView === true"
+        },
+        {
+            "eventId": "propertyGroupGrid.gridSelection",
+            "action": "updateInstanceData",
+            "condition": "data.atomicData.selectedBlockAttr.tableView === true"
+        },
+        {
+            "eventId": "columnArrange",
+            "action": "reorderInstances",
+            "condition": "data.atomicData.selectedBlockAttr.tableView === true"
+        }
+    ],
+    "conditions": {
+
+    },
+    "i18n": {
+
+    }
+}

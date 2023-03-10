@@ -1,0 +1,48 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "renderDataCard": {
+            "method": "renderDataCardFn",
+            "deps": "js/epDataCardRenderService"
+        },
+        "closePopup": {
+            "actionType": "JSFunctionAsync",
+            "method": "hide",
+            "inputData": {
+                "popupEl": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        },
+        "updateSelectedActivity": {
+            "actionType": "JSFunction",
+            "method": "updateSelectedActivity",
+            "inputData": {
+                "selection": "{{parameters.selection}}"
+            },
+            "deps": "js/epDataCardRenderService"
+        },
+        "resetSelectedActivity": {
+            "actionType": "JSFunction",
+            "method": "resetSelectedActivity",
+            "deps": "js/epDataCardRenderService"
+        }
+    },
+    "lifecycleHooks": {
+        "render": "renderDataCard",
+        "onUnmount": "resetSelectedActivity"
+    },
+    "onEvent": [
+        {
+            "eventId": "epActivitiesTableDataProvider.selectionChangeEvent",
+            "action": "updateSelectedActivity",
+            "inputArgs": {
+                "selection": "{{eventData.selectedObjects}}"
+            }
+        }
+    ],
+    "i18n": {
+        "CancelButtonTitle": [
+            "CreateObjectMessages"
+        ]
+    }
+}

@@ -1,0 +1,71 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2020.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+
+/*=========================================================================*/
+/*================================ EP table ===============================*/
+/*=========================================================================*/
+
+.aw-ep-treeTable {
+    padding-top: 0;
+    .aw-splm-table {
+        height: 100%;
+        border-width: 0;
+
+        .aw-splm-tableRow {
+            .aw-splm-tableCellTop {
+                margin-left: 2px;
+            }
+        }
+
+        .aw-splm-tableIconCell {
+            .aw-splm-tableIcon {
+                margin-left: -5px;
+            }
+        }
+
+        .aw-splm-tableHeaderCellInner {
+            margin-left: -1px;
+            .aw-visual-indicator {
+                padding-right: 0;
+                vertical-align: middle;
+            }
+        }
+
+        .aw-splm-tableCanvas {
+            height: 100%;
+
+            .aw-splm-tablePinnedRow.ui-grid-row .ui-grid-cell:last-child,
+            .aw-jswidgets-grid {
+                border-width: 0;
+            }
+        }
+    }
+}
+
+.aw-ep-tableCellindicator {
+    margin-left: 3px;
+}
+
+.aw-ep-searchBoxStyle.aw-flex-row {
+    flex-grow: initial;
+    overflow: visible;
+}
+
+/*=========================================================================*/
+/*========================= EP graphic visibility =========================*/
+/*=========================================================================*/
+
+.aw-ep-indicatorHidden {
+    opacity: 0.45;
+}
+
+.aw-ep-partialVisibilityWithDashedOutline {
+    outline: $default_outline_width dashed ;
+    outline-offset: rem-calc(-1);
+	opacity: 0.6;
+}

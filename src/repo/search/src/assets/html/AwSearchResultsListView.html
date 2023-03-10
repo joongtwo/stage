@@ -1,0 +1,11 @@
+<span class="aw-widgets-propertyNonEditValue aw-search-inContentSearchBox"
+    exist-when="subPanelContext.searchState.totalFound===0 && !(subPanelContext.searchState.thresholdExceeded === 'true')">{{i18n.noFiltersFound}}</span>
+<span class="aw-widgets-propertyNonEditValue aw-search-inContentSearchBox"
+    exist-when="subPanelContext.searchState.totalFound===0 && subPanelContext.searchState.thresholdExceeded === 'true'">{{data.thresholdExceededMessage}}</span>
+<aw-list dataprovider="data.dataProviders.searchListDataProvider" has-floating-cell-commands="true" show-decorators="true"
+    exist-when="conditions.populatedSearchString" show-context-menu="true"
+    show-check-box="subPanelContext.showCheckBox">
+    <div class='sw-column w-12'>
+        <aw-search-cell vmo="item" sub-panel-context="subPanelContext"></aw-search-cell>
+    </div>
+</aw-list>

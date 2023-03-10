@@ -1,0 +1,32 @@
+<aw-command-panel caption="i18n.createTranslationDelivery">
+
+    <aw-panel-body>
+        <aw-panel-section caption="i18n.include">
+            <aw-checkbox prop="data.includeGraphics"></aw-checkbox>
+            <aw-checkbox prop="data.includeSupportingData"></aw-checkbox>
+            <aw-checkbox prop="data.includePublishedContent"></aw-checkbox>
+        </aw-panel-section>
+
+        <aw-panel-section caption="i18n.deliveryModes">
+            <aw-checkbox prop="data.deliverComposed" action="updateCreateButton"></aw-checkbox>
+            <aw-checkbox prop="data.deliverDecomposed" action="updateDeliverDecomposed"></aw-checkbox>
+            <aw-panel-section caption="i18n.decomposedTopicDelivery" visible-when="conditions.decomposedTopicDelivery">
+                <aw-checkbox prop="data.deliverOutOfSync"></aw-checkbox>
+                <aw-checkbox prop="data.deliverTopicsOutForTransl"></aw-checkbox>
+            </aw-panel-section>
+        </aw-panel-section>
+        <aw-panel-section caption="i18n.languages">
+            <div aw-repeat="item:data.language" dataprovider="data.dataProviders.languageListProvider">
+                <aw-checkbox prop="item" action="updateCreateButton"></aw-checkbox>
+            </div>
+        </aw-panel-section>
+
+    </aw-panel-body>
+
+    <aw-panel-footer>
+        <aw-button action="Ctm1CreateTranslationDeliveryAction" visible-when="conditions.createDeliveryVisible" >
+            <aw-i18n>i18n.create</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+
+</aw-command-panel>

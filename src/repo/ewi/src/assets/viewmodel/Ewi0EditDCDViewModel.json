@@ -1,0 +1,794 @@
+{
+    "schemaVersion" : "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "data":
+    {
+        "dcdComment":
+        {
+            "displayName": "",
+            "type": "STRING",
+            "dbValue": "",
+            "isRequired": "false",
+            "dispValue": ""
+        },
+
+        "dcdType":
+        {
+            "displayName": "",
+            "type": "STRING",
+            "dbValue": "",
+            "dispValue": ""
+        },
+
+        "dcdString":
+        {
+            "displayName": "",
+            "type": "STRING",
+            "dbValue": "",
+            "isRequired": "false",
+            "dispValue": ""
+        },
+
+        "dcdInteger":
+        {
+            "displayName": "",
+            "type": "INTEGER",
+            "dbValue": "",
+            "isRequired": "false",
+            "dispValue": "",
+            "validationCriteria":
+            [
+                {
+                    "condition": "conditions.isOutOfBoundIntegerValue",
+                    "value": "{{i18n.outOfRangeValue}}"
+                }
+            ]
+        },
+
+        "dcdDouble":
+        {
+            "displayName": "",
+            "type": "DOUBLE",
+            "dbValue": "",
+            "isRequired": "false",
+            "dispValue": "",
+            "validationCriteria":
+            [
+                {
+                    "condition": "conditions.isOutOfBoundDoubleValue",
+                    "value": "{{i18n.outOfRangeValue}}"
+                }
+            ]
+        },
+
+        "dcdBoolean":
+        {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": true
+        },
+
+        "dcdBooleanListIn":
+        {
+            "type": "STRING",
+            "dbValue":
+            [
+                "True",
+                "False"
+            ]
+        },
+
+        "dcdLov":
+        {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": true
+        },
+
+        "dcdDateTime":
+        {
+            "displayName": "",
+            "type": "DATETIME",
+            "isRequired": "false",
+            "dbValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        }
+    },
+
+    "actions":
+    {
+        "setProperties":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2010-09-DataManagement",
+            "method": "setProperties",
+            "inputData":
+            {
+                "info":
+                [
+                    {
+                        "object": "{{data.selectedobject}}",
+                        "timestamp": "",
+                        "vecNameVal":
+                        [
+                            {
+                                "name": "ewi0DCExecutionValue",
+                                "values": "{{function:getCDCExecutionValues}}"
+                            },
+
+                            {
+                                "name": "ewi0ExecutionComment",
+                                "values":
+                                [
+                                    "{{data.dcdComment.dbValue}}"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "events":
+            {
+                "success":
+
+                [
+                    {
+
+                        "name": "editDCD.keepValues"
+
+                    }
+
+                ]
+
+            },
+
+            "deps": "js/Ewi0EditDCDService"
+        },
+
+        "saveAndClose":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "editDCD.setProperties"
+                    },
+
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+
+        "save":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "editDCD.setProperties"
+                    }
+                ]
+            }
+        },
+
+        "closePanel":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+
+        "saveAndUpdatePanel":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "editDCD.setProperties"
+                    },
+
+                    {
+                        "name": "editDCD.updatePanelData"
+                    }
+                ]
+            }
+        },
+
+        "updatePanelData":
+        {
+            "actionType": "JSFunction",
+            "method": "updatePanelData",
+            "inputData":
+            {
+                "selectedObj": "{{ctx.panelContext}}",
+                "dcdComment":"{{data.dcdComment}}",
+                "dcdDouble":"{{data.dcdDouble}}",
+                "dcdInteger":"{{data.dcdInteger}}",
+                "dcdBoolean":"{{data.dcdBoolean}}",
+                "dcdLov":"{{data.dcdLov}}",
+                "dcdDateTime":"{{data.dcdDateTime}}",
+                "dcdString":"{{data.dcdString}}",
+                "dcdBooleanListIn":"{{data.dcdBooleanListIn}}"
+            },
+            "outputData":
+            {
+                "dcdComment":"dcdCommentData",
+                "selectedobject":"selectedObj",
+                "dcdType.dbValue":"dcdTypeData",
+                "dcdDouble" : "dcdDoubleData",
+                "dcdInteger" : "dcdIntegerData",
+                "dcdBoolean" : "dcdBooleanData",
+                "dcdLov" : "dcdLovData",
+                "dcdDateTime" : "dcdDateTimeData",
+                "dcdString" : "dcdStringData",
+                "oldValue":"oldValue",
+                "oldTimeValue":"oldTimeValue",
+                "dcdBooleanList":"dcdBooleanList",
+                "dcdlovList":"dcdlovList"
+            },
+            "deps": "js/Ewi0EditDCDService"
+        },
+
+        "validateAndSave":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "editDCD.outOfBoundErrorOnSave",
+                        "condition": "conditions.isOutOfBoundValue"
+                    },
+                    {
+                        "name": "ewi.registerPolicies"
+                    },
+                    {
+                        "name": "editDCD.setProperties",
+                        "condition": "( !(data.dcdType.dbValue == 'Integer Data Collection' && (data.dcdInteger.dbValue < data.selectedobject.props.mes0DCDMinValue.displayValues[0] || data.dcdInteger.dbValue  > data.selectedobject.props.mes0DCDMaxValue.displayValues[0])) && !(data.dcdType.dbValue == 'Real Number Data Collection' && (data.dcdDouble.dbValue < data.selectedobject.props.mes0DCDMinValue.displayValues[0] || data.dcdDouble.dbValue  > data.selectedobject.props.mes0DCDMaxValue.displayValues[0])))"
+                    }
+                ]
+            }
+        },
+
+        "validateOutofBoundOnSelectionChange":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "editDCD.outOfBoundErrorSelectionChange",
+                        "condition": "conditions.isOutOfBoundValue"
+                    },
+
+                    {
+                        "name": "editDCD.setProperties",
+                        "condition": "!conditions.isOutOfBoundValue"
+                    },
+
+                    {
+                        "name": "editDCD.updateSelectionData",
+                        "condition": "!conditions.isOutOfBoundValue"
+                    }
+                ]
+            }
+        },
+
+        "validateOutofBoundOnClosingPanelFromselection":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "editDCD.outOfBoundErrorClosingPanel",
+                        "condition": "conditions.isOutOfBoundValue"
+                    },
+
+                    {
+                        "name": "editDCD.setProperties",
+                        "condition": "!conditions.isOutOfBoundValue"
+                    }
+                ]
+            }
+        },
+
+        "validateOutofBoundOnClosingPanel":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "editDCD.outOfBoundErrorClosingPanel",
+                        "condition": "conditions.isOutOfBoundValue"
+                    },
+
+                    {
+                        "name": "editDCD.setProperties",
+                        "condition": "!conditions.isOutOfBoundValue"
+                    },
+
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        },
+
+                        "condition": "!conditions.isOutOfBoundValue"
+                    }
+                ]
+            }
+        },
+
+        "close": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "closePanel",
+                    "condition": "!(conditions.isDataChanged)"
+                },
+                {
+                    "action": "displayUnsavedMsgClosingPanel"
+                }
+            ]
+        },
+
+        "displayUnsavedMsgClosingPanel":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                 "events":
+                 [
+                    {
+                        "name": "editDCD.unsavedErrorClosingPanel",
+                        "condition": "conditions.isDataChanged"
+                    }
+
+                 ]
+            }
+        },
+
+        "selectionChange": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getNextSelection"
+                },
+                {
+                    "action": "updateSelectionData",
+                    "condition": "!conditions.isDataChanged"
+                },
+                {
+                    "action": "displayUnsavedMsgSelectionChange"
+                }
+            ]
+        },
+
+        "getNextSelection":
+        {
+            "actionType": "JSFunction",
+            "method": "getNextSelection",
+            "inputData": {
+                "value": "{{data.eventData}}"
+            },
+            "outputData": {
+                "nextSelection": ""
+            },
+            "deps": "js/Ewi0EditDCDService"
+        },
+
+        "updateSelectionData":
+        {
+            "actionType": "JSFunction",
+            "method": "updatePanelData",
+            "inputData":
+            {
+                "selectedObj": "{{data.nextSelection}}",
+                "dcdComment":"{{data.dcdComment}}",
+                "dcdDouble":"{{data.dcdDouble}}",
+                "dcdInteger":"{{data.dcdInteger}}",
+                "dcdBoolean":"{{data.dcdBoolean}}",
+                "dcdLov":"{{data.dcdLov}}",
+                "dcdDateTime":"{{data.dcdDateTime}}",
+                "dcdString":"{{data.dcdString}}",
+                "dcdBooleanListIn":"{{data.dcdBooleanListIn}}"
+            },
+            "outputData":
+            {
+                "dcdComment":"dcdCommentData",
+                "selectedobject":"selectedObj",
+                "dcdType.dbValue":"dcdTypeData",
+                "dcdDouble" : "dcdDoubleData",
+                "dcdInteger" : "dcdIntegerData",
+                "dcdBoolean" : "dcdBooleanData",
+                "dcdLov" : "dcdLovData",
+                "dcdDateTime" : "dcdDateTimeData",
+                "dcdString" : "dcdStringData",
+                "oldValue":"oldValue",
+                "oldTimeValue":"oldTimeValue",
+                "dcdBooleanList":"dcdBooleanList",
+                "dcdlovList":"dcdlovList"
+            },
+            "deps": "js/Ewi0EditDCDService"
+        },
+
+        "displayUnsavedMsgSelectionChange":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                 "events":
+                 [
+                    {
+                        "name": "editDCD.unsavedErrorSelectionChange",
+                        "condition": "conditions.isDataChanged"
+                    }
+                 ]
+            }
+        },
+
+        "keepValues":
+        {
+            "actionType": "JSFunction",
+            "method": "keepValues",
+            "inputData":
+            {
+                "oldComment": "{{data.dcdComment.dbValue}}",
+                "dcdType": "{{data.dcdType.dbValue}}",
+                "dcdLovVal": "{{data.dcdLov.dbValue}}",
+                "dcdIntegerVal": "{{data.dcdInteger.dbValue}}",
+                "dcdBooleanVal": "{{data.dcdBoolean.uiValue}}",
+                "dcdDateVal": "{{data.dcdDateTime.dateApi.dateValue}}",
+                "dcdTimeVal": "{{data.dcdDateTime.dateApi.timeValue}}",
+                "dcdStringVal": "{{data.dcdString.dbValue}}",
+                "dcdDoubleVal": "{{data.dcdDouble.dbValue}}"
+            },
+            "outputData":
+            {
+                "selectedobject.oldComment": "oldComment",
+                "oldValue": "oldValue",
+                "oldTimeValue":"oldTimeValue"
+            },
+            "deps": "js/Ewi0EditDCDService"
+        }
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "editDCD.closePanel",
+            "action": "closePanel"
+        },
+        {
+            "eventId": "ewi0CloseEditablePanel",
+            "action": "close"
+        },
+        {
+            "eventId": "awTab.selected",
+            "action": "close"
+        },
+        {
+            "eventId": "editDCD.outOfBoundErrorOnSave",
+            "message": "outOfBoundErrorOnSave"
+        },
+
+        {
+            "eventId": "editDCD.unsavedErrorSelectionChange",
+            "message": "unsavedErrorSelectionChange"
+        },
+
+        {
+            "eventId": "editDCD.unsavedErrorClosingPanelFromselection",
+            "message": "unsavedErrorClosingPanelFromselection"
+        },
+
+        {
+            "eventId": "editDCD.unsavedErrorClosingPanel",
+            "message": "unsavedErrorClosingPanel"
+        },
+
+        {
+            "eventId": "editDCD.outOfBoundErrorSelectionChange",
+            "message": "outOfBoundErrorSelectionChange"
+        },
+
+        {
+            "eventId": "editDCD.outOfBoundErrorClosingPanel",
+            "message": "outOfBoundErrorClosingPanel"
+        },
+
+        {
+            "eventId": "editDCD.setProperties",
+            "action": "setProperties"
+        },
+
+        {
+            "eventId": "editDCD.updatePanelData",
+            "action": "updatePanelData"
+        },
+
+        {
+            "eventId": "workinstr.selectionChange",
+            "cacheEventData": true,
+            "action": "selectionChange"
+        },
+
+        {
+            "eventId": "editDCD.keepValues",
+            "action": "keepValues"
+        },
+        {
+            "eventId": "editDCD.updateSelectionData",
+            "action": "updateSelectionData"
+        }
+    ],
+
+    "functions":
+    {
+        "getCDCExecutionValues":
+        {
+            "functionName": "getCDCExecutionValues",
+            "parameters":
+            [
+                "{{data}}"
+            ]
+        }
+    },
+
+    "conditions":
+    {
+        "isIntegerDCDType":
+        {
+            "expression": "data.dcdType.dbValue == 'Integer Data Collection'"
+        },
+        "isRealDCDType":
+        {
+            "expression": "data.dcdType.dbValue == 'Real Number Data Collection'"
+        },
+        "isNumericDCDType":
+        {
+            "expression": "data.dcdType.dbValue == 'Integer Data Collection' || data.dcdType.dbValue == 'Real Number Data Collection'"
+        },
+        "isBooleanDCDType":
+        {
+            "expression": "data.dcdType.dbValue == 'Boolean Data Collection'"
+        },
+        "isLOVDCDType":
+        {
+            "expression": "data.dcdType.dbValue == 'User Defined LOV Data Collection'"
+        },
+        "isDateTimeDCDType":
+        {
+            "expression": "data.dcdType.dbValue == 'Time Stamp Data Collection'"
+        },
+        "isStringDCDType":
+        {
+            "expression": "!conditions.isIntegerDCDType && !conditions.isRealDCDType && !conditions.isBooleanDCDType && !conditions.isLOVDCDType && !conditions.isDateTimeDCDType"
+        },
+        "isOutOfBoundIntegerValue":
+        {
+            "expression": "conditions.isIntegerDCDType && data.dcdInteger.dbValue != '' && data.dcdInteger.dbValue < data.selectedobject.props.mes0DCDMinValue.displayValues[0] || data.dcdInteger.dbValue  > data.selectedobject.props.mes0DCDMaxValue.displayValues[0]"
+        },
+        "isOutOfBoundDoubleValue":
+        {
+            "expression": "conditions.isRealDCDType && data.dcdDouble.dbValue != '' && data.dcdDouble.dbValue < data.selectedobject.props.mes0DCDMinValue.displayValues[0] || data.dcdDouble.dbValue  > data.selectedobject.props.mes0DCDMaxValue.displayValues[0]"
+        },
+        "isDataChanged": {
+            "expression": " data.dcdComment.dbValue != data.selectedobject.oldComment  || (data.dcdType.dbValue == 'User Defined LOV Data Collection' &&  data.dcdLov.dbValue != data.oldValue ) || (data.dcdType.dbValue == 'Integer Data Collection' &&  data.dcdInteger.dbValue != data.oldValue ) || (data.dcdType.dbValue == 'Real Number Data Collection' &&  data.dcdDouble.dbValue != data.oldValue ) ||(data.dcdType.dbValue == 'Boolean Data Collection' && data.dcdBoolean.uiValue != data.oldValue)||(data.dcdType.dbValue == 'Time Stamp Data Collection' && (data.oldValue != data.dcdDateTime.dateApi.dateValue  || data.oldTimeValue != data.dcdDateTime.dateApi.timeValue)) || (data.dcdType.dbValue == 'String Data Collection'  && data.dcdString.dbValue!= data.oldValue )"
+        },
+        "isOutOfBoundValue":
+        {
+            "expression": "((data.dcdType.dbValue == 'Integer Data Collection' && (data.dcdInteger.dbValue < data.selectedobject.props.mes0DCDMinValue.displayValues[0] || data.dcdInteger.dbValue  > data.selectedobject.props.mes0DCDMaxValue.displayValues[0])) || (data.dcdType.dbValue == 'Real Number Data Collection' && (data.dcdDouble.dbValue < data.selectedobject.props.mes0DCDMinValue.displayValues[0] || data.dcdDouble.dbValue  > data.selectedobject.props.mes0DCDMaxValue.displayValues[0])))"
+        }
+    },
+
+    "messages":
+    {
+        "unsavedErrorSelectionChange":
+        {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.unsavedEditText}}",
+            "messageTextParams":
+            [
+                "{{data.selectedobject.props.object_string.uiValues[0]}}"
+            ],
+
+            "navigationOptions":
+            [
+                {
+                    "option": "Save",
+                    "text": "{{i18n.save}}",
+                    "action": "validateOutofBoundOnSelectionChange"
+                },
+
+                {
+                    "option": "Discard",
+                    "text": "{{i18n.discard}}",
+                    "action": "updateSelectionData"
+                }
+            ]
+        },
+
+        "unsavedErrorClosingPanelFromselection":
+        {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.unsavedEditText}}",
+            "messageTextParams":
+            [
+                "{{data.selectedobject.props.object_string.uiValues[0]}}"
+            ],
+
+            "navigationOptions":
+            [
+                {
+                    "option": "Save",
+                    "text": "{{i18n.save}}",
+                    "action": "validateOutofBoundOnClosingPanelFromselection"
+                },
+
+                {
+                    "option": "Discard",
+                    "text": "{{i18n.discard}}",
+                    "action": "closePanel"
+                }
+            ]
+        },
+
+        "unsavedErrorClosingPanel":
+        {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.unsavedEditText}}",
+            "messageTextParams":
+            [
+                "{{data.selectedobject.props.object_string.uiValues[0]}}"
+            ],
+
+            "navigationOptions":
+            [
+                {
+                    "option": "Save",
+                    "text": "{{i18n.save}}",
+                    "action": "validateOutofBoundOnClosingPanel"
+                },
+
+                {
+                    "option": "Discard",
+                    "text": "{{i18n.discard}}",
+                    "action": "closePanel"
+                }
+            ]
+        },
+
+        "outOfBoundErrorSelectionChange":
+        {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.outOfRangeValueMessageText}}",
+            "navigationOptions":
+            [
+                {
+                    "option": "Save",
+                    "text": "{{i18n.save}}",
+                    "action": "saveAndUpdatePanel"
+                },
+
+                {
+                    "option": "Discard",
+                    "text": "{{i18n.discard}}",
+                    "action": "updatePanelData"
+                }
+            ]
+        },
+
+        "outOfBoundErrorClosingPanel":
+        {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.outOfRangeValueMessageText}}",
+            "navigationOptions":
+            [
+                {
+                    "option": "Save",
+                    "text": "{{i18n.save}}",
+                    "action": "saveAndClose"
+                },
+
+                {
+                    "option": "Discard",
+                    "text": "{{i18n.discard}}",
+                    "action": "closePanel"
+                }
+            ]
+        },
+
+        "outOfBoundErrorOnSave":
+        {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.outOfRangeValueMessageText}}",
+            "messageTextParams":
+            [
+                "{{data.selectedobject.props.object_string.uiValues[0]}}"
+            ],
+
+            "navigationOptions":
+            [
+                {
+                    "option": "Save",
+                    "text": "{{i18n.save}}",
+                    "action": "save"
+                },
+
+                {
+                    "option": "Discard",
+                    "text": "{{i18n.discard}}"
+                }
+            ]
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "updatePanelData"
+    },
+
+    "i18n":
+    {
+        "save": ["EWIMessages"],
+        "close": ["EWIMessages"],
+        "discard": ["EWIMessages"],
+        "unsavedEditText": ["EWIMessages"],
+        "cdc": ["EWIMessages"],
+        "outOfRangeValue": ["EWIMessages"],
+        "outOfRangeValueMessageText": ["EWIMessages"]
+    }
+}

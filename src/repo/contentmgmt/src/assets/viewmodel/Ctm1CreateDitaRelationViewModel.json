@@ -1,0 +1,250 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+        "js/aw-panel.directive",
+        "js/aw-widget.directive",
+        "js/visible-when.directive"
+    ],
+
+    "actions":
+    {
+        "updateDataSource": {
+            "actionType": "JSFunction",
+            "method": "addHtmlPanelInDataSource",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "{{data.subPanelContext.xrtType}}",
+                "panelID": "Ctm1CreateDitaRelation"
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "reveal": {
+            "actionType": "JSFunction",
+            "method": "moveDitaRelationDataToCtx",
+            "inputData": {
+                "ctx": "{{ctx}}",
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        },
+        "topicTypeSelectionChange": {
+            "actionType": "JSFunction",
+            "method": "topicTypeSelectionChange",
+            "inputData": {
+                "ctx": "{{ctx}}",
+                "topicType": "{{data.eventData.ctm0TopicTypeTagref.dbValue}}",
+                "allowMultiVersions": "{{ctx.preferences.Ctm0Allow_Multiple_Version_In_DITA_Structure[0]}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "ctm1.topicTypeChanged"
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        },
+        "getDitaRelationList": {
+            "actionType": "JSFunction",
+            "method": "getDitaRelationList",
+            "inputData": {
+                "ctx": "{{ctx}}"
+            },
+            "outputData": {
+                "lovValues": ""
+            },
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        },
+        "getReferenceList": {
+            "actionType": "JSFunction",
+            "method": "getReferenceList",
+            "inputData": {
+                "ctx": "{{ctx}}",
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "lovValues": ""
+            },
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        },
+        "updateRelationSelectionEnablement": {
+            "actionType": "JSFunction",
+            "method": "updateRelationSelectionEnablement",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        },
+        "postProcessing": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2018-05-DataManagement",
+            "method": "saveViewModelEditAndSubmitWorkflow2",
+            "inputData": {
+                "inputs": "{{function:buildInputForDitaRelationWorkflow}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        },
+        "createRefTopicTypeRelation": {
+            "actionType": "JSFunction",
+            "method": "createRefTopicTypeRelation",
+            "inputData": {
+                "refTopicType": "{{data.rrr__referenceTopicType.dbValue}}",
+                "keyName": "{{data.rrr__ctm0KeyName.dbValue}}",
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        }
+    },
+
+    "data":
+    {
+        "rrr__relationSelection": {
+            "dbValue": "DC_ComposableReferenceR",
+            "uiValue": "{{i18n.composableReference}}",
+            "displayName": "{{i18n.relationSelection}}",
+            "type": "STRING",
+            "dataProvider": "relationListProvider",
+            "isRequired": "false",
+            "isEditable": "true"
+        },
+        "rrr__referenceTopicType": {
+            "dbValue": "",
+            "displayName": "{{i18n.referenceTopicType}}",
+            "type": "STRING",
+            "dataProvider": "referenceListProvider",
+            "isRequired": "false",
+            "isEditable": "true"
+        },
+        "rrr__ctm0KeyName": {
+            "dbValue": "",
+            "displayName": "{{i18n.keyName}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true"
+        }
+    },
+
+    "dataProviders":
+    {
+        "relationListProvider":
+        {
+            "initializeAction": "getDitaRelationList",
+            "nextAction": "getDitaRelationList",
+            "response": "{{data.lovValues}}",
+            "totalFound": "{{data.lovValues.length}}",
+            "valid": "{{data.valid}}",
+            "message": "{{data.message}}",
+            "moreValuesExist": false
+        },
+        "referenceListProvider":
+        {
+            "initializeAction": "getReferenceList",
+            "nextAction": "getReferenceList",
+            "response": "{{data.lovValues}}",
+            "totalFound": "{{data.lovValues.length}}",
+            "valid": "{{data.valid}}",
+            "message": "{{data.message}}",
+            "moreValuesExist": false
+        }
+    },
+
+    "functions":
+    {
+        "buildInputForDitaRelationWorkflow":
+        {
+            "functionName": "buildInputForDitaRelationWorkflow",
+            "parameters":
+            [
+                "{{data}}",
+                "{{ctx}}"
+            ]
+        },
+        "updateRelationSelectionEnablement":
+        {
+            "functionName": "updateRelationSelectionEnablement",
+            "parameters":
+            [
+                "{{data}}"
+            ]
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "updateDataSource",
+        "onUpdate": {
+            "action": "updateDataSource",
+            "observers": [ "viewModel.data" ]
+        },
+        "onInit": "reveal"
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "topicType.selectionChange",
+            "action": "topicTypeSelectionChange",
+            "cacheEventData": true,
+            "condition": "conditions.isAddChildOrSibling"
+        },
+        {
+            "eventId": "addElement.elementsAdded",
+            "action": "postProcessing",
+            "cacheEventData": true,
+            "condition": "conditions.isTopicTopicRelation"
+        },
+        {
+            "eventId": "addElement.elementsAdded",
+            "action": "createRefTopicTypeRelation",
+            "cacheEventData": true,
+            "condition": "conditions.isComposableReferenceRelation"
+        },
+        {
+            "eventId": "ctm1.topicTypeChanged",
+            "action": "updateRelationSelectionEnablement"
+        }
+    ],
+
+    "conditions":
+    {
+        "isAddChildOrSibling": {
+            "expression": "ctx.activeToolsAndInfoCommand.commandId === 'Awb0AddChildElementDeclarative' || ctx.activeToolsAndInfoCommand.commandId === 'Awb0AddSiblingElementDeclarative'"
+        },
+        "isTopicTopicRelation": {
+            "expression": "data.rrr__relationSelection && data.rrr__relationSelection.dbValue === 'DC_TopicTopicR'"
+        },
+        "isComposableReferenceRelation": {
+            "expression": "data.rrr__relationSelection && data.rrr__relationSelection.dbValue === 'DC_ComposableReferenceR'&& data.rrr__referenceTopicType && data.rrr__referenceTopicType.dbValue.length > 0"
+        },
+        "isCreateRefTopicTypeRelationAllowed": {
+            "expression": "(ctx.activeToolsAndInfoCommand.commandId === 'Awb0AddChildElementDeclarative' || ctx.activeToolsAndInfoCommand.commandId === 'Awb0AddSiblingElementDeclarative') && (ctx.tcSessionData.tcMajorVersion > 13 || ( ctx.tcSessionData.tcMajorVersion === 13 && ctx.tcSessionData.tcMinorVersion >= 2 ))"
+        }
+    },
+
+    "preferences":
+    [
+
+    ],
+
+    "messages":
+    {
+
+    },
+
+    "i18n":
+    {
+        "relationSelection": ["ContentMgmtMessages"],
+        "composableReference": ["ContentMgmtMessages"],
+        "topicToTopicReference": ["ContentMgmtMessages"],
+        "referenceTopicType": ["ContentMgmtMessages"],
+        "keyName": ["ContentMgmtMessages"]
+    }
+}

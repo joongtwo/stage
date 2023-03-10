@@ -1,0 +1,88 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "headerProperties":
+        {
+        },
+        "overview":
+        {
+            "isNull": false,
+            "propertyDisplayName": "{{i18n.overview}}",
+            "uiValue": "{{i18n.overview}}"
+        },
+        "collapse":
+        {
+            "type": "STRING",
+            "displayName": "<<"
+        },
+        "expand":
+        {
+            "type": "STRING",
+            "displayName": ">>"
+        }
+    },
+    "actions": {
+        "reset": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getTopLine"
+                },
+                {
+                    "action": "updateHeaderProps"
+                }
+            ]
+        },
+        "getTopLine":
+        {
+            "actionType": "JSFunction",
+            "method": "getTopLine",
+            "inputData": {
+            },
+            "outputData":
+            {
+                "topLine": ""
+            },
+            "deps": "js/ewiService"
+        },
+        "updateHeaderProps":
+        {
+            "actionType": "JSFunction",
+            "method": "updateHeaderProps",
+            "inputData":
+            {
+                "headerProps": "{{ctx.EWI0HeaderProperties}}"
+            },
+            "outputData":
+            {
+                "headerProperties": ""
+            },
+            "deps": "js/Ewi0HeaderContributionService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "ewi.updateHeaderProperties",
+            "action": "reset"
+        }
+    ],
+    "conditions": {
+        "showOperatorSelection": {
+            "expression": "data.topLine.modelType.typeHierarchyArray.indexOf( 'Mfg0BvrPlantBOP' ) > -1 && ctx.preferences.EWI_ShowOperatorSelection[0] === 'true'"
+        }
+    },
+    "i18n": {
+        "overview": ["EWIMessages"]
+    }
+}

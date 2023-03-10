@@ -1,0 +1,53 @@
+[
+  {
+    "name": {
+      "source": "/i18n/DpvMessages",
+      "key": "executionHistoryTitle"
+    },
+    "priority": 10,
+    "view": "Dpv1ReportExecutionHistory",
+    "visibleWhen": "selection.length === 1 && ctx.sublocation.nameToken === 'com.siemens.splm.client.dpv:graRepMgmtSubLocation'"
+  },
+  {
+    "name": {
+      "source": "/i18n/DpvMessages",
+      "key": "sharedScheduleLbl"
+    },
+    "priority": 20,
+    "view": "Dpv1SharedScheduleInfo",
+    "visibleWhen": "selection.length === 1 && ctx.sublocation.nameToken === 'com.siemens.splm.client.dpv:dpvSchedulesSubLocation'"
+  },
+  {
+    "name": {
+      "source": "/i18n/DpvMessages",
+      "key": "etlDashboardOverview"
+    },
+    "priority": 10,
+    "view": "Dpv1ETLDashboardOverviewTable",
+    "visibleWhen": "ctx.sublocation.nameToken === 'com.siemens.splm.client.dpv:etlDashboard'"
+  },
+  {
+    "name": {
+      "source": "/i18n/DpvMessages",
+      "key": "etlDashboardHealthReport"
+    },
+    "priority": 10,
+    "view": "Dpv1ETLDashboardHealthReportTable",
+    "visibleWhen": "ctx.sublocation.nameToken === 'com.siemens.splm.client.dpv:etlDashboard'"
+  },
+  {
+    "name": {
+      "source": "/i18n/DpvMessages",
+      "key": "etlDashboardDeviceReport"
+    },
+    "priority": 10,
+    "view": "Dpv1ETLDashboardDeviceReportTable",
+    "visibleWhen": "ctx.sublocation.nameToken === 'com.siemens.splm.client.dpv:etlDashboard'"
+  },
+  {
+    "name": "",
+    "priority": 10,
+    "view": "AwSecondaryWorkareaNoSkeleton",
+    "visibleWhen": "selection.length === 0 && ( ctx.sublocation.historyNameToken === 'createdDpv' || ctx.sublocation.historyNameToken === 'dpvRepTemplates' )"
+  }
+]

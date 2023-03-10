@@ -1,0 +1,34 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "closePanel": {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "inputData": {
+                "path": "epPageContext.showActivities",
+                "value": false
+            },
+            "deps": "js/appCtxService"
+        }
+    },
+    "data": {
+        "contentPanelData": {
+            "tabs": [ {
+                "name": "{{i18n.activitiesTitle}}",
+                "tabKey": "EpActivities"
+                }
+            ]
+        }
+    },
+    "i18n": {
+        "activitiesTitle": [ "ActivitiesMessages" ]
+    },
+    "lifecycleHooks": {
+        "onUnmount": "closePanel"
+    }
+}

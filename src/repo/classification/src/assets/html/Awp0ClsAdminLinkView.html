@@ -1,0 +1,21 @@
+<aw-command-panel caption="{{props.subPanelContext.searchState.reference.id}}">
+    <aw-panel>
+        <aw-panel-body>
+            <aw-panel-section caption="{{i18n.propertiesTitle}}"  visible-when="data.currentSecDataPanel.length > 0" collapsed="false">
+                <aw-widget prop="item" aw-repeat="item : data.currentSecDataPanel" ></aw-widget>
+            </aw-panel-section>
+            <sw-row height="fill">
+                <sw-column width="fill">
+                    <aw-panel-section  class="aw-clsadmin-classAttrTable aw-layout-column aw-layout-flexbox" caption="{{i18n.attributes}}" exist-when="data.classAttributesResponseForPanel.length > 0" collapsed="false">
+                        <aw-splm-table gridid="entryGridForPanel" show-decorators="true" exist-when="data.classAttributesResponseForPanel.length > 0 "></aw-splm-table>
+                    </aw-panel-section>
+                    <aw-panel-section  caption="{{i18n.keylovTitle}}" visible-when=" data.keyLOVTreeDataMetric.length > 0" collapsed="false">
+                        <aw-tree name = "'tree'" tree="data.keyLOVTreeDataMetric">
+                            {{node.label}}
+                        </aw-tree>
+                    </aw-panel-section>
+                </sw-column>
+            </sw-row>
+        </aw-panel-body>
+    </aw-panel>
+</aw-command-panel>

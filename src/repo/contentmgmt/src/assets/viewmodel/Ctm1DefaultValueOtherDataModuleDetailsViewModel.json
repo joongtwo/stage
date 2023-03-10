@@ -1,0 +1,110 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+        "js/aw-panel.directive",
+        "js/aw-textbox.directive"
+    ],
+
+    "actions": {
+            "initialize": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateDataSource"
+                }
+            ]
+        },
+        "updateDataSource": {
+            "actionType": "JSFunction",
+            "method": "addHtmlPanelInDataSource",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "{{data.subPanelContext.xrtType}}",
+                "panelID": "Ctm1DefaultValueOtherDataModuleDetails"
+            },
+            "deps": "js/addObjectUtils"
+        },
+
+        "setOtherDefaultValues": {
+            "actionType": "JSFunction",
+            "method": "setOtherDefaultValuesForDMCode",
+            "deps": "js/Ctm1ContentMgmtDMCodeService",
+            "inputData": {
+                "ctx": "{{ctx}}"
+            },
+            "outputData": {
+                "revision__skdsecurity_class.dbValue": "revision__skdsecurity_class.dbValue",
+                "revision__civ0rpcname.dbValue": "revision__civ0rpcname.dbValue",
+                "revision__civ0origname.dbValue": "revision__civ0origname.dbValue",
+                "revision__skdrpc.dbValue": "revision__skdrpc.dbValue",
+                "revision__skdorig.dbValue": "revision__skdorig.dbValue"
+            }
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "initialize",
+        "onUpdate": {
+            "action": "updateDataSource",
+            "observers": [ "viewModel.data" ]
+        }
+    },
+
+    "onEvent": [
+        {
+            "eventId": "ctm1.SNSDefaultValuesLoaded",
+
+            "action": "setOtherDefaultValues"
+        }
+    ],
+
+    "data":
+    {
+        "revision__skdsecurity_class": {
+            "dbValue": "",
+            "displayName": "{{i18n.securityClass}}",
+            "type": "NUMBER",
+            "isRequired": "true",
+            "isEditable": "true",
+            "maxLength": "2",
+            "requiredText": "0-9 {2}"
+        },
+        "revision__civ0rpcname": {
+            "dbValue": "",
+            "displayName": "{{i18n.responsiblePartnerCompanyName}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true"
+        },
+        "revision__skdrpc": {
+            "dbValue": "",
+            "displayName": "{{i18n.responsiblePartnerCompanyEnterpriseCode}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true"
+        },
+        "revision__civ0origname": {
+            "dbValue": "",
+            "displayName": "{{i18n.originatorName}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true"
+        },
+        "revision__skdorig": {
+            "dbValue": "",
+            "displayName": "{{i18n.originatorEnterpriseCode}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true"
+        }
+    },
+
+    "i18n": {
+        "securityClass": ["ContentMgmtMessages"],
+        "responsiblePartnerCompanyName": ["ContentMgmtMessages"],
+        "responsiblePartnerCompanyEnterpriseCode": ["ContentMgmtMessages"],
+        "originatorName": ["ContentMgmtMessages"],
+        "originatorEnterpriseCode": ["ContentMgmtMessages"]
+    }
+}

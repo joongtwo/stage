@@ -1,0 +1,25 @@
+<div visible-when="conditions.NonFeatureSearchCriteria">
+    <br />
+    <aw-property-label prop="data.searchCriteriaLink"></aw-property-label>
+    <aw-search-box prop="data.searchCriteria" action="launchResultsPanelAndSearch"></aw-search-box>
+</div>
+<div visible-when="!conditions.NonFeatureSearchCriteria">
+    <br />
+    <aw-property-label prop="data.featurePropLabel"></aw-property-label>
+    <p>{{i18n.featurePropDesc}}</p>
+</div>
+<br />
+<div class="aw-cfg-revisionruleCheckBox">
+    <aw-checkbox prop="data.considerRevRuleForSearch"></aw-checkbox>
+</div>
+<div class="aw-cfg-revisionruleValue">
+    <aw-include name="Pca0RevisionRule" sub-panel-context="{ ...data.subPanelContextInfo, currentRevisionRule : props.subPanelContext.value.revisionRule }"></aw-include>
+
+    <!-- <aw-include name="Pca0RevisionRule" sub-panel-context="{...props.subPanelContext, ...data.subPanelContextInfo}"></aw-include> -->
+    <!-- <pca0-revision-rule sub-panel-context="data.subPanelContextInfo"> </pca0-revision-rule> needs to be renamed first for this to work but it is used in multiple places so we'll postpone this for now-->
+</div>
+<br />
+<br />
+<aw-button visible-when="!conditions.NonFeatureSearchCriteria" action="launchResultsPanelAndSearch">
+    <aw-i18n>{{i18n.search}}</aw-i18n>
+</aw-button>

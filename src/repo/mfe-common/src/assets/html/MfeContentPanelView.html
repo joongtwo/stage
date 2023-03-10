@@ -1,0 +1,32 @@
+<div class="sw-column aw-mfe-contentPanelContainer w-12 h-12">
+    <aw-advanced-bar type="TOOLBAR">
+        <div class="sw-row align-center justify-justified aw-mfe-contentPanelToolbar">
+            <aw-icon class="sw-column justify-center aw-mfe-contentPanelTabIcon" exist-when="props.subPanelContext.tabs[0].iconName" icon-id={{props.subPanelContext.tabs[0].iconName}}></aw-icon>
+            <aw-tab-set exist-when="props.subPanelContext.tabs.length > 0" tab-set-id="{{props.subPanelContext.tabSetId}}" tabs="props.subPanelContext.tabs" aw-class="[{'aw-mfe-singleTabTitle': props.subPanelContext.tabs.length === 1}, {'aw-mfe-tabTitleWithIcon' : props.subPanelContext.tabs[0].iconName !== undefined}]" class="aw-mfe-tabs"></aw-tab-set>
+            <div class="sw-column align-right" aw-class="[{'aw-mfe-mfeContentPanelPinCommandBar': data.contentPanelData.cmdDisplayOption === 'menu'}]">
+                <div class="sw-row aw-mfe-contentPanelToolbar">
+                    <!--View Specific Commands for each Tab WITHOUT Pin Toolbar command -->
+                    <aw-command-bar aw-repeat="tab : props.subPanelContext.tabs" exist-when="data.contentPanelData.cmdDisplayOption === 'toolbarWithTabs' && (tab.viewId ? tab.viewId === data.tabModel.viewId : tab.tabKey === data.tabModel.tabKey)" context="{...data.tabModel, occContext: props.occContext}" anchor="{{tab.viewId ? tab.viewId+'_uiAnchor' : tab.tabKey+'_uiAnchor'}}" alignment="HORIZONTAL" overflow="tab.disableCommandOverflow ? false : true">
+                    </aw-command-bar>
+                    <!--View Specific Commands for each Tab WITH Pin Toolbar command-->
+                    <aw-command-bar anchor="{{tab.viewId ? 'mfePinToolBarCommandAnchor,'+tab.viewId+'_uiAnchor' : 'mfePinToolBarCommandAnchor,'+tab.tabKey+'_uiAnchor'}}" context="{...data.tabModel, contentPanelData: data.contentPanelData, occContext: props.occContext}" alignment="HORIZONTAL" exist-when="data.contentPanelData.cmdDisplayOption === 'menu' && (tab.viewId ? tab.viewId === data.tabModel.viewId : tab.tabKey === data.tabModel.tabKey)" overflow="true" aw-repeat="tab : props.subPanelContext.tabs">
+                    </aw-command-bar>
+                    <!--Shared Commands among the Tabs -->
+                    <aw-command-bar exist-when="props.subPanelContext.sharedCommandAnchor !== undefined" context="{...props.subPanelContext, tabModel: data.tabModel, occContext: props.occContext}" anchor="{{props.subPanelContext.sharedCommandAnchor}}" alignment="HORIZONTAL" overflow="true">
+                    </aw-command-bar>
+                </div>
+            </div>
+        </div>
+        <div class="sw-row afx-medium-background justify-left aw-mfe-contentPanelToolbar" aw-repeat="tab : props.subPanelContext.tabs" exist-when="data.contentPanelData.cmdDisplayOption === 'toolbarBelowTabs' && (tab.viewId ? tab.viewId === data.tabModel.viewId : tab.tabKey === data.tabModel.tabKey)">
+            <!--View Specific Commands below Tabs -->
+            <aw-command-bar class="align-left w-12" context="{...data.tabModel, occContext: props.occContext}" anchor="{{tab.viewId ? tab.viewId+'_uiAnchor' : tab.tabKey+'_uiAnchor'}}" alignment="HORIZONTAL" overflow="tab.disableCommandOverflow ? false : true">
+            </aw-command-bar>
+            <!--UnPin command-->
+            <aw-command-bar class="align-right" anchor="mfeUnpinToolBarCommandAnchor" context="data.contentPanelData" alignment="HORIZONTAL" show-command-labels="false">
+            </aw-command-bar>
+        </div>
+    </aw-advanced-bar>
+    <div class="sw-row aw-mfe-contentPanel h-12">
+        <aw-include view-id="{{data.tabModel.viewId ? data.tabModel.viewId : data.tabModel.tabKey}}" name="{{data.tabModel.viewName ? data.tabModel.viewName : data.tabModel.tabKey}}" sub-panel-context="{...props.subPanelContext, ...data.tabModel}" exist-when="data.tabModel.tabKey"> </aw-include>
+    </div>
+</div>

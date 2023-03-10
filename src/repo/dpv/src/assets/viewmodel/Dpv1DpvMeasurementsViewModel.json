@@ -1,0 +1,445 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+        "jsnTextbox": {
+            "displayName": "{{i18n.enterJSN}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "dbValue": "",
+            "dispValue": "",
+            "uiValue":""
+        },
+        "fromDate": {
+            "displayName":"{{i18n.fromDate}}",
+            "type":"DATETIME",
+            "isEditable": "true",
+            "dispValue":"",
+            "uiValue":""            
+        },
+        "toDate":{
+            "displayName":"{{i18n.toDate}}",
+            "type":"DATETIME",
+            "isEditable": "true",
+            "dispValue":"",
+            "uiValue":""
+        }
+    },
+    "actions": {
+        "registerContext": {
+            "actionType": "JSFunction",
+            "method": "registerContext",
+            "deps": "js/Dpv1DpvMeasurementsService"
+        },
+        "unregisterContext": {
+            "actionType": "JSFunction",
+            "method": "unregisterContext",
+            "inputData": {},
+            "deps": "js/Dpv1DpvMeasurementsService"
+        },
+        "updateDateRangeInCtx":{
+            "actionType": "JSFunction",
+            "method": "updateDateRangeInCtx",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Dpv1DpvMeasurementsService",
+            "events": {
+                "success": [
+                            {
+                                "name": "complete",
+                                "eventData": {
+                                    "source": "toolAndInfoPanel"
+                                }
+                            }
+                        ]
+                }
+
+        },
+        "loadMeasurementData":{
+            "actionType": "JSFunctionAsync",
+            "method": "loadMeasurementData",
+            "inputData": {
+                "plantId":"{{ctx.locationContext.modelObject.props.awb0ArchetypeId.uiValues[0]}}",
+                "routineId":"{{ctx.selected.props.awb0ArchetypeId.uiValues[0]}}",
+                "fromDate": "{{ctx.Dpv.fromDate}}",
+                "toDate":"{{ctx.Dpv.toDate}}",
+                "jsn":"{{ctx.Dpv.jsn}}"
+            },
+            "dataParsers": [
+                {
+                    "id": "myDPVTableDataParser",
+                    "responseObjs": "dpvEvents"
+                }
+            ],
+            "outputData": {
+                "totalFound ": "totalFound",
+                "dpvEvents": "dpvEvents"            
+            },
+        
+            "deps": "js/Dpv1DpvMeasurementsService"
+        },      
+        "loadUserInput": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateDateRangeInCtx"
+                },
+                {
+                    "action": "refreshMeasTable"
+                }
+            ]
+        },
+        "doMeasurementsGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "measurementsDataProvider"
+        },
+        "refreshMeasTable":{
+            "actionType": "JSFunction",
+            "method": "refreshMeasTable",
+            "deps": "js/Dpv1DpvMeasurementsService"
+        }
+    },
+    "dataProviders": {
+        "measurementsDataProvider": {
+            "dataProviderType": "Static",
+            "action": "loadMeasurementData",
+            "selectionModelMode": "multiple",
+            "response": "{{data.dpvEvents}}",
+            "totalFound": "{{data.totalFound}}"
+        }
+    },
+    "columnProviders": {
+        "measurementsColumnProvider": {
+           "frozenColumnIndex": -1,
+           "headerHeight": "LARGE",
+           "columns": [
+            {
+                "name": "active",
+                "displayName": "Active",
+                "typeName": "String", 
+                "minWidth": 60,
+                "width": 60,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "buildLabel",
+                "displayName": "Build Label",
+                "typeName": "String", 
+                "minWidth": 80,
+                "width": 80,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "eventType",
+                "displayName": "Event Type",
+                "typeName": "String", 
+                "maxWidth": 300,
+                "minWidth": 80,
+                "width": 80,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "eventDatetime",
+                "displayName": "Event Date and Time",
+                "typeName": "String", 
+                "minWidth": 100,
+                "width": 125,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "vehicleProgram",
+                "displayName": "Vehicle Program",
+                "typeName": "String", 
+                "minWidth": 100,
+                "width": 100,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "phaseName",
+                "displayName": "Phase Name",
+                "typeName": "String", 
+                "minWidth": 100,
+                "width": 100,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "plantId",
+                "displayName": "PlantID",
+                "typeName": "String", 
+                "minWidth": 70,
+                "width": 70,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "routineId",
+                "displayName": "RoutineID",
+                "typeName": "String", 
+                "minWidth": 70,
+                "width": 70,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "routineRev",
+                "displayName": "Routine Revision",
+                "typeName": "String", 
+                "minWidth": 110,
+                "width": 110,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "deviceType",
+                "displayName": "Device Type",
+                "typeName": "String", 
+                "minWidth": 80,
+                "width": 80,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "partName",
+                "displayName": "Part Name",
+                "typeName": "String", 
+                "minWidth": 80,
+                "width": 80,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "device",
+                "displayName": "Device",
+                "typeName": "String", 
+                "minWidth": 80,
+                "width": 80,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "shiftNumber",
+                "displayName": "Shift number",
+                "typeName": "String", 
+                "minWidth": 80,
+                "width": 80,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "utcTime",
+                "displayName": "UTC Time",
+                "typeName": "String", 
+                "minWidth": 80,
+                "width": 80,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "shiftDay",
+                "displayName": "Shift day",
+                "typeName": "String", 
+                "minWidth": 80,
+                "width": 80,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "hiLow",
+                "displayName": "High Low",
+                "typeName": "String", 
+                "minWidth": 80,
+                "width": 80,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "eventSysId",
+                "displayName": "Event Sys ID",
+                "typeName": "String", 
+                "minWidth": 100,
+                "width": 100,
+                "enableColumnMenu": false
+            }
+            ]
+        }
+    },
+    "grids": {
+        "measurementsTable": {
+            "dataProvider": "measurementsDataProvider",
+            "columnProvider": "measurementsColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enablePinning": true,
+                "enableSorting": false
+            }
+        }
+    },
+    "dataParseDefinitions": {
+        "myDPVTableDataParser": {
+            "identifier": "{{response.clientId}}",
+            "type": "",
+            "props": {
+                "active": {
+                    "name": "active",
+                    "displayName": "active",
+                    "value": "{{response.active}}",
+                    "displayValue": "{{response.active}}",
+                    "type": "String"
+                },
+                "buildLabel": {
+                    "name": "buildLabel",
+                    "displayName": "buildLabel",
+                    "value": "{{response.buildLabel}}",
+                    "displayValue": "{{response.buildLabel}}",
+                    "type": "String"
+                },
+                "eventType": {
+                    "name": "eventType",
+                    "displayName": "eventType",
+                    "value": "{{response.eventType}}",
+                    "displayValue": "{{response.eventType}}",
+                    "type": "String"
+                },
+                "eventDatetime": {
+                    "name": "eventDatetime",
+                    "displayName": "eventDatetime",
+                    "value": "{{response.eventDatetime}}",
+                    "displayValue": "{{response.eventDatetime}}",
+                    "type": "String"
+                },
+                "vehicleProgram": {
+                    "name": "vehicleProgram",
+                    "displayName": "vehicleProgram",
+                    "value": "{{response.vehicleProgram}}",
+                    "displayValue": "{{response.vehicleProgram}}",
+                    "type": "String"
+                },
+                "phaseName": {
+                    "name": "phaseName",
+                    "displayName": "phaseName",
+                    "value": "{{response.phaseName}}",
+                    "displayValue": "{{response.phaseName}}",
+                    "type": "String"
+                },
+                "plantId": {
+                    "name": "plantId",
+                    "displayName": "plantId",
+                    "value": "{{response.plantId}}",
+                    "displayValue": "{{response.plantId}}",
+                    "type": "String"
+                },
+                "routineId": {
+                    "name": "routineId",
+                    "displayName": "routineId",
+                    "value": "{{response.routineId}}",
+                    "displayValue": "{{response.routineId}}",
+                    "type": "String"
+                },
+                "routineRev": {
+                    "name": "routineRev",
+                    "displayName": "routineRev",
+                    "value": "{{response.routineRev}}",
+                    "displayValue": "{{response.routineRev}}",
+                    "type": "String"
+                },
+                "deviceType": {
+                    "name": "deviceType",
+                    "displayName": "deviceType",
+                    "value": "{{response.deviceType}}",
+                    "displayValue": "{{response.deviceType}}",
+                    "type": "String"
+                },
+                "partName": {
+                    "name": "partName",
+                    "displayName": "partName",
+                    "value": "{{response.partName}}",
+                    "displayValue": "{{response.partName}}",
+                    "type": "String"
+                },
+                "device": {
+                    "name": "device",
+                    "displayName": "device",
+                    "value": "{{response.device}}",
+                    "displayValue": "{{response.device}}",
+                    "type": "String"
+                },
+                "shiftNumber": {
+                    "name": "shiftNumber",
+                    "displayName": "shiftNumber",
+                    "value": "{{response.shiftNumber}}",
+                    "displayValue": "{{response.shiftNumber}}",
+                    "type": "String"
+                },
+                "utcTime": {
+                    "name": "utcTime",
+                    "displayName": "utcTime",
+                    "value": "{{response.utcTime}}",
+                    "displayValue": "{{response.utcTime}}",
+                    "type": "String"
+                },
+                "shiftDay": {
+                    "name": "shiftDay",
+                    "displayName": "shiftDay",
+                    "value": "{{response.shiftDay}}",
+                    "displayValue": "{{response.shiftDay}}",
+                    "type": "String"
+                },
+                "hiLow": {
+                    "name": "hiLow",
+                    "displayName": "hiLow",
+                    "value": "{{response.hiLow}}",
+                    "displayValue": "{{response.hiLow}}",
+                    "type": "String"
+                },
+                "eventSysId": {
+                    "name": "eventSysId",
+                    "displayName": "eventSysId",
+                    "value": "{{response.eventSysId}}",
+                    "displayValue": "{{response.eventSysId}}",
+                    "type": "String"
+                }
+            }
+        }
+    },
+    "functions":{
+        "getDateString_fromDate": {
+            "functionName": "getDateString",
+            "parameters": [
+                "{{data.fromDate.dateApi.dateObject}}"
+            ]
+        },
+        "getDateString_toDate": {
+            "functionName": "getDateString",
+            "parameters": [
+                "{{data.toDate.dateApi.dateObject}}"
+            ]
+        }
+    },
+    
+    "conditions":{
+        "requireDatesEntered":{
+            "expression":"!data.fromDate.uiValue && !data.toDate.uiValue"
+        },
+        "requiredJSNEntered":{
+            "expression":"!data.jsnTextbox.uiValue"
+        }
+    },
+    "i18n":{
+        "dpvGetData": ["DpvMessages"],
+        "fromDate":["DpvMessages"],
+        "toDate" :["DpvMessages"],
+        "enterJSN": ["DpvMessages"],
+        "dpvMeasurementsPanel" : ["DpvMessages"]
+    },
+
+    
+    "onEvent": [
+        {
+            "eventId": "measurementsTable.initialized",
+            "cacheEventData": true,
+            "action": "doMeasurementsGridDataProvider"
+        }, 
+        {
+            "eventId": "measurementsTable.refreshTable",
+            "action": "doMeasurementsGridDataProvider"
+        },
+        {
+            "eventId": "measurementsTable.reset",
+            "action": "doMeasurementsGridDataProvider"
+        }
+    ],
+    "lifecycleHooks": {
+        "onMount": "registerContext"
+    }
+}

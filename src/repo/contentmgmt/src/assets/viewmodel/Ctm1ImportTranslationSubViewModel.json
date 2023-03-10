@@ -1,0 +1,245 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+        [
+            "js/aw-panel-body.directive",
+            "js/aw-panel-footer.directive",
+            "js/aw-button.directive",
+            "js/aw-i18n.directive"
+        ],
+    "actions":
+    {
+        "updateSelectedFileInfo":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                            "name": "ctm1.updateSelectedFileInfo",
+                            "eventData": {
+                                "fileName": "{{parameters.fileName}}",
+                                "fileNameNoExt": "{{parameters.fileNameNoExt}}",
+                                "fileExt": "{{parameters.fileExt}}",
+                                "formData": "{{parameters.formData}}"
+                            }
+                        } ]
+            }
+        },
+
+        "updateSelectedFileInfoAction":
+        {
+            "actionType": "JSFunction",
+            "method": "handleFileChangeResponse",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "files": "files",
+                "fileNames": "fileNames"
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1TransientFileTicketsForUpload":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-01-FileManagement",
+            "method": "getTransientFileTicketsForUpload",
+            "inputData":
+            {
+                "transientFileInfos": "{{function:getTransientFileInfos}}"
+            },
+            "outputData":
+            {
+                "fmsTickets": "transientFileTicketInfos"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "ctm1.fmsTicketGenerated"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "SOAErrorMessage"
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+        "Ctm1UpdateFormData": {
+            "actionType": "JSFunction",
+            "method": "updateFormData",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "formData": "formData"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "ctm1.fileTicketCreated"
+                    }
+                ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+        "Ctm1UploadFile":
+        {
+            "actionType": "RESTService",
+            "serviceName": "",
+            "method": "POST",
+            "inputData": {
+                "request": {
+                    "method": "POST",
+                    "url": "{{Constants.fmsUrl}}",
+                    "headers": {
+                        "Content-type": "undefined"
+                    },
+                    "data": "{{data.formData}}"
+                }
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "ctm1.fileUploaded"
+                    }
+                ]
+            }
+        },
+        "Ctm1CheckUploadsComplete": {
+            "actionType": "JSFunction",
+            "method": "checkUploadsComplete",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+        "Ctm1ImportTranslation": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ContMgmtBase-2020-01-ContentManagement",
+            "method": "importTranslation",
+            "inputData": {
+                "fileTickets": ["{{function:getImportTranslationInputs}}"]
+            },
+            "outputData": {
+                "importData": "",
+                "objectName": "{{function:getImportedLanguageName}}"
+            },
+            "actionMessages": {
+                "success": [ {
+                    "message": "importTranslationSuccess"
+                } ],
+                "failure": [ {
+                    "message": "SOAErrorMessage"
+                } ]
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "ctm1.importComplete",
+                        "eventData": {
+                            "importData": "{{data.importData}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+        "Ctm1ImportTranslationFinished": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "conditions":
+    {
+        "importValid": {
+            "expression": "data.files && data.files.length > 0 && !data.formData"
+        }
+    },
+    "functions": {
+        "getTransientFileInfos": {
+            "functionName": "getTransientFileInfos",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getImportTranslationInputs": {
+            "functionName": "getImportTranslationInputs",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getImportedLanguageName": {
+            "functionName": "getImportedLanguageName",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "ctm1.updateSelectedFileInfo",
+            "action": "updateSelectedFileInfoAction",
+            "cacheEventData": true
+        },
+        {
+            "eventId" : "ctm1.fmsTicketGenerated",
+            "action" : "Ctm1UpdateFormData"
+        },
+        {
+            "eventId": "ctm1.fileTicketCreated",
+            "action": "Ctm1UploadFile"
+        },
+        {
+            "eventId": "ctm1.fileUploaded",
+            "action": "Ctm1CheckUploadsComplete"
+        },
+        {
+            "eventId": "ctm1.fileUploadedComplete",
+            "action": "Ctm1ImportTranslation"
+        },
+        {
+            "eventId": "ctm1.importComplete",
+            "action": "Ctm1ImportTranslationFinished"
+        }
+    ],
+    "data": {
+        "className": "DCt_TranslationRevision"
+    },
+    "messages": {
+        "importTranslationSuccess": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.importSuccess}}",
+            "messageTextParams": [
+                "{{data.objectName}}"
+            ]
+        },
+        "SOAErrorMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "i18n": {
+        "importTranslation": ["ContentMgmtMessages"],
+        "import": ["ContentMgmtMessages"],
+        "importSuccess": ["ContentMgmtMessages"]
+    }
+}

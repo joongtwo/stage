@@ -1,0 +1,99 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2020.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+
+
+/*========================================================================*/
+/*============================ MFE Common Location =======================*/
+/*========================================================================*/
+
+.aw-mfe-contentPanelContainer {
+    .aw-advanced-bar-horizontal.aw-advanced-bar[type="TOOLBAR"] {
+        .aw-mfe-contentPanelToolbar {
+			box-shadow: $drop_shadow_small;
+		}
+    }
+
+	.aw-mfe-contentPanel {
+		border-color: $brand-secondary-border;
+	}
+}
+
+/*========================================================================*/
+/*============================= MFE Content Panel ========================*/
+/*========================================================================*/
+.aw-mfe-singleTabTitle {
+    .sw-tabContainer .sw-tab {
+        a.sw-tab-selected {
+            color: $tab_title;
+            border-color: $tab_title_border_color;
+
+            &:hover {
+                color: $tab_title;
+                border-bottom-color: $tab_title_border_color;
+            }
+        }
+    }
+}
+
+.aw-mfe-transparentSplitter {
+    >.aw-layout-splitterLine {
+        border-color: transparent;
+    }
+
+    >.aw-layout-splitterLineHorizontal {
+        border-color: transparent;
+    }
+}
+
+.aw-mfe-activeContentPanel {
+    border-top-color: $aw_accent_7a;
+}
+
+/*========================================================================*/
+/*=========================== MFE Extended Tooltip ============================*/
+/*========================================================================*/
+
+.aw-mfe-tooltipInstruction {
+    color: $brand_disabled_reverse_background;
+}
+
+.aw-mfe-informationWarning {
+    background-color: $brand_status_error_background;
+    border-color: $guidance_error_border_color;
+}
+
+.aw-mfe-contentPanelAdvancedBar {
+    box-shadow: $brand_secondary_box_shadow;
+}
+
+/*========================================================================*/
+/*============================= Large popup ==============================*/
+/*========================================================================*/
+
+.aw-mfe-largeHeader {
+    color: $aw_secondary_text;
+}
+
+.aw-mfe-largePopup {
+    border-top-color: $aw_secondary_text;
+}
+
+/*========================================================================*/
+/*============================= MFE Gallery Scroll Location ==============================*/
+/*========================================================================*/
+
+.aw-mfe-galleryPanel{
+    .aw-theme-separator{
+        border-color: $brand_primary_background_disabled
+    }
+}
+.aw-mfe-galleryButton{
+    &:hover {
+        background-color: $brand_selection_background_hover;
+    }
+}

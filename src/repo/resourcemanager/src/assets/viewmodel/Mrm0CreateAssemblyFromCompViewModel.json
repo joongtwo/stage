@@ -1,0 +1,516 @@
+{
+    "schemaVersion": "1.0.0",
+    "lifecycleHooks": {
+        "onMount": "initialize"
+    },
+    "actions": {
+        "initialize": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getMappedTargetResourceData"
+                },
+                {
+                    "action": "loadTargetClassesInfo",
+                    "condition": "ctx.panelContext.icoMappingData && ctx.panelContext.icoMappingData.searchTargetClassesCriteria && ctx.panelContext.icoMappingData.searchTargetClassesCriteria.length > 0"
+                }
+            ]
+        },
+        "getMappedTargetResourceData": {
+            "actionType": "JSFunction",
+            "method": "getCreateNewResourceData",
+            "inputData": {
+                "classParents": "{{ctx.panelContext.classParents}}",
+                "clsObjectDefs": "{{ctx.panelContext.clsObjectDefs}}"
+            },
+            "outputData": {
+                "mappedTargetResourceData": ""
+            },
+            "deps": "js/MrmUtils"
+        },
+        "loadTargetClassesInfo": {
+            "actionType": "dataProvider",
+            "method": "loadTargetClasses"
+        },
+        "getTargetClasses": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-IcsAw-2019-12-Classification",
+            "method": "findClassificationInfo3",
+            "inputData": {
+                "workspaceObjects": [],
+                "searchCriterias": "{{ctx.panelContext.icoMappingData.searchTargetClassesCriteria}}",
+                "classificationDataOptions": 8
+            },
+            "outputData": {
+                "classParents": "classParents",
+                "clsClassDescriptors": "clsClassDescriptors",
+                "targetClassesList": "{{function:getTargetClassesList}}"
+            },
+            "deps": "js/MrmMapClassificationObjectService"
+        },
+        "mapResource": {
+            "actionType": "JSFunction",
+            "method": "getMapICOCreateInput",
+            "inputData": {
+                "data": "{{data}}",
+                "extensionVMProps": "",
+                "creationType": "{{addPanelState.creationType}}",
+                "editHandlerIn": "{{editHandlers.addPanelEditHandler}}"
+            },
+            "outputData": {
+                "mapICOCreateInput": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "mapClassificationObject"
+                    }
+                ]
+            },
+            "deps": "js/MrmMapClassificationObjectService"
+        },
+        "mapClassificationObject": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Manufacturing-2015-03-ResourceManagement",
+            "method": "mapClassificationObject",
+            "inputData": {
+                "sourceIcoId": "{{ctx.panelContext.icoMappingData.sourceIcoID}}",
+                "targetItemId": "{{data.mapICOCreateInput.item_id}}",
+                "targetItemName": "{{data.mapICOCreateInput.item_name}}",
+                "targetItemTypeName": "{{data.mapICOCreateInput.item_type}}",
+                "targetItemRevId": "{{data.mapICOCreateInput.item_revision_id}}",
+                "targetItemDescription": "{{data.mapICOCreateInput.item_desc}}",
+                "targetClassId": "{{data.targetClassesListBox.dbValue}}",
+                "options": 2
+            },
+            "outputData": {
+                "mapICOResponse": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "getOccurrencesOfMappedResource"
+                    },
+                    {
+                        "name": "addMappedResourceToMRLNewResourcesFolder",
+                        "condition": "( ctx.sublocation.historyNameToken === 'manageResources' || ctx.sublocation.historyNameToken === 'mrlNewResources' )"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "closeMapResourcePanel"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "createAssemblyFailed",
+                        "condition": "data.mapICOResponse.ServiceData.partialErrors.length > 0"
+                    }
+                ]
+            }
+        },
+        "getOccurrencesOfMappedResource": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ResourceManager-2019-12-ResourceOccurrencesManagement",
+            "method": "getResourceOccurrences",
+            "inputData": {
+                "inputData": {
+                    "product": {
+                        "uid": "{{data.mapICOResponse.targetWsoUid}}",
+                        "type": "{{data.mapICOCreateInput.item_revision_type}}"
+                    }
+                }
+            },
+            "outputData": {
+                "parentResourceOccurrence": "parentResourceOccurrence.resourceOccurrence",
+                "productContext": "parentProductContext"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "createAssembly"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "createAssemblyFailed"
+                    }
+                ]
+            }
+        },
+        "createAssembly": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2019-06-OccurrenceManagement",
+            "method": "addObject2",
+            "inputData": {
+                "input": {
+                    "objectsToBeAdded": [
+                        "{{function:getSelectedObject}}"
+                    ],
+                    "parentElement": "{{data.parentResourceOccurrence}}",
+                    "numberOfElements": 1,
+                    "inputCtxt": {
+                        "productContext": "{{data.productContext}}"
+                    },
+                    "requestPref": {
+                        "defaultClientScopeUri": [
+                            "Awb0OccurrenceManagement"
+                        ],
+                        "displayMode": [
+                            "Tree"
+                        ],
+                        "structExpanded": [
+                            "false"
+                        ]
+                    }
+                }
+            },
+            "outputData": {
+                "addElementResponse": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "createAssemblyPostAction"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "createAssemblyFailed",
+                        "condition": "data.addElementResponse.ServiceData.partialErrors.length > 0"
+                    }
+                ]
+            },
+            "deps": "js/MrmUtils"
+        },
+        "createAssemblyPostAction": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ResourceManager-2020-12-ResourceOccurrencesManagement",
+            "method": "addResourceElementsPostActions",
+            "inputData": {
+                "successorComponents": "{{data.addElementResponse.selectedNewElementInfo.newElements}}",
+                "predecessorComponent": "{{data.parentResourceOccurrence}}"
+            },
+            "outputData": {
+                "serviceData": "ServiceData"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "openMappedResource",
+                        "condition": "data.onMapResourceOpenInNewTab.dbValue === false && conditions.isResourceOrResourceWithSummaryView"
+                    },
+                    {
+                        "name": "onMapResourceOpenInNewTab",
+                        "condition": "data.onMapResourceOpenInNewTab.dbValue === true "
+                    },
+                    {
+                        "name": "closeMapResourcePanel",
+                        "condition": "data.onMapResourceOpenInNewTab.dbValue === false "
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "createAssemblySuccessfully"
+                    }
+                ],                "failure": [
+                    {
+                        "message": "createAssemblyFailed",
+                        "condition": "data.serviceData.partialErrors.length > 0"
+                    }
+                ]
+            }
+        },
+        "openMappedResource": {
+            "actionType": "Navigate",
+            "navigateTo": "com_siemens_splm_clientfx_tcui_xrt_showObject",
+            "navigationParams": {
+                "uid": "{{data.mapICOResponse.targetWsoUid}}",
+                "pageId": "tc_xrt_Content"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "closeMapResourcePanel"
+                    }
+                ]
+            }
+        },
+        "onMapResourceOpenInNewTab": {
+            "actionType": "Navigate",
+            "navigateTo": "com_siemens_splm_clientfx_tcui_xrt_showObject",
+            "navigationParams": {
+                "uid": "{{data.mapICOResponse.targetWsoUid}}",
+                "pageId": "tc_xrt_Content"
+            },
+            "navigateIn": "newTab",
+            "events": {
+                "success": [
+                    {
+                        "name": "closeMapResourcePanel"
+                    }
+                ]
+            }
+        },
+        "addMappedResourceToMRLNewResourcesFolder": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "createRelations",
+            "inputData": {
+                "input": [
+                    {
+                        "primaryObject": {
+                            "uid": "{{ctx.mrlDashboard.mrlNewResourcesFolderUid}}",
+                            "type": "Folder"
+                        },
+                        "secondaryObject": {
+                            "uid": "{{data.mapICOResponse.targetWsoUid}}",
+                            "type": "{{data.mapICOCreateInput.item_type}}"
+                        },
+                        "relationType": "contents",
+                        "clientId": ""
+                    }
+                ]
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "reloadNewResources",
+                        "condition": "conditions.isNewResourcesSublocationSelected"
+                    }
+                ]
+            }
+        },
+        "refreshPWAOfNewResourcesSubLocation": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "primaryWorkarea.reset"
+                    }
+                ]
+            }
+        },
+        "closeMapResourcePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+        "setActiveView": {
+            "actionType": "JSFunction",
+            "method": "resetActiveView",
+            "inputData": {
+                "stateName": "{{data.activeState}}",
+                "destPanelId": "AddObjectPrimarySub"
+            },
+            "outputData": {
+                "activeState": ""
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "targetClassChange": {
+            "actionType": "JSFunction",
+            "method": "targetClassChange",
+            "inputData": {
+                "currentTargetClass": "{{data.targetClassesListBox}}",
+                "targetClasses": "{{data.targetClassesList}}"
+            },
+            "outputData": {
+                "selectedTargetClassInfo": ""
+            },
+            "deps": "js/MrmMapClassificationObjectService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "mapClassificationObject",
+            "action": "mapClassificationObject"
+        },
+        {
+            "eventId": "getMappedTargetResourceData",
+            "action": "getMappedTargetResourceData"
+        },
+        {
+            "eventId": "reloadNewResources",
+            "action": "refreshPWAOfNewResourcesSubLocation"
+        },
+        {
+            "eventId": "closeMapResourcePanel",
+            "action": "closeMapResourcePanel"
+        },
+        {
+            "eventId": "openMappedResource",
+            "action": "openMappedResource"
+        },
+        {
+            "eventId": "onMapResourceOpenInNewTab",
+            "action": "onMapResourceOpenInNewTab"
+        },
+        {
+            "eventId": "addMappedResourceToMRLNewResourcesFolder",
+            "action": "addMappedResourceToMRLNewResourcesFolder"
+        },
+        {
+            "eventId": "getOccurrencesOfMappedResource",
+            "action": "getOccurrencesOfMappedResource"
+        },
+        {
+            "eventId": "createAssembly",
+            "action": "createAssembly"
+        },
+        {
+            "eventId": "createAssemblyPostAction",
+            "action": "createAssemblyPostAction"
+        }
+    ],
+    "functions": {
+        "getTargetClassesList": {
+            "functionName": "getTargetClassesList"
+        },
+        "getSelectedObject": {
+            "functionName": "getSelectedObject"
+        }
+    },
+    "dataProviders": {
+        "loadTargetClasses": {
+            "action": "getTargetClasses",
+            "inputData": {},
+            "response": "{{data.targetClassesList}}",
+            "totalFound": "{{data.targetClassesList.length}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "i18n": {
+        "create": [
+            "mrmMessages"
+        ],
+        "mrm0CreateAssemblySuccessfully": [
+            "mrmMessages"
+        ],
+        "onMapResourceOpenInNewTab": [
+            "mrmMessages"
+        ],
+        "mrm0TargetClassification": [
+            "mrmMessages"
+        ],
+        "mrm0SelectTargetClass": [
+            "mrmMessages"
+        ],
+        "Mrm0TargetClassPathLabel": [
+            "mrmMessages"
+        ],
+        "mrm0CreateAssemblyFromCompTitle": [
+            "mrmMessages"
+        ]
+    },
+    "conditions": {
+        "isNewResourcesSublocationSelected": {
+            "expression": "ctx.sublocation.historyNameToken === 'mrlNewResources'"
+        },
+        "isResourceOrResourceWithSummaryView": {
+            "expression": "ctx.ViewModeContext.ViewModeContext === 'ResourceView' || ctx.ViewModeContext.ViewModeContext === 'ResourceSummaryView'"
+        }
+    },
+    "messages": {
+        "createAssemblySuccessfully": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.mrm0CreateAssemblySuccessfully}}"
+        },
+        "createAssemblyFailed": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "data": {
+        "targetClassesListBox": {
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": true,
+            "displayName": "{{i18n.mrm0SelectTargetClass}}",
+            "isEditable": "true"
+        },
+        "onMapResourceOpenInNewTab": {
+            "displayName": "{{i18n.onMapResourceOpenInNewTab}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "targetClassPathLabel": {
+            "path": "{{i18n.Mrm0TargetClassPathLabel}}"
+        },
+        "addPanelState": {
+            "initialValues": {
+                "creationType": "",
+                "createdObject": "",
+                "sourceObjects": "",
+                "selectedTab": ""
+            },
+            "meta": {}
+        },
+        "activeState": {
+            "initialValues": {
+                "activeView": "AddObjectPrimarySub",
+                "context": {}
+            },
+            "meta": {}
+        },
+        "projectState": {
+            "initialValues": {
+                "selectedProjects": [],
+                "triggerAssign": false
+            },
+            "meta": {
+                "selectedProjects": {
+                    "field": "true",
+                    "type": "OBJECT"
+                },
+                "triggerAssign": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        },
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

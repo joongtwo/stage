@@ -1,0 +1,372 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "sharedDataState": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "isCreateMoreActivity": false,
+        "searchBox": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "searchBoxPlaceHolder": {
+            "dbValue": "{{i18n.searchByCode}}"
+        },
+        "messages": {
+            "activityCreated": [
+                {
+                    "text": "{{i18n.createActivityMessage}}"
+                }
+            ]
+        },
+        "selectedActivities": ""
+    },
+    "dataProviders": {
+        "searchBoxDataProvider": {
+            "action": "loadData",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "actions": {
+        "doSearch": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "performSearch",
+                    "condition": "data.searchBox.dbValue.length > 0"
+                }
+            ]
+        },
+        "performSearch": {
+            "actionType": "dataProvider",
+            "method": "searchBoxDataProvider"
+        },
+        "loadData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "searchInput": {
+                    "attributesToInflate": [],
+                    "internalPropertyName": "",
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "providerName": "Awp0FullTextSearchProvider",
+                    "searchCriteria": {
+                        "searchString": "{{data.searchBox.dbValue}}"
+                    },
+                    "searchFilterFieldSortType": "Priority",
+                    "searchFilterMap6": {
+                        "WorkspaceObject.object_type": [
+                            {
+                                "searchFilterType": "",
+                                "stringValue": "Ept0LibraryActivity"
+                            }
+                        ]
+                    },
+                    "searchSortCriteria": [],
+                    "cursor": {
+                        "startIndex": "{{data.dataProviders.searchDataProvider.startIndex}}",
+                        "endIndex": 0,
+                        "startReached": false,
+                        "endReached": false
+                    },
+                    "columnFilters": [],
+                    "focusObjUid": "",
+                    "pagingType": "",
+                    "startIndex": 0
+                },
+                "inflateProperties": false,
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "hostingClientName": "",
+                    "clientScopeURI": "Awp0SearchResults",
+                    "operationType": "intersection",
+                    "columnsToExclude": []
+                },
+                "saveColumnConfigData": {
+                    "scope": "",
+                    "scopeName": "",
+                    "clientScopeURI": "",
+                    "columnConfigId": "",
+                    "columns": []
+                },
+                "noServiceData": false
+            },
+            "policy": {
+                "types": [
+                    {
+                        "name": "Ept0LibraryActivityBase",
+                        "properties": [
+                            {
+                                "name": "Mfg0quantity"
+                            },
+                            {
+                                "name": "time_system_frequency"
+                            },
+                            {
+                                "name": "time_system_category"
+                            },
+                            {
+                                "name": "ept0repeats"
+                            },
+                            {
+                                "name": "ept0perCycle"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "{{json:searchResultsJSON}}"
+            }
+        },
+        "initializeData": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateCreateAndMoreStatus",
+                    "inputArg": {
+                        "status": false
+                    }
+                },
+                {
+                    "action": "getFrequencyMode"
+                },
+                {
+                    "action": "setSelectedActivity"
+                }
+            ]
+        },
+        "getFrequencyMode": {
+            "actionType": "JSFunction",
+            "method": "isStandardFrequencyMode",
+            "outputData": {
+                "isStandardFrequency": ""
+            },
+            "deps": "js/epDataCardService"
+        },
+        "updateWidgetState": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateSelectionData"
+                },
+                {
+                    "action": "updateWidgetValuesOnSelectionChange",
+                    "condition": "data.selectionChanged"
+                }
+            ]
+        },
+        "updateSelectionData": {
+            "actionType": "JSFunction",
+            "method": "updateSelectionOnData",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.searchBoxDataProvider}}",
+                "previousSelection": "{{data.selectedObject}}",
+                "newSelection": "{{data.dataProviders.searchBoxDataProvider.selectedObjects[0]}}"
+            },
+            "outputData": {
+                "selectedObject": "selectedObject",
+                "selectionChanged": "selectionChanged"
+            },
+            "deps": "js/epAddActivityDataCardService"
+        },
+        "updateWidgetValuesOnSelectionChange": {
+            "actionType": "JSFunction",
+            "method": "updateWidgetValues",
+            "inputData": {
+                "sharedData": "{{fields.sharedDataState}}",
+                "dataCard": "{{data.selectedObject}}",
+                "isStandardFrequency": "{{data.isStandardFrequency}}"
+            },
+            "deps": "js/epDataCardPropertyWidgetService"
+        },
+        "resetSharedState": {
+            "actionType": "JSFunction",
+            "method": "updateWidgetValues",
+            "inputData": {
+                "sharedData": "{{fields.sharedDataState}}"
+            },
+            "deps": "js/epDataCardPropertyWidgetService"
+        },
+        "closeAction": {
+            "actionType": "JSFunctionAsync",
+            "method": "hide",
+            "inputData": {
+                "popupEl": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        },
+        "createAndMoreAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateCreateAndMoreStatus",
+                    "inputArg": {
+                        "status": true
+                    }
+                },
+                {
+                    "action": "emptySearchResult"
+                },
+                {
+                    "action": "createActivity"
+                },
+                {
+                    "action": "resetSharedState"
+                },
+                {
+                    "action": "updateCreateAndMoreStatus",
+                    "inputArg": {
+                        "status": false
+                    }
+                }
+            ]
+        },
+        "createAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "createActivity"
+                },
+                {
+                    "action": "closeAction"
+                }
+            ]
+        },
+        "createActivity": {
+            "actionType": "JSFunctionAsync",
+            "method": "instantiateActivity",
+            "inputData": {
+                "libraryActivity": "{{data.dataProviders.searchBoxDataProvider.selectedObjects[0]}}",
+                "inputObject": "{{subPanelContext.inputObject}}",
+                "selectedObjects": "{{data.selectedActivities}}",
+                "properties": "{{data.sharedDataState}}"
+            },
+            "deps": "js/epDataCardService"
+        },
+        "updateCreateAndMoreStatus": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "status": "{{parameters.status}}"
+            },
+            "outputData": {
+                "isCreateMoreActivity": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "emptySearchResult": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clearSearchBox"
+                },
+                {
+                    "action": "clearDataProvider"
+                },
+                {
+                    "action": "clearSearchResult"
+                }
+            ]
+        },
+        "clearSearchResult": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": {
+                    "searchResults": [],
+                    "totalFound": 0
+                }
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults"
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "clearSearchBox": {
+            "actionType": "JSFunction",
+            "method": "clearSearchBox",
+            "inputData": {
+                "searchBox": "{{data.searchBox}}"
+            },
+            "outputData": {
+                "searchBox": ""
+            },
+            "deps": "js/epAddActivityDataCardService"
+        },
+        "clearDataProvider": {
+            "actionType": "JSFunction",
+            "method": "clearDataProvider",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.searchBoxDataProvider}}"
+            },
+            "deps": "js/epAddActivityDataCardService"
+        },
+        "setSelectedActivity": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{subPanelContext.selectedObjects}}"
+            },
+            "outputData": {
+                "selectedActivities": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "updateSelectedActivity": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{parameters.selection}}"
+            },
+            "outputData": {
+                "selectedActivities": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "searchBoxDataProvider.selectionChangeEvent",
+            "action": "updateWidgetState"
+        },
+        {
+            "eventId": "epActivitiesTableDataProvider.selectionChangeEvent",
+            "action": "updateSelectedActivity",
+            "inputArgs": {
+                "selection": "{{eventData.selectedObjects}}"
+            }
+        }
+    ],
+    "lifecycleHooks": {
+        "onMount": "initializeData"
+    },
+    "i18n": {
+        "CreateButtonTitle": [
+            "CreateObjectMessages"
+        ],
+        "CreateAndAddMoreObjectButtonTitle": [
+            "CreateObjectMessages"
+        ],
+        "CancelButtonTitle": [
+            "CreateObjectMessages"
+        ],
+        "searchByCode": [
+            "epDataCardMessages"
+        ],
+        "createActivityMessage": [
+            "epDataCardMessages"
+        ]
+    }
+}

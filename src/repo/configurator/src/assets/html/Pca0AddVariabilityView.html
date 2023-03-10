@@ -1,0 +1,27 @@
+<aw-command-panel caption="i18n.addPanelTitle" context="subPanelContext">
+    <aw-panel-body>
+        <aw-tab-set tabs="data.tabModels">
+            <aw-panel-body visible-when="conditions.showFeatures">
+                <pca0-variability-explorer-tree
+                    sub-panel-context="{ ...subPanelContext, tabKey : data.selectedTab.tabKey,
+                    showCheckBox: 'true', showMultiSelectOnLoad: 'true', constraintsData: ctx.panelContext,
+                    selectionModel: selectionModels.variabilitySelectionModel }"
+                selection-data="data.selectionData" selected-variability="data.selectedVariability">
+                </pca0-variability-explorer-tree>
+            </aw-panel-body>
+            <aw-panel-body visible-when="conditions.showModels">
+                <pca0-variability-explorer-tree
+                    sub-panel-context="{ ...subPanelContext, tabKey : data.selectedTab.tabKey,
+                    showCheckBox: 'true', showMultiSelectOnLoad: 'true', constraintsData: ctx.panelContext,
+                    selectionModel: selectionModels.variabilitySelectionModel }"
+                selection-data="data.selectionData" selected-variability="data.selectedVariability">
+                </pca0-variability-explorer-tree>
+            </aw-panel-body>
+        </aw-tab-set>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="addVariabilityToConstraintTree">
+            {{i18n.addButtonTitle}}
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

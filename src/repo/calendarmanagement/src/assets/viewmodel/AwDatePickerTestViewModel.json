@@ -1,0 +1,39 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "reveal": {
+            "actionType": "JSFunction",
+            "method": "getCurrentDate",
+            "deps": "js/AwDatePickerTestService",
+            "inputData": {
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "outputData": {
+                "todayDate.dbValue": "sampleJsonData"
+            }
+        }
+    },
+    "data": {
+            "todayDate": {
+                "displayName":"{{i18n.date}}",
+                "type": "DATE",
+                "dbValue": ""
+            },
+            "dateLabel": {
+                "displayName": "{{i18n.date}}",
+                "type": "STRING",
+                "labelPosition": "PROPERTY_LABEL_AT_TOP"
+            }
+    },
+    "lifecycleHooks": {
+        "onMount": "reveal"
+    },
+    "conditions": {},
+    "onEvent": [],
+    "i18n": {
+        "date":[
+            "CalendarManagementMessages"
+        ]
+    }
+}

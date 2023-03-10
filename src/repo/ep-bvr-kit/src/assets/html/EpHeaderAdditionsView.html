@@ -1,0 +1,10 @@
+<div class="sw-row align-center" exist-when="ctx.ep.scopeObject">
+    <aw-separator is-vertical="true" class="aw-epHeader-separator" exist-when="conditions.isCheckedOutBySameUser">
+    </aw-separator>
+    <div title="{{i18n.checkedOutByYou}}" exist-when="conditions.isCheckedOutBySameUser"
+        class="aw-epHeader-indicatorChip">
+        <aw-icon icon-id="indicatorChipCheckedOut" class="aw-epHeader-indicatorChip"></aw-icon>
+    </div>
+    <aw-separator is-vertical="true" class="aw-epHeader-separator"></aw-separator>
+    <ep-header-time-unit-link></ep-header-time-unit-link>
+</div>

@@ -1,0 +1,387 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpBalancingStationTilesList_selectedStation": {
+            "onChangeAction": "selectionSync",
+            "syncObject": {}
+        },
+        "EpBalancingStationTilesList_selectedEntity": {
+            "syncObject": {}
+        },
+        "EpBalancingStationTilesList_selectedStationAndPr": {
+            "syncObject": {}
+        },
+        "EpBalancingStationTilesList_setBalancingInformation": {
+            "syncObject": {},
+            "onChangeAction": "initializeStationTilesList"
+        }
+    },
+    "data": {
+        "isLoading": true,
+        "stationAndPrSelection": {
+            "station":0  ,
+            "pr":0,
+            "changedStationDuePrSelectionFlag": null
+        },
+        "prSelectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "selectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "messages": {
+            "noStationsInTheLine": [
+                {
+                    "text": "{{i18n.noStationsInTheLine}}"
+                }
+            ]
+        }
+    },
+    "dataProviders": {
+        "stationTilesProvider": {
+            "dataProviderType": "Static",
+            "response": "{{ports.EpBalancingStationTilesList_setBalancingInformation.syncObject.balancingStations}}",
+            "totalFound": "{{ports.EpBalancingStationTilesList_setBalancingInformation.syncObject.numberOfStations}}",
+            "selectionModelMode": "single",
+            "inputData": {
+                "selectionData": "{{fields.selectionData}}",
+                "selectionModel": "{{selectionModels.stationTilesListSelectionModel}}"
+            },
+            "commandsAnchor": "LB_StationTile"
+        }
+    },
+    "actions": {
+        "initializeStationTilesList": {
+            "actionType": "batchJob",
+            "steps": [
+
+                {
+                    "action": "saveMaxStationsCycleTime"
+                },
+                {
+                    "action": "loadStationTilesDataProvider"
+                },
+                {
+                    "action": "publishFocusSelection",
+                    "condition": "conditions.hasStations"
+                },
+                {
+                    "action": "hideLoadingMessage"
+                },
+                {
+                    "action":"loadSelectionFromLocalStorage"
+                }
+
+            ]
+        },
+        "updateStationSelection": {
+            "actionType": "JSFunction",
+            "method": "updateStationAndPrSelection",
+            "inputData": {
+                "station": "{{data.selectionData.selected[0]}}",
+                "pr":null,
+                "changedStationDuePrSelectionFlag":"{{data.stationAndPrSelection.changedStationDuePrSelectionFlag}}"
+            },
+            "outputData": {
+                "stationAndPrSelection": ""
+            },
+            "deps": "js/epBalancingSelectionService"
+        },
+        "updatePrSelection": {
+            "actionType": "JSFunction",
+            "method": "updateStationAndPrSelection",
+            "inputData": {
+                "station": "{{data.prSelectionData.station}}",
+                "pr": "{{data.prSelectionData.selected[0]}}",
+                "changedStationDuePrSelectionFlag": "{{data.prSelectionData.changedStationDuePrSelectionFlag}}"
+            },
+            "outputData": {
+                "stationAndPrSelection": ""
+            },
+            "deps": "js/epBalancingSelectionService"
+        },
+        "selectionSync": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action":"loadSelectionFromLocalStorage"
+                },
+                {
+                    "action": "clearChangedStationDuePrSelectionFlag"
+                },
+                {
+                    "action": "setSelectionFromPort"
+                },
+                {
+                    "action": "publishFocusSelection"
+                }
+            ]
+        },
+        "updateNoSelection": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateNoSelectionEntity"
+                },
+                {
+                    "action": "updateNoSelectionStationAndPr"
+                }
+            ]
+        },
+        "updateNoSelectionEntity": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpBalancingStationTilesList_selectedEntity",
+                "syncObject": {}
+            }
+        },
+        "updateNoSelectionStationAndPr": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpBalancingStationTilesList_selectedStationAndPr",
+                "syncObject": {}
+            }
+        },
+        "setSelectionFromPort": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.stationTilesProvider}}",
+                "objectsToSelect": "{{ports.EpBalancingStationTilesList_selectedStation.syncObject}}"
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "loadStationTilesDataProvider": {
+            "actionType": "dataProvider",
+            "method": "stationTilesProvider"
+        },
+        "saveMaxStationsCycleTime": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "object": "{{ports.EpBalancingStationTilesList_setBalancingInformation.syncObject.maxTimeInLine}}"
+            },
+            "outputData": {
+                "max": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "publishFocusSelection": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "stationTilesProvider.focusSelection"
+                    }
+                ]
+            }
+        },
+        "updateSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpBalancingStationTilesList_selectedStationAndPr",
+                "syncObject": "{{data.stationAndPrSelection}}"
+            }
+        },
+        "updateSelectedStationForEntityPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpBalancingStationTilesList_selectedEntity",
+                "syncObject": "{{data.stationAndPrSelection.station}}"
+            }
+        },
+        "updateSelectedPrForEntityPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpBalancingStationTilesList_selectedEntity",
+                "syncObject": "{{data.stationAndPrSelection.pr}}"
+            }
+        },
+
+        "clearPrSelectionData": {
+            "actionType": "JSFunction",
+            "method": "clearPrSelectionData",
+            "inputData": {
+                "prSelectionData": "{{fields.prSelectionData}}"
+            },
+            "deps": "js/epBalancingSelectionService"
+        },
+        "clearChangedStationDuePrSelectionFlag": {
+            "actionType": "JSFunction",
+            "method": "clearChangedStationDuePrSelectionFlag",
+            "inputData": {
+                "stationAndPrSelection": "{{data.stationAndPrSelection}}"
+            },
+            "outputData": {
+                "stationAndPrSelection": ""
+            },
+            "deps": "js/epBalancingSelectionService"
+        },
+        "loadSelectionFromLocalStorage":{
+            "actionType": "JSFunction",
+            "method": "loadSelectionFromLocalStorage",
+            "inputData": {
+                "dataProvider":"{{data.dataProviders.stationTilesProvider}}",
+                "station":  "{{fields.selectionData}}",
+                "pr":  "{{fields.prSelectionData}}",
+                "pageContext":"{{ctx.epPageContext.loadedObject}}"
+            },
+            "deps": "js/epBalancingSelectionService"
+        },
+        "updateSelectionLocalStorage":{
+            "actionType": "JSFunction",
+            "method": "updateSelectionLocalStorage",
+            "inputData": {
+                "dataProvider":"{{data.dataProviders.stationTilesProvider}}",
+                "stationAndPrSelection":  "{{data.stationAndPrSelection}}",
+                "pageContext":"{{ctx.epPageContext.loadedObject}}"
+            },
+            "deps": "js/epBalancingSelectionService"
+
+        },
+        "stationSelectionChanged": {
+            "actionType": "batchJob",
+            "steps": [
+
+                {
+                    "action": "updateStationSelection",
+                    "condition":"!data.stationAndPrSelection.changedStationDuePrSelectionFlag && data.selectionData.selected[0]"
+                },
+                {
+                    "action": "updateSelectionPort",
+                    "condition":"!data.stationAndPrSelection.changedStationDuePrSelectionFlag && data.selectionData.selected[0]"
+                },
+                {
+                    "action": "updateSelectedStationForEntityPort",
+                    "condition":"!data.stationAndPrSelection.changedStationDuePrSelectionFlag && data.selectionData.selected[0]"
+                },
+                {
+                    "action": "clearPrSelectionData",
+                    "condition":"!data.stationAndPrSelection.changedStationDuePrSelectionFlag && data.selectionData.selected[0]"
+                },
+                {
+                    "action": "clearChangedStationDuePrSelectionFlag"
+                }
+            ]
+        },
+        "prSelectionChanged": {
+            "actionType": "batchJob",
+            "steps": [
+
+                {
+                    "action":"updatePrSelection",
+                    "condition":"data.prSelectionData.station"
+                },
+                {
+                    "action": "updateSelectionPort",
+                    "condition": "data.prSelectionData.station"
+                },
+                {
+                    "action": "updateSelectedPrForEntityPort",
+                    "condition": "data.prSelectionData.station"
+                },
+                {
+                    "action":"setSelectionFromProcessResourceSelection",
+                    "condition":"conditions.needToUpdateStationFromPr"
+                }
+            ]
+        },
+        "setSelectionFromProcessResourceSelection": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.stationTilesProvider}}",
+                "objectsToSelect": "{{data.stationAndPrSelection.station}}"
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "hideLoadingMessage": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": false
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "lifecycleHooks": {
+    "onUpdate": [
+            {
+                "action": "stationSelectionChanged",
+                "observers": ["viewModel.atomicData.selectionData"]
+            },
+            {
+                "action": "prSelectionChanged",
+                "observers": ["viewModel.atomicData.prSelectionData"]
+            },
+            {
+                "action":"updateSelectionLocalStorage",
+                "observers":[
+                    "viewModel.data.stationAndPrSelection.pr",
+                    "viewModel.data.stationAndPrSelection.station" ]
+            }
+        ]
+    },
+    "i18n": {
+        "noStationsInTheLine": [
+            "BalancingMessages"
+        ]
+    },
+    "conditions": {
+        "hasStations": {
+            "expression": "ports.EpBalancingStationTilesList_setBalancingInformation.syncObject.numberOfStations > 0"
+        },
+        "needToUpdateStationFromPr":{
+            "expression": {
+                "$or": [
+                {
+                    "$source": "data.dataProviders.stationTilesProvider.selectedObjects.length",
+                    "$query": {
+                        "$eq": 0
+                    }
+                },
+                {
+                    "$source": "data.dataProviders.stationTilesProvider.selectedObjects[0]",
+                    "$query": {
+                        "$neq": "data.prSelectionData.station"
+                    }
+                },
+                {
+                    "$source": "viewModel.data.stationAndPrSelection.pr",
+                    "$query": {
+                        "$neq": "data.prSelectionData.selected[0]"
+                    }
+                }
+            ]
+            }
+        }
+
+    },
+    "selectionModels": {
+        "stationTilesListSelectionModel": {
+            "selectionMode": "single"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "stationTilesProvider.selectionChangeEvent",
+            "condition": "data.dataProviders.stationTilesProvider.selectedObjects.length === 0 && !data.stationAndPrSelection.changedStationDuePrSelectionFlag",
+            "action": "updateNoSelection",
+            "cacheEventData": true
+        }
+    ]
+}

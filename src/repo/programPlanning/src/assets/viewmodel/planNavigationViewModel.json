@@ -1,0 +1,73 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+        "_sublocation": {
+            "name": "com.siemens.splm.client.prgplanning:PlanNavigationSubLocation",
+            "nameToken": "com.siemens.splm.client.prgplanning:PlanNavigationSubLocation",
+            "clientScopeURI": "Pgp0Timeline",
+            "viewBase": "Pgp0PlanNavigation",
+            "label": {
+                "source": "/i18n/ProgramPlanningCommandPanelsMessages",
+                "key": "timeline"
+            },
+            "selectionQueryParamKey": "c_uid",
+            "viewModes": {
+                "TreeView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": false
+                },
+                "TreeSummaryView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": true
+                }
+            },
+            "awSubLocationPref": {
+                "orientation": "HORIZONTAL"
+            }
+        },
+        "setupPrgBoardState": {
+            "initialValues": {
+                "isPrgBoardActive": false,
+                "context": "",
+                "selectedObjs": ""
+            },
+            "meta": {}
+        },
+        "planNavigationContext": {
+            "initialValues": {
+                "isStructureEditSupported": true,
+                "columnFilters": [],
+                "showMilestonesOperation": "",
+                "selectedPlansForShowMilestones": []
+            },
+            "meta": {}
+        }
+    },
+    "actions": {
+        "initializePlanNavigationSublocation": {
+            "actionType": "JSFunction",
+            "method": "initializePlanNavigationSublocation",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "eventSubscriptions": "eventSubscriptions",
+                "initSuccess": "initSuccess"
+            },
+            "deps": "js/PlanNavigationService"
+        },
+        "destroyPlanNavigationSublocation": {
+            "actionType": "JSFunction",
+            "method": "destroyPlanNavigationSublocation",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/PlanNavigationService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initializePlanNavigationSublocation",
+        "onUnmount": "destroyPlanNavigationSublocation"
+    }
+}

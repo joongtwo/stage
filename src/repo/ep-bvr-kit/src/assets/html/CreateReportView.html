@@ -1,0 +1,14 @@
+<aw-panel>
+    <aw-panel-body>
+        <aw-radiobutton class="sw-column" prop="data.reportTypes" list="data.reportTypesList.dbValue">
+        </aw-radiobutton>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="closePopupWindow" size="auto" button-type="base">
+            <aw-i18n>i18n.cancelReportBtn</aw-i18n>
+        </aw-button>
+        <aw-button enable-when="conditions.isEnabledCreateBtn" action="createReportAction" size="auto">
+            <aw-i18n>i18n.createReportBtn</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-panel>

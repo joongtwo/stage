@@ -1,0 +1,819 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2022.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+
+.aw-epBalancing-stationTileProcessResourceName {
+    width: 100%;
+}
+
+.aw-epBalancing-trackingCnInfo {
+    overflow: hidden;
+    line-height: 3.9;
+
+    .aw-widgets-checkSelectPanel {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: inline-block;
+    }
+
+}
+
+.aw-epBalancing-stationTileProcessResourceTotalTimePanel,
+.aw-epBalancing-stationTileUnassignedTimePanel {
+    display: flex;
+    align-items: center;
+    font-size: $fontsize_normal;
+    width: 100%;
+}
+
+.aw-epBalancing-stationTileUnassignedTimePanel {
+    padding: rem-calc(2) rem-calc(5);
+    border: rem-calc(1) solid;
+}
+
+.aw-epBalancing-stationTileProcessResourceTotalTimePanel,
+.aw-epBalancing-stationTileUnassignedTimePanel {
+    height: rem-calc(20);
+    padding: 0 rem-calc(5);
+}
+
+.aw-epBalancing-stationTileClockIcon {
+    width: rem-calc(12);
+    height: rem-calc(12);
+}
+
+.aw-epBalancing-stationTileTotalTimeBarContainer,
+.aw-epBalancing-stationTileUnassignedTotalTimeBarContainer {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    height: 100%;
+}
+
+.aw-epBalancing-stationTileTotalTimeBarCycleTime {
+    width: rem-calc(1);
+    height: 100%;
+}
+
+.aw-epBalancing-stationTileTotalTimeBarExceedingTime,
+.aw-epBalancing-stationTileTotalTimeBarUsedTime,
+.aw-epBalancing-stationTileTotalTimeBarUnassignedTime,
+.aw-epBalancing-stationTileStationBarZero {
+    height: rem-calc(8);
+}
+
+.aw-epBalancing-stationTileTotalTimeBarExceedingTimeValue,
+.aw-epBalancing-stationTileTotalTimeBarAvailableTimeValue,
+.aw-epBalancing-stationTileUnassignedBarPlaceholder {
+    width: rem-calc(60);
+    text-align: left;
+    text-indent: rem-calc(5);
+}
+
+.aw-epBalancing-stationTilePrNameAndCapacityContainer {
+    width: rem-calc(100);
+    display: flex;
+    margin-right: rem-calc(2);
+
+    .aw-icon {
+        width: rem-calc(12);
+        height: rem-calc(12);
+        margin-right: rem-calc(2);
+    }
+}
+
+.aw-epBalancing-stationTileTotalTimeBarPlaceholder {
+    height: 100%;
+}
+
+.aw-epBalancing-stationTileTotalTimeField {
+    width: rem-calc(40);
+    text-align: right;
+    font-weight: 700;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.aw-epBalancing-stationTileStationBarZero {
+    width: rem-calc(1);
+    position: absolute;
+}
+
+/************************/
+.aw-epBalancing-singleStationTile {
+    border: rem-calc(1) solid;
+    cursor: pointer;
+    padding: rem-calc(5);
+}
+
+.aw-epBalancing-textEllipses {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.aw-epBalancing-maximizedVertically {
+    height: 0;
+}
+
+.aw-epBalancing-stationTileList {
+
+    .aw-widgets-cellListWidget {
+        padding: rem-calc(5);
+
+        .aw-widgets-cellListWidget {
+            padding: 0;
+        }
+    }
+
+    .aw-widgets-cellListItem {
+        padding: 0;
+        margin-bottom: rem-calc(7);
+
+        &:last-child {
+            margin-bottom: 0;
+        }
+
+        &:first-child {
+            margin-top: rem-calc(4);
+        }
+    }
+
+    .aw-widgets-cellListItem.sw-aria-border {
+        padding-bottom: 0;
+    }
+
+    .sw-aria-border {
+        border: none;
+    }
+
+    .aw-widgets-emptyCell {
+        height: 0;
+    }
+}
+
+.aw-epBalancing-cycleTimeStationHeader {
+    display: flex;
+    font-size: $fontsize_large;
+    font-weight: 600;
+    margin-bottom: rem-calc(10);
+
+    >* {
+        margin-right: rem-calc(10);
+    }
+}
+
+.aw-epBalancing-stationTileProcessResourceCapacity {
+    white-space: nowrap;
+}
+
+.aw-epBalancing-stationTileUnassignedTitle {
+    width: rem-calc(100);
+}
+
+.aw-epBalancing-editResourceCapacityText {
+    margin-bottom: 20px;
+}
+
+.aw-epBalancing-editResourceCapacityDataList {
+    flex-direction: row;
+    align-items: center;
+    width: rem-calc(250);
+}
+
+/* ================================ PRI ================================ */
+
+.aw-epBalancing-priRoot {
+    width: 100%;
+    padding: rem-calc(20) rem-calc(15) rem-calc(15);
+}
+
+.mfgGeneralUI-container-absoluteContainer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+.aw-epBalancing-priPanelWrapper {
+    height: 100%;
+    overflow-y: auto;
+    position: relative;
+    width: 100%;
+}
+
+.aw-epBalancing-priSvgWrapper {
+    position: absolute;
+    left: rem-calc(120);
+}
+
+.aw-epBalancing-priSvg {
+    shape-rendering: crispEdges;
+    height: 100%;
+}
+
+.aw-epBalancing-priContainer {
+    height: rem-calc(40);
+    width: 100%;
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 rem-calc(10);
+    box-sizing: border-box;
+}
+
+.aw-epBalancing-priContainer svg {
+    width: rem-calc(16);
+    height: rem-calc(16);
+}
+
+.aw-epBalancing-priNamePanel {
+    width: rem-calc(100);
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.aw-epBalancing-priName {
+    line-height: rem-calc(30);
+}
+
+.aw-epBalancing-priContainerCapacity {
+    white-space: nowrap;
+    margin-left: rem-calc(2);
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.aw-epBalancing-priTimePanel {
+    display: flex;
+    width: rem-calc(60);
+}
+
+.aw-epBalancing-priTime {
+    width: rem-calc(50);
+    font-weight: 500;
+    text-align: right;
+}
+
+.aw-epBalancing-priPanelWrapper * {
+    cursor: default;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    font-size: $fontsize_normal;
+}
+
+.aw-epBalancing-priItemSelected {
+    stroke-width: 2;
+}
+
+.aw-epBalancing-priItemWrapper {
+    fill: transparent;
+    cursor: pointer;
+}
+
+.aw-epBalancing-priGap {
+    fill: transparent;
+}
+
+.aw-epBalancing-priGap:HOVER~.aw-epBalancing-priGapBorder {
+    stroke-width: 1;
+}
+
+.aw-epBalancing-priTime {
+    width: rem-calc(50);
+    font-weight: 500;
+}
+
+.aw-epBalancing-priArrow {
+    stroke-width: 1;
+    fill: none;
+}
+
+.aw-epBalancing-priCurrentArrow {
+    stroke-dasharray: 3, 1;
+}
+
+.aw-epBalancing-priExistingArrowOverlay {
+    stroke-width: 10;
+    stroke: transparent;
+    fill: none;
+    cursor: pointer;
+}
+
+.aw-epBalancing-priArrowHead {
+    shape-rendering: geometricprecision;
+}
+
+.aw-epBalancing-priIndicatorLines {
+    stroke-width: 1;
+}
+
+.aw-epBalancing-priCycleTimeLine {
+    stroke-dasharray: 9, 4;
+}
+
+.aw-epBalancing-priLineOverlay {
+    stroke-width: rem-calc(6);
+    stroke: transparent;
+    fill: none;
+}
+
+.aw-epBalancing-priDropTarget {
+    stroke-width: rem-calc(2);
+}
+
+.aw-epBalancing-priSharedIcon {
+    margin-right: rem-calc(7);
+}
+
+/* ================================ PRI ================================ */
+
+
+/* ================================ OVERVIEW ================================ */
+
+.aw-epBalancing-overviewContainer {
+    .aw-mfe-contentPanel {
+        border: none;
+    }
+
+    .aw-advanced-bar {
+        box-shadow: 0 rem-calc(2) rem-calc(4) 0 rgb(0 0 0 / 30%);
+        z-index: 1;
+    }
+
+    .aw-epBalancing-stationTileList .aw-widgets-cellListWidget .aw-epBalancing-stationTileProcessResourceTotalTimePanel {
+        background-color: transparent;
+        padding: 1px 0;
+        height: rem-calc(16);
+        cursor: pointer;
+    }
+
+    .aw-widgets-cellListItem.sw-aria-border {
+        margin-bottom: 0;
+    }
+
+    .aw-widgets-cellListItem.aw-widgets-cellListItemSelected:not(.aw-widgets-dropframe) {
+        background-color: transparent;
+    }
+}
+
+/* ================================ OVERVIEW ================================ */
+
+
+/* ================================ TIME DISTRIBUTION ================================ */
+
+.aw-epBalancing-tdViewMainPanel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.aw-epBalancing-tdViewToolbarContainer {
+    height: rem-calc(55);
+    margin-bottom: rem-calc(8);
+}
+
+.aw-epBalancing-tdToolbarPvIndication {
+    height: rem-calc(15);
+    width: rem-calc(15);
+    border-radius: 50%;
+    margin-right: rem-calc(5);
+}
+
+.aw-epBalancing-tdToolbarPvInformation span {
+    margin-left: rem-calc(5);
+}
+
+.aw-epBalancing-tdToolbarPvInformation {
+    display: flex;
+    font-size: $fontsize_large;
+    align-items: center;
+}
+
+.aw-epBalancing-tdToolbarFilterButtonPanel {
+    margin-left: rem-calc(15);
+}
+
+.aw-epBalancing-tdToolbarFilterButton {
+    height: 100%;
+    font-family: inherit;
+    padding: 0 rem-calc(20);
+    margin: none;
+    font-size: $fontsize_large;
+}
+
+.aw-epBalancing-tdToolbarFilterButtonEnabled {
+    border: rem-calc(1) solid;
+}
+
+.aw-epBalancing-tdToolbarFilterButtonDisabled {
+    border: rem-calc(1) solid;
+    cursor: default;
+}
+
+.aw-epBalancing-tdToolbarMainPanel {
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding: rem-calc(10);
+    box-sizing: border-box;
+}
+
+.aw-epBalancing-tdViewChartContainer {
+    flex: 1;
+    position: relative;
+}
+
+.aw-epBalancing-tdChartMainPanel {
+    height: 100%;
+    width: 100%;
+}
+
+.aw-epBalancing-tdChartChartLayout {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.aw-epBalancing-tdChartScaleAndMessageContainer {
+    height: rem-calc(30);
+}
+
+.aw-epBalancing-tdScaleScaleAndMessageLine {
+    height: 100%;
+    display: flex;
+}
+
+.aw-epBalancing-tdScaleUnassignedMessage {
+    font-size: $fontsize_large;
+    display: flex;
+    height: 100%;
+    align-items: center;
+    text-indent: rem-calc(-20);
+    line-height: rem-calc(22);
+    font-style: italic;
+}
+
+.aw-epBalancing-tdScaleScaleContainer {
+    font-size: $fontsize_small;
+}
+
+.aw-epBalancing-tdScaleScaleText {
+    position: absolute;
+    margin-top: rem-calc(5);
+    width: rem-calc(40);
+    margin-left: rem-calc(-20);
+    text-align: center;
+}
+
+.aw-epBalancing-tdScaleScaleLine {
+    height: rem-calc(1);
+    position: absolute;
+}
+
+.aw-epBalancing-tdScaleTimeIndicator {
+    position: absolute;
+    width: rem-calc(50);
+    margin-left: rem-calc(-25);
+    display: none;
+    font-size: $fontsize_normal;
+}
+
+.aw-epBalancing-tdScaleTimeIndicatorTriangle {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 rem-calc(5) rem-calc(6) rem-calc(5);
+    margin: auto;
+}
+
+.aw-epBalancing-tdScaleTimeIndicatorText {
+    text-align: center;
+    width: 100%;
+    height: rem-calc(19);
+    line-height: rem-calc(19);
+}
+
+.aw-epBalancing-tdChartLoadingMessageContainer {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+}
+
+.aw-epBalancing-tdChartStationsContainer {
+    flex-grow: 1;
+    position: relative;
+}
+
+.aw-epBalancing-tdChartStationsInnerContainer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+}
+
+.aw-epBalancing-tdStationMainPanel {
+    display: flex;
+}
+
+.aw-epBalancing-tdStationMainPanel:not(:last-child),
+.aw-epBalancing-tdProcessResourceMainPanel:not(:last-child) {
+    margin-bottom: rem-calc(6);
+}
+
+.aw-epBalancing-tdStationLabelContainer,
+.aw-epBalancing-tdScaleScaleLeftSpaceHolder {
+    width: rem-calc(22);
+    margin-right: rem-calc(8);
+}
+
+.aw-epBalancing-tdStationLabel {
+    transform: rotate(90deg);
+    white-space: nowrap;
+    margin-top: rem-calc(10);
+    margin-left: rem-calc(1);
+    font-size: $fontsize_normal;
+    font-weight: 500;
+}
+
+.aw-epBalancing-tdStationProcessResourcesContainer {
+    flex-grow: 1;
+}
+
+.aw-epBalancing-tdProcessResourceMainPanel {
+    display: flex;
+    height: rem-calc(80);
+    box-sizing: border-box;
+}
+
+.aw-epBalancing-tdProcessResourceData {
+    padding: rem-calc(10);
+    box-sizing: border-box;
+}
+
+.aw-epBalancing-tdProcessResourceData,
+.aw-epBalancing-tdScaleUnassignedMessage {
+    width: rem-calc(270);
+    margin-right: rem-calc(50);
+}
+
+.aw-epBalancing-tdProcessResourceNameAndIcon {
+    display: flex;
+    align-items: center;
+}
+
+.aw-epBalancing-tdProcessResourceName {
+    font-size: $fontsize_large;
+    font-weight: 500;
+    height: rem-calc(25);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.aw-epBalancing-tdProcessResourceNameAndIcon svg {
+    height: rem-calc(13);
+    width: rem-calc(13);
+    margin-right: rem-calc(5);
+    margin-bottom: rem-calc(6);
+}
+
+.aw-epBalancing-tdProcessResourceWeighted {
+    font-size: $fontsize_large;
+    margin-bottom: rem-calc(5);
+}
+
+.aw-epBalancing-tdProcessResourceMinMax {
+    font-size: $fontsize_large;
+}
+
+.aw-epBalancing-tdProcessResourceGridLine {
+    height: calc(100% + rem-calc(6));
+    width: rem-calc(1);
+    position: absolute;
+}
+
+.aw-epBalancing-tdChartStationsContainer .aw-epBalancing-tdStationMainPanel:last-child .aw-epBalancing-tdProcessResourceMainPanel:last-child .aw-epBalancing-tdProcessResourceGridLine {
+    height: 100%;
+}
+
+.aw-epBalancing-tdProcessResourceBubblesAndGridLinesContainer,
+.aw-epBalancing-tdScaleScaleContainer {
+    flex-grow: 1;
+    position: relative;
+}
+
+.aw-epBalancing-tdProcessResourceTimesContainer,
+.aw-epBalancing-tdScaleScaleRightSpaceHolder {
+    width: rem-calc(230);
+    margin-left: rem-calc(70);
+}
+
+.aw-epBalancing-tdTimesMainPanel {
+    height: 100%;
+    position: relative;
+}
+
+.aw-epBalancing-tdTimesLine {
+    display: flex;
+    position: absolute;
+    bottom: rem-calc(10);
+    align-items: center;
+}
+
+.aw-epBalancing-tdTimesLine svg {
+    height: rem-calc(20);
+    width: rem-calc(20);
+}
+
+.aw-epBalancing-tdTimesTimeText,
+.aw-epBalancing-tdTimesDeviationText {
+    font-size: $fontsize_large;
+}
+
+.aw-epBalancing-tdTimesTimeText {
+    margin-left: rem-calc(15);
+}
+
+.aw-epBalancing-tdTimesDeviationText {
+    margin-left: rem-calc(5);
+}
+
+.aw-epBalancing-tdBubblesMainPanel {
+    height: 100%;
+    position: relative;
+}
+
+.aw-epBalancing-tdBubblesCycleTimeContainer {
+    height: 100%;
+    position: absolute;
+    padding: 0 rem-calc(5);
+    z-index: 10002;
+}
+
+.aw-epBalancing-tdBubblesCycleTime {
+    width: rem-calc(2);
+    height: 100%;
+}
+
+.aw-epBalancing-tdBubblesCycleTimeTooltip {
+    width: 0;
+    height: rem-calc(15);
+    transition: all 0.2s linear;
+    text-align: center;
+    line-height: rem-calc(15);
+    position: absolute;
+    font-size: $fontsize_normal;
+    bottom: rem-calc(15);
+    visibility: hidden;
+}
+
+.aw-epBalancing-tdBubblesCycleTimeContainer:HOVER .aw-epBalancing-tdBubblesCycleTimeTooltip {
+    width: rem-calc(30);
+    visibility: visible;
+}
+
+.aw-epBalancing-tdProcessResourceBubblesContainer,
+.aw-epBalancing-tdProcessResourceGridLinesContainer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.aw-epBalancing-tdBubblesBubbleWrapper {
+    display: flex;
+    position: absolute;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+.aw-epBalancing-tdBubblesBubble {
+    opacity: 0.3;
+    border-radius: 50%;
+    width: 0;
+    height: 0;
+    box-sizing: border-box;
+    transition-property: width, height;
+    transition-timing-function: ease-in-out;
+}
+
+.aw-epBalancing-tdBubblesBubble:HOVER {
+    opacity: 0.5;
+    cursor: pointer;
+}
+
+.aw-epBalancing-tdBubblesBubbleHighlighted,
+.aw-epBalancing-tdBubblesBubbleHighlighted:HOVER {
+    opacity: 1;
+    z-index: 10001 !important;
+}
+
+.aw-epBalancing-tdBubblesBubbleSelected,
+.aw-epBalancing-tdBubblesBubbleSelected:HOVER {
+    opacity: 1;
+    z-index: 10003 !important;
+}
+
+.aw-epBalancing-tdBubblesBubbleTooltip {
+    position: fixed;
+    z-index: 10004;
+}
+
+.aw-epBalancing-tdBubblesBubbleTooltipText {
+    font-size: $fontsize_normal;
+    padding: 0 rem-calc(10);
+    white-space: nowrap;
+    height: rem-calc(19);
+    line-height: rem-calc(17);
+    text-align: center;
+}
+
+.aw-epBalancing-tdBubblesBubbleTooltipPvName {
+    font-weight: bold;
+}
+
+.aw-epBalancing-tdBubblesBubbleTooltipSeparator {
+    margin: 0 rem-calc(10);
+}
+
+.aw-epBalancing-tdBubblesBubbleTooltipTriangle {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: rem-calc(6) rem-calc(5) 0 rem-calc(5);
+    margin-left: rem-calc(10);
+}
+
+
+/* ================================ TIME DISTRIBUTION ================================ */
+
+
+/* ================================ DASHBOARD ================================ */
+
+.aw-epBalancing-dashboardPanel {
+
+    .aw-epBalancing-dashboardChipsPanel {
+        align-items: center;
+    }
+
+    .aw-epBalancing-dashboardProductVariants {
+        flex-direction: row;
+        align-items: center;
+        width: rem-calc(250);
+        margin-left: 0;
+
+        input,
+        input:hover {
+            padding: 0.5rem;
+            border-width: 0.0833333333rem;
+        }
+
+        span {
+            margin-bottom: 0;
+        }
+
+        .sw-property-name {
+            width: auto;
+        }
+    }
+}
+
+.aw-epBalancing-dashboardChip {
+    margin-right: rem-calc(8);
+
+    &.aw-epBalancing-chipReversed {
+        .aw-mfeChip-label {
+            order: 1;
+        }
+    }
+}
+
+.aw-epBalancing-dashboardOverridingTaktTime>span::after {
+    content: '';
+    height: rem-calc(8);
+    width: rem-calc(8);
+    position: absolute;
+    border-radius: rem-calc(4);
+    margin-left: rem-calc(-5);
+    margin-top: rem-calc(-1);
+}
+
+/* ================================ DASHBOARD ================================ */

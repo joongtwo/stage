@@ -1,0 +1,68 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2020.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+
+.aw-lineLayout-container {
+    height: 100%;
+    width: 100%
+}
+
+.aw-lineLayout-imageViewer {
+    height: 100%;
+    margin: 0 16px;
+
+    aw-viewer-header {
+        display: none;
+    }
+}
+
+.aw-lineLayout-headerContainer {
+    @include flexbox();
+    @include flex-direction(row);
+    @include justify-content(space-between);
+    @include align-items(center);
+    width: 100%;
+    height: 56px;
+}
+
+.aw-lineLayout-headerLineName {
+    white-space: nowrap;
+    font-size: $h2_font_size;
+    margin-left: 16px;
+    width: 100%;
+}
+
+.aw-lineLayout-associatedElementCommandsPanel {
+    border: 2px dashed;
+    height: 216px;
+    box-sizing: border-box;
+    width: 598px;
+    margin: 18% 0 0 34%;
+    box-shadow: none;
+    cursor: pointer;
+
+    .aw-commands-svg {
+        height: 22px;
+        width: 22px;
+        display: inline-flex;
+    }
+}
+
+.aw-lineLayout-commandsLabel {
+    margin-left: 10px;
+    font-size: $h3_font_size;
+    font-weight: 400;
+}
+
+.aw-lineLayout-iconLabelContainer {
+    display: inline-flex;
+}
+
+.aw-lineLayout-loadingLabelPanel {
+    margin-top: 23%;
+    text-align: center;
+}

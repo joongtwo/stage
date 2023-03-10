@@ -1,0 +1,447 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "view-path": {
+            "type": "object"
+        },
+        "activities-model": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpActivities_setActivities": {
+            "syncObject": {}
+        },
+        "EpActivitiesTable_selectedOperation": {
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "messages": {
+            "noActivities": [
+                {
+                    "text": "{{i18n.noActivities}}"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "inputUpdated": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "doGridDataProvider",
+                    "condition": "props.subPanelContext.inputObject !== props.activitiesModel.selectedModelObject"
+                },
+                {
+                    "action": "updateCommandContext"
+                }
+            ]
+        },
+        "updateActivitiesModel": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetAtomicData": "{{props.activitiesModel}}",
+                "updatedValues": {
+                    "selectedModelObject": "{{props.subPanelContext.inputObject}}",
+                    "activityVMObjects": "{{data.activitiesList}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "updateStartedLoading": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetAtomicData": "{{props.activitiesModel}}",
+                "updatedValues": {
+                    "isLoading": true
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "updateFinishedLoading": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetAtomicData": "{{props.activitiesModel}}",
+                "updatedValues": {
+                    "isLoading": false
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "doGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "epActivitiesTableDataProvider"
+        },
+        "createColumnsForAndRegisterPolicyActivitiesTable": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "createColumnsForActivitiesTable"
+                },
+                {
+                    "action": "registerPolicy"
+                },
+                {
+                    "action": "addIconColumn",
+                    "condition": "subPanelContext.addIconColumn"
+                }
+            ]
+        },
+        "createColumnsForActivitiesTable": {
+            "actionType": "JSFunction",
+            "method": "createColumnsWithTwoObjects",
+            "inputData": {
+                "vmoObjectType": "CfgActivityLine",
+                "secondaryObjectType": "Mfg0BvrOperation",
+                "preferenceName": "{{subPanelContext.preferenceName}}",
+                "dataProvider": "{{data.dataProviders.epActivitiesTableDataProvider}}",
+                "columnProvider": {
+                    "enableSorting": true,
+                    "isFilteringEnabled": true
+                },
+                "additionalPolicyObjects": "{{subPanelContext.additionalPolicyObjects}}"
+            },
+            "deps": "js/epActivitiesService"
+        },
+        "loadActivitiesBatchAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateStartedLoading"
+                },
+                {
+                    "action": "loadActivities"
+                },
+                {
+                    "action": "updateActivitiesModel"
+                },
+                {
+                    "action": "updateFinishedLoading"
+                }
+            ]
+        },
+        "loadActivities": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadActivities",
+            "deps": "js/epActivitiesService",
+            "inputData": {
+                "contextProcess": "{{subPanelContext.inputObject}}",
+                "sortCriteria": "{{data.columnProviders.epActivitiesTableColumnProvider.sortCriteria}}",
+                "columnFilters": "{{data.columnProviders.epActivitiesTableColumnProvider.columnFilters}}",
+                "orderByPredecessor": "{{subPanelContext.orderByPredecessor}}"
+            },
+            "outputData": {
+                "activitiesList": ""
+            }
+        },
+        "registerPolicy": {
+            "actionType": "JSFunction",
+            "method": "register",
+            "inputData": {
+                "name": "epActivitiesTable",
+                "policyObj": "{{data.dataProviders.epActivitiesTableDataProvider.policy}}"
+            },
+            "deps": "js/mfePolicyService"
+        },
+        "unregisterPolicy": {
+            "actionType": "JSFunction",
+            "method": "unregister",
+            "inputData": {
+                "name": "epActivitiesTable"
+            },
+            "deps": "js/mfePolicyService"
+        },
+        "onDataProviderVmoCollectionChange": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateTimeManagementProperties"
+                },
+                {
+                    "action": "addOperationPropertiesToVmos",
+                    "condition": "data.activitiesList.length > 0"
+                },
+                {
+                    "action": "refreshTable",
+                    "condition": "data.activitiesList.length > 0"
+                },
+                {
+                    "action": "updateActiveActivitiesPort"
+                },
+                {
+                    "action": "updateTabDisplayNameQuantity"
+                }
+            ]
+        },
+        "addOperationPropertiesToVmos": {
+            "actionType": "JSFunction",
+            "method": "updatePropertiesForOperationInVmo",
+            "inputData": {
+                "secondaryObjectType": "Mfg0BvrOperation",
+                "activitiesVmos": "{{data.dataProviders.epActivitiesTableDataProvider.viewModelCollection.loadedVMObjects}}",
+                "preferenceName": "{{subPanelContext.preferenceName}}",
+                "sortCriteria": "{{data.columnProviders.epActivitiesTableColumnProvider.sortCriteria}}",
+                "columnFilters": "{{data.columnProviders.epActivitiesTableColumnProvider.columnFilters}}"
+
+            },
+            "deps": "js/epActivitiesService"
+        },
+        "refreshTable": {
+            "actionType": "JSFunction",
+            "method": "refreshTable",
+            "inputData": {
+                "tableId": "EpActivitiesTable"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "unregisterPolicyAndCloseAttachmentWindows": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "unregisterPolicy"
+                },
+                {
+                    "action": "closeAttachmentWindows"
+                }
+            ]
+        },
+        "closeAttachmentWindows": {
+            "actionType": "JSFunction",
+            "method": "closeAttachmentWindows",
+            "inputData": {
+                "contextProcess": "{{subPanelContext.inputObject}}",
+                "vmos": "{{data.dataProviders.epActivitiesTableDataProvider.viewModelCollection.loadedVMObjects}}"
+            },
+            "deps": "js/epActivitiesService"
+        },
+        "updateActiveActivitiesPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpActivities_setActivities",
+                "syncObject": "{{data.dataProviders.epActivitiesTableDataProvider.viewModelCollection.loadedVMObjects}}"
+            }
+        },
+        "saveColumnsWidth": {
+            "actionType": "JSFunctionAsync",
+            "method": "saveColumnsWidth",
+            "inputData": {
+                "secondaryObjectType": "Mfg0BvrOperation",
+                "preferenceName": "{{subPanelContext.preferenceName}}",
+                "columns": "{{parameters.eventData.columns}}"
+            },
+            "deps": "js/epActivitiesService"
+        },
+        "updateTabDisplayNameQuantity": {
+            "actionType": "JSFunction",
+            "method": "setTabDisplayNameWithQuantity",
+            "inputData": {
+                "tabData": "{{subPanelContext.tabContext}}",
+                "count": "{{data.dataProviders.epActivitiesTableDataProvider.viewModelCollection.totalFound}}",
+                "dataProvider": "{{data.dataProviders.epActivitiesTableDataProvider}}",
+                "activities": "{{data.activitiesList}}"
+            },
+            "deps": "js/epActivitiesService"
+        },
+        "handleSelectionChanged": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getAssociatedOperation",
+                    "outputArg": [
+                        "associatedOperation"
+                    ],
+                    "condition": "data.dataProviders.epActivitiesTableDataProvider.selectionModel.mode === 'single'"
+                },
+                {
+                    "action": "updateSelectedOperationSyncObjectsPort",
+                    "inputArg": {
+                        "operationToSelect": "{{actionData.associatedOperation}}"
+                    },
+                    "condition": "data.dataProviders.epActivitiesTableDataProvider.selectionModel.mode === 'single'"
+                },
+                {
+                    "action": "updateCommandContext"
+                }
+            ]
+        },
+        "getAssociatedOperation": {
+            "actionType": "JSFunction",
+            "method": "getAssociatedOperation",
+            "inputData": {
+                "syncObject": "{{data.dataProviders.epActivitiesTableDataProvider.selectedObjects}}"
+            },
+            "outputData": {
+                "associatedOperation": ""
+            },
+            "deps": "js/epActivitiesService"
+        },
+        "updateSelectedOperationSyncObjectsPort": {
+            "actionType": "Sync",
+            "parameters": {
+                "operationToSelect": "{{result.operationToSelect}}"
+            },
+            "inputData": {
+                "port": "EpActivitiesTable_selectedOperation",
+                "syncObject": "{{parameters.operationToSelect}}"
+            }
+        },
+        "updateCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext.tabContext}}",
+                "commandContext": {
+                    "inputObject": "{{subPanelContext.inputObject}}",
+                    "selectedObjects": "{{data.dataProviders.epActivitiesTableDataProvider.selectedObjects}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "handleActivityCreated": {
+            "actionType": "JSFunction",
+            "method": "addCreatedActivity",
+            "inputData": {
+                "createdUid": "{{parameters.eventData.created}}",
+                "dataProvider": "{{data.dataProviders.epActivitiesTableDataProvider}}",
+                "orderByPredecessor": "{{subPanelContext.orderByPredecessor}}"
+            },
+            "deps": "js/epActivitiesService"
+        },
+        "handleActivitiesDeleted": {
+            "actionType": "JSFunction",
+            "method": "removeFromDataProvider",
+            "inputData": {
+                "uidsToRemove": "{{parameters.eventData.deleted}}",
+                "dataProvider": "{{data.dataProviders.epActivitiesTableDataProvider}}"
+            },
+            "deps": "js/epActivitiesService"
+        },
+        "addIconColumn": {
+            "actionType": "JSFunction",
+            "method": "addIconColumn",
+            "inputData": {
+                "columns": "{{data.dataProviders.epActivitiesTableDataProvider.columnConfig.columns}}",
+                "nameColumn": "me_cl_object_name"
+            },
+            "outputData": {
+                "dataProviders.epActivitiesTableDataProvider.columnConfig.columns": ""
+            },
+            "deps": "js/mfeTableService"
+        },
+        "updateTimeManagementProperties": {
+            "actionType": "JSFunctionAsync",
+            "method": "updateTimeManagementProperties",
+            "deps": "js/epActivitiesService",
+            "events": {
+                "success": [
+                    {
+                        "name": "ep.activitiesTimeChanged"
+                    }
+                ]
+            }
+        }
+    },
+    "conditions": {
+        "hasActivities": {
+            "expression": "data.dataProviders.epActivitiesTableDataProvider.viewModelCollection.loadedVMObjects.length > 0"
+        },
+        "noActivities": {
+            "expression": "data.dataProviders.epActivitiesTableDataProvider.viewModelCollection.loadedVMObjects.length === 0"
+        },
+        "noActivitiesAfterFilter": {
+            "expression": "data.dataProviders.epActivitiesTableDataProvider.viewModelCollection.loadedVMObjects.length === 0 && viewModel.columnProviders.epActivitiesTableColumnProvider.columnFilters"
+        },
+        "hasInput": {
+            "expression": "props.subPanelContext.inputObject && props.subPanelContext.inputObject.uid"
+        },
+        "showNoActivitiesMsg": {
+            "expression": "conditions.hasInput && conditions.noActivities && !conditions.noActivitiesAfterFilter"
+        }
+    },
+    "grids": {
+        "EpActivitiesTable": {
+            "dataProvider": "epActivitiesTableDataProvider",
+            "columnProvider": "epActivitiesTableColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableSorting": true,
+                "isFilteringEnabled": true
+            }
+        }
+    },
+    "dataProviders": {
+        "epActivitiesTableDataProvider": {
+            "action": "loadActivitiesBatchAction",
+            "editContext": "{{ctx.mfgReadOnlyMode.readOnlyMode === true ? '': 'EP_ACITIVITIES_TABLE_EDIT_CONTEXT'}}",
+            "response": "{{data.activitiesList}}",
+            "totalFound": "{{data.activitiesList.length}}",
+            "selectionModelMode": "{{ctx.preferences.EP_TimeAnalysisMode[0] === 'ACTIVITIES' ? 'multiple' : 'single'}}"
+        }
+    },
+    "columnProviders": {
+        "epActivitiesTableColumnProvider": {
+            "frozenColumnIndex": -1,
+            "resetColumnAction": "saveColumnsWidth",
+            "saveColumnAndLoadAction": "saveColumnsWidth",
+            "loadColumnAction": "createColumnsForAndRegisterPolicyActivitiesTable"
+        }
+    },
+    "lifecycleHooks": {
+        "onUnmount": "unregisterPolicyAndCloseAttachmentWindows",
+        "onUpdate": {
+            "action": "inputUpdated",
+            "observers": [
+                "props.subPanelContext.inputObject"
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "epActivitiesTableDataProvider.modelObjectsUpdated",
+            "action": "onDataProviderVmoCollectionChange"
+        },
+        {
+            "eventId": "columnArrange",
+            "action": "saveColumnsWidth",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "criteria": {
+                "name": "EpActivitiesTable"
+            }
+        },
+        {
+            "eventId": "epActivitiesTableDataProvider.selectionChangeEvent",
+            "action": "handleSelectionChanged"
+        },
+        {
+            "eventId": "ep.activityCreated",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "handleActivityCreated"
+        },
+        {
+            "eventId": "ep.activitiesDeleted",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "handleActivitiesDeleted"
+        }
+    ],
+    "i18n": {
+        "noActivities": [
+            "ActivitiesMessages"
+        ]
+    }
+}

@@ -1,0 +1,27 @@
+<div class="sw-column">
+    <div exist-when="props.column.isTreeNavigation === true">
+        {props.column.displayName}
+    </div>
+    <div class="sw-row" exist-when="props.column.isTreeNavigation !== true && !props.column.isSplitColumn">
+        <div class="sw-column aw-cfg-constraintsGridHeaderText">
+            {props.column.displayName}
+        </div>
+        <div class="aw-cfg-constraintsGridHeaderIcon">
+            <img src="{{data.headerIconUrl}}" alt="" extended-tooltip-context="data.tooltipDetails"
+                extended-tooltip="Pca0ConstraintColumnExtTooltip" exist-when="!data.showPropsInfoInGrid">
+            </img>
+        </div>
+    </div>
+    <div class="sw-row" class="aw-cfg-topTreeHeaderSpacingBetweenRows">
+        <!-- Spacing between Rows in Table Header -->
+    </div>
+    <div class="sw-row" exist-when="props.column.isTreeNavigation !== true && !props.column.isSplitColumn" aw-class="[ {'aw-cfg-inclusionRule': data.constraintType.sourceType === 'Cfg0IncludeRule'},
+        {'aw-cfg-exclusionRule': data.constraintType.sourceType === 'Cfg0ExcludeRule'},
+        {'aw-cfg-exceptionRule': data.constraintType.sourceType === 'Cfg0ExceptionRule'},
+        {'aw-cfg-availabilityRule': data.constraintType.sourceType === 'Cfg0AvailabilityRule'},
+        {'aw-cfg-defaultRule': data.constraintType.sourceType === 'Cfg0DefaultRule'} ]">
+        <div class="sw-column aw-cfg-constraintsGridHeaderText">
+            {{data.constraintType.propDisplayValue}}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,153 @@
+// Copyright 2021 Siemens Product Lifecycle Management Software Inc.
+
+/* aw-markup */
+
+.aw-widgets-cellListCellImage.aw-markup-cellIndentation {
+    padding-left: $padding_xlarge;
+}
+
+.aw-markup-groupCellTitle {
+    width: 100%;
+    text-overflow: ellipsis;
+}
+
+.aw-markup-cell {
+    width: 100%;
+    flex: 1 1 auto;
+}
+
+.aw-markup-cell ul {
+    list-style: disc outside;
+}
+
+.aw-markup-cell ol {
+    list-style: decimal outside;
+}
+
+.aw-markup-cell i,
+.aw-markup-cell em {
+    font-style: italic;
+}
+
+.aw-markup-colorPatch {
+    display: inline-block;
+    width: rem-calc(16);
+    height: rem-calc(16);
+    margin: $margin_small;
+    border: $command_panel_border;
+}
+
+.aw-markup-colorPicker {
+    width: 100%;
+    position:absolute;
+    opacity: 0;
+}
+
+.aw-markup-colorOpacity {
+    padding-right: $padding_small;
+}
+
+.aw-markup-gdntSymbols {
+    width: 100%;
+}
+
+.aw-markup-gdntSymbols span {
+    width: 7%;
+    display: inline-block;
+    text-align: center;
+    margin: $margin_small 0 $margin_small 0;
+    font-size: $fontsize_2x_large;
+    cursor: pointer;
+}
+
+.aw-markup-gdntFrame {
+    border: $command_panel_border;
+    border-collapse: collapse;
+    margin: $margin_small 0 $margin_small 0;
+}
+
+.aw-markup-gdntFrame td {
+    border: $command_panel_border;
+}
+
+.aw-markup-gdntFrame input[type="text"] {
+    border: none;
+}
+
+.aw-markup-weldSymbols {
+    width: 100%;
+}
+
+.aw-markup-weldSymbols span {
+    width: 12.5%;
+    display: inline-block;
+    text-align: center;
+    font-size: $fontsize_2x_large;
+    cursor: pointer;
+}
+
+.aw-markup-weldFrame {
+    margin: $margin_normal 0 $margin_normal 0;
+}
+
+.aw-markup-weldFrame svg {
+    display: block;
+    margin: $margin_small auto $margin_small auto;
+}
+
+.aw-markup-leaderSymbols {
+    width: 100%;
+}
+
+.aw-markup-leaderSymbols span {
+    width: 10%;
+    display: inline-block;
+    text-align: center;
+    margin: $margin_small 0 $margin_small 0;
+    font-size: $fontsize_2x_large;
+    cursor: pointer;
+}
+
+.aw-markup-editor.ck.ck-editor__editable_inline {
+    margin: $margin_normal 0;
+    min-height: 5rem;
+    max-height: 20rem;
+    border: $command_panel_border;
+}
+
+.ck-font-size-dropdown .ck.ck-dropdown__panel {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.aw-markup-editor.ck.ck-content {
+    span, p, strong, b, em, i {
+        font-family: inherit;
+    }
+}
+
+.aw-markup-cellRichContent {
+    margin-top: $margin_small;
+    max-height: 8rem;
+    span, p, strong, b, em, i {
+        font-family: inherit;
+    }
+}
+
+li.aw-widgets-cellListItemSelected .aw-markup-cellRichContent {
+    max-height: none;
+}
+
+.aw-markup-geomDef {
+    display: none;
+}
+
+.aw-markup-geomVal {
+    position: relative;
+    margin: $margin_small 0 $margin_small 0;
+    border: $command_panel_border;
+}
+
+.aw-markup-geomSvg {
+    margin: $margin_small $margin_small 0 $margin_small;
+}

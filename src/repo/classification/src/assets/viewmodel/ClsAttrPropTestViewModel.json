@@ -1,0 +1,257 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-cls-properties.directive",
+        "js/aw-command-panel-section.directive",
+        "js/exists-when.directive",
+        "js/aw-search-box.directive"
+    ],
+    "ports": {
+
+    },
+    "lifecycleHooks": {
+        "render": "render",
+        "onMount": "init",
+        "onUpdate": {
+            "action": "update",
+            "observers": [
+                "viewModel.data.vmparray","viewModel.data.testAttributes"
+            ]
+        }
+    },
+    "props": {
+    },
+    "actions": {
+        "render": {
+            "method": "ClsAttrPropTestRenderFunction",
+            "deps": "js/classifyAttrPropTestService"
+        },
+        "init": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "initVmps"
+                },
+                {
+                    "action": "initAttributes"
+                }
+            ]
+        },
+        "initVmps": {
+            "actionType": "JSFunction",
+            "method": "initVmps",
+            "outputData": {
+                "vmparray": ""
+            },
+            "deps": "js/classifyAttrPropTestService"
+        },
+        "initAttributes": {
+            "actionType": "JSFunction",
+            "method": "initAttributes",
+            "inputData": {
+                "testAttributes": "{{data.testAttributes}}"
+            },
+            "outputData": {
+                "testAttributes": ""
+            },
+            "deps": "js/classifyAttrPropTestService"
+        },
+        "update": {
+            "actionType": "JSFunctionAsync",
+            "method": "update",
+            "inputData": {
+                "testAttributes": "{{data.testAttributes}}"
+            },
+            "deps": "js/classifyAttrPropTestService"
+        }
+    },
+    "functions": {
+
+    },
+    "dataProviders": {
+        "unitLinkDataProvider": {
+            "dataProviderType": "Static",
+            "response": [
+                {
+                    "propDisplayValue": "mm",
+                    "propInternalValue": "mm",
+                    "selected": false
+                },
+                {
+                    "propDisplayValue": "cm",
+                    "propInternalValue": "cm",
+                    "selected": false
+                },
+                {
+                    "propDisplayValue": "km",
+                    "propInternalValue": "km",
+                    "selected": false
+                }
+            ],
+            "totalFound": 3
+        }
+    },
+    "columnProviders": {
+
+    },
+    "grids": {
+
+    },
+    "data": {
+        "attr1": {
+            "displayName": "{{i18n.TestAttribute1}}",
+            "uiValue": "123",
+            "dbValue": "123",
+            "type": "STRING",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "anno1": {
+            "displayName": "{{i18n.anno1}}",
+            "uiValue": "",
+            "dbValue": "",
+            "type": "STRING",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "attr2": {
+            "displayName": "{{i18n.TestAttribute2}}",
+            "uiValue": "",
+            "dbValue": "",
+            "type": "STRING",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "anno2": {
+            "displayName": "{{i18n.anno2}}",
+            "uiValue": "",
+            "dbValue": "",
+            "type": "STRING",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "attr3": {
+            "displayName": "{{i18n.TestAttribute3}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": true
+        },
+        "anno3": {
+            "displayName": "{{i18n.anno3}}",
+            "uiValue": "",
+            "dbValue": "",
+            "type": "STRING"
+        },
+        "attr4": {
+            "displayName": "{{i18n.TestAttribute4}}",
+            "uiValue": "TestValue",
+            "dbValue": "TestValue",
+            "type": "STRING",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "anno4": {
+            "displayName": "{{i18n.anno4}}",
+            "uiValue": "",
+            "dbValue": "",
+            "type": "STRING"
+        },
+        "attr5": {
+            "displayName": "{{i18n.TestAttribute5}}",
+            "uiValue": 5,
+            "dbValue": 5,
+            "type": "INTEGER",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "anno5": {
+            "displayName": "{{i18n.anno5}}",
+            "uiValue": "",
+            "dbValue": "",
+            "type": "STRING"
+        },
+        "attr6": {
+            "displayName": "{{i18n.TestAttribute6}}",
+            "dbValue": 6,
+            "type": "INTEGER",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "anno6": {
+            "displayName": "{{i18n.anno6}}",
+            "uiValue": "",
+            "dbValue": "",
+            "type": "STRING"
+        },
+        "unitLink": {
+            "displayName": "{{i18n.units}}",
+            "iconName": "cmdListView",
+            "type": "STRING",
+            "isRequired": "true",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "showanno": {
+            "displayName": "{{i18n.showAnnotation}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": true
+        },
+        "showallprop": {
+            "displayName": "{{i18n.showAll}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": true
+        },
+        "showmode": {
+            "displayName": "{{i18n.createMode}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": true
+        },
+        "panelMode": {
+            "type": "INTEGER",
+            "dbValue": 0,
+            "uiValue": 0,
+            "displayName": "{{i18n.panelMode}}"
+        },
+        "testAttributes": {
+            "initialValues": {
+                "flag": "abc TEST"
+            },
+            "meta": {
+                "flag":{
+                        "type": "STRING",
+                        "field": "true"
+                    },
+
+                "attrs": [ {
+
+                        "field": "true",
+                        "type": "STRING"
+
+                } ]
+            }
+        }
+    },
+    "onEvent": [
+
+    ],
+    "conditions": {
+
+    },
+    "i18n": {
+        "anno1":            [ "ClassificationPanelMessages" ],
+        "anno2":            [ "ClassificationPanelMessages" ],
+        "anno3":            [ "ClassificationPanelMessages" ],
+        "anno4":            [ "ClassificationPanelMessages" ],
+        "anno5":            [ "ClassificationPanelMessages" ],
+        "anno6":            [ "ClassificationPanelMessages" ],
+        "createMode":       [ "ClassificationPanelMessages" ],
+        "panelMode":        [ "ClassificationPanelMessages" ],
+        "showAll":          [ "ClassificationPanelMessages" ],
+        "showAnnotation":   [ "ClassificationPanelMessages" ],
+        "TestAttribute1":   [ "ClassificationPanelMessages" ],
+        "TestAttribute2":   [ "ClassificationPanelMessages" ],
+        "TestAttribute3":   [ "ClassificationPanelMessages" ],
+        "TestAttribute4":   [ "ClassificationPanelMessages" ],
+        "TestAttribute5":   [ "ClassificationPanelMessages" ],
+        "TestAttribute6":   [ "ClassificationPanelMessages" ],
+        "units":            [ "ClassificationPanelMessages" ]
+    }
+}

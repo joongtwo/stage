@@ -1,0 +1,317 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel-section.directive",
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-scrollpanel.directive",
+        "js/aw-default-cell.directive",
+        "js/aw-list.directive",
+        "js/aw-i18n.directive",
+        "js/aw-widget.directive",
+        "js/aw-button.directive"
+    ],
+    "data": {
+        "activeView": "tcxSimplifiedCreateTaskAttachmentSub",
+        "previousView": "",
+        "taskName": {
+            "displayName": "{{i18n.taskName}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "numberOfLines": 1,
+            "dbValue": "To Do: "
+        },
+        "priority": {
+            "displayName": "{{i18n.priority}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "dbValue": "Low",
+            "isEditable": "true",
+            "numberOfLines": 1
+        },
+        "dueDate": {
+            "displayName": "{{i18n.dueDate}}",
+            "type": "DATE",
+            "isRequired": "false",
+            "dbValue": "",
+            "isEditable": "true"
+        },
+        "instructions": {
+            "displayName": "{{i18n.instructions}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "dbValue": "",
+            "maxLength": 270,
+            "numberOfLines": 4
+        },
+        "targetContextObject": {},
+        "targetsSelectionData": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "dataProviders": {
+        "attachTargets": {
+            "response": "{{data.targetContextObject.modelObjects}}",
+            "totalFound": "{{data.targetContextObject.modelObjects.length}}",
+            "totalLoaded": "{{data.targetContextObject.modelObjects.length}}",
+            "selectionModelMode": "multiple",
+            "inputData": {
+                "selectionData": "{{fields.targetsSelectionData}}"
+            }
+        }
+    },
+    "actions": {
+        "onMountAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setTaskName"
+                },
+                {
+                    "action": "initTargetPanel"
+                },
+                {
+                    "action": "setCreateTaskState"
+                }
+            ]
+        },
+        "onUnMountAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "saveCreateTaskState"
+                }
+            ]
+        },
+        "saveCreateTaskState": {
+            "actionType": "JSFunction",
+            "method": "saveCreateTaskState",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/createTaskService"
+        },
+        "setTaskName": {
+            "actionType": "JSFunction",
+            "method": "setTaskName",
+            "inputData": {
+                "taskName": "{{data.taskName}}",
+                "selectedObj": "{{ctx.selected.props.object_string.dbValues[0]}}",
+                "sharedData":"{{props.subPanelContext.sharedData}}"
+            },
+            "outputData": {
+                "taskName": ""
+            },
+            "deps": "js/createTaskService"
+        },
+        "setCreateTaskState": {
+            "actionType": "JSFunction",
+            "method": "setCreateTaskState",
+            "inputData": {
+                "taskName": "{{data.taskName}}",
+                "priority": "{{data.priority}}",
+                "dueDate": "{{data.dueDate}}",
+                "instructions": "{{data.instructions}}",
+                "sharedData":"{{props.subPanelContext.sharedData}}"
+            },
+            "outputData": {
+                "taskName": "taskName",
+                "priority": "priority",
+                "dueDate": "dueDate",
+                "instructions": "instructions"
+            },
+            "deps": "js/createTaskService"
+        },
+        "initTargetPanel": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "populateTargetsData"
+                },
+                {
+                    "action": "initDataProvider"
+                }
+            ]
+        },
+        "initDataProvider": {
+            "actionType": "dataProvider",
+            "method": "attachTargets"
+        },
+        "populateTargetsData": {
+            "actionType":"JSFunction",
+            "method":"populateTargetsData",
+            "inputData":{
+                "sharedData": "{{props.subPanelContext.sharedData}}"
+            },
+            "outputData": {
+                "targetContextObject": ""
+            },
+            "deps":"js/createTaskService"
+        },
+        "updateTargetSelection": {
+            "actionType":"JSFunction",
+            "method":"populateTargetsData",
+            "inputData":{
+                "context": "{{data.targetContextString}}",
+                "sourceObjects": "{{props.targetObjects}}",
+                "selectedObjects": "{{dataProviders.attachTargets.selectedObjects}}"
+            },
+            "outputData": {
+                "targetContextObject": ""
+            },
+            "deps":"js/createTaskService"
+        },
+        "create": {
+            "actionType": "TcSoaService",
+            "serviceName": "Workflow-2008-06-Workflow",
+            "method": "createInstance",
+            "inputData": {
+                "startImmediately": true,
+                "name": "{{data.taskName.dbValue}}",
+                "contextData": {
+                    "deadlineDate": "",
+                    "processTemplate": "Cad Design Simple Task",
+                    "attachmentCount": "{{data.targetContextObject.modelObjects.length}}",
+                    "attachments": "{{function:getTargetUids}}",
+                    "attachmentTypes": "{{function:getAttachmentTypes}}"
+                }
+            },
+            "outputData": {
+                "createdProcess": "ServiceData.created[0]",
+                "allModelObjects": "ServiceData.modelObjects",
+                "partialErrors": "ServiceData.partialErrors"
+            },
+            "deps": "js/createTaskService",
+            "events": {
+                "success": [
+                    {
+                        "name": "postCreateTask.setProperties"
+                    },
+                    {
+                        "name": "submissionSuccessful"
+                    },
+
+                    {
+                        "name": "workflow.updateTaskCount"
+                    },
+                    {
+                        "name": "primaryWorkarea.reset",
+                        "condition": "ctx.editInProgress && ( ctx.ViewModeContext && (ctx.ViewModeContext.ViewModeContext === 'TreeView' || ctx.ViewModeContext.ViewModeContext === 'TreeSummaryView' ||  ctx.ViewModeContext.ViewModeContext === 'TableSummaryView' || ctx.ViewModeContext.ViewModeContext === 'TableView'))"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure":
+                [
+                    {
+                        "message": "createTaskFailure",
+                        "condition": "data.partialErrors.length > 0"
+                    }
+                ]
+            }
+        },
+        "callSetPropertiesSOA": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2010-09-DataManagement",
+            "method": "setProperties",
+            "inputData": {
+                "info": [
+                    {
+                        "object": "{{function:getTaskObject}}",
+                        "vecNameVal": [
+                            {
+                                "name": "fnd0Instructions",
+                                "values": ["{{data.instructions.dbValue}}"]
+                            },
+                            {
+                                "name": "fnd0Priority",
+                                "values": ["{{data.priority.dbValue}}"]
+                            },
+                            {
+                                "name": "due_date",
+                                "values": ["{{function:convertToIsoString}}"]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "deps": "js/createTaskService",
+            "events": {
+                "success": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "onMountAction",
+        "onUnmount": "onUnMountAction"
+    },
+    "onEvent": [
+        {
+            "eventId": "postCreateTask.setProperties",
+            "action": "callSetPropertiesSOA"
+        },
+        {
+            "eventId": "awPanel.reveal",
+            "criteria":
+            {
+                "panelId": "tcxSimplifiedCreateDoSub"
+            },
+            "action": "onMountAction"
+        },
+        {
+            "eventId": "createTask.reloadTargetDataProvider",
+            "action": "initDataProvider"
+        }
+    ],
+    "functions": {
+        "getTargetUids": {
+            "functionName": "getTargetUids",
+            "parameters": ["{{data.targetContextObject}}"]
+        },
+        "getAttachmentTypes": {
+            "functionName": "getAttachmentTypes",
+            "parameters": ["{{data.targetContextObject}}"]
+        },
+        "getTaskObject": {
+            "functionName": "getTaskObject",
+            "parameters": ["{{data.allModelObjects}}"]
+        },
+        "convertToIsoString": {
+            "functionName": "convertToIsoString",
+            "parameters": ["{{data.dueDate.dbValue}}"]
+        }
+    },
+    "conditions": {
+        "isValidToCreate": {
+            "expression": "data.taskName.dbValue"
+        }
+    },
+    "messages": {
+        "createTaskFailure": {
+            "messageType": "ERROR",
+            "messageText": "{{data.partialErrors[0].errorValues[0].message}}"
+        }
+    },
+    "i18n": {
+        "createDoTask": ["tcxsimplifiedMessages"],
+        "taskName": ["tcxsimplifiedMessages"],
+        "priority": ["tcxsimplifiedMessages"],
+        "dueDate": ["tcxsimplifiedMessages"],
+        "instructions": ["tcxsimplifiedMessages"],
+        "createTask": ["tcxsimplifiedMessages"],
+        "taskDefinition": ["tcxsimplifiedMessages"],
+        "taskData":["tcxsimplifiedMessages"],
+        "add": [ "tcxsimplifiedMessages" ],
+        "remove":["tcxsimplifiedMessages"]
+    }
+}

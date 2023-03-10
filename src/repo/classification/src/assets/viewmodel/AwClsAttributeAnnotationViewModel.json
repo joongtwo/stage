@@ -1,0 +1,80 @@
+{
+    "schemaVersion": "1.0.0",
+    "lifecycleHooks": {
+        "render": "render",
+        "onMount": "initialize",
+        "onUpdate": {
+            "action": "initialize",
+            "observers": [
+                "props.attr",
+                "props.attr.unitSystem"
+            ]
+        }
+    },
+    "ctx": {
+        "clsLocation": {
+            "type": "object"
+        },
+        "clsTab": {
+            "type": "object"
+        },
+        "clsPanel": {
+            "type": "object"
+        },
+        "attrLabelClass": {
+            "type": "string"
+        }
+    },
+    "props": {
+        "attr": {
+            "type": "object"
+        },
+        "attrname" : {
+            "type": "string"
+        },
+        "classify-state": {
+            "type": "object"
+        },
+        "prop-details": {
+            "type": "object"
+        },
+        "response-state": {
+            "type": "object"
+        }
+    },
+    "dataProviders": {
+
+    },
+    "actions": {
+        "render": {
+            "method": "awClsAttrAnnoServiceRenderFunction",
+            "deps": "js/AwClsAttributeAnnotationService"
+        },
+        "initialize": {
+            "actionType": "JSFunction",
+            "method": "initialize",
+            "inputData": {
+                "attribute": "{{props.attr}}"
+            },
+            "outputData": {
+                "attrVmps": "result.attrVmps",
+                "unitState.value": "result.unitLink"
+            },
+            "deps": "js/AwClsAttributeAnnotationService"
+        }
+    },
+    "data": {
+        "unitState": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "onEvent": [
+
+    ],
+    "conditions": {
+
+    },
+    "i18n": {
+    }
+}

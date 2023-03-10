@@ -1,0 +1,17 @@
+<aw-panel-body>
+        <label>{{data.updateFLowsDesc[0].text}}</label>
+        <aw-radiobutton class="sw-column" prop="data.updateFlowsRadioButtons"></aw-radiobutton>
+        <div class="sw-row">
+            <aw-checkbox  prop="data.considerParallelFlowsCheckbox"></aw-checkbox>
+            <aw-icon icon-id="cmdShowInfoPanel" class="aw-updateFlows-Indicator" extended-tooltip-options="{placement : ['right']}" extended-tooltip="data.considerParallelFlowsTooltip"></aw-icon>
+        </div>
+
+        <aw-panel-footer>
+            <aw-button size="auto" button-type="base" action="closePopupWindow">
+                <aw-i18n>i18n.cancel</aw-i18n>
+            </aw-button>
+            <aw-button size="auto" action="updateFlowAndClosePopup">
+                <aw-i18n>i18n.update</aw-i18n>
+            </aw-button>
+        </aw-panel-footer>
+</aw-panel-body>

@@ -1,0 +1,8 @@
+<div aw-class="[{'aw-mfe-clickableTableCellIcon' : props.isClickable}]" class='{{props.imageClass}}'>
+    <aw-pic exist-when="!conditions.showTooltip" class="sw-pic-thumbnail aw-mfe-tableCellImage" icon-id='props.imageSrc'></aw-pic>
+    <div exist-when="conditions.showTooltip" extended-tooltip='props.tooltipView' extended-tooltip-context='props.tooltipData'>
+        <aw-pic class="sw-pic-thumbnail aw-mfe-tableCellImage" icon-id='props.imageSrc'></aw-pic>
+    </div>
+</div>
+
+

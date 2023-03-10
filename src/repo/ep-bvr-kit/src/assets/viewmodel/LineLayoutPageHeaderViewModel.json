@@ -1,0 +1,246 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "loading": true
+    },
+    "actions": {
+        "loadData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadModel",
+            "deps": "js/lineLayoutService",
+            "inputData": {
+                "lineNameTitlePrefix": "{{i18n.lineLayout}}",
+                "workPackageNameTitlePrefix": "{{i18n.workPackageLinkLabel}}"
+            },
+            "outputData": {
+                "lineModelObject": "lineModelObject",
+                "lineName": "lineName",
+                "workPackageObject": "workPackageObject",
+                "workPackageName": "workPackageName",
+                "dataset": "dataset",
+                "readOnlyEffectivityModeData": "readOnlyEffectivityModeData",
+                "lineNameTitle": "lineNameTitle",
+                "workPackageNameTitle": "workPackageNameTitle"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "lineLayoutPage.setReadOnlyByEffectivity",
+                        "condition": "data.readOnlyEffectivityModeData !== undefined"
+                    },
+                    {
+                        "name": "lineLayoutPage.setCheckedOutByOther",
+                        "condition": "data.readOnlyEffectivityModeData === undefined"
+                    },
+                    {
+                        "name": "lineLayoutPage.getViewerType",
+                        "condition": "data.dataset"
+                    },
+                    {
+                        "name": "lineLayoutPage.setLoading",
+                        "condition": "!data.dataset"
+                    }
+                ]
+            }
+        },
+        "setReadOnlyModeByEffectivity": {
+            "actionType": "JSFunction",
+            "method": "setReadOnlyMode",
+            "inputData": {
+                "readOnly": true,
+                "message": "readOnlyModeTextWarningMsg"
+            },
+            "deps": "js/mfeReadOnlyService"
+        },
+        "setReadOnlyModeCheckedOutByOther": {
+            "actionType": "JSFunction",
+            "method": "setReadOnlyMode",
+            "inputData": {
+                "readOnly": true,
+                "message": "readOnlyModeCheckedOutByOtherWarningMsg"
+            },
+            "deps": "js/mfeReadOnlyService"
+        },
+        "getViewerType": {
+            "actionType": "JSFunction",
+            "method": "getViewerType",
+            "inputData": {
+                "datasetType": "{{data.dataset.type}}"
+            },
+            "outputData": {
+                "viewerType": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "lineLayoutPage.getViewerData"
+                    }
+                ]
+            },
+            "deps": "js/lineLayoutService"
+        },
+        "getViewerData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2017-06-DataManagement",
+            "method": "getViewerData",
+            "inputData": {
+                "inputs": {
+                    "obj": "{{data.dataset}}",
+                    "dataset": "",
+                    "direction": ""
+                }
+            },
+            "outputData": {
+                "viewerData": "output"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "lineLayoutPage.setViewerDataInCtx"
+                    }
+                ]
+            }
+        },
+        "setViewerDataInCtx": {
+            "actionType": "JSFunction",
+            "method": "setViewerDataInCtx",
+            "inputData": {
+                "viewerData": {
+                    "fileData": {
+                        "file": "{{data.dataset}}",
+                        "fmsTicket": "{{data.viewerData.views[0].fmsTicket}}",
+                        "fileUrl": "{{function:getLayoutFileURL}}",
+                        "viewer": "{{data.viewerType}}"
+                    },
+                    "uid": "{{data.dataset.uid}}"
+                }
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "lineLayoutPage.setLoading"
+                    }
+                ]
+            },
+            "deps": "js/lineLayoutService"
+        },
+        "setLoading": {
+            "actionType": "JSFunction",
+            "method": "setLoading",
+            "inputData": {},
+            "outputData": {
+                "loading": ""
+            },
+            "deps": "js/lineLayoutService"
+        }
+    },
+    "functions": {
+        "getLayoutFileURL": {
+            "functionName": "getLayoutFileURL",
+            "parameters": [
+                "{{data.viewerData.views[0].fmsTicket}}"
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "lineLayoutPage.setCheckedOutByOther",
+            "action": "setReadOnlyModeCheckedOutByOther",
+            "condition": "conditions.isCheckedOutByOtherReadOnlyMode"
+        },
+        {
+            "eventId": "lineLayoutPage.setReadOnlyByEffectivity",
+            "action": "setReadOnlyModeByEffectivity"
+        },
+        {
+            "eventId": "lineLayoutPage.getViewerType",
+            "action": "getViewerType"
+        },
+        {
+            "eventId": "lineLayoutPage.getViewerData",
+            "action": "getViewerData"
+        },
+        {
+            "eventId": "lineLayoutPage.setViewerDataInCtx",
+            "action": "setViewerDataInCtx"
+        },
+        {
+            "eventId": "lineLayoutPage.setLoading",
+            "action": "setLoading"
+        }
+    ],
+    "conditions": {
+        "isReadOnlyMode": {
+            "expression": {
+                "$and": [
+                    {
+                        "$source": "ctx.mfgReadOnlyMode",
+                        "$query": {
+                            "$notNull": true
+                        }
+                    },
+                    {
+                        "$source": "ctx.mfgReadOnlyMode.readOnlyMode",
+                        "$query": {
+                            "$eq": true
+                        }
+                    }
+                ]
+            }
+        },
+        "isCheckedOutByOtherReadOnlyMode": {
+            "expression": "data.lineModelObject.props.bl_rev_checked_out_user && data.lineModelObject.props.bl_rev_checked_out_user.dbValues[0] !== ' ' && data.lineModelObject.props.bl_rev_checked_out_user.dbValues[0] !== ctx.userSession.props.user.uiValues[0]"
+        }
+    },
+    "preferences": [
+        "EP_FileTypesForLayoutDataset",
+        "EP_EffectivityMode"
+    ],
+    "messages": {
+        "readOnlyModeTextWarningMsg": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.readOnlyModeCaption}}",
+            "messageTextParams": [
+                "{{data.readOnlyEffectivityModeData.selectedRevisionRule}}",
+                "{{data.readOnlyEffectivityModeData.SelectedPlanUnit}}",
+                "{{data.readOnlyEffectivityModeData.selectedEndItem}}"
+            ]
+        },
+        "readOnlyModeCheckedOutByOtherWarningMsg": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.readOnlyModeCheckedOutByOther}}",
+            "messageTextParams": [
+                "{{data.lineModelObject.props.bl_rev_checked_out_user.dbValues[0]}}"
+            ]
+        }
+    },
+    "i18n": {
+        "headerTitle": [
+            "EPMessages"
+        ],
+        "workPackageLinkLabel": [
+            "AuthorPlantMessages"
+        ],
+        "lineLayout": [
+            "LayoutMessages"
+        ],
+        "addLayout": [
+            "LayoutMessages"
+        ],
+        "attachFile": [
+            "LayoutMessages"
+        ],
+        "readOnlyModeCaption": [
+            "EPMessages"
+        ],
+        "readOnlyModeCheckedOutByOther": [
+            "EPMessages"
+        ],
+        "lineLayoutPageTitle": [
+            "LayoutMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onMount": "loadData"
+    }
+}

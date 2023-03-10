@@ -1,0 +1,125 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+   "data":
+    {
+        "galleryModel": {
+            "initialValues": {},
+            "meta": {}
+        },
+
+        "messages": {
+            "noDataToDisplay": [{
+                "text": "{{i18n.noDataToDisplay}}"
+            }]
+        },
+
+        "typeViewer":
+        {
+            "MSWord": "Awp0PDFViewer",
+            "MSWordX": "Awp0PDFViewer",
+            "MSExcel": "Awp0PDFViewer",
+            "MSExcelX": "Awp0PDFViewer",
+            "MSExcelM": "Awp0PDFViewer",
+            "MSPowerPoint": "Awp0PDFViewer",
+            "MSPowerPointX": "Awp0PDFViewer",
+            "TCPublishingPage": "Awp0PDFViewer",
+            "PDF": "Awp0PDFViewer",
+            "Image": "Awp0ImageViewer",
+            "JPEG": "Awp0ImageViewer",
+            "Bitmap": "Awp0ImageViewer",
+            "GIF": "Awp0ImageViewer",
+            "PNG": "Awp0ImageViewer",
+            "JPG": "Awp0ImageViewer",
+            "TIF": "Awp0ImageViewer",
+            "Web Link": "WorkinstrWeblinkViewer",
+            "Text": "Awp0TextViewer",
+            "DirectModel": "WorkinstrSnapshotViewer",
+            "ItemRevision": "WorkinstrXRTViewer",
+            "Mfg0MEResourceRevision": "WorkinstrXRTViewer",
+            "MEOPRevision": "WorkinstrXRTViewer",
+            "String": "WorkinstrStringViewer",
+            "CME_Report": "WorkinstrCmeReportViewer",
+            "VMBFILE": "WorkinstrCortonaViewer",
+            "SnapShotViewData": "WorkinstrSnapshotViewer",
+            "FullText": "WorkinstrFulltextViewer",
+            "rtf": "WorkinstrFulltextViewer",
+            "mp4": "WorkinstrVideoViewer",
+            "jpg": "Awp0ImageViewer",
+            "png": "Awp0ImageViewer",
+            "tif": "Awp0ImageViewer",
+            "jpeg": "Awp0ImageViewer",
+            "gif": "Awp0ImageViewer",
+            "htm": "WorkinstrCmeReportViewer",
+            "html": "WorkinstrCmeReportViewer",
+            "txt": "Awp0TextViewer",
+            "doc": "Awp0PDFViewer",
+            "docx": "Awp0PDFViewer",
+            "xls": "Awp0PDFViewer",
+            "xlsx": "Awp0PDFViewer",
+            "xlsm": "Awp0PDFViewer",
+            "ppt": "Awp0PDFViewer",
+            "pptx": "Awp0PDFViewer",
+            "jt": "WorkinstrSnapshotViewer",
+            "pdf": "Awp0PDFViewer",
+            "vsd": "Awp0PDFViewer",
+            "mht": "WorkinstrMhtViewer",
+            "vmb": "WorkinstrCortonaViewer",
+            "Epw0WIDataset": "WorkinstrFulltextViewer"
+        }
+    },
+
+    "actions":
+    {
+        "handleInputChange": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateGalleryModel",
+                    "condition": "conditions.firstDatasetShouldBeSelected"
+                }
+            ]
+        },
+        "updateGalleryModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{props.subPanelContext.datasetsToShow[0]}}"
+            },
+            "outputData": {
+                "galleryModel.selectedItem": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+
+    "conditions": {
+        "showThumbnails": {
+            "expression": "props.subPanelContext.viewMode.showThumbnails !== 'false'"
+        },
+        "datasetsExists": {
+            "expression": "props.subPanelContext.datasetsToShow.length > 0"
+        },
+        "firstDatasetShouldBeSelected": {
+            "expression": "!conditions.showThumbnails && conditions.datasetsExists && galleryModel.selectedItem.uid !== props.subPanelContext.datasetsToShow[0].uid"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onUpdate": [{
+            "action":"handleInputChange",
+            "observers":["props.subPanelContext.datasetsToShow"]
+        }]
+    },
+
+    "i18n": {
+        "noDataToDisplay": [
+            "WorkinstrMessages"
+        ]
+    }
+}

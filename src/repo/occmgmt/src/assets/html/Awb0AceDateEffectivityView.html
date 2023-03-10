@@ -1,0 +1,39 @@
+<aw-panel-body>
+    <aw-flex-column width="12">
+        <aw-checkbox prop="data.isShared" ></aw-checkbox>
+        <aw-textbox prop="data.nameBox" exist-when="fields.isShared.value"></aw-textbox>
+
+        <aw-flex-row aw-init="prop=data.startDate">
+            <aw-flex-column width="12">
+                <aw-date prop="data.startDate" exist-when="!props.subPanelContext.sharedData.isTimeEnabled.value"></aw-date>
+                <aw-datetime prop="data.startDate" exist-when="props.subPanelContext.sharedData.isTimeEnabled.value"></aw-datetime>
+            </aw-flex-column>
+        </aw-flex-row>
+        <aw-flex-row>
+            <aw-flex-column width="12">
+                <aw-listbox action="clearDate" prop="data.endDateOptions" list="data.endDateList.dbValue"></aw-listbox>
+                <aw-widget prop="data.endDate"  exist-when="data.endDateOptions.dbValue=='Date' && props.subPanelContext.occContext === 'undefined'" class="aw-endDate-authorEffectivityPanel"></aw-widget>
+                <aw-widget prop="data.endDate"  exist-when="data.endDateOptions.dbValue=='Date' && props.subPanelContext.occContext !== 'undefined'" class="aw-endDate-authorEffectivityPanel"></aw-widget>
+            </aw-flex-column>
+        </aw-flex-row>
+    </aw-flex-column>
+</aw-panel-body>
+<aw-panel-footer>
+    <aw-flex-column width="12">
+        <aw-checkbox prop="data.isProtected" action="updateIsProtectedValue"></aw-checkbox>
+    </aw-flex-column>
+    <div exist-when="conditions.isValidEffectivityPanel">
+        <aw-button size="auto" exist-when="!conditions.isRevisionEffectivity && data.flag.dbValue!=='EDIT'" action="authorEffectivity">
+            <aw-i18n>i18n.addElementBtn</aw-i18n>
+        </aw-button>
+        <aw-button size="auto" exist-when="conditions.isRevisionEffectivity && data.flag.dbValue!=='EDIT'"  action="authorRevisionEffectivity">
+            <aw-i18n>i18n.addElementBtn</aw-i18n>
+        </aw-button>
+        <aw-button size="auto" exist-when="data.flag.dbValue==='EDIT' && ctx.elementEffectivity.currentEffectivityType==='Element'"  action="editEffectivity">
+            <aw-i18n>i18n.saveButtonText</aw-i18n>
+        </aw-button>
+        <aw-button size="auto" exist-when="data.flag.dbValue==='EDIT' && ctx.elementEffectivity.currentEffectivityType==='Release'"  action="editRevisionEffectivity">
+            <aw-i18n>i18n.saveButtonText</aw-i18n>
+        </aw-button>
+    </div>
+</aw-panel-footer>

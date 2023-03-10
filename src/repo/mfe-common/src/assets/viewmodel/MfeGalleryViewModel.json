@@ -1,0 +1,61 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "gallery-context":{
+            "type": "object"
+        }
+    },
+    "data": {
+        "buttonCommandLeft": {
+            "action": "scrollLeftAction",
+            "iconName": "cmdChevronLeft_uxRefresh"
+        },
+        "buttonCommandRight": {
+            "action": "scrollRightAction",
+            "iconName": "cmdChevronRight_uxRefresh"
+        },
+        "isGalleryLeftButtonEnabled": false,
+        "isGalleryRightButtonEnabled": false
+    },
+    "actions": {
+        "scrollLeftAction": {
+            "actionType": "JSFunction",
+            "method": "scrollLeft",
+            "deps": "js/mfeGalleryUtils"
+        },
+        "scrollRightAction": {
+            "actionType": "JSFunction",
+            "method": "scrollRight",
+            "deps": "js/mfeGalleryUtils"
+        },
+        "getVisibilityOfLeftAndRightAction": {
+            "actionType": "JSFunction",
+            "method": "getVisibilityOfLeftAndRight",
+            "outputData": {
+                "isGalleryLeftButtonEnabled": "isGalleryLeftButtonEnabled",
+                "isGalleryRightButtonEnabled": "isGalleryRightButtonEnabled"
+            },
+            "deps": "js/mfeGalleryUtils"
+        }
+    },
+    "conditions": {
+        "isGalleryLeftButtonEnabled": {
+            "expression": "data.isGalleryLeftButtonEnabled"
+        },"isGalleryRightButtonEnabled": {
+            "expression": "data.isGalleryRightButtonEnabled"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getVisibilityOfLeftAndRightAction"
+    },
+
+    "onEvent": [
+        {
+            "eventId": "aw.windowResize",
+            "action": "getVisibilityOfLeftAndRightAction"
+        },{
+            "eventId": "mfeGalleryScrollEvent",
+            "action": "getVisibilityOfLeftAndRightAction"
+        }
+    ]
+}

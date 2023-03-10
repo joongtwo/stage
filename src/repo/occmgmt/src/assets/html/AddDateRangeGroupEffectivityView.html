@@ -1,0 +1,11 @@
+<aw-panel-body scrollable="false">
+    <aw-panel-section caption="{{data.configuredBy.uiValue}}">
+        <aw-tab-set tabs="data.tabsModel.dbValues"></aw-tab-set>
+    </aw-panel-section>
+    <aw-include name='AuthorDateRangeGroupEffectivity' sub-panel-context='{...subPanelContext}'
+        show-when="data.selectedTab.tabKey ==='New'">
+    </aw-include>
+    <aw-include name='SearchDateRangeGroupEffectivity' sub-panel-context='{...subPanelContext}'
+        exist-when="data.selectedTab.tabKey ==='Search'">
+    </aw-include>
+</aw-panel-body>

@@ -1,0 +1,494 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2022.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+
+@mixin tile-bar-color {
+    background-color: $PL_Black_26;
+    border-color: $Siemens_Blue_Light_Old;
+}
+
+$lb-exceeding-time-color: $Siemens_Yellow_9;
+$lb-ok-time-color: $Siemens_Blue_Light_Old;
+
+.aw-epBalancing-stationTileProcessResourceTotalTimePanel,
+.aw-epBalancing-stationTileUnassignedTimePanel {
+    @include tile-bar-color;
+}
+
+.aw-epBalancing-stationTileProcessResourceTotalTimePanel .aw-epBalancing-stationTileTotalTimeBarAvailableTimeValue,
+.aw-epBalancing-stationTileUnassignedTimePanel .aw-epBalancing-stationTileTotalTimeBarAvailableTimeValue {
+    color: $lb-ok-time-color;
+}
+
+.aw-epBalancing-stationTileProcessResourceTotalTimePanel,
+.aw-epBalancing-stationTileUnassignedTimePanel {
+    color: $PL_Black_12;
+}
+
+.aw-epBalancing-stationTileUnassignedTimePanel {
+    background-color: $Siemens_Snow;
+    border-color: $Status_Gray_10
+}
+
+.aw-epBalancing-stationTileTotalTimeBarUnassignedTime {
+    background-color: $PL_Black_12
+}
+
+/******************************************************/
+
+.aw-widgets-cellListItem {
+    .aw-epBalancing-singleStationTile {
+        background-color: $Siemens_Snow;
+        border-color: $PL_Black_24;
+        box-shadow: rem-calc(1) rem-calc(1) rem-calc(3) $PL_Black;
+    
+        &:hover {
+            background-color: rgba($Natural_Blue_11,0.45);
+        }
+    
+        >.aw-epBalancing-problematicStation {
+            color: $lb-exceeding-time-color;
+
+            .aw-epBalancing-stationTileClockIcon svg * {
+                fill: $lb-exceeding-time-color;
+            }
+        }
+    }
+}
+
+.aw-epBalancing-stationTileTotalTimeBarUsedTime {
+    background-color: $lb-ok-time-color;
+}
+
+.aw-epBalancing-stationTileTotalTimeBarExceedingTime {
+    background-color: $lb-exceeding-time-color;
+}
+
+.aw-epBalancing-stationTileTotalTimeBarExceedingTimeValue {
+    color: $lb-exceeding-time-color;
+}
+
+.aw-epBalancing-stationTileTotalTimeBarUnassignedTime {
+    background-color: $PL_Black_12;
+}
+
+.aw-epBalancing-stationTileTotalTimeBarCycleTime {
+    background-color: $PL_Black_12;
+}
+
+.aw-epBalancing-stationTileList .aw-widgets-groupCommandStack {
+    display: none;
+}
+
+.aw-epBalancing-stationTileList {
+    .aw-widgets-cellListCellCommands {
+        width: 0;
+        position: relative;
+        top: 0.8rem;
+        left: -2rem;
+    }
+
+    .aw-widgets-cellListWidget {
+        .aw-epBalancing-stationTileProcessResourceTotalTimePanel {
+            @include tile-bar-color;
+        }
+
+        .aw-epBalancing-stationTileProcessResourceTotalTimePanel:hover ,
+        .aw-epBalancing-stationTileUnassignedTimePanel:hover {
+            background-color: $Natural_Blue_10 ;
+            border-color: $Natural_Blue_10 ;
+        }
+
+    }
+
+    .aw-widgets-cellListItemSelected {
+
+        .aw-epBalancing-singleStationTile {
+            background-color: $Natural_Blue_10
+        }
+        .aw-epBalancing-singleStationTile:HOVER {
+            background-color: rgba($Natural_Blue_9_5,0.45);
+        }
+
+        .aw-epBalancing-stationTileProcessResourceTotalTimePanel,
+        .aw-epBalancing-stationTileUnassignedTimePanel {
+            background-color: rgba($Siemens_Blue_Light_Old, 0.2);
+        }
+
+        .aw-epBalancing-stationTileProcessResourceTotalTimePanel .aw-epBalancing-stationTileTotalTimeBarAvailableTimeValue,
+        .aw-epBalancing-stationTileUnassignedTimePanel .aw-epBalancing-stationTileTotalTimeBarAvailableTimeValue {
+            color: $AW_SiemensAccentBlueDark;
+        }
+
+    }
+}
+
+.aw-epBalancing-stationTileProcessResourceCapacity {
+    color: $Siemens_Blue_Light_Old;
+}
+
+.aw-epBalancing-stationTileStationBarZero {
+    background-color: $Charting_Black_10;
+}
+
+/* ================================ PRI ================================ */
+.aw-epBalancing-priContainer {
+    background-color: $PL_Black_26;
+}
+
+.aw-epBalancing-priName {
+    color: $PL_Black_12;
+}
+
+.aw-epBalancing-priContainerCapacity {
+    color: $Siemens_Blue_Light_Old;
+}
+
+.aw-epBalancing-priTime {
+    color: $PL_Black_12;
+}
+
+.aw-epBalancing-priItem {
+    fill: $Natural_Blue_9;
+}
+
+.aw-epBalancing-priItem.aw-epBalancing-priItemHover,
+.aw-epBalancing-priItem+.aw-epBalancing-priItemSelected {
+    fill: $Natural_Blue_8;
+}
+
+.aw-epBalancing-priItem+.aw-epBalancing-priItemSelected {
+    stroke: $Siemens_Blue_Light_Old;
+}
+
+.aw-epBalancing-priExceedingItem {
+    fill: $lb-exceeding-time-color;
+}
+
+.aw-epBalancing-priExternalItem {
+    fill: $Charting_Black_10;
+}
+
+.aw-epBalancing-priExternalItem.aw-epBalancing-priItemHover,
+.aw-epBalancing-priExternalItem+.aw-epBalancing-priItemSelected {
+    fill: $PL_Black_20;
+}
+
+.aw-epBalancing-priExternalItem+.aw-epBalancing-priItemSelected {
+    stroke: $Charting_Black_7;
+}
+
+.aw-epBalancing-priGap:HOVER~.aw-epBalancing-priGapBorder {
+    stroke: $Natural_Blue_9;
+}
+
+.aw-epBalancing-priTime {
+    fill: $PL_Black_12;
+}
+
+.aw-epBalancing-priPort {
+    fill: $Siemens_Blue_11;
+}
+
+.aw-epBalancing-priArrow {
+    fill: none;
+}
+
+.aw-epBalancing-priExistingArrow,
+.aw-epBalancing-priCurrentArrow {
+    stroke: $Charting_Grey_6;
+}
+
+.aw-epBalancing-priHoveredArrow {
+    stroke: $lb-ok-time-color;
+}
+
+.aw-epBalancing-priExistingArrowHead {
+    fill: $Charting_Grey_6;
+}
+
+.aw-epBalancing-priHoveredArrowHead {
+    fill: $lb-ok-time-color;
+}
+
+.aw-epBalancing-priSelectedArrowHead {
+    fill: $Charting_Grey_3;
+}
+
+.aw-epBalancing-priMainTaktTimeLine {
+    stroke: $PL_Black_10;
+}
+
+.aw-epBalancing-priSecondaryTaktTimeLine {
+    stroke: $Charting_Black_10;
+}
+
+.aw-epBalancing-priTaktTimeText {
+    fill: $PL_Black_10;
+}
+
+.aw-epBalancing-priCycleTimeNormal .aw-epBalancing-priCycleTimeLine {
+    stroke: $Siemens_Blue_Light_Old;
+}
+
+.aw-epBalancing-priCycleTimeExceeding .aw-epBalancing-priCycleTimeLine {
+    stroke: $lb-exceeding-time-color;
+}
+
+.aw-epBalancing-priCycleTimeNormal text,
+.aw-epBalancing-priAvailableTime {
+    fill: $Siemens_Blue_Light_Old !important;
+}
+
+.aw-epBalancing-priCycleTimeExceeding text,
+.aw-epBalancing-priExceedingTime {
+    fill: $lb-exceeding-time-color !important;
+}
+
+.aw-epBalancing-priDropTarget {
+    stroke: $PL_Black_12;
+}
+
+.aw-epBalancing-priContainerAxis,
+.aw-epBalancing-priAxisLine {
+    fill: none;
+    stroke: $PL_Black_20;
+}
+
+.aw-epBalancing-priExternalArrowHead {
+    fill: $Charting_Grey_6;
+}
+
+.aw-epBalancing-priExternalArrow {
+    stroke: $Charting_Grey_6;
+}
+
+.aw-epBalancing-priSelectedProcessResource {
+    background-color: $Natural_Blue_10;
+}
+/* ================================ PRI ================================ */
+
+/* ================================ OVERVIEW ================================ */
+
+.aw-epBalancing-overviewContainer {
+    .aw-mfe-contentPanel {
+        background-color: $Siemens_Blue_30;
+    }
+
+    .aw-mfe-contentPanelToolbar {
+        background-color: $Siemens_Blue_30;
+
+        * {
+            color: $Siemens_Snow !important;
+        }
+    }
+
+    .aw-advanced-bar {
+        border-color: $Siemens_Blue_30;
+    }
+
+    .aw-epBalancing-stationTileList .aw-widgets-cellListWidget .aw-epBalancing-stationTileProcessResourceTotalTimePanel {
+        &:hover {
+            background-color: $Status_Blue_2 ;
+        }
+
+        .aw-epBalancing-stationTileTotalTimeBarCycleTime {
+            background-color: $PL_Black_22;
+        }
+
+        .aw-epBalancing-stationTileTotalTimeBarExceedingTimeValue {
+            color: $PL_Black_22;
+        }
+    }
+
+    .aw-mfe-messageLine {
+        color: $PL_Black_16;
+    }
+}
+
+
+
+
+/* ================================ TIME DISTRIBUTION ================================ */
+.aw-widgets-cellListItemSelected{
+    .aw-epBalancing-singleStationTile {
+        .aw-epBalancing-stationTileUnassignedTimePanel,
+        .aw-epBalancing-stationTileProcessResourceTotalTimePanel{
+            background-color: $Siemens_Stone_25 ;
+        }
+    }
+}
+
+.aw-widgets-cellListItem.aw-widgets-cellListItemSelected
+        :not(.aw-widgets-dropframe)
+        :not(.aw-epBalancing-stationTileProcessResourceTotalTimePanel)
+        :not(.aw-epBalancing-stationTileUnassignedTimePanel){
+        .aw-epBalancing-stationTileUnassignedTimePanelSelected,
+        .aw-epBalancing-stationTileProcessResourceTotalTimePanelSelected{
+            background-color: $Siemens_Blue_9_Old ;
+            border-color: $Siemens_Blue_17 ;
+    }
+}
+.sw-row.aw-widgets-cellListItemContainer.aw-widgets-cellListItem {
+    >.aw-epBalancing-stationTileProcessResourceTotalTimePanel.aw-epBalancing-stationTileProcessResourceTotalTimePanelSelected {
+        &:hover{
+            background-color: $Natural_Blue_9_5 ;
+            border-color: $Natural_Blue_9_5 ;
+        }
+    }
+}
+
+$lb-td-accent-yellow: $Siemens_Yellow_17;
+$lb-td-accent-grey: $Status_Blue_2;
+
+.aw-epBalancing-tdToolbarPvIndication {
+    background-color: $lb-td-accent-yellow;
+}
+
+.aw-epBalancing-tdToolbarPvInformation {
+    color: $PL_Black_12;
+}
+
+.aw-epBalancing-tdToolbarFilterButtonEnabled {
+    background-color: $Siemens_Blue_Light_Old;
+    color: $Siemens_Snow !important;
+    border-color: $Siemens_Blue_Light_Old;
+}
+
+.aw-epBalancing-tdToolbarFilterButtonEnabled:HOVER {
+    background-color: $Siemens_Blue_Dark_Old !important;
+    border-color: $Siemens_Blue_Dark_Old;
+}
+
+.aw-epBalancing-tdToolbarFilterButtonDisabled {
+    color: $Charting_Black_7;
+    background-color: $PL_Black_25;
+    border-color: $PL_Black_18;
+}
+
+.aw-epBalancing-tdToolbarMainPanel {
+    background-color: $Charting_Black_10;
+}
+
+.aw-epBalancing-tdScaleScaleAndMessageLine {
+    background-color: $Charting_Black_10;
+}
+
+.aw-epBalancing-tdScaleUnassignedMessage {
+    color: $Charting_Black_7;
+}
+
+.aw-epBalancing-tdScaleScaleText {
+    color: $PL_Black;
+}
+
+.aw-epBalancing-tdScaleScaleLine {
+    background-color: $Charting_Black_7;
+}
+
+.aw-epBalancing-tdScaleTimeIndicatorTriangle {
+    border-color: transparent transparent $lb-td-accent-grey transparent;
+}
+
+.aw-epBalancing-tdScaleTimeIndicatorText {
+    color: $Siemens_Snow;
+    background-color: $lb-td-accent-grey;
+}
+
+.aw-epBalancing-tdStationLabelContainer {
+    background-color: $Charting_Grey_6;
+}
+
+.aw-epBalancing-tdStationLabel {
+    color: $Siemens_Snow;
+}
+
+.aw-epBalancing-tdProcessResourceMainPanel {
+    background-color: $PL_Black_26;
+}
+
+.aw-epBalancing-tdProcessResourceData {
+    color: $PL_Black_12;
+}
+
+.aw-epBalancing-tdProcessResourceGridLine {
+    background-color: $Charting_Black_10;
+}
+
+.aw-epBalancing-tdTimesLine svg * {
+    fill: $lb-td-accent-yellow !important;
+}
+
+.aw-epBalancing-tdTimesTimeText,
+.aw-epBalancing-tdTimesDeviationText {
+    color: $PL_Black_12;
+}
+
+.aw-epBalancing-tdBubblesCycleTime {
+    background-color: $Siemens_Blue_30;
+}
+
+.aw-epBalancing-tdBubblesCycleTimeTooltip {
+    color: $Siemens_Snow;
+    background-color: $lb-td-accent-grey;
+}
+
+.aw-epBalancing-tdBubblesBubble {
+    background-color: $Siemens_Blue_30;
+}
+
+.aw-epBalancing-tdBubblesBubble:HOVER {
+    background-color: $lb-td-accent-yellow;
+}
+
+.aw-epBalancing-tdBubblesBubbleHighlighted,
+.aw-epBalancing-tdBubblesBubbleHighlighted:HOVER {
+    background-color: rgba($lb-td-accent-yellow, 0.5);
+    border: rem-calc(1) solid $lb-td-accent-yellow;
+}
+
+.aw-epBalancing-tdBubblesBubbleSelected,
+.aw-epBalancing-tdBubblesBubbleSelected:HOVER {
+    background-color: $lb-td-accent-yellow;
+}
+
+.aw-epBalancing-tdBubblesBubbleTooltipText {
+    background-color: $lb-td-accent-grey;
+    color: $Siemens_Snow;
+}
+
+.aw-epBalancing-tdBubblesBubbleTooltipTriangle {
+    border-color: $lb-td-accent-grey transparent transparent transparent;
+}
+/* ================================ TIME DISTRIBUTION ================================ */
+
+/* ================================ DASHBOARD ================================ */
+
+.aw-epBalancing-dashboardChip {
+    background-color: $Siemens_Stone_25;
+    color: $PL_Black_8;
+}
+
+.aw-epBalancing-dashboardChipOk svg * {
+    fill: $Siemens_Blue_Light_Old;
+}
+
+.aw-epBalancing-dashboardChipExceeding svg * {
+    fill: $lb-exceeding-time-color;
+}
+
+.aw-epBalancing-dashboardOverridingTaktTime>span::after {
+    background-color: $lb-exceeding-time-color;
+}
+
+.aw-epBalancing-dashboardProductVariants {
+    .aw-theme-iconOutline {
+        fill: $PL_Black_8;
+    }
+}
+
+/* ================================ DASHBOARD ================================ */

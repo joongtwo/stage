@@ -1,0 +1,184 @@
+{
+    "schemaVersion": "1.0.0",
+    "lifecycleHooks": {
+        "onInit": "initializeMRLDashBoard"
+    },
+    "data": {
+        "_provider": {
+            "breadcrumbConfig": {
+                "type" : "search",
+                "vm" : "AwSearchBreadcrumb",
+                "noUpdate": true,
+                "popuplist": "/html/defaultbreadcrumblist.html" ,
+                "overflowIndex": 0
+            },
+            "priority": 7,
+            "label": {
+                "source": "/i18n/mrlMessages",
+                "key": "manageResources"
+            },
+            "clientScopeURI": "Awp0SearchResults",
+            "nameToken": "com.siemens.splm.client.mrm:manageResourcesSublocation",
+            "context": {
+                "search": {
+                    "loadDataAction": "loadSearchData",
+                    "provider": "Awp0FullTextSearchProvider",
+                    "sortType": "Priority",
+                    "chartTitle": {
+                        "source": "/i18n/SearchMessages",
+                        "key": "SearchResultsChartTitle"
+                    },
+                    "criteria": {
+                        "searchString": "\"Classification Class Id\":\"MRM\"",
+                        "forceThreshold": "true",
+                        "searchFromLocation": "global"
+                    },
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "searchFilterMap6": {},
+                    "hideInContentSearchBox":true,
+                    "showLoadingText": true,
+                    "showChartColorBars": true,
+                    "selectFirstObjectPreference": false,
+                    "applicationName":"mrm0mfgresourcemgraw",
+                    "applicationPinnedSavedSearchTileTemplateId":"MrlPinnedSavedSearchTemplate"
+                }
+            },
+            "viewBase": "AwSearchResults",
+            "params": {
+                "searchCriteria": "",
+                "filter": "",
+                "chartBy": "",
+                "refresh": ""
+            }
+        }
+    },
+    "actions":
+    {
+        "initializeMRLDashBoard": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "activateSearchFilterAction"                    
+                },
+                {
+                    "action": "getUIDOfMRLNewResoucesFolder",
+                    "condition": "!(ctx.mrlDashboard && ctx.mrlDashboard.mrlNewResourcesFolderUid)"
+                }
+            ]
+        },
+        "activateSearchFilterAction": {
+            "actionType": "activateCommandPanel",
+            "inputData": {
+                "commandId": "Awp0SearchFilter",
+                "location": "aw_navigation"
+            }
+        },
+        "getUIDOfMRLNewResoucesFolder": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "Name":"MRL New Resources",
+                        "queryName": "General...",
+                        "searchID": "GENERAL_QUERY",
+                        "Type": "Folder",
+                        "lastEndIndex": "",
+                        "totalObjectsFoundReportedToClient": "",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0"
+                    }
+                }
+            },
+            "outputData": {
+                "mrlNewResourcesFolderTotalFound": "totalFound",
+                "ctx.mrlDashboard.mrlNewResourcesFolderUid":"{{function:getMRLNewResourcesFolderUid}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "createMRLNewResoucesFolder",
+                        "condition": "data.mrlNewResourcesFolderTotalFound === 0"
+                    }
+                ]
+            },
+            "deps": "js/mrlDashboardUtils"
+        },
+        "createMRLNewResoucesFolder": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2012-10-DataManagement",
+            "method": "createRelateAndSubmitObjects",
+            "inputData": {
+                "inputs": [
+                    {
+                        "clientId": "CreateObject",
+                        "createData": {
+                            "boName": "Folder",
+                            "propertyNameValues": {
+                                "object_name": [
+                                    "MRL New Resources"
+                                ]
+                            }
+                        }
+                    }
+                ]
+            },
+            "outputData": {
+                "ctx.mrlDashboard.mrlNewResourcesFolderUid": "{{function:getMRLNewResourcesFolderUid}}"
+            },
+            "deps": "js/mrlDashboardUtils",
+            "events": {
+                "success": [
+                    {
+                        "name": "modifyACLForMRLNewResoucesFolder"
+                    }
+                ]
+            }
+        },
+        "modifyACLForMRLNewResoucesFolder": {
+            "actionType": "TcSoaService",
+            "serviceName": "Administration-2006-03-IRM",
+            "method": "setPrivileges",
+            "inputData": {
+                "privilegeSettings": [
+                    {
+                        "object": {
+                            "uid": "{{ctx.mrlDashboard.mrlNewResourcesFolderUid}}",
+                            "type": "Folder"
+                        },
+                        "grant": [
+                            "WRITE"
+                        ]
+                    }
+                ],
+                "accessorType": "World"
+            }
+        }
+    },
+    "functions": {
+        "getMRLNewResourcesFolderUid": {
+            "functionName": "getMRLNewResourcesFolderUid"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "createMRLNewResoucesFolder",
+            "action": "createMRLNewResoucesFolder"
+        },
+        {
+            "eventId": "modifyACLForMRLNewResoucesFolder",
+            "action": "modifyACLForMRLNewResoucesFolder"
+        }
+    ]
+}

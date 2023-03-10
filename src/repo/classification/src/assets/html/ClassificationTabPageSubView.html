@@ -1,0 +1,56 @@
+<div class="sw-row aw-search-results-filters-tab aw-classificationTabPageSub-addTab">
+    <div class="sw-column aw-classificationTabPageSub-filtersTab" show-when="conditions.isMobileMode && conditions.displayFilters">
+        <!-- 1x Filters Commands -->
+        <div class="sw-row classification-page-toolbar" show-when="conditions.displayToggles">
+            <div class="sw-column" exist-when="conditions.displayFilters">
+                <aw-icon-button command="data.resultsCommand" aw-class="[{ 'aw-state-selected': fields.viewContext.value.showNavigate === 'filters' }]"></aw-icon-button>
+            </div>
+        </div>
+        <aw-search-breadcrumb-title crumb-title="data.crumbTitle">
+        </aw-search-breadcrumb-title>
+        <!-- Filters -->
+        <awp0-add-filters search-state="fields.searchStateForClsTree" sidenav-mode="{{props.subPanelContext.sidenavMode}}" active-section="{{fields.viewContext}}"></awp0-add-filters>
+    </div>
+    <!-- Class Navigator -->
+    <div aw-class="[conditions.isMobileMode ? '' : conditions.isDesktopMode ? 'w-4 aw-classificationTabPageSub-treeNavColumn' : 'w-6 aw-classificationTabPageSub-treeNavColumn']" class="sw-column" show-when="conditions.displayNavigation">
+        <aw-panel-section collapsed="disabled" class='aw-input-section aw-search-left-panel-view' name='inputSection'>
+            <classification-tab-page-table-wrapper selection-data="fields.treeSelectionData" sidenav-mode="props.subPanelContext.sidenavMode" search-state="fields.searchStateForClsTree" show-when="conditions.displayTree"></classification-tab-page-table-wrapper>
+            <awp0-add-filters search-state="fields.searchStateForClsTree" sidenav-mode="props.subPanelContext.sidenavMode" active-section="{{fields.viewContext}}" show-when="conditions.nonMobileMode"></awp0-add-filters>
+        </aw-panel-section>
+    </div>
+    <!-- 2x/Tablet Splitter -->
+    <aw-splitter exist-when="conditions.nonMobileMode"></aw-splitter>
+    <!-- This section changes depending on 1x or 2x usage. -->
+    <!-- Commands -->
+    <div class="sw-column" show-when="conditions.displayResults && (conditions.nonMobileMode || !conditions.displayFilters)" aw-class="[conditions.isMobileMode ? '' : conditions.isDesktopMode ? 'w-4 aw-classificationTabPageSub-resultsColumnDesktop' : 'w-6 aw-classificationTabPageSub-resultsColumnTablet']">
+        <div class="sw-row classification-page-toolbar">
+            <div class="sw-column" show-when="conditions.displayToggles && conditions.isMobileMode">
+                <aw-icon-button command="data.treeCommand"></aw-icon-button>
+            </div>
+            <div class="sw-column" exist-when="conditions.doNotDisplayTreeToggle">
+                <aw-icon-button command="data.treesetCommand" aw-class="[{ 'aw-state-selected': fields.viewContext.value.showNavigate === 'filters' }]"></aw-icon-button>
+            </div>
+            <div class="sw-column" exist-when="conditions.doNotDisplayFilterToggle">
+                <aw-icon-button command="data.filterCommand"></aw-icon-button>
+            </div>
+        </div>
+        <aw-search-breadcrumb-title crumb-title="data.crumbTitle" exist-when="conditions.displayBreadcrumb">
+        </aw-search-breadcrumb-title>
+        <aw-search-breadcrumb-chips search-object="fields.searchStateForClsTree" exist-when="conditions.displayBreadcrumb">
+        </aw-search-breadcrumb-chips>
+        <aw-panel-section collapsed="disabled" caption="{{i18n.searchResults}}" class="aw-results-section" key="{{data.resultSectionID}}" show-when="conditions.displayResults">
+            <!-- List of classification objects -->
+            <show-classification-info-list sub-panel-context="{selectionModel: selectionModels.resultTabModel, selectionData: fields.selectionData, searchState: fields.searchStateForClsTree}"></show-classification-info-list>
+        </aw-panel-section>
+    </div>
+    <!-- 3x/Desktop View-->
+    <aw-splitter exist-when="conditions.isDesktopMode"></aw-splitter>
+    <aw-panel-section aw-class="{'w-4 aw-classificationTabPageSub-clsInfoColumn' : conditions.nonMobileMode}" show-when="conditions.isDesktopMode">
+        <!-- Reusing classify panel component -->
+        <aw-command-sub-panel class="h-12" panel-id="Awp0ClassificationSub"
+            sub-panel-context="{...props.subPanelContext, selectionData: fields.viewSelectionData, sourceObjects: data.sourceObjects, classifyState: fields.classifyState, responseState: fields.responseState, workspaceObjectUID:data.workspaceObjectUID }" exist-when="conditions.selectionMade">
+        </aw-command-sub-panel>
+        <aw-i18n exist-when="conditions.multipleSelectionsMade">i18n.noClsObjSel</aw-i18n>
+        <aw-i18n exist-when="conditions.noSelectionMade">i18n.noClsObjSel</aw-i18n>
+    </aw-panel-section>
+</div>

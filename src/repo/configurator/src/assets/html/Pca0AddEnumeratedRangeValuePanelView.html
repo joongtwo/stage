@@ -1,0 +1,97 @@
+<aw-command-panel caption="i18n.addPanelTitle" context="subPanelContext">
+    <aw-panel-body>
+        <aw-panel-section caption="i18n.toTitle" exist-when="data.toFamily">
+            <aw-default-cell item="data.toFamily"></aw-default-cell>
+        </aw-panel-section>
+        <aw-panel-section caption="{{data.nameOfFamily.dbValue}}" exist-when="conditions.isOfIntegerType">
+            <div class="sw-row">
+                <div class="sw-column aw-cfg-fscFreeFormToFromRange">
+                    <aw-listbox class="aw-cfg-fromOperatorListBox" prop="data.fromOperator" list="data.enumFromListValues.OperatorValues" action="selectionChange" exist-when="conditions.isIntegerEnumeratedFamilyType"></aw-listbox>
+                </div>
+                <div class="sw-column w-11 aw-cfg-fscFreeFormRangeExpEnumValue">
+                    <aw-listbox class="aw-cfg-fromValueListBox" prop="data.fromEnumValues" list="data.fromChildListValues.childValues" action="selectionChange" exist-when="conditions.isIntegerEnumeratedFamilyType"></aw-listbox>
+                </div>
+            </div>
+
+            <div class="sw-row">
+                <div class="sw-column aw-cfg-fscFreeFormToFromRange">
+                    <aw-listbox class="aw-cfg-toOperatorListBox" prop="data.toOperator" list="data.enumToListValues.OperatorValues" action="selectionChange" enable-when="conditions.isToPartEnable"></aw-listbox>
+                </div>
+                <div class="sw-column w-11 aw-cfg-fscFreeFormRangeExpEnumValue">
+                    <aw-listbox class="aw-cfg-toValueListBox" prop="data.toEnumValues" list="data.toChildListValues.childValues" action="selectionChange" enable-when="conditions.isToPartEnableForEnum" exist-when="conditions.isIntegerEnumeratedFamilyType"></aw-listbox>
+                </div>
+            </div>
+
+            <div>
+                <aw-property-label prop="data.previewTitle"></aw-property-label>
+                <aw-property-non-edit-val class="aw-cfg-previewText" prop="data.preview"></aw-property-non-edit-val>
+            </div>
+        </aw-panel-section>
+
+        <aw-panel-section caption="{{data.nameOfFamily.dbValue}}" exist-when="conditions.isOfDoubleType">
+            <div class="sw-row">
+                <div class="sw-column aw-cfg-fscFreeFormToFromRange">
+                   <aw-listbox class="aw-cfg-fromOperatorListBox" prop="data.fromOperator" list="data.enumFromListValues.OperatorValues" action="selectionChange" exist-when="conditions.isDoubleEnumeratedFamilyType"></aw-listbox>
+                </div>
+                <div class="sw-column w-11 aw-cfg-fscFreeFormRangeExpEnumValue">
+                    <aw-listbox class="aw-cfg-fromValueListBox" prop="data.fromEnumValues" list="data.fromChildListValues.childValues" action="selectionChange" exist-when="conditions.isDoubleEnumeratedFamilyType"></aw-listbox>
+                </div>
+            </div>
+
+            <div class="sw-row">
+                <div class="sw-column aw-cfg-fscFreeFormToFromRange">
+                    <aw-listbox class="aw-cfg-toOperatorListBox" prop="data.toOperator" list="data.enumToListValues.OperatorValues" action="selectionChange" enable-when="conditions.isToPartEnable"></aw-listbox>
+                </div>
+                <div class="sw-column w-11 aw-cfg-fscFreeFormRangeExpEnumValue">
+                    <aw-listbox class="aw-cfg-toValueListBox" prop="data.toEnumValues" list="data.toChildListValues.childValues" action="selectionChange" enable-when="conditions.isToPartEnableForEnum" exist-when="conditions.isDoubleEnumeratedFamilyType"></aw-listbox>
+                </div>
+            </div>
+
+            <div>
+                <aw-property-label prop="data.previewTitle"></aw-property-label>
+
+                <aw-property-non-edit-val class="aw-cfg-previewText" prop="data.preview"></aw-property-non-edit-val>
+            </div>
+        </aw-panel-section>
+
+        <aw-panel-section caption="{{data.nameOfFamily.dbValue}}" exist-when="conditions.isOfDateType">
+            <div class="sw-row">
+                <div class="sw-column aw-cfg-fscFreeFormToFromRange">
+                    <aw-listbox class="aw-cfg-fromOperatorListBox" prop="data.fromOperator" list="data.enumFromListValues.OperatorValues" action="selectionChange" exist-when="conditions.isDateEnumeratedFamilyType"></aw-listbox>
+                </div>
+                <div class="sw-column w-11 aw-cfg-fscFreeFormRangeExpEnumValue" exist-when="conditions.isDateEnumeratedFamilyType">
+                    <aw-listbox class="aw-cfg-toValueListBox" prop="data.fromEnumValues" list="data.fromChildListValues.childValues" action="selectionChange"></aw-listbox>
+                </div>
+            </div>
+
+            <div class="sw-row">
+                <div class="sw-column aw-cfg-fscFreeFormToFromRange">
+                    <aw-listbox class="aw-cfg-toOperatorListBox" prop="data.toOperator" list="data.enumToListValues.OperatorValues" action="selectionChange" enable-when="conditions.isToPartEnable"></aw-listbox>
+                </div>
+                <div class="sw-column w-11 aw-cfg-fscFreeFormRangeExpEnumValue" exist-when="conditions.isDateEnumeratedFamilyType">
+                    <aw-listbox class="aw-cfg-toValueListBox" prop="data.toEnumValues" list="data.toChildListValues.childValues" action="selectionChange" enable-when="conditions.isToPartEnableForEnum"></aw-listbox>
+                </div>
+            </div>
+
+            <div>
+                <aw-property-label prop="data.previewTitle"></aw-property-label>
+
+                <aw-property-non-edit-val class="aw-cfg-previewText" prop="data.preview"></aw-property-non-edit-val>
+            </div>
+        </aw-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="addIntegerEnumRange" visible-when="(data.fromIntegerValue.uiValue !== '' || data.fromEnumValues.uiValue) && data.fromOperator.dbValue !== '' && conditions.isOfIntegerType">
+            <aw-i18n>i18n.addButtonTitle</aw-i18n>
+        </aw-button>
+        <aw-button action="addStringEnumRange" visible-when="data.freeFormStringValue.uiValue !== '' && conditions.isOfStringType">
+            <aw-i18n>i18n.addButtonTitle</aw-i18n>
+        </aw-button>
+        <aw-button action="addDoubleEnumRange" visible-when="(data.fromDoubleValue.uiValue !== '' || data.fromEnumValues.uiValue) && data.fromOperator.dbValue !== '' && conditions.isOfDoubleType">
+            <aw-i18n>i18n.addButtonTitle</aw-i18n>
+        </aw-button>
+        <aw-button action="addDateEnumRange" visible-when="(data.fromDateTime.uiValue !== '' || data.fromEnumValues.uiValue) && data.fromOperator.dbValue !== '' && conditions.isOfDateType">
+            <aw-i18n>i18n.addButtonTitle</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

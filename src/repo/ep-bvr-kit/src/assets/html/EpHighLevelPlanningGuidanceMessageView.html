@@ -1,0 +1,7 @@
+<aw-guidance-message  class="aw-ep-highLevelPlanningGuidanceMsg" exist-when="!props.subPanelContext.sharedSelectionData.isPertModeActive" message="mbomTreeGuidanceMsg" closable="false" banner-style="false" show-icon="false" show-type="false">
+    <aw-button action="cmdCreateProcessButtonCommandAction" enable-when="conditions.enableButton && conditions.isContainer">{{i18n.createButtonTitle}}</aw-button>
+</aw-guidance-message>
+<aw-guidance-message  class="aw-ep-highLevelPlanningGuidanceMsg" exist-when="props.subPanelContext.sharedSelectionData.isPertModeActive" message="pertGuidanceMsg" closable="false" banner-style="false" show-icon="false" show-type="false">
+    <aw-button action="cmdCreateProcessButtonCommandAction" enable-when="conditions.enableButtonForPert">{{i18n.createButtonTitle}}</aw-button>
+</aw-guidance-message>
+

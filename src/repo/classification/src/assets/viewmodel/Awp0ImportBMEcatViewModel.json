@@ -1,0 +1,391 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-i18n.directive",
+        "js/aw-file-upload.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-listbox.directive",
+        "js/aw-panel-footer.directive"
+    ],
+    "data": {
+        "potentialImportsListBox": {
+            "displayName": "{{i18n.potentialImports}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        }
+    },
+    "actions": {
+        "clsFilesSelectionChange": {
+            "actionType": "batchJob",
+            "steps":
+            [
+                {
+                    "action": "clearCLSImportListbox"
+                },
+                {
+                    "action": "addFormData"
+                },
+                {
+                    "action": "getFMSTicket",
+                    "condition": "parameters.fileName && parameters.validFile"
+                }
+            ]
+        },
+        "addFormData": {
+            "actionType": "JSFunction",
+            "method": "setFileParameters",
+            "inputData": {
+                "fileName": "{{parameters.fileName}}",
+                "validFile": "{{parameters.validFile}}",
+                "fileNameNoExt": "{{parameters.fileNameNoExt}}",
+                "fileExt": "{{parameters.fileExt}}",
+                "formData": "{{parameters.formData}}"
+            },
+            "outputData": {
+                "fileName": "fileName",
+                "validFile": "validFile",
+                "fileNameNoExt": "fileNameNoExt",
+                "fileExt": "fileExt",
+                "formData": "formData"
+            },
+            "deps": "js/fileUploadUtils"
+        },
+        "getFMSTicket": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-01-FileManagement",
+            "method": "getTransientFileTicketsForUpload",
+            "inputData": {
+                "transientFileInfos": [
+                    {
+                        "fileName": "{{data.fileName}}",
+                        "isBinary": true,
+                        "deleteFlag": true
+                    }
+                ]
+            },
+            "outputData": {
+                "fmsTicket": "transientFileTicketInfos[0].ticket"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "progress.start",
+                        "excludeLocalDataCtx": true
+                    },
+                    {
+                        "name": "fmsTicket.updateFormData"
+                    }
+                ]
+            }
+        },
+        "clearCLSImportListbox": {
+            "actionType": "JSFunction",
+            "method": "clearCLSImportListbox",
+            "outputData":
+            {
+                "classificationDataFiles": ""
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "progress.end",
+                        "excludeLocalDataCtx": true
+                    }
+                ]
+            },
+            "deps": "js/importBMEcatService"
+        },
+        "updateFormData":
+        {
+            "actionType": "JSFunction",
+            "method": "updateFormData",
+            "inputData":
+            {
+                "formData": "{{data.formData}}",
+                "key"  : "fmsTicket",
+                "value": "{{data.fmsTicket}}"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "fmsTicket.uploadFile"
+                    }
+                ]
+            },
+            "deps": "js/fileUploadUtils"
+        },
+        "uploadFile":
+        {
+            "actionType": "RESTService",
+            "serviceName": "",
+            "method": "POST",
+            "inputData":
+            {
+                "request":
+                {
+                    "method": "POST",
+                    "url": "{{Constants.fmsUrl}}",
+                    "headers":
+                    {
+                        "Content-type": "undefined"
+                    },
+                    "data": "{{data.formData}}"
+                }
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "fmsTicket.listCLSDataFiles"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "progress.end",
+                        "excludeLocalDataCtx": true
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "fmsUploadFailure"
+                    }
+                ]
+            }
+        },
+        "listCLSDataFiles":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ClassificationCommon-2021-12-Classification",
+            "method": "listClassificationDataFiles",
+            "inputData":
+            {
+                "fileTicket": "{{data.fmsTicket}}"
+            },
+            "outputData":
+            {
+                "classificationDataFiles": "classificationDataFiles",
+                "serviceData": "ServiceData"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "progress.end",
+                        "excludeLocalDataCtx": true
+                    },
+                    {
+                        "name": "classificationDataFiles.updateCLSImportListbox"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "progress.end",
+                        "excludeLocalDataCtx": true
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "condition": "data.serviceData.partialErrors.length > 0",
+                        "message": "clsDataBadZipSelected"
+                    }
+                ]
+            }
+        },
+        "updateCLSImportListbox": {
+            "actionType": "JSFunction",
+            "method": "updateCLSImportListbox",
+            "inputData": {
+                "dataFiles": "{{data.classificationDataFiles}}"
+            },
+            "outputData":
+            {
+                "potentialImportsListBoxValues": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "Awp0ImportBMEcat.selectImportFile"
+                    }
+                ]
+            },
+            "deps": "js/importBMEcatService"
+        },
+        "selectImportFile": {
+            "actionType": "JSFunction",
+            "method": "selectClsDataImportFile",
+            "inputData":
+            {
+                "data": "{{data}}"
+            },
+            "outputData":
+            {
+                "selectedClsImportFile": ""
+            },
+            "deps": "js/importBMEcatService"
+        },
+        "importCLSData": {
+            "actionType": "TcSoaService",
+            "serviceName": "ClassificationCommon-2021-12-Classification",
+            "method": "importClassificationData",
+            "inputData":
+            {
+                "fileTicket": "{{data.fmsTicket}}",
+                "relativePathToClsDataFile": "{{data.selectedClsImportFile.relativePath}}",
+                "processAsAsync": true
+            },
+            "outputData": {
+                "serviceData": "serviceData"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        }
+                    },
+                    {
+                        "name": "Awp0ImportBMEcat.clsDataImported"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "clsDataImportStarted"
+                    }
+                ],
+                "failure": [
+                    {
+                        "message": "clsDataImportFailure"
+                    }
+                ]
+            }
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "Awp0ImportBMEcat.clsDataImported",
+            "action": "clsDataImported"
+        },
+        {
+            "eventId": "classificationDataFiles.updateCLSImportListbox",
+            "action": "updateCLSImportListbox"
+        },
+        {
+            "eventId": "Awp0ImportBMEcat.selectImportFile",
+            "action": "selectImportFile"
+        },
+        {
+            "eventId": "fmsTicket.uploadFile",
+            "action": "uploadFile"
+        },
+        {
+            "eventId": "fmsTicket.updateFormData",
+            "action": "updateFormData"
+        },
+        {
+            "eventId": "fmsTicket.listCLSDataFiles",
+            "action": "listCLSDataFiles"
+        },
+        {
+            "eventId": "performSearch.selectionChangeEvent",
+            "action": "closePanel"
+        },
+        {
+            "eventId": "primaryWorkArea.selectionChangeEvent",
+            "action": "closePanel"
+        }
+    ],
+    "i18n": {
+        "potentialImports": [
+            "ClassificationPanelMessages"
+        ],
+        "cmdImportButton": [
+            "ClassificationPanelMessages"
+        ],
+        "clsDataImportStarted": [
+            "ClassificationPanelMessages"
+        ],
+        "clsDataImportFailed": [
+            "ClassificationPanelMessages"
+        ],
+        "clsDataBadZipSelected": [
+            "ClassificationPanelMessages"
+        ],
+        "importClsDataTitle": [
+            "ClassificationPanelMessages"
+        ],
+        "fmsUploadFailure": [
+            "ClassificationPanelMessages"
+        ]
+    },
+    "messages": {
+        "clsDataImportStarted": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.clsDataImportStarted}}",
+            "messageTextParams": [
+                "{{data.selectedClsImportFile.fileName}}"
+            ]
+        },
+        "clsDataImportFailed": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.clsDataImportFailed}}",
+            "messageTextParams": [
+                "{{data.selectedClsImportFile.fileName}}"
+            ]
+        },
+        "clsDataBadZipSelected": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.clsDataBadZipSelected}}"
+        },
+        "fmsUploadFailure": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.fmsUploadFailure}}",
+            "messageTextParams": [
+                "{{data.fileName}}"
+            ]
+        }
+    },
+    "conditions": {
+        "enableImport": {
+            "expression": "conditions.isValidFile && conditions.clsDataFileSelected && conditions.listboxEnabled"
+        },
+        "isValidFile": {
+            "expression": "data.fileName && data.validFile == true && data.fileName.substr(data.fileName.length - 4).toLowerCase() == '.zip'"
+        },
+        "clsDataFileSelected": {
+            "expression": "data.selectedClsImportFile.relativePath.length > 0"
+        },
+        "listboxEnabled": {
+            "expression": "data.classificationDataFiles.length > 0 && conditions.isValidFile"
+        }
+    }
+}

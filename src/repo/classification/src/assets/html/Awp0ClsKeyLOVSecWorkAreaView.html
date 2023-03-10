@@ -1,0 +1,9 @@
+<aw-panel>
+    <aw-panel-body>
+        <aw-widget prop="item" aw-repeat="item :  data.currentSecData" ></aw-widget>
+        <aw-panel-section caption="{{i18n.entries}}" visible-when="data.lovTypeItems.length > 0" collapsed="false">
+            <aw-splm-table gridid="entryGridForKeyLOV" use-tree="true" show-decorators="true"></aw-splm-table>
+        </aw-panel-section>
+    </aw-panel-body>
+</aw-panel>
+

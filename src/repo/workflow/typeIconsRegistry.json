@@ -1,0 +1,169 @@
+[
+  {
+    "type": {
+      "names": [
+        "EPMTask"
+      ],
+      "prop": {
+        "names": [
+          "fnd0PerformForm"
+        ],
+        "iconFileName": "typeFormTask48",
+        "conditions": {
+          "fnd0PerformForm": {
+            "$ne": ""
+          }
+        }
+      }
+    }
+  },
+  {
+    "type": {
+      "names": [
+        "EPMTask"
+      ],
+      "prop": {
+        "names": [
+          "root_task"
+        ],
+        "iconFileName": "typeWorkflowProcess48",
+        "conditions": {
+          "root_task": {
+            "$eq": "{{uid}}"
+          }
+        }
+      }
+    }
+  },
+  {
+    "type": {
+      "names": [
+        "Awp0UserAssignment"
+      ],
+      "prop": {
+        "names": [
+          "awp0User"
+        ],
+        "type": {
+          "names": [
+            "BusinessObject"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "type": {
+      "names": [
+        "Participant"
+      ],
+      "prop": {
+        "names": [
+          "assignee"
+        ],
+        "type": {
+          "names": [
+            "User"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "thumbnail": {
+      "names": [
+        "Awp0XRTObjectSetRow"
+      ],
+      "prop": {
+        "names": [
+          "awp0Target"
+        ],
+        "type": {
+          "names": [
+            "Participant"
+          ],
+          "prop": {
+            "names": [
+              "fnd0AssigneeUser"
+            ],
+            "type": {
+              "names": [
+                "User"
+              ]
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "type": {
+      "names": [
+        "Awp0XRTObjectSetRow"
+      ],
+      "prop": {
+        "names": [
+          "awp0Target"
+        ],
+        "type": {
+          "names": [
+            "TaskInbox"
+          ],
+          "prop": {
+            "names": [
+              "owning_site"
+            ],
+            "iconFileName": "cmdOpenInbox24",
+            "conditions": {
+              "owning_site": {
+                "$notin": [
+                  null,
+                  ""
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  {
+    "type": {
+      "names": [
+        "TaskInbox"
+      ],
+      "prop": {
+        "names": [
+          "owning_site"
+        ],
+        "iconFileName": "cmdOpenInbox24",
+        "conditions": {
+          "owning_site": {
+            "$notin": [
+              null,
+              ""
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "type": {
+      "names": [
+        "EPMTaskTemplate"
+      ],
+      "prop": {
+        "names": [
+          "template_classification"
+        ],
+        "iconFileName": "typeWorkflowTemplate48",
+        "conditions": {
+          "template_classification": {
+            "$eq": "0"
+          }
+        }
+      }
+    }
+  }
+]

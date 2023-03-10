@@ -1,0 +1,217 @@
+{
+  "schemaVersion": "1.0.0",
+  "commands": {
+    "swiShowObjectCell": {
+      "iconId": "cmdShow",
+      "isGroup": false,
+      "title": "{{i18n.swiShowCmdTitle}}",
+      "description": "{{i18n.swiShowCmdDescription}}"
+    },
+    "swiShowObjectCellForObjectNavigation": {
+      "iconId": "cmdShow",
+      "isGroup": false,
+      "title": "{{i18n.swiShowCmdTitle}}",
+      "description": "{{i18n.swiShowCmdDescription}}"
+    },
+    "swiCommand": {
+      "iconId": "cmdShow",
+      "isGroup": false,
+      "title": "{{i18n.swiShowCmdTitle}}",
+      "description": "{{i18n.swiShowCmdDescription}}"
+    },
+    "changeViewCommand": {
+      "iconId": "cmdShow",
+      "isGroup": true,
+      "title": "{{i18n.changeViewCmdTitle}}",
+      "description": "{{i18n.changeViewCmdDescription}}"
+    },
+    "allCommand": {
+      "iconId": "cmdShowAll16",
+      "isGroup": false,
+      "title": "{{i18n.allCmdTitle}}",
+      "description": "{{i18n.allCmdDescription}}"
+    },
+    "stepsCommand": {
+      "iconId": "typeTestProcedureSteps48",
+      "isGroup": false,
+      "title": "{{i18n.stepsCmdTitle}}",
+      "description": "{{i18n.stepsCmdDescription}}"
+    }
+  },
+  "commandPlacements": {
+    "swiShowObjectCellCmdPlacement": {
+      "id": "swiShowObjectCell",
+      "uiAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands",
+      "priority": 1,
+      "cellDisplay": {
+        "hover": true,
+        "position": "BOTTOM_RIGHT",
+        "selected": true
+      }
+    },
+    "swiShowObjectCellForObjectNavigationOnHover": {
+      "id": "swiShowObjectCellForObjectNavigation",
+      "uiAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectObjectNavigationCellListActionCommands",
+      "priority": 1,
+      "cellDisplay": {
+        "hover": true,
+        "position": "BOTTOM_RIGHT",
+        "selected": true
+      }
+    },
+    "swiCommandPlacement": {
+      "id": "swiCommand",
+      "uiAnchor": "Ssp0ServicePlanTree_uiAnchor",
+      "priority": 1
+    },
+    "changeViewCommandPlacement": {
+      "id": "changeViewCommand",
+      "uiAnchor": "swiInstructions",
+      "cellDisplay": {
+        "hover": true
+      }
+    },
+    "allCmdPlacement": {
+      "id": "allCommand",
+      "parentGroupId": "changeViewCommand"
+    },
+    "stepsCmdPlacement": {
+      "id": "stepsCommand",
+      "parentGroupId": "changeViewCommand"
+    }
+  },
+  "commandHandlers": {
+    "swiShowObjectCellCmdHandler": {
+      "id": "swiShowObjectCell",
+      "action": "navigateToSwiPage",
+      "activeWhen": {
+        "condition": "conditions.swiShowCmdCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.swiShowCmdCondition"
+      }
+    },
+    "swiShowObjectCellForObjectNavigationHandler": {
+      "id": "swiShowObjectCellForObjectNavigation",
+      "action": "navigateToSwiPage",
+      "activeWhen": {
+        "condition": "conditions.swiShowCmdCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.swiShowObjectCellForObjectNavigationCmdCondition"
+      }
+    },
+    "swiCommandHandler": {
+      "id": "swiCommand",
+      "action": "navigateToSwiPage",
+      "activeWhen": {
+        "condition": "conditions.swiCommandCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.swiCommandCondition"
+      }
+    },
+    "changeViewCmdHandler": {
+      "id": "changeViewCommand",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": true
+    },
+    "addCmdHandler": {
+      "id": "allCommand",
+      "action": "showAllViewAction",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": true
+    },
+    "stepsCmdHandler": {
+      "id": "stepsCommand",
+      "action": "showStepsViewAction",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": true
+    }
+  },
+  "actions": {
+    "navigateToSwiPage": {
+      "actionType": "JSFunction",
+      "method": "registerUidAndNavigate",
+      "inputData": {
+        "vmo": "{{function:getNavigateInput}}"
+      },
+      "deps": "js/swiService"
+    },
+    "showAllViewAction": {
+      "actionType": "JSFunction",
+      "method": "registerCtx",
+      "inputData": {
+        "name": "changeViewFlag",
+        "value": "All"
+      },
+      "deps": "js/appCtxService"
+    },
+    "showStepsViewAction": {
+      "actionType": "JSFunction",
+      "method": "registerCtx",
+      "inputData": {
+        "name": "changeViewFlag",
+        "value": "Steps"
+      },
+      "deps": "js/appCtxService"
+    }
+  },
+  "conditions": {
+    "IsServiceReqSelected": {
+      "expression": "commandContext.vmo.modelType.typeHierarchyArray.indexOf( 'SSP0ServiceReq' ) > -1 || commandContext.vmo.modelType.typeHierarchyArray.indexOf( 'SSP0ServiceReqRevision' ) > -1"
+    },
+    "IsWorkCardSelected": {
+      "expression": "commandContext.vmo.modelType.typeHierarchyArray.indexOf( 'SSP0WorkCard' ) > -1 || commandContext.vmo.modelType.typeHierarchyArray.indexOf( 'SSP0WorkCardRevision' ) > -1 "
+    },
+    "swiShowCmdCondition": {
+      "expression": "conditions.IsServiceReqSelected"
+    },
+    "swiCommandCondition": {
+      "expression": "conditions.isSwiCommandActiveInServicePlan"
+    },
+    "swiShowObjectCellForObjectNavigationCmdCondition": {
+      "expression": " conditions.swiShowCmdCondition  && commandContext.vmo.modelType.typeHierarchyArray.indexOf( 'Folder' ) === -1"
+    },
+    "isSwiCommandActiveInServicePlan": {
+      "expression": "ctx.selectedVMO.modelType.typeHierarchyArray.indexOf('SSP0BvrServiceRequirement')>-1"
+    }
+  },
+  "functions": {
+    "getNavigateInput": {
+      "functionName": "getNavigateInput",
+      "parameters": [
+        "{{commandContext}}"
+      ]
+    }
+  },
+  "i18n": {
+    "swiShowCmdTitle": [
+      "swiMessages"
+    ],
+    "swiShowCmdDescription": [
+      "swiMessages"
+    ],
+    "changeViewCmdTitle": [
+      "swiMessages"
+    ],
+    "changeViewCmdDescription": [
+      "swiMessages"
+    ],
+    "allCmdTitle": [
+      "swiMessages"
+    ],
+    "stepsCmdTitle": [
+      "swiMessages"
+    ],
+    "allCmdDescription": [
+      "swiMessages"
+    ],
+    "stepsCmdDescription": [
+      "swiMessages"
+    ]
+  }
+}

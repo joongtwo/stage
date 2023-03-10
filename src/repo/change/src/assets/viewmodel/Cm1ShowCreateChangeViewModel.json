@@ -1,0 +1,132 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-command-sub-panel.directive",
+        "js/visible-when.directive"
+    ],
+    "data": {
+        "activeState": {
+            "initialValues": {
+                "activeView": "Cm1CreateChangeSub",
+                "context": {}
+            },
+            "meta": {
+                "activeView": {
+                    "field": "true",
+                    "type": "STRING"
+                },
+                "context": {
+                    "field": "true",
+                    "type": "OBJECT"
+                }
+            }
+        },
+        "projectState": {
+            "initialValues": {
+                "selectedProjects": [],
+                "triggerAssign": false
+            },
+            "meta": {
+                "selectedProjects": {
+                    "field": "true",
+                    "type": "OBJECT"
+                },
+                "triggerAssign": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        },
+        "attachmentsState": {
+            "initialValues": {
+                "addAttachments": [],
+                "updateAttachmentsSection": false
+            },
+            "meta": {
+                "addAttachments": {
+                    "field": "true",
+                    "type": "OBJECT"
+                },
+                "updateAttachmentsSection": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        },
+        "addUserPanelState": {
+            "initialValues": {
+                "provider": "Awp0PeoplePickerProvider",
+                "selectionModelMode": "single",
+                "criteria": {
+                    "providerContentType": "GroupMember",
+                    "searchString": "*",
+                    "selectedObject": "",
+                    "searchSubGroup": "true",
+                    "group": "",
+                    "role": "",
+                    "participantType": ""
+                },
+                "defaultCriteria": {
+                    "providerContentType": "User",
+                    "searchSubGroup": "true",
+                    "group": "",
+                    "role": "",
+                    "participantType": ""
+                },
+                "selectedUsers": "",
+                "isAddButtonNeeded": true,
+                "triggerUpdateSearchCriteria": false
+            },
+            "meta": {
+                "selectedUsers": {
+                    "field": "true",
+                    "type": "OBJECTARRAY"
+                }
+            }
+        }
+    },
+    "actions": {
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+        "updateActiveView":{
+            "actionType": "JSFunction",
+            "method": "setActiveView",
+            "inputData": {
+                "stateName": "{{fields.activeState}}",
+                "destPanelId": "Cm1CreateChangeSub"
+            },
+            "deps": "js/addObjectUtils"
+        }
+    },
+    "onEvent": [ {
+        "eventId": "primaryWorkArea.selectionChangeEvent",
+        "action": "closePanel"
+    } ],
+    "conditions": {
+
+        "isHostedComponent": {
+            "expression": "ctx.aw_hosting_state.currentHostedComponentId === 'com.siemens.splm.client.change.CreateChangeComponent'"
+        }
+    },
+    "i18n": {
+        "CreateChange": [ "CreateChangeMessages" ],
+        "DeriveChange": [ "CreateChangeMessages" ],
+        "BACK_BUTTON_TITLE": ["BaseMessages"]
+    },
+    "props": {
+        "sub-panel-context":{
+            "type":"object"
+        }
+    }
+}

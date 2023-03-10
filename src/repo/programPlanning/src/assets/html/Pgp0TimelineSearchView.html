@@ -1,0 +1,23 @@
+<aw-command-panel caption="i18n.Pgp0TimelineSearch">
+    <aw-panel-body>
+        <aw-listbox prop="data.timelineSearchBy" list="data.timelineSearchByValues.dbValue" exist-when="conditions.isPsi0TemplateInstalled" action="clearDataProviderResults"></aw-listbox>
+        <aw-listbox prop="data.timelineSearchBy" list="data.timelineSearchByEvent.dbValue" exist-when="!conditions.isPsi0TemplateInstalled"></aw-listbox>
+        <aw-break></aw-break>
+        <aw-search-box prop="data.pgp0SearchBox" placeholder="i18n.pgp0Search" action="doSearch"></aw-search-box>
+        <aw-break></aw-break>
+        <p visible-when="data.resultString.dbValue">{{data.resultString.dbValue}}</p>
+        <aw-break></aw-break>
+        <aw-panel-section caption="i18n.pgp0EventResults" collapsed="false">
+            <aw-flex-row height="27.5f">
+                <aw-scrollpanel>
+                    <aw-list dataprovider="data.dataProviders.pgp0PlanObjsSearchProvider" exist-when="data.timelineSearchBy.dbValue === 'Event'">
+                        <aw-default-cell vmo="item"></aw-default-cell>
+                    </aw-list>
+                    <aw-list dataprovider="data.dataProviders.Psi0PrgDelSearchProvider" exist-when="data.timelineSearchBy.dbValue === 'DeliverablesInstancesWithinEvent'">
+                        <aw-default-cell vmo="item"></aw-default-cell>
+                    </aw-list>
+                </aw-scrollpanel>
+            </aw-flex-row>
+        </aw-panel-section>
+    </aw-panel-body>
+</aw-command-panel>

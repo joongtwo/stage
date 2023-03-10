@@ -1,0 +1,638 @@
+{
+  "schemaVersion": "1.0.0",
+  "commands": {
+    "ssp0AddGroupCommand": {
+      "iconId": "cmdAdd",
+      "isGroup": true,
+      "title": "{{i18n.Add}}"
+    },
+    "ssp0CreateServiceContainer": {
+      "iconId": "cmdCreateServiceContainer",
+      "title": "{{i18n.AddServiceContainer}}",
+      "description": "{{i18n.AddServiceContainerDesc}}"
+    },
+    "ssp0CreateServiceRequirement": {
+      "iconId": "cmdCreateServiceRequirement",
+      "title": "{{i18n.AddServiceReqTitle}}",
+      "description": "{{i18n.AddServiceReqDesc}}"
+    },
+    "ssp0CreateWorkCard": {
+      "iconId": "cmdCreateWorkCard",
+      "title": "{{i18n.addWorkCard}}",
+      "description": "{{i18n.addWorkCardDescription}}"
+    },
+    "Ssp1AddFrequency": {
+      "iconId": "cmdAdd",
+      "title": "{{i18n.Frequency}}",
+      "description": "{{i18n.Ssp1AddFrequencyDesc}}"
+    },
+    "ssp0AddSkill": {
+      "iconId": "cmdAdd",
+      "title": "{{i18n.Skill}}",
+      "description": "{{i18n.AddSkillDesc}}"
+    },
+    "Ssp1AddFrequencyToList": {
+      "iconId": "cmdSave",
+      "title": "{{i18n.Append}}"
+    },
+    "ssp0NavigateToTimeAnalysisCommand": {
+      "iconId": "cmdOpen",
+      "title": "{{i18n.AddTimeAnalysisTitle}}"
+    },
+    "Ssp1RemoveFrequencyExpressionCell": {
+      "iconId": "cmdRemove",
+      "title": "{{i18n.Remove}}"
+    },
+    "Ssp1MoveUpFrequencyExpressionCell": {
+      "iconId": "cmdMoveUp",
+      "title": "{{i18n.MoveUp}}"
+    },
+    "Ssp1MoveDownFrequencyExpressionCell": {
+      "iconId": "cmdMoveDown",
+      "title": "{{i18n.MoveDown}}"
+    },
+    "Ssp1ResetFrequencyFields": {
+      "iconId": "cmdReset",
+      "title": "{{i18n.Reset}}"
+    },
+    "Ssp1GroupFrequency": {
+      "iconId": "cmdGroupExpression16",
+      "title": "{{i18n.Group}}"
+    },
+    "Ssp1UngroupFrequency": {
+      "iconId": "cmdUngroupExpression16",
+      "title": "{{i18n.Ungroup}}"
+    },
+    "ssp0addActivityCommand": {
+      "iconId": "cmdAdd",
+      "title": "{{i18n.AddActivityTitle}}",
+      "isGroup": false,
+      "description": "{{i18n.AddActivityDesc}}"
+    },
+    "ssp0removeActivityCommand": {
+      "iconId": "cmdRemove",
+      "title": "{{i18n.RemoveActivityTitle}}",
+      "isGroup": false,
+      "description": "{{i18n.RemoveActivityDesc}}"
+    }
+  },
+  "commandPlacements": {
+    "ssp0NavigateToTimeAnalysisCommandPlacement": {
+      "id": "ssp0NavigateToTimeAnalysisCommand",
+      "uiAnchor": "Ssp0ServicePlanTree_uiAnchor",
+      "priority": 502
+    },
+    "AddGroupCommandPlacement": {
+      "id": "ssp0AddGroupCommand",
+      "uiAnchor": "Ssp0ServicePlanTree_uiAnchor",
+      "priority": 200
+    },
+    "ssp0CreateServiceContainerCommandPlacement": {
+      "id": "ssp0CreateServiceContainer",
+      "uiAnchor": "Ssp0ServicePlanTree_uiAnchor",
+      "parentGroupId": "ssp0AddGroupCommand",
+      "priority": 700
+    },
+    "ssp0CreateServiceRequirementCommandPlacement": {
+      "id": "ssp0CreateServiceRequirement",
+      "uiAnchor": "Ssp0ServicePlanTree_uiAnchor",
+      "parentGroupId": "ssp0AddGroupCommand",
+      "priority": 805
+    },
+    "ssp0CreateWorkCardCommandPlacement": {
+      "id": "ssp0CreateWorkCard",
+      "uiAnchor": "Ssp0ServicePlanTree_uiAnchor",
+      "parentGroupId": "ssp0AddGroupCommand",
+      "priority": 400
+    },
+    "addFrequency": {
+      "id": "Ssp1AddFrequency",
+      "uiAnchor": "FrequencyTableAnchor",
+      "priority": 1
+    },
+    "Ssp1AddFrequencyToListPlacement": {
+      "id": "Ssp1AddFrequencyToList",
+      "uiAnchor": "freq_expressions_barCommands",
+      "priority": 101
+    },
+    "ssp0AddSkillCommandPlacement": {
+      "id": "ssp0AddSkill",
+      "uiAnchor": "Ssp0ServicePlanTree_uiAnchor",
+      "priority": 1100,
+      "parentGroupId": "ssp0AddGroupCommand"
+    },
+    "Ssp1RemoveFrequencyExpressionCellPlacement": {
+      "id": "Ssp1RemoveFrequencyExpressionCell",
+      "uiAnchor": "freq_expressions_cellCommands",
+      "priority": 10,
+      "cellDisplay": {
+        "hover": false,
+        "position": "TOP_RIGHT",
+        "selected": true
+      }
+    },
+    "Ssp1MoveUpFrequencyExpressionCellPlacement": {
+      "id": "Ssp1MoveUpFrequencyExpressionCell",
+      "uiAnchor": "freq_expressions_cellCommands",
+      "priority": 20,
+      "cellDisplay": {
+        "hover": false,
+        "position": "TOP_RIGHT",
+        "selected": true
+      }
+    },
+    "Ssp1MoveDownFrequencyExpressionCellPlacement": {
+      "id": "Ssp1MoveDownFrequencyExpressionCell",
+      "uiAnchor": "freq_expressions_cellCommands",
+      "priority": 30,
+      "cellDisplay": {
+        "hover": false,
+        "position": "TOP_RIGHT",
+        "selected": true
+      }
+    },
+    "Ssp1ResetFrequencyFieldsPlacement": {
+      "id": "Ssp1ResetFrequencyFields",
+      "uiAnchor": "freq_expressions_barCommands",
+      "priority": 100
+    },
+    "Ssp1GroupFrequencyPlacement": {
+      "id": "Ssp1GroupFrequency",
+      "uiAnchor": "freq_expressions_listCommands",
+      "priority": 100
+    },
+    "Ssp1UngroupFrequencyPlacement": {
+      "id": "Ssp1UngroupFrequency",
+      "uiAnchor": "freq_expressions_listCommands",
+      "priority": 101
+    },
+    "ssp0addActivityCommandPlacement": {
+      "id": "ssp0addActivityCommand",
+      "uiAnchor": "Ssp0ActivityTree_uiAnchor",
+      "priority": 100
+    },
+    "ssp0removeActivityPlacement": {
+      "id": "ssp0removeActivityCommand",
+      "uiAnchor": "Ssp0ActivityTree_uiAnchor",
+      "priority": 101
+    }
+  },
+  "commandHandlers": {
+    "ssp0NavigateToTimeAnalysisCommandHandler": {
+      "id": "ssp0NavigateToTimeAnalysisCommand",
+      "action": "ssp0NavigateToTimeAnalysisCommandAction",
+      "activeWhen": {
+        "condition": "conditions.isWCSelected"
+      },
+      "visibleWhen": {
+        "condition": "conditions.isWCSelected"
+      }
+    },
+    "ssp0ShowSPObjectCellCmdHandler": {
+      "id": "Awp0ShowObjectCell",
+      "action": "navigateToServicePlanPage",
+      "activeWhen": {
+        "condition": "conditions.ssp0ShowSPCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.ssp0ShowSPCondition"
+      }
+    },
+    "AddGroupCommandHandler": {
+      "id": "ssp0AddGroupCommand",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": true
+    },
+    "ssp0CreateServiceContainerCommandHandler": {
+      "id": "ssp0CreateServiceContainer",
+      "action": "ssp0AddServiceContainerAction",
+      "visibleWhen": {
+        "condition": "conditions.isServicePlanOrServiceContainerSelected"
+      },
+      "enableWhen": {
+        "condition": "conditions.isServicePlanOrServiceContainerSelected"
+      },
+      "activeWhen": {
+        "condition": "conditions.isServicePlanOrServiceContainerSelected"
+      }
+    },
+    "ssp0CreateServiceRequirementCommandHandler": {
+      "id": "ssp0CreateServiceRequirement",
+      "action": "ssp0AddServiceRequirementAction",
+      "visibleWhen": {
+        "condition": "conditions.isServicePlanOrServiceContainerSelected"
+      },
+      "enableWhen": {
+        "condition": "conditions.isServicePlanOrServiceContainerSelected"
+      },
+      "activeWhen": {
+        "condition": "conditions.isServicePlanOrServiceContainerSelected"
+      }
+    },
+    "ssp0CreateWorkCardCommandHandler": {
+      "id": "ssp0CreateWorkCard",
+      "action": "ssp0CreateWorkCardAction",
+      "visibleWhen": {
+        "condition": "conditions.isServiceRequirementSelected"
+      },
+      "enableWhen": {
+        "condition": "conditions.isServiceRequirementSelected"
+      },
+      "activeWhen": {
+        "condition": "conditions.isServiceRequirementSelected"
+      }
+    },
+    "AddFrequencyHandler": {
+      "id": "Ssp1AddFrequency",
+      "action": "AddFrequency",
+      "activeWhen": {
+        "condition": "conditions.addFrequencyCommandActive"
+      },
+      "visibleWhen": {
+        "condition": "conditions.addFrequencyCommandActive"
+      },
+      "enableWhen": {
+        "condition": "conditions.addFrequencyCommandActive"
+      }
+    },
+    "Ssp1AddFrequencyToListHandler": {
+      "id": "Ssp1AddFrequencyToList",
+      "action": "AddFrequencyToListAdapter",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "ssp0AddSkillCommandHandler": {
+      "id": "ssp0AddSkill",
+      "visibleWhen": {
+        "condition": "conditions.isServiceRequirementSelected"
+      },
+      "enableWhen": false,
+      "activeWhen": {
+        "condition": "conditions.isServiceRequirementSelected"
+      }
+    },
+    "Ssp1RemoveFrequencyExpressionCellHandler": {
+      "id": "Ssp1RemoveFrequencyExpressionCell",
+      "action": "RemoveFrequencyExpressionAdapter",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Ssp1MoveUpFrequencyExpressionCellHandler": {
+      "id": "Ssp1MoveUpFrequencyExpressionCell",
+      "action": "MoveUpFrequencyExpressionAdapter",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Ssp1MoveDownFrequencyExpressionCellHandler": {
+      "id": "Ssp1MoveDownFrequencyExpressionCell",
+      "action": "MoveDownFrequencyExpressionAdapter",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Ssp1ResetFrequencyFieldsHandler": {
+      "id": "Ssp1ResetFrequencyFields",
+      "action": "ResetFrequencyFieldsAdapter",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Ssp1GroupFrequencyHandler": {
+      "id": "Ssp1GroupFrequency",
+      "action": "GroupFrequencyAdapter",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Ssp1UngroupFrequencyHandler": {
+      "id": "Ssp1UngroupFrequency",
+      "action": "UngroupFrequencyAdapter",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "ssp0addActivityCommandHandler": {
+      "id": "ssp0addActivityCommand",
+      "action": "ssp0addActivityCommandAction",
+      "activeWhen": {
+        "condition": "conditions.isAddActivitySelected"
+      },
+      "visibleWhen": {
+        "condition": "conditions.isAddActivitySelected"
+      }
+    },
+    "ssp0removeActivityCommandHandler": {
+      "id": "ssp0removeActivityCommand",
+      "action": "ssp0removeActivityCommandAction",
+      "activeWhen": {
+        "condition": "conditions.isRemoveActivitySelected"
+      },
+      "visibleWhen": {
+        "condition": "conditions.isRemoveActivitySelected"
+      }
+    }
+  },
+  "actions": {
+    "ssp0NavigateToTimeAnalysisCommandAction": {
+      "actionType": "Navigate",
+      "navigateTo": "timeAnalysis",
+      "navigationParams": {
+        "uid": "{{ctx.selectedVMO.uid}}"
+      }
+    },
+    "navigateToServicePlanPage": {
+      "actionType": "Navigate",
+      "navigateTo": "servicePlanning",
+      "navigationParams": {
+        "uid": {
+          "$adapt": "{{commandContext.vmo}}",
+          "path": "uid"
+        }
+      }
+    },
+    "ssp0AddServiceContainerAction": {
+      "actionType": "popup",
+      "method": "show",
+      "inputData": {
+        "options": {
+          "caption": "{{i18n.createServiceContainerTitle}}",
+          "view": "Ssp0CreateServiceContainer",
+          "preset": "modal",
+          "height": "420",
+          "width": "400",
+          "clickOutsideToClose": false,
+          "draggable": true,
+          "enableResize": true,
+          "independent": true
+        }
+      }
+    },
+    "ssp0AddServiceRequirementAction": {
+      "actionType": "popup",
+      "method": "show",
+      "inputData": {
+        "options": {
+          "caption": "{{i18n.createServiceReqTitle}}",
+          "view": "Ssp0CreateServiceReq",
+          "preset": "modal",
+          "height": "420",
+          "width": "400",
+          "clickOutsideToClose": false,
+          "draggable": true,
+          "enableResize": true,
+          "independent": true
+        }
+      }
+    },
+    "AddFrequency": {
+      "actionType": "popup",
+      "inputData": {
+        "options": {
+          "caption": "{{i18n.CreateFrequency}}",
+          "view": "Ssp1AddFrequency",
+          "ignoreLimit": true,
+          "preset": "modal",
+          "width": "1400",
+          "height": "700",
+          "hasCloseButton": true,
+          "clickOutsideToClose": false,
+          "draggable": true,
+          "enableResize": true,
+          "independent": true,
+          "resizable": true
+        }
+      }
+    },
+    "AddFrequencyToListAdapter": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "ssp1AddFrequency.AddFrequencyToList"
+          }
+        ]
+      }
+    },
+    "ssp0CreateWorkCardAction": {
+      "actionType": "popup",
+      "method": "show",
+      "inputData": {
+        "options": {
+          "caption": "{{i18n.addWorkCard}}",
+          "view": "Ssp0CreateWorkCard",
+          "preset": "modal",
+          "height": "420",
+          "width": "410",
+          "clickOutsideToClose": false,
+          "draggable": true,
+          "enableResize": true,
+          "independent": true
+        }
+      }
+    },
+    "RemoveFrequencyExpressionAdapter": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "ssp1AddFrequency.removeExpressionLine",
+            "eventData": {
+              "exprId": "{{commandContext.vmo.Title}}"
+            }
+          }
+        ]
+      }
+    },
+    "MoveUpFrequencyExpressionAdapter": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "ssp1AddFrequency.moveUpExpressionLine",
+            "eventData": {
+              "exprId": "{{commandContext.vmo.Title}}"
+            }
+          }
+        ]
+      }
+    },
+    "MoveDownFrequencyExpressionAdapter": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "ssp1AddFrequency.moveDownExpressionLine",
+            "eventData": {
+              "exprId": "{{commandContext.vmo.Title}}"
+            }
+          }
+        ]
+      }
+    },
+    "ResetFrequencyFieldsAdapter": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "ssp1AddFrequency.resetFrequencyFields"
+          }
+        ]
+      }
+    },
+    "GroupFrequencyAdapter": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "ssp1AddFrequency.groupFrequencies"
+          }
+        ]
+      }
+    },
+    "UngroupFrequencyAdapter": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "ssp1AddFrequency.ungroupFrequencies"
+          }
+        ]
+      }
+    },
+    "ssp0addActivityCommandAction": {
+      "actionType": "popup",
+      "method": "show",
+      "inputData": {
+        "options": {
+          "caption": "Activity",
+          "view": "Ssp0CreateActivity",
+          "preset": "modal",
+          "height": "420",
+          "width": "400",
+          "clickOutsideToClose": false,
+          "draggable": true,
+          "enableResize": true,
+          "independent": true
+        }
+      }
+    },
+    "ssp0removeActivityCommandAction": {
+      "actionType": "JSFunction",
+      "method": "removeActivity",
+      "inputData": {
+        "createType": "CfgActivityLine"
+      },
+      "deps": "js/ssp0ActivityUtilityService"
+    }
+  },
+  "conditions": {
+    "isWCSelected": {
+      "expression": "ctx.selectedVMO.modelType.typeHierarchyArray.includes('SSP0BvrWorkCard')"
+    },
+    "ssp0ShowSPCondition": {
+      "expression": "(ctx.mselected[0].modelType.typeHierarchyArray.includes('SSP0ServicePlan') && commandContext.vmo.modelType.typeHierarchyArray.includes( 'Awp0XRTObjectSetRow')) || (ctx.pselected.modelType.typeHierarchyArray.includes('SSP0ServicePlan'))"
+    },
+    "isServicePlanSelected": {
+      "expression": "ctx.selectedVMO !== null"
+    },
+    "isServiceRequirementSelected": {
+      "expression": "ctx.selectedVMO.modelType.typeHierarchyArray.includes('SSP0BvrServiceRequirement')"
+    },
+    "addFrequencyCommandActive": {
+      "expression": "(ctx.selectedVMO.modelType.typeHierarchyArray.includes('SSP0BvrServiceRequirement'))"
+    },
+    "isServicePlanOrServiceContainerSelected": {
+      "expression": "(ctx.selectedVMO.modelType.typeHierarchyArray.includes('SSP0BvrServicePlan')) || (ctx.selectedVMO.modelType.typeHierarchyArray.includes( 'SSP0BvrServiceContainer'))"
+    },
+    "isAddActivitySelected": {
+      "expression": "ctx.selectedActivity!== undefined"
+    },
+    "isRemoveActivitySelected": {
+      "expression": "ctx.selectedActivity!== undefined && (ctx.selectedActivity.props.me_cl_parent.dbValues[0]!=='' )"
+    }
+  },
+  "i18n": {
+    "Add": [
+      "ssp0Messages"
+    ],
+    "Skill": [
+      "ServicePlannerConstants"
+    ],
+    "AddSkillDesc": [
+      "ServicePlannerConstants"
+    ],
+    "addWorkCard": [
+      "ServicePlannerConstants"
+    ],
+    "addWorkCardDescription": [
+      "ServicePlannerConstants"
+    ],
+    "createServiceReqTitle": [
+      "ServicePlannerConstants"
+    ],
+    "createServiceContainerTitle": [
+      "ServicePlannerConstants"
+    ],
+    "AddServiceReqTitle": [
+      "ServicePlannerConstants"
+    ],
+    "AddServiceReqDesc": [
+      "ServicePlannerConstants"
+    ],
+    "AddServiceContainer": [
+      "ServicePlannerConstants"
+    ],
+    "AddServiceContainerDesc": [
+      "ServicePlannerConstants"
+    ],
+    "Frequency": [
+      "ServicePlannerConstants"
+    ],
+    "CreateFrequency": [
+      "ServicePlannerConstants"
+    ],
+    "Ssp1AddFrequencyDesc": [
+      "ssp0Messages"
+    ],
+    "AddTimeAnalysisTitle": [
+      "ServicePlannerConstants"
+    ],
+    "Group": [
+      "ServicePlannerConstants"
+    ],
+    "Ungroup": [
+      "ServicePlannerConstants"
+    ],
+    "Append": [
+      "ServicePlannerConstants"
+    ],
+    "MoveUp": [
+      "ServicePlannerConstants"
+    ],
+    "MoveDown": [
+      "ServicePlannerConstants"
+    ],
+    "Reset": [
+      "ServicePlannerConstants"
+    ],
+    "Remove": [
+      "ServicePlannerConstants"
+    ],
+    "AddActivityTitle": [
+      "timeAnalysisMessages"
+    ],
+    "RemoveActivityTitle": [
+      "timeAnalysisMessages"
+    ],
+    "AddActivityDesc": [
+      "timeAnalysisMessages"
+    ],
+    "RemoveActivityDesc": [
+      "timeAnalysisMessages"
+    ]
+  }
+}

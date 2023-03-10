@@ -1,0 +1,19 @@
+<aw-command-panel caption="i18n.importFeatureDataTitle">
+   
+    <aw-panel-body>
+
+      <aw-panel-section caption="i18n.selectFeatureFileToImport" >
+              <aw-file-upload  file-change-action="startDatasetCreation" type-filter=".xml" ></aw-file-upload>
+       </aw-panel-section> 
+        
+       <aw-panel-section >
+              <aw-widget  prop="data.objectName"></aw-widget>
+            <aw-widget  prop="data.objectDesc" hint="textarea"></aw-widget>
+        </aw-panel-section> 
+    </aw-panel-body>    
+    
+   <aw-panel-footer>
+        <aw-button action="importFeatureData" > <aw-i18n>i18n.import</aw-i18n> </aw-button>
+   </aw-panel-footer>
+
+</aw-command-panel> 

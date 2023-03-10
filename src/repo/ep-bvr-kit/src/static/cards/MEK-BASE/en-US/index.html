@@ -1,0 +1,747 @@
+<HTML>
+
+<HEAD>
+    <SCRIPT language="JavaScript">
+    function nocontextmenu(){
+          if (window.Event) {
+                document.captureEvents(Event.MOUSEUP);
+          }
+          event.cancelBubble = true;
+          event.returnValue = false;
+          return false;
+    }
+    function norightclick(e)
+    {
+          if (window.Event)
+          {
+                if(e.which!=1)
+                      return false;
+          }
+          else if (event.button !=1)
+          {
+                event.cancelBubble = true;
+                event.returnValue = false;
+                return false;
+          }
+    }
+    // Block backspace onKeyDown
+    function onKeyDown() {
+          if ( (event.altKey) || ((event.keyCode == 8) && (event.srcElement.type != "text" &&
+                event.srcElement.type != "textarea" && event.srcElement.type != "password")) ||
+                ((event.ctrlKey) && ((event.keyCode == 78) || (event.keyCode == 82)) ) ||
+                (event.keyCode == 116) )
+          {
+                event.keyCode = 0;
+                event.returnValue = false;
+          }
+    }
+    </SCRIPT>
+
+    <META name="author" content="JUL">
+    <META name="date" content="2004-10-04">
+
+        <STYLE type="text/css">
+.MTMLink {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt
+    color: #6F5415;
+    }
+
+.MTMGeneral {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt
+    }
+
+.MTMElement {
+    }
+
+.MTMInfo {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    font-style: italic;
+    color: #31247B;
+    }
+
+.MTMEmptyText {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt
+    }
+
+A {
+    font-family: Arial;
+    font-size: 8pt;
+    color: #6F5415;
+    width: 200px;
+    }
+
+A:visited {
+    color: #6F5415;
+    }
+
+A:hover {
+    color: #AE1111;
+    }
+
+BODY {
+    background-color: ButtonFace;
+}
+
+.MEKHeaderRed {
+    font-weight: bold;
+    color: #FF0000
+    }
+
+.MEKHeaderLightBlue {
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #3333CC
+    }
+
+.MEKHeaderBlue {
+    font-weight: bold;
+    color: #FFFFFF;
+    background-color: #000080;
+}
+.SDBHeaderRed { font-weight: bold; color: #FF0000 }
+.SDBHeaderBlue { font-weight: bold; color: #FFFFFF; background-color: #0000FF; }
+.SDBHeaderLightBlue { font-weight: bold; color: #FFFFFF; background-color: #3333CC }
+.UASHeaderLightBlue { font-weight: bold; color: #FFFFFF; background-color: #000080}
+.UASHeaderRed { font-weight: bold; color: #FF0000 }
+.MTMSPHeaderGreen { font-weight: bold; color: #FFFFFF; background-color: #006600}
+.MTM1HeaderRed { font-weight: bold; color: #FF0000 }
+.MTM2HeaderRed { font-weight: bold; color: #FF0000 }
+.MTM2HeaderGreen { font-weight: bold; color: #FFFFFF; background-color: #009966}
+
+.MTMTooltip {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    color: #31247B;
+    background-color: #FFFFE1
+    width: 200px;
+    }
+
+#tipBox {
+    position: absolute;
+    z-index: 100;
+    border: 1px #663333 solid;
+    padding: 2px 2px 2px 2px;
+    background-color: #FFFFE1;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    color: #663333;
+    visibility: hidden;
+    filter:            progid:DXImageTransform.Microsoft.Gradient(StartColorStr=#fffcfcfe, EndColorStr=#fff4f3ee, GradientType=0)
+                    progid:DXImageTransform.Microsoft.Shadow(Color=#ff919899, Strength=2, Direction=135);
+}
+#tipBoxWidth {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    z-index: 0;
+    border: 1px #663333 solid;
+    padding: 2px 2px 2px 2px;
+    background-color: #FFFFE1;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 8pt;
+    color: #663333;
+    visibility: hidden;
+    filter:            progid:DXImageTransform.Microsoft.Gradient(StartColorStr=#fffcfcfe, EndColorStr=#fff4f3ee, GradientType=0)
+                    progid:DXImageTransform.Microsoft.Shadow(Color=#ff919899, Strength=2, Direction=135);
+}
+.LOGHeader {  font-weight: bold; color: #993300}
+
+    </STYLE>
+
+        <SCRIPT language="JavaScript">
+// Copyright 2004 MTM Softwarehaus Dresden
+// Hilfsfunktionen fuer HTML-Datenkarten
+// 2004-04-26 TOM
+
+
+var MTMcolorSelect = '#FFCC00';  // Farbe für Hervorhebungen beim Ueberstreichen mit der Maus
+var MTMcolorDeselect;            // Hier wird waehrend der Hervorhebung die urspruengliche Farbe gespeichert
+var MTMdragging = 0;             // Wird beim Linksklick auf 1 gesetzt und beim Verlassen einer Zelle geprueft
+
+
+function MTMhighlightOn(object)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorSelect;
+       parentObj.style.background = MTMcolorSelect;
+       //alert(parentObj.nodeName + " = " + parentObj.style.background);
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        MTMcolorDeselect = parentObj.bgColor;
+        parentObj.bgColor = MTMcolorSelect;
+    }
+}
+
+// Wird beim Ueberstreichen einer Zelle mit der Maus aufgerufen
+// 1. Parameter object ist ein HTML-Objekt, dessen Hintergrundfarbe geaendert wird (idR = this)
+// 2. Parameter Text der in einer Infozeile ausgegeben werden soll (wird nicht mehr verwendet)
+// 3. bis 5. Parameter, Daten zu dem Element
+function MTMselect(object, text, code, index, variant)
+{
+    MTMhighlightOn(object);
+}
+
+function MTMhighlightOff(object)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorDeselect;
+       parentObj.style.background = MTMcolorDeselect;
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        parentObj.bgColor = MTMcolorDeselect;
+    }
+}
+// Wird beim Verlassen einer Zelle mit der Maus aufgerufen (wenn beim Verlassen immer noch die linke
+// Maustaste gedrueckt ist, wird ein Drag&Drop Event im TiCon erzeugt
+// 1. Parameter object ist ein HTML-Objekt, dessen Hintergrundfarbe zurueckgesetzt werden soll (idR = this)
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMdeselect(object, code, index, variant)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorDeselect;
+       parentObj.style.background = MTMcolorDeselect;
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        parentObj.bgColor = MTMcolorDeselect;
+    }
+
+    //    MTMInfo.innerHTML = '<SPAN class="MTMInfo" align="left">&nbsp;</SPAN>';
+
+    if(MTMdragging) {
+        MTMnavigate(2, code, index, variant);
+        MTMdragging=0;
+    }
+}
+
+// Loest einen Navigationsevent im TiCon aus
+// 1. Parameter Navigationscode: 1 = mit linker Maustaste angeklickt, 2 Drag & Drop, 3 Rechte Maustaste
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMnavigate(navcode, code, index, variant, time, descr)
+{
+    document.location.href=encodeURI("usercode://"+ code + "|" + index + "|" + variant + "|" + time + "|" + descr);
+}
+
+
+// Wird beim Pressen einer beliebigen Maustaste aufgerufen
+// es wird geprueft ob Drag & Drop gestartet werden soll oder ein Rechtsklick ausgeloest werden soll
+// 1. Event der ausgeloest wurde (idR = event)
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMmouseDown(e, code, index, variant)
+{
+    if(e.button == 1) { // linke Maustaste
+       // vorbereiten zum Drag & Drop
+        MTMdragging=1;
+    } else if(e.button == 2) { // rechte Maustaste
+       // Navigieren mit NavCode 3
+       MTMnavigate(3, code, index, variant);
+    }
+}
+
+
+// Tooltip///////////////////////////////////////////////////////////
+/*    Your are permitted to reuse this code as long as the following copyright
+    notice is not removed:
+
+    The    HTML tip handling code is copyright 1998 by insideDHTML.com, LLC. More information about this
+    code can be found at Inside Dynamic HTML: HTTP://www.insideDHTML.com
+*/
+
+// Support for all collection
+var    allSupport = document.all!=null
+
+function setupEventObject(e)
+{
+    // Map NS event object to IEs
+    if (e==null) return // IE returns
+    window.event = e
+    window.event.fromElement = e.target
+    window.event.toElement = e.target
+    window.event.srcElement = e.target
+    window.event.x = e.x
+    window.event.y = e.y
+    // Route the event to the original element
+    // Necessary to make sure _tip is set.
+    //window.event.srcElement.handleEvent(e);
+}
+
+
+function checkName(src)
+{
+    // Look for tooltip in IE
+    while ((src!=null) && (src._tip==null))
+        src = src.parentElement
+    return src
+}
+
+function getElement(elName)
+{
+    // Get an element from its ID
+    if (allSupport)
+        return document.all[elName]
+    else
+        return document.layers[elName]
+}
+
+function writeContents(el, tip)
+{
+    // Replace the contents    of the tooltip
+    if (allSupport)
+        el.innerHTML = tip
+    else {
+        // In NS, insert a table to work around
+        // stylesheet rendering bug.
+        // NS fails to apply style sheets when writing
+        // contents    into a positioned element.
+        el.document.open()
+        el.document.write('<TABLE BORDER=1 bordercolor=black><TR><TD WIDTH=100% class="MTMTooltip">')
+        el.document.write(tip)
+        el.document.write("</TD></TR></TABLE>")
+        el.document.close()
+    }
+}
+
+function getOffset(el, which)
+{
+    // Function for IE to calculate position
+    // of an element.
+    var amount = el["offset"+which]
+    if (which=="Top")
+        amount+=el.offsetHeight
+    el = el.offsetParent
+    while (el!=null) {
+        amount+=el["offset"+which]
+        el = el.offsetParent
+    }
+    return amount
+}
+
+
+function setPosition(el)
+{
+    // Set the position of an element
+    src = window.event.srcElement
+    if (allSupport) {
+        el.style.pixelTop = getOffset(src, "Top")
+        el.style.pixelLeft = getOffset(src, "Left") - 10
+    } else {
+        el.top = src.y + 20
+        el.left = src.x - 10
+    }
+}
+
+function getScrollLeft()
+{
+    // achtung nur für ie
+    var scrollPos;
+    if (typeof window.pageXOffset != 'undefined') {
+       scrollPos = window.pageXOffset;
+    }
+    else if (typeof document.compatMode != 'undefined' &&
+         document.compatMode != 'BackCompat') {
+       scrollPos = document.documentElement.scrollLeft;
+    }
+    else if (typeof document.body != 'undefined') {
+       scrollPos = document.body.scrollLeft;
+    }
+
+    return(scrollPos);
+}
+
+function getScrollTop()
+{
+    // achtung nur für ie
+    var scrollPos;
+    if (typeof window.pageYOffset != 'undefined') {
+       scrollPos = window.pageYOffset;
+    }
+    else if (typeof document.compatMode != 'undefined' &&
+         document.compatMode != 'BackCompat') {
+       scrollPos = document.documentElement.scrollTop;
+    }
+    else if (typeof document.body != 'undefined') {
+       scrollPos = document.body.scrollTop;
+    }
+
+    return(scrollPos);
+}
+
+function setPosition(el, xpos, ypos, tip)
+{
+    var width
+    var scrollLeft
+    var scrollTop
+    var visWidth
+    var    elhidden = getElement("tipBoxWidth")
+
+    // Set the position of an element
+    src = window.event.srcElement
+    if (allSupport) {
+        elhidden.innerHTML = tip
+        width = elhidden.offsetWidth
+        scrollLeft = getScrollLeft()
+        scrollTop = getScrollTop()
+        visWidth = document.body.offsetWidth
+
+        el.style.pixelTop = ypos + scrollTop
+//        alert("xpos: " + xpos + " -- width: " + width + " -- visWidth: " + visWidth + " -- scrollLeft: " + scrollLeft)
+        if(xpos + width + 35> visWidth) xpos = visWidth - width - 35
+        el.style.pixelLeft = xpos + 10 + scrollLeft
+        el.style.width = width
+    } else {
+        el.top = ypos
+        el.left = xpos + 10
+    }
+}
+
+
+function setVisibility(el, bDisplay)
+{
+    // Hide    or show    to tip
+    if (bDisplay)
+        if (allSupport)
+            el.style.visibility = "visible"
+        else
+            el.visibility = "show";
+    else
+        if (allSupport)
+            el.style.visibility = "hidden"
+        else
+            el.visibility = "hidden"
+}
+
+
+function displayContents(tip, xpos, ypos)
+{
+    // Display the tooltip.
+    var    el = getElement("tipBox")
+    writeContents(el, tip)
+    setPosition(el, xpos, ypos, tip)
+    setVisibility(el, true)
+}
+
+
+function doMouseOver(e)
+{
+    // Mouse moves over an element
+    setupEventObject(e)
+    var el, tip
+    if((el = checkName(window.event.srcElement))!=null)
+        if(!el._display) {
+            displayContents(el._tip, window.event.x, window.event.y)
+            //MTMcolorSelect = '#663333';
+            //MTMhighlightOn(window.event.srcElement);
+            //MTMcolorSelect = '#FFCC00';
+            el._display = true
+        }
+}
+
+function doMouseOut(e)
+{
+    // Mouse leaves    an element
+    setupEventObject(e)
+    el = checkName(window.event.srcElement)
+    var el, tip
+    if ((el = checkName(window.event.srcElement))!=null)
+        if (el._display)
+            if ((el.contains==null) || (!el.contains(window.event.toElement))) {
+                setVisibility(getElement("tipBox"), false)
+                //MTMhighlightOff(window.event.srcElement);
+                el._display = false
+            }
+}
+
+function doLoad()
+{
+    // Do Loading
+    if ((window.document.captureEvents==null) && (!allSupport))
+        return //Not IE4 or NS4
+    if (window.document.captureEvents!=null) // NS-capture events
+        window.document.captureEvents(Event.MOUSEOVER | Event.MOUSEOUT)
+    window.document.onmouseover = doMouseOver;
+    window.document.onmouseout = doMouseOut;
+}
+
+window.onload = doLoad
+
+
+    </SCRIPT>
+
+
+    <TITLE>MEK</TITLE>
+</HEAD>
+
+<BODY leftmargin="6" topmargin="6" marginwidth="6" marginheight="6">
+<DIV ID=tipBox></DIV>
+<DIV ID=tipBoxWidth></DIV>
+<TABLE border="1" width="100%" cellpadding="0" cellspacing="0"><TR><TD width="48%" bgcolor="#000000">
+    <TABLE border="1" width="100%"   cellspacing="1" cellpadding="1" class="MTMGeneral">
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="60%" class="MTMText" colspan="2" >Basic operations</TD>
+            <TD width="8%" class="MTMText"></TD>
+            <TD width="24%" colspan="3" class="MTMText">without bend</TD>
+            <TD width="8%" class="MTMText">with bend</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="60%" rowspan="2" class="MEKHeaderBlue" colspan="2"><SPAN class="MTMText">Get and Place</SPAN></TD>
+            <TD width="8%" class="MEKHeaderRed"><SPAN class="MTMText">DT</SPAN></TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &lt;= 20">1</TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &gt; 20 to &lt;= 80">3</TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &gt; 80 to &lt;= 200">4</TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &gt; 200">5</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="8%" class="MEKHeaderRed"><SPAN class="MTMText">Code</SPAN></TD>
+            <TD width="32%" colspan="4" class="MEKHeaderRed">TMU</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="44%" rowspan="2"><SPAN class="MTMText"></SPAN><BR>&lt;= 8daN and not bulky</TD>
+            <TD width="16%" class="MTMText" align="left">loose</TD>
+            <TD width="8%" class="MEKHeaderRed">AA</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AA1....6', '', '');" title="Pick up and place, not bulky, <= 8daN, approx., <=20cm" onmouseout="MTMdeselect(this, '3000AA1....6', '', '');" onmousedown="MTMmouseDown(event, '3000AA1....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AA1....6', '', '',30,'Pick up and place, not bulky, <= 8daN, approx., <=20cm');">30</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AA3....6', '', '');" title="Pick up and place, not bulky, <= 8daN, approx., <=80cm" onmouseout="MTMdeselect(this, '3000AA3....6', '', '');" onmousedown="MTMmouseDown(event, '3000AA3....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AA3....6', '', '',50,'Pick up and place, not bulky, <= 8daN, approx., <=80cm');">50</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AA4....6', '', '');" title="Pick up and place, not bulky, <= 8daN, approx., <=2 m" onmouseout="MTMdeselect(this, '3000AA4....6', '', '');" onmousedown="MTMmouseDown(event, '3000AA4....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AA4....6', '', '',120,'Pick up and place, not bulky, <= 8daN, approx., <=2 m');">120</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AA5....6', '', '');" title="Pick up and place, not bulky, <= 8daN, approx., <=2 m with bending" onmouseout="MTMdeselect(this, '3000AA5....6', '', '');" onmousedown="MTMmouseDown(event, '3000AA5....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AA5....6', '', '',150,'Pick up and place, not bulky, <= 8daN, approx., <=2 m with bending');">150</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="16%" class="MTMText" align="left">exact</TD>
+            <TD width="8%" class="MEKHeaderRed">AB</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AB1....6', '', '');" title="Pick up and place, not bulky, <= 8daN, exactly, <=20cm" onmouseout="MTMdeselect(this, '3000AB1....6', '', '');" onmousedown="MTMmouseDown(event, '3000AB1....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AB1....6', '', '',50,'Pick up and place, not bulky, <= 8daN, exactly, <=20cm');">50</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AB3....6', '', '');" title="Pick up and place, not bulky, <= 8daN, exactly, <=80cm" onmouseout="MTMdeselect(this, '3000AB3....6', '', '');" onmousedown="MTMmouseDown(event, '3000AB3....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AB3....6', '', '',90,'Pick up and place, not bulky, <= 8daN, exactly, <=80cm');">90</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AB4....6', '', '');" title="Pick up and place, not bulky, <= 8daN, exactly, <=2 m" onmouseout="MTMdeselect(this, '3000AB4....6', '', '');" onmousedown="MTMmouseDown(event, '3000AB4....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AB4....6', '', '',160,'Pick up and place, not bulky, <= 8daN, exactly, <=2 m');">160</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AB5....6', '', '');" title="Pick up and place, not bulky, <= 8daN, exactly, <=2 m with bending" onmouseout="MTMdeselect(this, '3000AB5....6', '', '');" onmousedown="MTMmouseDown(event, '3000AB5....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AB5....6', '', '',190,'Pick up and place, not bulky, <= 8daN, exactly, <=2 m with bending');">190</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="44%" rowspan="2" class="MTMText">8 - 22 daN <BR>and/or bulky</TD>
+            <TD width="16%" class="MTMText" align="left">loose</TD>
+            <TD width="8%" class="MEKHeaderRed">AC</TD>
+            <TD width="8%">-</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AC3....6', '', '');" title="Pick up and place, bulky and/or >8 to <= 22daN, approx. <=80cm" onmouseout="MTMdeselect(this, '3000AC3....6', '', '');" onmousedown="MTMmouseDown(event, '3000AC3....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AC3....6', '', '',150,'Pick up and place, bulky and/or >8 to <= 22daN, approx. <=80cm');">150</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AC4....6', '', '');" title="Pick up and place, bulky and/or >8 to <= 22daN, approx., <=2 m" onmouseout="MTMdeselect(this, '3000AC4....6', '', '');" onmousedown="MTMmouseDown(event, '3000AC4....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AC4....6', '', '',220,'Pick up and place, bulky and/or >8 to <= 22daN, approx., <=2 m');">220</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AC5....6', '', '');" title="Pick up and place, bulky and/or >8 to <= 22daN, approx., <=2 m with bending" onmouseout="MTMdeselect(this, '3000AC5....6', '', '');" onmousedown="MTMmouseDown(event, '3000AC5....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AC5....6', '', '',250,'Pick up and place, bulky and/or >8 to <= 22daN, approx., <=2 m with bending');">250</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="16%" class="MTMText" align="left">exact</TD>
+            <TD width="8%" class="MEKHeaderRed">AD</TD>
+            <TD width="8%">-</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AD3....6', '', '');" title="Pick up and place, bulky and/or >8 to <= 22daN, exactly, <=80cm" onmouseout="MTMdeselect(this, '3000AD3....6', '', '');" onmousedown="MTMmouseDown(event, '3000AD3....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AD3....6', '', '',190,'Pick up and place, bulky and/or >8 to <= 22daN, exactly, <=80cm');">190</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AD4....6', '', '');" title="Pick up and place, bulky and/or >8 to <= 22daN, exactly, <=2 m" onmouseout="MTMdeselect(this, '3000AD4....6', '', '');" onmousedown="MTMmouseDown(event, '3000AD4....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AD4....6', '', '',260,'Pick up and place, bulky and/or >8 to <= 22daN, exactly, <=2 m');">260</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000AD5....6', '', '');" title="Pick up and place, bulky and/or >8 to <= 22daN, exactly, <=2 m with bending" onmouseout="MTMdeselect(this, '3000AD5....6', '', '');" onmousedown="MTMmouseDown(event, '3000AD5....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000AD5....6', '', '',290,'Pick up and place, bulky and/or >8 to <= 22daN, exactly, <=2 m with bending');">290</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="60%" colspan="2" class="MEKHeaderBlue"><SPAN class="MTMText">Place</SPAN></TD>
+            <TD width="8%" class="MEKHeaderRed"><SPAN class="MTMText">Code</SPAN></TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &lt;= 20">1</TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &gt; 20 to &lt;= 80">3</TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &gt; 80 to &lt;= 200">4</TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &gt; 200">5</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="60%" colspan="2" class="MTMText" align="left">loose</TD>
+            <TD width="8%" class="MEKHeaderRed">PA</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000PA1....6', '', '');" title="Place, approx., <=20cm" onmouseout="MTMdeselect(this, '3000PA1....6', '', '');" onmousedown="MTMmouseDown(event, '3000PA1....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000PA1....6', '', '',20,'Place, approx., <=20cm');">20</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000PA3....6', '', '');" title="Place, approx., <=80cm" onmouseout="MTMdeselect(this, '3000PA3....6', '', '');" onmousedown="MTMmouseDown(event, '3000PA3....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000PA3....6', '', '',30,'Place, approx., <=80cm');">30</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000PA4....6', '', '');" title="Place, approx., <=2 m" onmouseout="MTMdeselect(this, '3000PA4....6', '', '');" onmousedown="MTMmouseDown(event, '3000PA4....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000PA4....6', '', '',40,'Place, approx., <=2 m');">40</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000PA5....6', '', '');" title="Place, approx., <=2 m with bending" onmouseout="MTMdeselect(this, '3000PA5....6', '', '');" onmousedown="MTMmouseDown(event, '3000PA5....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000PA5....6', '', '',70,'Place, approx., <=2 m with bending');">70</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="60%" colspan="2" class="MTMText" align="left">exact</TD>
+            <TD width="8%" class="MEKHeaderRed">PB</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000PB1....6', '', '');" title="Place, exactly, <=20cm" onmouseout="MTMdeselect(this, '3000PB1....6', '', '');" onmousedown="MTMmouseDown(event, '3000PB1....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000PB1....6', '', '',40,'Place, exactly, <=20cm');">40</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000PB3....6', '', '');" title="Place, exactly, <=80cm" onmouseout="MTMdeselect(this, '3000PB3....6', '', '');" onmousedown="MTMmouseDown(event, '3000PB3....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000PB3....6', '', '',50,'Place, exactly, <=80cm');">50</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000PB4....6', '', '');" title="Place, exactly, <=2 m" onmouseout="MTMdeselect(this, '3000PB4....6', '', '');" onmousedown="MTMmouseDown(event, '3000PB4....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000PB4....6', '', '',60,'Place, exactly, <=2 m');">60</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000PB5....6', '', '');" title="Place, exactly, <=2 m with bending" onmouseout="MTMdeselect(this, '3000PB5....6', '', '');" onmousedown="MTMmouseDown(event, '3000PB5....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000PB5....6', '', '',90,'Place, exactly, <=2 m with bending');">90</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="60%" colspan="2" class="MEKHeaderBlue"><SPAN class="MTMText">Handling Tools</SPAN></TD>
+            <TD width="8%" class="MEKHeaderRed"><SPAN class="MTMText">Code</SPAN></TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &lt;= 20">1</TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &gt; 20 to &lt;= 80">3</TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &gt; 80 to &lt;= 200">4</TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &gt; 200">5</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="60%" colspan="2" class="MTMText" align="left">loose</TD>
+            <TD width="8%" class="MEKHeaderRed">HA</TD>
+            <TD width="8%">-</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000HA3....6', '', '');" title="Use aid, approx., <=80cm" onmouseout="MTMdeselect(this, '3000HA3....6', '', '');" onmousedown="MTMmouseDown(event, '3000HA3....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000HA3....6', '', '',70,'Use aid, approx., <=80cm');">70</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000HA4....6', '', '');" title="Use aid, approx., <=2 m" onmouseout="MTMdeselect(this, '3000HA4....6', '', '');" onmousedown="MTMmouseDown(event, '3000HA4....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000HA4....6', '', '',140,'Use aid, approx., <=2 m');">140</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000HA5....6', '', '');" title="Use aid, approx., <=2 m with bending" onmouseout="MTMdeselect(this, '3000HA5....6', '', '');" onmousedown="MTMmouseDown(event, '3000HA5....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000HA5....6', '', '',170,'Use aid, approx., <=2 m with bending');">170</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="60%" colspan="2" class="MTMText" align="left">exact</TD>
+            <TD width="8%" class="MEKHeaderRed">HB</TD>
+            <TD width="8%">-</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000HB3....6', '', '');" title="Use aid, exactly, <=80cm" onmouseout="MTMdeselect(this, '3000HB3....6', '', '');" onmousedown="MTMmouseDown(event, '3000HB3....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000HB3....6', '', '',100,'Use aid, exactly, <=80cm');">100</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000HB4....6', '', '');" title="Use aid, exactly, <=2 m" onmouseout="MTMdeselect(this, '3000HB4....6', '', '');" onmousedown="MTMmouseDown(event, '3000HB4....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000HB4....6', '', '',160,'Use aid, exactly, <=2 m');">160</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000HB5....6', '', '');" title="Use aid, exactly, <=2 m with bending" onmouseout="MTMdeselect(this, '3000HB5....6', '', '');" onmousedown="MTMmouseDown(event, '3000HB5....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000HB5....6', '', '',190,'Use aid, exactly, <=2 m with bending');">190</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="60%" colspan="2" class="MEKHeaderBlue"><SPAN class="MTMText">Operate</SPAN></TD>
+            <TD width="8%" class="MEKHeaderRed"><SPAN class="MTMText">Code</SPAN></TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &lt;= 20">1</TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &gt; 20 to &lt;= 80">3</TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &gt; 80 to &lt;= 200">4</TD>
+            <TD width="8%" class="MEKHeaderRed" title="Distance in cm: &gt; 200">5</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="60%" colspan="2" class="MTMText" align="left">easy</TD>
+            <TD width="8%" class="MEKHeaderRed">BA</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000BA1....6', '', '');" title="Operate, simple, <=20cm" onmouseout="MTMdeselect(this, '3000BA1....6', '', '');" onmousedown="MTMmouseDown(event, '3000BA1....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000BA1....6', '', '',20,'Operate, simple, <=20cm');">20</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000BA3....6', '', '');" title="Operate, simple, <=80cm" onmouseout="MTMdeselect(this, '3000BA3....6', '', '');" onmousedown="MTMmouseDown(event, '3000BA3....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000BA3....6', '', '',30,'Operate, simple, <=80cm');">30</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000BA4....6', '', '');" title="Operate, simple, <=2 m" onmouseout="MTMdeselect(this, '3000BA4....6', '', '');" onmousedown="MTMmouseDown(event, '3000BA4....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000BA4....6', '', '',50,'Operate, simple, <=2 m');">50</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000BA5....6', '', '');" title="Operate, simple, <=2 m with bending" onmouseout="MTMdeselect(this, '3000BA5....6', '', '');" onmousedown="MTMmouseDown(event, '3000BA5....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000BA5....6', '', '',110,'Operate, simple, <=2 m with bending');">110</TD>
+        </TR>
+
+        <TR bgcolor="#C6F2FC" align="center">
+            <TD width="60%" colspan="2" class="MTMText" align="left">difficult</TD>
+            <TD width="8%" class="MEKHeaderRed">BB</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000BB1....6', '', '');" title="Operate, complex, <=20cm" onmouseout="MTMdeselect(this, '3000BB1....6', '', '');" onmousedown="MTMmouseDown(event, '3000BB1....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000BB1....6', '', '',40,'Operate, complex, <=20cm');">40</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000BB3....6', '', '');" title="Operate, complex, <=80cm" onmouseout="MTMdeselect(this, '3000BB3....6', '', '');" onmousedown="MTMmouseDown(event, '3000BB3....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000BB3....6', '', '',50,'Operate, complex, <=80cm');">50</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000BB4....6', '', '');" title="Operate, complex, <=2 m" onmouseout="MTMdeselect(this, '3000BB4....6', '', '');" onmousedown="MTMmouseDown(event, '3000BB4....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000BB4....6', '', '',70,'Operate, complex, <=2 m');">70</TD>
+            <TD width="8%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000BB5....6', '', '');" title="Operate, complex, <=2 m with bending" onmouseout="MTMdeselect(this, '3000BB5....6', '', '');" onmousedown="MTMmouseDown(event, '3000BB5....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000BB5....6', '', '',130,'Operate, complex, <=2 m with bending');">130</TD>
+        </TR>
+    </TABLE>
+</TD>
+
+<TD width="4%">&nbsp;</TD>
+
+<TD width="48%" valign="top">
+
+    <TABLE border="1" width="100%" cellpadding="0" cellspacing="0" height="100%">
+        <TR><TD bgcolor="#000000" valign="top">
+            <TABLE border="1" width="100%"   cellspacing="1" cellpadding="1" class="MTMGeneral">
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD width="68%" colspan="2" class="MEKHeaderBlue"><SPAN class="MTMText">Motion Cycles</SPAN></TD>
+                    <TD width="16%" class="MEKHeaderRed"><SPAN class="MTMText">Code</SPAN></TD>
+                    <TD width="16%"><B>TMU</B></TD>
+                </TR>
+
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD width="34%" rowspan="3"><SPAN class="MTMText"><B>without replacement</B></SPAN><BR><SPAN class="MTMText">(motion<BR>length in cm)</SPAN></TD>
+                    <TD width="34%" align="right">&lt;= 10</TD>
+                    <TD width="16%" class="MEKHeaderRed">ZA</TD>
+                    <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000ZA.....6', '', '');" title="Movement cylces, without transferring, <=10cm" onmouseout="MTMdeselect(this, '3000ZA.....6', '', '');" onmousedown="MTMmouseDown(event, '3000ZA.....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000ZA.....6', '', '',10,'Movement cylces, without transferring, <=10cm');">10</TD>
+                </TR>
+
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD width="34%" align="right">&gt; 10 &lt;= 30</TD>
+                    <TD width="16%" class="MEKHeaderRed">ZB</TD>
+                    <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000ZB.....6', '', '');" title="Movement cylces, without transferring, >10 to <=30cm" onmouseout="MTMdeselect(this, '3000ZB.....6', '', '');" onmousedown="MTMmouseDown(event, '3000ZB.....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000ZB.....6', '', '',20,'Movement cylces, without transferring, >10 to <=30cm');">20</TD>
+                </TR>
+
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD width="34%" align="right">&gt; 30 &lt;= 80</TD>
+                    <TD width="16%" class="MEKHeaderRed">ZC</TD>
+                    <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000ZC.....6', '', '');" title="Movement cylces, without transferring, >30 to <=80cm" onmouseout="MTMdeselect(this, '3000ZC.....6', '', '');" onmousedown="MTMmouseDown(event, '3000ZC.....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000ZC.....6', '', '',40,'Movement cylces, without transferring, >30 to <=80cm');">40</TD>
+                </TR>
+
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD width="34%" rowspan="3"><SPAN class="MTMText"><B>with replacement</B></SPAN><BR><SPAN class="MTMText">(lever length in cm)</SPAN></TD>
+                    <TD width="34%" align="right">&lt;= 20</TD>
+                    <TD width="16%" class="MEKHeaderRed">ZD</TD>
+                    <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000ZD.....6', '', '');" title="Movement cylces, with transferring, <=20cm" onmouseout="MTMdeselect(this, '3000ZD.....6', '', '');" onmousedown="MTMmouseDown(event, '3000ZD.....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000ZD.....6', '', '',40,'Movement cylces, with transferring, <=20cm');">40</TD>
+                </TR>
+
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD width="34%" align="right">&gt; 20 &lt;= 45</TD>
+                    <TD width="16%" class="MEKHeaderRed">ZE</TD>
+                    <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000ZE.....6', '', '');" title="Movement cylces, with transferring, >20 to <=45cm" onmouseout="MTMdeselect(this, '3000ZE.....6', '', '');" onmousedown="MTMmouseDown(event, '3000ZE.....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000ZE.....6', '', '',60,'Movement cylces, with transferring, >20 to <=45cm');">60</TD>
+                </TR>
+
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD width="34%" align="right">&gt; 45 &lt;= 100</TD>
+                    <TD width="16%" class="MEKHeaderRed">ZF</TD>
+                    <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000ZF.....6', '', '');" title="Movement cylces, with transferring, >45 to <=100cm" onmouseout="MTMdeselect(this, '3000ZF.....6', '', '');" onmousedown="MTMmouseDown(event, '3000ZF.....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000ZF.....6', '', '',120,'Movement cylces, with transferring, >45 to <=100cm');">120</TD>
+                </TR>
+
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD width="68%" colspan="2" align="left" class="MTMText"><B>tighten / untighten</B></TD>
+                    <TD width="16%" class="MEKHeaderRed">ZZ</TD>
+                    <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000ZZ.....6', '', '');" title="Movement cylces, tighten or loosen" onmouseout="MTMdeselect(this, '3000ZZ.....6', '', '');" onmousedown="MTMmouseDown(event, '3000ZZ.....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000ZZ.....6', '', '',30,'Movement cylces, tighten or loosen');">30</TD>
+                </TR>
+
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="2" class="MEKHeaderBlue"><SPAN class="MTMText">Body Motions</SPAN></TD>
+                    <TD width="16%" class="MEKHeaderRed"><SPAN class="MTMText">Code</SPAN></TD>
+                    <TD width="16%">&nbsp;</TD>
+                </TR>
+
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="2" width="68%" class="MTMText" align="left">walk / m</TD>
+                    <TD width="16%" class="MEKHeaderRed">KA</TD>
+                    <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000KA.....6', '', '');" title="Walk / m" onmouseout="MTMdeselect(this, '3000KA.....6', '', '');" onmousedown="MTMmouseDown(event, '3000KA.....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000KA.....6', '', '',25,'Walk / m');">25</TD>
+                </TR>
+
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="2" width="68%" align="left"><SPAN class="MTMText">bend and stoop</SPAN></TD>
+                    <TD width="16%" class="MEKHeaderRed">KB</TD>
+                    <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000KB.....6', '', '');" title="Bend or stoop or kneel incl. standing" onmouseout="MTMdeselect(this, '3000KB.....6', '', '');" onmousedown="MTMmouseDown(event, '3000KB.....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000KB.....6', '', '',60,'Bend or stoop or kneel incl. standing');">60</TD>
+                </TR>
+
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="2" width="68%" class="MTMText" align="left">sit</TD>
+                    <TD width="16%" class="MEKHeaderRed">KC</TD>
+                    <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000KC.....6', '', '');" title="Sit and stand" onmouseout="MTMdeselect(this, '3000KC.....6', '', '');" onmousedown="MTMmouseDown(event, '3000KC.....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000KC.....6', '', '',110,'Sit and stand');">110</TD>
+                </TR>
+
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="2" width="68%" class="MEKHeaderBlue"><SPAN class="MTMText">Visual Control</SPAN></TD>
+                    <TD width="16%" class="MEKHeaderRed">VA</TD>
+                    <TD width="16%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '3000VA.....6', '', '');" title="Visual control" onmouseout="MTMdeselect(this, '3000VA.....6', '', '');" onmousedown="MTMmouseDown(event, '3000VA.....6','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '3000VA.....6', '', '',40,'Visual control');">40</TD>
+                </TR>
+            </TABLE>
+        </TD></TR>
+    </TABLE>
+</TD>
+</TR></TABLE>
+<SCRIPT language="JavaScript">
+    window.document.oncontextmenu = nocontextmenu;
+    window.document.onmousedown = norightclick;
+    window.document.onkeydown = onKeyDown;
+</SCRIPT>
+</BODY>
+
+</HTML>
+

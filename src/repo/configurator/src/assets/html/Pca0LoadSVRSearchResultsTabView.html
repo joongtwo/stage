@@ -1,0 +1,9 @@
+
+<p visible-when="data.resultsString.dbValue">{{data.resultsString.dbValue}}</p>
+
+<aw-label prop="data.activeSearchResultPropLabel"></aw-label>
+<div exist-when="data.totalFound !== undefined && data.totalFound > 0">
+    <aw-list dataprovider="data.dataProviders.getAllVariantRulesBasedOnSearchCriteria">
+        <aw-default-cell item="item" vmo="item"></aw-default-cell>
+    </aw-list>
+</div>

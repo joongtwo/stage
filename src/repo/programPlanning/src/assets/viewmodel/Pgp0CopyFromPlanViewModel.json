@@ -1,0 +1,99 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "copyFromPlanSubPanelAction": {
+            "actionType": "JSFunction",
+            "method": "resetActiveView",
+            "inputData": {
+                "stateName": "{{data.activeState}}",
+                "destPanelId": "Pgp0CopyFromPlanSub"
+            },
+            "outputData": {
+                "activeState": ""
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "setActiveView": {
+            "actionType": "JSFunction",
+            "method": "resetActiveView",
+            "inputData": {
+                "stateName": "{{data.activeState}}",
+                "destPanelId": "Pgp0CopyFromPlan"
+            },
+            "outputData": {
+                "activeState": ""
+            },
+            "deps": "js/addObjectUtils"
+        }
+    },
+    "data": {
+        "addPanelState": {
+            "initialValues": {
+                "creationType": "",
+                "createdObject": "",
+                "sourceObjects": "",
+                "selectedTab": "",
+                "xrtTypeLoaded": ""
+            },
+            "meta": {}
+        },
+        "activeState": {
+            "initialValues": {
+                "activeView": "Pgp0CopyFromPlan",
+                "prePanelId": "Pgp0CopyFromPlan",
+                "context": {}
+            },
+            "meta": {}
+        },
+        "projectState": {
+            "initialValues": {
+                "selectedProjects": [],
+                "triggerAssign": false
+            },
+            "meta": {}
+        },
+        "xrtState": {
+            "initialValues": {
+                "deepCopyDatas": ""
+            },
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "conditions": {
+        "isPaletteSearchTabAddACopyButtonEnable": {
+            "expression": "data.addPanelState.sourceObjects && data.addPanelState.sourceObjects.length === 1 && ( addPanelState.selectedTab.view==='SearchTabPageSub' || addPanelState.selectedTab.view==='PaletteTabPageSub' )"
+        }
+    },
+    "editHandlers": {
+
+    },
+    "lifecycleHooks": {
+
+    },
+    "dataParseDefinitions": {
+
+    },
+    "messages": {
+        "SOAFailureMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "functions": {
+
+    },
+    "i18n": {
+        "pgp0CopyFromPlanTitle": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "copy": [
+            "ProgramPlanningCommandPanelsMessages"
+        ]
+    }
+
+}

@@ -1,0 +1,170 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "lifecycleHooks": {
+        "onInit": "selectNode",
+        "onUnmount": "clearPropGrpAndPropsData",
+        "onUpdate": [
+            {
+                "action": "selectNode",
+                "observers": [
+                    "props.subPanelContext.context.searchState.propertiesSWA.NodeIdClassId"
+                ]
+            },
+            {
+                "action": "setAppClassData",
+                "observers": [
+                    "props.subPanelContext.context.searchState.appClassData",
+                    "props.subPanelContext.context.searchState.appClassData.propAttr",
+                    "props.subPanelContext.context.searchState.isCSTNode"
+                ]
+            }
+        ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data":{
+        "unitSystem": {
+            "displayName": "{{i18n.unitSystemLabel}}",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "propertyRadioTrueText": "{{i18n.unitSystemMetric}}",
+            "propertyRadioFalseText": "{{i18n.unitSystemNonMetric}}",
+            "dbValue": "true"
+        },
+        "caption":{
+            "displayName": "{{i18n.properties}}",
+            "type": "STRING",
+            "dbValue":"{{i18n.properties}}"
+        },
+        "propFilter" : {
+            "dbValue": "",
+            "type": "STRING"
+        },
+        "propFilterText": {
+            "dbValue": "{{i18n.searchPlaceholder}}"
+        }
+    },
+    "actions": {
+        "selectNode":{
+            "actionType": "JSFunction",
+            "method": "selectNodeForNode",
+            "inputData": {
+                "data": "{{data}}",
+                "selected":"{{props.subPanelContext.context.searchState.propertiesSWA.NodeIdClassId}}"
+            },
+            "outputData": {
+                "nodeClassProperties": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "reveal",
+                        "condition": "data.nodeClassProperties !== null"
+                    }
+                ]
+            },
+            "deps":"js/classifyAdminService"
+        },
+        "resetAttributeFilter": {
+            "actionType": "JSFunction",
+            "method": "resetAttributeFilter",
+            "inputData": {
+                "data":"{{data}}"
+            },
+            "deps": "js/classifyFullViewService"
+        },
+        "drillToNextLevel": {
+            "actionType": "JSFunction",
+            "method": "detectNode",
+            "inputData": {
+                "selectedNode": "{{props.subPanelContext.context.searchState.propertiesSWA.nodeId}}",
+                "data":"{{data}}",
+                "searchState": "{{props.subPanelContext.context.searchState}}"
+            },
+            "outputData":{},
+            "deps": "js/classifyAdminNodesAppClassService"
+        },
+        "propertyFilter": {
+            "actionType": "JSFunction",
+            "method": "propertyFilter",
+            "inputData": {
+               "data":"{{data}}"
+            },
+            "deps": "js/classifyFullViewService"
+        },
+        "filterProperties": {
+            "actionType": "JSFunction",
+            "method": "filterProperties",
+            "inputData": {
+                "data":"{{data}}"
+            },
+            "deps": "js/classifyFullViewService"
+        },
+        "setAppClassData": {
+            "actionType": "JSFunction",
+            "method": "setAppClassData",
+            "inputData": {
+                "searchState": "{{props.subPanelContext.context.searchState}}"
+            },
+            "outputData": {
+                "isCSTNode": "isCSTNode",
+                "isGroupNode": "isGroupNode",
+                "hasBlocks": "hasBlocks",
+                "attr_anno": "attr_anno",
+                "attributesVisible": "attributesVisible",
+                "propAttr": "propAttr"
+            },
+            "deps": "js/classifyAdminNodesAppClassService"
+        },
+        "clearPropGrpAndPropsData": {
+            "actionType": "JSFunction",
+            "method": "clearPropGrpAndPropsData",
+            "inputData": {
+                "searchState":"{{props.subPanelContext.context.searchState}}"
+            },
+            "deps": "js/classifyAdminNodesAppClassService"
+        }
+    },
+    "functions": {
+    },
+    "onEvent": [
+        {
+            "eventId":"refreshClassApp",
+            "action":"drillToNextLevel"
+        },
+        {
+            "eventId":"reveal",
+            "action":"drillToNextLevel"
+        },
+        {
+             "eventId":"NodeSelectionEvent",
+            "action":"propertyFilter",
+            "cacheEventData": true
+        }
+    ],
+    "conditions": {
+        "hasAppClass": {
+            "expression": "props.subPanelContext.context.searchState.propertiesSWA.appClassProp"
+        },
+        "noAppClass": {
+            "expression": "!conditions.hasAppClass"
+        },
+        "isCSTNode": {
+            "expression": "conditions.noAppClass && props.subPanelContext.context.searchState.appClassData.isCSTNode === true"
+        },
+        "notCSTNode": {
+            "expression": "conditions.noAppClass && props.subPanelContext.context.searchState.appClassData.isCSTNode === false"
+        }
+    },
+    "i18n": {
+        "attrProp":         [ "ClassificationAdminMessages" ],
+        "classProperties":  [ "ClassificationAdminMessages" ],
+        "GRPNODE":          [ "ClassificationAdminMessages" ],
+        "SMLRAC":           [ "ClassificationAdminMessages" ]
+    }
+}

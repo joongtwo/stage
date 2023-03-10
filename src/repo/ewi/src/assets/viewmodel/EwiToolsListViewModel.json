@@ -1,0 +1,92 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "actions":
+    {
+        "toolsListDataProviderAction":
+        {
+            "actionType": "dataProvider",
+            "method": "toolsListDataProvider"
+        },
+        "setInputAndSelectionToMyContext": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setCommandContext"
+                },
+                {
+                    "action": "listItemSelected"
+                }
+            ]
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{props.subPanelContext}}",
+                "commandContext": {
+                    "selectedObjects": "{{data.dataProviders.toolsListDataProvider.selectedObjects}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "listItemSelected": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "workinstr.selectionChange",
+                        "eventData":
+                        {
+                            "dataProvider": "{{data.dataProviders.toolsListDataProvider}}",
+                            "activeTab": "{{props.subPanelContext}}"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+
+    "dataProviders":
+    {
+        "toolsListDataProvider":
+        {
+            "response": "{{props.subPanelContext.datasetsToShow}}",
+            "totalFound": "{{props.subPanelContext.datasetsToShow.length}}",
+            "selectionModelMode": "single",
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        }
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "toolsListDataProvider.selectionChangeEvent",
+            "action": "setInputAndSelectionToMyContext"
+        }
+    ],
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "toolsListDataProviderAction",
+                "observers": [
+                    "props.subPanelContext.datasetsToShow"
+                ]
+            }
+        ]
+    }
+}

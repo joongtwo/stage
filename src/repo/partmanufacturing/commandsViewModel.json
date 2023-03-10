@@ -1,0 +1,296 @@
+{
+  "commands": {
+    "Pm1DatasetTypeFilter": {
+      "iconId": "cmdfilter",
+      "isGroup": false,
+      "title": "{{i18n.Pm1DatasetTypeFiltersTitle}}",
+      "description": "{{i18n.Pm1DatasetTypeFilterDesc}}"
+    },
+    "Pm1OccTypeFilter": {
+      "iconId": "cmdfilter",
+      "title": "{{i18n.Pm1OccTypeFiltersTitle}}",
+      "description": "{{i18n.Pm1DatasetTypeFilterDesc}}"
+    },
+    "Pm1AddResource": {
+      "iconId": "cmdAdd",
+      "title": "{{i18n.Pm1AddResourceTitle}}",
+      "description": "{{i18n.Pm1AddResourceTooltip}}"
+    },
+    "Pm1DownloadAllFiles": {
+      "iconId": "cmdDownload",
+      "isGroup": false,
+      "title": "{{i18n.Pm1DownloadAllFilesTitle}}",
+      "description": "{{i18n.Pm1DownloadAllFilesToolTip}}"
+    }
+  },
+  "commandHandlers": {
+    "Pm1DatasetTypeFilterCommandHandler": {
+      "id": "Pm1DatasetTypeFilter",
+      "action": "launchDatasetTypeFilterPanel",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Pm1ShowDSFilterCommandVisibility"
+      }
+    },
+    "Pm1OccTypeFilterCommandHandler": {
+      "id": "Pm1OccTypeFilter",
+      "action": "launchOccTypeFilterPanel",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Pm1ShowOTFilterCommandVisibility"
+      }
+    },
+    "Pm1AddResourceCommandHandler": {
+      "id": "Pm1AddResource",
+      "action": "launchAddResourcePanel",
+      "activeWhen": {
+        "condition": "conditions.Pm1IsAddResourceCommandSupported"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Pm1IsAddResourceCommandSupported"
+      },
+      "enableWhen": {
+        "condition": "conditions.Pm1IsOpenedPartMfgOperationValid"
+      }
+    },
+    "Pm1DownloadAllFilesHandler": {
+      "id": "Pm1DownloadAllFiles",
+      "action": "actionPm1DownloadAllFiles",
+      "activeWhen": {
+        "condition": "conditions.isPm1PartManufacturingSublocation"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Pm1IsValidSelectionForDownload"
+      }
+    },
+    "Pm1ShowResourceCommandHandler": {
+      "id": "Awp0ShowObject",
+      "action": "actionPm1ShowResource",
+      "activeWhen": {
+        "condition": "conditions.Pm1IsPartManufacturingResource"
+      },
+      "visibleWhen": {
+        "condition": "conditions.cmdOpenBaseVisibleCondition"
+      }
+    },
+    "Pm1HideAddChildElementHandler": {
+      "id": "Awb0AddChildElementDeclarative",
+      "activeWhen": {
+        "condition": "conditions.isPm1PartManufacturingSublocation"
+      },
+      "visibleWhen": false
+    },
+    "Pm1HideSelectAllHandler": {
+      "id": "Awp0SelectAll",
+      "activeWhen": {
+        "condition": "conditions.isPm1PartManufacturingSublocation"
+      },
+      "visibleWhen": false
+    },
+    "Pm1HideEnableMultiSelectHandler": {
+      "id": "Awp0EnableMultiSelect",
+      "activeWhen": {
+        "condition": "conditions.isPm1PartManufacturingSublocation"
+      },
+      "visibleWhen": false
+    },
+    "Pm1HideSaveWorkingContextHandler": {
+      "id": "Awb0SaveWorkingContext",
+      "activeWhen": {
+        "condition": "conditions.Pm1IsSaveWorkingContextCommandSupported"
+      },
+      "enableWhen": false,
+      "visibleWhen": false
+    },
+    "Pm1HideImportFromExcelHandler": {
+      "id": "Awb0ImportFromExcel",
+      "activeWhen": {
+        "condition": "conditions.Pm1IsImportFromExcelCommandSupported"
+      },
+      "enableWhen": false,
+      "visibleWhen": false
+    },
+    "Pm1HidePasteHandler": {
+      "id": "Awp0Paste",
+      "activeWhen": {
+        "condition": "conditions.isPm1PartManufacturingSublocation"
+      },
+      "visibleWhen": false
+    }
+  },
+  "commandPlacements": {
+    "Pm1DatasetTypeFilterCmdDisplay": {
+      "id": "Pm1DatasetTypeFilter",
+      "uiAnchor": "aw_primaryWorkArea_Pm1PartManufacturing",
+      "priority": 640
+    },
+    "Pm1OccTypeFilterCmdDisplay": {
+      "id": "Pm1OccTypeFilter",
+      "uiAnchor": "aw_primaryWorkArea_Pm1PartManufacturing",
+      "priority": 740
+    },
+    "Pm1AddResourceCommandPlacementRW": {
+      "id": "Pm1AddResource",
+      "uiAnchor": "aw_rightWall",
+      "priority": 100,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "Pm1AddResourceCommandPlacementPWA": {
+      "id": "Pm1AddResource",
+      "uiAnchor": "aw_primaryWorkArea_Pm1PartManufacturing",
+      "priority": 750
+    },
+    "Pm1DownloadAllFilesDisplay": {
+      "id": "Pm1DownloadAllFiles",
+      "uiAnchor": "aw_rightWall",
+      "priority": 760,
+      "parentGroupId": "Awp0ShareGroup"
+    }
+  },
+  "actions": {
+    "launchDatasetTypeFilterPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Pm1DatasetTypeFilter",
+        "location": "aw_navigation"
+      }
+    },
+    "launchOccTypeFilterPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Pm1OccTypeFilter",
+        "location": "aw_navigation"
+      }
+    },
+    "launchAddResourcePanel": {
+      "actionType": "activateCommandPanel",
+      "inputData": {
+        "commandId": "Pm1AddResource",
+        "location": "aw_toolsAndInfo",
+        "config": {
+          "isPinUnpinEnabled": true
+        }
+      }
+    },
+    "actionPm1DownloadAllFiles": {
+      "actionType": "JSFunctionAsync",
+      "method": "downloadActivityFiles",
+      "inputData": {
+        "commandContext": "{{commandContext}}"
+      },
+      "outputData": {
+        "fileNamesAndTickets": "fileNamesAndTickets"
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.fileNamesAndTickets.length > 0",
+            "message": "downloadAllConfirmationMessage"
+          }
+        ]
+      },
+      "deps": "js/partManufacturingService"
+    },
+    "openMultipleFilesFromTickets": {
+      "actionType": "JSFunction",
+      "method": "openFiles",
+      "deps": "js/fmsUtils",
+      "inputData": {
+        "fileTickets": "{{data.fileNamesAndTickets}}"
+      }
+    },
+    "actionPm1ShowResource": {
+      "actionType": "Navigate",
+      "navigateTo": "com_siemens_splm_clientfx_tcui_xrt_showObject",
+      "navigationParams": {
+        "uid": "{{ctx.selected.props.awb0UnderlyingObject.dbValues[0]}}"
+      }
+    }
+  },
+  "conditions": {
+    "Pm1ShowDSFilterCommandVisibility": {
+      "expression": "ctx.sublocation && ( ctx.sublocation.clientScopeURI === 'Pm1PartManufacturing' ) && ctx.PartMfg.activeTabIndex === 1 && ctx.visibleServerCommands.Pm1DatasetTypeFilter"
+    },
+    "Pm1ShowOTFilterCommandVisibility": {
+      "expression": "ctx.sublocation && ( ctx.sublocation.clientScopeURI === 'Pm1PartManufacturing' ) && ctx.PartMfg.activeTabIndex === 0 && ctx.visibleServerCommands.Pm1OccTypeFilter && ( ctx.ViewModeContext.ViewModeContext === 'TableSummaryView' || ctx.ViewModeContext.ViewModeContext === 'TableView' )"
+    },
+    "Pm1IsAddResourceCommandSupported": {
+      "expression": "ctx.sublocation && ( ctx.sublocation.clientScopeURI === 'Pm1PartManufacturing' ) && ctx.PartMfg.activeTabIndex === 0"
+    },
+    "isPm1PartManufacturingSublocation": {
+      "expression": "ctx.sublocation && ( ctx.sublocation.clientScopeURI === 'Pm1PartManufacturing' )"
+    },
+    "Pm1IsSaveWorkingContextCommandSupported": {
+      "expression": "conditions.isCreateSWCCommandVisible && conditions.Pm1IsPartManufacturingResource"
+    },
+    "Pm1IsImportFromExcelCommandSupported": {
+      "expression": "conditions.enableImportBOMCommand && conditions.Pm1IsPartManufacturingResource"
+    },
+    "Pm1IsPartManufacturingResource": {
+      "expression": "ctx.sublocation && ( ctx.sublocation.clientScopeURI === 'Pm1PartManufacturing' ) && (ctx.selected.modelType.typeHierarchyArray.indexOf( 'Awb0Element' ) > -1)"
+    },
+    "Pm1IsValidSelectionForDownload": {
+      "expression": "ctx.sublocation && ( ctx.sublocation.clientScopeURI === 'Pm1PartManufacturing' ) && ( commandContext.searchState.pwaSelection[0].type === 'CfgActivityLine' || commandContext.searchState.pwaSelection[0].props.ref_list.dbValues.length > 0 )"
+    },
+    "Pm1IsOpenedPartMfgOperationValid": {
+      "expression": "conditions.Pm1IsAddResourceCommandSupported && commandContext.baseSelection.props.is_modifiable.dbValues[0] === '1'"
+    }
+  },
+  "messages": {
+    "downloadAllConfirmationMessage": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.Pm1DownloadAllOperationConfirmation}}",
+      "messageTextParams": [
+        "{{data.fileNamesAndTickets.length}}"
+      ],
+      "navigationOptions": [
+        {
+          "option": "Ok",
+          "text": "{{i18n.ok}}",
+          "action": "openMultipleFilesFromTickets"
+        },
+        {
+          "option": "Cancel",
+          "text": "{{i18n.cancelText}}",
+          "action": ""
+        }
+      ]
+    }
+  },
+  "i18n": {
+    "Pm1DatasetTypeFiltersTitle": [
+      "partmanufacturingMessages"
+    ],
+    "Pm1OccTypeFiltersTitle": [
+      "partmanufacturingMessages"
+    ],
+    "Pm1DatasetTypeFilterDesc": [
+      "partmanufacturingMessages"
+    ],
+    "Pm1AddResourceTitle": [
+      "partmanufacturingMessages"
+    ],
+    "Pm1DownloadAllFilesTitle": [
+      "partmanufacturingMessages"
+    ],
+    "Pm1AddResourceTooltip": [
+      "partmanufacturingMessages"
+    ],
+    "Pm1DownloadAllFilesToolTip": [
+      "partmanufacturingMessages"
+    ],
+    "Pm1DownloadAllOperationConfirmation": [
+      "partmanufacturingMessages"
+    ],
+    "cancelText": [
+      "partmanufacturingMessages"
+    ],
+    "okText": [
+      "partmanufacturingMessages"
+    ]
+  }
+}

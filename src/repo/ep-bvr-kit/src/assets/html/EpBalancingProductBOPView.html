@@ -1,0 +1,8 @@
+<div class="sw-column w-12">
+    <div class="sw-row">
+        <ep-structure-search sub-panel-context="fields.epProductBopSearchContext"></ep-structure-search>
+    </div>
+    <div class="sw-row aw-epProductBopStructureTree-navigationColumn">
+        <ep-tree-table exist-when="ctx.epPageContext.functionalPlan.uid" view-id="EpProductBopStructureTree_EpTreeTable" sub-panel-context="{...data.productBopStructureData, ...props.subPanelContext}" structure-search-context="fields.epProductBopSearchContext"></ep-tree-table>
+    </div>
+</div>

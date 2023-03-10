@@ -1,0 +1,8 @@
+<div class="sw-column w-12 h-12" >
+    <div class="sw-row w-12 h-12" >
+      <ep-validation-message-area exist-when="!ctx.epValidationContext['epValidationResults']"></ep-validation-message-area>
+      <ep-validation-result-area exist-when="ctx.epValidationContext['epValidationResults'] && ctx.epValidationContext['epValidationGetNewResults'] === false"></ep-validation-result-area>
+   </div>
+   <aw-splitter class="aw-mfe-transparentSplitter" direction="HORIZONTAL" show-when="conditions.isSingleObjectSelected"></aw-splitter>
+      <ep-validation-detail-area exist-when="conditions.isSingleObjectSelected" height="fill" input-object="ports.EpValidation_inputObject.syncObject"></ep-validation-detail-area>
+</div>

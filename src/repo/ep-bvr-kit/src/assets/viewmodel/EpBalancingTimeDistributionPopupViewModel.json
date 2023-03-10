@@ -1,0 +1,60 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        },
+        "updatePopupSubtitle": {
+            "actionType": "JSFunction",
+            "method": "applyMessageParamsWithoutContext",
+            "inputData": {
+                "messageString": "{{i18n.timeDistributionSubtitle}}",
+                "messageParams": [
+                    "{{ctx.epPageContext.productionProgramCollection.props.bl_rev_object_name.uiValues[0]}}"
+                ]
+            },
+            "outputData": {
+                "popupData.header.subtitle": ""
+            },
+            "deps": "js/messagingService"
+        }
+    },
+    "data": {
+        "popupData": {
+            "viewName": "EpBalancingTimeDistribution",
+            "header": {
+                "title": "{{i18n.timeDistributionTitle}}",
+                "scopeName": "{{ctx.epPageContext.loadedObject.props.bl_rev_object_name.uiValues[0]}}",
+                "iconName": "pageVariantAnalysis",
+                "subtitle": "{{i18n.timeDistributionSubtitle}}"
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "mfeLargePopup.closeRequest",
+            "action": "closePopupWindow"
+        }
+    ],
+    "i18n": {
+        "timeDistributionTitle": [
+            "BalancingMessages"
+        ],
+        "timeDistributionSubtitle": [
+            "BalancingMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onMount": "updatePopupSubtitle"
+    }
+}

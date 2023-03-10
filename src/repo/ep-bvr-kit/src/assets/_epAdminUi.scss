@@ -1,0 +1,153 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2021.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+
+/*========================================================================*/
+/*===========================MFE Manage Work Package  ==========================*/
+/*========================================================================*/
+
+.aw-mfe-manageWpXrtContainer {
+    padding : 0 ($padding_xlarge + $padding_normal);
+
+    .aw-xrt-separator {
+        margin: ($margin_normal + $margin_xsmall) 0;
+        padding-bottom:0;
+    }
+
+    .aw-layout-panelContent {
+        padding: 0;
+    }
+}
+
+.aw-manageTile-title {
+    font-size: $fontsize_large;
+    font-weight: $bold_font_weight;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.aw-mfe-tileSeparator {
+    height: rem-calc(24);
+}
+
+.aw-mfe-manageWpTileRevRuleContent {
+    margin-right: rem-calc(5);
+}
+
+.aw-mfe-manageWpTileRevRuleVal {
+    font-weight: $bold_font_weight;
+}
+
+.aw-ep-managePageColumn {
+    border-left-width: rem-calc(1);
+    border-left-style: solid;
+}
+
+.aw-ep-managePageColumnTitle {
+    font-weight: 600;
+    font-style: normal;
+    font-size: rem-calc(21);
+}
+
+.aw-ep-managePageOverviewColumnTitle {
+    margin-bottom: rem-calc(30);
+    margin-top: ($margin_large + $margin_xsmall);
+    height: rem-calc(24);
+}
+
+.aw-ep-managePageTilesColumn {
+    padding: 0 ($padding_xlarge + $padding_normal);
+}
+
+.aw-ep-managePageTilesColumnTitle{
+    margin-bottom: rem-calc(30);
+    margin-top: ($margin_large + $margin_xsmall);
+    height: rem-calc(24);
+}
+
+.aw-ep-managePageTasksColumnTitle {
+    padding: 0 ($padding_xlarge + $padding_normal);
+    margin-bottom: rem-calc(21);
+    margin-top: ($margin_large + $margin_xsmall);
+    height: rem-calc(24);
+}
+
+.aw-ep-ManagePageTask{
+    padding: 0 $padding_normal;
+}
+
+.aw-ep-manageWPHeaderTileAreaOffset {
+    .aw-mfe-contentPanel{
+        min-height: rem-calc(72);
+    }
+}
+
+.aw-mfe-manageWpTileContainer {
+    height: rem-calc(72);
+    padding-right: $padding_xlarge;
+}
+
+.aw-mfe-productVariantsContainer {
+    padding: $padding_xlarge;
+    gap: $margin_large;
+}
+
+.aw-mfe-epProductVariantsTilesTitle {
+    font-size: $fontsize_large;
+    font-weight: 600;
+}
+
+.aw-advanced-bar.aw-advanced-bar-horizontal.aw-mfe-epProductVariantsTiles {
+    border: none;
+    box-shadow: none;
+}
+
+.aw-mfe-contentPanel.aw-mfe-epProductVariantsTilesViews{
+    border: $default_border;
+}
+
+.aw-mfe-epProductVariantsTilesViews {
+    .aw-mfe-messageLine {
+        padding : 0 $padding_normal;
+    }
+}
+
+.aw-epHeader-separator.aw-mfe-separator.aw-theme-separator {
+    height: rem-calc(20);
+    margin: 0 $margin_normal;
+}
+
+// ========= Anchor Commands on Tiles =========
+@mixin full-width {
+    width: 100%;
+    height: 100%;
+}
+
+div[anchor$="_tileAnchor"] {
+    @include full-width;
+
+    .aw-commands-wrapper {
+        @include full-width;
+
+        .aw-command {
+            @include full-width;
+
+            button.aw-commands-commandIconButton.aw-commands-command.aw-commandId-epGroupAddToWorkpackage.aw-commands-commandWrapperHorizontal,
+            button.aw-commands-commandIconButton.aw-commands-command.aw-commandId-epAddStructureToWorkpackageTileCommand.aw-commands-commandWrapperHorizontal {
+                @include full-width;
+                max-width: 100%;
+                text-align: center;
+            }
+        }
+    }
+}
+
+// =========  To be used by Tile commands shown inside Popups =========
+li[command-id$="TileCommand"].aw-widgets-cellListItem {
+    min-width: rem-calc(420);
+}

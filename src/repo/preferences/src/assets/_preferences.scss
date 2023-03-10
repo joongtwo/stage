@@ -1,0 +1,54 @@
+// Copyright 2018 Siemens Product Lifecycle Management Software Inc.
+@import "mixins/_mixins.scss";
+
+.aw-preferences-layoutColumn {
+    @include flex( 4 );
+    max-width: 100%;
+}
+
+.aw-preferences-primaryWorkarea {
+    width: 50%;
+}
+
+.aw-preferences-secondaryWorkarea {
+    width: 30%;
+}
+
+.aw-preferences-orgTreeTable {
+    padding: 20px 20px 0 20px;
+    height: auto;
+}
+
+.aw-preferences-orgSearchBox{
+    padding: 20px 20px 0 20px;
+}
+
+.aw-preferences-breadcrumb{
+    margin-top: rem-calc(-3);
+    padding-bottom: rem-calc(13);
+    height: 47px;
+    align-items: center;
+}
+
+.aw-preferences-colProps{
+    min-width: rem-calc(200)  ;
+}
+
+// beginning of preferences secondary workarea classes
+.aw-preferences-propertiesSectionContainer {
+    overflow: auto;
+}
+
+.aw-preferences-wrapColumns {
+    flex-wrap: wrap;
+}
+
+.aw-preferences-value {
+    padding: 4px;
+}
+
+.aw-importPreferences
+{
+    flex-direction: column;
+    padding-left: rem-calc(1);
+}

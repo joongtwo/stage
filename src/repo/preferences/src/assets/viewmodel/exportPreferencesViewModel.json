@@ -1,0 +1,98 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-widget.directive",
+        "js/aw-listbox.directive",
+        "js/aw-break.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-i18n.directive",
+        "js/exist-when.directive",
+        "js/visible-when.directive",
+        "js/aw-button.directive"
+    ],
+    "actions":
+    {
+        "revealPrefExport": {
+            "actionType": "JSFunction",
+            "method": "populateExportPreferencesPanel",
+            "inputData":
+            {
+                "data":"{{data}}"
+            },
+            "outputData":{
+                "locationList":"locationList",
+                "productAreaList":"productAreaList",
+                "fnd0FileName":"fnd0FileName"
+            },
+            "deps": "js/exportPreferencesService"
+        },
+        "exportPreferences": {
+            "actionType": "JSFunctionAsync",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "method": "exportPreferences",
+            "deps": "js/exportPreferencesService"
+        }
+    },
+    "dataProviders": {
+        "locationDataProvider": {
+            "response": "{{data.locationList}}"
+        },
+        "productAreaProvider": {
+            "response": "{{data.productAreaList}}"
+        }
+    },
+    "data":
+    {
+
+        "fnd0FileName": {
+            "displayName": "{{i18n.Name}}",
+            "type": "STRING",
+            "isEditable": "true",
+            "isRequired": "true"
+        },
+        "fnd0Location": {
+            "displayName": "{{i18n.Location}}",
+            "type": "STRING",
+            "isEditable": "true",
+            "isRequired": "true",
+            "hasLov": true,
+            "dataProvider":"locationDataProvider"
+        },
+        "fnd0ProductArea": {
+            "displayName": "{{i18n.ProductArea}}",
+            "type": "STRING",
+            "isEditable": "true",
+            "isRequired": "true",
+            "hasLov": true,
+            "dataProvider":"productAreaProvider"
+        }
+    },
+    "i18n":
+    {
+        "exportPreferencesPanelTitle": [ "preferenceMessages" ],
+        "exportPreferencesBtn": [ "preferenceMessages" ],
+        "location": [ "preferenceMessages" ],
+        "ProductArea": [ "preferenceMessages" ],
+        "Name": [ "preferenceMessages" ]
+    },
+    "conditions":
+    {
+        "isSiteLocation":
+        {
+            "expression": "data.fnd0Location.dbValue == 'SITE'"
+        },
+        "showExportBtn":
+        {
+            "expression": "data.fnd0Location.dbValue !== null && data.fnd0FileName.dbValue != '' && data.fnd0FileName.dbValue !== null && data.fnd0FileName.dbValue !== undefined"
+        }
+
+    },
+    "lifecycleHooks": {
+        "onMount": "revealPrefExport"
+    }}

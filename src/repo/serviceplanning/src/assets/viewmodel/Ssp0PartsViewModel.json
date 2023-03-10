@@ -1,0 +1,189 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "messages": {
+            "VMOIsNotSrOrWc": [
+                {
+                    "text": "{{i18n.VMOIsNotSrOrWc}}"
+                }
+            ]
+        }
+    },
+    "ports": {
+        "setPartsTreeData": {
+            "syncObject": {}
+        },
+        "setOccurrenceType": {
+            "syncObject": {}
+        }
+    },
+    "actions": {
+        "getOccType": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getPreferences"
+                },
+                {
+                    "action": "getOccTypeListUsingPreferences"
+                }
+            ]
+        },
+        "getPreferences": {
+            "actionType": "TcSoaService",
+            "serviceName": "Administration-2012-09-PreferenceManagement",
+            "method": "getPreferences",
+            "inputData": {
+                "preferenceNames": [
+                    "MEDisplayOccurrenceType"
+                ],
+                "includePreferenceDescriptions": false
+            },
+            "outputData": {
+                "preferencesList": "{{function:getPreferencesNamesList}}"
+            },
+            "deps": "js/ssp0PartsService"
+        },
+        "getOccTypeListUsingPreferences": {
+            "actionType": "TcSoaService",
+            "serviceName": "Administration-2012-09-PreferenceManagement",
+            "method": "getPreferences",
+            "inputData": {
+                "preferenceNames": "{{data.preferencesList}}",
+                "includePreferenceDescriptions": false
+            },
+            "outputData": {
+                "occTypeList": "{{function:getOccTypeList}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "sendOccType"
+                    }
+                ]
+            },
+            "deps": "js/ssp0PartsService"
+        },
+        "sendOccType": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "setOccurrenceType",
+                "syncObject": "{{data.occTypeList}}"
+            }
+        },
+        "updatePartsTreeDataPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "setPartsTreeData",
+                "syncObject": "{{data.treeLoadResult}}"
+            }
+        },
+        "getChildNodeProperties": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "attributes": [
+                    "bl_has_children",
+                    "bl_line_name",
+                    "bl_occ_type",
+                    "bl_item_object_desc",
+                    "bl_item_object_type"
+                ],
+                "objects": "{{data.uids}}"
+            },
+            "outputData": {
+                "treeLoadResult": "{{function:setTreeProperties}}"
+            },
+            "deps": "js/ssp0PartsService"
+        },
+        "getChildNodeData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "attributes": [
+                    "Mfg0all_material"
+                ],
+                "objects": [
+                    {
+                        "uid": "{{data.eventMap['Ssp0Parts.triggerFunction'].selectedObj.uid}}",
+                        "type": "BomLine"
+                    }
+                ]
+            },
+            "outputData": {
+                "uids": "{{function:getPartNodes}}"
+            },
+            "deps": "js/ssp0PartsService"
+        },
+        "loadPartsTree": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getChildNodeData"
+                },
+                {
+                    "action": "getChildNodeProperties",
+                    "condition": "conditions.IsUidsNull"
+                },
+                {
+                    "action": "updatePartsTreeDataPort"
+                }
+            ]
+        }
+    },
+    "conditions": {
+        "IsVMOValid": {
+            "expression": "ctx.selectedVMO.modelType.typeHierarchyArray.includes('SSP0BvrServiceRequirement') || ctx.selectedVMO.modelType.typeHierarchyArray.includes('SSP0BvrWorkCard')"
+        },
+        "IsUidsNull": {
+            "expression": "data.uids.length > 0"
+        }
+    },
+    "ctx": {
+        "selectedVMO": {
+            "type": "object"
+        }
+    },
+    "functions": {
+        "setTreeProperties": {
+            "functionName": "setTreeProperties",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getChildNodes": {
+            "functionName": "getChildNodes",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getPartNodes": {
+            "functionName": "getPartNodes",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "Ssp0Parts.triggerFunction",
+            "action": "loadPartsTree",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "sendOccType",
+            "action": "sendOccType",
+            "cacheEventData": true
+        }
+    ],
+    "i18n": {
+        "VMOIsNotSrOrWc": [
+            "ssp0Messages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onInit": "getOccType"
+    }
+}

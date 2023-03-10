@@ -1,0 +1,178 @@
+{
+  "commands": {
+    "Awb0CompareCmdGroup": {
+      "iconId": "cmdCompare",
+      "isGroup": true,
+      "title": "{{i18n.CompareGroupCommandTitle}}"
+    },
+    "Awb0ContentCompareMsm": {
+      "iconId": "cmdCompare",
+      "isGroup": false,
+      "title": "{{i18n.compareStructuresTitle}}",
+      "description": "{{i18n.Awb0ContentCompareMsmDesc}}"
+    },
+    "Awb0ContentCompare": {
+      "iconId": "cmdCompare",
+      "isGroup": false,
+      "title": "{{i18n.compareStructuresTitle}}",
+      "description": "{{i18n.Awb0ContentCompareMsmDesc}}"
+    },
+    "Awb0CompareGroup": {
+      "iconId": "cmdCompare",
+      "title": "{{i18n.compareTitle}}",
+      "isRibbon": true,
+      "description": "{{i18n.Awb0CompareGrpDesc}}"
+    },
+    "Awb0CompareStructures": {
+      "iconId": "cmdCompare",
+      "isGroup": false,
+      "title": "{{i18n.compareStructuresTitle}}",
+      "description": "{{i18n.Awb0CompareStructuresDesc}}"
+    }
+  },
+  "commandHandlers": {
+    "awb0ContentCompareMsmCmdHandler": {
+      "id": "Awb0ContentCompareMsm",
+      "action": "contentCompareMsmAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.isContentCompareMsmVisible"
+      },
+      "enableWhen": {
+        "condition": "conditions.isContentCompareinMsmValid"
+      }
+    },
+    "awb0ContentCompareCmdHandler": {
+      "id": "Awb0ContentCompare",
+      "action": "contentCompareMsmAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.isCompareContentValidOutsideACE"
+      },
+      "enableWhen": {
+        "condition": "conditions.isCompareContentEnabled"
+      }
+    },
+    "openCompareNotificationCommandHandler": {
+      "id": "Awp0OpenLineItem",
+      "action": "openCompareNotification",
+      "activeWhen": {
+        "condition": "conditions.enableOpenCompareNotificationCommandCond"
+      },
+      "visibleWhen": {
+        "condition": "conditions.enableOpenCompareNotificationCommandCond"
+      }
+    },
+    "Awb0CompareGroupHandler": {
+      "id": "Awb0CompareGroup",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.isOccurrenceManagementSubLocation"
+      },
+      "enableWhen": true
+    },
+    "Awb0CompareStructuresCommandHandler": {
+      "id": "Awb0CompareStructures",
+      "action": "contentCompareMsmAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.isCompareStructuresCommandVisible"
+      },
+      "enableWhen": {
+        "condition": "conditions.isCompareStructuresCommandEnabled"
+      }
+    }
+  },
+  "commandPlacements": {
+    "awb0ContentCompareMsmCmdPlacement": {
+      "id": "Awb0ContentCompareMsm",
+      "uiAnchor": "aw_primaryWorkArea",
+      "parentGroupId": "Awb0CompareGroup",
+      "priority": 10
+    },
+    "awb0ContentCompareCmdPlacement": {
+      "id": "Awb0ContentCompare",
+      "uiAnchor": "aw_rightWall",
+      "parentGroupId": "Awp0ViewGroup",
+      "priority": 20
+    },
+    "Awb0CompareGroupCmdPlacement": {
+      "id": "Awb0CompareGroup",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 24
+    },
+    "Awb0CompareStructuresPlacement": {
+      "id": "Awb0CompareStructures",
+      "uiAnchor": "aw_objectSet",
+      "priority": 5
+    }
+  },
+  "actions": {
+    "contentCompareMsmAction": {
+      "actionType": "JSFunction",
+      "method": "launchContentCompare",
+      "deps": "js/structureCompareService",
+      "inputData": {}
+    },
+    "openCompareNotification": {
+      "actionType": "JSFunction",
+      "method": "openCompareNotification",
+      "inputData": {
+        "notificationObject": "{{commandContext}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "NotificationMessage.markRead"
+          }
+        ]
+      },
+      "deps": "js/structureCompareService"
+    }
+  },
+  "messages": {},
+  "conditions": {
+    "isCompareContentValidOutsideACE": {
+      "expression": "!ctx.isNarrowMode && !ctx.splitView && !ctx.hiddenCommands.Awb0ContentCompareMsm"
+    },
+    "isCompareContentEnabled": {
+      "expression": "!ctx.isNarrowMode && !ctx.splitView && ctx.mselected && ctx.mselected.length === 2 && ctx.visibleServerCommands.Awb0Compare && !ctx.hiddenCommands.Awb0ContentCompareMsm"
+    },
+    "isContentCompareMsmVisible": {
+      "expression": "conditions.isOccurrenceManagementSubLocation && !ctx.splitView"
+    },
+    "isContentCompareinMsmValid": {
+      "expression": "!ctx.isNarrowMode && !ctx.splitView && ctx.mselected && ctx.mselected.length === 2 && ctx.visibleServerCommands.Awb0Compare && !ctx.hiddenCommands.Awb0ContentCompareMsm"
+    },
+    "enableOpenCompareNotificationCommandCond": {
+      "expression": "commandContext.group.groupName==='COMPARE'"
+    },
+    "isCompareStructuresCommandVisible": {
+      "expression": "commandContext.objectSetSource === 'revision_list.ItemRevision'"
+    },
+    "isCompareStructuresCommandEnabled": {
+      "expression": "commandContext.selectionModel.selectionData.selected.length === 2 && ctx.visibleServerCommands.Awb0Compare"
+    }
+  },
+  "i18n": {
+    "CompareGroupCommandTitle": [
+      "StructureCompareConstants"
+    ],
+    "compareTitle": [
+      "CompareSplitViewConstants"
+    ],
+    "Awb0ContentCompareMsmDesc": [
+      "CompareSplitViewConstants"
+    ],
+    "Awb0CompareStructuresDesc": [
+      "CompareSplitViewConstants"
+    ],
+    "Awb0CompareGrpDesc": [
+      "CompareSplitViewConstants"
+    ],
+    "compareStructuresTitle": [
+      "CompareSplitViewConstants"
+    ]
+  },
+  "onEvent": []
+}

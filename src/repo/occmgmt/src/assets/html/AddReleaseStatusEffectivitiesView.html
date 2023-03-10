@@ -1,0 +1,9 @@
+<aw-panel-body scrollable="false">
+    <aw-tab-set tabs="data.tabsModel.dbValues"></aw-tab-set>
+    <aw-include name='AuthorEffectivityForRelStatus' sub-panel-context='{...subPanelContext}'
+            show-when="data.selectedTab.tabKey==='New'">
+        </aw-include>
+    <aw-include name='SearchEffectivitiesForRelStatus' sub-panel-context='{...subPanelContext}'
+            exist-when="data.selectedTab.tabKey==='Search'">
+    </aw-include>
+</aw-panel-body>

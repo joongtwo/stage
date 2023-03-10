@@ -1,0 +1,227 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "loadHealthReport": {
+            "actionType": "JSFunction",
+            "method": "loadHealthReportData",
+            "inputData": {
+                "selection": "{{props.subPanelContext.context.searchState.selectedPlants}}"
+            },
+            "dataParsers": [
+                {
+                    "id": "etlHealthReportDataParser",
+                    "responseObjs": "searchResults"
+                }
+            ],
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults",
+                "searchResultsWithIcon": "{{function:updateSearchResults}}",
+                "dataProviders.healthReportGridDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/Dpv1ETLHealthService"
+        },
+        "updateHealthInfo": {
+            "actionType": "JSFunction",
+            "method": "updateHealthInfo",
+            "inputData": {
+                "searchState": "{{props.subPanelContext.context.searchState}}",
+                "gridSelection": "{{data.eventMap['healthReportGridDataProvider.selectionChangeEvent'].selectedObjects}}"
+            },
+            "deps": "js/Dpv1ETLHealthService"
+        },
+        "selectTableRow":{
+            "actionType": "JSFunction",
+            "method": "selectTableRow",
+            "inputData": {
+                "searchState": "{{props.subPanelContext.context.searchState}}",
+                "dataProvider": "{{dataProviders.healthReportGridDataProvider}}"
+            },
+            "deps": "js/Dpv1ETLHealthService"
+        }
+    },
+    "data": {},
+    "onEvent": [
+        {
+            "eventId": "healthReportGridDataProvider.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "updateHealthInfo"
+        },
+        {
+            "eventId": "healthReportGridDataProvider.modelObjectsUpdated",
+            "action": "selectTableRow"
+        }
+    ],
+    "dataProviders": {
+        "healthReportGridDataProvider": {
+            "action": "loadHealthReport",
+            "selectionModelMode": "single",
+            "selectionModel": {
+                "multiSelectEnabled": false
+            },
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            },
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "commandsAnchor": "dpvetlconfigfile"
+        }    
+    },
+    "dataParseDefinitions": {
+        "etlHealthReportDataParser": {
+            "type": "etlHealthReport",
+            "props": {
+                "PlantName": {
+                    "name": "PlantName",
+                    "value": "{{response.PlantName}}",
+                    "displayValue": "{{response.PlantName}}",
+                    "type": "String"
+                },
+                "PlantID": {
+                    "name": "PlantID",
+                    "value": "{{response.PlantId}}",
+                    "displayValue": "{{response.PlantId}}",
+                    "type": "String"
+                },
+                "MeasDevice": {
+                    "name": "MeasDevice",
+                    "value": "{{response.DeviceName}}",
+                    "displayValue": "{{response.DeviceName}}",
+                    "type": "String"
+                },
+                "MeasDeviceID": {
+                    "name": "MeasDeviceID",
+                    "value": "{{response.DeviceId}}",
+                    "displayValue": "{{response.DeviceId}}",
+                    "type": "String"
+                },
+                "TotalFilesFailedFolder": {
+                    "name": "TotalFilesFailedFolder",
+                    "value": "{{response.FailedFiles}}",
+                    "displayValue": "{{response.FailedFiles}}",
+                    "type": "INTEGER"
+                },
+                "TotalFilesSuccessFolder": {
+                    "name": "TotalFilesSuccessFolder",
+                    "value": "{{response.SuccessFiles}}",
+                    "displayValue": "{{response.SuccessFiles}}",
+                    "type": "INTEGER"
+                },
+                "TotalFilesPartialSuccessFolder": {
+                    "name": "TotalFilesPartialSuccessFolder",
+                    "value": "{{response.PartialSuccessFiles}}",
+                    "displayValue": "{{response.PartialSuccessFiles}}",
+                    "type": "INTEGER"
+                },
+                "ConfigurationXML": {
+                    "name": "ConfigurationXML",
+                    "value": "{{response.ConfigXmlUrl}}",
+                    "displayValue": "{{response.ConfigXmlUrl}}",
+                    "type": "String"
+                }
+            }
+        }
+    },
+    "columnProviders": {
+        "healthReportGridColumnProvider": {
+            "frozenColumnIndex": -1,
+            "headerHeight": "LARGE",
+            "columns": [
+                {
+                    "name": "PlantName",
+                    "typeName": "String",
+                    "minWidth": 120,
+                    "width": 120,
+                    "enableColumnMenu": false,
+                    "isTableCommand": true
+                },
+                {
+                    "name": "PlantID",
+                    "typeName": "String",
+                    "maxWidth": 300,
+                    "minWidth": 140,
+                    "width": 140,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "MeasDevice",
+                    "typeName": "String",
+                    "minWidth": 140,
+                    "width": 140,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "MeasDeviceID",
+                    "typeName": "String",
+                    "minWidth": 140,
+                    "width": 140,
+                    "enableColumnMenu": false
+                },
+                {
+                    "name": "TotalFilesFailedFolder",
+                    "typeName": "Integer",
+                    "minWidth": 140,
+                    "width": 140,
+                    "enableColumnMenu": false,
+                    "isTableCommand": true
+                },
+                {
+                    "name": "TotalFilesSuccessFolder",
+                    "typeName": "Integer",
+                    "minWidth": 150,
+                    "width": 150,
+                    "enableColumnMenu": false,
+                    "isTableCommand": true
+                },
+                {
+                    "name": "TotalFilesPartialSuccessFolder",
+                    "typeName": "Integer",
+                    "minWidth": 160,
+                    "width": 160,
+                    "enableColumnMenu": false,
+                    "isTableCommand": true
+                },
+                {
+                    "name": "ConfigurationXML",
+                    "typeName": "String",
+                    "minWidth": 250,
+                    "width": 250,
+                    "enableColumnMenu": false
+                }
+            ]
+        }
+    },
+    "grids": {
+        "healthReportGrid": {
+            "dataProvider": "healthReportGridDataProvider",
+            "columnProvider": "healthReportGridColumnProvider",
+            "enableArrangeMenu": true,
+            "gridOptions": {
+                "enableGridMenu": true
+            }
+        }
+    },
+    "functions": {
+        "updateSearchResults":
+        {
+            "functionName": "updateSearchResultsWithIcon",
+            "parameters": ["typeMEProcessRevision48.svg"]
+        }
+    },
+    "messages": {
+        "noPlantSelectedMsg": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.noPlantSelectedMsg}}"
+        }
+    },
+    "i18n": {
+        "noPlantSelectedMsg":[
+            "DpvMessages"
+        ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

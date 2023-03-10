@@ -1,0 +1,221 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "classify-state": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "loadPropGroups": {
+            "actionType": "dataProvider",
+            "method": "propertyGroupDataProvider"
+        },
+        "loadData": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTreeStructure",
+            "inputData": {
+                "treeLoadInput": "request.treeLoadInput",
+                "data": "{{data}}",
+                "classifyState":"{{props.classifyState}}",
+                "filterString":"{{data.searchBox.dbValue}}"
+            },
+            "outputData": {
+                "response": ""
+            },
+            "deps": "js/AwClsPropertyGroupTreeService"
+        },
+        "loadColumns": {
+            "actionType": "JSFunction",
+            "method": "loadColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.propertyGroupDataProvider}}",
+                "gridoptions": "{{gridOptions}}"
+            },
+            "deps": "js/AwClsPropertyGroupTreeService"
+        },
+        "loadPropertiesActionJS": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadPropertiesJS",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.propertyGroupDataProvider}}",
+                "propertyLoadInput": "request.propertyLoadInput"
+            },
+            "outputData": {},
+            "deps": "js/AwClsPropertyGroupTreeService"
+        },
+        "filterPropertGroups": {
+            "actionType": "JSFunction",
+            "method": "filterHierarchy",
+            "inputData": {
+                "data":"{{data}}",
+                "searchString":"{{data.searchBox.dbValue}}",
+                "providerName": "propertyGroupDataProvider",
+                "conditions":"{{conditions}}"
+            },
+            "outputData": {
+                "initializationComplete": "result.initializationComplete"
+            },
+            "deps": "js/classifyFilterUtils"
+        },
+        "doPropertyGroupsDataProvider": {
+            "actionType": "dataProvider",
+            "method": "propertyGroupDataProvider"
+        },
+        "checkForInvalidSearch": {
+            "actionType": "JSFunction",
+            "method": "checkForInvalidSearch",
+            "inputData": {
+                "searchString":"{{data.searchBox.dbValue}}",
+                "eventName": "propertyGroupDataProvider.plTable.reload"
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "NotAllowedSearchMessage"
+                } ]
+            },
+            "deps": "js/classifyFilterUtils"
+        },
+        "selectPropertyGroup": {
+            "actionType": "JSFunction",
+            "method": "selectPropertyGroup",
+            "inputData": {
+                "classifyState":"{{props.classifyState}}",
+                "eventData": "{{data.eventData}}"
+            },
+            "deps": "js/AwClsPropertyGroupTreeService"
+        },
+        "updatePropGroupInstances":{
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updatePropGroupDataProvider",
+                    "condition": "props.classifyState.value.selectedCardinalAttribute !== undefined"
+                }
+            ]
+        },
+        "updatePropGroupDataProvider": {
+            "actionType": "JSFunction",
+            "method": "updatePropGroupDataProvider",
+            "inputData": {
+                "dataProvider":"{{data.dataProviders.propertyGroupDataProvider}}",
+                "classifyState": "{{props.classifyState}}"
+            },
+            "deps": "js/AwClsPropertyGroupTreeService"
+        },
+        "updateInstances": {
+            "actionType": "JSFunction",
+            "method": "updateInstances",
+            "inputData": {
+                "cardinalAttribute": "{{data.eventData.cardinalAttribute}}",
+                "classifyState": "{{props.classifyState}}"
+            },
+            "deps": "js/AwClsAttributesService"
+        }
+    },
+    "data": {
+        "searchBox": {
+            "dbValue": "",
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "propertyDisplayName": "",
+            "requiredText": "{{i18n.searchPlaceholder}}"
+        },
+        "searchStringMinLength": 3
+    },
+    "dataProviders": {
+        "propertyGroupDataProvider": {
+            "action":"loadData",
+            "initializeAction": "loadData",
+            "treeLoadResult": "action.result.treeLoadResult",
+            "treePageSize": 250,
+            "inputData": {
+                "accessMode": "tree",
+                "enablePropEdit": false
+            },
+            "cacheCollapse": true,
+            "response": "{{data.response}}",
+            "selectionModelMode": "single"
+        },
+        "propertyGroupPropertyProvider": {
+            "action": "loadPropertiesActionJS",
+            "propertyLoadResult": "action.result.propertyLoadResult"
+        }
+    },
+    "columnProviders": {
+        "propertyGroupColumnProvider": {
+            "loadColumnAction": "loadColumns",
+            "columns": "{{data.columns}}",
+            "frozenColumnIndex": -1,
+            "sortCriteria": []
+        }
+    },
+    "grids": {
+        "propertyGroupGrid": {
+            "dataProvider": "propertyGroupDataProvider",
+            "columnProvider": "propertyGroupColumnProvider",
+            "propertyProvider": "propertyGroupPropertyProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "useStaticFirstCol": true,
+                "enableExpansionStateCaching": false,
+                "enableGridMenu": false,
+                "enablePinning": false,
+                "enableSorting": false
+            }
+        }
+    },
+    "conditions":{
+        "isValidSearchInput": {
+            "expression": {
+                "$source": "data.searchBox.dbValue",
+                "$query": {
+                    "$regexp": "(.*[a-zA-Z0-9$&+,:;=?@#|'<>.-^()%!]){3}"
+                }
+            }
+        }
+    },
+    "i18n": {
+        "searchPlaceholder": [ "ClassificationPanelMessages" ],
+        "propertyGroups": [ "ClassificationPanelMessages" ]
+     },
+    "functions": {
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "filterPropertGroups",
+                "observers": [ "viewModel.data.searchBox.dbValue" ]
+            },
+            {
+                "action": "updatePropGroupInstances",
+                "observers": [ "props.classifyState.updateInstances" ]
+            },
+            {
+                "action": "loadPropGroups",
+                "observers": [ "props.classifyState.selectedClass.uid" ]
+            }
+        ]
+    },
+    "onEvent": [
+        {
+            "eventId": "propertyGroupDataProvider.dataProvider.reset",
+            "action": "checkForInvalidSearch"
+        },
+        {
+            "eventId": "propertyGroupDataProvider.plTable.reload",
+            "action": "doPropertyGroupsDataProvider"
+        },
+        {
+            "eventId": "propertyGroupDataProvider.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "selectPropertyGroup"
+        },
+        {
+            "eventId": "classify.updateInstances",
+            "cacheEventData": true,
+            "action": "updateInstances"
+         }
+    ]
+}

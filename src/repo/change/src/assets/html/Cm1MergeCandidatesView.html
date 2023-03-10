@@ -1,0 +1,18 @@
+<div class="sw-column flex-auto">
+    <aw-i18n class="sw-row afx-default-background aw-change-mergeCandidateDisplayLabel">i18n.Cm1MergeCandidatesTitle
+    </aw-i18n>
+    <aw-panel class="sw-row">
+        <aw-panel-body>
+            <aw-panel-section>
+                <aw-list dataprovider="data.dataProviders.mergeCandidatesDataProvider">
+                    <cm1-merge-candidate-tile merge-item="{mergeCandidateItem: item}"></cm1-merge-candidate-tile>
+                </aw-list>
+            </aw-panel-section>
+        </aw-panel-body>
+        <aw-panel-footer>
+            <div class="sw-row justify-right align-right">
+                <aw-button class="small aw-change-mergeAllButton" button-type='accent-caution' action="callMergeChangesSoa" enable-when="data.showMergeAllButton" size="auto">Merge All</aw-button>
+            </div>
+        </aw-panel-footer>
+    </aw-panel>
+</div>

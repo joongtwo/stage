@@ -1,0 +1,43 @@
+{
+  "slots": {
+    "ssp0HeaderTitleSlot": {
+      "name": "mfe_header",
+      "view": "Ssp0HeaderTitle",
+      "activeWhen": {
+        "condition": "conditions.isSubLocationServicePlanningORTimeAnalysis"
+      }
+    },
+    "ssp0TaskBarSlot": {
+      "name": "mfe_taskBar",
+      "view": "Ssp0TaskBar",
+      "activeWhen": {
+        "condition": "conditions.isSubLocationServicePlanningORTimeAnalysis"
+      }
+    },
+    "toggleButton": {
+      "name": "ssp0LeftToolBarSlot",
+      "view": "Ssp0ToggleButton",
+      "activeWhen": {
+        "condition": "conditions.isSubLocationServicePlanning"
+      }
+    },
+    "workCardTitle": {
+      "name": "ssp0LeftToolBarSlot",
+      "view": "Ssp0AddTitle",
+      "activeWhen": {
+        "condition": "conditions.isSubLocationTimeAnalysis"
+      }
+    }
+  },
+  "conditions": {
+    "isSubLocationServicePlanning": {
+      "expression": "ctx.locationContext['ActiveWorkspace:SubLocation'] === 'servicePlanning'"
+    },
+    "isSubLocationServicePlanningORTimeAnalysis": {
+      "expression": "ctx.locationContext['ActiveWorkspace:SubLocation'] === 'servicePlanning' || ctx.locationContext['ActiveWorkspace:SubLocation'] === 'servicePlanningTimeAnalysis'"
+    },
+    "isSubLocationTimeAnalysis": {
+      "expression": "ctx.locationContext['ActiveWorkspace:SubLocation'] === 'servicePlanningTimeAnalysis'"
+    }
+  }
+}

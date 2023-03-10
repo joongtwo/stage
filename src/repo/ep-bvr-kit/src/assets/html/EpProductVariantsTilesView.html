@@ -1,0 +1,11 @@
+<div class="sw-column w-12">
+    <aw-advanced-bar type="TOOLBAR" negative="true" class="aw-mfe-epProductVariantsTiles">
+        <div class="sw-row align-center justify-justified">
+            <strong><span class="aw-mfe-epProductVariantsTilesTitle">{{data.tabModel.name}}</span></strong>
+            <aw-command-bar class="sw-row align-right" context="fields.tabModel" anchor="{{props.subPanelContext.uiAnchor}}" alignment="HORIZONTAL"></aw-command-bar>
+        </div>
+    </aw-advanced-bar>
+    <div class="sw-row aw-mfe-contentPanel h-12 aw-mfe-epProductVariantsTilesViews">
+        <aw-include name="{{fields.tabModel.tabKey}}" sub-panel-context="fields.tabModel" exist-when="fields.tabModel.tabKey"></aw-include>
+    </div>
+</div>

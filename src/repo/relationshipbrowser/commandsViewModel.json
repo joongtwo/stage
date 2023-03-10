@@ -1,0 +1,1238 @@
+{
+  "commands": {
+    "Rv1OnNodePartialExpandIn": {
+      "iconId": "cmdIncomingPartial",
+      "isGroup": true,
+      "title": "{{i18n.incoming}}"
+    },
+    "Rv1OnNodePartialExpandInAll": {
+      "iconId": "cmdIncomingPartial",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.showAllIncomingRelations}}",
+        "params": [
+          "{{ctx.graph.commandContextItem.boundObject.filtered_in_degree}}"
+        ]
+      }
+    },
+    "Rv1OnNodePartialExpandInPartial": {
+      "iconId": "cmdIncomingPartial",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.hidePartialIncomingRelations}}",
+        "params": [
+          "{{ctx.graph.commandContextItem.boundObject.visible_in_degree}}",
+          "{{ctx.graph.commandContextItem.boundObject.filtered_in_degree}}"
+        ]
+      }
+    },
+    "Rv1OnNodePartialExpandOut": {
+      "iconId": "cmdOutgoingPartial",
+      "isGroup": true,
+      "title": "{{i18n.outgoing}}"
+    },
+    "Rv1OnNodePartialExpandOutAll": {
+      "iconId": "cmdOutgoingPartial",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.showAllOutgoingRelations}}",
+        "params": [
+          "{{ctx.graph.commandContextItem.boundObject.filtered_out_degree}}"
+        ]
+      }
+    },
+    "Rv1OnNodePartialExpandOutPartial": {
+      "iconId": "cmdOutgoingPartial",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.hidePartialOutgoingRelations}}",
+        "params": [
+          "{{ctx.graph.commandContextItem.boundObject.visible_out_degree}}",
+          "{{ctx.graph.commandContextItem.boundObject.filtered_out_degree}}"
+        ]
+      }
+    },
+    "Rv1ExpandIn": {
+      "iconId": "cmdShowIncomingRelations",
+      "isGroup": false,
+      "title": "{{i18n.incoming}}"
+    },
+    "Rv1ExpandOut": {
+      "iconId": "cmdShowOutgoingRelations",
+      "isGroup": false,
+      "title": "{{i18n.outgoing}}"
+    },
+    "Rv1FadeNode": {
+      "iconId": "",
+      "isGroup": false,
+      "title": "Hide"
+    },
+    "Rv1ShowObjectRelations": {
+      "iconId": "cmdRelatedObjects",
+      "isGroup": false,
+      "title": "{{i18n.showObjectRelationsTitle}}",
+      "description": "{{i18n.Rv1ShowObjectRelationsDesc}}"
+    },
+    "Rv1OpenInPrintView": {
+      "iconId": "cmdOpen",
+      "isGroup": false,
+      "title": "{{i18n.openInPrintViewTitle}}"
+    },
+    "Rv1OneStepShowIncomingIcon": {
+      "iconId": "cmdShowIncomingRelations",
+      "isGroup": true,
+      "title": "{{i18n.rv1ShowIncoming}}",
+      "description": "{{i18n.Rv1OneStepShowIncomingIconDesc}}"
+    },
+    "Rv1OneStepShowIncoming1Singular": {
+      "iconId": "cmdShowIncomingRelations",
+      "isGroup": false,
+      "title": "{{i18n.oneLevel}}"
+    },
+    "Rv1OneStepShowIncoming2Singular": {
+      "iconId": "cmdShowIncomingRelations",
+      "isGroup": false,
+      "title": "{{i18n.oneLevel}}"
+    },
+    "Rv1OneStepShowIncoming3Singular": {
+      "iconId": "cmdShowIncomingRelations",
+      "isGroup": false,
+      "title": "{{i18n.oneLevel}}"
+    },
+    "Rv1OneStepShowIncoming4Singular": {
+      "iconId": "cmdShowIncomingRelations",
+      "isGroup": false,
+      "title": "{{i18n.oneLevel}}"
+    },
+    "Rv1OneStepShowIncoming5Singular": {
+      "iconId": "cmdShowIncomingRelations",
+      "isGroup": false,
+      "title": "{{i18n.oneLevel}}"
+    },
+    "Rv1OneStepShowIncoming1Plural": {
+      "iconId": "cmdShowIncomingRelations",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.multipleLevels}}",
+        "params": [
+          "{{ctx.preferences.RV1_DARB_Expand_Incoming_Levels[0]}}"
+        ]
+      }
+    },
+    "Rv1OneStepShowIncoming2Plural": {
+      "iconId": "cmdShowIncomingRelations",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.multipleLevels}}",
+        "params": [
+          "{{ctx.preferences.RV1_DARB_Expand_Incoming_Levels[1]}}"
+        ]
+      }
+    },
+    "Rv1OneStepShowIncoming3Plural": {
+      "iconId": "cmdShowIncomingRelations",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.multipleLevels}}",
+        "params": [
+          "{{ctx.preferences.RV1_DARB_Expand_Incoming_Levels[2]}}"
+        ]
+      }
+    },
+    "Rv1OneStepShowIncoming4Plural": {
+      "iconId": "cmdShowIncomingRelations",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.multipleLevels}}",
+        "params": [
+          "{{ctx.preferences.RV1_DARB_Expand_Incoming_Levels[3]}}"
+        ]
+      }
+    },
+    "Rv1OneStepShowIncoming5Plural": {
+      "iconId": "cmdShowIncomingRelations",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.multipleLevels}}",
+        "params": [
+          "{{ctx.preferences.RV1_DARB_Expand_Incoming_Levels[4]}}"
+        ]
+      }
+    },
+    "Rv1OneStepShowOutgoingIcon": {
+      "iconId": "cmdShowOutgoingRelations",
+      "isGroup": true,
+      "title": "{{i18n.rv1ShowOutgoing}}",
+      "description": "{{i18n.Rv1OneStepShowOutgoingIconDesc}}"
+    },
+    "Rv1OneStepShowOutgoing1Singular": {
+      "iconId": "cmdShowOutgoingRelations",
+      "isGroup": false,
+      "title": "{{i18n.oneLevel}}"
+    },
+    "Rv1OneStepShowOutgoing2Singular": {
+      "iconId": "cmdShowOutgoingRelations",
+      "isGroup": false,
+      "title": "{{i18n.oneLevel}}"
+    },
+    "Rv1OneStepShowOutgoing3Singular": {
+      "iconId": "cmdShowOutgoingRelations",
+      "isGroup": false,
+      "title": "{{i18n.oneLevel}}"
+    },
+    "Rv1OneStepShowOutgoing4Singular": {
+      "iconId": "cmdShowOutgoingRelations",
+      "isGroup": false,
+      "title": "{{i18n.oneLevel}}"
+    },
+    "Rv1OneStepShowOutgoing5Singular": {
+      "iconId": "cmdShowOutgoingRelations",
+      "isGroup": false,
+      "title": "{{i18n.oneLevel}}"
+    },
+    "Rv1OneStepShowOutgoing1Plural": {
+      "iconId": "cmdShowOutgoingRelations",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.multipleLevels}}",
+        "params": [
+          "{{ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[0]}}"
+        ]
+      }
+    },
+    "Rv1OneStepShowOutgoing2Plural": {
+      "iconId": "cmdShowOutgoingRelations",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.multipleLevels}}",
+        "params": [
+          "{{ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[1]}}"
+        ]
+      }
+    },
+    "Rv1OneStepShowOutgoing3Plural": {
+      "iconId": "cmdShowOutgoingRelations",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.multipleLevels}}",
+        "params": [
+          "{{ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[2]}}"
+        ]
+      }
+    },
+    "Rv1OneStepShowOutgoing4Plural": {
+      "iconId": "cmdShowOutgoingRelations",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.multipleLevels}}",
+        "params": [
+          "{{ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[3]}}"
+        ]
+      }
+    },
+    "Rv1OneStepShowOutgoing5Plural": {
+      "iconId": "cmdShowOutgoingRelations",
+      "isGroup": false,
+      "title": {
+        "text": "{{i18n.multipleLevels}}",
+        "params": [
+          "{{ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[4]}}"
+        ]
+      }
+    },
+    "Rv1ExpandAll1Level": {
+      "iconId": "cmdExpandAll",
+      "isGroup": false,
+      "title": "{{i18n.expandRelations1Level}}",
+      "description": "{{i18n.Rv1ExpandAll1LevelDesc}}"
+    },
+    "Rv1ExpandSelected1Level": {
+      "iconId": "cmdExpandAll",
+      "isGroup": false,
+      "title": "{{i18n.expandRelations1Level}}",
+      "description": "{{i18n.Rv1ExpandSelected1LevelDesc}}"
+    }
+  },
+  "commandHandlers": {
+    "Rv1OnNodePartialExpandInCommandHandler": {
+      "id": "Rv1OnNodePartialExpandIn",
+      "action": "Rv1ExpandInAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Rv1OnNodePartialExpandInAllCommandHandler": {
+      "id": "Rv1OnNodePartialExpandInAll",
+      "action": "Rv1OnNodePartialExpandInAllAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Rv1OnNodePartialExpandInPartialCommandHandler": {
+      "id": "Rv1OnNodePartialExpandInPartial",
+      "action": "Rv1ExpandInAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Rv1OnNodePartialExpandOutCommandHandler": {
+      "id": "Rv1OnNodePartialExpandOut",
+      "action": "Rv1ExpandOutAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Rv1OnNodePartialExpandOutAllCommandHandler": {
+      "id": "Rv1OnNodePartialExpandOutAll",
+      "action": "Rv1OnNodePartialExpandOutAllAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Rv1OnNodePartialExpandOutPartialCommandHandler": {
+      "id": "Rv1OnNodePartialExpandOutPartial",
+      "action": "Rv1ExpandOutAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Rv1ExpandInCommandHandler": {
+      "id": "Rv1ExpandIn",
+      "action": "Rv1ExpandInAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Rv1ExpandOutCommandHandler": {
+      "id": "Rv1ExpandOut",
+      "action": "Rv1ExpandOutAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Rv1FadeNodeCommandHandler": {
+      "id": "Rv1FadeNode",
+      "action": "Rv1FadeNodeAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Rv1StartEditCommandHandlerOverride": {
+      "id": "Awp0StartEdit",
+      "activeWhen": {
+        "condition": "conditions.Rv1HideEditCommand"
+      },
+      "visibleWhen": false
+    },
+    "showRelationsHandler": {
+      "id": "Rv1ShowObjectRelations",
+      "action": "showRelationsAction",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.Rv1showRelationsCmd"
+      }
+    },
+    "Rv1OpenInPrintViewHandler": {
+      "id": "Rv1OpenInPrintView",
+      "action": "Rv1OpenInPrintViewAction",
+      "activeWhen": {
+        "condition": "conditions.Rv1ShowOpenInPrintViewCmd"
+      },
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.Rv1ShowOpenInPrintViewCmd"
+      }
+    },
+    "Rv1OneStepShowIncoming1CommandHandlerSingular": {
+      "id": "Rv1OneStepShowIncoming1Singular",
+      "action": "Rv1OneStepShowIncomingAction1",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.Rv1Incoming1ConditionSingular"
+      }
+    },
+    "Rv1OneStepShowIncoming2CommandHandlerSingular": {
+      "id": "Rv1OneStepShowIncoming2Singular",
+      "action": "Rv1OneStepShowIncomingAction2",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Rv1Incoming2ConditionSingular"
+      }
+    },
+    "Rv1OneStepShowIncoming3CommandHandlerSingular": {
+      "id": "Rv1OneStepShowIncoming3Singular",
+      "action": "Rv1OneStepShowIncomingAction3",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Rv1Incoming3ConditionSingular"
+      }
+    },
+    "Rv1OneStepShowIncoming4CommandHandlerSingular": {
+      "id": "Rv1OneStepShowIncoming4Singular",
+      "action": "Rv1OneStepShowIncomingAction4",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Rv1Incoming4ConditionSingular"
+      }
+    },
+    "Rv1OneStepShowIncoming5CommandHandlerSingular": {
+      "id": "Rv1OneStepShowIncoming5Singular",
+      "action": "Rv1OneStepShowIncomingAction5",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Rv1Incoming5ConditionSingular"
+      }
+    },
+    "Rv1OneStepShowIncoming1CommandHandlerPlural": {
+      "id": "Rv1OneStepShowIncoming1Plural",
+      "action": "Rv1OneStepShowIncomingAction1",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Rv1Incoming1ConditionPlural"
+      }
+    },
+    "Rv1OneStepShowIncoming2CommandHandler": {
+      "id": "Rv1OneStepShowIncoming2Plural",
+      "action": "Rv1OneStepShowIncomingAction2",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.Rv1Incoming2ConditionPlural"
+      }
+    },
+    "Rv1OneStepShowIncoming3CommandHandler": {
+      "id": "Rv1OneStepShowIncoming3Plural",
+      "action": "Rv1OneStepShowIncomingAction3",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.Rv1Incoming3ConditionPlural"
+      }
+    },
+    "Rv1OneStepShowIncoming4CommandHandler": {
+      "id": "Rv1OneStepShowIncoming4Plural",
+      "action": "Rv1OneStepShowIncomingAction4",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.Rv1Incoming4ConditionPlural"
+      }
+    },
+    "Rv1OneStepShowIncoming5CommandHandler": {
+      "id": "Rv1OneStepShowIncoming5Plural",
+      "action": "Rv1OneStepShowIncomingAction5",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.Rv1Incoming5ConditionPlural"
+      }
+    },
+    "Rv1OneStepShowOutgoing1CommandHandlerSingular": {
+      "id": "Rv1OneStepShowOutgoing1Singular",
+      "action": "Rv1OneStepShowOutgoingAction1",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.Rv1Outgoing1ConditionSingular"
+      }
+    },
+    "Rv1OneStepShowOutgoing2CommandHandlerSingular": {
+      "id": "Rv1OneStepShowOutgoing2Singular",
+      "action": "Rv1OneStepShowOutgoingAction2",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Rv1Outgoing2ConditionSingular"
+      }
+    },
+    "Rv1OneStepShowOutgoing3CommandHandlerSingular": {
+      "id": "Rv1OneStepShowOutgoing3Singular",
+      "action": "Rv1OneStepShowOutgoingAction3",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Rv1Outgoing3ConditionSingular"
+      }
+    },
+    "Rv1OneStepShowOutgoing4CommandHandlerSingular": {
+      "id": "Rv1OneStepShowOutgoing4Singular",
+      "action": "Rv1OneStepShowOutgoingAction4",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Rv1Outgoing4ConditionSingular"
+      }
+    },
+    "Rv1OneStepShowOutgoing5CommandHandlerSingular": {
+      "id": "Rv1OneStepShowOutgoing5Singular",
+      "action": "Rv1OneStepShowOutgoingAction5",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Rv1Outgoing5ConditionSingular"
+      }
+    },
+    "Rv1OneStepShowOutgoing1CommandHandler": {
+      "id": "Rv1OneStepShowOutgoing1Plural",
+      "action": "Rv1OneStepShowOutgoingAction1",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Rv1Outgoing1ConditionPlural"
+      }
+    },
+    "Rv1OneStepShowOutgoing2CommandHandler": {
+      "id": "Rv1OneStepShowOutgoing2Plural",
+      "action": "Rv1OneStepShowOutgoingAction2",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.Rv1Outgoing2ConditionPlural"
+      }
+    },
+    "Rv1OneStepShowOutgoing3CommandHandler": {
+      "id": "Rv1OneStepShowOutgoing3Plural",
+      "action": "Rv1OneStepShowOutgoingAction3",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.Rv1Outgoing3ConditionPlural"
+      }
+    },
+    "Rv1OneStepShowOutgoing4CommandHandler": {
+      "id": "Rv1OneStepShowOutgoing4Plural",
+      "action": "Rv1OneStepShowOutgoingAction4",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.Rv1Outgoing4ConditionPlural"
+      }
+    },
+    "Rv1OneStepShowOutgoing5CommandHandler": {
+      "id": "Rv1OneStepShowOutgoing5Plural",
+      "action": "Rv1OneStepShowOutgoingAction5",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.Rv1Outgoing5ConditionPlural"
+      }
+    },
+    "Rv1ExpandAll1LevelHandler": {
+      "id": "Rv1ExpandAll1Level",
+      "action": "Rv1ExpandAll1LevelAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Rv1ShowExpandAll1LevelCondition"
+      }
+    },
+    "Rv1ExpandSelected1LevelHandler": {
+      "id": "Rv1ExpandSelected1Level",
+      "action": "Rv1ExpandSelected1LevelAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.Rv1ShowExpandSelected1LevelCondition"
+      }
+    },
+    "Rv1ShowLegendHandler": {
+      "id": "graphLegend",
+      "action": "Rv1ShowLegendPanelAction",
+      "activeWhen": {
+        "condition": "conditions.Rv1ShowLegendCmdActiveCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.isGcVisibleLegend"
+      }
+    }
+  },
+  "commandPlacements": {
+    "Rv1LayoutCommandGroupOneStep": {
+      "id": "GcLayoutCommandGroup",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 1
+    },
+    "Rv1ShowLegend": {
+      "id": "graphLegend",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 2
+    },
+    "showObjectRelations": {
+      "id": "Rv1ShowObjectRelations",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 3
+    },
+    "Rv1OnNodePartialExpandInCommandHandler": {
+      "id": "Rv1OnNodePartialExpandIn",
+      "uiAnchor": "aw_graph_node",
+      "priority": 4
+    },
+    "Rv1OnNodePartialExpandInAllCommandHandler": {
+      "id": "Rv1OnNodePartialExpandInAll",
+      "uiAnchor": "aw_graph_node",
+      "priority": 4,
+      "parentGroupId": "Rv1OnNodePartialExpandIn"
+    },
+    "Rv1OnNodePartialExpandInPartialCommandHandler": {
+      "id": "Rv1OnNodePartialExpandInPartial",
+      "uiAnchor": "aw_graph_node",
+      "priority": 4,
+      "parentGroupId": "Rv1OnNodePartialExpandIn"
+    },
+    "Rv1OnNodePartialExpandOutCommandHandler": {
+      "id": "Rv1OnNodePartialExpandOut",
+      "uiAnchor": "aw_graph_node",
+      "priority": 4
+    },
+    "Rv1OnNodePartialExpandOutAllCommandHandler": {
+      "id": "Rv1OnNodePartialExpandOutAll",
+      "uiAnchor": "aw_graph_node",
+      "priority": 4,
+      "parentGroupId": "Rv1OnNodePartialExpandOut"
+    },
+    "Rv1OnNodePartialExpandOutPartialCommandHandler": {
+      "id": "Rv1OnNodePartialExpandOutPartial",
+      "uiAnchor": "aw_graph_node",
+      "priority": 4,
+      "parentGroupId": "Rv1OnNodePartialExpandOut"
+    },
+    "Rv1ExpandInTileNode": {
+      "id": "Rv1ExpandIn",
+      "uiAnchor": "aw_graph_node",
+      "priority": 50
+    },
+    "Rv1ExpandOutTileNode": {
+      "id": "Rv1ExpandOut",
+      "uiAnchor": "aw_graph_node",
+      "priority": 50
+    },
+    "Rv1FadeNodeTileNode": {
+      "id": "Rv1FadeNode",
+      "uiAnchor": "aw_graph_node",
+      "priority": 50
+    },
+    "Rv1OneStepShowIncomingIcon": {
+      "id": "Rv1OneStepShowIncomingIcon",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 201
+    },
+    "Rv1OneStepShowIncoming1Singular": {
+      "id": "Rv1OneStepShowIncoming1Singular",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 1,
+      "parentGroupId": "Rv1OneStepShowIncomingIcon"
+    },
+    "Rv1OneStepShowIncoming2Singular": {
+      "id": "Rv1OneStepShowIncoming2Singular",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 2,
+      "parentGroupId": "Rv1OneStepShowIncomingIcon"
+    },
+    "Rv1OneStepShowIncoming3Singular": {
+      "id": "Rv1OneStepShowIncoming3Singular",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 3,
+      "parentGroupId": "Rv1OneStepShowIncomingIcon"
+    },
+    "Rv1OneStepShowIncoming4Singular": {
+      "id": "Rv1OneStepShowIncoming4Singular",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 4,
+      "parentGroupId": "Rv1OneStepShowIncomingIcon"
+    },
+    "Rv1OneStepShowIncoming5Singular": {
+      "id": "Rv1OneStepShowIncoming5Singular",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 5,
+      "parentGroupId": "Rv1OneStepShowIncomingIcon"
+    },
+    "Rv1OneStepShowIncoming1Plural": {
+      "id": "Rv1OneStepShowIncoming1Plural",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 1,
+      "parentGroupId": "Rv1OneStepShowIncomingIcon"
+    },
+    "Rv1OneStepShowIncoming2Plural": {
+      "id": "Rv1OneStepShowIncoming2Plural",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 2,
+      "parentGroupId": "Rv1OneStepShowIncomingIcon"
+    },
+    "Rv1OneStepShowIncoming3Plural": {
+      "id": "Rv1OneStepShowIncoming3Plural",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 3,
+      "parentGroupId": "Rv1OneStepShowIncomingIcon"
+    },
+    "Rv1OneStepShowIncoming4Plural": {
+      "id": "Rv1OneStepShowIncoming4Plural",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 4,
+      "parentGroupId": "Rv1OneStepShowIncomingIcon"
+    },
+    "Rv1OneStepShowIncoming5Plural": {
+      "id": "Rv1OneStepShowIncoming5Plural",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 5,
+      "parentGroupId": "Rv1OneStepShowIncomingIcon"
+    },
+    "Rv1OneStepShowOutgoingIcon": {
+      "id": "Rv1OneStepShowOutgoingIcon",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 200
+    },
+    "Rv1OneStepShowOutgoing1Singular": {
+      "id": "Rv1OneStepShowOutgoing1Singular",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 1,
+      "parentGroupId": "Rv1OneStepShowOutgoingIcon"
+    },
+    "Rv1OneStepShowOutgoing2Singular": {
+      "id": "Rv1OneStepShowOutgoing2Singular",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 2,
+      "parentGroupId": "Rv1OneStepShowOutgoingIcon"
+    },
+    "Rv1OneStepShowOutgoing3Singular": {
+      "id": "Rv1OneStepShowOutgoing3Singular",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 3,
+      "parentGroupId": "Rv1OneStepShowOutgoingIcon"
+    },
+    "Rv1OneStepShowOutgoing4Singular": {
+      "id": "Rv1OneStepShowOutgoing4Singular",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 4,
+      "parentGroupId": "Rv1OneStepShowOutgoingIcon"
+    },
+    "Rv1OneStepShowOutgoing5Singular": {
+      "id": "Rv1OneStepShowOutgoing5Singular",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 5,
+      "parentGroupId": "Rv1OneStepShowOutgoingIcon"
+    },
+    "Rv1OneStepShowOutgoing1Plural": {
+      "id": "Rv1OneStepShowOutgoing1Plural",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 1,
+      "parentGroupId": "Rv1OneStepShowOutgoingIcon"
+    },
+    "Rv1OneStepShowOutgoing2Plural": {
+      "id": "Rv1OneStepShowOutgoing2Plural",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 2,
+      "parentGroupId": "Rv1OneStepShowOutgoingIcon"
+    },
+    "Rv1OneStepShowOutgoing3Plural": {
+      "id": "Rv1OneStepShowOutgoing3Plural",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 3,
+      "parentGroupId": "Rv1OneStepShowOutgoingIcon"
+    },
+    "Rv1OneStepShowOutgoing4Plural": {
+      "id": "Rv1OneStepShowOutgoing4Plural",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 4,
+      "parentGroupId": "Rv1OneStepShowOutgoingIcon"
+    },
+    "Rv1OneStepShowOutgoing5Plural": {
+      "id": "Rv1OneStepShowOutgoing5Plural",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 5,
+      "parentGroupId": "Rv1OneStepShowOutgoingIcon"
+    },
+    "Rv1ExpandAll1Level": {
+      "id": "Rv1ExpandAll1Level",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 50
+    },
+    "Rv1ExpandSelected1Level": {
+      "id": "Rv1ExpandSelected1Level",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 50
+    },
+    "Rv1OpenInPrintViewPlacement": {
+      "id": "Rv1OpenInPrintView",
+      "uiAnchor": "aw_relationsViewer",
+      "priority": 2
+    }
+  },
+  "actions": {
+    "Rv1ExpandInAction": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{ctx.graph.appActionObj}}",
+        "1": "setAtomicData",
+        "2": {
+          "toggleEdges": {
+            "node": "{{ctx.graph.commandContextItem}}",
+            "direction": "incoming"
+          }
+        }
+      }
+    },
+    "Rv1OnNodePartialExpandInAllAction": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{ctx.graph.appActionObj}}",
+        "1": "setAtomicData",
+        "2": {
+          "expandGraph": {
+            "expandDirection": "backward",
+            "rootIDs": [
+              "{{ctx.graph.commandContextItem.model.nodeObject.uid}}"
+            ]
+          }
+        }
+      }
+    },
+    "Rv1OnNodePartialExpandInPartialAction": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{ctx.graph.appActionObj}}",
+        "1": "setAtomicData",
+        "2": {
+          "toggleEdges": {
+            "node": "{{ctx.graph.commandContextItem}}",
+            "direction": "incoming"
+          }
+        }
+      }
+    },
+    "Rv1ExpandOutAction": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{ctx.graph.appActionObj}}",
+        "1": "setAtomicData",
+        "2": {
+          "toggleEdges": {
+            "node": "{{ctx.graph.commandContextItem}}",
+            "direction": "outgoing"
+          }
+        }
+      }
+    },
+    "Rv1OnNodePartialExpandOutAllAction": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{ctx.graph.appActionObj}}",
+        "1": "setAtomicData",
+        "2": {
+          "expandGraph": {
+            "expandDirection": "forward",
+            "rootIDs": [
+              "{{ctx.graph.commandContextItem.model.nodeObject.uid}}"
+            ]
+          }
+        }
+      }
+    },
+    "Rv1OnNodePartialExpandOutPartialAction": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{ctx.graph.appActionObj}}",
+        "1": "setAtomicData",
+        "2": {
+          "toggleEdges": {
+            "node": "{{ctx.graph.commandContextItem}}",
+            "direction": "outgoing"
+          }
+        }
+      }
+    },
+    "Rv1FadeNodeAction": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{ctx.graph.appActionObj}}",
+        "1": "setAtomicData",
+        "2": {
+          "fadeNode": {
+            "node": "{{ctx.graph.commandContextItem}}"
+          }
+        }
+      }
+    },
+    "Rv1OpenInPrintViewAction": {
+      "actionType": "JSFunction",
+      "method": "openGraphInPrintView",
+      "deps": "js/Rv1RelationBrowserService",
+      "inputData": {
+        "graphModel": "{{commandContext.data.graphModel}}"
+      }
+    },
+    "showRelationsAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Rv1ShowObjectRelations",
+        "location": "aw_toolsAndInfo",
+        "context": {
+          "graphModel": "{{commandContext.data.graphModel}}",
+          "graphActionState": "{{commandContext.actionState}}",
+          "legendFilters": "{{commandContext.data.legendFilters}}",
+          "queryNetworkPolicy": "{{commandContext.data.queryNetworkPolicy}}"
+        }
+      }
+    },
+    "Rv1OneStepShowIncomingAction1": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{commandContext.actionState}}",
+        "1": "update",
+        "2": {
+          "expandGraph": {
+            "nodes": "selected",
+            "expandLevel": "{{ctx.preferences.RV1_DARB_Expand_Incoming_Levels[0]}}",
+            "expandDirection": "backward"
+          }
+        }
+      }
+    },
+    "Rv1OneStepShowIncomingAction2": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{commandContext.actionState}}",
+        "1": "update",
+        "2": {
+          "expandGraph": {
+            "nodes": "selected",
+            "expandLevel": "{{ctx.preferences.RV1_DARB_Expand_Incoming_Levels[1]}}",
+            "expandDirection": "backward"
+          }
+        }
+      }
+    },
+    "Rv1OneStepShowIncomingAction3": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{commandContext.actionState}}",
+        "1": "update",
+        "2": {
+          "expandGraph": {
+            "nodes": "selected",
+            "expandLevel": "{{ctx.preferences.RV1_DARB_Expand_Incoming_Levels[2]}}",
+            "expandDirection": "backward"
+          }
+        }
+      }
+    },
+    "Rv1OneStepShowIncomingAction4": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{commandContext.actionState}}",
+        "1": "update",
+        "2": {
+          "expandGraph": {
+            "nodes": "selected",
+            "expandLevel": "{{ctx.preferences.RV1_DARB_Expand_Incoming_Levels[3]}}",
+            "expandDirection": "backward"
+          }
+        }
+      }
+    },
+    "Rv1OneStepShowIncomingAction5": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{commandContext.actionState}}",
+        "1": "update",
+        "2": {
+          "expandGraph": {
+            "nodes": "selected",
+            "expandLevel": "{{ctx.preferences.RV1_DARB_Expand_Incoming_Levels[4]}}",
+            "expandDirection": "backward"
+          }
+        }
+      }
+    },
+    "Rv1OneStepShowOutgoingAction1": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{commandContext.actionState}}",
+        "1": "update",
+        "2": {
+          "expandGraph": {
+            "nodes": "selected",
+            "expandLevel": "{{ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[0]}}",
+            "expandDirection": "forward"
+          }
+        }
+      }
+    },
+    "Rv1OneStepShowOutgoingAction2": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{commandContext.actionState}}",
+        "1": "update",
+        "2": {
+          "expandGraph": {
+            "nodes": "selected",
+            "expandLevel": "{{ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[1]}}",
+            "expandDirection": "forward"
+          }
+        }
+      }
+    },
+    "Rv1OneStepShowOutgoingAction3": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{commandContext.actionState}}",
+        "1": "update",
+        "2": {
+          "expandGraph": {
+            "nodes": "selected",
+            "expandLevel": "{{ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[2]}}",
+            "expandDirection": "forward"
+          }
+        }
+      }
+    },
+    "Rv1OneStepShowOutgoingAction4": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{commandContext.actionState}}",
+        "1": "update",
+        "2": {
+          "expandGraph": {
+            "nodes": "selected",
+            "expandLevel": "{{ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[3]}}",
+            "expandDirection": "forward"
+          }
+        }
+      }
+    },
+    "Rv1OneStepShowOutgoingAction5": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{commandContext.actionState}}",
+        "1": "update",
+        "2": {
+          "expandGraph": {
+            "nodes": "selected",
+            "expandLevel": "{{ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[4]}}",
+            "expandDirection": "forward"
+          }
+        }
+      }
+    },
+    "Rv1ExpandAll1LevelAction": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{commandContext.actionState}}",
+        "1": "update",
+        "2": {
+          "expandGraph": {
+            "nodes": "all",
+            "expandDirection": "all"
+          }
+        }
+      }
+    },
+    "Rv1ExpandSelected1LevelAction": {
+      "actionType": "JSFunction",
+      "deps": "lodash",
+      "method": "invoke",
+      "inputData": {
+        "0": "{{commandContext.actionState}}",
+        "1": "update",
+        "2": {
+          "expandGraph": {
+            "nodes": "selected",
+            "expandDirection": "all"
+          }
+        }
+      }
+    },
+    "Rv1ShowLegendPanelAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "graphLegend",
+        "location": "aw_toolsAndInfo",
+        "context": {
+          "graphModel": "{{commandContext.data.graphModel}}",
+          "filterMap": "{{commandContext.data.filterMap}}",
+          "legendFilters": "{{commandContext.data.legendFilters}}",
+          "graphFilterState": "{{commandContext.filterState}}"
+        }
+      }
+    }
+  },
+  "conditions": {
+    "Rv1IsRelationsBrowserVisible": {
+      "expression": "commandContext.pageContext.primaryActiveTabId === 'tc_xrt_Relations' || commandContext.pageContext.secondaryActiveTabId === 'tc_xrt_Relations'"
+    },
+    "Rv1HideEditCommand": {
+      "expression": "conditions.isStartEditAllowed && conditions.Rv1IsRelationsBrowserVisible"
+    },
+    "Rv1ShowOpenInPrintViewCmd": {
+      "expression": "commandContext.data.hasAdvancedLicense === true"
+    },
+    "Rv1showRelationsCmd": {
+      "expression": "commandContext.data.hasAdvancedLicense === true && commandContext.selectionState.nodes.length === 1"
+    },
+    "Rv1GraphModelOneOrMoreSelected": {
+      "expression": "commandContext.selectionState.nodes.length > 0"
+    },
+    "Rv1GraphModelNoneSelected": {
+      "expression": "commandContext.selectionState.nodes.length === 0"
+    },
+    "Rv1ShowExpandAll1LevelCondition": {
+      "expression": "conditions.Rv1DARBExpandAll1LevelCommandVisible && conditions.Rv1GraphModelNoneSelected"
+    },
+    "Rv1ShowExpandSelected1LevelCondition": {
+      "expression": "conditions.Rv1DARBExpandSelected1LevelCommandVisible && conditions.Rv1GraphModelOneOrMoreSelected"
+    },
+    "Rv1ShowLegendCmdActiveCondition": {
+      "expression": "commandContext.data.relationBrowserActive === true"
+    },
+    "Rv1DARBExpandAll1LevelCommandVisible": {
+      "expression": "ctx.preferences.RV1_DARB_Expand_All_1_Level_Command_Visible[0].toLowerCase() === 'true'"
+    },
+    "Rv1DARBExpandSelected1LevelCommandVisible": {
+      "expression": "ctx.preferences.RV1_DARB_Expand_Selected_1_Level_Command_Visible[0].toLowerCase() === 'true'"
+    },
+    "Rv1Incoming1ConditionSingular": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[0] === '1'"
+    },
+    "Rv1Incoming2ConditionSingular": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[1] === '1'"
+    },
+    "Rv1Incoming3ConditionSingular": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[2] === '1'"
+    },
+    "Rv1Incoming4ConditionSingular": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[3] === '1'"
+    },
+    "Rv1Incoming5ConditionSingular": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[4] === '1'"
+    },
+    "Rv1Incoming1ConditionPlural": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[0] && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[0] !== '1'"
+    },
+    "Rv1Incoming2ConditionPlural": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[1] && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[1] !== '1'"
+    },
+    "Rv1Incoming3ConditionPlural": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[2] && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[2] !== '1'"
+    },
+    "Rv1Incoming4ConditionPlural": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[3] && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[3] !== '1'"
+    },
+    "Rv1Incoming5ConditionPlural": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[4] && ctx.preferences.RV1_DARB_Expand_Incoming_Levels[4] !== '1'"
+    },
+    "Rv1Outgoing1ConditionSingular": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[0] === '1'"
+    },
+    "Rv1Outgoing2ConditionSingular": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[1] === '1'"
+    },
+    "Rv1Outgoing3ConditionSingular": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[2] === '1'"
+    },
+    "Rv1Outgoing4ConditionSingular": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[3] === '1'"
+    },
+    "Rv1Outgoing5ConditionSingular": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[4] === '1'"
+    },
+    "Rv1Outgoing1ConditionPlural": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[0] && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[0] !== '1'"
+    },
+    "Rv1Outgoing2ConditionPlural": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[1] && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[1] !== '1'"
+    },
+    "Rv1Outgoing3ConditionPlural": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[2] && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[2] !== '1'"
+    },
+    "Rv1Outgoing4ConditionPlural": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[3] && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[3] !== '1'"
+    },
+    "Rv1Outgoing5ConditionPlural": {
+      "expression": "conditions.Rv1GraphModelOneOrMoreSelected && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[4] && ctx.preferences.RV1_DARB_Expand_Outgoing_Levels[4] !== '1'"
+    }
+  },
+  "i18n": {
+    "oneLevel": [
+      "RelationBrowserMessages"
+    ],
+    "multipleLevels": [
+      "RelationBrowserMessages"
+    ],
+    "openInPrintViewTitle": [
+      "RelationBrowserMessages"
+    ],
+    "expandRelations1Level": [
+      "RelationBrowserMessages"
+    ],
+    "showObjectRelationsTitle": [
+      "RelationBrowserMessages"
+    ],
+    "hidePartialIncomingRelations": [
+      "RelationBrowserMessages"
+    ],
+    "hidePartialOutgoingRelations": [
+      "RelationBrowserMessages"
+    ],
+    "showAllIncomingRelations": [
+      "RelationBrowserMessages"
+    ],
+    "showAllOutgoingRelations": [
+      "RelationBrowserMessages"
+    ],
+    "rv1ShowIncoming": [
+      "RelationBrowserMessages"
+    ],
+    "rv1ShowOutgoing": [
+      "RelationBrowserMessages"
+    ],
+    "aw_relationsViewer": [
+      "RelationBrowserMessages"
+    ],
+    "incoming": [
+      "RelationBrowserMessages"
+    ],
+    "outgoing": [
+      "RelationBrowserMessages"
+    ],
+    "Rv1ShowObjectRelationsDesc": [
+      "RelationBrowserMessages"
+    ],
+    "Rv1OneStepShowIncomingIconDesc": [
+      "RelationBrowserMessages"
+    ],
+    "Rv1OneStepShowOutgoingIconDesc": [
+      "RelationBrowserMessages"
+    ],
+    "Rv1ExpandAll1LevelDesc": [
+      "RelationBrowserMessages"
+    ],
+    "Rv1ExpandSelected1LevelDesc": [
+      "RelationBrowserMessages"
+    ]
+  }
+}

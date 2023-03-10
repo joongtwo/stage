@@ -1,0 +1,45 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "setOccurrenceType": {
+            "actionType": "JSFunction",
+            "method": "setOccurrenceType",
+            "inputData": {
+                "selectedObject": "{{subPanelContext.setOccTypeData.selectedObject}}",
+                "occurrenceType": "{{data.occTypesListBox.dbValue}}",
+                "parentObject": "{{subPanelContext.setOccTypeData.parentObject}}"
+            },
+            "deps": "js/epSetOccurrenceTypeService"
+        }
+    },
+    "data": {
+        "occTypesListBox": {
+            "displayName": "{{i18n.selectOccurrenceType}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true"
+        },
+        "occTypesListBoxValues": {
+            "propertyName": "occurrenceType",
+            "propertyDisplayName": "{{i18n.occurrenceType}}",
+            "type": "STRING",
+            "dbValue": "{{subPanelContext.setOccTypeData.occTypes}}"
+        }
+    },
+    "i18n": {
+        "done": [
+            "DetailsMessages"
+        ],
+        "occurrenceType": [
+            "DetailsMessages"
+        ],
+        "selectOccurrenceType": [
+            "DetailsMessages"
+        ]
+    }
+}

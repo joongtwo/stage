@@ -1,0 +1,76 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-label.directive"
+    ],
+    "props": {
+        "view-id": {
+            "type": "string"
+        }
+    },
+    "ports": {
+        "WiScopeLabel_inputObject": {
+            "onChangeAction": "handleInput",
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "inputObjectName": {
+            "displayName": "{{i18n.selected}}",
+            "type": "STRING"
+        }
+    },
+    "actions": {
+        "setLabelValue": {
+            "actionType": "JSFunction",
+            "method": "updateDisplayValue",
+            "inputData": {
+                "vmProp": "{{data.inputObjectName}}",
+                "displayValues": ["{{data.inputObject.props.object_string.displayValues ? data.inputObject.props.object_string.displayValues[0] : data.inputObject.props.object_string.uiValues[0]}}"]
+            },
+            "outputData": {
+                "inputObjectName": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "saveInputToData": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{ports.WiScopeLabel_inputObject.syncObject}}"
+            },
+            "outputData": {
+                "inputObject": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "handleInput": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "saveInputToData"
+                },
+                {
+                    "action": "setLabelValue"
+                }
+            ]
+        }
+    },
+    "onEvent": [ {
+        "eventId": "mfe.updated",
+        "action": "setLabelValue",
+        "cacheEventData": true
+    } ],
+    "i18n": {
+        "selected": [ "InstructionsMessages" ]
+    },
+    "conditions": {
+        "hasInputObject": {
+            "expression": {
+                "$source": "data.inputObject.uid",
+                "$query": {
+                    "$notNull": true
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,134 @@
+{
+  "com_siemens_splm_client_dpv_internal_DpvLocation": {
+    "data": {
+      "browserSubTitle": {
+        "source": "/i18n/DpvMessages",
+        "key": "dpvTitle"
+      },
+      "headerTitle": {
+        "source": "/i18n/DpvMessages",
+        "key": "dpvTitle"
+      },
+      "propertyPolicy": "/policies/DpvObjectPropertyPolicy.json"
+    },
+    "view": "AwSearchLocation",
+    "parent": "root"
+  },
+  "createdDpv": {
+    "data": {
+      "priority": 0,
+      "label": {
+        "source": "/i18n/DpvMessages",
+        "key": "createdDpv"
+      }
+    },
+    "parent": "com_siemens_splm_client_dpv_internal_DpvLocation",
+    "view": "CreatedDpvPage",
+    "url": "/createdDpv"
+  },
+  "graDashboard": {
+    "data": {
+      "isXrtApplicable": false,
+      "priority": 1,
+      "label": {
+        "source": "/i18n/DpvMessages",
+        "key": "graReportManagement"
+      },
+      "clientScopeURI": "Awp0SearchResults"
+    },
+    "params": {
+      "commandID": null,
+      "cmdArg": {
+        "array": true
+      },
+      "cmdId": null,
+      "filter": null,
+      "HostRequestKey": null,
+      "searchCriteria": null
+    },
+    "parent": "com_siemens_splm_client_dpv_internal_DpvLocation",
+    "view": "DpvReportManagementPage",
+    "url": "/graRepMgmt"
+  },
+  "reportTemplates": {
+    "data": {
+      "label": {
+        "source": "/i18n/DpvMessages",
+        "key": "reportTemplates"
+      },
+      "priority": 2
+    },
+    "params": {
+      "commandID": null,
+      "cmdArg": {
+        "array": true
+      },
+      "cmdId": null,
+      "filter": null,
+      "HostRequestKey": null,
+      "searchCriteria": null
+    },
+    "parent": "com_siemens_splm_client_dpv_internal_DpvLocation",
+    "view": "DpvReportTemplatesPage",
+    "url": "/dpvRepTemplates"
+  },
+  "sharedSchedules": {
+    "data": {
+      "isXrtApplicable": false,
+      "label": {
+        "source": "/i18n/DpvMessages",
+        "key": "sharedSchedules"
+      },
+      "priority": 3
+    },
+    "params": {
+      "commandID": null,
+      "cmdArg": {
+        "array": true
+      },
+      "cmdId": null,
+      "filter": null,
+      "HostRequestKey": null,
+      "searchCriteria": null
+    },
+    "parent": "com_siemens_splm_client_dpv_internal_DpvLocation",
+    "view": "DpvSharedSchedulesPage",
+    "url": "/dpvSchedules"
+  },
+  "accessHistory": {
+    "data": {
+      "isXrtApplicable": false,
+      "priority": 4,
+      "label": {
+        "source": "/i18n/DpvMessages",
+        "key": "reportAccessHistory"
+      }
+    },
+    "parent": "com_siemens_splm_client_dpv_internal_DpvLocation",
+    "view": "DpvReportAccessHistoryPage",
+    "url": "/graRepAccHistory"
+  },
+  "etlDashboard": {
+    "data": {
+      "isXrtApplicable": false,
+      "priority": 5,
+      "label": {
+        "source": "/i18n/DpvMessages",
+        "key": "etlDashboard"
+      }
+    },
+    "params": {
+      "commandID": null,
+      "cmdArg": {
+        "array": true
+      },
+      "cmdId": null,
+      "filter": null,
+      "HostRequestKey": null,
+      "searchCriteria": null
+    },
+    "parent": "com_siemens_splm_client_dpv_internal_DpvLocation",
+    "view": "DpvETLDashboardOverviewPage",
+    "url": "/dpvetlDashboard"
+  }
+}

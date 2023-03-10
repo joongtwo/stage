@@ -1,0 +1,23 @@
+<aw-command-panel caption="{{data.caption}}">
+    <aw-panel-body>
+        <aw-command-panel-section caption="i18n.includedLO">
+            <aw-widget prop="data.logicalObjectID"></aw-widget>
+            <aw-widget prop="data.displayName"></aw-widget>
+        </aw-command-panel-section>
+        <aw-command-panel-section collapsed="false" caption="{{seg.caption}}"
+            anchor="(seg.index !== 1 && seg.index === data.loContext.segments.length) ? data.removeSegmentCommands : ''"
+            aw-repeat="seg: data.loContext.segments" context="{ ...subPanelContext }" exist-when="data.loContext.segments.length">
+            <div visible-when="seg.caption !== undefined && seg.caption !== null">
+                <awp0-segment-section sub-panel-context='{ ...subPanelContext, loContext: data.loContext }' traverse-segment="seg" >
+                </awp0-segment-section>
+            </div>
+        </aw-command-panel-section>
+        <aw-command-panel-section caption="{{data.addSegmentCaption}}"
+            visible-when="conditions.isValidToAddSegment"
+            anchor="data.addSegmentCommands" context="data">
+        </aw-command-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="specialCharacterCheckIncludedLogicalObject" size="auto" enable-when="conditions.isValidToAddIncludedLogicalObject"><aw-i18n>i18n.add</aw-i18n></aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

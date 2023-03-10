@@ -1,0 +1,14 @@
+<aw-command-panel name="Pca0ConstraintsGridEditorAddPanel" caption="i18n.addConstraint" context="subPanelContext">
+    <aw-panel-body>
+        <aw-listbox prop="data.selectedConstraintType" list="data.loadedConstraintTypes">
+        </aw-listbox>
+        <aw-xrt type="CREATE" object-type="{{data.selectedConstraintType.dbValue}}" xrt-state="data.xrtState"
+            exist-when="data.selectedConstraintType.dbValue !== ''"></aw-xrt>
+    </aw-panel-body>
+
+    <aw-panel-footer class="aw-cfg-settingsFooter">
+        <aw-button action="createConstraint" visible-when="formProp.attributes.valid">
+            <aw-i18n>i18n.addCmd</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "1.0.0",
+  "pasteHandlers": {
+    "mrmDefaultPasteHandler": {
+      "action": "mrmDefaultPasteAction",
+      "activeWhen": {
+        "condition": "conditions.isMrmDefaultPasteHandlerActive"
+      }
+    }
+  },
+  "actions": {
+    "mrmDefaultPasteAction": {
+      "actionType": "JSFunctionAsync",
+      "method": "mrmDefaultPasteHandler",
+      "deps": "js/MrmDefaultPasteHandler",
+      "inputData": {
+        "targetObject": "{{pasteContext.targetObject}}",
+        "sourceObject": "{{pasteContext.sourceObject}}"
+      },
+      "outputData": {
+        "addElementResponse": "addElementResponse",
+        "totalObjectsAdded": "totalObjectsAdded",
+        "addElementInput": "addElementInput"
+      },
+      "actionMessages": {
+        "failure": [
+          {
+            "message": "addElementsFailuresMessage"
+          }
+        ]
+      }
+    }
+  },
+  "conditions": {
+    "isMrmDefaultPasteHandlerActive": {
+      "expression": {
+        "$and": [
+          {
+            "$source": "pasteContext.targetObject",
+            "$query": {
+              "$typeOf": "Awb0PositionedElement"
+            }
+          },
+          {
+            "$or": [
+              {
+                "$source": "pasteContext.sourceObject",
+                "$query": {
+                  "$typeOf": "Awb0PositionedElement"
+                }
+              },
+              {
+                "$source": "pasteContext.sourceObject",
+                "$query": {
+                  "$typeOf": "ItemRevision"
+                }
+              },
+              {
+                "$source": "pasteContext.sourceObject",
+                "$query": {
+                  "$typeOf": "Ase0LogicalElement"
+                }
+              },
+              {
+                "$source": "pasteContext.sourceObject",
+                "$query": {
+                  "$typeOf": "Fnd0LogicalBlockRevision"
+                }
+              },
+              {
+                "$source": "pasteContext.sourceObject",
+                "$query": {
+                  "$typeOf": "Ase0FunctionalElement"
+                }
+              },
+              {
+                "$source": "pasteContext.sourceObject",
+                "$query": {
+                  "$typeOf": "Arm0RequirementSpecElement"
+                }
+              },
+              {
+                "$source": "pasteContext.sourceObject",
+                "$query": {
+                  "$typeOf": "Arm0RequirementElement"
+                }
+              },
+              {
+                "$source": "pasteContext.sourceObject",
+                "$query": {
+                  "$typeOf": "Arm0ParagraphElement"
+                }
+              }
+            ]
+          },
+          {
+            "$or": [
+              {
+                "$source": "ctx.ViewModeContext.ViewModeContext",
+                "$query": {
+                  "$eq": "ResourceView"
+                }
+              },
+              {
+                "$source": "ctx.ViewModeContext.ViewModeContext",
+                "$query": {
+                  "$eq": "ResourceSummaryView"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "messages": {
+    "addElementsFailuresMessage": {
+      "messageType": "ERROR",
+      "messageText": "{{errorCode}}"
+    }
+  }
+}

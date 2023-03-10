@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "1.0.0",
+  "syncStrategies": {
+    "selectionSyncFromSBOMTreeToSBOMVisViewer": {
+      "source": {
+        "view": "Ssp0SbomTree",
+        "port": "onSBOMTreeSelectionChanged"
+      },
+      "target": {
+        "view": "sbomVisViewer",
+        "port": "setSelections"
+      }
+    },
+    "listenOnVisibilityChangedSBOMTreeToSBOMVisViewer": {
+      "source": {
+        "view": "Ssp0SbomTree",
+        "port": "sbomVisibilityChangePort"
+      },
+      "target": {
+        "view": "sbomVisViewer",
+        "port": "setVisibility"
+      }
+    },
+    "listenOnVisibilityChangedFromSBOMVisViewerToSBOMTree": {
+      "source": {
+        "view": "sbomVisViewer",
+        "port": "publishVisibilityChanged"
+      },
+      "target": {
+        "view": "Ssp0SbomTree",
+        "port": "onSBOMVisViewerVisibilityChanged"
+      }
+    },
+    "loadPartsTreeData": {
+      "source": {
+        "view": "Ssp0Parts",
+        "port": "setPartsTreeData"
+      },
+      "target": {
+        "view": "Ssp0PartsTree",
+        "port": "getPartsTreeData"
+      }
+    },
+    "occTypeData": {
+      "source": {
+        "view": "Ssp0Parts",
+        "port": "setOccurrenceType"
+      },
+      "target": {
+        "view": "OccurrenceTypeProvider",
+        "port": "getOccurrenceType"
+      }
+    },
+    "syncSBOMViewerIdToSbomTree": {
+      "source": {
+        "view": "sbomVisViewer",
+        "port": "publishVisWebInstanceId"
+      },
+      "target": {
+        "view": "Ssp0SbomTree",
+        "port": "listenSBOMViewersId"
+      }
+    },
+    "selectionSyncFromSBOMVisViewerToSBOM": {
+      "source": {
+        "view": "sbomVisViewer",
+        "port": "publishSelection"
+      },
+      "target": {
+        "view": "Ssp0SbomTree",
+        "port": "onVisViewerSelectionChangedForSBOM"
+      }
+    },
+    "syncPartsVisViewerIdToServicePlan": {
+      "source": {
+        "view": "partsVisViewer",
+        "port": "publishVisWebInstanceId"
+      },
+      "target": {
+        "view": "Ssp0ServicePlan",
+        "port": "listenPartsViewersId"
+      }
+    },
+    "listenOnVisibilityChangedSsp0PartsTreeToPartsVisViewer": {
+      "source": {
+        "view": "Ssp0PartsTree",
+        "port": "partsVisibilityChangePort"
+      },
+      "target": {
+        "view": "partsVisViewer",
+        "port": "setVisibility"
+      }
+    },
+    "listenOnVisibilityChangedFromPartsVisViewerToSsp0PartsTree": {
+      "source": {
+        "view": "partsVisViewer",
+        "port": "publishVisibilityChanged"
+      },
+      "target": {
+        "view": "Ssp0PartsTree",
+        "port": "onPartsVisViewerVisibilityChanged"
+      }
+    },
+    "listenOnVisibilityChangedSsp0ServicePlanTreeToPartsVisViewer": {
+      "source": {
+        "view": "Ssp0ServicePlanTree",
+        "port": "spPartsVisibilityChangePort"
+      },
+      "target": {
+        "view": "partsVisViewer",
+        "port": "setVisibility"
+      }
+    },
+    "listenOnVisibilityChangedFromPartsVisViewerToServicePlanTree": {
+      "source": {
+        "view": "partsVisViewer",
+        "port": "publishVisibilityChanged"
+      },
+      "target": {
+        "view": "Ssp0ServicePlanTree",
+        "port": "onSPPartsVisViewerVisibilityChanged"
+      }
+    }
+  },
+  "syncStrategyHandlers": {
+    "listenOnVisibilityChangedSsp0ServicePlanTreeToPartsVisViewerHandler": {
+      "id": "listenOnVisibilityChangedSsp0ServicePlanTreeToPartsVisViewer",
+      "activeWhen": true
+    },
+    "listenOnVisibilityChangedFromPartsVisViewerToServicePlanTreeHandler": {
+      "id": "listenOnVisibilityChangedFromPartsVisViewerToServicePlanTree",
+      "activeWhen": true
+    },
+    "listenOnVisibilityChangedFromPartsVisViewerToSsp0PartsTreeHandler": {
+      "id": "listenOnVisibilityChangedFromPartsVisViewerToSsp0PartsTree",
+      "activeWhen": true
+    },
+    "listenOnVisibilityChangedSsp0PartsTreeToPartsVisViewerHandler": {
+      "id": "listenOnVisibilityChangedSsp0PartsTreeToPartsVisViewer",
+      "activeWhen": true
+    },
+    "syncPartsVisViewerIdToServicePlanTreeHandler": {
+      "id": "syncPartsVisViewerIdToServicePlan",
+      "activeWhen": true
+    },
+    "selectionSyncFromSBOMTreeToSBOMVisViewerHandler": {
+      "id": "selectionSyncFromSBOMTreeToSBOMVisViewer",
+      "activeWhen": true
+    },
+    "selectionSyncFromSBOMVisViewerToSBOMHandler": {
+      "id": "selectionSyncFromSBOMVisViewerToSBOM",
+      "activeWhen": true
+    },
+    "listenOnVisibilityChangedFromSBOMVisViewerToSBOMTreeHandler": {
+      "id": "listenOnVisibilityChangedFromSBOMVisViewerToSBOMTree",
+      "activeWhen": true
+    },
+    "listenOnVisibilityChangedSBOMTreeToSBOMVisViewerHandler": {
+      "id": "listenOnVisibilityChangedSBOMTreeToSBOMVisViewer",
+      "activeWhen": true
+    },
+    "syncSBOMViewerIdToSbomTreeHandler": {
+      "id": "syncSBOMViewerIdToSbomTree",
+      "activeWhen": true
+    },
+    "loadPartsTreeDataHandler": {
+      "id": "loadPartsTreeData",
+      "activeWhen": true
+    },
+    "occTypeDataHandler": {
+      "id": "occTypeData",
+      "activeWhen": true
+    }
+  }
+}

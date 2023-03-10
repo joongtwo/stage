@@ -1,0 +1,53 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "_provider": {
+            "breadcrumbConfig": {
+                "type" : "search",
+                "vm" : "AwSearchBreadcrumb",
+                "noUpdate": true,
+                "popuplist": "/html/defaultbreadcrumblist.html" ,
+                "overflowIndex": 0,
+                "noBreadCrumb": true
+            },
+            "priority": 7,
+            "label": {
+                "source": "/i18n/ScheduleManagerMessages",
+                "key": "scheduleTemplates"
+            },
+            "clientScopeURI": "Saw1ScheduleTemplates",
+            "nameToken": "scheduleTemplatesSublocation",
+            "context": {
+                "search": {
+                    "provider": "Awp0FullTextSearchProvider",
+                    "criteria":
+                    {
+                        "searchString": "*"
+                    },
+                    "activeFilterMap": {
+                        "WorkspaceObject.object_type": [
+                            {
+                                "searchFilterType": "StringFilter",
+                                "stringValue": "Schedule"
+                            }
+                        ],
+                        "Schedule.is_template": [
+                            {
+                                "searchFilterType": "StringFilter",
+                                "stringValue": "true"
+                            }
+                        ]
+                    },
+                    "sortType": "Priority",
+                    "chartTitle": {
+                        "source": "/i18n/ScheduleManagerMessages",
+                        "key": "resultsChartTitle"
+                    },
+                    "maxToLoad": 50,
+                    "maxToReturn": 50
+                }
+            },
+            "viewBase": "Awp0Base"
+        }
+    }
+}

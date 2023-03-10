@@ -1,0 +1,82 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "setActiveTab":{
+            "actionType":"JSFunction",
+            "method":"setActiveTab",
+            "inputData":{
+                "selectedTab":"{{data.selectedTab}}",
+                "tabsModel":"{{data.tabsModel}}",
+                "setDefaultTab":"{{data.setDefaultTab}}",
+                "tcSessionData":"{{ctx.tcSessionData}}"
+            },
+            "outputData":{
+                "defaultSelectedTab":"defaultSelectedTab",
+                "selectedTab":"selectedTab",
+                "setDefaultTab":"setDefaultTab"
+            },
+            "deps": "js/Awv0ImageCaptureService"
+        }
+    },
+    "data": {
+        "tabsModel": [ {
+                "name": "{{i18n.snapshotTab}}",
+                "tabKey": "InputSnapshot",
+                "visibleWhen": {
+                    "condition": "conditions.showSnapshottab"
+                },
+                "selectWhen":{
+                    "condition": "conditions.renderSnapshottab"
+                }
+            },
+            {
+                "name": "{{i18n.imagesTab}}",
+                "tabKey": "InputImageCapture",
+                "selectWhen":{
+                    "condition": "conditions.renderImageCaptureTab"
+                }
+            }
+        ],
+        "setDefaultTab":true
+    },
+    "conditions": {
+        "renderSnapshottab": {
+            "expression": "data.defaultSelectedTab === 'InputSnapshot' && conditions.showSnapshottab"
+        },
+        "renderImageCaptureTab":{
+            "expression":"data.defaultSelectedTab === 'InputImageCapture'"
+        },
+        "showSnapshottab": {
+            "expression": "conditions.isSnapshotModuleInstalled && ctx.sublocation.nameToken === 'com.siemens.splm.client.occmgmt:OccurrenceManagementSubLocation' && !ctx.splitView.mode && ((((ctx.tcSessionData.tcMajorVersion === 13 && ctx.tcSessionData.tcMinorVersion >= 3 ) || ( ctx.tcSessionData.tcMajorVersion > 13 )) && props.subPanelContext.occContext.topElement.modelType.typeHierarchyArray.indexOf('Fnd0AppSession') === -1) || ctx.tcSessionData.tcMajorVersion >= 13 && ctx.aceActiveContext.context.topElement.modelType.typeHierarchyArray.indexOf('Fnd0AppSession') !== -1) && !(ctx.aceActiveContext.context.topElement.modelType.typeHierarchyArray.indexOf('Cae1ModelDesignElement') > -1) && !(ctx.aceActiveContext.context.workingContextObj && (ctx.aceActiveContext.context.workingContextObj.modelType.typeHierarchyArray.indexOf( 'Awb0SavedBookmark' ) > -1))"
+        },
+        "isSnapshotModuleInstalled": {
+            "expression": "ctx.panelContext && ctx.panelContext.viewerAtomicData.snapshotModuleInstalled"
+        },
+        "isFnd0WorksetAndSnapshotsNotSupported": {
+            "expression": "( ctx.aceActiveContext.context.worksetTopNode !== undefined && ctx.aceActiveContext.context.worksetTopNode.modelType.typeHierarchyArray.indexOf( 'Fnd0WorksetRevision' ) > -1 ) && conditions.isNotSnapshotsSupportedForWorksets"
+        },
+        "isNotSnapshotsSupportedForWorksets": {
+            "expression": "(ctx.tcSessionData.tcMajorVersion < 14) || (ctx.tcSessionData.tcMajorVersion === 14 && ctx.tcSessionData.tcMinorVersion <= 1)"
+        }
+    },
+    "preferences": [],
+    "dataProviders": {},
+    "lifecycleHooks": {},
+    "i18n": {
+        "captureToolPanelTitle": [
+            "ImageCaptureToolMessages"
+        ],
+        "createCapture": [
+            "ImageCaptureToolMessages"
+        ],
+        "captureGallery": [
+            "ImageCaptureToolMessages"
+        ],
+        "snapshotTab": [
+            "ImageCaptureToolMessages"
+        ],
+        "imagesTab": [
+            "ImageCaptureToolMessages"
+        ]
+    }
+}

@@ -1,0 +1,210 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+    ],
+    "ports": {
+
+    },
+    "lifecycleHooks": {
+        "onMount": "resetScope",
+        "onUpdate": [
+            {
+                "action": "setSearchExternally",
+                "observers": [
+                    "viewModel.data.searchBox.dbValue"
+                ]
+            },
+            {
+                "action": "updateSelection",
+                "observers": [
+                    "props.navigateState.searchCriteria"
+                ]
+            },{
+                "action": "clearSearchExternally",
+                "observers": [
+                    "props.navigateState.selectedNode"
+                ]
+            }
+        ]
+    },
+    "props": {
+        "has-releases": {
+            "type": "BOOLEAN"
+        },
+        "classify-state": {
+            "type": "object"
+        },
+        "node-state": {
+            "type": "object"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "sort-option":{
+            "type":"object"
+        },
+        "navigate-state":{
+            "type":"object"
+        }
+    },
+    "actions": {
+        "resetScope":{
+            "actionType": "JSFunction",
+            "method": "resetScope",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Awp0ClassificationNavigateService"
+        },
+        "setSearchCriteria": {
+            "actionType": "JSFunction",
+            "method": "setSearchCriteria",
+            "inputData": {
+                "searchCriteria": "{{data.searchBox}}",
+                "navigateState": "{{props.navigateState}}",
+                "providerName": "{{data.componentId}}",
+                "searchState": "{{props.subPanelContext.searchState}}",
+                "conditions":"{{conditions}}",
+                "classifyState": "{{props.classifyState}}"
+            },
+            "outputData": {
+                "externalSearchBox": ""
+            },
+            "deps": "js/Awp0ClassificationNavigateService"
+        },
+        "updateSelection": {
+            "actionType": "JSFunction",
+            "method": "updateSelection",
+            "inputData": {
+                "selectionData": "{{subPanelContext.selectionData}}"
+            },
+            "deps": "js/Awp0ClassificationNavigateService"
+        },
+        "setSearchExternally": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setSearchCriteria",
+                    "condition": "conditions.normalSearch"
+                }
+            ]
+        },
+        "clearSearchExternally": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clearSearch",
+                    "condition": "conditions.resetSearch"
+                }
+            ]
+        },
+        "clearSearch": {
+            "actionType": "JSFunction",
+            "method": "clearSearch",
+            "inputData": {
+                "searchBox": "{{data.searchBox}}",
+                "externalSearchBox": "{{data.externalSearchBox}}"
+            },
+            "deps": "js/Awp0ClassificationNavigateService"
+        }
+    },
+    "functions": {
+
+    },
+    "ctx":{
+        "preferences":{
+            "type":"object"
+        }
+    },
+    "dataProviders": {
+
+    },
+    "columnProviders": {
+
+    },
+    "grids": {
+
+    },
+    "data": {
+        "Releases": {
+            "displayName": "{{i18n.release}}",
+            "type": "STRING",
+            "isEditable": "true"
+        },
+        "searchBox": {
+            "dbValue": "",
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "propertyDisplayName": "",
+            "requiredText": "{{i18n.filter}}"
+        },
+        "externalSearchBox": {
+            "dbValue": ""
+        },
+        "classificationTreeCommands": "classify_searchCommand",
+        "caption": "{{i18n.classNavigate}}",
+        "releasesState":{
+            "initialValues":{
+            },
+            "meta":{
+                "release":{
+                    "type":"object",
+                    "field":"true"
+                }
+            }
+        },
+        "componentId": "Awp0ClassificationNavigate",
+        "searchStringMinLength": 3
+    },
+    "onEvent": [
+        {
+            "eventId": "getClassTableSummary.invalidSearchString",
+            "message": "InvalidSearchStringLength"
+        }
+    ],
+    "conditions": {
+        "isReleasesActive": {
+            "expression": "conditions.isReleasesPref && conditions.isClsActive"
+        },
+        "isReleasesPref":{
+            "expression": "ctx.preferences.CST_supported_eclass_releases.length > 0"
+        },
+        "isClsActive":{
+            "expression":"ctx.preferences.CLS_is_presentation_hierarchy_active"
+        },
+        "displayImageNavigation": {
+            "expression": "props.navigateState.value.showNavigateImage"
+        },
+        "isValidSearchInput": {
+            "expression": {
+                "$source": "data.searchBox.dbValue",
+                "$query": {
+                    "$regexp": "(.*[a-zA-Z0-9$&+,:;=?@#|'<>.-^()%!]){3}"
+                }
+            }
+        },
+        "resetSearch": {
+            "expression": "data.searchBox.dbValue && props.navigateState.selectedNode && props.navigateState.value.showNavigateImage"
+        },
+        "normalSearch": {
+            "expression": "(props.navigateState.selectedNode && !props.navigateState.value.showNavigateImage) || (!props.navigateState.selectedNode && props.navigateState.value.showNavigateImage) || (!props.navigateState.selectedNode && !props.navigateState.value.showNavigateImage) || !props.navigateState"
+        }
+    },
+    "messages":{
+        "InvalidSearchStringLength":{
+            "messageType": "INFO",
+            "messageText": "{{i18n.InvalidSearchStringLength}}",
+            "messageTextParams": [
+                "{{data.searchStringMinLength}}"
+            ]
+        }
+    },
+    "i18n": {
+        "classNavigate": [ "ClassificationPanelMessages" ],
+        "filter": [ "ClassificationPanelMessages" ],
+        "InvalidSearchStringLength": [ "ClassificationPanelMessages" ],
+        "release":  [ "ClassificationPanelMessages" ]
+    }
+}

@@ -1,0 +1,30 @@
+<aw-panel class="aw-clsadmin-classes">
+    <aw-panel-body>
+        <aw-widget prop="item" aw-repeat="item : data.currentSecData" ></aw-widget>
+        <div class="sw-row">
+            <div class="sw-column w-6 h-12">
+                <div class="sw-row">
+                    <aw-panel-section caption="{{i18n.attributes}}" class="aw-clsadmin-attributes" exist-when="data.hasClassAttributes" collapsed="false">
+                        <aw-splm-table gridid="entryGrid" show-decorators="true"></aw-splm-table>
+                    </aw-panel-section>
+                </div>
+            </div>
+            <div class="sw-column w-6 h-12">
+                <div class="sw-row">
+                    <aw-panel-section caption="{{i18n.associations}}"  class="aw-clsadmin-associations" visible-when="data.attrSelected" collapsed="false">
+                        <div class="aw-base-scrollPanel">
+                            <aw-widget prop="item" aw-repeat="item : data.attrprop" ></aw-widget>
+                            <aw-panel-section caption="{{i18n.metric}}" visible-when="data.dataTypeMetric.length > 0" collapsed="false">
+                                <aw-widget prop="item" aw-repeat="item : data.dataTypeMetric"></aw-widget>
+                            </aw-panel-section>
+                            <aw-panel-section caption="{{i18n.nonMetric}}" visible-when="data.dataTypeNonMetric.length > 0" collapsed="false">
+                                <aw-widget prop="item" aw-repeat="item : data.dataTypeNonMetric"></aw-widget>
+                            </aw-panel-section>
+                            <aw-link prop="data.reference" action="selectLink"></aw-link>
+                        </div>
+                    </aw-panel-section>
+                </div>
+            </div>
+        </div>
+    </aw-panel-body>
+</aw-panel>

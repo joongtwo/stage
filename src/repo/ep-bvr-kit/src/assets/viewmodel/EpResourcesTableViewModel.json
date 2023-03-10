@@ -1,0 +1,71 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "data": {
+        "editContext": "{{ctx.mfgReadOnlyMode.readOnlyMode === true ? '': 'EP_DETAILS_TABLE_EDIT_CONTEXT'}}",
+        "preferenceName": "EP_ProcessPageTabProcessAssignedToolsAreaColumnConfiguration",
+        "relationName": [ "Mfg0used_equipment" ],
+        "loadInputObject": {
+            "loadTypes": [ "getProperties" ],
+            "propertiesToLoad": [ "Mfg0used_equipment" ]
+        },
+        "messages": {
+            "noElementSelected": [{
+                "text": "{{i18n.selectProcessOrOperation}}",
+                "textParams": [
+                    "{{i18n.resources}}"
+                ]
+            }],
+            "noAssigned": [
+                {
+                    "text": "{{i18n.noAssigned}}",
+                    "textParams": [
+                        "{{i18n.resources}}"
+                    ]
+                },
+                {
+                    "text": "{{i18n.assignResourcesFromClassification}}",
+                    "iconId": "cmdClassificationSearch"
+                }
+            ]
+        },
+        "customColumns": "{{subPanelContext.customColumns}}"
+    },
+
+    "actions": {
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext.tabContext}}"
+            },
+            "outputData": {
+                "tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "getValueInViewModel"
+    },
+
+    "i18n": {
+        "resources": ["DetailsMessages"],
+        "selectProcessOrOperation": [ "DetailsMessages" ],
+        "noAssigned": [ "DetailsMessages" ],
+        "assignResourcesFromClassification": [ "DetailsMessages" ]
+    }
+}
+

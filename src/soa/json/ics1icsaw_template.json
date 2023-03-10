@@ -1,0 +1,3579 @@
+{
+  "Date": "Wed Sep 11 12:15:12 PM 2019",
+  "Library": [
+    {
+      "createRelease": "Awp03.3.0",
+      "description": "Ics1SoaIcsAw",
+      "isThirdParty": "false",
+      "name": "Ics1SoaIcsAw",
+      "namespace": "Ics1::Soa::IcsAw",
+      "serviceLibrary": "true"
+    }
+  ],
+  "Operation": [
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of structures containing information about the classification object (ICO) that needs to be created or updated including its attribute values. It also includes the classification class information for which classification object will be created & information on workspace object being classified.",
+          "parameterName": "classificationObjects"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Fnd0Classification",
+      "createRelease": "Awp03.3.0",
+      "dependencies": "",
+      "description": "Creates or updates one or more classification objects and (optionally) attach them to a WorkspaceObject, thus classifying it. When the Classification objects are not associated with any WorkspaceObject, they would act as standalone classification objects. A classification object is also called ICO.",
+      "exceptionCondition": "",
+      "id": "createOrUpdateClassificationObjects#const,std::vector<Ics1::Soa::Internal::IcsAw::_2017_06::Author::ClassificationObject>,&",
+      "interface": "Ics1::Soa::IcsAw::Author",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "createOrUpdateClassificationObjects",
+      "opTemplate": "Ics1::Soa::Internal::IcsAw::_2017_06::Author::CreateOrUpdateClsObjectsResponse#Ics1::Soa::IcsAw::Author::createOrUpdateClassificationObjects#const,std::vector<Ics1::Soa::Internal::IcsAw::_2017_06::Author::ClassificationObject>,&",
+      "returnDescription": "The created or update classification objects with their property values. The following partial errors may be returned: <br /><ul><ul><li type=\"disc\">71506 Invalid Workspace Object, when incorrect workspace object tag passed in.</li><li type=\"disc\">71503 Cannot classify the Workspace object. If given WorkspaceObject type is not part of 'ICS_allowable_types' preference.</li><li type=\"disc\">71002 Missing parameter. If classification class Id and its value not provided through input structure.</li></ul></ul>",
+      "useCase": "User wants to classify a workspace object or create a standalone classification object (ICO) or update an existing classification object in Active Workspace. This operation can be combined with other operations like createItems() to create workspace object and then associate the workspace object to the classification object. Before creating a classification object, a classification class hierarchy should already be created by the classification admin user in Teamcenter. This hierarchy should include a storage class (a class that allows instances to be created and associated to it) for which the classification objects need to be created. Values of any attributes associated with classification objects can also be populated."
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of  classification objects (ICO, <b>Cls0Object</b> or <b>Cls0CstObject</b>) to be deleted.",
+          "parameterName": "classificationObjects"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Ics1icsaw",
+      "createRelease": "Awp04.0.0",
+      "dependencies": "",
+      "description": "Deletes one or more traditional or Classification Standard Taxonomy (<b>CST</b>) classification objects permanently. The classified workspace object associated with the classification object will not be deleted. When deleting a classification object, additional structures related to this classification object are deleted as well. These are the <b>icm0</b> and <b>Cst0PropertyRecord</b> objects, <b>Cls0ClassifiedBy</b> object, and <b>Ptn0Membership</b> object.",
+      "exceptionCondition": "",
+      "id": "deleteClassificationObjects#const,std::vector<Teamcenter::BusinessObject>,&",
+      "interface": "Ics1::Soa::IcsAw::Classification",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "deleteClassificationObjects",
+      "opTemplate": "Teamcenter::Soa::Server::ServiceData#Ics1::Soa::IcsAw::Classification::deleteClassificationObjects#const,std::vector<Teamcenter::BusinessObject>,&",
+      "returnDescription": "The UIDs of the deleted classification objects or other classification structures related to the classification object. Partial errors will include the classification object UID. The following partial errors may be returned:<br /><ul><ul><li type=\"disc\">71546 Internal error, can not delete the SML object.</li><li type=\"disc\">71520 Classification Object does not exist.</li><li type=\"disc\">71521 Workspace Object does not exist.</li></ul></ul>",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of <b>WorkspaceObject</b>. Finds out all the classification objects for the given workspace objects.",
+          "parameterName": "workspaceObjects"
+        },
+        {
+          "description": "A list of search criteria used for class search.",
+          "parameterName": "searchCriteria"
+        },
+        {
+          "description": "Bitwise value representing the classification data to return. Supported values are:<br /><ul><ul><li type=\"disc\">1 Classification object metadata </li><li type=\"disc\">2 Classification class definition </li><li type=\"disc\">4 Classification class attribute definition </li><li type=\"disc\">8 Classification class parents </li><li type=\"disc\">16 Classification class children</li></ul></ul>",
+          "parameterName": "classificationDataOptions"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Ics1icsaw",
+      "createRelease": "Awp04.0.0",
+      "dependencies": "",
+      "description": "Finds traditional and Classification Standard Taxonomy (<b>CST</b>) classification information based on the input criteria.<br /><br />If a list of <b>WorkspaceObject</b> objects are provided; then this operation finds all the classification objects for the given <b>WorkspaceObject</b>.<br />If a given <b>WorkspaceObject</b> is not classified this operation finds and returns standalone classification object; which could then be linked to given <b>WorkspaceObject</b>.<br />If a given workspace object is not classified and also system does not contain standalone classification object which could be linked to the <b>WorkspaceObject</b> then this operation will return classification class hierarchy (For traditional classification, children of &ldquo;Classification Root&rdquo; (<b>ICM</b>). For <b>CST</b> classification, children of the Default Hierarchy View) which could be used for browsing and classifying an object in a classification class of interest.<br /><br />If a search criteria is provided; then this operation searches for classification classes in classification hierarchy and returns their metadata information like class ID, name, class parents etc. If both <font face=\"courier\" height=\"10\">searchCriterias</font> and <font face=\"courier\" height=\"10\">workspaceObjects</font> are provided, <font face=\"courier\" height=\"10\">workspaceObjects</font> list is ignored and search criteria is used.",
+      "exceptionCondition": "",
+      "id": "findClassificationInfo#const,std::vector<Teamcenter::WorkspaceObject>,&$const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SearchCriteria>,&$int",
+      "interface": "Ics1::Soa::IcsAw::Classification",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "findClassificationInfo",
+      "opTemplate": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::FindClassificationInfoResponse#Ics1::Soa::IcsAw::Classification::findClassificationInfo#const,std::vector<Teamcenter::WorkspaceObject>,&$const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SearchCriteria>,&$int",
+      "returnDescription": "Returns found classification objects information and associated class information. In case of class search, this operation returns the list of found classes and their parents' information.<br /><br />The following partial errors may be returned:<br /><ul><ul><li type=\"disc\">71506 Invalid <b>WorkspaceObject</b>, when incorrect <b>WorkspaceObject</b> tag is passed in</li><li type=\"disc\">71528 Class ID does not exist in the system, when invalid classification class ID is passed in</li></ul></ul>",
+      "useCase": "This operation could be used when user needs to find classification objects, for both traditional and Classification Standard Taxonomy (<b>CST</b>), based on workspace objects. Each time a <b>WorkspaceObject</b> is classified in a classification class a classification object is created. After searching for all the classification objects corresponding to a <b>WorkspaceObject</b>, user can find more information about the classification(s) of a <b>WorkspaceObject</b>. <br />The operation <font face=\"courier\" height=\"10\">findClassificationInfo</font> can be used to get detailed information about the classification objects, classification classes where these classification objects belong. After getting information about classification objects the user can choose to modify or delete the objects by using operation: <font face=\"courier\" height=\"10\">saveClassificationObjects</font> or <font face=\"courier\" height=\"10\">deleteClassificationObjects</font>, both of which support traditional and Classification Standard Taxonomy (<b>CST</b>) classes.<br /><br />The operation <font face=\"courier\" height=\"10\">findClassificationInfo</font> can also be used when a user wants to search for classes in classification hierarchy by using any of class' properties. After searching for classification classes; the user can use that information to browse through a subset of classification hierarchy and classify a classifiable workspace object in a classification class of interest."
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of WorkspaceObject. Finds all the classification objects for the given workspace objects.",
+          "parameterName": "workspaceObjects"
+        },
+        {
+          "description": "A list of search criteria used for class search.",
+          "parameterName": "searchCriterias"
+        },
+        {
+          "description": "Bitwise value representing the classification data to return. Supported values are:<br /><ul><ul><li type=\"disc\">1 Classification object metadata. </li><li type=\"disc\">2 Classification class definition. </li><li type=\"disc\">4 Classification class attribute definition. </li><li type=\"disc\">8 Classification class parents. </li><li type=\"disc\">16 Classification class children.</li></ul></ul>",
+          "parameterName": "classificationDataOptions"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Fnd0Classification",
+      "createRelease": "Awp04.1.0",
+      "dependencies": "",
+      "description": "Finds classification information based on the input criteria.<br /><br />A populated list If a list of WorkspaceObject objects are provided  ; then this operation finds all the classification objects for the given WorkspaceObject.<br />In caseIf a given WorkspaceObject is not classified this operation finds and returns standalone classification object; which could then be linked to given WorkspaceObject.<br />If a given workspace object is not classified and also the system does not contain standalone classification object which could be linked to the WorkspaceObject then this operation will return classification hierarchy which could be used for browsing and classifying an object in a classification class of interest. (For traditional classification system, children of &ldquo;Classification Root&rdquo; (ICM) are returned. For next generation Classification Standard Taxonomy (CST) system, children of the Default Hierarchy are returned).<br />Empty list of  WorkspaceObject would be passed in if user wants to search for a class in classification hierarchy using search criteria.<br />This operations takes care of returning classification node information from next generation classification system including, containing cardinal and polymorphic blocks.<br /><br />If a search criteria is provided; then this operation searches for classification classes in classification hierarchy and returns their metadata information like class ID, name, class parents etc. If both searchCriterias and workspaceObjects are provided, workspaceObjects list is ignored and search criteria is used.",
+      "exceptionCondition": "",
+      "id": "findClassificationInfo2#const,std::vector<Teamcenter::WorkspaceObject>,&$const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SearchCriteria>,&$int",
+      "interface": "Ics1::Soa::IcsAw::Classification",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "findClassificationInfo2",
+      "opTemplate": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::FindClassificationInfo2Response#Ics1::Soa::IcsAw::Classification::findClassificationInfo2#const,std::vector<Teamcenter::WorkspaceObject>,&$const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SearchCriteria>,&$int",
+      "returnDescription": "Returns found classification objects information and associated class information. In case of class search, this operation returns the list of found classes and their parents' information.<br />The following partial errors may be returned:<br /><ul><ul><li type=\"disc\">71506  Invalid WorkspaceObject, when incorrect WorkspaceObject passed in.</li><li type=\"disc\">71528  Class ID does not exist in the system, when invalid classification class Id passed in.</li><li type=\"disc\">516004 One of the following:</li><li type=\"disc\">String class is not a valid POM_class name</li><li type=\"disc\">String class is not a valid class alias</li><li type=\"disc\">String class is not a valid pseudo class</li><li type=\"disc\">String attribute is not a valid attribute of the class</li></ul></ul>",
+      "useCase": "This operation could be used when user needs to find classification objects, for both traditional and Classification Standard Taxonomy (CST), based on workspace objects. Each time a <b>WorkspaceObject</b> is classified in a classification class a classification object is created. After searching for all the classification objects corresponding to a <b>WorkspaceObject</b>, user can find more information about the classification(s) of a WorkspaceObject. <br />The operation findClassificationInfo2 can be used to get detailed information about the classification objects, classification classes where these classification objects belong. After getting information about classification objects the user can choose to modify or delete the objects by using operation: saveClassificationObjects2 or deleteClassificationObjects, both of which support traditional and Classification Standard Taxonomy (CST) classes.<br /><br />The operation findClassificationInfo2 can also be used when a user wants to search for classes in classification hierarchy by using any of class' properties. After searching for classification classes; the user can use that information to browse through a subset of classification hierarchy and classify a classifiable workspace object in a classification class of interest."
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of WorkspaceObject. Finds all the classification objects for the given workspce objects.",
+          "parameterName": "workspaceObjects"
+        },
+        {
+          "description": "A list of search criteria used for class search.",
+          "parameterName": "searchCriterias"
+        },
+        {
+          "description": "Bitwise value representing the classification data to return. Supported values are:<br /><ul><ul><li type=\"disc\">1 Classification object metadata.</li><li type=\"disc\">2 Classification class definition.</li><li type=\"disc\">4 Classification class attribute definition.</li><li type=\"disc\">8 Classification class parents.</li><li type=\"disc\">16 Classification class children.</li></ul></ul>",
+          "parameterName": "classificationDataOptions"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Fnd0Classification",
+      "createRelease": "Awp04.3.0",
+      "dependencies": "",
+      "description": "Finds classification information based on the input criteria.<br /><br />A populated list If a list of WorkspaceObject objects are provided ; then this operation finds all the classification objects for the given WorkspaceObject.<br />In caseIf a given WorkspaceObject is not classified this operation finds and returns standalone classification object; which could then be linked to given WorkspaceObject.<br />If a given workspace object is not classified and also the system does not contain standalone classification object which could be linked to the WorkspaceObject then this operation will return classification hierarchy which could be used for browsing and classifying an object in a classification class of interest. (For traditional classification system, children of &ldquo;Classification Root&rdquo; (ICM) are returned. For next generation Classification Standard Taxonomy (CST) system, children of the Default Hierarchy are returned).<br />Empty list of WorkspaceObject would be passed in if user wants to search for a class in classification hierarchy using search criteria.<br />This operations takes care of returning classification node information from next generation classification system including, containing cardinal and polymorphic blocks.<br /><br />If a search criteria is provided; then this operation searches for classification classes in classification hierarchy and returns their metadata information like class ID, name, class parents etc. If both searchCriterias and workspaceObjects are provided, workspaceObjects list is ignored and search criteria is used.",
+      "exceptionCondition": "",
+      "id": "findClassificationInfo3#const,std::vector<Teamcenter::WorkspaceObject>,&$const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SearchCriteria>,&$int",
+      "interface": "Ics1::Soa::IcsAw::Classification",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "findClassificationInfo3",
+      "opTemplate": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::FindClassificationInfo3Response#Ics1::Soa::IcsAw::Classification::findClassificationInfo3#const,std::vector<Teamcenter::WorkspaceObject>,&$const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SearchCriteria>,&$int",
+      "returnDescription": "Returns found classification objects information and associated class information. In case of class search, this operation returns the list of found classes and their parents' information.<br />The following partial errors may be returned:<br /><br /><ul><ul><li type=\"disc\">71506 Invalid WorkspaceObject, when incorrect WorkspaceObject passed in.</li><li type=\"disc\">71528 Class ID does not exist in the system, when invalid classification class Id passed in.</li><li type=\"disc\">516004 One of the following:</li><li type=\"disc\">String class is not a valid POM_class name</li><li type=\"disc\">String class is not a valid class alias</li><li type=\"disc\">String class is not a valid pseudo class</li><li type=\"disc\">String attribute is not a valid attribute of the class</li></ul></ul>",
+      "useCase": "This operation could be used when user needs to find classification objects, for both traditional and Classification Standard Taxonomy (CST), based on workspace objects. Each time a WorkspaceObject is classified in a classification class a classification object is created. After searching for all the classification objects corresponding to a WorkspaceObject, user can find more information about the classification(s) of a WorkspaceObject. <br />The operation findClassificationInfo2 can be used to get detailed information about the classification objects, classification classes where these classification objects belong. After getting information about classification objects the user can choose to modify or delete the objects by using operation: saveClassificationObjects2 or deleteClassificationObjects, both of which support traditional and Classification Standard Taxonomy (CST) classes.<br /><br />The operation findClassificationInfo2 can also be used when a user wants to search for classes in classification hierarchy by using any of class' properties. After searching for classification classes; the user can use that information to browse through a subset of classification hierarchy and classify a classifiable workspace object in a classification class of interest."
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of input workspace objects.",
+          "parameterName": "workspaceObjects"
+        },
+        {
+          "description": "A list of search criteria used for class search.",
+          "parameterName": "searchCriterias"
+        },
+        {
+          "description": "Options representing the classification data to be returned through this operation. Valid values are:<br /><ul><ul><li type=\"disc\">Classification object definition = (1<<0)</li><li type=\"disc\">Classification class definition = (1<<1)</li><li type=\"disc\">Classification class attribute definition = (1<<2)</li><li type=\"disc\">Classification class parents = (1<<3)</li><li type=\"disc\">Classification class children = (1<<4)</li></ul></ul>",
+          "parameterName": "classificationDataOptions"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Fnd0Classification",
+      "createRelease": "Awp03.4.0",
+      "dependencies": "",
+      "description": "Finds classification information based on the input criteria.<br /><br />If a list of workspace objects are provided; then this operation finds out all the classification objects for the given workspace object.<br />If a given workspace object is not classified; this operation finds and returns standalone classification object; which could then be linked to given workspace object.<br />If a given workspace object is not classified and also system does not contain standalone classification object which could be linked to the workspace object; then this operation will return classification class hierarchy (children of \"Classification Root\" (<b>ICM</b>)) which could be used for browsing and classifying an object in a classification class of interest.<br /><br />If a search criteria is provided; then this operation searches for classification classes in classification hierarchy and returns their metadata information like class ID, name, class parents etc. <br /><br />Note that this operation returns only the information that is asked through \"classificationDataOptions\" parameter.",
+      "exceptionCondition": "",
+      "id": "findClassifications#const,std::vector<Teamcenter::WorkspaceObject>,&$const,std::vector<Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassSearchCriteria>,&$int",
+      "interface": "Ics1::Soa::IcsAw::Author",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "findClassifications",
+      "opTemplate": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::FindClassificationsResponse#Ics1::Soa::IcsAw::Author::findClassifications#const,std::vector<Teamcenter::WorkspaceObject>,&$const,std::vector<Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassSearchCriteria>,&$int",
+      "returnDescription": "Returns found classification objects information and associated class information. In case of class search, this operation returns the list of found classes and their parents' information.<br /><br />The following partial errors may be returned: <br /><br /><ul><ul><li type=\"disc\">71506 Invalid Workspace Object, when incorrect workspace object tag passed in. </li><li type=\"disc\">71528 Class ID does not exist in the system, when invalid classification class Id passed in.</li></ul></ul>",
+      "useCase": "This operation could be used when user needs to find classification objects (<b>ICO</b>) based on workspace objects. Each time a workspace object is classified in a classification class a classification object (<b>ICO</b>) object is created. After searching for all the classification objects corresponding to a workspace object, user can find more information about the classification(s) of a workspace object. The operation findClassification() can be used to get detailed information about the classification objects, classification classes where these classification objects belong. After getting information about classification objects, the user can also choose to modify or delete the object found by this operation using operation createOrUpdateClassificationObjects() or deleteClassificationObjects().<br /><br />The operation findClassification() can be used when user wants to search for classes in classification hierarchy by using any of class' properties. After searching for classification classes; the user can use that information to browse through a subset of classification hierarchy and classify a classifiable workspace object in a classification class of interest."
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of <b>WorkspaceObject</b> objects. Finds the classification visibility information for the given workspace objects.",
+          "parameterName": "theWSOs"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Ics1icsaw",
+      "createRelease": "Awp04.2.0",
+      "dependencies": "",
+      "description": "Finds classification command visibility information for traditional and Classification Standard Taxonomy (CST) for the list of workspace objects.<br />If a given <b>WorkspaceObject</b> type is or dependent type is not present in ICS_classifiable_types preference or the user does not have permission to classify the workspace object then this operation returns false for the corresponding workspace object in the response.<br />If a given workspace object type is or dependent type is present in ICS_classifiable_types and the user has the permission to classify the workspace object then this operation returns true for the corresponding workspace object in the response.",
+      "exceptionCondition": "",
+      "id": "getClassificationCmdVisibilityInfo#const,std::vector<Teamcenter::BusinessObject>,&",
+      "interface": "Ics1::Soa::IcsAw::Classification",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "getClassificationCmdVisibilityInfo",
+      "opTemplate": "Ics1::Soa::Internal::IcsAw::_2019_06::Classification::ClassifyCommandVisibilityInfoResp#Ics1::Soa::IcsAw::Classification::getClassificationCmdVisibilityInfo#const,std::vector<Teamcenter::BusinessObject>,&",
+      "returnDescription": "Returns the structure representing the classification visibility information.<br /><ul><ul><li type=\"disc\">71506 Invalid Workspace Object, when incorrect workspace object passed in.</li></ul></ul>",
+      "useCase": "This operation could be used when user needs to find classification command visibility information, for given workspace objects in both traditional and Classification Standard Taxonomy <b>(CST)</b>. <br />Each time a workspace object is selected for classify operation, this operation will evaluate the &ldquo;Add&rdquo; command visibility button in the classification tab based on workspace object type and user&rsquo;s privileges to classify the given <b>WorkspaceObject</b>."
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of structures containing information about the classification object (<b>ICO</b>, <b>Cls0Object</b>, or <b>Cls0CstObject</b>) that needs to be created or updated including its attribute values. It also includes the classification class information for which classification object will be created and information on workspace object being classified.",
+          "parameterName": "classificationObjects"
+        },
+        {
+          "description": "Type of update to perform:<br />0 - A full update. Completely updates the class&rsquo;s properties.<br />1 - A delta update. Only updates properties which are modified.",
+          "parameterName": "deltaUpdateFlag"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Ics1icsaw",
+      "createRelease": "Awp04.0.0",
+      "dependencies": "",
+      "description": "Creates or updates one or more classification objects and (optionally) attach them to a <b>WorkspaceObject</b> object, thus classifying it. When the Classification objects are not associated with any <b>WorkspaceObject</b> they act as standalone classification objects. A classification object is also called an <b>ICO</b> object. This supports traditional <b>ICO</b>, next generation <b>Cls0Object</b>, and Classification Standard Taxonomy (CST) <b>Cls0CstObject</b>. Additionally, this operation can perform a delta update for <b>Cls0CstObject</b> object.",
+      "exceptionCondition": "",
+      "id": "saveClassificationObjects#const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassificationInfo>,&$int",
+      "interface": "Ics1::Soa::IcsAw::Classification",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "saveClassificationObjects",
+      "opTemplate": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SaveClassificationObjectsResponse#Ics1::Soa::IcsAw::Classification::saveClassificationObjects#const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassificationInfo>,&$int",
+      "returnDescription": "The created or update classification objects with their property values. The following partial errors may be returned:<br /><ul><ul><li type=\"disc\">71506 Invalid Workspace Object, when incorrect workspace object tag passed in.</li><li type=\"disc\">71503 Cannot classify the Workspace object. If given WorkspaceObject type is not part of '<b>ICS_allowable_types</b>' preference.</li><li type=\"disc\">71002 Missing parameter. If classification class Id and its value not provided as property of the classificationObjects.</li></ul></ul>",
+      "useCase": "User wants to classify a workspace object or create a standalone classification object (ICO) or update an existing classification object in Active Workspace, in either a traditional or Classification Standard Taxonomy (CST) class. Additionally, the user could be performing a delta update on a CST Property Record. This operation can be combined with other operations like createItems() to create workspace object and then associate the workspace object to the classification object. Before creating a classification object, a classification class hierarchy should already be created by the classification admin user in Teamcenter. This hierarchy should include a storage class (a class that allows instances to be created and associated to it) for which the classification objects need to be created. Values of any attributes associated with classification objects can also be populated."
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of structures containing information about the classification object (<b>icm0</b>, <b>Cls0Object</b>, or <b>Cls0CstObject</b>) that needs to be created or updated including its attribute values. It also includes the classification class information for which classification object will be created and information on workspace object being classified.",
+          "parameterName": "classificationObjects"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Fnd0Classification",
+      "createRelease": "Awp04.1.0",
+      "dependencies": "",
+      "description": "Creates or updates one or more classification objects and (optionally) attach them to a WorkspaceObject object, thus classifying it. When the Classification objects are not associated with any WorkspaceObject they act as standalone classification objects. A classification object is also called an ICO object. This supports traditional <b>icm0</b>, next generation <b>Cls0Object</b>, and Classification Standard Taxonomy (CST) <b>Cls0CstObject</b>.<br />This operation can also be used to create or update classification objects in next generation classification hierarchy containing cardinal and polymorphic blocks.",
+      "exceptionCondition": "",
+      "id": "saveClassificationObjects2#const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_12::Classification::ClassificationObjectInfo2>,&",
+      "interface": "Ics1::Soa::IcsAw::Classification",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "saveClassificationObjects2",
+      "opTemplate": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::SaveClassificationObjects2Response#Ics1::Soa::IcsAw::Classification::saveClassificationObjects2#const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_12::Classification::ClassificationObjectInfo2>,&",
+      "returnDescription": "The created or update classification objects with their property values. The following partial errors may be returned:<br /><ul><ul><li type=\"disc\">71506     Invalid <b>WorkspaceObject</b>.</li><li type=\"disc\">71503     Cannot classify the <b>WorkspaceObject</b>, the given <b>WorkspaceObject</b> type is not part of  the ICS_allowable_types preference.</li><li type=\"disc\">71002    The classification class Id and its value were not provided as property of the classificationObjects.</li><li type=\"disc\">377019   Given IRDI is not valid.</li></ul></ul>",
+      "useCase": "User wants to classify a <b>WorkspaceObject</b> or create a standalone classification object (ICO) or update an existing classification object in Active Workspace, in either a traditional or Classification Standard Taxonomy (<b>CST</b>) class. Additionally, the user could be performing a delta update on a CST Property Record. This operation can be combined with other operations like createItems() to create workspace object and then associate the workspace object to the classification object. Before creating a classification object, a classification class hierarchy should already be created by the classification admin user in Teamcenter. This hierarchy should include a storage class (a class that allows instances to be created and associated to it) for which the classification objects need to be created. Values of any attributes associated with classification objects can also be populated."
+    }
+  ],
+  "OperationTemplate": [
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_06::Author::ClassificationObject",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of structures containing information about the classification object (ICO) that needs to be created or updated including its attribute values. It also includes the classification class information for which classification object will be created & information on workspace object being classified.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "classificationObjects"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Ics1::Soa::Internal::IcsAw::_2017_06::Author::CreateOrUpdateClsObjectsResponse",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "Awp03.3.0",
+      "description": "Creates or updates one or more classification objects and (optionally) attach them to a WorkspaceObject, thus classifying it. When the Classification objects are not associated with any WorkspaceObject, they would act as standalone classification objects. A classification object is also called ICO.",
+      "id": "Ics1::Soa::Internal::IcsAw::_2017_06::Author::CreateOrUpdateClsObjectsResponse#Ics1::Soa::IcsAw::Author::createOrUpdateClassificationObjects#const,std::vector<Ics1::Soa::Internal::IcsAw::_2017_06::Author::ClassificationObject>,&",
+      "name": "Ics1::Soa::IcsAw::Author::createOrUpdateClassificationObjects",
+      "returnConst": "false",
+      "returnDescription": "The created or update classification objects with their property values. The following partial errors may be returned: <br /><ul><ul><li type=\"disc\">71506 Invalid Workspace Object, when incorrect workspace object tag passed in.</li><li type=\"disc\">71503 Cannot classify the Workspace object. If given WorkspaceObject type is not part of 'ICS_allowable_types' preference.</li><li type=\"disc\">71002 Missing parameter. If classification class Id and its value not provided through input structure.</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::WorkspaceObject",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of input workspace objects.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "workspaceObjects"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassSearchCriteria",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of search criteria used for class search.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "searchCriterias"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "int",
+              "qualifier": ""
+            }
+          ],
+          "const": "false",
+          "defaultValue": "",
+          "description": "Options representing the classification data to be returned through this operation. Valid values are:<br /><ul><ul><li type=\"disc\">Classification object definition = (1<<0)</li><li type=\"disc\">Classification class definition = (1<<1)</li><li type=\"disc\">Classification class attribute definition = (1<<2)</li><li type=\"disc\">Classification class parents = (1<<3)</li><li type=\"disc\">Classification class children = (1<<4)</li></ul></ul>",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "classificationDataOptions"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::FindClassificationsResponse",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "Awp03.4.0",
+      "description": "Finds classification information based on the input criteria.<br /><br />If a list of workspace objects are provided; then this operation finds out all the classification objects for the given workspace object.<br />If a given workspace object is not classified; this operation finds and returns standalone classification object; which could then be linked to given workspace object.<br />If a given workspace object is not classified and also system does not contain standalone classification object which could be linked to the workspace object; then this operation will return classification class hierarchy (children of \"Classification Root\" (<b>ICM</b>)) which could be used for browsing and classifying an object in a classification class of interest.<br /><br />If a search criteria is provided; then this operation searches for classification classes in classification hierarchy and returns their metadata information like class ID, name, class parents etc. <br /><br />Note that this operation returns only the information that is asked through \"classificationDataOptions\" parameter.",
+      "id": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::FindClassificationsResponse#Ics1::Soa::IcsAw::Author::findClassifications#const,std::vector<Teamcenter::WorkspaceObject>,&$const,std::vector<Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassSearchCriteria>,&$int",
+      "name": "Ics1::Soa::IcsAw::Author::findClassifications",
+      "returnConst": "false",
+      "returnDescription": "Returns found classification objects information and associated class information. In case of class search, this operation returns the list of found classes and their parents' information.<br /><br />The following partial errors may be returned: <br /><br /><ul><ul><li type=\"disc\">71506 Invalid Workspace Object, when incorrect workspace object tag passed in. </li><li type=\"disc\">71528 Class ID does not exist in the system, when invalid classification class Id passed in.</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::BusinessObject",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of  classification objects (ICO, <b>Cls0Object</b> or <b>Cls0CstObject</b>) to be deleted.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "classificationObjects"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Teamcenter::Soa::Server::ServiceData",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "Awp04.0.0",
+      "description": "Deletes one or more traditional or Classification Standard Taxonomy (<b>CST</b>) classification objects permanently. The classified workspace object associated with the classification object will not be deleted. When deleting a classification object, additional structures related to this classification object are deleted as well. These are the <b>icm0</b> and <b>Cst0PropertyRecord</b> objects, <b>Cls0ClassifiedBy</b> object, and <b>Ptn0Membership</b> object.",
+      "id": "Teamcenter::Soa::Server::ServiceData#Ics1::Soa::IcsAw::Classification::deleteClassificationObjects#const,std::vector<Teamcenter::BusinessObject>,&",
+      "name": "Ics1::Soa::IcsAw::Classification::deleteClassificationObjects",
+      "returnConst": "false",
+      "returnDescription": "The UIDs of the deleted classification objects or other classification structures related to the classification object. Partial errors will include the classification object UID. The following partial errors may be returned:<br /><ul><ul><li type=\"disc\">71546 Internal error, can not delete the SML object.</li><li type=\"disc\">71520 Classification Object does not exist.</li><li type=\"disc\">71521 Workspace Object does not exist.</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::WorkspaceObject",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of <b>WorkspaceObject</b>. Finds out all the classification objects for the given workspace objects.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "workspaceObjects"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SearchCriteria",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of search criteria used for class search.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "searchCriteria"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "int",
+              "qualifier": ""
+            }
+          ],
+          "const": "false",
+          "defaultValue": "",
+          "description": "Bitwise value representing the classification data to return. Supported values are:<br /><ul><ul><li type=\"disc\">1 Classification object metadata </li><li type=\"disc\">2 Classification class definition </li><li type=\"disc\">4 Classification class attribute definition </li><li type=\"disc\">8 Classification class parents </li><li type=\"disc\">16 Classification class children</li></ul></ul>",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "classificationDataOptions"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::FindClassificationInfoResponse",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "Awp04.0.0",
+      "description": "Finds traditional and Classification Standard Taxonomy (<b>CST</b>) classification information based on the input criteria.<br /><br />If a list of <b>WorkspaceObject</b> objects are provided; then this operation finds all the classification objects for the given <b>WorkspaceObject</b>.<br />If a given <b>WorkspaceObject</b> is not classified this operation finds and returns standalone classification object; which could then be linked to given <b>WorkspaceObject</b>.<br />If a given workspace object is not classified and also system does not contain standalone classification object which could be linked to the <b>WorkspaceObject</b> then this operation will return classification class hierarchy (For traditional classification, children of &ldquo;Classification Root&rdquo; (<b>ICM</b>). For <b>CST</b> classification, children of the Default Hierarchy View) which could be used for browsing and classifying an object in a classification class of interest.<br /><br />If a search criteria is provided; then this operation searches for classification classes in classification hierarchy and returns their metadata information like class ID, name, class parents etc. If both <font face=\"courier\" height=\"10\">searchCriterias</font> and <font face=\"courier\" height=\"10\">workspaceObjects</font> are provided, <font face=\"courier\" height=\"10\">workspaceObjects</font> list is ignored and search criteria is used.",
+      "id": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::FindClassificationInfoResponse#Ics1::Soa::IcsAw::Classification::findClassificationInfo#const,std::vector<Teamcenter::WorkspaceObject>,&$const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SearchCriteria>,&$int",
+      "name": "Ics1::Soa::IcsAw::Classification::findClassificationInfo",
+      "returnConst": "false",
+      "returnDescription": "Returns found classification objects information and associated class information. In case of class search, this operation returns the list of found classes and their parents' information.<br /><br />The following partial errors may be returned:<br /><ul><ul><li type=\"disc\">71506 Invalid <b>WorkspaceObject</b>, when incorrect <b>WorkspaceObject</b> tag is passed in</li><li type=\"disc\">71528 Class ID does not exist in the system, when invalid classification class ID is passed in</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::WorkspaceObject",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of WorkspaceObject. Finds all the classification objects for the given workspace objects.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "workspaceObjects"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SearchCriteria",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of search criteria used for class search.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "searchCriterias"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "int",
+              "qualifier": ""
+            }
+          ],
+          "const": "false",
+          "defaultValue": "",
+          "description": "Bitwise value representing the classification data to return. Supported values are:<br /><ul><ul><li type=\"disc\">1 Classification object metadata. </li><li type=\"disc\">2 Classification class definition. </li><li type=\"disc\">4 Classification class attribute definition. </li><li type=\"disc\">8 Classification class parents. </li><li type=\"disc\">16 Classification class children.</li></ul></ul>",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "classificationDataOptions"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::FindClassificationInfo2Response",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "Awp04.1.0",
+      "description": "Finds classification information based on the input criteria.<br /><br />A populated list If a list of WorkspaceObject objects are provided  ; then this operation finds all the classification objects for the given WorkspaceObject.<br />In caseIf a given WorkspaceObject is not classified this operation finds and returns standalone classification object; which could then be linked to given WorkspaceObject.<br />If a given workspace object is not classified and also the system does not contain standalone classification object which could be linked to the WorkspaceObject then this operation will return classification hierarchy which could be used for browsing and classifying an object in a classification class of interest. (For traditional classification system, children of &ldquo;Classification Root&rdquo; (ICM) are returned. For next generation Classification Standard Taxonomy (CST) system, children of the Default Hierarchy are returned).<br />Empty list of  WorkspaceObject would be passed in if user wants to search for a class in classification hierarchy using search criteria.<br />This operations takes care of returning classification node information from next generation classification system including, containing cardinal and polymorphic blocks.<br /><br />If a search criteria is provided; then this operation searches for classification classes in classification hierarchy and returns their metadata information like class ID, name, class parents etc. If both searchCriterias and workspaceObjects are provided, workspaceObjects list is ignored and search criteria is used.",
+      "id": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::FindClassificationInfo2Response#Ics1::Soa::IcsAw::Classification::findClassificationInfo2#const,std::vector<Teamcenter::WorkspaceObject>,&$const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SearchCriteria>,&$int",
+      "name": "Ics1::Soa::IcsAw::Classification::findClassificationInfo2",
+      "returnConst": "false",
+      "returnDescription": "Returns found classification objects information and associated class information. In case of class search, this operation returns the list of found classes and their parents' information.<br />The following partial errors may be returned:<br /><ul><ul><li type=\"disc\">71506  Invalid WorkspaceObject, when incorrect WorkspaceObject passed in.</li><li type=\"disc\">71528  Class ID does not exist in the system, when invalid classification class Id passed in.</li><li type=\"disc\">516004 One of the following:</li><li type=\"disc\">String class is not a valid POM_class name</li><li type=\"disc\">String class is not a valid class alias</li><li type=\"disc\">String class is not a valid pseudo class</li><li type=\"disc\">String attribute is not a valid attribute of the class</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::WorkspaceObject",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of WorkspaceObject. Finds all the classification objects for the given workspce objects.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "workspaceObjects"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SearchCriteria",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of search criteria used for class search.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "searchCriterias"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "int",
+              "qualifier": ""
+            }
+          ],
+          "const": "false",
+          "defaultValue": "",
+          "description": "Bitwise value representing the classification data to return. Supported values are:<br /><ul><ul><li type=\"disc\">1 Classification object metadata.</li><li type=\"disc\">2 Classification class definition.</li><li type=\"disc\">4 Classification class attribute definition.</li><li type=\"disc\">8 Classification class parents.</li><li type=\"disc\">16 Classification class children.</li></ul></ul>",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "classificationDataOptions"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::FindClassificationInfo3Response",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "Awp04.3.0",
+      "description": "Finds classification information based on the input criteria.<br /><br />A populated list If a list of WorkspaceObject objects are provided ; then this operation finds all the classification objects for the given WorkspaceObject.<br />In caseIf a given WorkspaceObject is not classified this operation finds and returns standalone classification object; which could then be linked to given WorkspaceObject.<br />If a given workspace object is not classified and also the system does not contain standalone classification object which could be linked to the WorkspaceObject then this operation will return classification hierarchy which could be used for browsing and classifying an object in a classification class of interest. (For traditional classification system, children of &ldquo;Classification Root&rdquo; (ICM) are returned. For next generation Classification Standard Taxonomy (CST) system, children of the Default Hierarchy are returned).<br />Empty list of WorkspaceObject would be passed in if user wants to search for a class in classification hierarchy using search criteria.<br />This operations takes care of returning classification node information from next generation classification system including, containing cardinal and polymorphic blocks.<br /><br />If a search criteria is provided; then this operation searches for classification classes in classification hierarchy and returns their metadata information like class ID, name, class parents etc. If both searchCriterias and workspaceObjects are provided, workspaceObjects list is ignored and search criteria is used.",
+      "id": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::FindClassificationInfo3Response#Ics1::Soa::IcsAw::Classification::findClassificationInfo3#const,std::vector<Teamcenter::WorkspaceObject>,&$const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SearchCriteria>,&$int",
+      "name": "Ics1::Soa::IcsAw::Classification::findClassificationInfo3",
+      "returnConst": "false",
+      "returnDescription": "Returns found classification objects information and associated class information. In case of class search, this operation returns the list of found classes and their parents' information.<br />The following partial errors may be returned:<br /><br /><ul><ul><li type=\"disc\">71506 Invalid WorkspaceObject, when incorrect WorkspaceObject passed in.</li><li type=\"disc\">71528 Class ID does not exist in the system, when invalid classification class Id passed in.</li><li type=\"disc\">516004 One of the following:</li><li type=\"disc\">String class is not a valid POM_class name</li><li type=\"disc\">String class is not a valid class alias</li><li type=\"disc\">String class is not a valid pseudo class</li><li type=\"disc\">String attribute is not a valid attribute of the class</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::BusinessObject",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of <b>WorkspaceObject</b> objects. Finds the classification visibility information for the given workspace objects.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "theWSOs"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Ics1::Soa::Internal::IcsAw::_2019_06::Classification::ClassifyCommandVisibilityInfoResp",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "Awp04.2.0",
+      "description": "Finds classification command visibility information for traditional and Classification Standard Taxonomy (CST) for the list of workspace objects.<br />If a given <b>WorkspaceObject</b> type is or dependent type is not present in ICS_classifiable_types preference or the user does not have permission to classify the workspace object then this operation returns false for the corresponding workspace object in the response.<br />If a given workspace object type is or dependent type is present in ICS_classifiable_types and the user has the permission to classify the workspace object then this operation returns true for the corresponding workspace object in the response.",
+      "id": "Ics1::Soa::Internal::IcsAw::_2019_06::Classification::ClassifyCommandVisibilityInfoResp#Ics1::Soa::IcsAw::Classification::getClassificationCmdVisibilityInfo#const,std::vector<Teamcenter::BusinessObject>,&",
+      "name": "Ics1::Soa::IcsAw::Classification::getClassificationCmdVisibilityInfo",
+      "returnConst": "false",
+      "returnDescription": "Returns the structure representing the classification visibility information.<br /><ul><ul><li type=\"disc\">71506 Invalid Workspace Object, when incorrect workspace object passed in.</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassificationInfo",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of structures containing information about the classification object (<b>ICO</b>, <b>Cls0Object</b>, or <b>Cls0CstObject</b>) that needs to be created or updated including its attribute values. It also includes the classification class information for which classification object will be created and information on workspace object being classified.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "classificationObjects"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "int",
+              "qualifier": ""
+            }
+          ],
+          "const": "false",
+          "defaultValue": "",
+          "description": "Type of update to perform:<br />0 - A full update. Completely updates the class&rsquo;s properties.<br />1 - A delta update. Only updates properties which are modified.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "deltaUpdateFlag"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SaveClassificationObjectsResponse",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "Awp04.0.0",
+      "description": "Creates or updates one or more classification objects and (optionally) attach them to a <b>WorkspaceObject</b> object, thus classifying it. When the Classification objects are not associated with any <b>WorkspaceObject</b> they act as standalone classification objects. A classification object is also called an <b>ICO</b> object. This supports traditional <b>ICO</b>, next generation <b>Cls0Object</b>, and Classification Standard Taxonomy (CST) <b>Cls0CstObject</b>. Additionally, this operation can perform a delta update for <b>Cls0CstObject</b> object.",
+      "id": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::SaveClassificationObjectsResponse#Ics1::Soa::IcsAw::Classification::saveClassificationObjects#const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassificationInfo>,&$int",
+      "name": "Ics1::Soa::IcsAw::Classification::saveClassificationObjects",
+      "returnConst": "false",
+      "returnDescription": "The created or update classification objects with their property values. The following partial errors may be returned:<br /><ul><ul><li type=\"disc\">71506 Invalid Workspace Object, when incorrect workspace object tag passed in.</li><li type=\"disc\">71503 Cannot classify the Workspace object. If given WorkspaceObject type is not part of '<b>ICS_allowable_types</b>' preference.</li><li type=\"disc\">71002 Missing parameter. If classification class Id and its value not provided as property of the classificationObjects.</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::ClassificationObjectInfo2",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of structures containing information about the classification object (<b>icm0</b>, <b>Cls0Object</b>, or <b>Cls0CstObject</b>) that needs to be created or updated including its attribute values. It also includes the classification class information for which classification object will be created and information on workspace object being classified.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "classificationObjects"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::SaveClassificationObjects2Response",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "Awp04.1.0",
+      "description": "Creates or updates one or more classification objects and (optionally) attach them to a WorkspaceObject object, thus classifying it. When the Classification objects are not associated with any WorkspaceObject they act as standalone classification objects. A classification object is also called an ICO object. This supports traditional <b>icm0</b>, next generation <b>Cls0Object</b>, and Classification Standard Taxonomy (CST) <b>Cls0CstObject</b>.<br />This operation can also be used to create or update classification objects in next generation classification hierarchy containing cardinal and polymorphic blocks.",
+      "id": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::SaveClassificationObjects2Response#Ics1::Soa::IcsAw::Classification::saveClassificationObjects2#const,std::vector<Ics1::Soa::Internal::IcsAw::_2018_12::Classification::ClassificationObjectInfo2>,&",
+      "name": "Ics1::Soa::IcsAw::Classification::saveClassificationObjects2",
+      "returnConst": "false",
+      "returnDescription": "The created or update classification objects with their property values. The following partial errors may be returned:<br /><ul><ul><li type=\"disc\">71506     Invalid <b>WorkspaceObject</b>.</li><li type=\"disc\">71503     Cannot classify the <b>WorkspaceObject</b>, the given <b>WorkspaceObject</b> type is not part of  the ICS_allowable_types preference.</li><li type=\"disc\">71002    The classification class Id and its value were not provided as property of the classificationObjects.</li><li type=\"disc\">377019   Given IRDI is not valid.</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    }
+  ],
+  "ServiceInterface": [
+    {
+      "createRelease": "Awp03.3.0",
+      "dependencies": "",
+      "description": "The Author service helps achieve different classification authoring operations needed for active workspace and utilizes a classification hierarchy to categorize your company's product data. The service allows users to create classification objects and associate them to workspace objects in order to classify the workspace objects and other authoring operations like update and delete.",
+      "libraryName": "Ics1SoaIcsAw",
+      "name": "Author",
+      "namespace": "Ics1::Soa::IcsAw",
+      "serviceLibraryRef": ""
+    },
+    {
+      "createRelease": "Awp04.0.0",
+      "dependencies": "",
+      "description": "The Classification service helps achieve different classification operations needed for active workspace and utilizes a classification hierarchy to categorize your company's product data. The service allows users to create classification objects and associate them to workspace objects in order to classify the workspace objects and other authoring operations like update and delete.",
+      "libraryName": "Ics1SoaIcsAw",
+      "name": "Classification",
+      "namespace": "Ics1::Soa::IcsAw",
+      "serviceLibraryRef": ""
+    }
+  ],
+  "Struct": [
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Integer representing the attribute type, which could be one of the following:<br /><ul><ul><li type=\"disc\">- 1 = KeyLOV </li><li type=\"disc\">0 = String </li><li type=\"disc\">1 = Integer </li><li type=\"disc\">2 = Real </li><li type=\"disc\">3 = Date </li><li type=\"disc\">4 = Time range</li><li type=\"disc\">5= Boolean</li></ul></ul>",
+          "name": "formatType"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Integer to indicate whether the attribute is configured for one of the following - <br /><ul><ul><li type=\"disc\">0 - Force positive number. </li><li type=\"disc\">1 - Accept and display either + or - </li><li type=\"disc\">2 - Accept + or - but display - sign only.</li></ul></ul><br />Note: This field will return 0 if not applicable. Only applicable if the selected formatType is 1 or 2.",
+          "name": "formatModifier1"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Integer to indicate additional information about the selected formatType from one of the following : <br />If formatType = 0 then:<br /><ul><ul><li type=\"disc\">0 = Print characters in upper and lower case.</li><li type=\"disc\">1 = Print all characters in upper case.</li><li type=\"disc\">2 = Print all characters in lower case.</li></ul></ul><br />If formatType == 2 then:<br /><ul><ul><li type=\"disc\">Number of digits after the decimal point.</li></ul></ul><br /><br />Note: This field will return 0 if not applicable. Only applicable if the selected formatType is 0 or 2.",
+          "name": "formatModifier2"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Integer representing the length of the attribute. In case of a KeyLOV (<b>stxt</b>), or Cst0KeyLOVDefintion if attribute belongs to a Classification Standard Taxonomy (<b>CST</b>) class, this will contain the KeyLOV ID.",
+          "name": "formatLength"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure representing format details of a classification attribute.",
+      "isPublished": "false",
+      "name": "AttributeFormat",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Integer representing the attribute type, which could be one of the following:<br /><ul><ul><li type=\"disc\">- 1 => KeyLOV </li><li type=\"disc\">0 => String </li><li type=\"disc\">1 => Integer </li><li type=\"disc\">2 => Real </li><li type=\"disc\">3 => Date </li><li type=\"disc\">4 => Time range.</li></ul></ul>",
+          "name": "formatType"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Integer to indicate whether the attribute is configured for one of the following - <br /><ul><ul><li type=\"disc\">0 - Force positive number.</li><li type=\"disc\">1 - Accept and display either + or - </li><li type=\"disc\">2 - Accept + or - but display - sign only.</li></ul></ul><br /><br />Note: This field will return 0 if not applicable. Only applicable if the selected formatType is 1 or 2.",
+          "name": "formatModifier1"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Integer to indicate additional information about the selected formatType from one of the following : <br />If formatType = 0 then:<br /><ul><ul><li type=\"disc\">0 = Print characters in upper and lower case.</li><li type=\"disc\">1 = Print all characters in upper case.</li><li type=\"disc\">2 = Print all characters in lower case.</li></ul></ul><br /><br />If formatType == 2 then Number of digits after the decimal point<br /><br />Note: This field will return 0 if not applicable. Only applicable if the selected formatType is 0 or 2.",
+          "name": "formatModifier2"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Integer representing the length of the attribute. In case of a KeyLOV (<b>stxt</b>), this will contain the KeyLOV ID.",
+          "name": "formatLength"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure representing format details of a classification attribute.",
+      "isPublished": "false",
+      "name": "AttributeFormat",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Number of child classes for this class.",
+          "name": "childCount"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Total number of classification objects instantiated in this class or any of its descendants.",
+          "name": "instanceCount"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Number of Views defined for this class.",
+          "name": "viewCount"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Property describing classification class' flags represented as a single integer<br />To access individual property flags, a bitwise operation will be required by the client. Valid values are:<br /><ul><ul><li type=\"disc\">CLASS_falg_englishUnitBase = 1</li><li type=\"disc\">CLASS_flag_isGroup = 2</li><li type=\"disc\">CLASS_flag_unit_system_both = 4</li><li type=\"disc\">CLASS_flag_isStorageClass = 8</li><li type=\"disc\">CLASS_flag_isAssembly = 16</li></ul></ul>",
+          "name": "options"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassDocuments"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of attached Icons, Images and NamedRefs to this class.",
+          "name": "documents"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::PropertyInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of classification class properties containing property ids and their values.",
+          "name": "properties"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassAttribute"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of class attributes owned by this class definition.",
+          "name": "attributes"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "The list of Classification Class or View ID / IRDIs and corresponding definition.",
+      "isPublished": "false",
+      "name": "ClassDefinition",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Contains type of document attached. Valid values are:<br /><ul><ul><li type=\"disc\">icon </li><li type=\"disc\">image </li><li type=\"disc\">NamedRef</li></ul></ul>",
+          "name": "documentType"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "File ticket identifier for the attached file.",
+          "name": "ticket"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "File name for this attachment.",
+          "name": "originalFileName"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure holding the attached Icon, Image or NamedRef or this child class.",
+      "isPublished": "false",
+      "name": "ClassDocuments",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Contains type of document attached. Valid values are:<br /><ul><ul><li type=\"disc\">icon </li><li type=\"disc\">image </li><li type=\"disc\">NamedRef</li></ul></ul>",
+          "name": "documentType"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "File ticket identifier for the attached file.",
+          "name": "ticket"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "File name for this attachment.",
+          "name": "originalFileName"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure holding the attached Icon, Image or NamedRef or this child class.",
+      "isPublished": "false",
+      "name": "ClassDocuments",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassDefinition"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of class parents' details.",
+          "name": "parents"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure representing classification class' parents details.",
+      "isPublished": "false",
+      "name": "ClassParents",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassDefinition"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of class parents' details.",
+          "name": "parents"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure representing classification class' parents details.",
+      "isPublished": "false",
+      "name": "ClassParents",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Class attribute to be searched for. Valid values are all class properties like class Id, class Name etc.",
+          "name": "searchAttribute"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Query string to search the class attribute by.",
+          "name": "searchString"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Option to sort the returned results. Valid values are the class properties like class Id, class Name etc.",
+          "name": "sortOption"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "A structure defining the search criteria used for searching classes from classification hierarchy.  Also allows sorting the results based on a predefined criterion.",
+      "isPublished": "false",
+      "name": "ClassSearchCriteria",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The Classification object. If this is NULLTAG; a new classification object will be created otherwise existing classification object represented by <font face=\"courier\" height=\"10\">classificationObj</font> will be updated.",
+          "name": "classificationObj"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::WorkspaceObject"
+            }
+          ],
+          "description": "The <b>WorkspaceObject</b> that is associated by this Classification object. If this is NULLTAG, then a standalone classification object was created or updated, if the classificationObj is set. Supported WSO types are defined by preference: '<b>ICS_allowable_types</b>'.",
+          "name": "workspaceObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassificationObjectProperty"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of properties containing attribute Ids and their values.",
+          "name": "properties"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure representing Classification Object details.",
+      "isPublished": "false",
+      "name": "ClassificationInfo",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The Classification object. If this is NULLTAG; a new classification object will be created otherwise existing classification object represented by clsObject will be updated.",
+          "name": "clsObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::WorkspaceObject"
+            }
+          ],
+          "description": "The WorkspaceObject (WSO) that is associated by this Classification object. If this is NULLTAG, then a standalone classification object is created or updated. Allowed WSO types will be defined by the preference 'ICS_allowable_types'.",
+          "name": "workspaceObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_06::Author::ClassificationProperty"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of properties containing attribute Ids and their values.",
+          "name": "properties"
+        }
+      ],
+      "createRelease": "Awp03.3.0",
+      "description": "Structure representing Classification Object details.",
+      "isPublished": "false",
+      "name": "ClassificationObject",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_06::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The found Classification object.",
+          "name": "clsObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::WorkspaceObject"
+            }
+          ],
+          "description": "The <b>WorkspaceObject</b> (WSO) that is associated by this Classification object. If this is NULLTAG, then the found \"clsObject\" is a standalone classification object (<b>ICO</b>). Allowed WSO types will be defined by the preference 'ICS_allowable_types'.",
+          "name": "workspaceObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClsProperty"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of properties containing, attribute Ids and their values.",
+          "name": "properties"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure representing Classification Object details.",
+      "isPublished": "false",
+      "name": "ClassificationObjectInfo",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The found Classification object.",
+          "name": "clsObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::WorkspaceObject"
+            }
+          ],
+          "description": "The <b>WorkspaceObject</b> (WSO) that is associated by this Classification object. If this is NULLTAG, then the found &quot;<font face=\"courier\" height=\"10\">clsObject</font>&quot; is a standalone classification object.",
+          "name": "workspaceObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::PropertyInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of properties containing, attributes ids and their values.",
+          "name": "properties"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure representing Classification Object details.",
+      "isPublished": "false",
+      "name": "ClassificationObjectInfo",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::BlockInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of block information.",
+          "name": "blocks"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "Structure representing the list of blocks&rsquo; information of a Classification Object.",
+      "isPublished": "false",
+      "name": "BlockData",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The found Classification object.",
+          "name": "clsObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::WorkspaceObject"
+            }
+          ],
+          "description": "The <b>WorkspaceObject</b> that is associated by this Classification object. If this is NULLTAG, then the found &quot;clsObject&quot; is a standalone classification object.",
+          "name": "workspaceObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::PropertyInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of properties containing, attributes ids and their values.",
+          "name": "properties"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::BlockDataMap"
+            }
+          ],
+          "description": "A map (string, blockData) of block IRDI to the list of block data. IRDI comprises of Registration Authority Identifier, Data Identifier, separator and version identifier. Example of an block IRDI is &ldquo;SPLM-0#01-000806#001&rdquo;.",
+          "name": "blockDataMap"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "Structure representing Classification Object details.",
+      "isPublished": "false",
+      "name": "ClassificationObjectInfo2",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The found Classification Object",
+          "name": "clsObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::WorkspaceObject"
+            }
+          ],
+          "description": "The <b>WorkspaceObject</b> that is associated by this Classification object. If this is NULLTAG, the the found &quot;clsObject&quot; is a standalone classification object.",
+          "name": "workspaceObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::PropertyInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of properties containing, attribute ids and their values.",
+          "name": "properties"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::BlockDataMap2"
+            }
+          ],
+          "description": "A map (string, blockData) of block IRDI to the list of block data. IRDI comprises of Registration Authority Identifier, Data Identifier, separator and version identifier. Example of an block IRDI is &ldquo;SPLM-0#01-000806#001&rdquo;.",
+          "name": "blockDataMap"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "Structure representing Classification Object details.",
+      "isPublished": "false",
+      "name": "ClassificationObjectInfo3",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The ID, or IRDI if the attribute belongs to a CST class, of the attribute. For traditional classification attribute IDs, this is an integer that is converted into a string. For cases in which the attribute represents the Class ID or Class Name, this is a string representation of the identifier of those properties. These identifiers include:<br /><ul><ul><li type=\"disc\">CLASS_ID</li><li type=\"disc\">CLASS_NAME</li><li type=\"disc\">CLASS_TYPE</li><li type=\"disc\">UNIT_SYSTEM</li><li type=\"disc\">ATTRIBUTE_DEPENDENCY_ATTRIBUTE</li><li type=\"disc\">ATTRIBUTE_DEPENDENCY_CONFIG</li><li type=\"disc\">ATTRIBUTE_NAME</li><li type=\"disc\">ATTRIBUTE_ID</li><li type=\"disc\">USER_DATA_1</li><li type=\"disc\">USER_DATA_2</li><li type=\"disc\">CLASS_SHORT_NAME</li><li type=\"disc\">MODIFICATION_DATE</li></ul></ul>",
+          "name": "attributeId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::vector<std::string>"
+            }
+          ],
+          "description": "A list of values for this attribute in the context of a Classification object.<br />For regular properties it&rsquo;s just one value. In case of VLA (variable length array) properties each value has its own entry.",
+          "name": "values"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure representing Classification Property which holds attribute ids and their values.",
+      "isPublished": "false",
+      "name": "ClassificationObjectProperty",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassificationObjectInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of Classification Object information.",
+          "name": "clsObjects"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure representing the Classification Objects of a <b>WorkspaceObject</b>.",
+      "isPublished": "false",
+      "name": "ClassificationObjects",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassificationObjectInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of classification object's information.",
+          "name": "clsObjects"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "A structure representing list of classification objects information.",
+      "isPublished": "false",
+      "name": "ClassificationObjects",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::ClassificationObjectInfo2"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of Classification Objects' information.",
+          "name": "clsObjects"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "Structure representing the Classification Objects of a WorkspaceObject.",
+      "isPublished": "false",
+      "name": "ClassificationObjects2",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::ClassificationObjectInfo3"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of Classification Objects' information.",
+          "name": "clsObjects"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "Structure representing the Classification Objects of a WorkspaceObject.",
+      "isPublished": "false",
+      "name": "ClassificationObjects3",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "The unique identifier of classification attribute or internal identifier for classification header properties like class Id, unit system etc.",
+          "name": "attributeId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::vector<std::string>"
+            }
+          ],
+          "description": "A list of values for this attribute in the context of a Classification object.<br />For regular properties it's just one value. In case of VLA (variable length array) properties each value has its own entry.",
+          "name": "values"
+        }
+      ],
+      "createRelease": "Awp03.3.0",
+      "description": "Structure representing Classification Property which holds attribute ids and their values.",
+      "isPublished": "false",
+      "name": "ClassificationProperty",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_06::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2019_06::Classification::Wso2ClassifyMap"
+            }
+          ],
+          "description": "A map (<b>WorkspaceObject</b>, bool) of workspace objects to corresponding boolean visibility value.<br />True &ndash; <b>WorkspaceObject</b> is classifiable. &ldquo;Add&rdquo; command will be visible in Classification tab.<br />False &ndash; <b>WorkspaceObject</b> is not classifiable. &ldquo;Add&rdquo; command will not be visible in Classification tab.",
+          "name": "wso2ClassifyMap"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Any failures will be returned in the service data list of partial errors.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "Awp04.2.0",
+      "description": "Structure representing the classification visibility information returned by getClassificationCmdVisibilityInfo operation.",
+      "isPublished": "false",
+      "name": "ClassifyCommandVisibilityInfoResp",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_06::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Internal value stored into database.",
+          "name": "internalValue"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Display value for a classification property. This will be same as that of internalValue for all classification attributes except keyLOV (<b>stxt</b>) attributes as they will have \"entry key\" as internalValue and \"entry key entry value\" or \"entry value\" as displayValue; based on the keyLOV configuration.",
+          "name": "displayValue"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure containing classification property value details.",
+      "isPublished": "false",
+      "name": "ClsPropValue",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The classification class IRDI to which current block ID references. This is used in polymorphic blocks.",
+          "name": "classId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::vector<std::string>"
+            }
+          ],
+          "description": "List of classification block IRDI to which given block belongs.",
+          "name": "owningBlocks"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "The index of a block in a given cardinal structure. Classification blocks can be configured as cardinal block in a class; this index is used to identify the location of the block in a given cardinal structure.",
+          "name": "cardinalityIndex"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::PropertyInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of properties containing, attributes ids and their values.",
+          "name": "properties"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::BlockDataMap"
+            }
+          ],
+          "description": "A map (string, blockData) of block IRDI to the list of block data.",
+          "name": "blockDataMap"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "Structure containing classification block details. Classification block is a class attribute (Cst0ClassAttrute) pointing to property definition (Cst0PropertyDefinition) instance which references another classification class (Cst0ClassDefinition).",
+      "isPublished": "false",
+      "name": "BlockInfo",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "The unique identifier of classification attribute or internal identifier for classification header properties like class Id, unit system etc.",
+          "name": "propertyId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The name of classification attribute or name of internal identifier for classification header properties like class Id, unit system etc.",
+          "name": "propertyName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClsPropValue"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of values for this attribute.<br />[Note: An array is required as an attribute can be single or multi-valued.]",
+          "name": "values"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure representing Classification Property which holds attribute ids and their values.",
+      "isPublished": "false",
+      "name": "ClsProperty",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_06::Author::ClassificationObject"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of created or updated Classification objects.",
+          "name": "clsObjects"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Any failures will be returned in the service data list of partial errors.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "Awp03.3.0",
+      "description": "Holds the classification objects returned by the createOrUpdateClassificationObjects operation.",
+      "isPublished": "false",
+      "name": "CreateOrUpdateClsObjectsResponse",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_06::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Extended metadata property name.",
+          "name": "propName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClsPropValue"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of extended metadata property values.",
+          "name": "propValues"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure representing classification attributes' extended metadata properties details.",
+      "isPublished": "false",
+      "name": "ExtendedProperties",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::ClassificationObjectsDefMap2"
+            }
+          ],
+          "description": "A map (WorkspaceObject, ClassificationObjects2) of workspace objects to a list of Classification objects.",
+          "name": "clsObjectDefs"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::KeyLOVDefMap2"
+            }
+          ],
+          "description": "A map (string, KeyLOVDef) of Classification KeyLOV IDs/IRDIs (International Registration Data Identifier) and its definitions pairs.",
+          "name": "keyLOVDescriptors"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::ClassDefinitionMap2"
+            }
+          ],
+          "description": "A map (string, ClassDefinition) of Classification classes or view IDs/IRDIs and its corresponding definition pairs. This map also contains class attribute information.",
+          "name": "clsClassDescriptors"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::ClassParentsMap2"
+            }
+          ],
+          "description": "A map (string, ClassParents) of Classification classes or view IDs/IRDIs and its parents' definition pairs.",
+          "name": "classParents"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::ClassChildrenMap2"
+            }
+          ],
+          "description": "A map (string, ClassChildren) of Classification classes or view IDs/IRDIs and its children's definition pairs.",
+          "name": "classChildren"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::BlockDefinitionMap2"
+            }
+          ],
+          "description": "A map (string, ClassDefinition) of Classification classes IRDIs and its corresponding definition pairs. This map also contains class attribute information. This map is only used for Classification Standard Taxonomy (<b>CST</b>) property block information. This map differs from clsClassDescriptors as it contains the information for property blocks that belong to the returned classes.",
+          "name": "clsBlockDescriptors"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Any failures will be returned in the service data list of partial errors.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "Structure representing the classification information returned by FindClassificationInfo2 operation.",
+      "isPublished": "false",
+      "name": "FindClassificationInfo2Response",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::ClassificationObjectsDefMap3"
+            }
+          ],
+          "description": "A map (WorkspaceObject, ClassificationObjects3) of workspace objects to a list of Classification objects.",
+          "name": "clsObjectDefs"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::KeyLOVDefMap3"
+            }
+          ],
+          "description": "A map (string, KeyLOVDef) of Classification KeyLOV IDs/IRDIs (International Registration Data Identifier) and its definitions pairs.",
+          "name": "keyLOVDescriptors"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::ClassDefinitionMap3"
+            }
+          ],
+          "description": "A map (string, ClassDefinition) of Classification classes or view IDs/IRDIs and its corresponding definition pairs. This map also contains class attribute information.",
+          "name": "clsClassDescriptors"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::ClassParentsMap3"
+            }
+          ],
+          "description": "A map (string, ClassParents) of Classification classes or view IDs/IRDIs and its parents' definition pairs.",
+          "name": "classParents"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::ClassChildrenMap3"
+            }
+          ],
+          "description": "A map (string, ClassChildren) of Classification classes or view IDs/IRDIs and its children's definition pairs.",
+          "name": "classChildren"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::BlockDefinitionMap3"
+            }
+          ],
+          "description": "A map (String, ClassDefinition) of Classification classes IDDIs and its corresponding definition pairs. This map also contains class attribute information. This map is only used for Classification Standard Taxonomy (<b>CST</b>) property block information. This map differs from clsClassDescriptors as it contains the information for property clocks that belong to the returned classes.",
+          "name": "clsBlockDescriptors"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Any failures will be returned in the service data list of partial errors.",
+          "name": "serviceData"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::UnitMap"
+            }
+          ],
+          "description": "A Map that contains all the units of a given measure, such as Length, Time, Power, etc.",
+          "name": "unitMap"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "Structure representing the classification information returned by FindClassificationInfo3 operation.",
+      "isPublished": "false",
+      "name": "FindClassificationInfo3Response",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassificationObjectsDefMap"
+            }
+          ],
+          "description": "A map (<b>WorkspaceObject</b>, <font face=\"courier\" height=\"10\">ClassificationObjects</font>) of workspace objects to a list of Classification objects.",
+          "name": "clsObjectDefs"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::KeyLOVDefMap"
+            }
+          ],
+          "description": "A map (string, <font face=\"courier\" height=\"10\">KeyLOVDef</font>) of Classification KeyLOV IDs/IRDIs and its definitions pairs.",
+          "name": "keyLOVDescriptors"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassDefinitionMap"
+            }
+          ],
+          "description": "A map (string, <font face=\"courier\" height=\"10\">ClassDefinition</font>) of Classification classes or view IDs/IRDIs and its corresponding definition pairs. This map also contains class attribute information.",
+          "name": "clsClassDescriptors"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassParentsMap"
+            }
+          ],
+          "description": "A map (string, <font face=\"courier\" height=\"10\">ClassParents</font>) of Classification classes or view IDs/IRDIs and its parents' definition pairs.",
+          "name": "classParents"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassChildrenMap"
+            }
+          ],
+          "description": "A map (string, <font face=\"courier\" height=\"10\">ClassChildren</font>) of Classification classes or view IDs/IRDIs and its children's definition pairs.",
+          "name": "classChildren"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::BlockDefinitionMap"
+            }
+          ],
+          "description": "A map (string, <font face=\"courier\" height=\"10\">ClassDefinition</font>) of Classification classes IRDIs and its corresponding definition pairs. This map also contains class attribute information. This map is only used for Classification Standard Taxonomy (<b>CST</b>) property block information. This map differs from <font face=\"courier\" height=\"10\">clsClassDescriptors</font> as it contains the information for property blocks that belong to the returned classes.",
+          "name": "clsBlockDescriptors"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Any failures will be returned in the service data list of partial errors.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure representing the classification information returned by FindClassificationInfo operation.",
+      "isPublished": "false",
+      "name": "FindClassificationInfoResponse",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClsObjectsDefinitionMap"
+            }
+          ],
+          "description": "A map (WorkspaceObject/ClassificationObjectInfo) of workspace objects to a list of Classification objects.",
+          "name": "clsObjectDefMap"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::KeyLOVDefinitionMap"
+            }
+          ],
+          "description": "A map (string/KeyLOVDefinition) of Classification KeyLOV IDs and its definitions pairs .",
+          "name": "keyLOVDefMap"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassAttributeDefinitionMap"
+            }
+          ],
+          "description": "A map (string/ClassAttributesDefinition) of Classification class or view IDs and its definition pairs .",
+          "name": "clsAttrdefMap"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassDefinitionMap"
+            }
+          ],
+          "description": "A map (string/ClassDefinition) of Classification class or view IDs and its corresponding definition pairs.",
+          "name": "clsDefMap"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassParentsMap"
+            }
+          ],
+          "description": "A map (string/ClassParents) of Classification classes or view IDs and its parents' definition pairs.",
+          "name": "clsParentsMap"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassChildrenMap"
+            }
+          ],
+          "description": "A map (string/ClassChildren) of Classification classes or view IDs and its children's definition pairs.",
+          "name": "clsChildrenMap"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Any failures will be returned in the service data list of partial errors.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure representing the classification information returned by FindClassifications operation.",
+      "isPublished": "false",
+      "name": "FindClassificationsResponse",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::AttributeFormat"
+            }
+          ],
+          "description": "Attribute format definition.",
+          "name": "formatDefinition"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Unit display name associated with this attribute in this unit system.",
+          "name": "unitName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Default value of this Class attribute. This can be an empty string indicating no default value.",
+          "name": "defaultValue"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Minimum value constraint of this Class attribute. This can be an empty string indicating no minimum value constraint.<br />Note: Only applicable to numerical formats of attributes.",
+          "name": "minimumValue"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Maximum value constraint of this Class attribute. This can be an empty string indicating no maximum value constraint.<br />Note: Only applicable to numerical formats of attributes.",
+          "name": "maximumValue"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure representing format details.",
+      "isPublished": "false",
+      "name": "FormatProperties",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::AttributeFormat"
+            }
+          ],
+          "description": "Attribute format definition.",
+          "name": "formatDefinition"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Unit display name associated with this attribute in this unit system.",
+          "name": "unitName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Default value of this Class attribute. This can be an empty string indicating no default value.",
+          "name": "defaultValue"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Minimum value constraint of this Class attribute. This can be an empty string indicating no minimum value constraint.<br />Note: Only applicable to numerical formats of attributes.",
+          "name": "minimumValue"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Maximum value constraint of this Class attribute. This can be an empty string indicating no maximum value constraint.<br />Note: Only applicable to numerical formats of attributes.",
+          "name": "maximumValue"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure representing format details.",
+      "isPublished": "false",
+      "name": "FormatProperties",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "KeyLOV (<b>stxt</b> or <b>Cst0KeyLOVDefinition</b>) options to show/hide keys. Valid values are: <br /><ul><ul><li type=\"disc\">0 = Show key </li><li type=\"disc\">1 = Hide key</li></ul></ul>",
+          "name": "keyLOVOptions"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::KeyLOVEntry"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of KeyLOV (<b>stxt</b> or <b>Cst0KeyLOVDefinition</b>) entries.",
+          "name": "keyLOVEntries"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "Owning Site (<b>POM_imc</b>) of this keyLOV (<b>stxt </b>or <b>Cst0KeyLOVDefinition</b>) object.",
+          "name": "owningSite"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::BusinessObject"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of sites (<b>POM_imc</b>) where this KeyLOV (<b>stxt</b> or <b>Cst0KeyLOVDefinition</b>) is shared using Multisite operations.",
+          "name": "shatedSites"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::PropertyInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "keyLOV (<b>stxt </b>or <b>Cst0KeyLOVDefinition</b>) properties containing property ids and their values.",
+          "name": "keyLOVProperties"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure representing KeyLOV (<b>stxt </b>or <b>Cst0KeyLOVDefinition</b>) definition.",
+      "isPublished": "false",
+      "name": "KeyLOVDef",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Classification attribute Id.",
+          "name": "attributeId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::FormatProperties"
+            }
+          ],
+          "description": "Attribute format definition in metric unit system.",
+          "name": "metricFormat"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::FormatProperties"
+            }
+          ],
+          "description": "Attribute format definition in non-metric unit system.",
+          "name": "nonMetricFormat"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Array size or the number of values for this attribute.<br /><ul><ul><li type=\"disc\">If single valued (nonarray), then arraySize = 1 </li><li type=\"disc\">If multi valued (array), then arraySize >= 1 corresponding to the size of the array defined in the attribute definition.</li></ul></ul>",
+          "name": "arraySize"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Attribute property flags represented as a single integer. To access individual property flags, a bitwise operation will be required by the client.Valid values are:<br /><ul><ul><li type=\"disc\">ATTR_vla          = (1 << 0) </li><li type=\"disc\">ATTR_external_vla = (1 << 1) </li><li type=\"disc\">ATTR_mandatory     = (1 << 2) </li><li type=\"disc\">ATTR_protected     = (1 << 3) </li><li type=\"disc\">ATTR_unique         = (1 << 4) </li><li type=\"disc\">ATTR_propagated     = (1 << 5) </li><li type=\"disc\">ATTR_localValue     = (1 << 6) </li><li type=\"disc\">ATTR_reference     = (1 << 7) </li><li type=\"disc\">ATTR_auto_computed = (1 << 15) </li><li type=\"disc\">ATTR_hidden         = (1 << 20) </li><li type=\"disc\">ATTR_localizable = ( 1 << 22 )</li></ul></ul>",
+          "name": "options"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ExtendedProperties"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of classification class attributes' extended metadata properties.",
+          "name": "extendedProperties"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClsProperty"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of classification attributes' property values. These properties could be attribute Id, attribute Name, attribute shortName etc.",
+          "name": "attributeProperties"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure representing class attribute details.",
+      "isPublished": "false",
+      "name": "ClassAttribute",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "KeyLOV (<b>stxt</b>) options to Show/Hide keys. Valid values are: <br /><ul><ul><li type=\"disc\">0 = Show key </li><li type=\"disc\">1 = Hide key</li></ul></ul>",
+          "name": "keyLOVOptions"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::KeyLOVEntry"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of KeyLOV (<b>stxt</b>) entries.",
+          "name": "keyLOVEntries"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "Owning Site (<b>POM_imc</b>) of this keyLOV (<b>stxt</b>) object.",
+          "name": "owningSite"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::BusinessObject"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of sites (<b>POM_imc</b>) where this KeyLOV (<b>stxt</b>) is shared using Multisite operations.",
+          "name": "sharedSites"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClsProperty"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "keyLOV (<b>stxt</b>) properties like keyLOV Id, name etc. details.",
+          "name": "keyLOVProperties"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure representing KeyLOV (<b>stxt</b>) definition.",
+      "isPublished": "false",
+      "name": "KeyLOVDefinition",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "String representing a Key of a KeyLOV (<b>stxt</b>) entry.",
+          "name": "keyLOVkey"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "String representing a Value of the KeyLOV (<b>stxt</b>) entry.",
+          "name": "keyLOVValue"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "bool"
+            }
+          ],
+          "description": "Flag indicating whether this KeyLOV (<b>stxt</b>) entry is deprecated.<br />If true, keyLOV entry is deprecated and can not be used for new classifications otherwise, it can be used for new classifications.",
+          "name": "isDeprecated"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure representing KeyLOV (<b>stxt</b>) Entry.",
+      "isPublished": "false",
+      "name": "KeyLOVEntry",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "String representing a Key of a KeyLOV (<b>stxt</b> or <b>Cst0KeyLOVDefinition</b>) entry.",
+          "name": "keyLOVkey"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "String representing a Value of the KeyLOV (<b>stxt</b> or <b>Cst0KeyLOVDefinition</b>) entry.",
+          "name": "keyLOVValue"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "bool"
+            }
+          ],
+          "description": "Indicating whether this KeyLOV (<b>stxt</b> or <b>Cst0KeyLOVDefinition</b>) entry is deprecated.<br />If true, keyLOV entry is deprecated and cannot be used for new classifications; otherwise, it can be used for new classifications.",
+          "name": "isDeprecated"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure representing KeyLOV (<b>stxt</b> or <b>Cst0KeyLOVDefinition</b>) Entry.",
+      "isPublished": "false",
+      "name": "KeyLOVEntry",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Internal value stored into database.",
+          "name": "internalValue"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Display value for a classification property. This will be same as that of <font face=\"courier\" height=\"10\">internalValue</font> for all classification attributes except keyLOV (<b>stxt</b>) attributes as they will have &quot;entry key&quot; as <font face=\"courier\" height=\"10\">internalValue</font> and &quot;entry key entry value&quot; or &quot;entry value&quot; as <font face=\"courier\" height=\"10\">displayValue</font>; based on the keyLOV configuration.",
+          "name": "displayValue"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure containing classification property value details.",
+      "isPublished": "false",
+      "name": "PropValue",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "A string representing the type attribute Id of the attribute. This could also be one of the following strings, which are string representations of internal ids:<br /><ul><ul><li type=\"disc\">CLASS_ID</li><li type=\"disc\">CLASS_TYPE</li><li type=\"disc\">CLASS_NAME</li><li type=\"disc\">UNIT_SYSTEM</li><li type=\"disc\">ATTRIBUTE_DEPENDENCY_ATTRIBUTE</li><li type=\"disc\">ATTRIBUTE_DEPENDENCY_CONFIG</li><li type=\"disc\">ATTRIBUTE_NAME</li><li type=\"disc\">ATTRIBUTE_ID</li><li type=\"disc\">USER_DATA_1</li><li type=\"disc\">USER_DATA_2</li><li type=\"disc\">CLASS_SHORT_NAME</li><li type=\"disc\">MODIFICATION_DATE</li></ul></ul>",
+          "name": "propertyId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The name of classification attribute or name of internal identifier for classification header properties like class Id, unit system etc.",
+          "name": "propertyName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::PropValue"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of values for this attribute.",
+          "name": "values"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure representing Classification Property which holds attribute ids and their values.",
+      "isPublished": "false",
+      "name": "PropertyInfo",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::ClassificationObjectInfo2"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of created or updated Classification objects.",
+          "name": "classificationObjects"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Any failures will be returned in the service data list of partial errors.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "Holds the classification objects returned by the saveClassificationObjects2 operation.",
+      "isPublished": "false",
+      "name": "SaveClassificationObjects2Response",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassificationObjectInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of created or updated Classification objects.",
+          "name": "classificationObjects"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Any failures will be returned in the service data list of partial errors.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Holds the classification objects returned by the <font face=\"courier\" height=\"10\">saveClassificationObjects</font> operation.",
+      "isPublished": "false",
+      "name": "SaveClassificationObjectsResponse",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Class attribute to be searched for. Valid values are:<br /><ul><ul><li type=\"disc\">CLASS_ID</li><li type=\"disc\">CLASS_NAME</li></ul></ul>",
+          "name": "searchAttribute"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Query string to search the class by.",
+          "name": "searchString"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Option to sort the returned results. Valid values are:<br /><ul><ul><li type=\"disc\">-600 : Class Id</li><li type=\"disc\">-607 : Class Name</li></ul></ul>",
+          "name": "sortOption"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "A structure defining the search criteria used for searching classes from classification hierarchy. Also allows sorting the results based on a predefined criterion.",
+      "isPublished": "false",
+      "name": "SearchCriteria",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The unit ID.",
+          "name": "unitID"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The measure of the unit (ex: length).",
+          "name": "measure"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Unit Display name (Ex: ft /s^2).",
+          "name": "displayName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "System of unit, (Ex: Metric).",
+          "name": "systemOfMeasurement"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "An individual unit (ex: Foot, Milimeter, or Watt).",
+      "isPublished": "false",
+      "name": "Unit",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Classification attribute Id/IRDI.",
+          "name": "attributeId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::FormatProperties"
+            }
+          ],
+          "description": "Attribute format definition in metric unit system.",
+          "name": "metricFormat"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::FormatProperties"
+            }
+          ],
+          "description": "Attribute format definition in non-metric unit system.",
+          "name": "nonMetricFormat"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Array size or the number of values for this attribute.<br /><ul><ul><li type=\"disc\">If single valued (nonarray), then arraySize = 0 </li><li type=\"disc\">If limited multi valued (array), then arraySize &gt; 0 corresponding to the size of the array defined in the attribute definition.</li><li type=\"disc\">If unlimited multi valued (array), then arraySize = -1</li></ul></ul>",
+          "name": "arraySize"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Attribute property flags represented as a single integer. To access individual property flags, a bitwise operation will be required by the client. Valid values are:<br /><ul><ul><li type=\"disc\">ATTR_vla = 1</li><li type=\"disc\">ATTR_external_vla = 2 </li><li type=\"disc\">ATTR_mandatory = 4</li><li type=\"disc\">ATTR_protected = 8</li><li type=\"disc\">ATTR_unique = 16</li><li type=\"disc\">ATTR_propagated = 32</li><li type=\"disc\">ATTR_localValue = 64 </li><li type=\"disc\">ATTR_reference = 128</li><li type=\"disc\">ATTR_auto_computed = 256</li><li type=\"disc\">ATTR_hidden = 512</li><li type=\"disc\">ATTR_localizable = 1024</li></ul></ul>",
+          "name": "options"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::PropertyInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of classification attributes' property values. These properties could be attribute Id, attribute Name, attribute shortName etc.",
+          "name": "attributeProperties"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::KeyLOVDef"
+            }
+          ],
+          "description": "Configured KeyLOV definition information for this attribute.",
+          "name": "attributeKeyLOVDef"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure representing class attribute details.",
+      "isPublished": "false",
+      "name": "ClassAttribute",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassAttribute"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of attributes defined for the classification class.",
+          "name": "classAttributes"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ConfiguredKeyLOVDefinitionMap"
+            }
+          ],
+          "description": "A map (int/KeyLOVDefinition) of attribute ID and KeyLOV (<b>stxt</b>) definition pairs, based on dependency configuration of an attribute.",
+          "name": "configKeyLOVMap"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "The structure containing list of Classification class attributes definition and configured KeyLOV (<b>stxt</b>) definition.",
+      "isPublished": "false",
+      "name": "ClassAttributesDefinition",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassDefinition"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of class' children details.",
+          "name": "children"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure representing classification class' children details.",
+      "isPublished": "false",
+      "name": "ClassChildren",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassDefinition"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of class' children details.",
+          "name": "children"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Structure representing classification class' children details.",
+      "isPublished": "false",
+      "name": "ClassChildren",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Number of child classes for this class.",
+          "name": "childCount"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Total number of classification objects instantiated in this class or any of its descendants.",
+          "name": "instanceCount"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Number of Views defined for this class.",
+          "name": "viewCount"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Property describing classification class' flags represented as a single integer.<br />To access individual property flags, a bitwise operation will be required by the client. Valid values are:<br /><ul><ul><li type=\"disc\">CLASS_falg_englishUnitBase = (1 << 0 )</li><li type=\"disc\">CLASS_flag_isGroup          = (1 << 1)</li><li type=\"disc\">CLASS_flag_unit_system_both = (1 << 2)</li><li type=\"disc\">CLASS_flag_isStorrageClass  = (1 << 4)</li><li type=\"disc\">CLASS_flag_isAssembly       = (1 << 5)</li></ul></ul>",
+          "name": "options"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassDocuments"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of attached Icons, Images and NamedRefs to this class.",
+          "name": "documents"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClsProperty"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A list of classification class properties like class Id, Name, ShortName etc. details.",
+          "name": "properties"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Structure holding properties information about the given class.",
+      "isPublished": "false",
+      "name": "ClassDefinition",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    }
+  ],
+  "TcVersion": "tc11000.2.0",
+  "Typedef": [
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::BlockData"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "A map (string, blockData) of block IRDI to the list of block data.",
+      "isPublished": "false",
+      "name": "BlockDataMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::BlockData"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "A map (string, blockData) of block IRDI to the list of block data.",
+      "isPublished": "false",
+      "name": "BlockDataMap2",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassDefinition"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "The list of Classification Class or View ID and corresponding definition.",
+      "isPublished": "false",
+      "name": "ClassDefinitionMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassDefinition"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "The list of Classification Class or View ID / IRDIs and corresponding definition.",
+      "isPublished": "false",
+      "name": "ClassDefinitionMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassDefinition"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "The list of Classification Class or View ID / IRDIs and corresponding definition.",
+      "isPublished": "false",
+      "name": "ClassDefinitionMap2",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassDefinition"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "The list of Classification Class or View ID / IRDIs and corresponding definition.",
+      "isPublished": "false",
+      "name": "ClassDefinitionMap3",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassParents"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "A map of classification class Id to a list of its parents.",
+      "isPublished": "false",
+      "name": "ClassParentsMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassParents"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "A map of classification class Id / IRDI to a list of its parents.",
+      "isPublished": "false",
+      "name": "ClassParentsMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassParents"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "A map of classification class Id / Irdi to a list of its parents.",
+      "isPublished": "false",
+      "name": "ClassParentsMap2",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassParents"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "A map of classification class Id / Irdi to a list of its parents.",
+      "isPublished": "false",
+      "name": "ClassParentsMap3",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::WorkspaceObject"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassificationObjects"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "Map of workspace object to a list of its classification objects or standalone classification objects with a matching ID to that of the WSO. If an object is classified then map value will have all its classification's information. If object is not classified, but system found standalone classification objects, then the map values will have standalone classification object's information. In the case of a standalone classification, the standalone classification&rsquo;s WSO tag will be a NULLTAG.",
+      "isPublished": "false",
+      "name": "ClassificationObjectsDefMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::WorkspaceObject"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification::ClassificationObjects2"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "Map of workspace object to a list of its classification objects or standalone classification objects with a matching ID to that of the <b>WorkspaceObject</b>. If an object is classified then map value will have all its classification's information. If object is not classified, but system found standalone classification objects, then the map values will have standalone classification object's information. In the case of a standalone classification, the standalone classification&rsquo;s <b>WorkspaceObject</b> will be a NULLTAG.",
+      "isPublished": "false",
+      "name": "ClassificationObjectsDefMap2",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassDefinition"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "A map of classification class Id / IRDI to a list of block property class definitions. Used by Classification Standard Taxonomy (CST) when a class has block properties.",
+      "isPublished": "false",
+      "name": "BlockDefinitionMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::WorkspaceObject"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::ClassificationObjects3"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "Map of workspace object to a list of its classification objects or standalone classification objects with a matching ID to that of the WorkspaceObject. If an object is classified then map value will have all its classification's information. If object is not classified, but system found standalone classification objects, then the map values will have standalone classification object's information. In the case of a standalone classification, the standalone classification&rsquo;s WorkspaceObject will be a NULLTAG.",
+      "isPublished": "false",
+      "name": "ClassificationObjectsDefMap3",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::WorkspaceObject"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassificationObjects"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "Map of workspace object to a list of its classification objects. If an object is classified then map value will have all its classification's information. If object is not classified but system found standalone classification objects then the map values will have standalone classification object's information.",
+      "isPublished": "false",
+      "name": "ClsObjectsDefinitionMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::KeyLOVDefinition"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "A list of attribute ID and corresponding configured KeyLOV (<b>stxt</b>) definition based on dependency configuration set on class attribute.",
+      "isPublished": "false",
+      "name": "ConfiguredKeyLOVDefinitionMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::KeyLOVDef"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "The list of KeyLOV ids and corresponding KeyLOV definition. KeyLOV id and definition will be <b>stxt </b>BO if the class is a from traditional classification, or from <b>Cst0KeyLOVDefinition</b> BO if it is from Classification Standard Taxonomy (<b>CST</b>).",
+      "isPublished": "false",
+      "name": "KeyLOVDefMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::KeyLOVDef"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "The list of KeyLOV ids and corresponding KeyLOV definition. KeyLOV id and definition will be <b>stxt</b> business object if the class is a from traditional classification, or from <b>Cst0KeyLOVDefinition</b> business object if it is from Classification Standard Taxonomy (<b>CST</b>).",
+      "isPublished": "false",
+      "name": "KeyLOVDefMap2",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::KeyLOVDef"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "The list of KeyLOV ids and corresponding KeyLOV definition. KeyLOV id and definition will be <b>stxt</b> business object if the class is a from traditional classification, or from <b>Cst0KeyLOVDefinition</b> business object if it is from Classification Standard Taxonomy <b>(CST</b>).",
+      "isPublished": "false",
+      "name": "KeyLOVDefMap3",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::KeyLOVDefinition"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "The list of KeyLOV (<b>stxt</b>) id and corresponding KeyLOV (<b>stxt</b>) definition.",
+      "isPublished": "false",
+      "name": "KeyLOVDefinitionMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification::Unit"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "A map of (String, Unit) describing all the units in a given measure (ex: Length, Power, Time, etc.)",
+      "isPublished": "false",
+      "name": "UnitMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            },
+            {
+              "dataType": "bool"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.2.0",
+      "description": "Map of <b>WorkspaceObject</b> to corresponding Boolean visibility value.",
+      "isPublished": "false",
+      "name": "Wso2ClassifyMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_06::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassDefinition"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "A map of classification class Id / IRDI to a list of block property class definitions. Used by Classification Standard Taxonomy (<b>CST</b>) when a class has block properties.",
+      "isPublished": "false",
+      "name": "BlockDefinitionMap2",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassDefinition"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "A map of classification class Id / IRDI to a list of block property class definitions. Used by Classification Standard Taxonomy (CST) when a class has block properties.",
+      "isPublished": "false",
+      "name": "BlockDefinitionMap3",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassAttributesDefinition"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "The list of Classification Class or View ID and corresponding attributes definition.",
+      "isPublished": "false",
+      "name": "ClassAttributeDefinitionMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2017_12::Author::ClassChildren"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp03.4.0",
+      "description": "A map of classification class Id to a list of its children.",
+      "isPublished": "false",
+      "name": "ClassChildrenMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2017_12::Author",
+      "scope": "Ics1::Soa::IcsAw::Author"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassChildren"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.0.0",
+      "description": "A map of classification class Id / IRDI to a list of its children.",
+      "isPublished": "false",
+      "name": "ClassChildrenMap",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassChildren"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.1.0",
+      "description": "A map of classification class Id / Irdi to a list of its children.",
+      "isPublished": "false",
+      "name": "ClassChildrenMap2",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2018_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Ics1::Soa::Internal::IcsAw::_2018_05::Classification::ClassChildren"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "Awp04.3.0",
+      "description": "A map of classification class Id / Irdi to a list of its children.",
+      "isPublished": "false",
+      "name": "ClassChildrenMap3",
+      "namespace": "Ics1::Soa::Internal::IcsAw::_2019_12::Classification",
+      "scope": "Ics1::Soa::IcsAw::Classification"
+    }
+  ],
+  "xmlns": "http://teamcenter.com/BusinessModel/TcBusinessData"
+}

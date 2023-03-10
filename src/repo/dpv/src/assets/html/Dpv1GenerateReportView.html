@@ -1,0 +1,18 @@
+<aw-panel>
+    <aw-panel-body>
+        <div class="sw-column">
+            <div class="sw-row">
+                <div class="sw-column w-3">
+                    <aw-listbox prop="data.repExecPriority" list="data.repExecPriorityList.dbValue"></aw-listbox>
+                </div>
+            </div>
+            <div class="sw-row">
+                <aw-tab-set class="awTabs" tabs="data.queryParamsTabs" sub-panel-context='{...subPanelContext,qryTypeState:data.qryTypeState,chartSettingsState:data.chartSettingsState,statFeatureAttrState:data.statFeatureAttrState,statFeatureState:data.statFeatureState,dataFilterState:data.dataFilterState}'></aw-tab-set>
+            </div>
+        </div>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button class="medium" button-type="base" action="closePopupWindow" size="auto">{{i18n.closeBtn}}</aw-button>
+        <aw-button class="medium" action="generateReport" size="auto">{{i18n.generateReportBtn}}</aw-button>
+    </aw-panel-footer>
+</aw-panel>

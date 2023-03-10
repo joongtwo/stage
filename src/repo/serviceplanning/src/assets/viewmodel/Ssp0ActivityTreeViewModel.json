@@ -1,0 +1,419 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "openRootActivityBatchAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getRootActivity"
+                },
+                {
+                    "action": "addRootObjectInCtx"
+                }
+            ]
+        },
+        "addRootObjectInCtx": {
+            "actionType": "JSFunction",
+            "method": "registerCtx",
+            "inputData": {
+                "name": "rootActivityOfTree",
+                "value": "{{data.dataProviders.activityDataProvider.viewModelCollection}}"
+            },
+            "deps": "js/appCtxService"
+        },
+        "getRootActivity": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "attributes": [
+                    "bl_me_activity_lines",
+                    "Mfg0equivalence_id",
+                    "object_id"
+                ],
+                "objects": [
+                    {
+                        "uid": "{{data.treeLoadInput.parentNode.uid}}"
+                    }
+                ]
+            },
+            "policy": {
+                "types": [
+                    {
+                        "name": "MECfgLine",
+                        "properties": [
+                            {
+                                "name": "al_activity_awp0HasChildren"
+                            },
+                            {
+                                "name": "al_activity_time_system_code"
+                            },
+                            {
+                                "name": "al_activity_time_system_unit_time"
+                            },
+                            {
+                                "name": "al_activity_work_time"
+                            },
+                            {
+                                "name": "al_activity_Mfg0quantity"
+                            },
+                            {
+                                "name": "al_activity_ssp0ActivityExecutionType"
+                            },
+                            {
+                                "name": "al_activity_time_system_frequency"
+                            },
+                            {
+                                "name": "al_activity_long_description"
+                            },
+                            {
+                                "name": "al_activity_time_system_category"
+                            },
+                            {
+                                "name": "me_cl_display_string"
+                            },
+                            {
+                                "name": "me_cl_parent"
+                            },
+                            {
+                                "name": "me_cl_window"
+                            },
+                            {
+                                "name": "me_cl_child_lines"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "outputData": {
+                "treeLoadResult": "{{function:setActivityNodeProperties}}"
+            },
+            "deps": "js/ssp0ActivitiesTreeService"
+        },
+        "loadActivitiesTableColumns": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadActivitiesTableColumns",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "dataProviders.activityDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/ssp0ActivitiesTreeService"
+        },
+        "retrieveTreeLoadResult": {
+            "actionType": "JSFunction",
+            "method": "retrieveTreeLoadResult",
+            "inputData": {
+                "treeNode": "{{data.treeLoadInput.parentNode}}"
+            },
+            "outputData": {
+                "treeLoadResult": "{{function:retrieveTreeLoadResult}}"
+            },
+            "deps": "js/ssp0ActivitiesTreeService"
+        },
+        "loadChildrenBatchAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "retrieveTreeLoadResult",
+                    "condition": "conditions.checkIfNodeIsLoaded"
+                },
+                {
+                    "action": "getChildren"
+                },
+                {
+                    "action": "getChildNodesOfActivityNode"
+                }
+            ]
+        },
+        "getChildren": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "attributes": [
+                    "me_cl_child_lines"
+                ],
+                "objects": [
+                    {
+                        "uid": "{{data.treeLoadInput.parentNode.uid}}"
+                    }
+                ]
+            },
+            "outputData": {
+                "uids": "{{function:getChildNodesOfActivity}}"
+            },
+            "deps": "js/ssp0ActivitiesTreeService"
+        },
+        "selectionChanged": {
+            "actionType": "JSFunction",
+            "method": "selectionChanged",
+            "inputData": {
+                "selectedActivity": "{{data.dataProviders.activityDataProvider.selectedObjects[0]}}"
+            },
+            "deps": "js/ssp0ActivitiesTreeService"
+        },
+        "reloadActivitiesTree": {
+            "actionType": "JSFunction",
+            "method": "reloadActivitiesTree",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.activityDataProvider}}"
+            },
+            "deps": "js/ssp0ActivitiesTreeService"
+        },
+        "newNodeAdded": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "attributes": [
+                    "bl_me_activity_lines",
+                    "Mfg0equivalence_id",
+                    "object_id",
+                    "al_activity_awp0HasChildren",
+                    "al_activity_time_system_code",
+                    "al_activity_time_system_unit_time",
+                    "al_activity_work_time",
+                    "al_activity_Mfg0quantity",
+                    "al_activity_ssp0ActivityExecutionType",
+                    "al_activity_time_system_frequency",
+                    "al_activity_long_description",
+                    "al_activity_time_system_category",
+                    "me_cl_display_string",
+                    "me_cl_window",
+                    "me_cl_child_lines"
+                ],
+                "objects": [
+                    {
+                        "uid": "{{data.eventMap['SSP0ActivityTree.newNodeAdded'].childNodeUid}}"
+                    }
+                ]
+            },
+            "outputData": {
+                "treeLoadResult": "{{function:newNodeAdded}}"
+            },
+            "deps": "js/ssp0ActivityUtilityService"
+        },
+        "newNodeAdded2": {
+            "actionType": "JSFunction",
+            "method": "newNodeAdded",
+            "inputData": {
+                "nodeToBeExpanded": "{{data.eventMap['SSP0ActivityTree.newNodeAdded'].soaResult}}",
+                "newlyAddedNode": "{{data.eventMap['SSP0ActivityTree.childNodeUid']}}",
+                "dataProvider": "{{data.dataProviders.activityDataProvider}}"
+            },
+            "deps": "js/ssp0ActivityUtilityService"
+        },
+        "expandSelectedNode": {
+            "actionType": "JSFunction",
+            "method": "expandSelectedNode",
+            "inputData": {
+                "nodeToBeExpanded": "{{data.eventMap['SSP0ActivityTree.expandSelectedNode'].nodeToBeExpanded}}",
+                "nodeToBeSelected": "{{data.eventMap['SSP0ActivityTree.expandSelectedNode'].nodeToBeSelected}}",
+                "dataProvider": "{{data.dataProviders.activityDataProvider}}"
+            },
+            "deps": "js/ssp0ActivityUtilityService"
+        },
+        "getChildNodesOfActivityNode": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "objects": "{{data.uids}}"
+            },
+            "policy": {
+                "types": [
+                    {
+                        "name": "MECfgLine",
+                        "properties": [
+                            {
+                                "name": "me_cl_child_lines"
+                            },
+                            {
+                                "name": "al_activity_awp0HasChildren"
+                            },
+                            {
+                                "name": "al_activity_time_system_code"
+                            },
+                            {
+                                "name": "al_activity_time_system_unit_time"
+                            },
+                            {
+                                "name": "al_activity_work_time"
+                            },
+                            {
+                                "name": "al_activity_Mfg0quantity"
+                            },
+                            {
+                                "name": "al_activity_ssp0ActivityExecutionType"
+                            },
+                            {
+                                "name": "al_activity_time_system_frequency"
+                            },
+                            {
+                                "name": "al_activity_long_description"
+                            },
+                            {
+                                "name": "al_activity_time_system_category"
+                            },
+                            {
+                                "name": "me_cl_parent"
+                            },
+                            {
+                                "name": "me_cl_display_string"
+                            },
+                            {
+                                "name": "me_cl_window"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "outputData": {
+                "treeLoadResult": "{{function:setActivityNodeProperties}}"
+            },
+            "deps": "js/ssp0ActivitiesTreeService"
+        },
+        "editActivitiesTreeTable": {
+            "actionType": "JSFunction",
+            "method": "startEditTable",
+            "inputData": {},
+            "deps": "js/ssp0ActivitiesTreeService"
+        },
+        "setActivityProperty": {
+            "actionType": "JSFunction",
+            "method": "setActivityProperty",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.activityDataProvider}}"
+            },
+            "deps": "js/ssp0ActivityUtilityService"
+        }
+    },
+    "dataProviders": {
+        "activityDataProvider": {
+            "initializeAction": "openRootActivityBatchAction",
+            "action": "loadChildrenBatchAction",
+            "treeLoadResult": "{{data.treeLoadResult}}",
+            "inputData": {
+                "accessMode": "tree",
+                "topNodeUid": "{{ctx.state.params.uid}}"
+            },
+            "editConfig": {
+                "startEditAction": "editActivitiesTreeTable",
+                "saveEditAction": "setActivityProperty",
+                "identifier": "uid"
+            },
+            "selectionModelMode": "multiple"
+        }
+    },
+    "columnProviders": {
+        "activityColumnProvider": {
+            "loadColumnAction": "loadActivitiesTableColumns",
+            "columns": "{{data.columns}}",
+            "frozenColumnIndex": -1
+        }
+    },
+    "grids": {
+        "activitiesTreeTable": {
+            "dataProvider": "activityDataProvider",
+            "columnProvider": "activityColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": false,
+                "enablePinning": false,
+                "enableSorting": false
+            }
+        }
+    },
+    "ctx": {},
+    "conditions": {
+        "checkIfNodeIsLoaded": {
+            "expression": "data.treeLoadInput.parentNode.alreadyExpanded == true"
+        },
+        "checkIfNodeIsNotLoaded": {
+            "expression": "data.treeLoadInput.parentNode.alreadyExpanded == false"
+        }
+    },
+    "i18n": {
+        "nameValueColumn": [
+            "timeAnalysisMessages"
+        ],
+        "descriptionValueColumn": [
+            "timeAnalysisMessages"
+        ],
+        "codeValueColumn": [
+            "timeAnalysisMessages"
+        ],
+        "unitTimeValueColumn": [
+            "timeAnalysisMessages"
+        ],
+        "quantityValueColumn": [
+            "timeAnalysisMessages"
+        ],
+        "frequencyValueColumn": [
+            "timeAnalysisMessages"
+        ],
+        "workTimeValueColumn": [
+            "timeAnalysisMessages"
+        ],
+        "categoryValueColumn": [
+            "timeAnalysisMessages"
+        ],
+        "executionTypeValueColumn": [
+            "timeAnalysisMessages"
+        ]
+    },
+    "functions": {
+        "newNodeAdded": {
+            "functionName": "newNodeAdded",
+            "parameters": [
+                "{{data.dataProviders.activityDataProvider}}"
+            ]
+        },
+        "getChildNodesOfActivity": {
+            "functionName": "getChildNodesOfActivity",
+            "parameters": [
+                "{{data.treeLoadInput.parentNode}}"
+            ]
+        },
+        "setActivityNodeProperties": {
+            "functionName": "setActivityNodeProperties",
+            "parameters": [
+                "{{data.treeLoadInput.parentNode}}"
+            ]
+        },
+        "retrieveTreeLoadResult": {
+            "functionName": "retrieveTreeLoadResult",
+            "parameters": [
+                "{{data.treeLoadInput.parentNode}}"
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "SSP0ActivityTree.expandSelectedNode",
+            "action": "expandSelectedNode",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "SSP0ActivityTree.newNodeAdded",
+            "action": "newNodeAdded",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "reloadActivitiesTree",
+            "action": "reloadActivitiesTree"
+        },
+        {
+            "eventId": "activityDataProvider.selectionChangeEvent",
+            "action": "selectionChanged",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "expandSelectedActivity",
+            "action": "expandSelectedActivity",
+            "cacheEventData": true
+        }
+    ]
+}

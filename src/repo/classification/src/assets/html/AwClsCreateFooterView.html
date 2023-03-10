@@ -1,0 +1,17 @@
+<div class="sw-row justify-right justify-bottom aw-clspanel-createFooter"
+    exist-when="props.classifyState.value.panelMode === 0 || props.classifyState.value.pasteClicked === true || props.classifyState.value.standaloneExists === true">
+    <aw-button size="auto" visible-when="props.classifyState.value.pasteClicked === true || props.classifyState.value.standaloneExists === true"
+        button-type="negative" action="cancelEdit" default="false">
+        <aw-i18n>i18n.cancel</aw-i18n>
+    </aw-button>
+    <aw-button size="auto" visible-when="props.classifyState.value.pasteClicked === false && props.classifyState.value.standaloneExists !== true"
+        button-type="negative" action="cancelEditOperation" default="false">
+        <aw-i18n>i18n.cancel</aw-i18n>
+    </aw-button>
+    <aw-button class="aw-clspanel-classifyButtonLast" size="auto" action="save"
+        visible-when="(props.classifyState.value.panelMode === -1 && props.classifyState.value.selectedClass.className) ||
+                    (props.classifyState.value.panelMode !== -1 && props.classifyState.value.selectedClass.type === 'StorageClass' &&
+                (props.classifyState.editClassCmd.clsObject === undefined || props.classifyState.value.selectedClass.id !== props.classifyState.value.editClassCmd.targetClassID))">
+        <aw-i18n>{!conditions.isStandAloneCmdSelected ? i18n.Classify: i18n.create}</aw-i18n>
+    </aw-button>
+</div>

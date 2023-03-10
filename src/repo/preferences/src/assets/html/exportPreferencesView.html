@@ -1,0 +1,16 @@
+<aw-command-panel caption="i18n.exportPreferencesPanelTitle">
+     <aw-panel-body>
+        <aw-panel-section>
+            <aw-widget prop="data.fnd0FileName" hint="textbox"></aw-widget>
+            <aw-break></aw-break>
+            <aw-listbox prop="data.fnd0Location" is-required="true"></aw-listbox>
+            <aw-break></aw-break>
+            <aw-listbox prop="data.fnd0ProductArea" exist-when="conditions.isSiteLocation"></aw-listbox>
+        </aw-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="exportPreferences" visible-when="conditions.showExportBtn">
+            <aw-i18n>i18n.exportPreferencesBtn</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

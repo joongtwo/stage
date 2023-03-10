@@ -1,0 +1,386 @@
+{
+"schemaVersion" : "1.0.0",
+"props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "data":
+    {
+        "serialNumber":
+        {
+            "displayName": "{{i18n.serialNumber}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "dbValue":""
+        },
+        "lotNumber":
+        {
+            "displayName": "{{i18n.lotNumber}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "dbValue":""
+        }
+    },
+
+    "actions":
+    {
+        "init": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getIsSerialLotPropertyName"
+                },
+                {
+                    "action": "updatePanelData"
+                }
+            ]
+        },
+
+        "getIsSerialLotPropertyName": {
+            "actionType": "JSFunction",
+            "method": "getIsSerialLotPropertyName",
+            "inputData":
+            {
+                "preferences": "{{ctx.preferences}}"
+            },
+            "deps": "js/Ewi0EditSerialAndLotService"
+        },
+
+        "updatePanelData":
+        {
+            "actionType": "JSFunction",
+            "method": "updatePanelData",
+            "inputData":
+            {
+                "selectedObj": "{{ctx.panelContext}}"
+            },
+            "outputData":
+            {
+                "isSerial": "isSerial",
+                "isLot": "isLot",
+                "serialNumber.dbValue": "serialNumber",
+                "lotNumber.dbValue": "lotNumber",
+                "selectedObj": "selectedObj",
+                "orgSerialNumber": "orgSerialNumber",
+                "orgLotNumber": "orgLotNumber"
+            },
+            "deps": "js/Ewi0EditSerialAndLotService"
+        },
+
+        "getNextSelection":
+        {
+            "actionType": "JSFunction",
+            "method": "getNextSelection",
+            "inputData": {
+                "value": "{{data.eventData}}"
+            },
+            "outputData": {
+                "nextSelection": ""
+            },
+            "deps": "js/Ewi0EditSerialAndLotService"
+        },
+
+        "updateSelectionData":
+        {
+            "actionType": "JSFunction",
+            "method": "updatePanelData",
+            "inputData":
+            {
+                "selectedObj": "{{data.nextSelection}}"
+            },
+            "outputData":
+            {
+                "isSerial": "isSerial",
+                "isLot": "isLot",
+                "serialNumber.dbValue": "serialNumber",
+                "lotNumber.dbValue": "lotNumber",
+                "selectedObj": "selectedObj",
+                "orgSerialNumber": "orgSerialNumber",
+                "orgLotNumber": "orgLotNumber"
+            },
+            "deps": "js/Ewi0EditSerialAndLotService"
+        },
+
+        "save": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setProperties"
+                },
+                {
+                    "action": "keepValues"
+                }
+            ]
+        },
+
+        "setProperties":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2010-09-DataManagement",
+            "method": "setProperties",
+            "inputData":
+            {
+                "info":
+                [
+                    {
+                        "object": "{{data.selectedObj}}",
+                        "timestamp": "",
+                        "vecNameVal":
+                        [
+                            {
+                                "name": "ewi0SerialNumber",
+                                "values": ["{{data.serialNumber.dbValue}}"]
+                            },
+                            {
+                                "name": "ewi0LotNumber",
+                                "values": ["{{data.lotNumber.dbValue}}"]
+
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+
+        "keepValues":
+        {
+            "actionType": "JSFunction",
+            "method": "keepValues",
+            "inputData":
+            {
+                "serialNumber": "{{data.serialNumber.dbValue}}",
+                "lotNumber": "{{data.lotNumber.dbValue}}"
+            },
+            "outputData":
+            {
+                "orgSerialNumber": "orgSerialNumber",
+                "orgLotNumber": "orgLotNumber"
+            },
+            "deps": "js/Ewi0EditSerialAndLotService"
+        },
+
+        "saveAndUpdatePanel": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setProperties"
+                },
+                {
+                    "action": "updateSelectionData"
+                }
+            ]
+        },
+
+        "saveAndClosePanel": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setProperties"
+                },
+                {
+                    "action": "closePanel"
+                }
+            ]
+        },
+
+        "closePanel":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                 "events":
+                 [
+                      {
+                         "name": "complete",
+                         "eventData":
+                         {
+                             "source": "toolAndInfoPanel"
+                         }
+                     }
+                 ]
+            }
+        },
+
+        "selectionChange": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getNextSelection"
+                },
+                {
+                    "action": "updateSelectionData",
+                    "condition": "!conditions.isDataChanged"
+                },
+                {
+                    "action": "displayUnsavedMsgSelectionChange"
+                }
+            ]
+        },
+
+        "displayUnsavedMsgSelectionChange":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                 "events":
+                 [
+                    {
+                        "name": "editSerialAndLot.unsavedMsgSelectionChange",
+                        "condition": "conditions.isDataChanged"
+                    }
+                 ]
+            }
+        },
+
+        "close": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "closePanel",
+                    "condition": "!conditions.isDataChanged"
+                },
+                {
+                    "action": "displayUnsavedMsgClosingPanel"
+                }
+            ]
+        },
+
+        "displayUnsavedMsgClosingPanel":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                 "events":
+                 [
+                    {
+                        "name": "editSerialAndLot.unsavedMsgClosingPanel",
+                        "condition": "conditions.isDataChanged"
+                    }
+
+                 ]
+            }
+        }
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "editSerialAndLot.closePanel",
+            "action": "closePanel"
+        },
+        {
+            "eventId": "ewi0CloseEditablePanel",
+            "action": "close"
+        },
+        {
+            "eventId": "awTab.selected",
+            "action": "close"
+        },
+        {
+            "eventId": "workinstr.selectionChange",
+            "cacheEventData": true,
+            "action": "selectionChange"
+        },
+        {
+            "eventId": "editSerialAndLot.unsavedMsgSelectionChange",
+            "message": "unsavedMsgSelectionChange"
+        },
+        {
+            "eventId": "editSerialAndLot.unsavedMsgClosingPanel",
+            "message": "unsavedMsgClosingPanel"
+        }
+    ],
+
+    "conditions":
+    {
+        "isLot": {
+            "expression": "data.isLot === true"
+        },
+        "isSerial": {
+            "expression": "data.isSerial === true"
+        },
+        "isDataChanged": {
+            "expression": "data.orgSerialNumber !== data.serialNumber.dbValue || data.orgLotNumber !== data.lotNumber.dbValue"
+        },
+        "isSerialAndLot": {
+            "expression": "conditions.isSerial && conditions.isLot"
+        }
+    },
+
+    "messages":
+    {
+        "unsavedMsgSelectionChange":
+        {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.unsavedEditText}}",
+            "messageTextParams":
+            [
+                 "{{data.selectedObj.props.bl_rev_object_name.uiValue}}"
+            ],
+            "navigationOptions":
+            [
+                {
+                    "option": "Save",
+                    "text": "{{i18n.save}}",
+                    "action": "saveAndUpdatePanel"
+                },
+                {
+                    "option": "Discard",
+                    "text": "{{i18n.discard}}",
+                    "action": "updateSelectionData"
+                }
+            ]
+        },
+
+        "unsavedMsgClosingPanel":
+        {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.unsavedEditText}}",
+            "messageTextParams":
+            [
+                 "{{data.selectedObj.props.bl_rev_object_name.uiValue}}"
+            ],
+            "navigationOptions":
+            [
+                {
+                    "option": "Save",
+                    "text": "{{i18n.save}}",
+                    "action": "saveAndClosePanel"
+                },
+                {
+                    "option": "Discard",
+                    "text": "{{i18n.discard}}",
+                    "action": "closePanel"
+                }
+            ]
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "init"
+    },
+
+    "i18n":
+    {
+        "editSerialAndLotNumber": ["EWIMessages"],
+        "editSerialNumber": ["EWIMessages"],
+        "editLotNumber": ["EWIMessages"],
+        "serialNumber": ["EWIMessages"],
+        "lotNumber": ["EWIMessages"],
+        "save": ["EWIMessages"],
+        "close": ["EWIMessages"],
+        "discard":["EWIMessages"],
+        "unsavedEditText":["EWIMessages"]
+    }
+}

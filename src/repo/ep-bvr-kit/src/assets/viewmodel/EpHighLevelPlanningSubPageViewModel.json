@@ -1,0 +1,177 @@
+{
+    "schemaVersion": "1.0.0",
+    "data" : {
+        "provider":{
+            "label":"{{i18n.highLevelPlanningTaskTitle}}",
+            "priority": 3,
+            "name": "highLevelPlanning",
+            "clientScopeURI": "highLevelPlanning",
+            "nameToken": "highLevelPlanning"
+        },
+        "awSubLocationPref": {
+            "hideRightWall": true
+        },
+        "occContext": {
+            "initialValues": {
+                "selectedModelObjects": [],
+                "viewKey": "",
+                "productContextInfo": null,
+                "elementToPCIMapCount": null,
+                "supportedFeatures": null,
+                "skipReloadOnConfigParamChange": true
+            },
+            "meta": {}
+        },
+        "highLevelPlanningMbomTreeContext": {
+            "tabs": [{
+                "name": "{{i18n.highLevelPlanningMbomTreeTitle}}",
+                "tabKey": "EpHighLevelPlanningMbomTree"
+            }]
+        },
+        "highLevelPlanningProcessLayoutAreaContext": {
+            "tabs": [ {
+                    "name": "{{i18n.highLevelPlanningProcessLayoutAreaTitle}}",
+                    "tabKey": "EpHighLevelPlanningProcessTree"
+                }
+            ],
+            "sharedCommandAnchor": "processLayoutAreaAnchor"
+        },
+        "sharedSelectionData": {
+            "initialValues": {
+                "isPertModeActive": false,
+                "isPRIModeActive": false
+            },
+            "meta": {}
+        },
+        "configurationChipsData":{
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "actions": {
+        "initialize":{
+            "actionType":"batchJob",
+            "steps":[
+                {
+                    "action":"initializeEPPage"
+                },
+                {
+                    "action":"updateVisibleTabs"
+                },
+                {
+                    "action":"initialiseConfigurationChips"
+                }
+            ]
+        },
+
+        "initializeEPPage": {
+            "actionType": "JSFunctionAsync",
+            "method": "initializeEPPage",
+            "inputData": {
+                "provider": "{{data.provider}}"
+            },
+            "outputData": {
+                "stateContext": "stateContext",
+                "propertyPolicyId": "propertyPolicyId"
+            },
+            "deps": "js/epInitializationService"
+        },
+        "updateVisibleTabs": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "showBOPTreeView",
+                    "condition": "!data.sharedSelectionData.isPertModeActive"
+                },
+                {
+                    "action": "showSequenceView",
+                    "condition": "data.sharedSelectionData.isPertModeActive"
+                }
+            ]
+        },
+        "showBOPTreeView": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "highLevelPlanningProcessLayoutAreaContext": {
+                    "tabs": [ {
+                            "name": "{{i18n.highLevelPlanningProcessLayoutAreaTitle}}",
+                            "tabKey": "EpHighLevelPlanningProcessTree"
+                        }
+                    ],
+                    "sharedCommandAnchor": "processLayoutAreaAnchor"
+                }
+            },
+            "outputData": {
+                "highLevelPlanningProcessLayoutAreaContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "showSequenceView": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "highLevelPlanningProcessLayoutAreaContext": {
+                    "tabs": [ {
+                            "name": "{{i18n.highLevelPlanningProcessLayoutAreaTitle}}",
+                            "tabKey": "EpPert",
+                            "contextObject": "{{data.sharedSelectionData.selected[0]}}"
+                        }
+                    ],
+                    "sharedCommandAnchor": "processLayoutAreaAnchor"
+                }
+            },
+            "outputData": {
+                "highLevelPlanningProcessLayoutAreaContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "initialiseConfigurationChips":{
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetContext":"{{fields.configurationChipsData}}",
+                "updatedValues":{
+                    "ebomStructure":"{{ctx.epPageContext.ebomStructure}}",
+                    "ebomPCI":"{{ctx.epTaskPageContext.ebomPCI}}",
+                    "ebomStructureConfigFlags":"{{ctx.epTaskPageContext.ebomStructureConfigFlags}}",
+                    "mbomStructure":"{{ctx.epPageContext.mbomStructure}}",
+                    "mbomPCI":"{{ctx.epTaskPageContext.mbomPCI}}",
+                    "mbomStructureConfigFlags":"{{ctx.epTaskPageContext.mbomStructureConfigFlags}}",
+                    "processStructure":"{{ctx.epPageContext.processStructure}}",
+                    "processPCI":"{{ctx.epTaskPageContext.processPCI}}",
+                    "processStructureConfigFlags":"{{ctx.epTaskPageContext.processStructureConfigFlags}}",
+                    "rootPlant":"{{ctx.epPageContext.rootPlant}}",
+                    "plantPCI":"{{ctx.epTaskPageContext.plantPCI}}",
+                    "rootPlantConfigFlags":"{{ctx.epTaskPageContext.rootPlantConfigFlags}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "i18n": {
+        "highLevelPlanningMbomTreeTitle": [
+            "HighLevelPlanningMessages"
+        ],
+        "highLevelPlanningProcessLayoutAreaTitle": [
+            "HighLevelPlanningMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onMount": "initialize",
+        "onUpdate": [
+            {
+                "action": "updateVisibleTabs",
+                "observers": [
+                    "viewModel.atomicData.sharedSelectionData.isPertModeActive"
+                ]
+            }
+        ]
+    },
+    "onEvent":[
+        {
+            "eventId": "ep.pageContext.changed",
+            "action": "initialiseConfigurationChips"
+        }
+    ]
+}

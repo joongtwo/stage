@@ -1,0 +1,282 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "loadETLOverviewData": {
+            "actionType": "JSFunction",
+            "method": "loadETLOverviewData",
+            "inputData": {
+            },
+            "dataParsers": [
+                {
+                    "id": "etlDashboardDataParser",
+                    "responseObjs": "searchResults"
+                }
+            ],
+            "outputData": {
+                "totalFound ": "totalFound",
+                "searchResults": "searchResults",
+                "searchResultsWithIcon": "{{function:updateSearchResults}}"
+            },
+            "deps": "js/Dpv1ETLDashboardService"
+        },
+        "loadETLOverviewDataBatchAction": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "loadETLOverviewData"
+                },
+                {
+                    "action": "hideLoadingMessage"
+                }
+            ]
+        },
+        "hideLoadingMessage": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": false
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/Dpv1ETLDashboardService"
+        },
+        "enableAutomaticMultiSelection": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "dashboardDataProvider.multiSelectModeAction",
+                        "eventData": {
+                            "multiSelect": true
+                        }
+                    }
+                ]
+            }
+        },
+        "selectTableRows":{
+            "actionType": "JSFunction",
+            "method": "selectTableRows",
+            "inputData": {
+                "searchState": "{{props.subPanelContext.context.searchState}}",
+                "dataProvider": "{{dataProviders.dashboardDataProvider}}"
+            },
+            "deps": "js/Dpv1ETLDashboardService"
+        },
+        "updatePlantSelection":{
+            "actionType": "JSFunction",
+            "method": "updatePlantSelection",
+            "inputData": {
+                "searchState": "{{props.subPanelContext.context.searchState}}",
+                "selection": "{{data.eventMap['dashboardDataProvider.selectionChangeEvent'].selectedObjects}}"
+            },
+            "deps": "js/Dpv1ETLDashboardService"
+        }
+    },
+    "data": {
+        "isLoading": true
+    },
+    "functions":{
+        "updateSearchResults":{
+            "functionName": "updateSearchResultsWithIcon",
+            "parameters": ["typeMEProcessRevision48.svg"]
+        }        
+    },
+    "onEvent": [
+        {
+            "eventId": "dashboardDataProvider.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "updatePlantSelection"
+        },
+        {
+            "eventId": "dashboardDataProvider.modelObjectsUpdated",
+            "action": "selectTableRows"
+        }
+    ],
+    "dataProviders": {
+        "dashboardDataProvider": {
+            "action": "loadETLOverviewDataBatchAction",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "selectionModelMode": "multiple",
+            "selectionModel": {
+                "multiSelectEnabled": true
+            },
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            }
+        }
+    },
+    "dataParseDefinitions":{
+        "etlDashboardDataParser":{
+            "type": "etlOverview",
+            "props":{
+                "PlantName": {
+                    "name": "PlantName",
+                    "value": "{{response.PlantName}}",
+                    "displayValue": "{{response.PlantName}}",
+                    "type": "String"
+                },
+                "PlantId": {
+                    "name": "PlantId",
+                    "value": "{{response.PlantId}}",
+                    "displayValue": "{{response.PlantId}}",
+                    "type": "String"
+                },
+                "DeviceAgentsCount":{
+                    "name": "DeviceAgentsCount",
+                    "value": "{{response.TotalAgents}}",
+                    "displayValue": "{{response.TotalAgents}}",
+                    "type": "String"
+                },
+                "DeviceAgentsLast24hrs":{
+                    "name": "DeviceAgentsLast24hrs",
+                    "value": "{{response.PctAvailability}}",
+                    "displayValue": "{{response.PctAvailability}}",
+                    "type": "String"
+                },
+                "FilesTransferredInLast24Hrs":{
+                    "name": "FilesTransferredInLast24Hrs",
+                    "value": "{{response.FilesXferedLast24hrs}}",
+                    "displayValue": "{{response.FilesXferedLast24hrs}}",
+                    "type": "INTEGER"
+                },
+                "TotalFilesSuccessFolder":{
+                    "name": "TotalFilesSuccessFolder",
+                    "value": "{{response.SuccessFiles}}",
+                    "displayValue": "{{response.SuccessFiles}}",
+                    "type": "INTEGER"
+                },
+                "TotalFilesFailedFolder":{
+                    "name": "TotalFilesFailedFolder",
+                    "value": "{{response.FailedFiles}}",
+                    "displayValue": "{{response.FailedFiles}}",
+                    "type": "INTEGER"
+                },
+                "TotalFilesPartialSuccessFolder":{
+                    "name": "TotalFilesPartialSuccessFolder",
+                    "value": "{{response.PartialSuccessFiles}}",
+                    "displayValue": "{{response.PartialSuccessFiles}}",
+                    "type": "INTEGER"
+                },
+                "ConfigurationXML":{
+                    "name": "ConfigurationXML",
+                    "value": "{{response.ConfigXmlUrl}}",
+                    "displayValue": "{{response.ConfigXmlUrl}}",
+                    "type": "String"
+                }
+            }
+        }
+    },
+    "columnProviders": {
+        "etlDashboardColumnProvider": {
+            "frozenColumnIndex": -1,
+            "headerHeight": "LARGE",
+            "columns": [
+             {
+                 "name": "PlantName",
+                 "displayName": "{{i18n.plantName}}",
+                 "typeName": "String", 
+                 "minWidth": 120,
+                 "width": 120,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "DeviceAgentsCount",
+                 "displayName": "{{i18n.deviceAgentCount}}",
+                 "typeName": "String", 
+                 "maxWidth": 300,
+                 "minWidth": 140,
+                 "width": 140,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "DeviceAgentsLast24hrs",
+                 "displayName": "{{i18n.deviceAgentsAvailability}}",
+                 "typeName": "String", 
+                 "minWidth": 140,
+                 "width": 140,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "FilesTransferredInLast24Hrs",
+                 "displayName": "{{i18n.filesXferredLast24hrs}}",
+                 "typeName": "Integer", 
+                 "minWidth": 140,
+                 "width": 140,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "TotalFilesSuccessFolder",
+                 "displayName": "{{i18n.filesInSuccessFolder}}",
+                 "typeName": "Integer", 
+                 "minWidth": 140,
+                 "width": 140,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "TotalFilesFailedFolder",
+                 "displayName": "{{i18n.filesInFailedFolder}}",
+                 "typeName": "Integer", 
+                 "minWidth": 140,
+                 "width": 140,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "TotalFilesPartialSuccessFolder",
+                 "displayName": "{{i18n.filesInPartialSuccessFolder}}",
+                 "typeName": "Integer", 
+                 "minWidth": 140,
+                 "width": 140,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "ConfigurationXML",
+                 "displayName": "{{i18n.configurationXML}}",
+                 "typeName": "String", 
+                 "minWidth": 350,
+                 "width": 350,
+                 "enableColumnMenu": false
+             }
+             ]
+         }        
+    },    
+    "grids": {
+        "dashboardView": {
+            "dataProvider": "dashboardDataProvider",
+            "columnProvider": "etlDashboardColumnProvider",
+            "enableArrangeMenu": false,
+            "gridOptions": {
+                "enablePinning": true,
+                "enableGridMenu": false,
+                "maxRowsToShow": 18,
+                "enableSorting": false
+            }
+        }
+    },
+    "i18n": {
+        "plantName": [ "DpvColumnConfigurationMessages" ],
+        "plantId": [ "DpvColumnConfigurationMessages" ],
+        "deviceAgentCount": [ "DpvColumnConfigurationMessages" ],
+        "deviceAgentsAvailability": [ "DpvColumnConfigurationMessages" ],
+        "filesXferredLast24hrs": [ "DpvColumnConfigurationMessages" ],
+        "filesInSuccessFolder": [ "DpvColumnConfigurationMessages" ],
+        "filesInFailedFolder": [ "DpvColumnConfigurationMessages" ],
+        "filesInPartialSuccessFolder": [ "DpvColumnConfigurationMessages" ],
+        "configurationXML": [ "DpvColumnConfigurationMessages" ],
+        "LOADING_TEXT": ["BaseMessages"]
+    },
+    "conditions": {
+        "isOverviewTableLoading": {
+            "expression": "data.isLoading === true"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "enableAutomaticMultiSelection"
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

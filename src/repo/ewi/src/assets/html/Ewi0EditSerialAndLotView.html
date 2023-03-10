@@ -1,0 +1,13 @@
+<aw-command-panel caption="{{conditions.isSerialAndLot ? i18n.editSerialAndLotNumber : conditions.isSerial ? i18n.editSerialNumber : i18n.editLotNumber}}">
+    <aw-panel-body>
+        <div exist-when="conditions.isSerial">
+            <aw-textbox prop="data.serialNumber" ></aw-textbox>
+            <aw-break> </aw-break>
+        </div>
+        <aw-textbox prop="data.lotNumber" exist-when="conditions.isLot"></aw-textbox>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="close" size='auto' button-type="base"><aw-i18n>i18n.close</aw-i18n></aw-button>
+        <aw-button action="save" size='auto' aw-class="{'disabled': !formProp.attributes.valid}"><aw-i18n>i18n.save</aw-i18n></aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

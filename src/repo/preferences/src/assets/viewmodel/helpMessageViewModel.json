@@ -1,0 +1,43 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel.directive",
+        "js/aw-label.directive",
+        "js/aw-break.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-panel-body.directive"
+    ],
+    "data": {
+        "adminMsg1": "{{i18n.adminMsg1}}",
+        "allUserMsg1": [ "{{i18n.allUserMsg1a}}", "{{i18n.allUserMsg1b}}" ],
+        "allUserMsg2": {
+            "displayName": "{{i18n.scopeLabel}}",
+            "dispValue": "{{i18n.scopeHelpMessage}}"
+        },
+        "allUserMsg3": {
+            "displayName": "{{i18n.locationLabel}}",
+            "dispValue": "{{i18n.locationHelpMessage}}"
+        },
+        "allUserMsg4": {
+            "displayName": "{{i18n.productAreaLabel}}",
+            "dispValue": "{{i18n.productAreaHelpMessage}}"
+        }
+    },
+    "i18n": {
+        "adminMsg1": [ "preferenceInfoMessages" ],
+        "allUserMsg1a": [ "preferenceInfoMessages" ],
+        "allUserMsg1b": [ "preferenceInfoMessages" ],
+        "columns": [ "preferenceInfoMessages" ],
+        "scopeHelpMessage": [ "preferenceInfoMessages" ],
+        "locationHelpMessage": [ "preferenceInfoMessages" ],
+        "productAreaHelpMessage": [ "preferenceInfoMessages" ],
+        "scopeLabel": [ "preferenceInfoMessages" ],
+        "locationLabel": [ "preferenceInfoMessages" ],
+        "productAreaLabel": [ "preferenceInfoMessages" ]
+    },
+    "conditions": {
+        "isUserAdmin": {
+            "expression": "ctx.tcadmconsole.preferences.isUserSystemAdmin === true || ctx.tcadmconsole.preferences.isUserGroupAdmin === true"
+        }
+    }
+}

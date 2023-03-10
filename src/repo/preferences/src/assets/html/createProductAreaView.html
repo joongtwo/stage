@@ -1,0 +1,17 @@
+<aw-command-panel caption="i18n.createProductAreaPanelTitle">
+    <aw-panel-body>
+        <aw-panel-section>
+            <!-- Name -->
+            <aw-widget prop="data.fnd0SubcategoryName" hint="textbox"></aw-widget>
+            <aw-break></aw-break>
+             <!-- Product Area -->
+             <aw-listbox prop="data.fnd0ProductArea"></aw-listbox>
+        </aw-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer>
+         <!-- Add -->
+        <aw-button action='createProductArea' visible-when="conditions.showAddBtn">
+            <aw-i18n>i18n.createProductAreaBtnTitle</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

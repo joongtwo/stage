@@ -1,0 +1,35 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {},
+    "actions": {
+       
+        "buildCrumbs": {
+            "actionType": "JSFunction",
+            "method": "buildNavigateBreadcrumb",
+            "inputData": {
+                "selectedObjects": "{{props.subPanelContext.occContext.selectedModelObjects}}",
+                "occContext": "{{props.subPanelContext.occContext}}",
+                "data":"{{data}}"
+            },
+            "outputData": {
+                "crumbs": "crumbs"
+            },
+            "deps": "js/aceBreadcrumbService"
+        }
+    },
+    
+    "lifecycleHooks": {
+        "onMount": "buildCrumbs",
+        "onUpdate": {
+            "action": "buildCrumbs",
+            "observers": [
+                "props.subPanelContext.occContext.selectedModelObjects"
+            ]
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

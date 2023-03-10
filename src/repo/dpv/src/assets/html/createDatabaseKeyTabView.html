@@ -1,0 +1,14 @@
+<aw-panel-section>
+    <aw-widget prop="data.databaseName" hint="textbox"></aw-widget>
+    <aw-widget prop="data.databaseKey" hint="textbox"></aw-widget>
+    <aw-listbox prop="data.databaseTypeList" action="" list="data.databaseTypeValues.dbValue"></aw-listbox>
+    <aw-widget prop="data.server" hint="textbox"></aw-widget>
+    <aw-widget prop="data.username" hint="textbox"></aw-widget>
+    <aw-password prop="data.password" hint="textbox"></aw-password>
+    <aw-password prop="data.confirmPassword" hint="textbox"></aw-password>
+</aw-panel-section>
+<aw-panel-footer>
+    <aw-button enable-when="conditions.isValidToCreateButton" action="addMeasurementData">
+        <aw-i18n>i18n.create</aw-i18n>
+    </aw-button>
+</aw-panel-footer>

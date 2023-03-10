@@ -1,0 +1,7 @@
+<span class="aw-widgets-propertyNonEditValue aw-search-inContentSearchBox"
+    exist-when="subPanelContext.searchState.totalFound===0 && subPanelContext.searchState.totalLoaded===0">{{i18n.noFiltersFound}}</span>
+<aw-scrollpanel exist-when="subPanelContext.searchState.totalFound > 0">
+    <aw-list dataprovider="data.dataProviders.listDataProvider" show-context-menu="true" show-check-box="subPanelContext.showCheckBox">
+       <aw-default-cell vmo="item"></aw-default-cell>
+    </aw-list>
+  </aw-scrollpanel>

@@ -1,0 +1,52 @@
+<aw-show-object-page header-title="subPanelContext.showObjectContext.displayName" browser-sub-title="subPanelContext.showObjectContext.displayName">
+    <aw-show-object-header class="ewi-showObjectHeader" headerVMO="subPanelContext.openedObject" header-data="subPanelContext.headerData" header-properties="data.headerProperties">
+        <div class='sw-column w-12'>
+            <ewi-breadcrumb exist-when="data.currentStep" sub-panel-context="{...subPanelContext, workPackage: data.workPackage, currentStep: data.currentStep}"></ewi-breadcrumb>
+        </div>
+        <aw-global-search></aw-global-search>
+        <aw-logo></aw-logo>
+    </aw-show-object-header>
+
+    <aw-tab-container tab-container-model="subPanelContext.showObjectContext.subLocationTabs" callback="subPanelContext.showObjectContext.api" tab-set-id="primary">
+    </aw-tab-container>
+
+    <aw-scrollpanel>
+        <aw-advanced-bar type="TASKBAR" class="afx-layout-footer-container">
+            <div class="sw-row h-12 justify-right align-center">
+                <aw-button button-type='base-button' class="sw-ewi-taskbarButton" action="openPreviousStep" size='auto' enable-when="data.previousStepUid">
+                    <aw-i18n>i18n.previousStepName</aw-i18n>
+                </aw-button>
+                <aw-button button-type='base-button' class="sw-ewi-taskbarButton" action="openNextStep" size='auto' enable-when="data.nextStepUid">
+                    <aw-i18n>i18n.nextStepName</aw-i18n>
+                </aw-button>
+            </div>
+        </aw-advanced-bar>
+
+        <aw-base-sublocation base-selection="subPanelContext.modelObject" provider="data._sublocation">
+            <div class="sw-column w-12">
+                <mfe-content-container class="sw-row h-12 aw-ewi-subpageContent" container-direction="HORIZONTAL" container-name="mainPanelTabs" aw-class="[{ 'aw-workinstr-viewerStyle': conditions.isFooterHidden }]">
+                    <mfe-content-container show-when="conditions.leftPanelTabsVisible" container-direction="VERTICAL" container-name="leftPanelTabs" aw-class="[conditions.rightPanelTabsVisible ? 'w-6' : 'w-12']" exist-when="conditions.isNotSinglePanelLayout">
+                        <!-- Top left panel -->
+                        <mfe-content-container show-when="conditions.topLeftPanelTabsVisible" container-direction="HORIZONTAL" container-name="topLeftPanelTabs" aw-class="[conditions.isThreePanelLayout && conditions.bottomLeftPanelTabsVisible ? 'h-7' : 'h-12']" exist-when="data.workareasTabsData[1]">
+                            <mfe-content-panel sub-panel-context="{...data.workareasTabs[1].filteredTabs}">
+                            </mfe-content-panel>
+                        </mfe-content-container>
+                        <!-- Bottom left panel -->
+                        <mfe-content-container show-when="conditions.bottomLeftPanelTabsVisible" container-direction="HORIZONTAL" container-name="bottomLeftPanelTabs" aw-class="[conditions.isThreePanelLayout && conditions.topLeftPanelTabsVisible ? 'h-5' : 'h-12']" exist-when="data.workareasTabsData[2] && conditions.isThreePanelLayout">
+                            <mfe-content-panel sub-panel-context="{...data.workareasTabs[2].filteredTabs}">
+                            </mfe-content-panel>
+                        </mfe-content-container>
+                    </mfe-content-container>
+
+                    <!-- Right panel -->
+                    <mfe-content-container show-when="conditions.rightPanelTabsVisible" container-direction="HORIZONTAL" container-name="rightPanelTabs" aw-class="[conditions.isNotSinglePanelLayout && conditions.leftPanelTabsVisible ? 'w-6' : 'w-12']" exist-when="data.workareasTabsData[0]">
+                        <mfe-content-panel sub-panel-context="{...data.workareasTabsData[0].filteredTabs}">
+                        </mfe-content-panel>
+                    </mfe-content-container>
+                </mfe-content-container>
+
+            </div>
+        </aw-base-sublocation>
+    </aw-scrollpanel>
+
+</aw-show-object-page>

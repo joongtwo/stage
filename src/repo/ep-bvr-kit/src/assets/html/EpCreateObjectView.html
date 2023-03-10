@@ -1,0 +1,31 @@
+<aw-panel  class="aw-epCreateObject-panel" show-when="data.activeState.value.activeView==='AddObjectPrimarySub' && data.convertedTypeString">
+    <aw-add
+        max-recent-count='0'
+        visible-tabs="new"
+        include-types="{{data.convertedTypeString}}"
+        auto-select-on-unique-type="true"
+        load-sub-types="false"
+        add-panel-state="fields.addPanelState"
+        active-state="data.activeState"
+        project-state="data.projectState"
+        xrt-state="data.xrtState"
+        edit-handler="editHandlers.addPanelEditHandler">
+    </aw-add>
+    <aw-panel-footer class="aw-epCreateObject-panelFooter">
+        <aw-button exist-when="!ctx.showAddProjectSection" size="auto" button-type="base" action="closePopupWindow">
+            <aw-i18n>i18n.CancelButtonTitle</aw-i18n>
+        </aw-button>
+        <aw-button exist-when="!ctx.showAddProjectSection && !data.hideCreateAndAddMoreButton" size="auto" button-type="base" action="createAndAddMoreObject" enable-when="formProp.attributes.valid">
+            <aw-i18n>i18n.CreateAndAddMoreObjectButtonTitle</aw-i18n>
+        </aw-button>
+        <aw-button exist-when="!ctx.showAddProjectSection" size="auto" action="createObject" enable-when="formProp.attributes.valid">
+            <aw-i18n>i18n.CreateButtonTitle</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+
+</aw-panel>
+<aw-add-navigate
+    active-state="data.activeState"
+    project-state="data.projectState"
+    action="actions.setActiveView">
+</aw-add-navigate>

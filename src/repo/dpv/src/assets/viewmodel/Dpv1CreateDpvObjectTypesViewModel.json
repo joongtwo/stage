@@ -1,0 +1,245 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":[],
+
+    "actions":
+    {
+         "getCriteria":
+        {
+            "actionType": "JSFunction",
+            "method": "displayCriteriaPanel",
+            "inputData":
+            {
+                "data": "{{data}}"
+            },
+
+            "deps": "js/Dpv1CreateDpvService"
+        },
+
+        "createDpvObject": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2012-10-DataManagement",
+            "method": "createRelateAndSubmitObjects",
+            "inputData": {
+                "inputs": "{{function:getCreateInput}}"
+            },
+            "outputData": {
+                "createdMainObject": "output[0].objects[0]",
+                "createdObject": "{{function:getCreatedObject}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "addDpvObject.objectcreated",
+                        "condition": "ctx.selected"
+                    },
+                    {
+                       "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "condition": "!ctx.selected",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ],
+                "failure": [{
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                }]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "condition": "!ctx.selected",
+                        "message": "createObjectSuccess"
+                    }
+                ]
+            },
+            "deps": "js/addObjectUtils"
+        },
+
+        "addcreatedDpvObject": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2017-06-OccurrenceManagement",
+            "method": "addObject6",
+            "inputData": {
+                "input": {
+                    "siblingElement": "",
+                    "productContext": "{{ctx.occmgmtContext.productContextInfo}}",
+                    "parentElements": [
+                        "{{ctx.selected}}"
+                    ],
+                    "objectsToBeAdded": [
+                        "{{data.createdObject}}"
+                    ],
+                    "columnConfigInput": ""
+                }
+            },
+            "outputData": {
+            "addElementResponse": ""
+            },
+            "events": {
+                "failure": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ],
+                "success": [
+                    {
+                     "name": "addElement.ElementAddedEvent",
+                      "eventData": {
+                      "addElementResponse": "{{data.addElementResponse}}",
+                        "parentElement": "{{ctx.occmgmtContext.addElement.parent}}"
+                        }
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "createObjectSuccess"
+                    }
+                ]
+            }
+        },
+        "setActiveView":{
+            "actionType": "JSFunction",
+            "method": "resetActiveView",
+            "inputData": {
+                "stateName": "{{data.activeState}}",
+                "destPanelId": "AddObjectPrimarySub"
+            },
+            "outputData": {
+                "activeState": ""
+            },
+            "deps": "js/addObjectUtils"
+        }
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "addDpvObject.objectcreated",
+            "action": "addcreatedDpvObject"
+        }
+    ],
+    "functions": {
+        "getCreateInput": {
+            "functionName": "getCreateInput",
+            "parameters": [
+                "{{data}}",
+                "",
+                "{{addPanelState.creationType}}",
+                "{{editHandlers.addPanelEditHandler}}"
+            ]
+        },
+        "getCreatedObject": {
+            "functionName": "getCreatedObject",
+            "parameters": []
+        },
+        "getCreateRelationsInput": {
+            "functionName": "getCreateRelationsInput",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getSourceModelObjects": {
+            "functionName": "getSourceModelObjects",
+            "parameters": [
+                "{{data.sourceObject}}"
+            ]
+        }
+    },
+    "i18n":
+    {
+        "create": ["DpvMessages"],
+        "pasteSuccessful": ["DpvMessages"],
+        "BACK_BUTTON_TITLE": [ "BaseMessages" ]
+    },
+    "messages": {
+        "createObjectSuccess": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.pasteSuccessful}}",
+            "messageTextParams": [
+                "{{data.createdObject.props.object_name.dbValues[0]}}"
+            ]
+        }
+    },
+    "data":
+    {
+        "typeListProp": {
+            "type": "STRING",
+            "hasLov": true,
+            "isEditable": true,
+            "propertyLabelDisplay": "NO_PROPERTY_LABEL"
+        },
+        "addPanelState": {
+            "initialValues": {
+                "creationType": "",
+                "createdObject": "",
+                "sourceObjects": "",
+                "selectedTab": "",
+                "isDatasetCreate": ""
+            },
+            "meta": {}
+        },
+        "activeState": {
+            "initialValues": {
+                "activeView": "AddObjectPrimarySub",
+                "context": {}
+            },
+            "meta": {}
+        },
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        },
+        "projectState": {
+            "initialValues": {
+                "selectedProjects": [],
+                "triggerAssign": false
+            },
+            "meta": {
+                "selectedProjects": {
+                    "field": "true",
+                    "type": "OBJECT"
+                },
+                "triggerAssign": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

@@ -1,0 +1,236 @@
+<HTML>
+<HEAD>
+    <META name="author" content="JUL">
+    <META name="date" content="2005-02-01">
+    
+    <LINK type="text/css" rel="stylesheet" href="common.css">
+    <LINK type="text/css" rel="StyleSheet" href="tab.css">
+    <SCRIPT language="JavaScript" src="common.js" type="text/javascript"></SCRIPT> 
+    <SCRIPT language="JavaScript" src="tabpane.js" type="text/javascript"></SCRIPT>
+
+    <TITLE>MOS</TITLE>
+
+
+    <SCRIPT language="JavaScript">
+    function nocontextmenu(){ 
+          if (window.Event) { 
+                document.captureEvents(Event.MOUSEUP); 
+          } 
+          event.cancelBubble = true; 
+          event.returnValue = false; 
+          return false; 
+    } 
+    function norightclick(e) 
+    { 
+          if (window.Event) 
+          { 
+                if(e.which!=1) 
+                      return false; 
+          } 
+          else if (event.button !=1) 
+          { 
+                event.cancelBubble = true; 
+                event.returnValue = false; 
+                return false; 
+          } 
+    } 
+    // Block backspace onKeyDown 
+    function onKeyDown() { 
+          if ( (event.altKey) || ((event.keyCode == 8) && (event.srcElement.type != "text" && 
+                event.srcElement.type != "textarea" && event.srcElement.type != "password")) || 
+                ((event.ctrlKey) && ((event.keyCode == 78) || (event.keyCode == 82)) ) || 
+                (event.keyCode == 116) ) 
+          { 
+                event.keyCode = 0; 
+                event.returnValue = false; 
+          } 
+    } 
+    </SCRIPT>
+
+
+    <SCRIPT language="JavaScript">
+// Copyright 2004 MTM Softwarehaus Dresden
+// Hilfsfunktionen fuer HTML-Datenkarten
+// 2004-04-26 TOM
+
+
+var MTMcolorSelect = '#FFCC00';  // Farbe für Hervorhebungen beim Ueberstreichen mit der Maus
+var MTMcolorDeselect;            // Hier wird waehrend der Hervorhebung die urspruengliche Farbe gespeichert
+var MTMdragging = 0;             // Wird beim Linksklick auf 1 gesetzt und beim Verlassen einer Zelle geprueft
+
+
+// Wird beim Ueberstreichen einer Zelle mit der Maus aufgerufen
+// 1. Parameter object ist ein HTML-Objekt, dessen Hintergrundfarbe geaendert wird (idR = this)
+// 2. Parameter Text der in einer Infozeile ausgegeben werden soll (wird nicht mehr verwendet)
+// 3. bis 5. Parameter, Daten zu dem Element
+function MTMselect(object, text, code, index, variant)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorSelect;
+       parentObj.style.background = MTMcolorSelect;
+       //alert(parentObj.nodeName + " = " + parentObj.style.background);
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        MTMcolorDeselect = parentObj.bgColor;
+        parentObj.bgColor = MTMcolorSelect;
+    }
+
+//    MTMInfo.innerHTML = '<SPAN class="MTMInfo" align="left">' + MTMgetText(text) + '</SPAN>';
+}
+
+
+// Wird beim Verlassen einer Zelle mit der Maus aufgerufen (wenn beim Verlassen immer noch die linke
+// Maustaste gedrueckt ist, wird ein Drag&Drop Event im TiCon erzeugt
+// 1. Parameter object ist ein HTML-Objekt, dessen Hintergrundfarbe zurueckgesetzt werden soll (idR = this)
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMdeselect(object, code, index, variant)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorDeselect;
+       parentObj.style.background = MTMcolorDeselect;
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        parentObj.bgColor = MTMcolorDeselect;
+    }
+    
+    //    MTMInfo.innerHTML = '<SPAN class="MTMInfo" align="left">&nbsp;</SPAN>';
+
+    if(MTMdragging) {
+        MTMnavigate(2, code, index, variant);
+        MTMdragging=0;
+    }
+}
+
+// Loest einen Navigationsevent im TiCon aus
+// 1. Parameter Navigationscode: 1 = mit linker Maustaste angeklickt, 2 Drag & Drop, 3 Rechte Maustaste
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMnavigate(navcode, code, index, variant, time, descr)
+{
+    document.location.href=encodeURI("usercode://"+ code + "|" + index + "|" + variant + "|" + time + "|" + descr);
+}
+
+
+// Wird beim Pressen einer beliebigen Maustaste aufgerufen 
+// es wird geprueft ob Drag & Drop gestartet werden soll oder ein Rechtsklick ausgeloest werden soll
+// 1. Event der ausgeloest wurde (idR = event)
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMmouseDown(e, code, index, variant)
+{
+    if(e.button == 1) { // linke Maustaste
+       // vorbereiten zum Drag & Drop
+        MTMdragging=1;
+    } else if(e.button == 2) { // rechte Maustaste
+       // Navigieren mit NavCode 3
+       MTMnavigate(3, code, index, variant);
+    }
+}
+
+    </SCRIPT>
+
+
+    <STYLE type="text/css">
+.MTMText { 
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt
+    }
+
+.MTMLink { 
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt
+    color: #6F5415;
+    }
+
+.MTMGeneral { 
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt
+    }
+
+.MTMElement {
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt
+    }
+
+.MTMInfo {
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt;
+    font-style: italic;
+    color: #31247B;
+    }
+
+.MTMEmptyText { 
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt
+    }
+
+A {
+    font-family: Arial;
+    font-size: 8pt;
+    color: #6F5415;
+    }
+
+A:visited {
+    color: #6F5415;
+    }
+
+A:hover {
+    color: #AE1111;
+    }
+
+BODY {
+    background: #ECE9D8
+    }    </STYLE>
+
+</HEAD>
+
+<BODY bgcolor="#FFFFFF" leftmargin="6" topmargin="6" marginwidth="6" marginheight="6">
+<DIV ID=tipBox></DIV>
+<DIV ID=tipBoxWidth></DIV>
+
+<TABLE border="1" cellspacing="0" cellpadding="0"  width="100%" bgcolor="#000000" align="center"><TR><TD>
+<TABLE border="1" cellspacing="1" cellpadding="1"  width="100%" class="MTMGeneral">
+    <TR class="MOSHeaderBlack">
+        <TD width="100%" colspan=6 class="MTMText">Body movements</TD>
+    </TR>
+    <TR bgcolor="#FFFFFF" align="center">
+        <TD width="15%" class="MTMText">Zone</TD>
+        <TD width="17%" bgcolor="#EAEAEA" class="MOSHeaderRed">5MOS-WA-</TD>
+        <TD width="17%" bgcolor="#EAEAEA" class="MOSHeaderRed">A</TD>
+        <TD width="17%" bgcolor="#EAEAEA" class="MOSHeaderRed">B</TD>
+        <TD width="17%" bgcolor="#EAEAEA" class="MOSHeaderRed">C</TD>
+        <TD width="17%" bgcolor="#EAEAEA" class="MOSHeaderRed">D</TD>
+    </TR>
+    <TR bgcolor="#FFFFFF" align="center">
+        <TD width="32%" colspan=2 class="MTMText">Distance</TD>
+        <TD width="17%" class="MTMText">&lt;= 2m</TD>
+        <TD width="17%" class="MTMText">&lt;= 5m</TD>
+        <TD width="17%" class="MTMText">&lt;= 10m</TD>
+        <TD width="17%" class="MTMText">&lt;= 20m</TD>
+    </TR>
+    <TR bgcolor="#FFFFFF" align="center">
+        <TD width="32%" colspan=2><B>TMU</B></TD>
+        <TD class="MTMElement" width="17%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-WA-A..O', '', '');" title="Body movements, Distance <= 2 m" onmouseout="MTMdeselect(this, '5MOS-WA-A..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-WA-A..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-WA-A..O', '', '',190,'Body movements, Distance <= 2 m');"><B>190</B></TD>
+        <TD class="MTMElement" width="17%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-WA-B..O', '', '');" title="Body movements, Distance <= 5 m" onmouseout="MTMdeselect(this, '5MOS-WA-B..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-WA-B..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-WA-B..O', '', '',340,'Body movements, Distance <= 5 m');"><B>340</B></TD>
+        <TD class="MTMElement" width="17%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-WA-C..O', '', '');" title="Body movements, Distance <= 10 m" onmouseout="MTMdeselect(this, '5MOS-WA-C..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-WA-C..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-WA-C..O', '', '',540,'Body movements, Distance <= 10 m');"><B>540</B></TD>
+        <TD class="MTMElement" width="17%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-WA-D..O', '', '');" title="Body movements, Distance <= 20 m" onmouseout="MTMdeselect(this, '5MOS-WA-D..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-WA-D..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-WA-D..O', '', '',940,'Body movements, Distance <= 20 m');"><B>940</B></TD>
+    </TR>
+</TABLE>
+</TD></TR></TABLE>
+</BODY>
+</HTML>
+

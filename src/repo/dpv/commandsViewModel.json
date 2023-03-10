@@ -1,0 +1,1624 @@
+{
+  "commands": {
+    "Dpv1Awb0ExportForIbs": {
+      "iconId": "cmdExport",
+      "isGroup": false,
+      "title": "{{i18n.exportForIbs}}",
+      "description": "{{i18n.Dpv1Awb0ExportForIbsDesc}}"
+    },
+    "Dpv1Awb0ImportFtrData": {
+      "iconId": "cmdImport",
+      "isGroup": false,
+      "title": "{{i18n.importFtrData}}",
+      "description": "{{i18n.Dpv1Awb0ImportFtrDataDesc}}"
+    },
+    "Dpv1Awb0SubmitForDataColl": {
+      "iconId": "cmdCollect",
+      "isGroup": false,
+      "title": "{{i18n.submitForDataCollection}}",
+      "description": "{{i18n.Dpv1Awb0SubmitForDataCollDesc}}"
+    },
+    "Dpv1Awb0ApplyRuleSet": {
+      "iconId": "cmdCreateDPV",
+      "isGroup": false,
+      "title": "{{i18n.creatInspectionObjects}}",
+      "description": "{{i18n.Dpv1Awb0ApplyRuleSetDesc}}"
+    },
+    "Dpv1Awb0DpvMeasurements": {
+      "iconId": "cmdTableValuesAndMeasurements",
+      "isGroup": false,
+      "title": "{{i18n.dpvMeasurementsPanel}}",
+      "description": "{{i18n.dpvMeasurementsPanelDesc}}"
+    },
+    "Dpv1Awb0Event": {
+      "iconId": "cmdCreateSingle",
+      "isGroup": true,
+      "title": "{{i18n.dpvEvents}}",
+      "description": "{{i18n.dpvEventsDesc}}"
+    },
+    "Dpv1Awb0ActivateEvent": {
+      "iconId": "cmdCreateTraceLink",
+      "title": "{{i18n.dpvActivate}}",
+      "description": "{{i18n.dpvActivateDesc}}"
+    },
+    "Dpv1Awb0DeactivateEvent": {
+      "iconId": "cmdCreateSimulation",
+      "title": "{{i18n.dpvDeactivate}}",
+      "description": "{{i18n.dpvDeactivateDesc}}"
+    },
+    "Dpv1GenerateReport": {
+      "iconId": "cmdGenerateReport",
+      "title": "{{i18n.Dpv1GenerateReportTitle}}",
+      "description": "{{i18n.Dpv1GenerateReportTitleDesc}}"
+    },
+    "Dpv1CreateSharedSchedule": {
+      "iconId": "cmdCreateSchedule",
+      "title": "{{i18n.createSharedScheduleTitle}}",
+      "description": "{{i18n.createSharedScheduleDesc}}"
+    },
+    "Dpv1EditSharedSchedule": {
+      "iconId": "cmdUpdateSchedule",
+      "title": "{{i18n.editSharedScheduleTitle}}",
+      "description": "{{i18n.editSharedScheduleDesc}}"
+    },
+    "Dpv1DeleteSharedSchedule": {
+      "iconId": "cmdDelete",
+      "title": "{{i18n.deleteSharedScheduleTitle}}",
+      "description": "{{i18n.deleteSharedScheduleDesc}}"
+    },
+    "Dpv1AssignSchedule": {
+      "iconId": "cmdManage",
+      "title": "{{i18n.Dpv1AssignScheduleTitle}}",
+      "description": "{{i18n.Dpv1AssignScheduleTitleDesc}}"
+    },
+    "Dpv1GRAFilter": {
+      "iconId": "cmdfilter",
+      "isGroup": false,
+      "title": "{{i18n.searchFiltersTitle}}",
+      "description": "{{i18n.Dpv1GRAFilterDesc}}"
+    },
+    "Dpv1RefreshReportJobs": {
+      "iconId": "cmdRefresh",
+      "isGroup": false,
+      "title": "{{i18n.Dpv1RefreshReportJobsTitle}}",
+      "description": "{{i18n.Dpv1RefreshReportJobsDesc}}"
+    },
+    "Dpv1ResubmitReportJob": {
+      "iconId": "cmdResumeTask",
+      "title": "{{i18n.Dpv1ResubmitReportJobTitle}}",
+      "description": "{{i18n.Dpv1ResubmitReportJobDesc}}"
+    },
+    "Dpv1OpenScheduledReport": {
+      "iconId": "cmdOpenInNewTab",
+      "title": "{{i18n.Dpv1OpenScheduledReportTitle}}",
+      "description": "{{i18n.Dpv1OpenScheduledReportDesc}}"
+    },
+    "Dpv1OpenETLConfigFile": {
+      "iconId": "cmdOpen",
+      "title": "{{i18n.etlOpenConfigFile}}",
+      "description": "{{i18n.etlOpenConfigFileDesc}}"
+    },
+    "Dpv1DeviceAgentHourlyStat": {
+      "iconId": "cmdTime",
+      "isGroup": false,
+      "title": "{{i18n.hourlyStatistics}}",
+      "description": "{{i18n.hourlyStatisticsDesc}}"
+    },
+    "Dpv1DeviceAgentMinuteStat": {
+      "iconId": "cmdTime",
+      "isGroup": false,
+      "title": "{{i18n.minuteStatistics}}",
+      "description": "{{i18n.minuteStatisticsDesc}}"
+    },
+    "Dpv1DeviceAgentShowGraph": {
+      "iconId": "cmdShowGraphOverview",
+      "isGroup": false,
+      "title": "{{i18n.showGraph}}",
+      "description": "{{i18n.showGraphDesc}}"
+    },
+    "Dpv1DeviceAgentHideGraph": {
+      "iconId": "cmdHideGraphOverview",
+      "isGroup": false,
+      "title": "{{i18n.hideGraph}}",
+      "description": "{{i18n.hideGraphDesc}}"
+    },
+    "Dpv1ReprocessFiles": {
+      "iconId": "cmdProcessFiles",
+      "isGroup": false,
+      "title": "{{i18n.reprocessFiles}}",
+      "description": "{{i18n.reprocessFilesDesc}}"
+    },
+    "Dpv1DeleteFiles": {
+      "iconId": "cmdDelete",
+      "isGroup": false,
+      "title": "{{i18n.deleteFiles}}",
+      "description": "{{i18n.deleteFilesDesc}}"
+    },
+    "Dpv1SendPlantId": {
+      "iconId": "cmdInsert",
+      "isGroup": false,
+      "title": "{{i18n.sendPlantIdPanel}}",
+      "description": "{{i18n.sendPlantIdPanelDesc}}"
+    }
+  },
+  "commandHandlers": {
+    "dpv1Awb0ExportForIbsCommandHandler": {
+      "id": "Dpv1Awb0ExportForIbs",
+      "action": "dpv1Awb0ExportForIbsCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.dpv1Awb0ExportForIbsCommandCondition"
+      }
+    },
+    "dpv1Awb0ImportFtrDataCommandHandler": {
+      "id": "Dpv1Awb0ImportFtrData",
+      "action": "dpv1Awb0ImportFtrDataCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.dpv1Awb0ImportFtrDataCommandCondition"
+      }
+    },
+    "dpv1Awb0SubmitForDataCollCommandHandler": {
+      "id": "Dpv1Awb0SubmitForDataColl",
+      "action": "dpv1Awb0SubmitForDataCollCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.dpv1Awb0SubmitForDataCollCommandCondition"
+      }
+    },
+    "dpv1Awb0ApplyRuleSetCommandHandler": {
+      "id": "Dpv1Awb0ApplyRuleSet",
+      "action": "dpv1Awb0ApplyRuleSetCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.dpv1Awb0ApplyRuleSetCommandCondition"
+      }
+    },
+    "Dpv1Awb0DpvMeasurementsCommandHandler": {
+      "id": "Dpv1Awb0DpvMeasurements",
+      "action": "Dpv1Awb0DpvMeasurementsCommandAction",
+      "activeWhen": {
+        "condition": "conditions.dpv1Awb0ImportFtrDataCommandCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.dpv1Awb0ImportFtrDataCommandCondition"
+      }
+    },
+    "Dpv1Awb0EventHandler": {
+      "id": "Dpv1Awb0Event",
+      "activeWhen": true,
+      "action": ""
+    },
+    "Dpv1Awb0ActivateEventCommandHandler": {
+      "id": "Dpv1Awb0ActivateEvent",
+      "action": "Dpv1Activate",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Dpv1Awb0DeactivateEventCommandHandler": {
+      "id": "Dpv1Awb0DeactivateEvent",
+      "action": "Dpv1Deactivate",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Dpv1GenerateReportCommandHandler": {
+      "id": "Dpv1GenerateReport",
+      "action": "dpv1GenerateReportAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1RepTempSelectionCmdCond"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1RepTempSelectionCmdCond"
+      }
+    },
+    "Dpv1CreateSharedScheduleCommandHandler": {
+      "id": "Dpv1CreateSharedSchedule",
+      "action": "dpv1CreateSharedScheduleAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1RepSchedBaseCmdCond"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1RepSchedBaseCmdCond"
+      }
+    },
+    "Dpv1EditSharedScheduleCommandHandler": {
+      "id": "Dpv1EditSharedSchedule",
+      "action": "dpv1EditSharedScheduleAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1RepSchedBaseCmdCond"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1RepSchedSelectionCmdCond"
+      }
+    },
+    "Dpv1DeleteSharedScheduleCommandHandler": {
+      "id": "Dpv1DeleteSharedSchedule",
+      "action": "dpv1DeleteSharedScheduleCommandAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1RepSchedBaseCmdCond"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1RepSchedSelectionCmdCond"
+      }
+    },
+    "Dpv1AssignScheduleCommandHandler": {
+      "id": "Dpv1AssignSchedule",
+      "action": "dpv1AssignScheduleAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1RepTempSelectionCmdCond"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1RepTempSelectionCmdCond"
+      }
+    },
+    "Dpv1GRAFilterCommandHandler": {
+      "id": "Dpv1GRAFilter",
+      "action": "dpv1GRAFilterPanelAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1RepExecBaseCmdCond"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1RepExecBaseCmdCond"
+      }
+    },
+    "Dpv1ResubmitReportJobCommandHandler": {
+      "id": "Dpv1ResubmitReportJob",
+      "action": "dpv1ResubmitReportJobCommandAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1RepExecBaseCmdCond"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1RepExecSelectionCmdCond"
+      }
+    },
+    "Dpv1RefreshReportJobsCommandHandler": {
+      "id": "Dpv1RefreshReportJobs",
+      "action": "dpv1RefreshReportJobsCommandAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1RepExecBaseCmdCond"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1RepExecBaseCmdCond"
+      }
+    },
+    "Dpv1OpenScheduledReportCommandHandler": {
+      "id": "Dpv1OpenScheduledReport",
+      "action": "dpv1OpenScheduledReportCommandAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1RepExecBaseCmdCond"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1RepExecBaseCmdCond"
+      },
+      "enableWhen": {
+        "condition": "conditions.Dpv1RepExecCompletedStatusCond"
+      }
+    },
+    "Dpv1HideAdvancedSearchHandler": {
+      "id": "Awp0AdvancedSearch",
+      "activeWhen": {
+        "condition": "conditions.Dpv1RepTempBaseCmdCond"
+      },
+      "visibleWhen": false
+    },
+    "Dpv1HideSaveAdvSearchHandler": {
+      "id": "Awp0SaveAdvSearch",
+      "activeWhen": {
+        "condition": "conditions.Dpv1RepTempBaseCmdCond"
+      },
+      "visibleWhen": false
+    },
+    "Dpv1HideEnableMultiSelectHandler": {
+      "id": "Awp0EnableMultiSelect",
+      "activeWhen": {
+        "condition": "conditions.Dpv1IntegratedBaseCmdCond"
+      },
+      "visibleWhen": false
+    },
+    "Dpv1HideDisableMultiSelectHandler": {
+      "id": "Awp0DisableMultiSelect",
+      "activeWhen": {
+        "condition": "conditions.Dpv1IntegratedBaseCmdCond"
+      },
+      "visibleWhen": false
+    },
+    "Dpv1HideSelectAllHandler": {
+      "id": "Awp0SelectAll",
+      "activeWhen": {
+        "condition": "conditions.Dpv1IntegratedBaseCmdCond"
+      },
+      "visibleWhen": false,
+      "enableWhen": false
+    },
+    "Dpv1OpenETLConfigFileCommandHandler": {
+      "id": "Dpv1OpenETLConfigFile",
+      "action": "Dpv1OpenETLConfigFileAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Dpv1DeviceAgentHourlyStatCommandHandler": {
+      "id": "Dpv1DeviceAgentHourlyStat",
+      "action": "Dpv1DeviceAgentHourlyAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1ETLBaseCmdCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1DeviceAgentHourlyStatCmdCond"
+      }
+    },
+    "Dpv1DeviceAgentMinuteStatCommandHandler": {
+      "id": "Dpv1DeviceAgentMinuteStat",
+      "action": "Dpv1DeviceAgentMinuteAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1ETLBaseCmdCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1DeviceAgentMinuteStatCmdCond"
+      }
+    },
+    "Dpv1DeviceAgentShowGraphCommandHandler": {
+      "id": "Dpv1DeviceAgentShowGraph",
+      "action": "Dpv1DeviceAgentShowGraphAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1ETLBaseCmdCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1DeviceAgentShowGraphCmdCond"
+      }
+    },
+    "Dpv1DeviceAgentHideGraphCommandHandler": {
+      "id": "Dpv1DeviceAgentHideGraph",
+      "action": "Dpv1DeviceAgentHideGraphAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1ETLBaseCmdCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1DeviceAgentHideGraphCmdCond"
+      }
+    },
+    "Dpv1ReprocessFilesCommandHandler": {
+      "id": "Dpv1ReprocessFiles",
+      "action": "Dpv1ReprocessFilesAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1ETLHealthRepCmdCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1ETLHealthRepCmdCondition"
+      },
+      "enableWhen": {
+        "condition": "conditions.Dpv1ReprocessFilesCmdCond"
+      }
+    },
+    "Dpv1DeleteFilesCommandHandler": {
+      "id": "Dpv1DeleteFiles",
+      "action": "Dpv1DeleteFilesAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1ETLHealthRepCmdCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1ETLHealthRepCmdCondition"
+      },
+      "enableWhen": {
+        "condition": "conditions.Dpv1ReprocessFilesCmdCond"
+      }
+    },
+    "Dpv1SendPlantIdCommandHandler": {
+      "id": "Dpv1SendPlantId",
+      "action": "Dpv1SendPlantIdCommandAction",
+      "activeWhen": {
+        "condition": "conditions.Dpv1SendPlantIdCmdCond"
+      },
+      "visibleWhen": {
+        "condition": "conditions.Dpv1SendPlantIdCmdCond"
+      }
+    }
+  },
+  "commandPlacements": {
+    "dpv1Awb0ExportForIbsDisplay": {
+      "id": "Dpv1Awb0ExportForIbs",
+      "uiAnchor": "aw_rightWall",
+      "priority": 50,
+      "parentGroupId": "Awp0ShareGroup"
+    },
+    "dpv1Awb0ApplyRuleSetDisplay": {
+      "id": "Dpv1Awb0ApplyRuleSet",
+      "uiAnchor": "aw_rightWall",
+      "priority": 390,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "dpv1Awb0ImportFtrDataDisplay": {
+      "id": "Dpv1Awb0ImportFtrData",
+      "uiAnchor": "aw_rightWall",
+      "priority": 512,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "dpv1Awb0SubmitForDataCollDisplay": {
+      "id": "Dpv1Awb0SubmitForDataColl",
+      "uiAnchor": "aw_rightWall",
+      "priority": 250,
+      "parentGroupId": "Awp0ManageGroup"
+    },
+    "Dpv1Awb0DpvMeasurementsDisplay": {
+      "id": "Dpv1Awb0DpvMeasurements",
+      "uiAnchor": "aw_rightWall",
+      "priority": 270,
+      "parentGroupId": "Awp0ManageGroup"
+    },
+    "horizontalToolBareventCmdPlacement": {
+      "id": "Dpv1Awb0Event",
+      "uiAnchor": "rightMeasSlot",
+      "priority": 100
+    },
+    "ActivateTool": {
+      "id": "Dpv1Awb0ActivateEvent",
+      "uiAnchor": "rightMeasSlot",
+      "priority": 400,
+      "parentGroupId": "Dpv1Awb0Event"
+    },
+    "DeactivateTool": {
+      "id": "Dpv1Awb0DeactivateEvent",
+      "uiAnchor": "rightMeasSlot",
+      "priority": 400,
+      "parentGroupId": "Dpv1Awb0Event"
+    },
+    "Dpv1GenerateReportCmdPlacement": {
+      "id": "Dpv1GenerateReport",
+      "uiAnchor": "aw_contextMenu2",
+      "priority": 2
+    },
+    "Dpv1CreateSharedScheduleCmdPlacement": {
+      "id": "Dpv1CreateSharedSchedule",
+      "uiAnchor": "aw_rightWall",
+      "priority": 300,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "Dpv1EditSharedScheduleCmdPlacement": {
+      "id": "Dpv1EditSharedSchedule",
+      "uiAnchor": "aw_rightWall",
+      "priority": 400,
+      "parentGroupId": "Awp0EditGroup"
+    },
+    "Dpv1ReprocessFilesCmdPlacement": {
+      "id": "Dpv1ReprocessFiles",
+      "uiAnchor": "aw_rightWall",
+      "priority": 300,
+      "parentGroupId": "Awp0ManageGroup"
+    },
+    "Dpv1DeleteFilesCmdPlacement": {
+      "id": "Dpv1DeleteFiles",
+      "uiAnchor": "aw_rightWall",
+      "priority": 300,
+      "parentGroupId": "Awp0ManageGroup"
+    },
+    "Dpv1AssignScheduleCmdPlacement": {
+      "id": "Dpv1AssignSchedule",
+      "uiAnchor": "aw_contextMenu2",
+      "priority": 2
+    },
+    "Dpv1ResubmitReportJobCmdPlacement": {
+      "id": "Dpv1ResubmitReportJob",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 1200
+    },
+    "Dpv1RefreshJobsCmdPlacement": {
+      "id": "Dpv1RefreshReportJobs",
+      "uiAnchor": "aw_workArea_right",
+      "priority": 100
+    },
+    "Dpv1AssignSchedulePWACmdPlacement": {
+      "id": "Dpv1AssignSchedule",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 500
+    },
+    "Dpv1GenerateReportPWACmdPlacement": {
+      "id": "Dpv1GenerateReport",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 600
+    },
+    "Dpv1CreateSharedSchedulePWACmdPlacement": {
+      "id": "Dpv1CreateSharedSchedule",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 700
+    },
+    "Dpv1EditSharedSchedulePWACmdPlacement": {
+      "id": "Dpv1EditSharedSchedule",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 700
+    },
+    "Dpv1DeleteSharedSchedulePWACmdPlacement": {
+      "id": "Dpv1DeleteSharedSchedule",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 800
+    },
+    "Dpv1OpenScheduledReportCmdPlacement": {
+      "id": "Dpv1OpenScheduledReport",
+      "uiAnchor": "aw_rightWall",
+      "priority": 500,
+      "parentGroupId": "Awp0ShareGroup"
+    },
+    "Dpv1SearchFilterToolsInfoCmdPlacement": {
+      "id": "Dpv1GRAFilter",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 1170
+    },
+    "Dpv1OpenETLConfigFileCmdPlacement": {
+      "id": "Dpv1OpenETLConfigFile",
+      "uiAnchor": "dpvetlconfigfile",
+      "priority": 1
+    },
+    "Dpv1DeviceAgentHourlyStatCmdPlacement": {
+      "id": "Dpv1DeviceAgentHourlyStat",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 1170
+    },
+    "Dpv1DeviceAgentMinuteStatCmdPlacement": {
+      "id": "Dpv1DeviceAgentMinuteStat",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 1170
+    },
+    "Dpv1DeviceAgentShowGraphCmdPlacement": {
+      "id": "Dpv1DeviceAgentShowGraph",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 1180
+    },
+    "Dpv1DeviceAgentHideGraphCmdPlacement": {
+      "id": "Dpv1DeviceAgentHideGraph",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 1180
+    },
+    "Dpv1ReprocessFilesPWACmdPlacement": {
+      "id": "Dpv1ReprocessFiles",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 700
+    },
+    "Dpv1DeleteFilesPWACmdPlacement": {
+      "id": "Dpv1DeleteFiles",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 800
+    },
+    "Dpv1SendPlantIdCmdPlacement": {
+      "id": "Dpv1SendPlantId",
+      "uiAnchor": "aw_rightWall",
+      "priority": 280,
+      "parentGroupId": "Awp0ManageGroup"
+    }
+  },
+  "actions": {
+    "dpv1Awb0ExportForIbsCommandAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "exportForIbs.exportforIbsConfirmation",
+            "condition": ""
+          }
+        ]
+      }
+    },
+    "dpv1Awb0ImportFtrDataCommandAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Dpv1ImportFtrData",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "doExportForIbsOperation": {
+      "actionType": "TcSoaService",
+      "serviceName": "ProductionManagement-2007-12-EngineeringDataLoad",
+      "method": "importFeatureData",
+      "inputData": {
+        "input": [
+          {
+            "routineRevision": "{{function:getSelectedObject}}",
+            "fmsFileTicket": "abc.xml",
+            "datasetName": "dummy_abc_name",
+            "datasetDescription": "dummy_abc_desc"
+          }
+        ]
+      },
+      "outputData": {
+        "errorMessage": "{{function:populateErrorMessageOnPerformAction}}"
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "message": "ExportForIbsOperationSuccessful"
+          }
+        ],
+        "failure": [
+          {
+            "condition": "errorCode.code==33038",
+            "message": "ExportForIbsPartialError"
+          },
+          {
+            "condition": "errorCode.code!=33038",
+            "message": "ExportForIbsOperationFailed"
+          }
+        ]
+      },
+      "deps": "js/Dpv1ImportFtrDataService"
+    },
+    "dpv1Awb0SubmitForDataCollCommandAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "submitForDataCollection.submitForDataCollectionConfirmation",
+            "condition": ""
+          }
+        ]
+      }
+    },
+    "dosubmitForDataCollectionOperation": {
+      "actionType": "TcSoaService",
+      "serviceName": "Workflow-2008-06-Workflow",
+      "method": "createInstance",
+      "inputData": {
+        "startImmediately": true,
+        "observerKey": "",
+        "name": "{{ctx.selected.props.object_string.dbValues[0]}}",
+        "subject": "",
+        "description": "",
+        "contextData": {
+          "processTemplate": "{{function:getWorkflowTemplate}}",
+          "attachmentCount": "{{function:getAttachmentCount}}",
+          "attachments": "{{function:getAttachmentUids}}",
+          "attachmentTypes": "{{function:getAttachmentTypes}}"
+        }
+      },
+      "outputData": {
+        "errorMessage": "{{function:populateErrorMessageOnPerformAction}}"
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "message": "SubmitForDataCollectionOperationSuccessful"
+          }
+        ],
+        "failure": [
+          {
+            "message": "SubmitForDataCollectionOperationFailed"
+          }
+        ]
+      },
+      "deps": "js/Dpv1ImportFtrDataService"
+    },
+    "dpv1Awb0ApplyRuleSetCommandAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Dpv1ApplyRuleSet",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Dpv1Awb0DpvMeasurementsCommandAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Dpv1DpvMeasurements",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Dpv1Activate": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "measurementsTable.activateRow"
+          }
+        ]
+      }
+    },
+    "Dpv1Deactivate": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "measurementsTable.deactivateRow"
+          }
+        ]
+      }
+    },
+    "dpv1GenerateReportAction": {
+      "actionType": "popup",
+      "inputData": {
+        "options": {
+          "ignoreLimit": true,
+          "view": "Dpv1GenerateReport",
+          "caption": "{{i18n.Dpv1GenerateReportTitle}}",
+          "isModal": true,
+          "height": "85vh",
+          "width": "60vw",
+          "clickOutsideToClose": false,
+          "draggable": true,
+          "preset": "modal",
+          "placement": "left",
+          "hooks": {}
+        }
+      }
+    },
+    "dpv1CreateSharedScheduleAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Dpv1CreateSharedSchedule",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "dpv1EditSharedScheduleAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Dpv1EditSharedSchedule",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "dpv1DeleteSharedScheduleAction": {
+      "actionType": "JSFunction",
+      "method": "deleteSchedule",
+      "inputData": {
+        "selection": "{{ctx.mselected}}"
+      },
+      "outputData": {
+        "response": ""
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "message": "DeleteScheduleOperationSuccessful",
+            "condition": "response.data.Success"
+          },
+          {
+            "message": "DeleteScheduleOperationFailed",
+            "condition": "response.data.Errors && response.data.Errors.length>0"
+          }
+        ],
+        "failure": [
+          {
+            "message": "DeleteScheduleOperationFailedUnknown"
+          }
+        ]
+      },
+      "deps": "js/Dpv1ScheduleService"
+    },
+    "dpv1DeleteSharedScheduleCommandAction": {
+      "actionType": "JSFunction",
+      "method": "getScheduleInfoForDelete",
+      "inputData": {
+        "selection": "{{ctx.mselected}}"
+      },
+      "outputData": {
+        "response": "",
+        "errorMessage": "{{function:populateSchedulingError}}"
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "message": "deleteAndUnassignScheduleConfirmationMessage",
+            "condition": "response.data.Data && response.data.Data.length > 0"
+          },
+          {
+            "message": "deleteScheduleConfirmationMessage",
+            "condition": "response.data.Data && response.data.Data.length === 0"
+          }
+        ]
+      },
+      "deps": "js/Dpv1ScheduleService"
+    },
+    "dpv1AssignScheduleAction": {
+      "actionType": "popup",
+      "inputData": {
+        "options": {
+          "ignoreLimit": true,
+          "view": "Dpv1AssignSchedule",
+          "caption": "{{i18n.Dpv1AssignScheduleTitle}}",
+          "isModal": true,
+          "height": "85vh",
+          "width": "60vw",
+          "clickOutsideToClose": false,
+          "draggable": true,
+          "preset": "modal",
+          "placement": "left",
+          "hooks": {}
+        }
+      }
+    },
+    "dpv1GRAFilterPanelAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Awp0SearchFilter",
+        "location": "aw_navigation"
+      }
+    },
+    "doResubmitReportJob": {
+      "actionType": "JSFunction",
+      "method": "resubmitReportJob",
+      "deps": "js/Dpv1GraphicalReportService",
+      "inputData": {
+        "selectedJobs": "{{ctx.mselected}}"
+      },
+      "outputData": {
+        "response": "",
+        "errorMessage": "{{function:populateResubmitError}}"
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "message": "ResubmitReportJobOperationSuccessful",
+            "condition": "data.response.Success"
+          },
+          {
+            "message": "ResubmitReportJobOperationFailed",
+            "condition": "data.response.Errors && data.response.Errors.length>0"
+          }
+        ],
+        "failure": [
+          {
+            "message": "ResubmitReportJobOperationFailedUnknown"
+          }
+        ]
+      }
+    },
+    "dpv1ResubmitReportJobCommandAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "resubmitReportJob.resubmitReportJobConfirmation",
+            "condition": ""
+          }
+        ]
+      }
+    },
+    "dpv1RefreshReportJobsCommandAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "gridView.plTable.reload"
+          }
+        ]
+      }
+    },
+    "dpv1OpenScheduledReportCommandAction": {
+      "actionType": "JSFunction",
+      "method": "openScheduledReport",
+      "deps": "js/Dpv1GraphicalReportService",
+      "inputData": {
+        "reportId": "{{ctx.selected.props.ReportId.uiValues[0]}}"
+      }
+    },
+    "Dpv1OpenETLConfigFileAction": {
+      "actionType": "JSFunction",
+      "method": "openConfigFile",
+      "deps": "js/Dpv1ETLHealthService",
+      "inputData": {
+        "vmo": "{{commandContext.vmo}}"
+      }
+    },
+    "Dpv1DeviceAgentHourlyAction": {
+      "actionType": "JSFunction",
+      "method": "updateStatOption",
+      "deps": "js/Dpv1ETLDeviceAgentService",
+      "inputData": {
+        "searchState": "{{commandContext.searchState}}",
+        "commandId": "Dpv1DeviceAgentHourlyStat"
+      }
+    },
+    "Dpv1DeviceAgentMinuteAction": {
+      "actionType": "JSFunction",
+      "method": "updateStatOption",
+      "deps": "js/Dpv1ETLDeviceAgentService",
+      "inputData": {
+        "searchState": "{{commandContext.searchState}}",
+        "commandId": "Dpv1DeviceAgentMinuteStat"
+      }
+    },
+    "Dpv1DeviceAgentShowGraphAction": {
+      "actionType": "JSFunction",
+      "method": "updateShowGraph",
+      "deps": "js/Dpv1ETLDeviceAgentService",
+      "inputData": {
+        "searchState": "{{commandContext.searchState}}",
+        "commandId": "Dpv1DeviceAgentShowGraph"
+      }
+    },
+    "Dpv1DeviceAgentHideGraphAction": {
+      "actionType": "JSFunction",
+      "method": "updateShowGraph",
+      "deps": "js/Dpv1ETLDeviceAgentService",
+      "inputData": {
+        "searchState": "{{commandContext.searchState}}",
+        "commandId": "Dpv1DeviceAgentHideGraph"
+      }
+    },
+    "Dpv1ReprocessFilesAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "reprocessFiles.reprocessFilesConfirmation",
+            "condition": ""
+          }
+        ]
+      }
+    },
+    "doReprocessFilesJob": {
+      "actionType": "JSFunction",
+      "method": "reprocessFiles",
+      "deps": "js/Dpv1ETLHealthService",
+      "inputData": {
+        "searchState": "{{commandContext.searchState}}"
+      },
+      "outputData": {
+        "response": "",
+        "errorMessage": "{{function:populateError}}"
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "message": "ReprocessFilesOperationSuccessful",
+            "condition": "response.data.Success"
+          },
+          {
+            "message": "ReprocessFilesOperationFailed",
+            "condition": "response.data.Errors && response.data.Errors.length>0"
+          }
+        ],
+        "failure": [
+          {
+            "message": "ReprocessFilesOperationFailedUnknown"
+          }
+        ]
+      }
+    },
+    "Dpv1DeleteFilesAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "deleteFiles.deleteFilesConfirmation",
+            "condition": ""
+          }
+        ]
+      }
+    },
+    "doDeleteFilesJob": {
+      "actionType": "JSFunction",
+      "method": "deleteFiles",
+      "deps": "js/Dpv1ETLHealthService",
+      "inputData": {
+        "searchState": "{{commandContext.searchState}}"
+      },
+      "outputData": {
+        "response": "",
+        "errorMessage": "{{function:populateError}}"
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "message": "DeleteFilesOperationSuccessful",
+            "condition": "response.data.Success"
+          },
+          {
+            "message": "DeleteFilesOperationFailed",
+            "condition": "response.data.Errors && response.data.Errors.length>0"
+          }
+        ],
+        "failure": [
+          {
+            "message": "DeleteFilesOperationFailedUnknown"
+          }
+        ]
+      }
+    },
+    "Dpv1SendPlantIdCommandAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Dpv1SendPlantIdPage",
+        "location": "aw_toolsAndInfo"
+      }
+    }
+  },
+  "conditions": {
+    "dpv1Awb0ExportForIbsCommandCondition": {
+      "expression": "ctx.visibleServerCommands.Dpv1Awb0ExportForIbs"
+    },
+    "dpv1Awb0ImportFtrDataCommandCondition": {
+      "expression": "ctx.visibleServerCommands.Dpv1Awb0ImportFtrData"
+    },
+    "dpv1Awb0SubmitForDataCollCommandCondition": {
+      "expression": "ctx.visibleServerCommands.Dpv1Awb0SubmitForDataColl"
+    },
+    "dpv1Awb0ApplyRuleSetCommandCondition": {
+      "expression": "ctx.sublocation.nameToken === 'com.siemens.splm.client.dpv:createdDpvSublocation'"
+    },
+    "Dpv1Awb0DpvMeasurementsCommandCondition": {
+      "expression": "(ctx.xrtSummaryContextObject.modelType.typeHierarchyArray.indexOf( 'MEInspection Revision' ) > -1)"
+    },
+    "Dpv1RepExecBaseCmdCond": {
+      "expression": "ctx.sublocation.nameToken === 'com.siemens.splm.client.dpv:graRepMgmtSubLocation' && commandContext.searchState.totalFound > 0"
+    },
+    "Dpv1RepExecSelectionCmdCond": {
+      "expression": "conditions.Dpv1RepExecBaseCmdCond && ctx.mselected.length>0"
+    },
+    "Dpv1RepExecCompletedStatusCond": {
+      "expression": "conditions.Dpv1RepExecBaseCmdCond && ctx.mselected.length === 1 && ctx.mselected[0].props.Status.dbValue === 'Succeeded'"
+    },
+    "Dpv1IntegratedBaseCmdCond": {
+      "expression": "conditions.Dpv1RepExecBaseCmdCond || conditions.Dpv1RepTempBaseCmdCond || conditions.Dpv1RepSchedBaseCmdCond || conditions.Dpv1RepAccHistBaseCmdCond || conditions.Dpv1ETLBaseCmdCondition"
+    },
+    "Dpv1RepTempBaseCmdCond": {
+      "expression": "ctx.sublocation.nameToken === 'com.siemens.splm.client.dpv:graRepTemplatesSubLocation'"
+    },
+    "Dpv1RepTempSelectionCmdCond": {
+      "expression": "ctx.mselected.length === 1 && conditions.Dpv1RepTempBaseCmdCond && (ctx.selected.type === 'Dpv0MBQXml' || ctx.selected.type === 'DPVRDL')"
+    },
+    "Dpv1RepSchedBaseCmdCond": {
+      "expression": "ctx.sublocation.nameToken === 'com.siemens.splm.client.dpv:dpvSchedulesSubLocation'"
+    },
+    "Dpv1RepSchedFilterCmdCond": {
+      "expression": "conditions.Dpv1RepSchedBaseCmdCond && commandContext.searchState.totalFound > 0"
+    },
+    "Dpv1RepSchedSelectionCmdCond": {
+      "expression": "conditions.Dpv1RepSchedBaseCmdCond && ctx.mselected.length>0"
+    },
+    "Dpv1RepAccHistBaseCmdCond": {
+      "expression": "ctx.sublocation.nameToken === 'com.siemens.splm.client.dpv:graRepAccHistSubLocation'"
+    },
+    "Dpv1ETLBaseCmdCondition": {
+      "expression": "ctx.sublocation.nameToken === 'com.siemens.splm.client.dpv:etlDashboard'"
+    },
+    "Dpv1ETLHealthRepCmdCondition": {
+      "expression": "conditions.Dpv1ETLBaseCmdCondition && commandContext.pageContext.secondaryActiveTabId === 'Dpv1ETLDashboardHealthReportTable'"
+    },
+    "Dpv1ReprocessFilesCmdCond": {
+      "expression": "conditions.Dpv1ETLHealthRepCmdCondition && commandContext.searchState.healthInfo.selectedFileReports && commandContext.searchState.healthInfo.selectedFileReports.length>0"
+    },
+    "Dpv1DeviceAgentHourlyStatCmdCond": {
+      "expression": "conditions.Dpv1ETLBaseCmdCondition && commandContext.pageContext.secondaryActiveTabId === 'Dpv1ETLDashboardDeviceReportTable' && commandContext.searchState.deviceAgentInfo.selectedStatOption !== 'hourly'"
+    },
+    "Dpv1DeviceAgentMinuteStatCmdCond": {
+      "expression": "conditions.Dpv1ETLBaseCmdCondition && commandContext.pageContext.secondaryActiveTabId === 'Dpv1ETLDashboardDeviceReportTable' && commandContext.searchState.deviceAgentInfo.selectedStatOption !== 'minute'"
+    },
+    "Dpv1DeviceAgentShowGraphCmdCond": {
+      "expression": "conditions.Dpv1ETLBaseCmdCondition && commandContext.pageContext.secondaryActiveTabId === 'Dpv1ETLDashboardDeviceReportTable' && !commandContext.searchState.deviceAgentInfo.showGraph"
+    },
+    "Dpv1DeviceAgentHideGraphCmdCond": {
+      "expression": "conditions.Dpv1ETLBaseCmdCondition && commandContext.pageContext.secondaryActiveTabId === 'Dpv1ETLDashboardDeviceReportTable' && commandContext.searchState.deviceAgentInfo.showGraph"
+    },
+    "Dpv1SendPlantIdCmdCond": {
+      "expression": "ctx.mselected.length === 1 && ( ctx.selected.modelType.typeHierarchyArray.indexOf( 'MEPrPlantProcessRevision' ) > -1 )"
+    }
+  },
+  "messages": {
+    "exportforIbsConfirmationMessage": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.exportForIbsOperationConfirmation}}",
+      "messageTextParams": [
+        "{{ctx.selected.props.object_string.dbValues[0]}}"
+      ],
+      "navigationOptions": [
+        {
+          "option": "Ok",
+          "text": "{{i18n.ok}}",
+          "action": "doExportForIbsOperation"
+        },
+        {
+          "option": "Cancel",
+          "text": "{{i18n.cancelText}}",
+          "action": ""
+        }
+      ]
+    },
+    "submitForDataCollectionConfirmationMessage": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.submitForDataCollectionConfirmation}}",
+      "messageTextParams": [
+        "{{ctx.selected.props.object_string.dbValues[0]}}"
+      ],
+      "navigationOptions": [
+        {
+          "option": "Ok",
+          "text": "{{i18n.ok}}",
+          "action": "dosubmitForDataCollectionOperation"
+        },
+        {
+          "option": "Cancel",
+          "text": "{{i18n.cancelText}}",
+          "action": ""
+        }
+      ]
+    },
+    "resubmitReportJobConfirmationMessage": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.resubmitReportJobConfirmation}}",
+      "messageTextParams": [
+        "{{ctx.selected.length}}"
+      ],
+      "navigationOptions": [
+        {
+          "option": "Ok",
+          "text": "{{i18n.ok}}",
+          "action": "doResubmitReportJob"
+        },
+        {
+          "option": "Cancel",
+          "text": "{{i18n.cancelText}}",
+          "action": ""
+        }
+      ]
+    },
+    "deleteAndUnassignScheduleConfirmationMessage": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.deleteAndUnassignScheduleConfirmation}}",
+      "messageTextParams": [
+        "{{ctx.selected.props.Name.dbValue}}"
+      ],
+      "navigationOptions": [
+        {
+          "option": "Ok",
+          "text": "{{i18n.ok}}",
+          "action": "dpv1DeleteSharedScheduleAction"
+        },
+        {
+          "option": "Cancel",
+          "text": "{{i18n.cancelText}}",
+          "action": ""
+        }
+      ]
+    },
+    "deleteScheduleConfirmationMessage": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.deleteScheduleConfirmation}}",
+      "messageTextParams": [
+        "{{ctx.selected.props.Name.dbValue}}"
+      ],
+      "navigationOptions": [
+        {
+          "option": "Ok",
+          "text": "{{i18n.ok}}",
+          "action": "dpv1DeleteSharedScheduleAction"
+        },
+        {
+          "option": "Cancel",
+          "text": "{{i18n.cancelText}}",
+          "action": ""
+        }
+      ]
+    },
+    "ExportForIbsOperationSuccessful": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.exportForIbsOperationSuccessful}}",
+      "messageTextParams": [
+        "{{ctx.selected.props.object_string.dbValues[0]}}"
+      ]
+    },
+    "ExportForIbsOperationFailed": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.exportForIbsOperationFailed}}",
+      "messageTextParams": [
+        "{{data.errorMessage}}"
+      ]
+    },
+    "ExportForIbsPartialError": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.exportForIbsPartialError}}",
+      "messageTextParams": [
+        "{{data.errorMessage}}"
+      ]
+    },
+    "SubmitForDataCollectionOperationSuccessful": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.submitForDataCollectionOperationSuccessful}}",
+      "messageTextParams": [
+        "{{ctx.selected.props.object_string.dbValues[0]}}"
+      ]
+    },
+    "SubmitForDataCollectionOperationFailed": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.submitForDataCollectionOperationFailed}}",
+      "messageTextParams": [
+        "{{data.errorMessage}}"
+      ]
+    },
+    "ResubmitReportJobOperationSuccessful": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.resubmitReportJobOperationSuccessful}}",
+      "messageTextParams": [
+        "{{ctx.mselected.length}}"
+      ]
+    },
+    "ResubmitReportJobOperationFailed": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.resubmitReportJobOperationFailed}}",
+      "messageTextParams": [
+        "{{data.errorMessage}}"
+      ]
+    },
+    "ResubmitReportJobOperationFailedUnknown": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.resubmitReportJobOperationFailedUnknown}}"
+    },
+    "DeleteScheduleOperationSuccessful": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.deleteScheduleOperationSuccessful}}",
+      "messageTextParams": [
+        "{{ctx.mselected[0].props.Name.dbValues}}"
+      ]
+    },
+    "DeleteScheduleOperationFailed": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.deleteScheduleOperationFailed}}",
+      "messageTextParams": [
+        "{{response.data.Errors[0]}}"
+      ]
+    },
+    "DeleteScheduleOperationFailedUnknown": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.deleteScheduleOperationFailedUnknown}}"
+    },
+    "reprocessFilesConfirmationMessage": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.reprocessFilesConfirmation}}",
+      "messageTextParams": [
+        "{{ctx.selected.length}}"
+      ],
+      "navigationOptions": [
+        {
+          "option": "Ok",
+          "text": "{{i18n.ok}}",
+          "action": "doReprocessFilesJob"
+        },
+        {
+          "option": "Cancel",
+          "text": "{{i18n.cancelText}}",
+          "action": ""
+        }
+      ]
+    },
+    "ReprocessFilesOperationSuccessful": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.reprocessFilesOperationSuccessful}}",
+      "messageTextParams": [
+        "{{ctx.mselected.length}}"
+      ]
+    },
+    "ReprocessFilesOperationFailedUnknown": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.reprocessFilesOperationFailedUnknown}}"
+    },
+    "ReprocessFilesOperationFailed": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.reprocessFilesOperationFailed}}",
+      "messageTextParams": [
+        "{{data.errorMessage}}"
+      ]
+    },
+    "deleteFilesConfirmationMessage": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.deleteFilesConfirmation}}",
+      "messageTextParams": [
+        "{{ctx.selected.length}}"
+      ],
+      "navigationOptions": [
+        {
+          "option": "Ok",
+          "text": "{{i18n.ok}}",
+          "action": "doDeleteFilesJob"
+        },
+        {
+          "option": "Cancel",
+          "text": "{{i18n.cancelText}}",
+          "action": ""
+        }
+      ]
+    },
+    "DeleteFilesOperationSuccessful": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.deleteFilesOperationSuccessful}}",
+      "messageTextParams": [
+        "{{ctx.mselected.length}}"
+      ]
+    },
+    "DeleteFilesOperationFailedUnknown": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.deleteFilesOperationFailedUnknown}}"
+    },
+    "DeleteFilesOperationFailed": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.deleteFilesOperationFailed}}",
+      "messageTextParams": [
+        "{{data.errorMessage}}"
+      ]
+    }
+  },
+  "functions": {
+    "getWorkflowTemplate": {
+      "functionName": "getWorkflowTemplate",
+      "parameters": []
+    },
+    "getAttachmentCount": {
+      "functionName": "getAttachmentCount",
+      "parameters": []
+    },
+    "getAttachmentUids": {
+      "functionName": "getAttachmentUids",
+      "parameters": []
+    },
+    "getAttachmentTypes": {
+      "functionName": "getAttachmentTypes",
+      "parameters": []
+    }
+  },
+  "onEvent": [
+    {
+      "eventId": "exportForIbs.exportforIbsConfirmation",
+      "message": "exportforIbsConfirmationMessage"
+    },
+    {
+      "eventId": "submitForDataCollection.submitForDataCollectionConfirmation",
+      "message": "submitForDataCollectionConfirmationMessage"
+    },
+    {
+      "eventId": "resubmitReportJob.resubmitReportJobConfirmation",
+      "message": "resubmitReportJobConfirmationMessage"
+    },
+    {
+      "eventId": "reprocessFiles.reprocessFilesConfirmation",
+      "message": "reprocessFilesConfirmationMessage"
+    },
+    {
+      "eventId": "deleteFiles.deleteFilesConfirmation",
+      "message": "deleteFilesConfirmationMessage"
+    }
+  ],
+  "i18n": {
+    "exportForIbs": [
+      "DpvMessages"
+    ],
+    "importFtrData": [
+      "DpvMessages"
+    ],
+    "submitForDataCollection": [
+      "DpvMessages"
+    ],
+    "exportForIbsOperationSuccessful": [
+      "DpvMessages"
+    ],
+    "exportForIbsOperationFailed": [
+      "DpvMessages"
+    ],
+    "exportForIbsOperationConfirmation": [
+      "DpvMessages"
+    ],
+    "submitForDataCollectionConfirmation": [
+      "DpvMessages"
+    ],
+    "submitForDataCollectionOperationSuccessful": [
+      "DpvMessages"
+    ],
+    "submitForDataCollectionOperationFailed": [
+      "DpvMessages"
+    ],
+    "exportForIbsPartialError": [
+      "DpvMessages"
+    ],
+    "cancelText": [
+      "DpvMessages"
+    ],
+    "ok": [
+      "DpvMessages"
+    ],
+    "creatInspectionObjects": [
+      "DpvMessages"
+    ],
+    "Dpv1Awb0ExportForIbsDesc": [
+      "DpvMessages"
+    ],
+    "Dpv1Awb0ImportFtrDataDesc": [
+      "DpvMessages"
+    ],
+    "Dpv1Awb0SubmitForDataCollDesc": [
+      "DpvMessages"
+    ],
+    "Dpv1Awb0ApplyRuleSetDesc": [
+      "DpvMessages"
+    ],
+    "dpvMeasurementsPanel": [
+      "DpvMessages"
+    ],
+    "dpvMeasurementsPanelDesc": [
+      "DpvMessages"
+    ],
+    "dpvActivate": [
+      "DpvMessages"
+    ],
+    "dpvDeactivate": [
+      "DpvMessages"
+    ],
+    "dpvEvents": [
+      "DpvMessages"
+    ],
+    "dpvEventsDesc": [
+      "DpvMessages"
+    ],
+    "dpvActivateDesc": [
+      "DpvMessages"
+    ],
+    "dpvDeactivateDesc": [
+      "DpvMessages"
+    ],
+    "Dpv1GenerateReportTitle": [
+      "DpvMessages"
+    ],
+    "Dpv1GenerateReportTitleDesc": [
+      "DpvMessages"
+    ],
+    "createSharedScheduleTitle": [
+      "DpvMessages"
+    ],
+    "createSharedScheduleDesc": [
+      "DpvMessages"
+    ],
+    "editSharedScheduleTitle": [
+      "DpvMessages"
+    ],
+    "editSharedScheduleDesc": [
+      "DpvMessages"
+    ],
+    "deleteSharedScheduleTitle": [
+      "DpvMessages"
+    ],
+    "deleteSharedScheduleDesc": [
+      "DpvMessages"
+    ],
+    "Dpv1AssignScheduleTitle": [
+      "DpvMessages"
+    ],
+    "Dpv1AssignScheduleTitleDesc": [
+      "DpvMessages"
+    ],
+    "searchFiltersTitle": [
+      "SearchMessages"
+    ],
+    "Dpv1GRAFilterDesc": [
+      "DpvMessages"
+    ],
+    "Dpv1RefreshReportJobsTitle": [
+      "DpvMessages"
+    ],
+    "Dpv1RefreshReportJobsDesc": [
+      "DpvMessages"
+    ],
+    "Dpv1ResubmitReportJobTitle": [
+      "DpvMessages"
+    ],
+    "Dpv1ResubmitReportJobDesc": [
+      "DpvMessages"
+    ],
+    "Dpv1OpenScheduledReportTitle": [
+      "DpvMessages"
+    ],
+    "Dpv1OpenScheduledReportDesc": [
+      "DpvMessages"
+    ],
+    "resubmitReportJobConfirmation": [
+      "DpvMessages"
+    ],
+    "resubmitReportJobOperationSuccessful": [
+      "DpvMessages"
+    ],
+    "resubmitReportJobOperationFailed": [
+      "DpvMessages"
+    ],
+    "resubmitReportJobOperationFailedUnknown": [
+      "DpvMessages"
+    ],
+    "etlOpenConfigFile": [
+      "DpvMessages"
+    ],
+    "etlOpenConfigFileDesc": [
+      "DpvMessages"
+    ],
+    "deleteScheduleOperationSuccessful": [
+      "DpvMessages"
+    ],
+    "deleteScheduleOperationFailed": [
+      "DpvMessages"
+    ],
+    "deleteScheduleOperationFailedUnknown": [
+      "DpvMessages"
+    ],
+    "deleteAndUnassignScheduleConfirmation": [
+      "DpvMessages"
+    ],
+    "deleteScheduleConfirmation": [
+      "DpvMessages"
+    ],
+    "hourlyStatistics": [
+      "DpvMessages"
+    ],
+    "hourlyStatisticsDesc": [
+      "DpvMessages"
+    ],
+    "minuteStatistics": [
+      "DpvMessages"
+    ],
+    "minuteStatisticsDesc": [
+      "DpvMessages"
+    ],
+    "showGraph": [
+      "DpvMessages"
+    ],
+    "showGraphDesc": [
+      "DpvMessages"
+    ],
+    "hideGraph": [
+      "DpvMessages"
+    ],
+    "hideGraphDesc": [
+      "DpvMessages"
+    ],
+    "reprocessFiles": [
+      "DpvMessages"
+    ],
+    "reprocessFilesDesc": [
+      "DpvMessages"
+    ],
+    "reprocessFilesConfirmation": [
+      "DpvMessages"
+    ],
+    "reprocessFilesOperationSuccessful": [
+      "DpvMessages"
+    ],
+    "reprocessFilesOperationFailed": [
+      "DpvMessages"
+    ],
+    "reprocessFilesOperationFailedUnknown": [
+      "DpvMessages"
+    ],
+    "deleteFiles": [
+      "DpvMessages"
+    ],
+    "deleteFilesDesc": [
+      "DpvMessages"
+    ],
+    "deleteFilesConfirmation": [
+      "DpvMessages"
+    ],
+    "deleteFilesOperationSuccessful": [
+      "DpvMessages"
+    ],
+    "deleteFilesOperationFailed": [
+      "DpvMessages"
+    ],
+    "deleteFilesOperationFailedUnknown": [
+      "DpvMessages"
+    ],
+    "sendPlantIdPanel": [
+      "DpvMessages"
+    ],
+    "sendPlantIdPanelDesc": [
+      "DpvMessages"
+    ]
+  }
+}

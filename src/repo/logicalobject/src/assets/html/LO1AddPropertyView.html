@@ -1,0 +1,11 @@
+<aw-command-panel caption="{{data.caption}}">
+    <aw-panel-body>
+        <aw-panel-section caption="i18n.presentedProperties">
+            <aw-widget prop="data.propDef.props.fnd0RootOrMemberID"></aw-widget>
+            <aw-widget hint="checkboxoptionlov" prop="data.propDef.props.fnd0MemberProperties"></aw-widget>
+        </aw-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="addPropertyEvent" size="auto" enable-when="conditions.isValidToAddProperty"><aw-i18n>i18n.add</aw-i18n></aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

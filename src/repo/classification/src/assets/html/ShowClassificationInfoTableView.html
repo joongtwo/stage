@@ -1,0 +1,8 @@
+<aw-splm-table gridid="gridView" show-decorators="true" show-context-menu="true"
+    show-when="conditions.showResultsFound" exist-when="subPanelContext.searchState.criteria !== undefined &&
+    subPanelContext.searchState.criteria.searchString !== ''"
+    show-context-menu="true"
+    show-check-box="subPanelContext.showCheckBox">
+</aw-splm-table>
+<span class="aw-widgets-propertyNonEditValue aw-search-inContentSearchBox"
+    exist-when="!conditions.showResultsFound">{{i18n.noFiltersFound}}</span>

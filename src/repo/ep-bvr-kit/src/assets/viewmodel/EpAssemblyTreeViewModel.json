@@ -1,0 +1,227 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "initAssemblyTreeContent": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "unRegisterSelectionMode"
+                },
+                {
+                    "action": "getValueInViewModel"
+                },
+                {
+                    "action":"updateSearchContext"
+                },
+                {
+                    "action":"updateCommandContextForManageConsumptionMode"
+                }
+            ]
+        },
+        "unRegisterSelectionMode": {
+            "actionType": "JSFunction",
+            "method": "unRegisterSelectionMode",
+            "deps": "js/wiSelectionModeUtil"
+        },
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "assemblyTreeContext.tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "updateSearchContext": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetAtomicData": "{{fields.epAssemblyTreeSearchContext}}",
+                "updatedValues":{
+                    "searchPlaceholderString":"{{i18n.searchForPart}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "toggleToEpManageConsumption":{
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetContext": "{{props.subPanelContext.manageConsumptionMode}}",
+                "updatedValue": {
+                    "isEnabled": true
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "updateCommandContextForManageConsumptionMode": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{data.assemblyTreeContext.tabContext}}",
+                "commandContext": {
+                    "manageConsumptionMode": "{{props.subPanelContext.manageConsumptionMode}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        }
+    },
+    "data": {
+        "epAssemblyTreeSearchContext": {
+            "initialValues": {
+                "searchObjectType": "BOMLine",
+                "searchPlaceholderString": "{{i18n.searchForPart}}",
+                "searchScopeUid": ""
+            },
+            "meta": {}
+        },
+        "assemblyTreeContext": {
+            "objectUid": "{{ctx.epPageContext.loadedObject.uid}}",
+            "isTopNode": false,
+            "preferenceName": "EP_ProductScopeTabTreeGridColumnConfiguration",
+            "isLeafProperty": "bl_has_children",
+            "additionalPolicyObjects": {
+                "name": "EpAssemblyTree",
+                "types": [
+                    {
+                        "name": "BOMLine",
+                        "properties": [
+                            {
+                                "name": "bl_has_children"
+                            },
+                            {
+                                "name": "bl_parent"
+                            },
+                            {
+                                "name": "bl_is_packed"
+                            },
+                            {
+                                "name": "bl_packed_lines"
+                            },
+                            {
+                                "name": "bl_line_name"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "additionalLoadParamsForRootLoadInputData": [
+                {
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandMBOMDetailedPlanning"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "TOP_WITH_CHILDREN"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "rootsProperty",
+                    "attributeValue": "associatedAssembly"
+                }
+            ],
+            "additionalLoadParamsForChildLoadInputData": [{
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandMBOMDetailedPlanning"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "CHILDREN"
+                }
+            ],
+            "relatedObjectMapKey": ["childAssembly", "associatedAssembly"],
+            "initializeAction": "loadTreeTableData",
+            "clientColumns": [
+                {
+                    "clientColumn": true,
+                    "name": "graphicVisibility",
+                    "propertyDisplayName": "{{i18n.GraphicVisibilityColumnName}}"
+                },
+                {
+                    "clientColumn": true,
+                    "name": "assignmentIndication",
+                    "propertyDisplayName": "{{i18n.AssignmentIndicationColumnName}}"
+                }
+            ],
+            "treeNavigationColumnIndex": 2,
+            "tabModel": "{{data.assemblyTreeContext.tabContext}}",
+            "messages": {
+                "noAssemblyStructure": [
+                    {
+                        "text": "{{i18n.noAssemblyStructure}}"
+                    }
+                ]
+            },
+            "enableSorting": true
+        },
+        "switch":{
+            "displayName": "{{i18n.switch}}",
+            "type": "STRING"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initAssemblyTreeContent"
+    },
+    "messages":{
+        "guidanceMessageAssemblyTree": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.assemblyTreeGuidanceMessage}}",
+            "messageTextLinks": [{
+                "prop": "data.switch",
+                "action": "toggleToEpManageConsumption"
+            }]
+        }
+    },
+    "i18n": {
+        "searchForPart": [
+            "TablesMessages"
+        ],
+        "assemblyTreeGuidanceMessage": [
+            "TablesMessages"
+        ],
+        "noAssemblyStructure": [
+            "AssemblyMessages"
+        ],
+        "GraphicVisibilityColumnName": [
+            "BvrGraphicsMessages"
+        ],
+        "AssignmentIndicationColumnName": [
+            "InstructionsMessages"
+        ]
+    },
+    "conditions": {
+        "isObjectUidAvailable": {
+            "expression": {
+                "$source": "data.assemblyTreeContext.objectUid",
+                "$query": {
+                    "$notNull": true
+                }
+            }
+        },
+        "isManageConsumptionModeEnabled":{
+            "expression":"props.subPanelContext.manageConsumptionMode.isEnabled === true"
+        },
+        "isProductStructureDefined": {
+            "expression": {
+                "$source": "ctx.epTaskPageContext.productStructure",
+                "$query": {
+                    "$notNull": true
+                }
+            }
+        }
+    }
+}

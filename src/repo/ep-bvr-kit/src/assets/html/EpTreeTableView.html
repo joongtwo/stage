@@ -1,0 +1,3 @@
+<mfe-loading-message exist-when="!conditions.isTreeDataLoaded && !conditions.isTreeDataMissing"></mfe-loading-message>
+<mfe-message exist-when="conditions.isTreeDataMissing" sub-panel-context="data.messages.noAssemblyStructure"></mfe-message>
+<aw-splm-table show-when="conditions.isTreeDataLoaded" selection-data="fields.selectionData" class="aw-ep-treeTable" gridid="EpTreeTable" use-tree="true" show-decorators="true" reusable="true"></aw-splm-table>

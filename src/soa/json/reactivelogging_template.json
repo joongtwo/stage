@@ -1,0 +1,165 @@
+{
+    "Release": [
+      {
+        "description": "Teamcenter 12.2",
+        "displayName": "Teamcenter 12.2",
+        "name": "tc12000.2.0",
+        "priorRelease": "tc12000.1.0",
+        "releaseType": "Minor",
+        "serviceVersion": "_2019_06"
+      }
+    ],
+    "Date": "",
+    "Operation": [
+    {
+      "ParameterInfo": [
+        {
+          "description": "A map (string, string) of logflags that contains the debug log flags to be enabled.",
+          "parameterName": "logFlags"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Fnd0CoreModelGeneral",
+      "createRelease": "tc12000.2.0",
+      "dependencies": "",
+      "description": "This operation enables logging of the debug log flags that are passed through logFlags.",
+      "exceptionCondition": "",
+      "id": "startLogging#const,Fnd0::Soa::Internal::DebugMonitor::_2019_06::DebugLogging::Logflags,&",
+      "interface": "Fnd0::Soa::DebugMonitor::DebugLogging",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "startLogging",
+      "opTemplate": "Fnd0::Soa::Internal::DebugMonitor::_2019_06::DebugLogging::DebugLoggingResponse#Fnd0::Soa::DebugMonitor::DebugLogging::startLogging#const,Fnd0::Soa::Internal::DebugMonitor::_2019_06::DebugLogging::Logflags,&",
+      "returnDescription": "The DebugLoggingResponse data type provides a response to the client of the debug logging flags that were set and the service data information.",
+      "useCase": ""
+    },
+    {
+      "canOverride": "false",
+      "component": "Fnd0CoreModelGeneral",
+      "createRelease": "tc12000.2.0",
+      "dependencies": "",
+      "description": "This operation disables logging of the selected log type, collects all the generated log files and creates a zip file of the logs. It either returns a FMS transient file ticket of a zip file containg all the relavent log files, or a message informing the user to contact the system adminstrator for access to the zip file.",
+      "exceptionCondition": "",
+      "id": "stopLogging#",
+      "interface": "Fnd0::Soa::DebugMonitor::DebugLogging",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "stopLogging",
+      "opTemplate": "Fnd0::Soa::Internal::DebugMonitor::_2019_06::DebugLogging::DebugLoggingResponse#Fnd0::Soa::DebugMonitor::DebugLogging::stopLogging",
+      "returnDescription": "The log file information.<br /><br />Following partial errors may be returned:<br />214675 - An error has occurred when retrieving the Performance logging",
+      "useCase": ""
+    }
+  ],
+  "OperationTemplate": [
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Fnd0::Soa::Internal::DebugMonitor::_2019_06::DebugLogging::Logflags",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A map (string, string) of logflags that contains the debug log flags to be enabled.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "logFlags"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Fnd0::Soa::Internal::DebugMonitor::_2019_06::DebugLogging::DebugLoggingResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc12000.2.0",
+      "description": "This operation enables logging of the debug log flags that are passed through logFlags.",
+      "id": "Fnd0::Soa::Internal::DebugMonitor::_2019_06::DebugLogging::DebugLoggingResponse#Fnd0::Soa::DebugMonitor::DebugLogging::startLogging#const,Fnd0::Soa::Internal::DebugMonitor::_2019_06::DebugLogging::Logflags,&",
+      "name": "Fnd0::Soa::DebugMonitor::DebugLogging::startLogging",
+      "returnConst": "false",
+      "returnDescription": "The DebugLoggingResponse data type provides a response to the client of the debug logging flags that were set and the service data information.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Fnd0::Soa::Internal::DebugMonitor::_2019_06::DebugLogging::DebugLoggingResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc12000.2.0",
+      "description": "This operation disables logging of the selected log type, collects all the generated log files and creates a zip file of the logs. It either returns a FMS transient file ticket of a zip file containg all the relavent log files, or a message informing the user to contact the system adminstrator for access to the zip file.",
+      "id": "Fnd0::Soa::Internal::DebugMonitor::_2019_06::DebugLogging::DebugLoggingResponse#Fnd0::Soa::DebugMonitor::DebugLogging::stopLogging",
+      "name": "Fnd0::Soa::DebugMonitor::DebugLogging::stopLogging",
+      "returnConst": "false",
+      "returnDescription": "The log file information.<br /><br />Following partial errors may be returned:<br />214675 - An error has occurred when retrieving the Performance logging",
+      "returnFreeMemory": "false",
+      "static": "false"
+    }
+  ],
+  "Struct": [
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Fnd0::Soa::Internal::DebugMonitor::_2019_06::DebugLogging::Logflags"
+            }
+          ],
+          "description": "Previous debug logging flags.",
+          "name": "prevDebugLoggingFlags"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Service data information.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "tc12000.2.0",
+      "description": "The DebugLoggingResponse data type provides a response to the client of the debug logging flags that were set and the service data information.",
+      "isPublished": "false",
+      "name": "DebugLoggingResponse",
+      "namespace": "Fnd0::Soa::Internal::DebugMonitor::_2019_06::DebugLogging",
+      "scope": "Fnd0::Soa::DebugMonitor::DebugLogging"
+    }
+  ],
+  "Typedef": [
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc12000.2.0",
+      "description": "A map (string, string) of logflags that enables debug logs.",
+      "isPublished": "false",
+      "name": "Logflags",
+      "namespace": "Fnd0::Soa::Internal::DebugMonitor::_2019_06::DebugLogging",
+      "scope": "Fnd0::Soa::DebugMonitor::DebugLogging"
+    }
+  ],
+  "xmlns": "http://teamcenter.com/BusinessModel/TcBusinessData"
+  }

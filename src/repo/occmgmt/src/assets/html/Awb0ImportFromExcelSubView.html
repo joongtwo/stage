@@ -1,0 +1,25 @@
+<aw-panel-header>
+    <aw-widget prop="data.selectExcelFile" hint="label"></aw-widget>
+    <aw-file-upload file-change-action="updateFormDataAndReset" type-filter=".xlsx, .xlsm" is-required="true" exist-when="conditions.showFileUploadWidget"></aw-file-upload>
+<br>
+    <aw-panel-section caption="i18n.mapProperties" visible-when="data.showPropertiesMap">
+        <aw-widget prop="data.mappingGroup"></aw-widget>
+    </aw-panel-section>
+</aw-panel-header>
+<aw-panel-body>
+    <aw-panel-section visible-when="data.showPropertiesMap">
+        <aw-label prop="data.headerMapping" class="aw-importexport-header"></aw-label>
+        <aw-widget prop="header" class="aw-importexport-headerLabel" aw-repeat="header:data.viewModelPropertiesForHeader"></aw-widget>
+    </aw-panel-section>
+</aw-panel-body>
+<aw-panel-footer>
+    <div class="sw-flex-row">
+        <aw-checkbox prop="data.runInBackgroundExcel"></aw-checkbox>
+    </div>
+    <aw-button size="auto" enable-when="conditions.isExcelImportAllowed && conditions.showFileUploadWidget" action="setContextAndPreview" button-type="base">
+        <aw-i18n>i18n.preview</aw-i18n>
+    </aw-button>
+    <aw-button size="auto" enable-when="conditions.isExcelImportAllowed && !ctx.awb0ImportFromExcelProgressing" action="getExcelImportInput">
+        <aw-i18n>i18n.importTitle</aw-i18n>
+    </aw-button>
+</aw-panel-footer>

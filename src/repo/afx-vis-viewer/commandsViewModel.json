@@ -1,0 +1,613 @@
+{
+  "schemaVersion": "1.0.0",
+  "commands": {
+    "fitAllCommand": {
+      "iconId": "cmdFitToWindow",
+      "isGroup": false,
+      "title": "{{i18n.fitAllKey}}"
+    },
+    "mouseModeGroupCommand": {
+      "iconId": "cmdArrowNorthWest",
+      "isShuttle": true
+    },
+    "mouseModePanCommand": {
+      "iconId": "cmdPan",
+      "title": "{{i18n.panKey}}"
+    },
+    "mouseModeRotateCommand": {
+      "iconId": "cmdRotate",
+      "title": "{{i18n.rotateKey}}"
+    },
+    "mouseModeZoomCommand": {
+      "iconId": "cmdZoom",
+      "title": "{{i18n.zoomKey}}"
+    },
+    "snapshotCommand": {
+      "iconId": "cmdSnapShot",
+      "isGroup": false,
+      "title": "{{i18n.snapshotKey}}"
+    },
+    "standardViewsCommand": {
+      "iconId": "cmdOrientISO",
+      "isGroup": true,
+      "title": "{{i18n.standardViewsKey}}"
+    },
+    "standardViewLeft": {
+      "iconId": "cmdOrientLeft",
+      "title": "{{i18n.leftKey}}"
+    },
+    "standardViewFront": {
+      "iconId": "cmdOrientFront",
+      "title": "{{i18n.frontKey}}"
+    },
+    "standardViewBottom": {
+      "iconId": "cmdOrientBottom",
+      "title": "{{i18n.bottomKey}}"
+    },
+    "standardViewRight": {
+      "iconId": "cmdOrientRight",
+      "title": "{{i18n.rightKey}}"
+    },
+    "standardViewBack": {
+      "iconId": "cmdOrientBack",
+      "title": "{{i18n.backKey}}"
+    },
+    "standardViewTop": {
+      "iconId": "cmdOrientTop",
+      "title": "{{i18n.topKey}}"
+    },
+    "standardViewISOMETRIC": {
+      "iconId": "cmdOrientISO",
+      "title": "{{i18n.isometricKey}}"
+    },
+    "standardViewNEGATIVE_ISOMETRIC": {
+      "iconId": "cmdOrientNegative",
+      "title": "{{i18n.negativeIsometricKey}}"
+    },
+    "viewerSettingsCommand": {
+      "iconId": "cmdDisplayOptions",
+      "title": "{{i18n.viewerOptionsKey}}"
+    },
+    "viewerSettingsCloseCommand": {
+      "iconId": "cmdClosePanel",
+      "title": "{{i18n.closeKey}}"
+    },
+    "visibilityControlsCommand": {
+      "iconId": "cmdShow",
+      "isGroup": true,
+      "title": "{{i18n.visibilityControlsKey}}"
+    },
+    "allOnVisibiltyControlCommand": {
+      "iconId": "cmdShow",
+      "title": "{{i18n.allOnKey}}"
+    },
+    "allOffVisibiltyControlCommand": {
+      "iconId": "cmdHide",
+      "title": "{{i18n.allOffKey}}"
+    },
+    "selectedOffVisibiltyControlCommand": {
+      "iconId": "cmdHideAll",
+      "title": "{{i18n.selectedOffKey}}"
+    },
+    "selectedOnVisibiltyControlCommand": {
+      "iconId": "cmdShowAll",
+      "title": "{{i18n.selectedOnlyKey}}"
+    }
+  },
+  "commandPlacements": {
+    "fitAllCommandPlacement": {
+      "id": "fitAllCommand",
+      "uiAnchor": "mfe_visviewer_base_command_bar",
+      "priority": 100
+    },
+    "mouseModeGroupCommandPlacement": {
+      "id": "mouseModeGroupCommand",
+      "uiAnchor": "mfe_visviewer_base_command_bar",
+      "priority": 300,
+      "showGroupSelected": false
+    },
+    "mouseModePanCommandPlacement": {
+      "id": "mouseModePanCommand",
+      "uiAnchor": "mfe_visviewer_base_command_bar",
+      "priority": 301,
+      "parentGroupId": "mouseModeGroupCommand"
+    },
+    "mouseModeRotateCommandPlacement": {
+      "id": "mouseModeRotateCommand",
+      "uiAnchor": "mfe_visviewer_base_command_bar",
+      "priority": 302,
+      "parentGroupId": "mouseModeGroupCommand"
+    },
+    "mouseModeZoomCommandPlacement": {
+      "id": "mouseModeZoomCommand",
+      "uiAnchor": "mfe_visviewer_base_command_bar",
+      "priority": 303,
+      "parentGroupId": "mouseModeGroupCommand"
+    },
+    "snapshotCommandPlacement": {
+      "id": "snapshotCommand",
+      "uiAnchor": "mfe_visviewer_base_command_bar",
+      "priority": 8
+    },
+    "standardViewsCommandPlacement": {
+      "id": "standardViewsCommand",
+      "uiAnchor": "mfe_visviewer_base_command_bar",
+      "priority": 400
+    },
+    "standardViewLeftPlacement": {
+      "id": "standardViewLeft",
+      "parentGroupId": "standardViewsCommand",
+      "priority": 50
+    },
+    "standardViewFrontBPlacement": {
+      "id": "standardViewFront",
+      "parentGroupId": "standardViewsCommand",
+      "priority": 70
+    },
+    "standardViewBottomPlacement": {
+      "id": "standardViewBottom",
+      "parentGroupId": "standardViewsCommand",
+      "priority": 40
+    },
+    "standardViewRightPlacement": {
+      "id": "standardViewRight",
+      "parentGroupId": "standardViewsCommand",
+      "priority": 60
+    },
+    "standardViewBackPlacement": {
+      "id": "standardViewBack",
+      "parentGroupId": "standardViewsCommand",
+      "priority": 80
+    },
+    "standardViewTopPlacement": {
+      "id": "standardViewTop",
+      "parentGroupId": "standardViewsCommand",
+      "priority": 30
+    },
+    "standardViewISOMETRIC": {
+      "id": "standardViewISOMETRIC",
+      "parentGroupId": "standardViewsCommand",
+      "priority": 90
+    },
+    "standardViewNEGATIVE_ISOMETRIC": {
+      "id": "standardViewNEGATIVE_ISOMETRIC",
+      "parentGroupId": "standardViewsCommand",
+      "priority": 100
+    },
+    "viewerSettingsCommandPlacement": {
+      "id": "viewerSettingsCommand",
+      "uiAnchor": "mfe_visviewer_base_command_bar",
+      "priority": 1000
+    },
+    "viewerSettingsCloseCommandPlacement": {
+      "id": "viewerSettingsCloseCommand",
+      "uiAnchor": "mfe_visviewer_viewerSettingsPanel_anchor",
+      "priority": 100
+    },
+    "visibilityControlsCommandPlacement": {
+      "id": "visibilityControlsCommand",
+      "uiAnchor": "mfe_visviewer_base_command_bar",
+      "priority": 200
+    },
+    "allOnVisibiltyControlCommandPlacement": {
+      "id": "allOnVisibiltyControlCommand",
+      "parentGroupId": "visibilityControlsCommand",
+      "priority": 201
+    },
+    "allOffVisibiltyControlCommandPlacement": {
+      "id": "allOffVisibiltyControlCommand",
+      "parentGroupId": "visibilityControlsCommand",
+      "priority": 202
+    },
+    "selectedOffVisibiltyControlCommandPlacement": {
+      "id": "selectedOffVisibiltyControlCommand",
+      "parentGroupId": "visibilityControlsCommand",
+      "priority": 203
+    },
+    "selectedOnVisibiltyControlCommandPlacement": {
+      "id": "selectedOnVisibiltyControlCommand",
+      "parentGroupId": "visibilityControlsCommand",
+      "priority": 204
+    }
+  },
+  "commandHandlers": {
+    "fitAllCommandHandler": {
+      "id": "fitAllCommand",
+      "action": "fitAllCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "mouseModePanCommandHandler": {
+      "id": "mouseModePanCommand",
+      "action": "mouseModePanCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "selectWhen": {
+        "condition": "conditions.isMouseNavigationModePan"
+      }
+    },
+    "mouseModeRotateCommandHandler": {
+      "id": "mouseModeRotateCommand",
+      "action": "mouseModeRotateCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "selectWhen": {
+        "condition": "conditions.isMouseNavigationModeRotate"
+      }
+    },
+    "mouseModeZoomCommandHandler": {
+      "id": "mouseModeZoomCommand",
+      "action": "mouseModeZoomCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "selectWhen": {
+        "condition": "conditions.isMouseNavigationModeZoom"
+      }
+    },
+    "snapshotCommandHandler": {
+      "id": "snapshotCommand",
+      "action": "snapshotCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "standardViewLeftHandler": {
+      "id": "standardViewLeft",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "action": "setStandardViewToLeft"
+    },
+    "standardViewFrontHandler": {
+      "id": "standardViewFront",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "action": "setStandardViewToFront"
+    },
+    "standardViewBottomHandler": {
+      "id": "standardViewBottom",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "action": "setStandardViewToBottom"
+    },
+    "standardViewRightHandler": {
+      "id": "standardViewRight",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "action": "setStandardViewToRight"
+    },
+    "standardViewBackHandler": {
+      "id": "standardViewBack",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "action": "setStandardViewToBack"
+    },
+    "standardViewTopHandler": {
+      "id": "standardViewTop",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "action": "setStandardViewToTop"
+    },
+    "standardViewISOMETRICHandler": {
+      "id": "standardViewISOMETRIC",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "action": "setStandardViewToISOMETRIC"
+    },
+    "standardViewNEGATIVE_ISOMETRICHandler": {
+      "id": "standardViewNEGATIVE_ISOMETRIC",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "action": "setStandardViewToNEGATIVE_ISOMETRIC"
+    },
+    "viewerSettingsCommandHandler": {
+      "id": "viewerSettingsCommand",
+      "activeWhen": false,
+      "visibleWhen": false,
+      "action": "openViewerSettingsPanel"
+    },
+    "viewerSettingsCloseCommandHandler": {
+      "id": "viewerSettingsCloseCommand",
+      "action": "openViewerSettingsPanel",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.viewerSettingsPanelVisible"
+      }
+    },
+    "allOnVisibiltyControlCommandHandler": {
+      "id": "allOnVisibiltyControlCommand",
+      "action": "allOnVisibiltyControlCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "allOffVisibiltyControlCommandHandler": {
+      "id": "allOffVisibiltyControlCommand",
+      "action": "allOffVisibiltyControlCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "selectedOnVisibiltyControlCommandHandler": {
+      "id": "selectedOnVisibiltyControlCommand",
+      "action": "selectedOnVisibiltyControlCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.checkForSelection"
+      }
+    },
+    "selectedOffVisibiltyControlCommandHandler": {
+      "id": "selectedOffVisibiltyControlCommand",
+      "action": "selectedOffVisibiltyControlCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.checkForSelection"
+      }
+    }
+  },
+  "actions": {
+    "fitAllCommandAction": {
+      "actionType": "JSFunction",
+      "method": "fitAll",
+      "inputData": {
+        "visId": "{{commandContext.visContext.id}}"
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "mouseModePanCommandAction": {
+      "actionType": "JSFunction",
+      "method": "setDefaultNavigationAction",
+      "inputData": {
+        "visContext": "{{commandContext.visContext}}",
+        "mode": 1
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "mouseModeRotateCommandAction": {
+      "actionType": "JSFunction",
+      "method": "setDefaultNavigationAction",
+      "inputData": {
+        "visContext": "{{commandContext.visContext}}",
+        "mode": 0
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "mouseModeZoomCommandAction": {
+      "actionType": "JSFunction",
+      "method": "setDefaultNavigationAction",
+      "inputData": {
+        "visContext": "{{commandContext.visContext}}",
+        "mode": 2
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "snapshotCommandAction": {
+      "actionType": "JSFunction",
+      "method": "captureSnapshot",
+      "inputData": {
+        "visId": "{{commandContext.visContext.id}}"
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "setStandardViewToLeft": {
+      "actionType": "JSFunction",
+      "method": "setStandardView",
+      "inputData": {
+        "visId": "{{commandContext.visContext.id}}",
+        "standardViewType": "X"
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "setStandardViewToFront": {
+      "actionType": "JSFunction",
+      "method": "setStandardView",
+      "inputData": {
+        "visId": "{{commandContext.visContext.id}}",
+        "standardViewType": "Y"
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "setStandardViewToBottom": {
+      "actionType": "JSFunction",
+      "method": "setStandardView",
+      "inputData": {
+        "visId": "{{commandContext.visContext.id}}",
+        "standardViewType": "Z"
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "setStandardViewToRight": {
+      "actionType": "JSFunction",
+      "method": "setStandardView",
+      "inputData": {
+        "visId": "{{commandContext.visContext.id}}",
+        "standardViewType": "NEGATIVE_X"
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "setStandardViewToBack": {
+      "actionType": "JSFunction",
+      "method": "setStandardView",
+      "inputData": {
+        "visId": "{{commandContext.visContext.id}}",
+        "standardViewType": "NEGATIVE_Y"
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "setStandardViewToTop": {
+      "actionType": "JSFunction",
+      "method": "setStandardView",
+      "inputData": {
+        "visId": "{{commandContext.visContext.id}}",
+        "standardViewType": "NEGATIVE_Z"
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "setStandardViewToISOMETRIC": {
+      "actionType": "JSFunction",
+      "method": "setStandardView",
+      "inputData": {
+        "visId": "{{commandContext.visContext.id}}",
+        "standardViewType": "ISOMETRIC"
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "setStandardViewToNEGATIVE_ISOMETRIC": {
+      "actionType": "JSFunction",
+      "method": "setStandardView",
+      "inputData": {
+        "visId": "{{commandContext.visContext.id}}",
+        "standardViewType": "NEGATIVE_ISOMETRIC"
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "openViewerSettingsPanel": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "awsidenav.openClose",
+            "eventData": {
+              "id": "viewerSettingsSideNav",
+              "includeView": "viewerSettingsPanel",
+              "commandId": "viewerSettingsCommand",
+              "config": {
+                "width": "wide",
+                "height": "full"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "allOnVisibiltyControlCommandAction": {
+      "actionType": "JSFunction",
+      "method": "setVisibilityOfAllObjectsInViewer",
+      "inputData": {
+        "visId": "{{commandContext.visContext.id}}",
+        "visibility": true
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "allOffVisibiltyControlCommandAction": {
+      "actionType": "JSFunction",
+      "method": "setVisibilityOfAllObjectsInViewer",
+      "inputData": {
+        "visId": "{{commandContext.visContext.id}}",
+        "visibility": false
+      },
+      "deps": "js/visViewerIntService"
+    },
+    "selectedOnVisibiltyControlCommandAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "commands.selectedOnVisibiltyControl",
+            "eventData": {
+              "sourceId": "{{commandContext.visContext.id}}"
+            },
+            "excludeLocalDataCtx": true
+          }
+        ]
+      }
+    },
+    "selectedOffVisibiltyControlCommandAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "commands.selectedOffVisibiltyControl",
+            "eventData": {
+              "sourceId": "{{commandContext.visContext.id}}"
+            },
+            "excludeLocalDataCtx": true
+          }
+        ]
+      }
+    }
+  },
+  "conditions": {
+    "isMouseNavigationModePan": {
+      "expression": "commandContext.visContext.currentMouseNavigationMode == 1"
+    },
+    "isMouseNavigationModeRotate": {
+      "expression": "commandContext.visContext.currentMouseNavigationMode == 0"
+    },
+    "isMouseNavigationModeZoom": {
+      "expression": "commandContext.visContext.currentMouseNavigationMode == 2"
+    },
+    "viewerSettingsPanelVisible": {
+      "expression": "ctx.sidenavCommandId === 'viewerSettingsCommand'"
+    },
+    "checkForSelection": {
+      "expression": "commandContext.eventData !== undefined && commandContext.eventData.selection !== undefined && commandContext.eventData.selection.ids !== undefined && commandContext.eventData.selection.ids.length !== 0"
+    }
+  },
+  "i18n": {
+    "fitAllKey": [
+      "visWebViewerMessages"
+    ],
+    "panKey": [
+      "visWebViewerMessages"
+    ],
+    "rotateKey": [
+      "visWebViewerMessages"
+    ],
+    "zoomKey": [
+      "visWebViewerMessages"
+    ],
+    "snapshotKey": [
+      "visWebViewerMessages"
+    ],
+    "standardViewsKey": [
+      "visWebViewerMessages"
+    ],
+    "leftKey": [
+      "visWebViewerMessages"
+    ],
+    "frontKey": [
+      "visWebViewerMessages"
+    ],
+    "bottomKey": [
+      "visWebViewerMessages"
+    ],
+    "rightKey": [
+      "visWebViewerMessages"
+    ],
+    "backKey": [
+      "visWebViewerMessages"
+    ],
+    "topKey": [
+      "visWebViewerMessages"
+    ],
+    "isometricKey": [
+      "visWebViewerMessages"
+    ],
+    "negativeIsometricKey": [
+      "visWebViewerMessages"
+    ],
+    "viewerOptionsKey": [
+      "visWebViewerMessages"
+    ],
+    "closeKey": [
+      "visWebViewerMessages"
+    ],
+    "visibilityControlsKey": [
+      "visWebViewerMessages"
+    ],
+    "allOnKey": [
+      "visWebViewerMessages"
+    ],
+    "allOffKey": [
+      "visWebViewerMessages"
+    ],
+    "selectedOffKey": [
+      "visWebViewerMessages"
+    ],
+    "selectedOnlyKey": [
+      "visWebViewerMessages"
+    ]
+  }
+}

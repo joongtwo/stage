@@ -1,0 +1,95 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-command-sub-panel.directive",
+        "js/visible-when.directive",
+        "js/aw-init.directive"
+    ],
+    "actions": {
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+        "updateActiveView":{
+            "actionType": "JSFunction",
+            "method": "setActiveView",
+            "inputData": {
+                "stateName": "{{fields.activeState}}",
+                "destPanelId": "Cm1CreateChangeSub"
+            },
+            "deps": "js/addObjectUtils"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "gwt.SubLocationContentSelectionChangeEvent",
+            "condition": "conditions.isObjectSelected",
+            "action": "closePanel"
+        }
+    ],
+    "conditions": {
+        "isObjectSelected": {
+            "expression": "haveObjectsSelected===true"
+        }
+    },
+    "i18n": {
+        "CreateChange": [
+            "CreateChangeMessages"
+        ],
+        "DeriveChange": [
+            "CreateChangeMessages"
+        ],
+        "BACK_BUTTON_TITLE": ["BaseMessages"]
+    },
+    "data": {
+        "sharedData": {
+            "initialValues": {
+                "prePanelId":"Cm1CreateChangeSub"
+            },
+            "meta": {}
+        },
+        "activeState": {
+            "initialValues": {
+                "activeView": "Cm1CreateChangeSub",
+                "context": {}
+            },
+            "meta": {
+                "activeView": {
+                    "field": "true",
+                    "type": "STRING"
+                },
+                "context": {
+                    "field": "true",
+                    "type": "OBJECT"
+                }
+            }
+        },
+        "projectState": {
+            "initialValues": {
+                "selectedProjects": [],
+                "triggerAssign": false
+            },
+            "meta": {
+                "selectedProjects": {
+                    "field": "true",
+                    "type": "OBJECT"
+                },
+                "triggerAssign": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,25 @@
+<aw-panel-body>
+    <aw-scrollpanel>
+        <aw-command-panel-section caption="i18n.taskDefinition">
+            <aw-widget prop="data.taskName"></aw-widget>
+            <aw-widget prop="data.priority"></aw-widget>
+            <aw-widget prop="data.dueDate"></aw-widget>
+            <aw-widget prop="data.instructions" hint="textarea"></aw-widget>
+        </aw-command-panel-section>
+        <aw-panel-section caption="i18n.taskData">
+            <aw-command-bar anchor="tcx_addTargetCmd" context="{ targetContextObject: data.targetContextObject, selectedObject: data.dataProviders.attachTargets.selectedObjects, createContext: { sharedData: props.subPanelContext.sharedData} }"></aw-command-bar>
+            <div class="sw-row aw-tcxsimplified-targetSectionRow">
+                <aw-scrollpanel>
+                    <aw-list dataprovider="data.dataProviders.attachTargets">
+                        <aw-default-cell vmo="item"></aw-default-cell>
+                    </aw-list>
+                </aw-scrollpanel>
+            </div>
+        </aw-panel-section>
+    </aw-scrollpanel>
+</aw-panel-body>
+<aw-panel-footer>
+    <aw-button action="create" enable-when="conditions.isValidToCreate">
+        <aw-i18n>i18n.createTask</aw-i18n>
+    </aw-button>
+</aw-panel-footer>

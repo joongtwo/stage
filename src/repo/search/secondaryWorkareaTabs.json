@@ -1,0 +1,20 @@
+[
+  {
+    "name": "",
+    "priority": 50,
+    "view": "AwSearchChart",
+    "visibleWhen": "selection.length === 0 && context.searchState && context.searchState.chartTitle && context.searchState.forceChart"
+  },
+  {
+    "name": "",
+    "priority": 10,
+    "view": "AwSecondaryWorkareaNoSkeleton",
+    "visibleWhen": "context.searchState && !context.searchState.totalFound && (context.clientScopeURI === 'Awp0SearchResults' || context.clientScopeURI === 'Awp0SavedSearch' || context.clientScopeURI === 'Awp0AdvancedSearch')"
+  },
+  {
+    "name": "",
+    "priority": 10,
+    "view": "AwSecondaryWorkareaNoSkeleton",
+    "visibleWhen": "selection.length === 0 && context.searchState && context.searchState.totalFound && (context.clientScopeURI === 'Awp0SavedSearch' || context.clientScopeURI === 'Awp0AdvancedSearch')"
+  }
+]

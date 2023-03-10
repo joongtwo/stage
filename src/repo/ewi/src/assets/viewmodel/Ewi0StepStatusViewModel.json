@@ -1,0 +1,385 @@
+{
+    "schemaVersion" : "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "data":
+    {
+        "ewi0ExecutionStatus":
+        {
+            "displayName": "{{i18n.stepStatus}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": true,
+            "dbValue": 0,
+            "uiValue": ""
+        },
+
+        "stepProgressSliderProp": {
+            "isArray": "true",
+            "dbValue":
+            [
+                {
+                    "sliderOption":
+                    {
+                        "disabled": false,
+                        "min": 0,
+                        "max": 100,
+                        "step": 1,
+                        "value": 0,
+                        "orientation": "horizontal",
+                        "range": false
+                    },
+                    "labelValueSuffix": "%",
+                    "showSliderDisplayValueLabel": true
+                }
+            ]
+        },
+
+        "ewi0ExecutionComment":
+        {
+            "displayName": "{{i18n.comments}}",
+            "type": "STRING",
+            "isEditable": "true",
+            "isRequired": "false",
+            "dbValue": "",
+            "uiValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        }
+    },
+
+    "actions":
+    {
+        "init":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "ewi.registerPolicies"
+                    },
+                    {
+                        "name": "Ewi0StepStatus.getList"
+                    }
+                ]
+            }
+        },
+
+        "getList":
+        {
+           "actionType": "TcSoaService",
+            "serviceName": "Core-2013-05-LOV",
+            "method": "getInitialLOVValues",
+            "inputData":
+            {
+                "initialData":
+                {
+                    "lov": "",
+                    "lovInput":
+                    {
+                        "owningObject": "",
+                        "boName": "ImanItemBOPLine",
+                        "operationName": "Search",
+                        "propertyValues":
+                        {
+                        }
+                    },
+                    "propertyName": "ewi0ExecutionStatus",
+                    "filterData":
+                    {
+                        "filterString": "",
+                        "maxResults": 0,
+                        "numberToReturn": -1,
+                        "sortPropertyName": "",
+                        "order": 1
+                    }
+                }
+            },
+
+            "outputData":
+            {
+                "ewi0ExecutionStatusList": "{{function:getStatusList}}"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "ewi.registerPolicies"
+                    },
+                    {
+                        "name": "Ewi0StepStatus.updatePanelData"
+                    }
+                ]
+             },
+            "deps": "js/Ewi0StepStatus"
+        },
+
+        "updatePanelData":
+        {
+            "actionType": "JSFunction",
+            "method": "updatePanelData",
+            "inputData":
+            {
+                "statusList": "{{data.ewi0ExecutionStatusList}}"
+            },
+            "outputData":
+            {
+                "ewi0ExecutionStatus.uiValue": "executionStatus.uiValue",
+                "ewi0ExecutionStatus.dbValue": "executionStatus.dbValue",
+                "stepProgressSliderProp.dbValue[0].sliderOption.value": "sliderVal",
+                "ewi0ExecutionComment.uiValue": "comment",
+                "ewi0ExecutionComment.dbValue": "comment"
+            },
+            "deps": "js/Ewi0StepStatus"
+        },
+
+        "statusUpdated":
+        {
+            "actionType": "JSFunction",
+            "method": "statusUpdated",
+            "inputData":
+            {
+                "selectedStatus": "{{data.ewi0ExecutionStatus.dbValue}}",
+                "sliderVal": "{{data.stepProgressSliderProp.dbValue[0].sliderOption.value}}"
+            },
+            "outputData":
+            {
+                "stepProgressSliderProp.dbValue[0].sliderOption.value": "sliderValue",
+                "stepProgressSliderProp.dbValue[0].sliderOption.disabled": "sliderDisable"
+            },
+            "deps": "js/Ewi0StepStatus"
+        },
+
+        "doSave": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getDataToSave"
+                },
+                {
+                    "action": "setProperties",
+                    "condition": "data.dataToSave.length > 0"
+                }
+            ]
+        },
+
+        "getDataToSave":
+        {
+            "actionType": "JSFunction",
+            "method": "getDataToSave",
+            "inputData":
+            {
+                "executionStatus": "{{data.ewi0ExecutionStatus.uiValue}}",
+                "sliderVal": "{{data.stepProgressSliderProp.dbValue[0].sliderOption.value}}",
+                "comment": "{{data.ewi0ExecutionComment.dbValue}}"
+            },
+            "outputData":
+            {
+                "dataToSave": ""
+            },
+            "deps": "js/Ewi0StepStatus"
+        },
+
+        "setProperties":
+        {
+           "actionType": "TcSoaService",
+            "serviceName": "Core-2010-09-DataManagement",
+            "method": "setProperties",
+            "inputData":
+            {
+                "info":
+                [
+                    {
+                        "object": "{{ctx.EWI0currentStep}}",
+                        "timestamp": "",
+                        "vecNameVal": "{{data.dataToSave}}"
+                    }
+                ]
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "Ewi0StepStatus.updateCurrStepCtx"
+                    }
+                ]
+            }
+        },
+
+        "updateCurrStepCtx":
+        {
+            "actionType": "JSFunction",
+            "method": "updateCurrStepCtx",
+            "inputData":
+            {
+                "executionStatus": "{{data.ewi0ExecutionStatus.uiValue}}",
+                "sliderVal": "{{data.stepProgressSliderProp.dbValue[ 0 ].sliderOption.value}}",
+                "comment": "{{data.ewi0ExecutionComment.dbValue}}"
+            },
+            "deps": "js/Ewi0StepStatus"
+        },
+
+        "closePanel":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+
+        "close": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "closePanel",
+                    "condition": "conditions.isSame"
+                },
+                {
+                    "action": "displayUnsavedMsgClosingPanel"
+                }
+            ]
+        },
+
+        "displayUnsavedMsgClosingPanel":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                 "events":
+                 [
+                    {
+                        "name": "Ewi0StepStatus.unsavedMsgClosingPanel",
+                        "condition": "!conditions.isSame"
+                    }
+
+                 ]
+            }
+        },
+
+        "saveAndClosePanel":
+        {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "doSave"
+                },
+                {
+                    "action": "closePanel"
+                }
+            ]
+        }
+    },
+
+    "onEvent":
+    [
+        {
+            "eventId": "Ewi0StepStatus.updatePanelData",
+            "action": "updatePanelData"
+        },
+        {
+            "eventId": "ewi.stepChanged",
+            "action": "updatePanelData"
+        },
+        {
+            "eventId": "Ewi0StepStatus.getList",
+            "action": "getList"
+        },
+        {
+            "eventId": "Ewi0StepStatus.updateCurrStepCtx",
+            "action": "updateCurrStepCtx"
+        },
+        {
+            "eventId": "ewi0CloseEditablePanel",
+            "action": "close"
+        },
+        {
+            "eventId": "Ewi0StepStatus.unsavedMsgClosingPanel",
+            "message": "unsavedMsgClosingPanel"
+        }
+    ],
+
+    "conditions":
+    {
+        "isSame": {
+            "expression": "conditions.isSameStatus && conditions.isSameComment && conditions.isSameSliderVal"
+        },
+        "isSameStatus": {
+            "expression": "data.ewi0ExecutionStatus.dbValue === 0 && ctx.EWI0currentStep.props.ewi0ExecutionStatus.uiValues[0] === '' || data.ewi0ExecutionStatus.uiValue === ctx.EWI0currentStep.props.ewi0ExecutionStatus.uiValues[0]"
+        },
+        "isSameComment": {
+            "expression": "data.ewi0ExecutionComment.uiValue === ctx.EWI0currentStep.props.ewi0ExecutionComment.uiValues[0]"
+        },
+        "isSameSliderVal": {
+            "expression": "data.stepProgressSliderProp.dbValue[0].sliderOption.value === 0 && ctx.EWI0currentStep.props.ewi0ExecutionPercentage.dbValues[0] === '' || data.stepProgressSliderProp.dbValue[0].sliderOption.value.toString() === ctx.EWI0currentStep.props.ewi0ExecutionPercentage.dbValues[0]"
+        }
+    },
+
+    "messages":
+    {
+        "unsavedMsgClosingPanel":
+        {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.leavePageConfirmation}}",
+            "navigationOptions":
+            [
+                {
+                    "option": "Save",
+                    "text": "{{i18n.save}}",
+                    "action": "saveAndClosePanel"
+                },
+                {
+                    "option": "Discard",
+                    "text": "{{i18n.discard}}",
+                    "action": "closePanel"
+                }
+            ]
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "init"
+    },
+
+    "i18n":
+    {
+        "setStepStatus": ["EWIMessages"],
+        "stepStatus": ["EWIMessages"],
+        "stepProgress": ["EWIMessages"],
+        "discard": ["EWIMessages"],
+        "save": ["EWIMessages"],
+        "comments": ["EWIMessages"],
+        "leavePageConfirmation": ["EWIMessages"]
+    },
+
+    "ctx": {
+        "EWI0currentStep": {
+            "type": "object"
+        }
+    }
+}

@@ -1,0 +1,173 @@
+{
+  "activitiesCategoryColumn_template": {
+    "grids": [
+      "EpActivitiesTable"
+    ],
+    "columns": [
+      "al_activity_time_system_category"
+    ],
+    "renderFunction": "renderActivityCategory",
+    "deps": "js/epActivitiesRenderService"
+  },
+  "epMissingInSourceColumn_template": {
+    "grids": [
+      "EpDetailsTable"
+    ],
+    "columns": [
+      "missingInSource"
+    ],
+    "renderFunction": "rendererMissingInSourceOrChangeIndication",
+    "deps": "js/epMissingInSrcIndicationTablePropertyRenderer",
+    "headerTemplateUrl": "",
+    "headerRenderFunction": "renderMissinInSrcColumnHeader"
+  },
+  "epExternalFlowsColumn_template": {
+    "grids": [
+      "EpDetailsTable"
+    ],
+    "columns": [
+      "externalFlowIndication"
+    ],
+    "renderFunction": "rendererForExternalFlowIndication",
+    "deps": "js/epExternalFlowIndicationTablePropertyRenderer",
+    "headerTemplateUrl": "",
+    "headerRenderFunction": "renderExternalFlowColumnHeader"
+  },
+  "epAssignmentIndicationColumn_template": {
+    "grids": [
+      "EpTreeTable"
+    ],
+    "columns": [
+      "assignmentIndication"
+    ],
+    "renderFunction": "rendererForAssignmentIndication",
+    "deps": "js/epAssignmentIndicationService",
+    "headerTemplateUrl": "",
+    "headerRenderFunction": "renderIndicationColumnHeader"
+  },
+  "epProcessReleasedFlagColumn_template": {
+    "grids": [
+      "EpTreeTable"
+    ],
+    "columns": [
+      "releaseStatusFlag"
+    ],
+    "renderFunction": "rendererReleaseStatusFlagVisibility",
+    "deps": "js/epReleaseStatusFlagTablePropertyRenderer",
+    "headerTemplateUrl": "",
+    "headerRenderFunction": "releaseStatusFlagHeaderRenderer"
+  },
+  "epChangeIndicationColumn_template": {
+    "grids": [
+      "EpTreeTable"
+    ],
+    "columns": [
+      "changeIndication"
+    ],
+    "renderFunction": "rendererForChangeIndication",
+    "deps": "js/epChangeIndicationService",
+    "headerTemplateUrl": "",
+    "headerRenderFunction": "changeIndicationHeaderRenderer"
+  },
+  "is_modifiable_template": {
+    "grids": [
+      "studyGridTable"
+    ],
+    "columns": [
+      "is_modifiable"
+    ],
+    "tooltip": [
+      "is_modifiable"
+    ],
+    "template": "",
+    "templateUrl": "/propRenderTemplates/isModifiablePropertyRenderer.html",
+    "deps": "propRenderTemplates/studyPropRenderService",
+    "renderFunction": "",
+    "headerRenderFunction": "renderIsModifiableHeader",
+    "dependentServices": []
+  },
+  "study_owning_user_template": {
+    "grids": [
+      "studyGridTable"
+    ],
+    "columns": [
+      "owning_user"
+    ],
+    "tooltip": [
+      "owning_user"
+    ],
+    "template": "",
+    "templateUrl": "/propRenderTemplates/studyOwnerPropertyRenderer.html",
+    "renderFunction": "",
+    "deps": "",
+    "dependentServices": []
+  },
+  "study_approved_for_briefcase_export_template": {
+    "grids": [
+      "studyGridTable"
+    ],
+    "columns": [
+      "briefcaseExport"
+    ],
+    "tooltip": [
+      "briefcaseExport"
+    ],
+    "renderFunction": "rendererApprovedForBriefcaseExport",
+    "deps": "propRenderTemplates/studyPropRenderService",
+    "headerTemplateUrl": "/propRenderTemplates/isApprovedForBriefcaseRenderer.html"
+  },
+  "balancingProcessResourceColumn_template": {
+    "grids": [
+      "EpDetailsTable"
+    ],
+    "columns": [
+      "Mfg0processResource"
+    ],
+    "renderFunction": "renderProcessResourceName",
+    "deps": "js/epBalancingLabelsService"
+  },
+  "epPmiMissingInSourceColumn_template": {
+    "grids": [
+      "assignedPmisTable"
+    ],
+    "columns": [
+      "missingInSource"
+    ],
+    "renderFunction": "rendererMissingInSourceOrChangeIndication",
+    "deps": "js/wiPmiAssignmentStatusService",
+    "headerTemplateUrl": "/propRenderTemplates/epColumnHeaderRenderer.html"
+  },
+  "wiPmiAssignmentStatusColumn_template": {
+    "grids": [
+      "assemblyPmiTable"
+    ],
+    "columns": [
+      "assignmentIndication"
+    ],
+    "renderFunction": "renderPmiAssignmentStatusIndication",
+    "deps": "js/wiPmiAssignmentStatusService",
+    "headerTemplateUrl": "/propRenderTemplates/epColumnHeaderRenderer.html"
+  },
+  "wiPmiDefindInColumn_template": {
+    "grids": [
+      "assignedPmisTable",
+      "assemblyPmiTable"
+    ],
+    "columns": [
+      "DefinedIn"
+    ],
+    "headerRenderFunction": "renderDefinedIn",
+    "deps": "js/wiPmiService",
+    "headerTemplateUrl": ""
+  },
+  "productionProgramProbabilityColumn_template": {
+    "grids": [
+      "productVariantsResultsTable"
+    ],
+    "columns": [
+      "probability"
+    ],
+    "renderFunction": "renderProductVariantProbability",
+    "deps": "js/epProductionProgramService"
+  }
+}

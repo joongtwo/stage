@@ -1,0 +1,482 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "updateUseOrigTemplateSettings": {
+            "actionType": "JSFunction",
+            "method": "updateChartOrigSettings",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "origSettingsVal":"{{data.useOrigSettingCheckbox.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateChartType": {
+            "actionType": "JSFunction",
+            "method": "updateChartType",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "chartTypeVal":"{{data.chartType.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateXAxisLabels": {
+            "actionType": "JSFunction",
+            "method": "updateXAxisLabels",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "xAxisLabelsVal":"{{data.xAxisLabels.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateYAxisLabels": {
+            "actionType": "JSFunction",
+            "method": "updateYAxisLabels",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "yAxisLabelsVal":"{{data.yAxisLabels.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateAnnotationColorBox":{
+            "actionType": "JSFunction",
+            "method": "updateAnnotationColorBox",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "annColoxBoxVal":"{{data.annotationColorCheckbox.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateAnnotationRed": {
+            "actionType": "JSFunction",
+            "method": "updateAnnotationRed",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "annRedVal":"{{data.annotationRed.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateAnnotationGreen": {
+            "actionType": "JSFunction",
+            "method": "updateAnnotationGreen",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "annGreenVal":"{{data.annotationGreen.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateBarChartScopeGreen": {
+            "actionType": "JSFunction",
+            "method": "updateBarChartScopeGreen",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "barChartScopeGreenVal":"{{data.barChartScopeGreen.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateBarChartScopeRed": {
+            "actionType": "JSFunction",
+            "method": "updateBarChartScopeRed",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "barChartScopeRedVal":"{{data.barChartScopeRed.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateBarChartScopeBlack": {
+            "actionType": "JSFunction",
+            "method": "updateBarChartScopeBlack",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "barChartScopeBlackVal":"{{data.barChartScopeBlack.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateBasisAndAnnColors": {
+            "actionType": "JSFunction",
+            "method": "updateBasisAndAnnColors",
+            "inputData": {
+                "data":"{{data}}",
+                "state": "{{props.subPanelContext.chartSettingsState}}"
+            },
+            "outputData":{
+                "annotationGreen" : "annotationGreen",
+                "annotationRed" : "annotationRed"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "resetChartSettingsData": {
+            "actionType": "JSFunction",
+            "method": "resetChartSettingsData",
+            "inputData": {
+                "data": "{{data}}",
+                "chartSettingsState": "{{props.subPanelContext.chartSettingsState}}"
+            },
+            "outputData": {
+                "useOrigSettingCheckbox": "useOrigSettingCheckbox",
+                "chartType": "chartType",
+                "xAxisLabels": "xAxisLabels",
+                "yAxisLabels": "yAxisLabels",
+                "annotationColorCheckbox": "annotationColorCheckbox",
+                "annotationGreen": "annotationGreen",
+                "annotationRed": "annotationRed",
+                "basis": "basis",
+                "basisList": "basisList",
+                "barChartScopeGreen": "barChartScopeGreen",
+                "barChartScopeRed": "barChartScopeRed",
+                "barChartScopeBlack": "barChartScopeBlack"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        }
+    },
+    "dataProviders": {},
+    "onEvent": [
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateAnnotationRed",
+            "criteria": {
+                "condition": "conditions.annotationRedChange"
+            },
+            "cacheEventData": true
+        },       
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateAnnotationGreen",
+            "criteria": {
+                "condition": "conditions.annotationGreenChange"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateBarChartScopeGreen",
+            "criteria": {
+                "condition": "conditions.barChartScopeGreenChange"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateBarChartScopeRed",
+            "criteria": {
+                "condition": "conditions.barChartScopeRedChange"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateBarChartScopeBlack",
+            "criteria": {
+                "condition": "conditions.barChartScopeBlackChange"
+            },
+            "cacheEventData": true
+        }
+    ],
+    "data": {
+        "useOrigSettingCheckbox": {
+            "displayName": "{{i18n.UseOrigChartSetting}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.useOrigTempSettings}}",
+            "dispValue": "{{i18n.UseOrigChartSetting}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "annotationColorCheckbox": {
+            "displayName": "{{i18n.annotationColorBox}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.annotationColorBox}}",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "chartType": {
+            "displayName": "{{i18n.chartType}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.chartType}}",
+            "vertical": false,
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "chartTypeValues": {
+            "type": "STRING",
+            "dbValue": [
+                {
+                    "propDisplayValue": "{{i18n.trendChart}}",
+                    "propInternalValue": "0"
+                },
+                {
+                    "propDisplayValue": "{{i18n.barChart}}",
+                    "propInternalValue": "1"
+                }
+            ]
+        },
+        "xAxisLabels": {
+            "displayName": "{{i18n.xAxisLabels}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.xAxisLabels}}",
+            "vertical": false,
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "yAxisLabels": {
+            "displayName": "{{i18n.yAxisLabels}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue":"{{props.subPanelContext.chartSettingsState.yAxisLabels}}",
+            "vertical": false,
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "basis": {
+            "displayName": "{{i18n.basis}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.basis}}",
+            "isEditable": "true",
+            "labelPosition": "PROPERTY_LABEL_AT_LEFT"
+        },
+        "xAxisLabelsList": {
+            "type": "STRING",
+            "dbValue": [ {
+                "propDisplayValue": "{{i18n.xAxisLabelNone}}",
+                "propInternalValue": "3"
+            },
+            {
+                "propDisplayValue": "{{i18n.xAxisLabelJSN}}",
+                "propInternalValue": "0"
+            },
+            {
+                "propDisplayValue": "{{i18n.xAxisLabelDate}}",
+                "propInternalValue": "2"
+            },
+            {
+                "propDisplayValue": "{{i18n.xAxisLabelRecordID}}",
+                "propInternalValue": "1"
+            }
+        ]
+        },
+        "yAxisLabelsList": {
+            "type": "STRING",
+            "dbValue": [ 
+            {
+                "propDisplayValue": "{{i18n.yAxisLabelUserDefined}}",
+                "propInternalValue": "0"
+            },
+            {
+                "propDisplayValue": "{{i18n.yAxisLabelBasedOnSpecLimit}}",
+                "propInternalValue": "1"
+            },
+            {
+                "propDisplayValue": "{{i18n.yAxisLabelAuto}}",
+                "propInternalValue": "2"
+            }
+        ]
+        },
+        "basisList": {
+            "type": "STRING",
+            "dbValue": [ {
+                "propDisplayValue": "{{i18n.basisPpk}}",
+                "dispValue": "ppk",
+                "propInternalValue": "0"
+            },
+            {
+                "propDisplayValue": "{{i18n.basisMeanShift}}",
+                "dispValue": "meanShift",
+                "propInternalValue": "1"
+            },
+            {
+                "propDisplayValue": "{{i18n.basis6Sigma}}",
+                "dispValue": "6sigma",
+                "propInternalValue": "2"
+            },
+            {
+                "propDisplayValue": "{{i18n.basisOnTarget}}",
+                "dispValue": "onTarget",
+                "propInternalValue": "3"
+            },
+            {
+                "propDisplayValue": "{{i18n.basisPp}}",
+                "dispValue": "pp",
+                "propInternalValue": "4"
+            },
+            {
+                "propDisplayValue": "{{i18n.basisCp}}",
+                "dispValue": "cp",
+                "propInternalValue": "5"
+            },
+            {
+                "propDisplayValue": "{{i18n.basisCpk}}",
+                "dispValue": "cpk",
+                "propInternalValue": "6"
+            },
+            {
+                "propDisplayValue": "{{i18n.basisOutOfSpec}}",
+                "dispValue": "outOfSpec",
+                "propInternalValue": "7"
+            },
+            {
+                "propDisplayValue": "{{i18n.basisSampleRange}}",
+                "dispValue": "sampleRange",
+                "propInternalValue": "8"
+            },
+            {
+                "propDisplayValue": "{{i18n.basisStdDev}}",
+                "dispValue": "stdDeviation",
+                "propInternalValue": "9"
+            },
+            {
+                "propDisplayValue": "{{i18n.basisMean}}",
+                "dispValue": "mean",
+                "propInternalValue": "10"
+            }
+        ]
+        },
+        "annotationGreen": {
+            "displayName": "{{i18n.annotationGreen}}",
+            "type": "DOUBLE",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.annotationGreen}}",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_LEFT"
+        },
+        "annotationRed": {
+            "displayName": "{{i18n.annotationRed}}",
+            "type": "DOUBLE",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.annotationRed}}",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_LEFT"
+        },
+        "barChartColorScope":{
+            "displayName": "{{i18n.barChartColorScope}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "barChartColorScope",
+            "dispValue": ""
+        },
+        "barChartScopeGreen": {
+            "displayName": "{{i18n.barChartScopeGreen}}",
+            "type": "DOUBLE",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.barChartScopeGreen}}",
+            "dispValue": 75.00,
+            "labelPosition": "PROPERTY_LABEL_AT_LEFT"
+        },
+        "barChartScopeRed": {
+            "displayName": "{{i18n.barChartScopeRed}}",
+            "type": "DOUBLE",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.barChartScopeRed}}",
+            "dispValue": 100.00,
+            "labelPosition": "PROPERTY_LABEL_AT_LEFT"
+        },
+        "barChartScopeBlack": {
+            "displayName": "{{i18n.barChartScopeBlack}}",
+            "type": "DOUBLE",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.barChartScopeBlack}}",
+            "dispValue": 200.00,
+            "labelPosition": "PROPERTY_LABEL_AT_LEFT"
+        },
+        "props": {
+            "prop": {
+                "type": "field"
+            }
+        }
+    },
+    "functions": {},
+    "conditions":{
+        "showUserDefinedOption":{
+            "expression": "data.yAxisLabels.dbValue === '0'"
+        },
+        "showSpecLimitOption":{
+            "expression": "data.yAxisLabels.dbValue === '1'"
+        },
+        "showAutoOption":{
+            "expression": "data.yAxisLabels.dbValue === '2'"
+        },
+        "annotationRedChange": {
+            "expression": "data.annotationRed.dbValue",
+            "trackValues": true
+        },        
+        "annotationGreenChange": {
+            "expression": "data.annotationGreen.dbValue",
+            "trackValues": true
+        },        
+        "barChartScopeGreenChange": {
+            "expression": "data.barChartScopeGreen.dbValue",
+            "trackValues": true
+        },        
+        "barChartScopeRedChange": {
+            "expression": "data.barChartScopeRed.dbValue",
+            "trackValues": true
+        },
+        "barChartScopeBlackChange": {
+            "expression": "data.barChartScopeBlack.dbValue",
+            "trackValues": true
+        },
+        "isQryTypeUseOrigSettingsOff": {
+            "expression": "!props.subPanelContext.qryTypeState.useOrigTempSettings"
+        },
+        "enableChartSettingsWidgetsCond": {
+            "expression": "conditions.isQryTypeUseOrigSettingsOff && !props.subPanelContext.chartSettingsState.useOrigTempSettings"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [ {
+            "action": "resetChartSettingsData",
+            "observers": [
+                "props.subPanelContext.chartSettingsState.useOrigTempSettings"
+            ]
+        } ],
+        "onUnmount": "resetChartSettingsData"
+    },
+    "i18n": {
+        "UseOrigChartSetting": [ "DpvMessages" ],
+        "annotationColorBox": [ "DpvMessages" ],
+        "barChartColorScope": [ "DpvMessages" ],
+        "chartType": [ "DpvMessages" ],
+        "trendChart": [ "DpvMessages" ],
+        "barChart": [ "DpvMessages" ],
+        "xAxisLabels": [ "DpvMessages" ],
+        "yAxisLabels": [ "DpvMessages" ],
+        "basis": [ "DpvMessages" ],
+        "xAxisLabelNone": [ "DpvMessages" ],
+        "xAxisLabelJSN": [ "DpvMessages" ],
+        "xAxisLabelDate": [ "DpvMessages" ],
+        "xAxisLabelRecordID": [ "DpvMessages" ],
+        "yAxisLabelUserDefined": [ "DpvMessages" ],
+        "yAxisLabelBasedOnSpecLimit": [ "DpvMessages" ],
+        "yAxisLabelAuto": [ "DpvMessages" ],
+        "basisPpk": [ "DpvMessages" ],
+        "basisMeanShift": [ "DpvMessages" ],
+        "basis6Sigma": [ "DpvMessages" ],
+        "basisOnTarget": [ "DpvMessages" ],
+        "basisPp": [ "DpvMessages" ],
+        "basisCp": [ "DpvMessages" ],
+        "basisCpk": [ "DpvMessages" ],
+        "basisOutOfSpec": [ "DpvMessages" ],
+        "basisSampleRange": [ "DpvMessages" ],
+        "basisStdDev": [ "DpvMessages" ],
+        "basisMean": [ "DpvMessages" ],
+        "annotationGreen": [ "DpvMessages" ],
+        "annotationRed": [ "DpvMessages" ],
+        "barChartScopeGreen": [ "DpvMessages" ],
+        "barChartScopeRed": [ "DpvMessages" ],
+        "barChartScopeBlack": [ "DpvMessages" ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

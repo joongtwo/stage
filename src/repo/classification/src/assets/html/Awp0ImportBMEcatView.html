@@ -1,0 +1,17 @@
+<aw-command-panel caption="i18n.importClsDataTitle">
+    <aw-panel-body>
+        <aw-flex-column width="fill" justify="left">
+            <aw-panel-section>
+                <aw-file-upload type-filter=".zip" is-required="true" file-change-action="clsFilesSelectionChange"></aw-file-upload>
+            </aw-panel-section>
+            <aw-panel-section>
+                <aw-listbox prop="data.potentialImportsListBox" visible-when="conditions.listboxEnabled" list="data.potentialImportsListBoxValues" action="selectImportFile"></aw-listbox>
+            </aw-panel-section>
+        </aw-flex-column>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button visible-when="conditions.enableImport" size="stretched" action="importCLSData">
+            <aw-i18n>i18n.cmdImportButton</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

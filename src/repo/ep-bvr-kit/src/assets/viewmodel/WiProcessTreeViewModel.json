@@ -1,0 +1,235 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "processTreeContext": {
+            "editContext": "{{ctx.mfgReadOnlyMode.readOnlyMode === true ? '': 'EP_PROCESS_TREE_TABLE_EDIT_CONTEXT'}}",
+            "objectUid": "{{ctx.epPageContext.loadedObject.uid}}",
+            "isTopNode": true,
+            "preferenceName": "EP_ProcessStructureWorkInstructionsColumnPreference",
+            "isLeafProperty": "hasChildren",
+            "reloadType": {
+                "epPaste": "GetWIData"
+            },
+            "relatedObjectMapKey": "childAssembly",
+            "additionalPolicyObjects": {
+                "types": [
+                    {
+                        "name": "BOMLine",
+                        "properties": [
+                            {
+                                "name": "mbc0hasSubElements"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mfg0BvrOperation",
+                        "properties": [
+                            {
+                                "name": "bl_parent"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mfg0BvrProcess",
+                        "properties": [
+                            {
+                                "name": "bl_parent"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "ImanItemBOPLine",
+                        "properties": [
+                            {
+                                "name": "bl_rev_checked_out_user"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "epTreeTableCommandAnchor": "wiProcessTree_OnHoverCommand",
+            "clientColumns": [
+                {
+                    "clientColumn": true,
+                    "name": "graphicVisibility",
+                    "propertyDisplayName": "{{i18n.GraphicVisibilityColumnName}}"
+                },
+                {
+                    "clientColumn": true,
+                    "name": "changeIndication",
+                    "propertyDisplayName": "{{i18n.ChangeIndicationColumnName}}"
+                }
+            ],
+            "treeNavigationColumnIndex": 2,
+            "propertyToSort": "bl_sequence_no",
+            "additionalLoadParamsForRootLoadInputData": [
+                {
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandProcessDetailedPlanning"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "TOP_WITH_CHILDREN"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "rootsProperty",
+                    "attributeValue": "RootObject"
+                }
+            ],
+            "additionalLoadParamsForChildLoadInputData": [
+                {
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandProcessDetailedPlanning"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "CHILDREN"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "rootsProperty",
+                    "attributeValue": "RootObject"
+                }
+            ],
+            "initializeAction": "initializeLoadDataForTree",
+            "relationName": ["Mbc0CutPaste","elb0allocatedOpsByPV"]
+        },
+        "toggleSyncLink": {
+            "displayName": "{{i18n.switchMode}}",
+            "type": "STRING"
+        },
+        "contentPanelData": {
+            "tabs": [
+                {
+                    "name": "{{i18n.missingInSource}}",
+                    "tabKey": "EpMissingInSource"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "initialize": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initializeSelectionMode"
+                },
+                {
+                    "action": "getValueInViewModel"
+                }
+            ]
+        },
+        "initializeSelectionMode": {
+            "actionType": "JSFunction",
+            "method": "initializeSelectionMode",
+            "deps": "js/wiSelectionModeUtil"
+        },
+        "toggleSyncAction": {
+            "actionType": "JSFunction",
+            "method": "toggleSelectionMode",
+            "deps": "js/wiSelectionModeUtil"
+        },
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "processTreeContext.tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "getMissingInSrcData": {
+            "actionType": "JSFunction",
+            "method": "getProperty",
+            "inputData": {
+                "name": "{{ctx.epPageContext.loadedObject.uid}}",
+                "propertyName": "accountabilityResponse"
+            },
+            "outputData": {
+                "missingInSrc": "result.missingInSrc"
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initialize",
+        "onUpdate":
+            {
+                "action": "getMissingInSrcData",
+                "observers": [
+                    "props.subPanelContext.sharedSelectionData.isIndicationToggleOn"
+                ]
+            }
+    },
+    "messages": {
+        "syncedToEditorMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.syncedToEditor}}",
+            "messageTextLinks": [
+                {
+                    "prop": "data.toggleSyncLink",
+                    "action": "toggleSyncAction"
+                }
+            ]
+        },
+        "syncedToViewerMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.syncedToViewer}}",
+            "messageTextLinks": [
+                {
+                    "prop": "data.toggleSyncLink",
+                    "action": "toggleSyncAction"
+                }
+            ]
+        }
+    },
+    "conditions": {
+        "isSyncedWithViewer": {
+            "expression": "ctx.epWiSelectionMode === 'GRAPHICS'"
+        },
+        "isMissingInSourcePanelVisible": {
+            "expression": "props.subPanelContext.sharedSelectionData.isIndicationToggleOn === true && data.missingInSrc.length > 0"
+        }
+    },
+    "i18n": {
+        "noAssemblyStructure": [
+            "InstructionsMessages"
+        ],
+        "GraphicVisibilityColumnName": [
+            "InstructionsMessages"
+        ],
+        "syncedToViewer": [
+            "InstructionsMessages"
+        ],
+        "syncedToEditor": [
+            "InstructionsMessages"
+        ],
+        "switchMode": [
+            "InstructionsMessages"
+        ],
+        "missingInSource": [
+            "assignmentIndicationMessages"
+        ],
+        "ChangeIndicationColumnName": [
+            "changeIndicationMessages"
+        ]
+    },
+    "onEvent": [
+        {
+            "eventId": "epObjectPropertyCache.accountabilityResponseUpdated",
+            "action": "getMissingInSrcData"
+        }
+    ]
+}

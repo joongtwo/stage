@@ -1,0 +1,35 @@
+<aw-panel-section>
+    <aw-row>
+        <aw-checkbox prop="data.useOrigSettingCheckbox" action="updateUseOrigTemplateSettings" enable-when="conditions.isQryTypeUseOrigSettingsOff"></aw-checkbox>
+        <aw-column width="1f"></aw-column>
+        <aw-column width="16f">
+            <aw-widget prop="data.featAttrTypelistBox" hint="checkboxoptionlov" enable-when="conditions.enableFeatTableWidgetsCond"></aw-widget>
+        </aw-column>
+        <aw-column width="1f"></aw-column>
+        <aw-column width="16f">
+            <aw-widget prop="data.featOptionslistBox" hint="checkboxoptionlov" enable-when="conditions.enableFeatTableWidgetsCond"></aw-widget>
+        </aw-column>
+    </aw-row>
+    <div class="sw-row h-11 aw-dpv-featattrstat">
+        <aw-column width="15f">
+            <div aw-repeat="item:data.searchResultsFeatCol1" enable-when="conditions.enableFeatTableWidgetsCond">
+                <aw-checkbox prop="item" action="selectStatFeatureCol1"></aw-checkbox>
+            </div>
+        </aw-column>
+        <aw-column width="12f">
+            <div aw-repeat="item:data.searchResultsFeatCol2" enable-when="conditions.enableFeatTableWidgetsCond">
+                <aw-checkbox prop="item" action="selectStatFeatureCol2"></aw-checkbox>
+            </div>
+        </aw-column>
+        <aw-column width="18f">
+            <div aw-repeat="item:data.searchResultsFeatCol3" enable-when="conditions.enableFeatTableWidgetsCond">
+                <aw-checkbox prop="item" action="selectStatFeatureCol3"></aw-checkbox>
+            </div>
+        </aw-column>
+        <aw-column width="18f">
+            <div aw-repeat="item:data.searchResultsFeatCol4" enable-when="conditions.enableFeatTableWidgetsCond">
+                <aw-checkbox prop="item" action="selectStatFeatureCol4"></aw-checkbox>
+            </div>
+        </aw-column>
+    </div>
+</aw-panel-section>

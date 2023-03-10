@@ -1,0 +1,45 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "lifecycleHooks": {
+        "onInit": "initializePropertiesSWA",
+        "onUpdate": {
+            "action": "initializePropertiesSWA",
+            "observers": [
+                "props.subPanelContext.context.searchState.propertiesSWA"
+            ]
+        }
+    },
+    "props":{
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions":{
+        "initializePropertiesSWA":{
+            "actionType": "JSFunction",
+            "method": "initializeSWA",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext.context.searchState}}",
+                "subLocationName": "Properties"
+            },
+            "outputData": {
+                "currentSecData": "currentSecData",
+                "dataTypeMetric": "dataTypeMetric",
+                "dataTypeNonMetric": "dataTypeNonMetric",
+                "keyLOVTreeDataMetric": "keyLOVTreeDataMetric",
+                "keyLOVTreeDataNonMetric": "keyLOVTreeDataNonMetric",
+                "isAvailable": "isAvailable"
+            },
+            "deps":"js/classifyAdminService"
+        }
+    },
+    "data":{},
+    "i18n": {
+        "dataType":  [ "ClassificationAdminMessages" ],
+        "keylovTitle":  [ "ClassificationAdminMessages" ],
+        "metric":  [ "ClassificationAdminMessages" ],
+        "nonMetric":  [ "ClassificationAdminMessages" ],
+        "propertiesTitle":  [ "ClassificationAdminMessages" ]
+    }
+}

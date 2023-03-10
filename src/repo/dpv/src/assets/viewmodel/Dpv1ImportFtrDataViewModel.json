@@ -1,0 +1,303 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "importFeatureData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-01-FileManagement",
+            "method": "getTransientFileTicketsForUpload",
+            "inputData": {
+                "transientFileInfos": [
+                    {
+                        "fileName": "{{data.fileName}}",
+                        "isBinary": false,
+                        "deleteFlag": true
+                    }
+                ]
+            },
+            "outputData": {
+                "fmsTicket": "transientFileTicketInfos[0].ticket"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "fmsTicket.update"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "datasetFileImportFail"
+                    }
+                ]
+            },
+            "deps": "js/Dpv1ImportFtrDataService"
+        },
+        "updateFormData": {
+            "actionType": "JSFunction",
+            "method": "updateFormData",
+            "deps": "js/fileUploadUtils",
+            "inputData": {
+                "formData": "{{data.formData}}",
+                "key": "fmsTicket",
+                "value": "{{data.fmsTicket}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "importFeatureData.datasetWriteTicketsCreated"
+                    }
+                ]
+            }
+        },
+        "uploadFile": {
+            "actionType": "RESTService",
+            "serviceName": "",
+            "method": "POST",
+            "inputData": {
+                "request": {
+                    "method": "POST",
+                    "url": "{{Constants.fmsUrl}}",
+                    "headers": {
+                        "Content-type": "undefined"
+                    },
+                    "data": "{{data.formData}}"
+                }
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "importFeatureData.fileUploaded"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "datasetFileImportFail"
+                    }
+                ]
+            }
+        },
+        "importFeatureForSelectedData": {
+            "actionType": "TcSoaService",
+            "serviceName": "ProductionManagement-2007-12-EngineeringDataLoad",
+            "method": "importFeatureData",
+            "inputData": {
+                "input": [
+                    {
+                        "routineRevision": "{{function:getSelectedObject}}",
+                        "fmsFileTicket": "{{data.fmsTicket}}",
+                        "datasetName": "{{data.objectName.uiValue}}",
+                        "datasetDescription": "{{data.objectDesc.uiValue}}"
+                    }
+                ]
+            },
+            "outputData": {
+                "updatedObjects": "{{function:getUpdatedObjects}}",
+                "errors": "{{function:processPartialErrors}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "importFeatureData.createRelation"
+                    },
+                    {
+                        "name": "cdm.relatedModified",
+                        "eventData": {
+                            "relatedModified": "{{data.updatedObjects}}"
+                        }
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "datasetFileImportSucess"
+                    }
+                ],
+                "failure": [
+                    {
+                        "message": "datasetFileImportFail"
+                    }
+                ]
+            },
+            "deps": "js/Dpv1ImportFtrDataService"
+        },
+        "createRelBwDsRoutineRev": {
+            "actionType": "TcSoaService",
+            "serviceName": "ProductionManagement-2011-06-EngineeringDataLoad",
+            "method": "createRelBwDsRoutineRev",
+            "inputData": {
+                "xlsbDs": "",
+                "routineRev": "{{function:getSelectedObject}}"
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "fileNotFound"
+                    }
+                ]
+            },
+            "deps": "js/Dpv1ImportFtrDataService"
+        },
+        "getFileName": {
+            "actionType": "JSFunction",
+            "method": "getFileNameFromSelectedDataset",
+            "inputData": {
+                "data": "{{data.fileName}}"
+            },
+            "deps": "js/Dpv1ImportFtrDataService"
+        },
+        "startDatasetCreation": {
+            "actionType": "JSFunction",
+            "method": "setFileParameters",
+            "inputData": {
+                "fileName": "{{parameters.fileName}}",
+                "validFile": "{{parameters.validFile}}",
+                "fileNameNoExt": "{{parameters.fileNameNoExt}}",
+                "fileExt": "{{parameters.fileExt}}",
+                "formData": "{{parameters.formData}}"
+            },
+            "outputData": {
+                "fileName": "fileName",
+                "validFile": "validFile",
+                "fileNameNoExt": "fileNameNoExt",
+                "fileExt": "fileExt",
+                "formData": "formData"
+            },
+            "deps": "js/fileUploadUtils"
+        }      
+    },
+    "onEvent": [
+        {
+            "eventId": "fmsTicket.update",
+            "action": "updateFormData"
+        },
+        {
+            "eventId": "importFeatureData.datasetWriteTicketsCreated",
+            "action": "uploadFile"
+        },
+        {
+            "eventId": "importFeatureData.fileUploaded",
+            "action": "importFeatureForSelectedData"
+        },
+        {
+            "eventId": "importFeatureData.createRelation",
+            "action": "createRelBwDsRoutineRev"
+        }
+    ],
+    "data": {
+        "objectName": {
+            "displayName": "{{i18n.objectName}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "dispValue": "",
+            "dbValue": "",
+            "uiValue": ""
+        },
+        "objectDesc": {
+            "displayName": "{{i18n.objectDesc}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "maxLength": 70,
+            "numberOfLines": 3,
+            "dbValue": "",
+            "uiValue": ""
+        },
+        "availableRuleSets": {
+            "displayName": "{{i18n.availableRuleSets}}",
+            "type": "STRING",
+            "hasLov": true
+        },        
+        "availableRuleSetsList": {
+            "type": "STRING",
+            "dbValue": [
+                ""
+            ]
+        }
+    },    
+    "functions": {
+        "getSelectedObject": {
+            "functionName": "getSelectedObject",
+            "parameters": []
+        },
+        "getFileNameFromSelectedDataset": {
+            "functionName": "getFileNameFromSelectedDataset",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "processPartialErrors": {
+            "functionName": "processPartialErrors",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "conditions": {
+        "isValidToShowImporteButton": {
+            "expression": "data.objectName.dbValue!=''"
+        }
+    },
+    "messages": {
+        "datasetFileImportSucess": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.datasetFileImportSucess}}",
+            "messageTextParams": [
+                "{{data.fileNameNoExt}}"
+            ]
+        },
+        "datasetFileImportFail": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.datasetFileImportFail}}",
+            "messageTextParams": [
+                "{{data.errors}}"
+            ]
+        }
+    },
+    "i18n": {
+        "importFeatureDataTitle": [
+            "DpvMessages"
+        ],
+        "import": [
+            "DpvMessages"
+        ],
+        "selectFeatureFileToImport": [
+            "DpvMessages"
+        ],
+        "objectName": [
+            "DpvMessages"
+        ],
+        "objectDesc": [
+            "DpvMessages"
+        ],
+        "availableRuleSets": [
+            "DpvMessages"
+        ],
+        "datasetFileImportSucess": [
+            "DpvMessages"
+        ],
+        "datasetFileImportFail": [
+            "DpvMessages"
+        ],
+        "fileNotFound": [
+            "DpvMessages"
+        ]
+    }
+}

@@ -1,0 +1,18 @@
+<div class="sw-row aw-mbomRevisiontable-parent">
+    <div class="sw-column">
+        <aw-message-params class="aw-epProcess-title" context="props.currentProcesses" params='["mbomRevisionName"]' message="{{i18n.additionalProcessTitleMessage}}"></aw-message-params>
+        <div class="sw-row">
+            <div class="aw-navigation-selectionMessage">
+                <aw-message-params context="props.currentProcesses" params='["currentRevisionName","mbomCurrentName"]' message="{{i18n.additionalProcessDescriptionMessage}}"></aw-message-params>
+            </div>
+        </div>
+        <div class="sw-row aw-epAssociatedProcessTable-height">
+            <aw-splm-table class="h-12" gridid="additionalProcessesTable"></aw-splm-table>
+        </div>
+        <div class=" sw-row justify-right mx-large justify-bottom aw-epfooter-btn">
+            <aw-button size="auto" enable-when="conditions.onProcessSelection" action="reviseAndRelinkProcesses" button-type="base">
+                {{conditions.enableReviseAndLinkCommand ? i18n.processReviseAndRelinkButtonLabel : i18n.processLinkButtonLabel }}
+            </aw-button>
+        </div>
+    </div>
+</div>

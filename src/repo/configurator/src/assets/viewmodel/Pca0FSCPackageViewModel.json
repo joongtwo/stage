@@ -1,0 +1,218 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-button.directive",
+        "js/aw-command-panel.directive",
+        "js/exist-when.directive",
+        "js/aw-i18n.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-repeat.directive",
+        "js/aw-command-panel-section.directive",
+        "js/aw-include.directive"
+    ],
+    "actions": {
+        "closePackagePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+        "renderPackagePanel": {
+            "actionType": "JSFunction",
+            "method": "renderPackagePanel",
+            "inputData": {},
+            "deps": "js/pca0FscPackageService"
+        },
+        "addPackage": {
+            "actionType": "JSFunction",
+            "method": "addPackageToConfiguration",
+            "inputData": {},
+            "deps": "js/pca0FscPackageService",
+            "events": {
+                "success": [ {
+                        "name": "Pca0Features.loadScopeData"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+        "updateValue": {
+            "actionType": "JSFunction",
+            "method": "updateValue",
+            "inputData": {
+                "data": "{{data}}",
+                "newValue": "{{eventData.newValue}}",
+                "path": "{{eventData.path}}"
+            },
+            "outputData": {
+                "scopeStruct.group": "result.group"
+            },
+            "deps": "js/pca0FscPackageService"
+        },
+        "loadPackageData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ProductConfiguratorAw-2022-12-ConfiguratorManagement",
+            "method": "variantConfigurationView3",
+            "inputData": {
+                "input": {
+                    "configPerspective": "{{ctx.fscContext.packageContext.configPerspective}}",
+                    "scopes": [
+                        ""
+                    ],
+                    "selectedExpressions": "{{function:convertSelectedExpressionJsonObjectToString}}",
+                    "requestInfo": {
+                        "requestType": [
+                            "getConfigPackage"
+                        ],
+                        "packageFeatureList": [
+                            "{{ctx.fscContext.packageContext.currentPackage.optValue.uid}}"
+                        ],
+                        "configurationControlMode": [
+                            "guided"
+                        ]
+                    }
+                }
+            },
+            "outputData": {
+                "scopeStruct": "{{function:getPackageGroup}}"
+            },
+            "events": {
+                "failure": [ {
+                    "name": "Pca0FullScreenConfiguration.processPartialError",
+                    "eventData": {
+                        "ServiceData": "{{data.ServiceData}}"
+                    }
+                } ]
+            },
+            "deps": "js/pca0FscPackageService"
+        },
+        "selectPackageOption": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ProductConfiguratorAw-2022-12-ConfiguratorManagement",
+            "method": "variantConfigurationView3",
+            "inputData": {
+                "input": {
+                    "configPerspective": "{{ctx.fscContext.packageContext.configPerspective}}",
+                    "scopes": [
+                        ""
+                    ],
+                    "selectedExpressions": "{{function:convertSelectedExpressionJsonObjectToString}}",
+                    "payloadStrings": "{{ctx.fscContext.packageContext.payloadStrings}}",
+                    "requestInfo": {
+                        "requestType": [
+                            "getConfigPackage"
+                        ],
+                        "packageFeatureList": [
+                            "{{ctx.fscContext.packageContext.currentPackage.optValue.uid}}"
+                        ],
+                        "configurationControlMode": [
+                            "guided"
+                        ]
+                    }
+                }
+            },
+            "outputData": {
+                "scopeStruct": "{{function:getPackageGroup}}"
+            },
+            "deps": "js/pca0FscPackageService",
+            "events": {
+                "success": [ {
+                    "name": "Pca0FSCPackage.handleSavePackageCommandVisibility",
+                    "eventData": {
+                        "showSavePackageCommand": true
+                    }
+                } ],
+                "failure": [ {
+                    "name": "Pca0FullScreenConfiguration.processPartialError",
+                    "eventData": {
+                        "ServiceData": "{{data.ServiceData}}"
+                    }
+                } ]
+            }
+        },
+        "handleSavePackageCommandVisibility": {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "inputData": {
+                "path": "fscContext.packageContext.showSavePackageCommand",
+                "value": "{{data.eventData.showSavePackageCommand}}"
+            },
+            "deps": "js/appCtxService"
+        },
+        "unregisterPackageContext": {
+            "actionType": "JSFunction",
+            "method": "unregisterPackageContext",
+            "inputData": {},
+            "deps": "js/pca0FscPackageService"
+        }
+    },
+    "functions": {
+        "getPackageGroup": {
+            "functionName": "getPackageGroup"
+        },
+        "convertSelectedExpressionJsonObjectToString": {
+            "functionName": "convertSelectedExpressionJsonObjectToString",
+            "parameters": [ "{{ctx.fscContext.packageContext.selectedExpressions}}" ]
+        }
+    },
+    "data": {
+        "familyCmdAnchor": "aw_cfgFamilyCommandBar",
+        "valueaction": "selectPackageOption",
+        "variantcontext": "fscContext.packageContext",
+        "scopeStruct": {
+            "group": {}
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "loadPackageData",
+        "onUnmount": "unregisterPackageContext",
+        "render": "renderPackagePanel"
+    },
+    "onEvent": [ {
+            "eventId": "Pca0FSCPackage.handleSavePackageCommandVisibility",
+            "cacheEventData": true,
+            "action": "handleSavePackageCommandVisibility"
+        },
+        {
+            "eventId": "gwt.SubLocationContentSelectionChangeEvent",
+            "action": "closePackagePanel"
+        },
+        {
+            "eventId": "Pca0FSCPackage.closePanel",
+            "action": "closePackagePanel"
+        },
+        {
+            "eventId": "Pca0FscValue.updateValue",
+            "action": "updateValue",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "Pca0FSCPackage.selectPackageOption",
+            "action": "selectPackageOption"
+        }
+    ],
+    "i18n": {
+        "addBtn": [
+            "FullScreenConfigurationMessages"
+        ],
+        "aw_single_select_message": [
+            "FullScreenConfigurationMessages"
+        ],
+        "allowedRange": [
+            "FullScreenConfigurationMessages"
+        ]
+    }
+}

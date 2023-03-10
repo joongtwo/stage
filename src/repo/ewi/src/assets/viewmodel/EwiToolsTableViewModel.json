@@ -1,0 +1,124 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "actions": {
+        "doGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "toolsGridDataProvider"
+        },
+        "loadData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadData",
+            "inputData": {
+                "activeTab": "{{props.subPanelContext}}",
+                "sortCriteria": "{{data.columnProviders.staticColumnProvider.sortCriteria}}"
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults"
+            },
+            "deps": "js/workinstrTableService"
+        },
+        "loadColumns": {
+            "actionType": "JSFunction",
+            "method": "loadColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.toolsGridDataProvider}}",
+                "colInfos": "{{subPanelContext.viewMode.columns}}"
+            },
+            "outputData": {
+                "staticColumnProvider.columnConfig": ""
+            },
+            "deps": "js/workinstrTableService"
+        },
+        "setInputAndSelectionToMyContext": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setCommandContext"
+                },
+                {
+                    "action": "gridRowSelected"
+                }
+            ]
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{props.subPanelContext}}",
+                "commandContext": {
+                    "selectedObjects": "{{data.dataProviders.toolsGridDataProvider.selectedObjects}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "gridRowSelected": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "workinstr.selectionChange",
+                    "eventData": {
+                        "dataProvider": "{{data.dataProviders.toolsGridDataProvider}}",
+                        "activeTab": "{{props.subPanelContext}}"
+                    }
+                } ]
+            }
+        }
+    },
+
+    "columnProviders": {
+        "staticColumnProvider": {
+            "loadColumnAction": "loadColumns",
+            "columns": "{{staticColumnProvider.columnConfig.columns}}",
+            "sortCriteria": []
+        }
+    },
+
+    "dataProviders": {
+        "toolsGridDataProvider": {
+            "action": "loadData",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "inputData": {
+                "selectionModelMode": "single"
+            },
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        }
+    },
+
+    "grids": {
+        "toolsGridView": {
+            "dataProvider": "toolsGridDataProvider",
+            "columnProvider": "staticColumnProvider",
+            "addIconColumn": true
+        }
+    },
+
+    "onEvent": [ {
+        "eventId": "toolsGridDataProvider.selectionChangeEvent",
+        "action": "setInputAndSelectionToMyContext"
+    } ],
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "doGridDataProvider",
+                "observers": [
+                    "props.subPanelContext.datasetsToShow"
+                ]
+            }
+        ]
+    }
+}

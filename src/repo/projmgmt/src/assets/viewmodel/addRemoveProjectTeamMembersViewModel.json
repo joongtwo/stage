@@ -1,0 +1,123 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+
+    "actions": {
+        "updateMembers":{
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2020-01-ProjectLevelSecurity",
+            "method": "addOrRemoveProjectMembers",
+            "deps": "js/addRemoveProjectTeamMembersSvc",
+            "inputData":
+            {
+                "inputs": "{{function:addSelectedMembers}}"
+
+            },
+            "outputData":{
+                "addMemberResponse":""
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "complete",
+                        "condition": "!subPanelContext.panelPinned",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    },
+                    {
+
+                        "name":"ProjectTeamTreeReloadAndSelectNode",
+                        "excludeLocalDataCtx": true,
+                        "eventData": {
+                            "nodes": "{{data.nodes}}"
+                        }
+                    }
+                ],
+                "failure":[
+                    {
+                        "name": "complete",
+                        "condition": "!subPanelContext.panelPinned",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    },
+                    {
+
+                        "name":"ProjectTeamTreeReloadAndSelectNode",
+                        "excludeLocalDataCtx": true,
+                        "eventData": {
+                            "nodes": "{{data.nodes}}"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure":[
+                    {
+                        "condition":"data.addMemberResponse.partialErrors[0].errorValues",
+                        "message":"addProjectTeamMemberFailureMessage"
+                    }
+                ]
+            }
+        },
+        "addSelectedTeamMembers": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "addTeamMembers"
+                    }
+                ]
+            }
+        }
+    },
+    "conditions":
+    {
+        "isValidToShowAddTeamMembersButton":
+        {
+            "expression": "data.selectionData.selected.length>1 ||   data.selectionData.selected.length===1 && (data.selectionData.selected[0].type === 'Group' || data.selectionData.selected[0].type === 'GroupMember' || data.selectionData.selected[0].type === 'Role')"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "addTeamMembers",
+            "action": "updateMembers"
+        }
+    ],
+    "data": {
+        "selectionData": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "selectionModels": {
+        "orgTreeSelectionModel": {
+            "selectionMode": "multiple"
+        }
+    },
+
+    "functions": {
+        "addSelectedMembers": {
+            "functionName": "addSelectedMembers",
+            "parameters": [
+                "{{subPanelContext}}",
+                "{{data}}"]
+        }
+    },
+    "messages": {
+        "addProjectTeamMemberFailureMessage":{
+            "messageType": "ERROR",
+            "messageText": "{{data.addMemberResponse.partialErrors[0].errorValues[0].message}}"
+        }
+    },
+    "i18n": {
+        "Organization": [
+            "ProjmgmtConstants"
+        ],
+        "addTeamMembers": [ "ProjmgmtConstants" ]
+    }
+}

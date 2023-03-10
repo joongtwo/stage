@@ -1,0 +1,77 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+        "js/aw-panel.directive",
+        "js/aw-checkbox.directive"
+    ],
+
+    "actions":
+    {
+        "updateDataSource": {
+            "actionType": "JSFunction",
+            "method": "addHtmlPanelInDataSource",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "{{data.subPanelContext.xrtType}}",
+                "panelID": "Ctm1CreateTopicReferenceOnly"
+            },
+            "deps": "js/addObjectUtils"
+        }
+    },
+
+    "data":
+    {
+        "revision__referenceOnly": {
+            "displayName": "{{i18n.referenceOnly}}",
+            "type": "BOOLEAN",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "false",
+            "dispValue": "{{i18n.referenceOnly}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+
+    "dataProviders":
+    {
+
+    },
+
+    "functions":
+    {
+    },
+
+    "lifecycleHooks": {
+        "onMount": "updateDataSource",
+        "onUpdate": {
+            "action": "updateDataSource",
+            "observers": [ "viewModel.data" ]
+        }
+    },
+
+    "onEvent":
+    [
+
+    ],
+
+    "conditions":
+    {
+
+    },
+
+    "preferences":
+    [
+
+    ],
+
+    "messages":
+    {
+
+    },
+
+    "i18n":
+    {
+        "referenceOnly": [ "ContentMgmtMessages" ]
+    }
+}

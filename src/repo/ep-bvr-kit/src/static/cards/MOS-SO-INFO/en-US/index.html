@@ -1,0 +1,360 @@
+<HTML>
+<HEAD>
+    <META name="author" content="JUL">
+    <META name="date" content="2005-02-01">
+    
+    <LINK type="text/css" rel="stylesheet" href="common.css">
+    <LINK type="text/css" rel="StyleSheet" href="tab.css">
+    <SCRIPT language="JavaScript" src="common.js" type="text/javascript"></SCRIPT> 
+    <SCRIPT language="JavaScript" src="tabpane.js" type="text/javascript"></SCRIPT>
+
+    <TITLE>MOS</TITLE>
+
+
+    <SCRIPT language="JavaScript">
+    function nocontextmenu(){ 
+          if (window.Event) { 
+                document.captureEvents(Event.MOUSEUP); 
+          } 
+          event.cancelBubble = true; 
+          event.returnValue = false; 
+          return false; 
+    } 
+    function norightclick(e) 
+    { 
+          if (window.Event) 
+          { 
+                if(e.which!=1) 
+                      return false; 
+          } 
+          else if (event.button !=1) 
+          { 
+                event.cancelBubble = true; 
+                event.returnValue = false; 
+                return false; 
+          } 
+    } 
+    // Block backspace onKeyDown 
+    function onKeyDown() { 
+          if ( (event.altKey) || ((event.keyCode == 8) && (event.srcElement.type != "text" && 
+                event.srcElement.type != "textarea" && event.srcElement.type != "password")) || 
+                ((event.ctrlKey) && ((event.keyCode == 78) || (event.keyCode == 82)) ) || 
+                (event.keyCode == 116) ) 
+          { 
+                event.keyCode = 0; 
+                event.returnValue = false; 
+          } 
+    } 
+    </SCRIPT>
+
+
+    <SCRIPT language="JavaScript">
+// Copyright 2004 MTM Softwarehaus Dresden
+// Hilfsfunktionen fuer HTML-Datenkarten
+// 2004-04-26 TOM
+
+
+var MTMcolorSelect = '#FFCC00';  // Farbe für Hervorhebungen beim Ueberstreichen mit der Maus
+var MTMcolorDeselect;            // Hier wird waehrend der Hervorhebung die urspruengliche Farbe gespeichert
+var MTMdragging = 0;             // Wird beim Linksklick auf 1 gesetzt und beim Verlassen einer Zelle geprueft
+
+
+// Wird beim Ueberstreichen einer Zelle mit der Maus aufgerufen
+// 1. Parameter object ist ein HTML-Objekt, dessen Hintergrundfarbe geaendert wird (idR = this)
+// 2. Parameter Text der in einer Infozeile ausgegeben werden soll (wird nicht mehr verwendet)
+// 3. bis 5. Parameter, Daten zu dem Element
+function MTMselect(object, text, code, index, variant)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorSelect;
+       parentObj.style.background = MTMcolorSelect;
+       //alert(parentObj.nodeName + " = " + parentObj.style.background);
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        MTMcolorDeselect = parentObj.bgColor;
+        parentObj.bgColor = MTMcolorSelect;
+    }
+
+//    MTMInfo.innerHTML = '<SPAN class="MTMInfo" align="left">' + MTMgetText(text) + '</SPAN>';
+}
+
+
+// Wird beim Verlassen einer Zelle mit der Maus aufgerufen (wenn beim Verlassen immer noch die linke
+// Maustaste gedrueckt ist, wird ein Drag&Drop Event im TiCon erzeugt
+// 1. Parameter object ist ein HTML-Objekt, dessen Hintergrundfarbe zurueckgesetzt werden soll (idR = this)
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMdeselect(object, code, index, variant)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorDeselect;
+       parentObj.style.background = MTMcolorDeselect;
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        parentObj.bgColor = MTMcolorDeselect;
+    }
+    
+    //    MTMInfo.innerHTML = '<SPAN class="MTMInfo" align="left">&nbsp;</SPAN>';
+
+    if(MTMdragging) {
+        MTMnavigate(2, code, index, variant);
+        MTMdragging=0;
+    }
+}
+
+// Loest einen Navigationsevent im TiCon aus
+// 1. Parameter Navigationscode: 1 = mit linker Maustaste angeklickt, 2 Drag & Drop, 3 Rechte Maustaste
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMnavigate(navcode, code, index, variant, time, descr)
+{
+    document.location.href=encodeURI("usercode://"+ code + "|" + index + "|" + variant + "|" + time + "|" + descr);
+}
+
+
+// Wird beim Pressen einer beliebigen Maustaste aufgerufen 
+// es wird geprueft ob Drag & Drop gestartet werden soll oder ein Rechtsklick ausgeloest werden soll
+// 1. Event der ausgeloest wurde (idR = event)
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMmouseDown(e, code, index, variant)
+{
+    if(e.button == 1) { // linke Maustaste
+       // vorbereiten zum Drag & Drop
+        MTMdragging=1;
+    } else if(e.button == 2) { // rechte Maustaste
+       // Navigieren mit NavCode 3
+       MTMnavigate(3, code, index, variant);
+    }
+}
+
+    </SCRIPT>
+
+
+    <STYLE type="text/css">
+.MTMText { 
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt
+    }
+
+.MTMLink { 
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt
+    color: #6F5415;
+    }
+
+.MTMGeneral { 
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt
+    }
+
+.MTMElement {
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt
+    }
+
+.MTMInfo {
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt;
+    font-style: italic;
+    color: #31247B;
+    }
+
+.MTMEmptyText { 
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt
+    }
+
+A {
+    font-family: Arial;
+    font-size: 8pt;
+    color: #6F5415;
+    }
+
+A:visited {
+    color: #6F5415;
+    }
+
+A:hover {
+    color: #AE1111;
+    }
+
+BODY {
+    background: #ECE9D8
+    }    </STYLE>
+
+</HEAD>
+
+<BODY bgcolor="#FFFFFF" leftmargin="6" topmargin="6" marginwidth="6" marginheight="6">
+<DIV ID=tipBox></DIV>
+<DIV ID=tipBoxWidth></DIV>
+
+<TABLE border="1" cellspacing="0" cellpadding="0"  width="100%" bgcolor="#000000" align="center"><TR><TD>
+<TABLE border="1" cellspacing="1" cellpadding="1"  width="100%" class="MTMGeneral">
+    <TR class="MOSHeaderBlack">
+        <TD width="100%" colspan=8 class="MTMText"><B>Process - Information</B></TD>
+    </TR>
+    
+    <TR bgcolor="#FFFFFF" align="center">
+        <TD width="23%" rowspan="2" align="left" valign="top" class="MTMText"><B>(Times in TMU)</B></TD>
+        <TD width="11%" rowspan="2" valign="top" class="MOSHeaderRed" bgcolor="#EAEAEA"><SPAN class="MTMText">Code</SPAN></TD>
+        <TD width="33%" colspan="3" class="MTMText">Data field</TD>
+        <TD width="33%" colspan="3" class="MTMText">Continuous text page DIN A4</TD>
+    </TR>
+    
+    <TR bgcolor="#FFFFFF" align="center">
+        <TD width="11%" class="MTMText">small
+1-12 characters
+1-2 words</TD>
+        <TD width="11%" class="MTMText">medium
+13-30 characters
+3-5 words</TD>
+        <TD width="11%" class="MTMText">large
+31-100 characters
+6-15 words</TD>
+        <TD width="11%" class="MTMText">quarter</TD>
+        <TD width="11%" class="MTMText">half</TD>
+        <TD width="11%" class="MTMText">whole</TD>
+    </TR>
+    
+    <TR bgcolor="#EAEAEA" align="center">
+        <TD width="23%" align="left" bgcolor="#FFFFFF" class="MTMText">Class</TD>
+        <TD width="11%" class="MOSHeaderRed">5MOS-</TD>
+        <TD width="11%" class="MOSHeaderRed">A</TD>
+        <TD width="11%" class="MOSHeaderRed">B</TD>
+        <TD width="11%" class="MOSHeaderRed">C</TD>
+        <TD width="11%" class="MOSHeaderRed">D</TD>
+        <TD width="11%" class="MOSHeaderRed">E</TD>
+        <TD width="11%" class="MOSHeaderRed">F</TD>
+    </TR>
+    
+    <TR bgcolor="#FFFFFF" align="center">
+        <TD width="23%" align="left" class="MTMText">Read</TD>
+        <TD width="11%" class="MOSHeaderRed" bgcolor="#EAEAEA">VA-</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VA-A..O', '', '');" title="Read, data field small" onmouseout="MTMdeselect(this, '5MOS-VA-A..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VA-A..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VA-A..O', '', '',20,'Read, data field small');">20</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VA-B..O', '', '');" title="Read, data field medium" onmouseout="MTMdeselect(this, '5MOS-VA-B..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VA-B..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VA-B..O', '', '',50,'Read, data field medium');">50</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VA-C..O', '', '');" title="Read, data field large" onmouseout="MTMdeselect(this, '5MOS-VA-C..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VA-C..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VA-C..O', '', '',130,'Read, data field large');">130</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VA-D..O', '', '');" title="Read, continuous text page DIN A4, quarter" onmouseout="MTMdeselect(this, '5MOS-VA-D..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VA-D..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VA-D..O', '', '',630,'Read, continuous text page DIN A4, quarter');">630</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VA-E..O', '', '');" title="Read, continuous text page DIN A4, half" onmouseout="MTMdeselect(this, '5MOS-VA-E..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VA-E..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VA-E..O', '', '',1190,'Read, continuous text page DIN A4, half');">1190</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VA-F..O', '', '');" title="Read, continuous text page DIN A4, whole" onmouseout="MTMdeselect(this, '5MOS-VA-F..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VA-F..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VA-F..O', '', '',2380,'Read, continuous text page DIN A4, whole');">2380</TD>
+    </TR>
+
+    <TR bgcolor="#FFFFFF" align="center">
+        <TD width="23%" align="left" class="MTMText">Check</TD>
+        <TD width="11%" class="MOSHeaderRed" bgcolor="#EAEAEA">VB-</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VB-A..O', '', '');" title="Check, data field small" onmouseout="MTMdeselect(this, '5MOS-VB-A..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VB-A..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VB-A..O', '', '',40,'Check, data field small');">40</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VB-B..O', '', '');" title="Check, data field medium" onmouseout="MTMdeselect(this, '5MOS-VB-B..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VB-B..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VB-B..O', '', '',100,'Check, data field medium');">100</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VB-C..O', '', '');" title="Check, data field large" onmouseout="MTMdeselect(this, '5MOS-VB-C..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VB-C..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VB-C..O', '', '',260,'Check, data field large');">260</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VB-D..O', '', '');" title="Check, continuous text page DIN A4, quarter" onmouseout="MTMdeselect(this, '5MOS-VB-D..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VB-D..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VB-D..O', '', '',1260,'Check, continuous text page DIN A4, quarter');">1260</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VB-E..O', '', '');" title="Check, continuous text page DIN A4, half" onmouseout="MTMdeselect(this, '5MOS-VB-E..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VB-E..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VB-E..O', '', '',2380,'Check, continuous text page DIN A4, half');">2380</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VB-F..O', '', '');" title="Check, continuous text page DIN A4, whole" onmouseout="MTMdeselect(this, '5MOS-VB-F..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VB-F..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VB-F..O', '', '',4760,'Check, continuous text page DIN A4, whole');">4760</TD>
+    </TR>
+
+    <TR bgcolor="#FFFFFF" align="center">
+        <TD width="23%" align="left" class="MTMText">Compare</TD>
+        <TD width="11%" class="MOSHeaderRed" bgcolor="#EAEAEA">VC-</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VC-A..O', '', '');" title="Compare, data field small" onmouseout="MTMdeselect(this, '5MOS-VC-A..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VC-A..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VC-A..O', '', '',80,'Compare, data field small');">80</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VC-B..O', '', '');" title="Compare, data field medium" onmouseout="MTMdeselect(this, '5MOS-VC-B..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VC-B..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VC-B..O', '', '',190,'Compare, data field medium');">190</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VC-C..O', '', '');" title="Compare, data field large" onmouseout="MTMdeselect(this, '5MOS-VC-C..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VC-C..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VC-C..O', '', '',530,'Compare, data field large');">530</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VC-D..O', '', '');" title="Compare, continuous text page DIN A4, quarter" onmouseout="MTMdeselect(this, '5MOS-VC-D..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VC-D..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VC-D..O', '', '',2700,'Compare, continuous text page DIN A4, quarter');">2700</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VC-E..O', '', '');" title="Compare, continuous text page DIN A4, half" onmouseout="MTMdeselect(this, '5MOS-VC-E..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VC-E..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VC-E..O', '', '',5100,'Compare, continuous text page DIN A4, half');">5100</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-VC-F..O', '', '');" title="Compare, continuous text page DIN A4, whole" onmouseout="MTMdeselect(this, '5MOS-VC-F..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-VC-F..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-VC-F..O', '', '',10200,'Compare, continuous text page DIN A4, whole');">10200</TD>
+    </TR>
+</TABLE>
+</TD></TR></TABLE>
+
+<BR>
+
+<TABLE border="1" cellspacing="0" cellpadding="0"  width="100%" bgcolor="#000000" align="center"><TR><TD>
+<TABLE border="1" cellspacing="1" cellpadding="1"  width="100%" class="MTMGeneral">
+    <TR class="MOSHeaderBlack">
+        <TD width="100%" colspan=9 class="MTMText"><B>Generate - Information</B></TD>
+    </TR>
+    
+    <TR bgcolor="#FFFFFF" align="center">
+        <TD width="23%" colspan=2 rowspan="2" align="left" valign="top" class="MTMText"><B>Write
+(Times in TMU)</B></TD>
+        <TD width="11%" bgcolor="#EAEAEA" rowspan="2" valign="top" class="MOSHeaderRed"><SPAN class="MTMText">Code</SPAN></TD>
+        <TD width="33%" colspan="3" class="MTMText">Data field</TD>
+        <TD width="33%" colspan="3" class="MTMText">Continuous text page DIN A4</TD>
+    </TR>
+    
+    <TR bgcolor="#FFFFFF" align="center">
+        <TD width="11%" class="MTMText">small
+1-12 characters
+1-2 words</TD>
+        <TD width="11%" class="MTMText">medium
+13-30 characters
+3-5 words</TD>
+        <TD width="11%" class="MTMText">large
+31-100 characters
+6-15 words</TD>
+        <TD width="11%" class="MTMText">quarter</TD>
+        <TD width="11%" class="MTMText">half</TD>
+        <TD width="11%" class="MTMText">whole</TD>
+    </TR>
+    
+    <TR bgcolor="#EAEAEA" align="center">
+        <TD width="23%" colspan=2 align="left" bgcolor="#FFFFFF" class="MTMText">Class</TD>
+        <TD width="11%" class="MOSHeaderRed">5MOS-</TD>
+        <TD width="11%" class="MOSHeaderRed">A</TD>
+        <TD width="11%" class="MOSHeaderRed">B</TD>
+        <TD width="11%" class="MOSHeaderRed">C</TD>
+        <TD width="11%" class="MOSHeaderRed">D</TD>
+        <TD width="11%" class="MOSHeaderRed">E</TD>
+        <TD width="11%" class="MOSHeaderRed">F</TD>
+    </TR>
+
+    <TR bgcolor="#FFFFFF" align="center">
+        <TD width="12%" align="left" class="MTMText">Keyboard</TD>
+        <TD width="11%" align="left" class="MTMText">single op.</TD>
+        <TD bgcolor="#EAEAEA" width="11%" class="MOSHeaderRed">EA-</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-EA-A..O', '', '');" title="Write with keyboard/single operation, data field small" onmouseout="MTMdeselect(this, '5MOS-EA-A..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-EA-A..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-EA-A..O', '', '',120,'Write with keyboard/single operation, data field small');">120</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-EA-B..O', '', '');" title="Write with keyboard/single operation, data field medium" onmouseout="MTMdeselect(this, '5MOS-EA-B..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-EA-B..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-EA-B..O', '', '',260,'Write with keyboard/single operation, data field medium');">260</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-EA-C..O', '', '');" title="Write with keyboard/single operation, data field large" onmouseout="MTMdeselect(this, '5MOS-EA-C..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-EA-C..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-EA-C..O', '', '',680,'Write with keyboard/single operation, data field large');">680</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-EA-D..O', '', '');" title="Write with keyboard/single operation, continuous text page DIN A4, quarter" onmouseout="MTMdeselect(this, '5MOS-EA-D..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-EA-D..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-EA-D..O', '', '',5040,'Write with keyboard/single operation, continuous text page DIN A4, quarter');">5040</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-EA-E..O', '', '');" title="Write with keyboard/single operation, continuous text page DIN A4, half" onmouseout="MTMdeselect(this, '5MOS-EA-E..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-EA-E..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-EA-E..O', '', '',9520,'Write with keyboard/single operation, continuous text page DIN A4, half');">9520</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-EA-F..O', '', '');" title="Write with keyboard/single operation, continuous text page DIN A4, whole" onmouseout="MTMdeselect(this, '5MOS-EA-F..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-EA-F..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-EA-F..O', '', '',19040,'Write with keyboard/single operation, continuous text page DIN A4, whole');">19040</TD>
+    </TR>
+
+    <TR bgcolor="#FFFFFF" align="center">
+        <TD width="12%" rowspan="2" align="left" class="MTMText">hand</TD>
+        <TD width="11%" align="left" class="MTMText">Basic value</TD>
+        <TD bgcolor="#EAEAEA" width="11%" class="MOSHeaderRed">EB-</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-EB-A..O', '', '');" title="Handwrite, Basic value, data field small" onmouseout="MTMdeselect(this, '5MOS-EB-A..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-EB-A..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-EB-A..O', '', '',220,'Handwrite, Basic value, data field small');">220</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-EB-B..O', '', '');" title="Handwrite, Basic value, data field medium" onmouseout="MTMdeselect(this, '5MOS-EB-B..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-EB-B..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-EB-B..O', '', '',220,'Handwrite, Basic value, data field medium');">220</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-EB-C..O', '', '');" title="Handwrite, Basic value, data field large" onmouseout="MTMdeselect(this, '5MOS-EB-C..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-EB-C..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-EB-C..O', '', '',220,'Handwrite, Basic value, data field large');">220</TD>
+        <TD width="33%" colspan=3 rowspan="2">&nbsp;</TD>
+    </TR>
+
+    <TR bgcolor="#FFFFFF" align="center">
+        <TD width="11%" align="left" class="MTMText">write</TD>
+        <TD bgcolor="#EAEAEA" width="11%" class="MOSHeaderRed">EC-</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-EC-A..O', '', '');" title="Handwrite, Write, data field small" onmouseout="MTMdeselect(this, '5MOS-EC-A..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-EC-A..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-EC-A..O', '', '',200,'Handwrite, Write, data field small');">200</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-EC-B..O', '', '');" title="Handwrite, Write, data field medium" onmouseout="MTMdeselect(this, '5MOS-EC-B..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-EC-B..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-EC-B..O', '', '',480,'Handwrite, Write, data field medium');">480</TD>
+        <TD class="MTMElement" width="11%" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '5MOS-EC-C..O', '', '');" title="Handwrite, Write, data field large" onmouseout="MTMdeselect(this, '5MOS-EC-C..O', '', '');" onmousedown="MTMmouseDown(event, '5MOS-EC-C..O','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '5MOS-EC-C..O', '', '',1290,'Handwrite, Write, data field large');">1290</TD>
+    </TR>
+</TABLE>
+</TD></TR></TABLE>
+
+<BR>
+<TABLE border="1" cellspacing="1" cellpadding="1"  width="100%" align="center" class="MTMGeneral"><TR><TD>
+    <SPAN class="MTMText">Use of this table without thorough training in MTM-OFFICE-SYSTEMS application will lead to erroneous results.</SPAN>
+</TD></TR></TABLE>
+
+</BODY>
+</HTML>
+

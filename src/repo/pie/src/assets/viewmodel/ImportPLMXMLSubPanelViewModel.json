@@ -1,0 +1,283 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+        "transferModeListBox": {
+            "displayName": "{{i18n.transferMode}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "dataProvider" : "transferModeProvider",
+            "uiValue": "",
+            "dbValue": "",
+            "emptyLOVEntry": false,
+            "name": "transferModeListBox" 
+        }      
+    },
+    "dataProviders": {
+        "transferModeProvider": {
+            "response": "{{data.transferModeListBoxValues}}"
+        }
+    },
+    "actions": {        
+        "importPLMXML": {
+            "actionType": "JSFunction",
+            "method": "collectSessionOption",
+            "inputData": {
+                "ctx": "{{ctx}}"
+            },
+            "outputData": {
+                "sessionOptionsForImport": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "importPLMXML.getFMSFileTicket"
+                    }
+                ]
+            },
+            "deps": "js/importPLMXML"
+        },
+        "getFMSTicket": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-01-FileManagement",
+            "method": "getTransientFileTicketsForUpload",
+            "inputData": {
+                "transientFileInfos": [
+                    {
+                        "fileName": "{{data.fileName}}",
+                        "isBinary": true,
+                        "deleteFlag": true
+                    }
+                ]
+            },
+            "outputData": {
+                "fmsTicket": "transientFileTicketInfos[0].ticket"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "fmsTicket.updatePLMXML"
+                    }
+                ]
+            }
+        },
+        "updateFormData": {
+            "actionType": "JSFunction",
+            "method": "updateFormData",
+            "inputData": {
+                "formData": "{{data.formData}}",
+                "key": "fmsTicket",
+                "value": "{{data.fmsTicket}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "importPLMXML.gotTransientFileTicket"
+                    }
+                ]
+            },
+            "deps": "js/fileUploadUtils"
+        },
+        "uploadPLMXMLFile": {
+            "actionType": "RESTService",
+            "serviceName": "",
+            "method": "POST",
+            "inputData": {
+                "request": {
+                    "method": "POST",
+                    "url": "{{Constants.fmsUrl}}",
+                    "headers": {
+                        "Content-type": "undefined"
+                    },
+                    "data": "{{data.formData}}"
+                }
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "fmsTicket.actionPLMXMLImport"
+                    }
+                ]
+            }
+        },
+        "importPLMXMLInternal": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-TCXMLImportExport-2021-06-PLMXML",
+            "method": "importObjectsFromPLMXML",
+            "inputData": {
+                "input": "{{function:getSOAInputForPLMXMLImport}}"
+            },
+            "outputData": {
+                "serviceData": "ServiceData"
+            },
+            "deps": "js/importPLMXML",
+            "events": {
+                "success": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "plmxmlImportStarted"
+                    }
+                ],
+                "failure": [
+                    {
+                        "condition": "data.serviceData.partialErrors.length > 0",
+                        "message": "plmxmlImportFailed"
+                    }
+                ]
+            }
+        },
+        "populateXferMode": {
+            "actionType": "JSFunction",
+            "method": "setFileParameters",
+            "inputData": {
+                "fileName": "{{parameters.fileName}}",
+                "validFile": "{{parameters.validFile}}",
+                "fileNameNoExt": "{{parameters.fileNameNoExt}}",
+                "fileExt": "{{parameters.fileExt}}",
+                "formData": "{{parameters.formData}}"
+            },
+            "outputData": {
+                "fileName": "result.fileName",
+                "validFile": "result.validFile",
+                "fileNameNoExt": "result.fileNameNoExt",
+                "fileExt": "result.fileExt",
+                "formData": "result.formData"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "importPLMXML.getXferModes",
+                        "condition": "data.fileName && data.validFile"
+                    },
+                    {
+                        "name": "importPLMXML.clearTransferModeListBox",
+                        "condition": "data.fileName && !data.validFile"
+                    }
+                ]
+            },
+            "deps": "js/fileUploadUtils"
+        },        
+        "getTransferModes": {
+            "actionType": "TcSoaService",
+            "serviceName": "GlobalMultiSite-2007-06-ImportExport",
+            "method": "getTransferModes",
+            "inputData": {
+                "inputs": {
+                    "scope": "IMPORT",
+                    "schemaFormat": "PLMXML"
+                }
+            },
+            "policy": {
+                "types": [
+                    {
+                        "name": "TransferMode",
+                        "properties": [
+                            {
+                                "name": "object_name"
+                            },
+                            {
+                                "name": "object_desc"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "outputData": {
+                "transferModeListBoxValues": "{{function:getXferModes}}"
+            },
+            "deps": "js/exportToPLMXML"
+        },
+        "clearTransferModes": {
+            "actionType": "JSFunction",
+            "method": "clearTransferModes",
+            "outputData": {
+                "transferModeListBoxValues": "emptyArray",
+                "transferModeListBox.uiValue": "emptyString",
+                "transferModeListBox.dbValue": "emptyString"
+            },
+            "deps": "js/importPLMXML"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "importPLMXML.getXferModes",
+            "action": "getTransferModes"
+        },
+        {
+            "eventId": "importPLMXML.clearTransferModeListBox",
+            "action": "clearTransferModes"
+        },
+        {
+            "eventId": "importPLMXML.getFMSFileTicket",
+            "action": "getFMSTicket"
+        },
+        {
+            "eventId": "fmsTicket.updatePLMXML",
+            "action": "updateFormData"
+        },
+        {
+            "eventId": "importPLMXML.gotTransientFileTicket",
+            "action": "uploadPLMXMLFile"
+        },
+        {
+            "eventId": "fmsTicket.actionPLMXMLImport",
+            "action": "importPLMXMLInternal"
+        }       
+    ],
+    "functions": {
+        "getSOAInputForPLMXMLImport": {
+            "functionName": "getSOAInputForPLMXMLImport",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },    
+    "conditions": {
+        "isValidFile": {
+            "expression": "data.fileName && data.validFile === true"
+        },
+        "enableImport": {
+            "expression": "conditions.isValidFile && data.transferModeListBox.dbValue"
+        }      
+    },
+    "messages": {
+        "plmxmlImportStarted": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.plxmlImportStartedMessage}}",
+            "messageTextParams": [
+                "{{data.fileName}}"
+            ]
+        },
+        "plmxmlImportFailed": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.plmxmlImportFailedMessage}}",
+            "messageTextParams": [
+                "{{data.fileName}}",
+                "{{data.serviceData.partialErrors[0].errorValues[0].message}}"
+            ]
+        }
+    },
+    "i18n": {
+        "cmdImportButton": [
+            "pieMessages"
+        ],
+        "transferMode": [
+            "pieMessages"
+        ],
+        "plxmlImportStartedMessage": [
+            "pieMessages"
+        ],
+        "plmxmlImportFailedMessage": [
+            "pieMessages"
+        ]
+    }
+}

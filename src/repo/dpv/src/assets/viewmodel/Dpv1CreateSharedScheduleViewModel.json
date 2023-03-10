@@ -1,0 +1,133 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "createSharedSchedule": {
+            "actionType": "JSFunctionAsync",
+            "method": "createorUpdateSharedSchedule",
+            "inputData": {
+                "data": "{{data}}",
+                "commandId": "{{ctx.sidenavCommandId}}"
+            },
+            "outputData": {},
+            "events": {
+                "success": [
+                    {
+                        "name": "Dpv1.updateSearchState"
+                    },
+                    {
+                        "name": "createSharedSchedule.closePanel"
+                    }
+                ],
+                "failure": [ {
+                    "name": "createSharedSchedule.closePanel"
+                } ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "createSharedScheduleSuccessfulMessage"
+                    }
+                ],
+                "failure": [
+                    {
+                        "message": "createSharedScheduleFailedMessage"
+                    }
+                ]
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "condition": "!data._internal.isDestroyed",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+        "updateSearchState": {
+            "actionType": "JSFunction",
+            "method": "updateStateWithSchedule",
+            "inputData": {
+                "scheduleName": "{{data.scheduleName.dbValue}}",
+                "searchState": "{{props.subPanelContext.searchState}}"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        }
+    },
+    "data": {
+        "scheduleName": {
+            "displayName": "{{i18n.scheduleName}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "uiValue": "",
+            "dbValue": ""
+        },
+        "cronModelState": {
+            "initialValues": {
+                "basis": 2,
+                "startTime": "",
+                "daily_selectedDaysOfWeek": [0,1,2,3,4,5,6],
+                "hourly_everyXHoursVal": 2,
+                "monthly_dayVal": 1,
+                "monthly_everyXMonthsVal": 1
+            },
+            "meta": {}
+        }
+    },
+    "functions": {},
+    "messages": {
+        "createSharedScheduleSuccessfulMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Dpv1CreateSharedScheduleSuccessful}}",
+            "messageTextParams": [
+                "{{data.scheduleName.dbValue}}"
+            ]
+        },
+        "createSharedScheduleFailedMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Dpv1CreateSharedScheduleFailed}}",
+            "messageTextParams": [
+                "{{data.scheduleName.dbValue}}"
+            ]
+        }},
+    "i18n": {
+        "create": [
+            "DpvMessages"
+        ],
+        "createSharedScheduleTitle": [
+            "DpvMessages"
+        ],
+        "scheduleName": [
+            "DpvMessages"
+        ],
+        "Dpv1CreateSharedScheduleSuccessful": [
+            "DpvMessages"
+        ],
+        "Dpv1CreateSharedScheduleFailed": [
+            "DpvMessages"
+        ]
+    },
+    "onEvent": [ 
+        {
+            "eventId": "createSharedSchedule.closePanel",
+            "action": "closePanel"
+        },
+        {
+            "eventId": "Dpv1.updateSearchState",
+            "action": "updateSearchState"
+        }
+        
+    ],
+    "conditions": {
+        "isCreateButtonVisible": {
+            "expression": "data.scheduleName.dbValue !== '' && data.cronModelState.startTime"
+        }
+    }
+}

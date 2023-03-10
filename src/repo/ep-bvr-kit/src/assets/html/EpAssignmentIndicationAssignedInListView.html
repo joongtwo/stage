@@ -1,0 +1,21 @@
+
+<div class="w-12 h-12">
+    <div  exist-when="conditions.showLoading" class="aw-layout-linkWithPopupContainer aw-widgets-cellListItem aw-widgets-cellTop">
+        <mfe-loading-message></mfe-loading-message>
+    </div>
+    <div exist-when="conditions.showInScopeList" >
+        <div class="sw-row aw-ep-inScopeTitle"  exist-when="!conditions.showLoading">{{props.inScopeTitle}}</div>
+        <aw-separator class="aw-ep-assignmentIndicationAssignedInSeparator"></aw-separator>
+        <aw-list dataprovider="data.dataProviders.inScopeDataProvider" show-drop-area=false class=" aw-ep-assignmentIndicationAssignedInList">
+            <span class="aw-widgets-cellTop">{{item.vmo.props.bl_rev_object_name.uiValues[0] || item.displayName}}</span>
+        </aw-list>
+    </div>
+    <aw-separator exist-when="conditions.showSeparator" class="aw-ep-assignmentIndicationAssignedInSeparator"></aw-separator>
+    <div exist-when="conditions.showOutOfScopeList">
+        <div class="sw-row aw-ep-inScopeTitle" exist-when="!conditions.showLoading">{{props.outOfScopeTitle}}</div>
+        <aw-separator  class="aw-ep-assignmentIndicationAssignedInSeparator"></aw-separator>
+        <aw-list dataprovider="data.dataProviders.outScopeDataProvider" show-drop-area=false class=" aw-ep-assignmentIndicationAssignedInList" aw-class="[{'aw-ep-AssignedToOutOfScopeListDisabled' : subPanelContext.disableAssignedToOutOfScopeList}]">
+            <span class="aw-widgets-cellTop"  >{{item.vmo.props.bl_rev_object_name.uiValues[0] || item.vmo.props.object_name.uiValues[0] || item.displayName}} </span>
+        </aw-list>
+    </div>
+</div>

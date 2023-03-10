@@ -1,0 +1,25 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "applyMessagesParams": {
+            "actionType": "JSFunction",
+            "method": "applyMessagesParams",
+            "inputData": {
+                "messagesData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "messages": ""
+            },
+            "deps": "js/mfeMessagesService"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "applyMessagesParams"
+    }
+}

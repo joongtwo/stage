@@ -1,0 +1,27 @@
+<aw-panel>
+    <aw-panel-body>
+        <div class="h-1 sw-row aw-workinstr-overviewCommandBar" exist-when="!conditions.isLoading">
+            <div aw-click="actions.applyHierarchyLayout" aw-class="['aw-workinstr-hierarchyLayoutOverviewCmd', {'aw-workinstr-overviewActiveCmd': conditions.isDisplayTypeHierarchy}]">
+                <aw-icon icon-id="cmdLayoutHierarchy"></aw-icon>
+                <aw-i18n class="aw-workinstr-overviewCmdTxt">i18n.hierarchy</aw-i18n>
+            </div>
+            <div aw-click="actions.applySequentialLayout" aw-class="['aw-workinstr-overviewCmd', {'aw-workinstr-overviewActiveCmd': conditions.isDisplayTypeSequential}]">
+                <aw-icon icon-id="cmdLayoutSequence"></aw-icon>
+                <aw-i18n class="aw-workinstr-overviewCmdTxt">i18n.sequential</aw-i18n>
+            </div>
+            <div exist-when="conditions.isExecutionEnabled">
+                <div aw-click="actions.applyTableLayout" aw-class="['aw-workinstr-overviewCmd', {'aw-workinstr-overviewActiveCmd': conditions.isDisplayTypeTable}]">
+                    <aw-icon icon-id="cmdReports"></aw-icon>
+                    <aw-i18n class="aw-workinstr-overviewCmdTxt">i18n.table</aw-i18n>
+                </div>
+            </div>
+        </div>
+        <mfe-loading-message class="h-12" exist-when="conditions.isLoading"></mfe-loading-message>
+        <div class="h-11" aw-class="{'aw-workinstr-hidden': conditions.shouldHideGraph}">
+            <div class="aw-workinstr-overviewGraph">
+                <aw-graphing-component graph-model="data.graphModel"></aw-graphing-component>
+            </div>
+        </div>
+        <aw-splm-table id="travelerContent" gridid="travelerGridView" class="h-11" exist-when="conditions.isDisplayTypeTable"></aw-splm-table>
+    </aw-panel-body>
+</aw-panel>

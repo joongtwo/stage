@@ -1,0 +1,149 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+        "databaseKey": {
+            "displayName": "{{i18n.databaseKey}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "databaseName": {
+            "displayName": "{{i18n.databaseName}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "uiValue": "",
+            "dbValue": ""
+        },
+        "databaseTypeList": {
+            "displayName": "{{i18n.databaseTypeList}}",
+            "name": "databaseTypeList",
+            "type": "STRING",
+            "isRequired": true,
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "databaseTypeValues":{
+            "type": "STRING",
+            "dbValue": [
+                {
+                    "propDisplayValue": "ORACLE",
+                    "dispValue": "ORACLE",
+                    "propInternalValue": "ORACLE"
+                },
+                {
+                    "propDisplayValue": "SQL SERVER",
+                    "dispValue": "SQL SERVER",
+                    "propInternalValue": "SQL SERVER"
+                }
+            ]
+        },
+        "server": {
+            "displayName": "{{i18n.server}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "uiValue": "",
+            "dbValue": ""
+        },
+        "username": {
+            "displayName": "{{i18n.username}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "uiValue": "",
+            "dbValue": ""
+        },
+        "password": {
+            "displayName": "{{i18n.password}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "uiValue": "",
+            "dbValue": ""
+        },
+        "confirmPassword": {
+            "displayName": "{{i18n.confirmPassword}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "uiValue": "",
+            "dbValue": "",
+            "validationCriteria": [
+                {
+                    "condition": "conditions.isPasswordCorrect",
+                    "value": "{{i18n.passwordMismatchMessage}}"
+                }
+            ]
+        }   
+    },
+    "actions": {
+        "addMeasurementData":{
+            "actionType": "JSFunction",
+            "method": "addMeasurementData",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {},
+            "events": {
+                "success": [                   
+                    {
+                        "name": "addMeasurementData.closePanel"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "addMeasurementData.closePanel"
+                    }
+                ]
+            },
+            "deps": "js/Dpv1CreateDpvService"
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        }     
+    },
+    "dataProviders": {
+    },
+    "functions":{
+    },
+    "conditions": {
+        "isValidToCreateButton": {
+            "expression": "data.databaseName.dbValue!='' && data.databaseKey.dbValue!='' && data.server.dbValue!='' && data.username.dbValue!='' && data.password.dbValue!='' && data.confirmPassword.dbValue!='' && (data.password.dbValue === data.confirmPassword.dbValue)"
+        },
+        "isPasswordCorrect": {
+            "expression": "data.password.dbValue !== data.confirmPassword.dbValue"
+        }
+    },
+    "i18n":{
+        "create":["DpvMessages"],
+        "databaseKey":["DpvMessages"],
+        "databaseName":["DpvMessages"],
+        "databaseTypeList":["DpvMessages"],
+        "server":["DpvMessages"],
+        "username":["DpvMessages"],
+        "password":["DpvMessages"],
+        "confirmPassword":["DpvMessages"],
+        "passwordMismatchMessage":["DpvMessages"]
+    },    
+    "onEvent": [
+        {
+            "eventId": "addMeasurementData.closePanel",
+            "action": "closePanel"
+        }
+    ],
+    "lifecycleHooks": {
+    }
+}

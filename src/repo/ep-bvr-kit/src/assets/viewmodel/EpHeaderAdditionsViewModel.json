@@ -1,0 +1,20 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {},
+    "data": {},
+    "conditions": {
+        "isCheckedOutBySameUser": {
+            "expression": "ctx.ep.scopeObject.props.bl_rev_checked_out_user && ctx.ep.scopeObject.props.bl_rev_checked_out_user.dbValues[0] === ctx.userSession.props.user.displayValues[0]"
+        }
+    },
+    "ctx": {
+        "ep.scopeObject.props.bl_rev_checked_out_user.dbValues": {
+            "type": "object"
+        }
+    },
+    "i18n": {
+        "checkedOutByYou": [
+            "EPMessages"
+        ]
+    }
+}

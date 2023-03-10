@@ -1,0 +1,64 @@
+<aw-command-panel caption="i18n.volumeTabText">
+    <aw-panel-body>
+        <aw-command-panel-section caption="i18n.seedPartsText" anchor="data.analysisVolumnAddRemoveCommands" context="{...data,...fields}"></aw-command-panel-section>
+        <aw-i18n visible-when="!conditions.hasTargets">i18n.emptyTargetList</aw-i18n>
+        <aw-list dataprovider="data.dataProviders.volumeSearchPanelDataProvider" visible-when="conditions.hasTargets" item-options="fields">
+            <aw-default-cell vmo="item"></aw-default-cell>
+        </aw-list>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-command-panel-section caption="i18n.targetVolumeCoordinates" anchor="data.volumeTargetHelpAnchor"></aw-command-panel-section>
+        <div class="sw-column w-12">
+            <div class="sw-row">
+                <div class="sw-column w-1"></div>
+                <div class="sw-column w-7">
+                    <aw-label class="aw-geometrictool-volumeCornersText" prop="data.volumeUnitTextMinimum"> </aw-label>
+                </div>
+                <div class="sw-column w-6">
+                    <aw-label class="aw-geometrictool-volumeCornersText" prop="data.volumeUnitTextMaximum"> </aw-label>
+                </div>
+            </div>
+            <div class="sw-row">
+                <div class="sw-column w-1">
+                    <label class="aw-geometrictool-volumeCornersText aw-geometrictool-volumeCornersColLabel">{{i18n.coordinateX}}</label>
+                </div>
+                <div class="sw-column w-6">
+                    <aw-numeric prop="data.targetRangeVolumeX1"></aw-numeric>
+                </div>
+                <aw-splitter> </aw-splitter>
+                <div class="sw-column w-6">
+                    <aw-numeric prop="data.targetRangeVolumeX2"></aw-numeric>
+                </div>
+            </div>
+            <div class="sw-row">
+                <div class="sw-column w-1">
+                    <label class="aw-geometrictool-volumeCornersText aw-geometrictool-volumeCornersColLabel">{{i18n.coordinateY}}</label>
+                </div>
+                <div class="sw-column w-6">
+                    <aw-numeric prop="data.targetRangeVolumeY1"></aw-numeric>
+                </div>
+                <aw-splitter> </aw-splitter>
+                <div class="sw-column w-6">
+                    <aw-numeric prop="data.targetRangeVolumeY2"></aw-numeric>
+                </div>
+            </div>
+            <div class="sw-row">
+                <div class="sw-column w-1">
+                    <label class="aw-geometrictool-volumeCornersText aw-geometrictool-volumeCornersColLabel">{{i18n.coordinateZ}}</label>
+                </div>
+                <div class="sw-column w-6">
+                    <aw-numeric prop="data.targetRangeVolumeZ1"></aw-numeric>
+                </div>
+                <aw-splitter> </aw-splitter>
+                <div class="sw-column w-6">
+                    <aw-numeric prop="data.targetRangeVolumeZ2"></aw-numeric>
+                </div>
+            </div>
+            <div class="sw-row">
+                <aw-button visible-when=true enable-when="!conditions.anyEmptyCornerValue && !conditions.invalidCornerValueX && !conditions.invalidCornerValueY && !conditions.invalidCornerValueZ" action="executeVolumeSearch">
+                    <aw-i18n>i18n.filterButtonText</aw-i18n>
+                </aw-button>
+            </div>
+        </div>
+    </aw-panel-footer>
+</aw-command-panel>

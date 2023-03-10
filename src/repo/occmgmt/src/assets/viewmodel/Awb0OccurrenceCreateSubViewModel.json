@@ -1,0 +1,138 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "occTypeToCreate" :{
+            "props": {
+                "type_name": {
+                    "dbValues": ["{{props.subPanelContext.addElementState.occType}}"]
+                }
+            },
+            "propertyDescriptors": {}
+        },
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "actions": {
+        "loadCreateXRT": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadCreateXrt",
+            "inputData": {
+                "type": "CREATE",
+                "activePageTitle": "",
+                "selectedObject": "",
+                "objectType": "{{props.subPanelContext.addElementState.occType}}"               
+            },
+            "outputData": {
+                "xrtData": ""
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "addPropertiesAndSetCreateInputContext": {
+            "actionType": "JSFunction",
+            "method": "buildOccurrenceCreateInputAndUpdateState",
+            "inputData": {
+                "value": "{{data}}",
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "outputData": {},
+            "events": {
+                "success": [
+                    {
+                        "name": "awb0Element.setElementCreateInputComplete",
+                        "excludeLocalDataCtx": true
+                    }
+                ]
+            },
+            "deps": "js/addRevOccService"
+        },
+        "addElementPropertiesComplete": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "revOcc.setElementCreateInputComplete",
+                    "excludeLocalDataCtx": false
+                    }
+                ]
+            }
+        },
+        "updateValueOnCtxOrStateAction": {
+            "actionType": "JSFunction",
+            "method": "updateValueOnCtxOrState",
+            "inputData": {
+                "pathOnCtxOrState": "Awb0ElementCreateSubView",
+                "value": true,
+                "target" : "{{props.subPanelContext.addElementState}}"
+            },
+            "deps": "js/occmgmtUtils",
+            "events": {
+                "success": [
+                    {
+                    "name": "awb0Element.initializePanelProperties"
+                    }
+                ]
+            }
+        },
+        "destroyPanel": {
+            "actionType": "JSFunction",
+            "method": "updateValueOnCtxOrState",
+            "inputData": {
+                "pathOnCtxOrState, ": "Awb0ElementCreateSubView",
+                "value": false,
+                "target" : "{{props.subPanelContext.addElementState}}"
+            },
+            "deps": "js/occmgmtUtils"
+        },
+        "assignInitialValuesToXrtProperties": {
+            "actionType": "JSFunction",
+            "method": "assignInitialValuesToXrtProperties",
+            "inputData": {
+                "createType": "{{data.occTypeToCreate.props.type_name.dbValues[0]}}",
+                "editHandler": "{{editHandlers.addSubPanelEditHandler}}"
+            },
+            "deps": "js/addElementService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "awb0Element.loadCreateXRTEvent",
+            "action": "loadCreateXRT"
+        },
+        {
+            "eventId": "awb0Element.addUsageProperties",
+            "action": "addPropertiesAndSetCreateInputContext",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awb0Element.setElementCreateInputComplete",
+            "action": "addElementPropertiesComplete"
+        },
+        {
+            "eventId": "awb0Element.addRevOccElementProperties",
+            "action": "addPropertiesAndSetCreateInputContext"
+        },
+        {
+            "eventId": "awb0Element.initializePanelProperties",
+            "action": "assignInitialValuesToXrtProperties"
+        }
+    ],
+    "lifecycleHooks": {
+        "onMount": "updateValueOnCtxOrStateAction",
+        "onUnmount": "destroyPanel"
+    },
+    "editHandlers": {
+        "addSubPanelEditHandler": {
+            "context": "CREATE_SUB_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    }
+}

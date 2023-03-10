@@ -1,0 +1,190 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+    },
+    "props":{
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "buildCrumbs": {
+            "actionType": "JSFunction",
+            "method": "buildNavigateBreadcrumb",
+            "inputData": {
+                "selectedObject" : "{{data.adaptedObjects[0]}}",
+                "xrtState": "{{props.subPanelContext.xrtState}}"
+            },
+            "outputData": {
+                "crumbs": "crumbs"
+            },
+            "deps": "js/Awp0WorkflowBreadcrumbPanel"
+        },
+        "updateNavigateBreadcrumbData": {
+            "actionType": "JSFunctionAsync",
+            "method": "updateNavigateBreadcrumbData",
+            "inputData": {
+                "selectedProcess": "{{data.eventMap['workflow.updateBreadcrumbData'].selection}}",
+                "selectedObject" : "{{data.adaptedObjects[0]}}",
+                "crumbs" : "{{data.crumbs}}",
+                "xrtState": "{{props.subPanelContext.xrtState}}"
+            },
+            "outputData": {
+                "crumbs": "crumbs"
+            },
+            "deps": "js/Awp0WorkflowBreadcrumbPanel"
+        },
+        "initBreadCrumbPanel": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getSelectedObjects"
+                },
+                {
+                    "action": "loadProperties",
+                    "condition": "!conditions.isSelectedEPMTaskOrSignOffTask"
+                }
+            ]
+        },
+        "getSelectedObjects": {
+            "actionType": "JSFunctionAsync",
+            "method": "getAdaptedObjects",
+            "inputData": {
+                "sourceObjects": [
+                    "{{props.subPanelContext.selected}}"
+                ]
+            },
+            "outputData": {
+                "adaptedObjects": ""
+            },
+            "deps": "js/adapterService"
+        },
+        "loadProperties": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData":
+            {
+                "objects":"{{data.adaptedObjects}}",
+                "attributes": [
+                    "fnd0AllWorkflows",
+                    "fnd0MyWorkflowTasks",
+                    "object_string"
+                ]
+            },
+            "policy":
+            {
+
+                "types": [
+
+                    {
+                        "name": "WorkspaceObject",
+                        "properties": [
+                            {
+                                "name": "object_string"
+                            },
+                            {
+                                "name": "fnd0AllWorkflows",
+                                "modifiers": [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "fnd0MyWorkflowTasks",
+                                "modifiers": [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        "name": "EPMTask",
+                        "properties": [
+                            {
+                                "name": "parent_process",
+                                "modifiers":
+                                [
+                                    {
+                                        "Value":"true",
+                                        "name":"withProperties"
+                                    }
+                                ]
+                            },
+                            {
+                                "name": "object_name"
+                            }
+                        ]
+                    }
+                ]
+
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "workflowBreadCrumb.PropertiesLoaded"
+                    }
+                ]
+            },
+            "deps": "js/Awp0WorkflowBreadcrumbPanel"
+        },
+        "handleCdmRelatedModifiedEventBatchAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "isRefreshLocationNeeded",
+                    "condition": "parameters.eventData.refreshLocationFlag"
+                },
+                {
+                    "action": "loadProperties",
+                    "condition": "parameters.eventData.refreshLocationFlag && data.isRefreshLocation"
+                }
+            ]
+        },
+        "isRefreshLocationNeeded": {
+            "actionType": "JSFunction",
+            "method": "isRefreshLocationNeeded",
+            "deps": "js/Awp0WorkflowUtils",
+            "inputData": {
+                "eventdata": "{{parameters.eventData}}",
+                "selection": [ "{{data.adaptedObjects[0]}}" ]
+            },
+            "outputData": {
+                "isRefreshLocation": ""
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initBreadCrumbPanel"
+    },
+    "onEvent":[
+        {
+            "eventId": "workflowBreadCrumb.PropertiesLoaded",
+            "action": "buildCrumbs"
+        },
+        {
+            "eventId": "workflow.updateBreadcrumbData",
+            "action": "updateNavigateBreadcrumbData",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "cdm.relatedModified",
+            "action": "handleCdmRelatedModifiedEventBatchAction",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        }
+    ],
+    "conditions": {
+        "isSelectedEPMTaskOrSignOffTask": {
+          "expression":"props.subPanelContext.selected.modelType.typeHierarchyArray.indexOf('Signoff') > -1 || props.subPanelContext.selected.modelType.typeHierarchyArray.indexOf('EPMTask') > -1"
+        }
+    }
+}

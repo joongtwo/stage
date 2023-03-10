@@ -1,0 +1,49 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "ewiBreadCrumbDataProviderAction": {
+            "actionType": "dataProvider",
+            "method": "ewiBreadCrumbDataProvider"
+        },
+        "buildCrumbs": {
+            "actionType": "JSFunction",
+            "method": "createBreadCrumbs",
+            "inputData": {
+                "currentStep": "{{subPanelContext.currentStep}}",
+                "workPackage": "{{subPanelContext.workPackage}}"
+            },
+            "outputData": {
+                "crumbs": "breadCrumbProvider.crumbs"
+            },
+            "deps": "js/Ewi0BreadcrumbService"
+        }
+    },
+    "dataProviders": {
+        "ewiBreadCrumbDataProvider": {
+            "action": "buildCrumbs",
+            "response": "{{data.crumbs}}",
+            "totalFound": "{{data.crumbs.length}}"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "ewiBreadCrumbDataProviderAction",
+                "observers": [
+                    "props.subPanelContext.currentStep"
+                ]
+            }
+        ]
+    }
+}

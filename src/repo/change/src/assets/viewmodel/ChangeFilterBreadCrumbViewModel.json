@@ -1,0 +1,31 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports": [
+                  "js/aw-search-box.directive",
+                  "js/aw.searchFilter.service" 
+               ],
+    "data": 
+    {
+        "searchBox": {
+            "displayName":"",
+            "type":"STRING",
+            "isRequired":"true",
+            "dbValue":"{{ctx.search.criteria.searchString}}",
+            "dispValue":"{{ctx.search.criteria.searchString}}"
+        }        
+    },               
+    "actions": 
+    {
+        "doSearchKeepFilter":
+        {
+            "actionType": "JSFunction",
+            "method": "simpleSearch",
+            "inputData":
+            {
+                "searchCriteria": "{{data.searchBox.dbValue}}"
+            },
+
+            "deps": "js/filterPanelService"
+        }
+    }    
+}

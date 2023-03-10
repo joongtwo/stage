@@ -1,0 +1,10 @@
+<aw-panel-body>
+    <aw-list dataprovider="data.dataProviders.performSearch" item-options="props.classifyState" visible-when="( !props.classifyState.value.pasteClicked && !props.classifyState.value.standaloneExists )">
+        <aw-default-cell  vmo="item" hideoverlay="true" extended-tooltip-context="item" extended-tooltip="data.cellTooltip"></aw-default-cell>
+    </aw-list>
+    <div visible-when="( data.icoCells === 'undefined' || data.icoCells && data.icoCells.length === 0 ) && props.classifyState.value.pasteClicked === false" class="aw-clspanel-noClassifiedMsg">
+        <aw-i18n>i18n.noClassifiedObjects</aw-i18n>
+        <div></div>
+    </div>
+    <aw-label class="aw-clspanel-pasteBreadcrumb" prop="data.descriptionString" visible-when="props.classifyState.value.pasteClicked === true || props.classifyState.value.standaloneExists === true"></aw-label>
+</aw-panel-body>

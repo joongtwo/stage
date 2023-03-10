@@ -1,0 +1,53 @@
+{
+    "schemaVersion": "1.0.0",
+    "lifecycleHooks": {
+        "onMount": "onMountAction",
+        "onUnmount": "cleanup"
+    },
+    "actions": {
+        "onMountAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setHeaderTitle"
+                },
+                {
+                    "action": "initialize"
+                }
+            ]
+        },
+        "initialize": {
+            "actionType": "JSFunctionAsync",
+            "method": "initializePage",
+            "inputData": {},
+            "outputData": {
+                "headerTitle": "headerTitle"
+            },
+            "deps": "js/AwGatewayLocationService"
+        },
+        "cleanup": {
+            "actionType": "JSFunction",
+            "method": "cleanupPage",
+            "inputData": {},
+            "deps": "js/AwGatewayLocationService"
+        },
+        "setHeaderTitle": {
+            "actionType": "JSFunction",
+            "method": "setHeaderTitle",
+            "inputData": {},
+            "outputData": {
+                "overriddenHeaderTitle": ""
+            },
+            "deps": "js/commonUtilService"
+        }
+    },
+    "data": {
+        "showsearchbox": {
+            "dbValue": true,
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true"
+        }
+    }
+
+}

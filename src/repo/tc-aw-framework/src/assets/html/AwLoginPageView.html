@@ -1,0 +1,41 @@
+<div class='signin-form aw-layout-mainView' >
+    <div class='aw-session-loginViewPanel'>
+        <div class='aw-session-tcLoginView'>
+            <div class='aw-session-companyLogoParent'>
+                <div class='aw-session-companyLogo'></div>
+            </div>
+            <div class='aw-session-signInParent'>
+                <div class='aw-session-signIn'>
+                    <div class='aw-session-brandPanel'>
+                        <h1 class='aw-session-brandName'>{ data.brandName }</h1>
+                        <h2 class='aw-session-productName'>{ data.productName }</h2>
+                        <h3 class='aw-session-companyName'>{ data.companyName }</h3>
+                    </div>
+                    <ul>
+                        <li><aw-textbox prop="data.username" action='loginAction'></aw-textbox></li>
+                        <li><aw-password prop="data.password" action='loginAction'></aw-password></li>
+                        <li>
+                            <div class='aw-session-signInContainer'>
+                                <div class='aw-session-signInButton'>
+                                    <aw-button type='submit' action='loginAction'>{ data.signInText.propertyDisplayName }</aw-button>
+                                    <div class='aw-session-progress' visible-when="data.spinnerStatus === 'Active'"></div>
+                                </div>
+                                <div class='aw-session-locale aw-layout-flexColumnContainer'>
+                                    <aw-link-with-popup prop="data.localeTextLink" dataprovider='dataProviders.localeList'></aw-link-with-popup>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class='aw-session-progressContainer'>
+                                <div class='aw-session-errorMessage' visible-when="data.loginError">{data.loginError}</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div class='copyright normal'>{ data.copyright }</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

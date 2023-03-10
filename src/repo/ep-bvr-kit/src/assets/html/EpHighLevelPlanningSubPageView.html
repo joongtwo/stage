@@ -1,0 +1,19 @@
+<ep-configuration-chip-area exist-when="ctx.epTaskPageContext.loadedObject.uid && ctx.ep.scopeObject.uid" configuration-chips-data = "data.configurationChipsData"></ep-configuration-chip-area>
+<aw-sublocation sub-location-preference="data.awSubLocationPref" sub-panel-context="{provider : data.provider, occContext:data.occContext}">
+    <mfe-loading-message exist-when="!ctx.epPageContext.loadedObject.uid || !ctx.ep.scopeObject.uid"></mfe-loading-message>
+    <mfe-content-container container-direction="HORIZONTAL" container-name="HighLevelPlanningPage" class="h-12" exist-when="ctx.epPageContext.loadedObject.uid && ctx.ep.scopeObject.uid">
+        <mfe-content-container container-direction="VERTICAL" container-name="HighLevelPlanningMBOMArea" class="w-6">
+            <mfe-content-panel sub-panel-context="{...data.highLevelPlanningMbomTreeContext,sharedSelectionData: data.sharedSelectionData}"></mfe-content-panel>
+        </mfe-content-container>
+        <mfe-content-container container-direction="VERTICAL" container-name="HighLevelPlanningProcessAndDetailsArea" class="w-6 aw-ep-highLevelPlanningProcessTreeCommands">
+            <mfe-content-container container-direction="HORIZONTAL" container-name="HighLevelPlanningProcessArea" class="h-7">
+                <mfe-content-panel sub-panel-context="{...data.highLevelPlanningProcessLayoutAreaContext, sharedSelectionData: data.sharedSelectionData}"></mfe-content-panel>
+            </mfe-content-container>
+            <mfe-content-container container-direction="HORIZONTAL" container-name="HighLevelPlanningDetailsArea" class="h-5">
+                <ep-high-level-planning-details-area occ-context="data.occContext"></ep-high-level-planning-details-area>
+            </mfe-content-container>
+        </mfe-content-container>
+    </mfe-content-container>
+    <mfe-sync-manager view-id="EpSelectedAssemblyInHighLevelPlanningPageSyncMgr"></mfe-sync-manager>
+    <mfe-sync-manager view-id="EpSelectedProcessInHighLevelPlanningPageSyncMgr"></mfe-sync-manager>
+</aw-sublocation>

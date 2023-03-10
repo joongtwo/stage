@@ -1,0 +1,90 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-widget.directive"
+    ],
+    "lifecycleHooks": {
+        "onMount": "releases",
+        "onUpdate": {
+            "action": "releases",
+            "observers": [
+                "props.releasesState.value.releasesString"
+             ]
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "releases-state":{
+            "type":"object"
+        }
+    },
+    "actions": {
+        "initialize": {
+            "actionType": "JSFunction",
+            "method": "initialize",
+            "inputData": {
+                "eventData":"{{data.eventData}}",
+                "release": "{{props.releasesState}}",
+                "releases": "{{ctx.preferences.CST_supported_eclass_releases}}"
+            },
+            "deps": "js/AwClsReleaseBoxService"
+        },
+        "releases": {
+            "actionType": "JSFunction",
+            "method": "getReleases",
+            "inputData": {
+                "isClsActive":"{{ctx.preferences.CLS_is_presentation_hierarchy_active}}",
+                "releases": "{{ctx.preferences.CST_supported_eclass_releases}}",
+                "filter":"{{data.releasesLOV.filterString}}",
+                "prevReleases": "{{props.releasesState}}",
+               "releaseLOV": "{{data.releasesLOV}}" 
+            },
+            "outputData": {
+                "releases": "releases",
+                "releasesLOV": "releasesLOV"
+            },
+            "deps": "js/AwClsReleaseBoxService"
+        }
+    },
+
+    "functions": {
+
+    },
+    "dataProviders": {
+        "listProvider": {
+            "action": "releases",
+            "response": "{{data.releases}}",
+            "totalFound": "{{data.releases.length}}"
+        }
+    },
+    "columnProviders": {
+
+    },
+    "grids": {
+
+    },
+    "data": {
+        "releasesLOV": {
+            "displayName": "{{i18n.release}}",
+            "type": "CHECKBOX",
+            "isArray": true,
+            "dataProvider": "listProvider",
+            "renderingHint": "checkboxoptionlov"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId" : "listProvider.validSelectionEvent",
+            "cacheEventData": true,
+            "action": "initialize"
+        }
+    ],
+    "conditions": {
+
+    },
+    "i18n": {
+        "release": [ "ClassificationPanelMessages" ]
+    }
+}

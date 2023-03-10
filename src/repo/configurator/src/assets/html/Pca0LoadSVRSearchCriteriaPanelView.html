@@ -1,0 +1,48 @@
+<aw-command-panel caption="i18n.cmdLoadSavedVariantsTitle">
+    <aw-panel-body>
+        <div class="aw-layout-subPanelContent">
+            <div>
+                <aw-column width="5f">
+                    <aw-property-label prop="data.searchByLabel"></aw-property-label>
+                </aw-column>
+                <aw-column width="fill">
+                    <aw-link-with-popup-menu prop="data.searchCriteriaLink" dataprovider="data.dataProviders.searchCriteriaProvider" link-popup-menu-id="searchCriteriaLink"></aw-link-with-popup-menu>
+                </aw-column>
+            </div>
+            <div class="aw-layout-flexColumn">
+                <div class='aw-xrt-tabsContainer aw-create-tabsContainer'>
+                    <aw-tab-set tabs="data.tabsModel.dbValue" tab-set-id="Pca0LoadSVRSearchTab">
+                        <aw-command-sub-panel panel-id="Pca0LoadSVRSearchInputTab" visible-when="conditions.showInputPage" sub-panel-context="data.tabData"></aw-command-sub-panel>
+                        <aw-command-sub-panel panel-id="Pca0LoadSVRSearchResultsTab" visible-when="conditions.showResultsPage" sub-panel-context="data.tabData"></aw-command-sub-panel>
+                    </aw-tab-set>
+                </div>
+            </div>
+        </div>
+    </aw-panel-body>
+    <aw-panel-footer class="sw-column">
+        <div class="sw-row sw-component" exist-when=" !conditions.isTreeMode && conditions.showLoadButton">
+            <div class="sw-column demo-w-3f">
+                <aw-pic exist-when="!conditions.areMultipleItemsSelected" class="aw-widget-thumbnail" icon-id="data.indicatorInfo"></aw-pic>
+                <aw-pic exist-when="conditions.areMultipleItemsSelected" class="aw-widget-thumbnail" icon-id="data.indicatorWarning"></aw-pic>
+            </div>
+            <div class="sw-column">
+                <span>
+                    <aw-i18n class="svr-selection-msg" exist-when="!conditions.areMultipleItemsSelected">i18n.singleSVRSelectionMsg</aw-i18n>
+                    <aw-i18n class="svr-selection-msg" exist-when="conditions.areMultipleItemsSelected">i18n.multipleSVRSelectionMsg</aw-i18n>
+                </span>
+            </div>
+        </div>
+        <div class="sw-row sw-component" exist-when="conditions.isTreeMode && conditions.showLoadButton">
+            <aw-checkbox prop="data.appendSVRElement">
+            </aw-checkbox>
+        </div>
+        <div class="sw-row sw-component">
+            <aw-button action="loadSavedVariants" visible-when="conditions.showLoadButton && !conditions.isDirty">
+                <aw-i18n>i18n.load</aw-i18n>
+            </aw-button>
+            <aw-button action="showConfirmationMessageForLoad" visible-when="conditions.showLoadButton && conditions.isDirty">
+                <aw-i18n>i18n.load</aw-i18n>
+            </aw-button>
+        </div>
+    </aw-panel-footer>
+</aw-command-panel>

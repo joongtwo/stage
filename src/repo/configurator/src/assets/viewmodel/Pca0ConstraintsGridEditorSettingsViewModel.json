@@ -1,0 +1,175 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-button.directive",
+        "js/aw-checkbox.directive",
+        "js/aw-command-panel.directive",
+        "js/aw-i18n.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-slider.directive",
+        "js/visible-when.directive"
+    ],
+    "actions": {
+        "initializeView": {
+            "actionType": "JSFunction",
+            "method": "initializeSettingsPanel",
+            "outputData": {
+                "showPropsInfoInGrid.dbValue": "showPropsInfoInGrid",
+                "headerHeight.dbValue[0].sliderOption.value": "topTableHeight",
+                "useCompactColumnWidth.dbValue": "useCompactColumnWidth",
+                "columnWidth.dbValue[0].sliderOption.value": "columnWidth",
+                "showSubjectInTopGrid.dbValue": "showSubjectInTopGrid"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "applySettings": {
+            "actionType": "JSFunction",
+            "method": "applySettings",
+            "inputData": {
+                "viewModel": "{{data}}"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "updateHeight": {
+            "actionType": "JSFunction",
+            "method": "updateTopTableHeight",
+            "inputData": {
+                "sliderValue": "{{data.headerHeight.dbValue}}"
+            },
+            "outputData": {
+                "headerHeightUpdated": ""
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "updateAllColumnsWidth": {
+            "actionType": "JSFunction",
+            "method": "updateAllColumnsWidth",
+            "inputData": {
+                "sliderValue": "{{data.columnWidth.dbValue}}"
+            },
+            "outputData": {
+                "columnWidthUpdated": ""
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        }
+    },
+    "data": {
+        "headerHeightUpdated": false,
+        "headerHeight": {
+            "isArray": "true",
+            "dbValue": [ {
+                "sliderOption": {
+                    "disabled": false,
+                    "min": 25,
+                    "max": 80,
+                    "step": 1,
+                    "orientation": "horizontal",
+                    "range": false
+                },
+                "showIncrementButtons": true,
+                "showSliderDisplayValueLabel": false,
+                "sliderChangeEventAction": "updateHeight"
+            } ]
+        },
+        "columnWidthUpdated": false,
+        "columnWidth": {
+            "isArray": "true",
+            "dbValue": [ {
+                "sliderOption": {
+                    "disabled": false,
+                    "min": 50,
+                    "max": 300,
+                    "step": 1,
+                    "orientation": "horizontal",
+                    "range": false
+                },
+                "showIncrementButtons": true,
+                "showSliderDisplayValueLabel": false,
+                "sliderChangeEventAction": "updateAllColumnsWidth"
+            } ]
+        },
+        "showPropsInfoInGrid": {
+            "displayName": "{{i18n.showPropsInfoInGrid}}",
+            "type": "BOOLEAN",
+            "isRequired": false,
+            "isEditable": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "useCompactColumnWidth": {
+            "displayName": "{{i18n.useCompactColumnWidth}}",
+            "type": "BOOLEAN",
+            "isRequired": false,
+            "isEditable": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "showSubjectInTopGrid": {
+            "displayName": "{{i18n.showSubjectInTopGrid}}",
+            "type": "BOOLEAN",
+            "isRequired": false,
+            "isEditable": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+    "i18n": {
+        "settings": [ "ConfiguratorExplorerMessages" ],
+        "properties": [ "ConfiguratorExplorerMessages" ],
+        "showPropsInfoInGrid": [ "ConfiguratorExplorerMessages" ],
+        "topTableHeightResizeTitle": [ "ConfiguratorExplorerMessages" ],
+        "tableColumnHeaderWidthTitle": [ "ConfiguratorExplorerMessages" ],
+        "useCompactColumnWidth": [ "ConfiguratorExplorerMessages" ],
+        "sectionTitle": [ "ConfiguratorExplorerMessages" ],
+        "showSubjectInTopGrid": [ "ConfiguratorExplorerMessages" ],
+        "applyCmd": [ "ConfiguratorExplorerMessages" ]
+    },
+    "lifecycleHooks": {
+        "onMount": "initializeView"
+    },
+    "onEvent": [],
+    "conditions": {
+        "isShowPropertiesInfoInGridChanged": {
+            "expression": "data.showPropsInfoInGrid.valueUpdated"
+        },
+        "isCompactColumnWidthChanged": {
+            "expression": "data.useCompactColumnWidth.valueUpdated"
+        },
+        "isColumnWidthPxChanged": {
+            "expression": "data.columnWidthUpdated === true"
+        },
+        "isColumnWidthChanged": {
+            "expression": "conditions.isCompactColumnWidthChanged || conditions.isColumnWidthPxChanged"
+        },
+        "isShowSubjectInTopGridChanged": {
+            "expression": "data.showSubjectInTopGrid.valueUpdated"
+        },
+        "settingsChanged": {
+            "expression": {
+                "$or": [ {
+                        "$source": "conditions.isShowPropertiesInfoInGridChanged",
+                        "$query": {
+                            "$eq": true
+                        }
+                    }, {
+                        "$source": "data.headerHeightUpdated",
+                        "$query": {
+                            "$eq": true
+                        }
+                    },
+                    {
+                        "$source": "conditions.isColumnWidthChanged",
+                        "$query": {
+                            "$eq": true
+                        }
+                    },
+                    {
+                        "$source": "conditions.isShowSubjectInTopGridChanged",
+                        "$query": {
+                            "$eq": true
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}

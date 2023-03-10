@@ -1,0 +1,212 @@
+{
+    "schemaVersion" : "1.0.0",
+
+    "i18n":
+    {
+        "sharedEffectivities":[ "OccurrenceManagementConstants"],
+        "addElementBtn":[ "OccurrenceManagementConstants"],
+        "failedToApplyEffectivity":[ "OccurrenceManagementConstants"],
+        "filter": [ "OccurrenceManagementConstants"],
+        "effectivitesSuccessfullyApplied" :["OccurrenceManagementMessages"]
+    },
+
+    "dataProviders":
+    {
+        "performSearchForSharedEffectivities":
+        {
+            "action": "performSearchForSharedEffectivitiesAction",
+            "response": "{{data.effectivitiesFound}}",
+            "totalFound": "{{data.effectivitiesTotalFound}}",
+            "selectionModelMode": "multiple"
+        }
+    },
+    "data" :
+    {
+        "filterBox": {
+          "displayName" :"{{i18n.filter}}",
+          "type": "STRING",
+          "dbValue" :""
+        }
+    },
+    "actions":
+    {
+        "getAllSharedEffectivitiesAction":
+        {
+            "actionType": "dataProvider",
+            "method": "performSearchForSharedEffectivities"
+        },
+
+        "performSearchForSharedEffectivitiesAction":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Query-2014-11-Finder",
+            "method": "performSearch",
+            "inputData":
+            {
+                "searchInput":
+                {
+                    "maxToLoad": 20,
+                    "maxToReturn": 20,
+                    "providerName": "Awb0EffectivityProvider",
+                    "searchFilterFieldSortType": "Alphabetical",
+                    "startIndex": "{{data.dataProviders.performSearchForSharedEffectivities.startIndex}}",
+                    "searchCriteria":
+                    {
+                        "effectivityId": "{{data.filterBox.dbValue}}",
+                        "productContextUid": "{{ctx.editEffectivityContext.productContextInfo}}"
+                    },
+                    "searchFilterMap":
+                    {
+                    },
+                    "searchSortCriteria":
+                    [
+                    ],
+                    "attributesToInflate":
+                    [
+                    ],
+                    "internalPropertyName": ""
+                }
+            },
+            "outputData":
+            {
+                "effectivitiesFound": "searchResults",
+                "effectivitiesTotalFound": "totalFound"
+            }
+        },
+
+        "addSearchButtonClicked":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2016-03-OccurrenceManagement",
+            "method": "addOrRemoveOccurrenceEffectivities",
+            "inputData":
+            {
+                "input":
+                {
+                    "elements":"{{props.subPanelContext.occContext.selectedModelObjects}}",
+                    "effectivities": "{{data.dataProviders.performSearchForSharedEffectivities.selectedObjects}}",
+                    "addOrRemove": true
+                }
+            },
+            "outputData":
+            {
+                "occurrenceConfigured": "updated",
+                "occurrenceUnconfigured": "deleted"
+            },
+            "events":
+            {
+                "success": [
+                    {
+                        "name": "occurrenceUpdatedByEffectivityEvent",
+                        "eventData":
+                        {
+                            "updated" : "{{data.occurrenceConfigured}}",
+                            "deleted" : "{{data.occurrenceUnconfigured}}",
+                            "addedEffectivities": "{{data.dataProviders.performSearchForSharedEffectivities.selectedObjects}}",
+                            "viewToReact": "{{props.subPanelContext.provider.contextKey}}",
+                            "state" : "COMPLETED",
+                            "source"  : "toolAndInfoPanel"
+                        }
+                    },
+                    {
+                        "name": "navigateToDisplayandRemovePanelEventFromSearch",
+                        "condition": "data.occurrenceConfigured && data.occurrenceConfigured.includes(ctx.selected.uid)"
+                    },
+                    {
+                        "name": "aceElementsDeSelectedEvent",
+                         "eventData":
+                        {
+                            "elementsToDeselect": "{{props.subPanelContext.occContext.selectedModelObjects}}"
+                        },
+                        "condition": "data.occurrenceUnconfigured && data.occurrenceUnconfigured.includes(ctx.selected.uid)"
+                    }
+                ]
+            },
+             "actionMessages":
+             {
+                 "failure":
+                 [
+                     {
+                         "message": "failedToApplyEffectivityMessage"
+                     }
+                 ],
+                 "success": [
+                    {
+                        "condition": "props.subPanelContext.occContext.selectedModelObjects.length > 1",
+                        "message": "succsessfullyAddedEffectivityMessage"
+                    }
+                ]
+             },
+             "deps":"js/sharedEffectivityService"
+        },
+        "navigateToDisplayandRemovePanelAction": {
+            "actionType": "JSFunction",
+            "method": "updateValueOnCtxOrState",
+            "inputData": {
+                "path": "",
+                "value": {
+                    "previousView": "{{props.subPanelContext.sharedData.activeView}}",
+                    "activeView": "DisplayAndRemoveEffectivities"
+                },
+                "target": "{{props.subPanelContext.sharedData}}"
+            },
+            "deps": "js/occmgmtUtils"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getAllSharedEffectivitiesAction"
+    },
+    "onEvent": [
+        {
+            "eventId": "awPanel.reveal",
+            "criteria": {
+                "panelId": "SearchEffectivities"
+            },
+            "action": "getAllSharedEffectivitiesAction"
+        },
+        {
+            "eventId": "searchEffectivities.search",
+            "action": "getAllSharedEffectivitiesAction"
+        },
+        {
+            "eventId": "navigateToDisplayandRemovePanelEventFromSearch",
+            "action": "navigateToDisplayandRemovePanelAction"
+        }
+    ],
+
+     "messages":
+     {
+         "failedToApplyEffectivityMessage":
+         {
+             "messageType": "INFO",
+            "messageText": "{{i18n.failedToApplyEffectivity}}",
+            "messageTextParams":
+            [
+                "{{ctx.selected.props.awb0Name.dbValue}}"
+            ]
+         },
+         "succsessfullyAddedEffectivityMessage":
+        {
+            "messageType": "INFO",
+            "messageText": "{{i18n.effectivitesSuccessfullyApplied}}",
+            "messageTextParams":
+            [
+                "{{props.subPanelContext.occContext.selectedModelObjects.length}}"
+            ]
+        }
+     },
+
+     "conditions":{
+         "isAnyItemSelectedFromSearchPanelList":{
+             "expression" : "data.dataProviders.performSearchForSharedEffectivities.selectedObjects.length>0"
+         },
+         "cancelButtonVisible":{
+             "expression" : "false"
+         }
+     },
+     "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

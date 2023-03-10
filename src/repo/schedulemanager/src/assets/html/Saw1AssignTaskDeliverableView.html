@@ -1,0 +1,25 @@
+<aw-command-panel caption="i18n.assignTaskdeliverableTitle" context="subPanelContext">
+    <div class="aw-layout-flexColumn" show-when="data.activeState.value.activeView==='AddObjectPrimarySub'">
+        <aw-add
+            is-custom-dataset-action="true"
+            relations=""
+            include-types="{{data.includeTypes}}"
+            type-filter="{{data.includeTypes}}"
+            load-sub-types="true"
+            add-panel-state="fields.addPanelState"
+            active-state="data.activeState"
+            project-state="data.projectState"
+            sub-panel-context="{ ...subPanelContext, triggerCreate: data.triggerCreate, showDataSetUploadPanel: data.isDatasetPresent }"
+            xrt-state="data.xrtState"
+            edit-handler="editHandlers.addPanelEditHandler" >
+        </aw-add>
+        <!-- Panel footer-->
+        <aw-panel-footer visible-when="data.activeView!='AssignProjectSub'&&data.activeView!='addTypeReferenceSub'">
+            <!-- panel-footer button for New tab -->
+            <aw-button action="checkSchDeliverableName" enable-when="(formProp.attributes.valid && conditions.isNewTabAddButtonVisible) || conditions.isPaletteSearchTabAddButtonVisible">
+                <aw-i18n>i18n.assignButtonText</aw-i18n>
+            </aw-button>
+        </aw-panel-footer>
+    </div>
+    <aw-add-navigate active-state="data.activeState" project-state="data.projectState" action="actions.setActiveView"></aw-add-navigate>
+</aw-command-panel>

@@ -1,0 +1,100 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "initEbomContent":{
+            "actionType":"batchJob",
+            "steps":[
+                {
+                    "action":"getValueInViewModel"
+                },
+                {
+                    "action":"updateSearchContext"
+                }
+            ]
+        },
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "backgroundPartsEbomTreeContext.tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "updateSearchContext": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetAtomicData": "{{fields.epEbomTreeSearchContext}}",
+                "updatedValues":{
+                    "searchPlaceholderString":"{{i18n.searchForPart}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "onEvent": [],
+    "data": {
+        "epEbomTreeSearchContext": {
+            "initialValues": {
+                "searchObjectType": "BOMLine",
+                "searchPlaceholderString": "{{i18n.searchForPart}}",
+                "searchScopeUid": ""
+            },
+            "meta": {}
+        },
+        "backgroundPartsEbomTreeContext": {
+            "objectUid": "{{ctx.epPageContext.ebomStructure.uid}}",
+            "isTopNode": true,
+            "loadTypes": [ "getProperties" ],
+            "propertiesToLoad": [
+                "bl_child_lines"
+            ],
+            "isLeafProperty": "bl_has_children",
+            "additionalPolicyObjects": {
+                "name": "EpBackgroundPartsEbomTree",
+                "types": [{
+                    "name": "BOMLine",
+                    "properties": [{
+                            "name": "bl_has_children"
+                        },
+                        {
+                            "name": "bl_rev_last_release_status"
+                        }
+                    ]
+                }]
+            },
+            "initializeAction": "initializeLoadDataForTree",
+            "clientColumns": [{
+                    "clientColumn": true,
+                    "name": "graphicVisibility",
+                    "propertyDisplayName": "{{i18n.GraphicVisibilityColumnName}}"
+                },
+                {
+                    "clientColumn": true,
+                    "name": "releaseStatusFlag",
+                    "propertyDisplayName": "{{i18n.releaseStatusFlagColumnName}}"
+                }
+            ],
+            "tabModel": "{{data.backgroundPartsEbomTreeContext.tabContext}}",
+            "treeNavigationColumnIndex": 2,
+            "preferenceName": "EP_BackgroundPartsEbomColumnConfiguration"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initEbomContent"
+    },
+    "i18n": {
+        "searchForPart": [
+            "TablesMessages"
+        ],
+        "GraphicVisibilityColumnName": [
+            "BvrGraphicsMessages"
+        ],
+        "releaseStatusFlagColumnName": [
+            "AssemblyMessages"
+        ]
+    }
+}

@@ -1,0 +1,160 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-button.directive",
+        "js/aw-checkbox.directive",
+        "js/aw-i18n.directive",
+        "js/aw-include.directive",
+        "js/aw-property-label.directive",
+        "js/aw-search-box.directive",
+        "js/visible-when.directive"
+    ],
+    "actions": {
+        "initFromSavedCriteria": {
+            "actionType": "JSFunction",
+            "method": "initFromSavedCriteria",
+            "deps": "js/pca0LoadSavedVariantsService",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "searchCriteriaLink": "result.searchCriteriaLink",
+                "currentRevisionRule": "result.revisionRule",
+                "considerRevRuleForSearch": "result.considerRevRuleForSearch",
+                "featurePropLabel": "result.featurePropLabel",
+                "searchCriteria": "result.searchCriteria"
+            }
+        },
+        "handleSelectionInSearchInputTab": {
+            "actionType": "JSFunction",
+            "method": "handleSelectionInSearchInputTab",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "activeSearchCriteria": "result.activeSearchCriteria",
+                "featurePropLabel": "result.featurePropLabel",
+                "activeSearchResultPropLabel": "result.activeSearchResultPropLabel",
+                "searchCriteriaLink": "result.searchCriteriaLink"
+            },
+            "deps": "js/pca0LoadSavedVariantsService"
+        },
+        "saveInputTabData": {
+            "actionType": "JSFunction",
+            "method": "setSearchCriteria",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/pca0LoadSavedVariantsService"
+        },
+        "launchResultsPanelAndSearch": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "Pca0LoadSVRSearchTab.tabChange",
+                    "eventData": {
+                        "pageId": "Pca0LoadSVRSearchResultsTab",
+                        "tabKey": "Results"
+                    }
+                } ]
+            }
+        },
+        "updateParentComponent": {
+            "actionType": "JSFunction",
+            "method": "updateParentComponent",
+            "inputData": {
+                "viewModel": "{{data}}"
+            },
+            "outputData": {
+                "currentRevisionRule": "currentRevisionRule"
+            },
+            "deps": "js/pca0RevisionRuleProviderForSearchPanelService"
+        }
+    },
+    "data": {
+        "searchCriteria": {
+            "type": "STRING",
+            "dbValue": "",
+            "isRequired": "true"
+        },
+        "featurePropLabel": {
+            "displayName": "{{i18n.featurePropLabel}}",
+            "type": "STRING",
+            "dbValue": "Feature"
+        },
+        "searchCriteriaLink": {
+            "displayName": "{{i18n.name}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "dbValue": "Name",
+            "uiValue": "{{i18n.name}}"
+        },
+        "subPanelContextInfo": {
+            "contextKey": "fscContext",
+            "isRevRuleActionDefaultBehavior": {
+                "type": "BOOLEAN",
+                "dbValue": false
+            },
+            "isConfigurationReadOnly": {
+                "dbValue": false,
+                "type": "BOOLEAN"
+            }
+        },
+        "currentRevisionRule": {
+            "type": "STRING",
+            "hasLov": true,
+            "dbValue": "",
+            "displayName": "{{i18n.revisionRule}}"
+        },
+        "considerRevRuleForSearch": {
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": true,
+            "displayName": "{{i18n.applyRevisionRule}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initFromSavedCriteria",
+        "onUnmount": "saveInputTabData"
+    },
+    "onEvent": [ {
+            "eventId": "Pca0LoadSVRSearchCriteriaPanel.launchResultsPanel",
+            "cacheEventData": true,
+            "action": "launchResultsPanelAndSearch"
+        },
+        {
+            "eventId": "Pca0LoadSVRSearchCriteriaPanel.updateActiveSearchCriteria",
+            "cacheEventData": true,
+            "action": "handleSelectionInSearchInputTab"
+        },
+        {
+            "eventId": "Pca0RevisionRulePopupContent.contentUnloaded",
+            "action": "resetContentSelection"
+        },
+        {
+            "eventId": "Pca0FilterCriteriaSettings.refreshRevisionRuleContent",
+            "cacheEventData": true,
+            "action": "updateParentComponent"
+        }
+
+    ],
+    "conditions": {
+        "NonFeatureSearchCriteria": {
+            "expression": "data.searchCriteriaLink.dbValue !== data.featurePropLabel.dbValue"
+        }
+    },
+    "functions": {},
+
+    "i18n": {
+        "name": [ "FullScreenConfigurationMessages" ],
+        "cancel": [ "FullScreenConfigurationMessages" ],
+        "featurePropLabel": [ "FullScreenConfigurationMessages" ],
+        "featurePropDesc": [ "FullScreenConfigurationMessages" ],
+        "search": [ "FullScreenConfigurationMessages" ],
+        "revisionRule": [ "FullScreenConfigurationMessages" ],
+        "applyRevisionRule": [ "FullScreenConfigurationMessages" ]
+    }
+}

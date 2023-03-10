@@ -1,0 +1,370 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "clearCtxForEventHighlight": {
+            "actionType": "JSFunction",
+            "method": "clearCtxForEventHighlight",
+            "deps": "js/Pgp0TimelineSearchService",
+            "inputData": {
+                "ctx": "{{ctx}}"
+
+            }
+        },
+        "populateCtxForEventHighlight": {
+            "actionType": "JSFunction",
+            "method": "populateCtxForEventHighlight",
+            "deps": "js/Pgp0TimelineSearchService",
+            "inputData": {
+                "data": "{{data}}"
+            }
+        },
+        "selectEventForTimeline": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "planTimelineChart.selectEventOnTimeline",
+                    "eventData": {
+                        "eventUidToSelect": "{{dataProviders.pgp0PlanObjsSearchProvider.selectedObjects[0].uid}}"
+                    }
+                } ]
+            }
+        },
+        "selectEventForPDROnTimeline": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "planTimelineChart.selectEventOnTimeline",
+                    "eventData": {
+                        "eventUidToSelect": "{{dataProviders.Psi0PrgDelSearchProvider.selectedObjects[0].uid}}"
+                    }
+                } ]
+            }
+        },
+        "doSearch": {
+            "actionType": "JSFunction",
+            "method": "getSearchByType",
+            "deps": "js/Pgp0TimelineSearchService",
+            "inputData": {
+                "timelineSearchByValue": "{{data.timelineSearchBy.dbValue}}"
+            }
+        },
+        "getEvents": {
+            "actionType": "dataProvider",
+            "method": "pgp0PlanObjsSearchProvider"
+        },
+        "getEventsInfo": {
+            "actionType": "TcSoaService",
+            "serviceName": "Query-2014-11-Finder",
+            "method": "performSearch",
+            "inputData": {
+                "searchInput": {
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "providerName": "Pgp0PlanObjsSearchProvider",
+                    "searchCriteria": {
+                        "searchContentType": "EventsOfPlanObjects",
+                        "searchString": "{{data.pgp0SearchBox.dbValue}}",
+                        "parentUid": "{{subPanelContext.baseSelection.uid}}",
+                        "planUidsList": "{{data.eventMap.getEventsInformation}}"
+                    },
+                    "searchFilterFieldSortType": "Alphabetical",
+                    "searchFilterMap": {},
+                    "searchSortCriteria": [],
+                    "startIndex": "{{data.dataProviders.pgp0PlanObjsSearchProvider.startIndex}}"
+                }
+            },
+            "outputData": {
+                "searchResults": "searchResults",
+                "totalFound": "totalFound",
+                "totalLoaded": "totalLoaded"
+            },
+            "events": {
+                "success": [ {
+                        "name": "selectObjectInList",
+                        "eventData": {
+                            "dataProvider": "{{data.dataProviders.pgp0PlanObjsSearchProvider}}",
+                            "selectedObject": "{{data.searchResults[0]}}"
+                        }
+                    },
+                    {
+                        "name": "populateCtxForEventHighlight"
+                    },
+                    {
+                        "name": "buildResultString",
+                        "eventData": {
+                            "totalFound": "{{data.totalFound}}"
+                        }
+                    }
+                ]
+            }
+        },
+        "getDelInstances": {
+            "actionType": "dataProvider",
+            "method": "Psi0PrgDelSearchProvider"
+        },
+        "getDelInstancesInfo": {
+            "actionType": "TcSoaService",
+            "serviceName": "Query-2014-11-Finder",
+            "method": "performSearch",
+            "inputData": {
+                "searchInput": {
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "providerName": "Psi0PrgDelSearchProvider",
+                    "searchCriteria": {
+                        "searchContentType": "delInstancesAndRelatedEvents",
+                        "searchString": "{{data.pgp0SearchBox.dbValue}}",
+                        "parentUid": "{{subPanelContext.baseSelection.uid}}",
+                        "lastEndIndex": "{{function:getLastIndex}}",
+                        "planUids": "{{data.eventMap.getDelInstancesInformation}}"
+                    },
+                    "searchFilterFieldSortType": "Alphabetical",
+                    "searchFilterMap": {},
+                    "searchSortCriteria": [],
+
+                    "startIndex": "{{data.dataProviders.Psi0PrgDelSearchProvider.startIndex}}"
+                }
+            },
+            "policy": {
+                "types": [ {
+
+                    "name": "WorkspaceObject",
+                    "properties": [ {
+
+                        "name": "object_name"
+                    } ]
+
+                } ]
+
+            },
+            "outputData": {
+                "searchResultsForPDR": "{{function:constructDeliverableEventObjects}}"
+            },
+            "events": {
+                "success": [ {
+                        "name": "selectObjectInList",
+                        "eventData": {
+                            "dataProvider": "{{data.dataProviders.Psi0PrgDelSearchProvider}}",
+                            "selectedObject": "{{data.searchResultsForPDR.searchResults[0]}}"
+                        }
+                    },
+                    {
+                        "name": "populateCtxForEventHighlight"
+                    },
+                    {
+                        "name": "buildResultString",
+                        "eventData": {
+                            "totalFound": "{{data.searchResultsForPDR.totalFound}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Pgp0TimelineSearchService"
+        },
+        "buildResultString": {
+            "actionType": "JSFunction",
+            "method": "buildResultString",
+            "deps": "js/Pgp0TimelineSearchService",
+            "inputData": {
+                "searchResultLength": "{{data.eventData.totalFound}}",
+                "i18nResultStr": "{{data.i18n.pgp0EventResults}}"
+            },
+            "outputData": {
+                "resultString.dbValue": ""
+            }
+        },
+        "clearDataProviderResults": {
+            "actionType": "JSFunction",
+            "method": "clearDataProviderResults",
+            "deps": "js/Pgp0TimelineSearchService",
+            "inputData": {
+                "data": "{{data}}"
+            }
+        },
+        "checkForEventAndHighlight": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                        "name": "planTimelineChart.selectEventOnTimeline",
+                        "eventData": {
+                            "eventUidToSelect": "{{dataProviders.pgp0PlanObjsSearchProvider.selectedObjects[0].uid}}"
+                        },
+                        "condition": "{{data.timelineSearchBy.dbValue === 'Event'}}"
+                    },
+                    {
+                        "name": "planTimelineChart.selectEventOnTimeline",
+                        "eventData": {
+                            "eventUidToSelect": "{{dataProviders.Psi0PrgDelSearchProvider.selectedObjects[0].uid}}"
+                        },
+                        "condition": "{{data.timelineSearchBy.dbValue !== 'Event'}}"
+                    }
+                ]
+            }
+        },
+        "selectObjectInList": {
+            "actionType": "JSFunction",
+            "method": "selectObjectInList",
+            "deps": "js/Pgp0TimelineSearchService",
+            "inputData": {
+                "dataProvider": "{{data.eventMap.selectObjectInList.dataProvider}}",
+                "selectedObject": "{{data.eventMap.selectObjectInList.selectedObject}}"
+            }
+        }
+    },
+    "dataProviders": {
+        "pgp0PlanObjsSearchProvider": {
+            "action": "getEventsInfo",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "totalLoaded": "{{data.totalLoaded}}",
+            "selectionModelMode": "single"
+        },
+        "Psi0PrgDelSearchProvider": {
+            "action": "getDelInstancesInfo",
+            "response": "{{data.searchResultsForPDR.searchResults}}",
+            "totalFound": "{{data.searchResultsForPDR.totalFound}}",
+            "totalLoaded": "{{data.searchResultsForPDR.totalLoaded}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "data": {
+        "resultString": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "",
+            "dispValue": "",
+            "uiValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "pgp0SearchBox": {
+            "type": "STRING"
+        },
+        "timelineSearchBy": {
+            "displayName": "{{i18n.TimelineSearchBy}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "{{i18n.Pgp0Event}}",
+            "dispValue": "{{i18n.Pgp0Event}}"
+        },
+        "timelineSearchByValues": {
+            "type": "STRING",
+            "dbValue": [ {
+
+                    "propDisplayValue": "{{i18n.Pgp0Event}}",
+                    "dispValue": "{{i18n.Pgp0Event}}",
+                    "propInternalValue": "Event"
+                },
+                {
+                    "propDisplayValue": "{{i18n.Pgp0DelInstancesWithinEvent}}",
+                    "dispValue": "{{i18n.Pgp0DelInstancesWithinEvent}}",
+                    "propInternalValue": "DeliverablesInstancesWithinEvent"
+                }
+            ]
+        },
+        "timelineSearchByEvent": {
+            "type": "STRING",
+            "dbValue": [ {
+
+                "propDisplayValue": "{{i18n.Pgp0Event}}",
+                "dispValue": "{{i18n.Pgp0Event}}",
+                "propInternalValue": "Event"
+            } ]
+        }
+    },
+    "functions": {
+        "getLastIndex": {
+            "functionName": "getLastIndex",
+            "parameters": [
+                "{{data.dataProviders.Psi0PrgDelSearchProvider.startIndex}}",
+                "{{data}}"
+            ]
+        },
+        "constructDeliverableEventObjects": {
+            "functionName": "constructDeliverableEventObjects",
+            "parameters": [
+                "{{data.i18n}}"
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onUnmount": "clearCtxForEventHighlight"
+    },
+    "conditions": {
+        "isPsi0TemplateInstalled": {
+            "expression": "ctx.timelineContext.isPsi0TemplateInstalled === true"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "planTimelineChart.eventsAddedOnTimeline",
+            "cacheEventData": true,
+            "action": "checkForEventAndHighlight"
+        },
+        {
+            "eventId": "buildResultString",
+            "cacheEventData": true,
+            "action": "buildResultString"
+        },
+        {
+            "eventId": "getEventsInformation",
+            "action": "getEvents",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "getDelInstancesInformation",
+            "action": "getDelInstances",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "populateCtxForEventHighlight",
+            "action": "populateCtxForEventHighlight"
+        },
+        {
+            "eventId": "pgp0PlanObjsSearchProvider.selectionChangeEvent",
+            "action": "selectEventForTimeline"
+        },
+        {
+            "eventId": "Psi0PrgDelSearchProvider.selectionChangeEvent",
+            "action": "selectEventForPDROnTimeline"
+        },
+        {
+            "eventId": "selectObjectInList",
+            "cacheEventData": true,
+            "action": "selectObjectInList"
+        }
+    ],
+    "i18n": {
+        "pgp0Search":[
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0TimelineSearch": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "TimelineSearchBy": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0Event": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "pgp0EventResults": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0DelInstancesWithinEvent": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "objectName": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "ID": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "type": [
+            "ProgramPlanningCommandPanelsMessages"
+        ]
+    }
+}

@@ -1,0 +1,248 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+    ],
+     "data": {
+        "searchBox": {
+            "displayName": "",
+            "type": "STRING"
+        },
+        "breadCrumbInfo": {},
+        "isSearch": false
+    },
+    "lifecycleHooks": {
+        "onMount": "initialize",
+        "onUpdate": {
+            "action": "doSearchInit",
+            "observers": [
+                "props.subPanelContext.searchState.criteria.searchString",
+                "props.subPanelContext.searchState.filterMap",
+                "props.subPanelContext.searchState.releases" ]
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "initialize":{
+            "actionType": "JSFunction",
+            "method": "initialize",
+            "inputData": {
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "deps":"js/classifyAdminTreeTableService"
+        },
+        "selectNode":{
+            "actionType": "JSFunction",
+            "method": "selectNode",
+            "inputData": {
+                "data": "{{data}}",
+                "selected":"{{data.eventData.selected[0]}}",
+                "type":"Attributes",
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "deps":"js/classifyAdminService"
+        },
+        "parseExpansion":{
+            "actionType": "JSFunction",
+            "method": "parseExpansion",
+            "inputData": {
+                "data": "{{data}}",
+                "ctx": "{{ctx.clsAdmin}}",
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "deps": "js/classifyAdminTreeTableService"
+        },
+        "selectFirstItem": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "selectionModel": "{{data.dataProviders.classes.selectionModel}}",
+                "newSelection": "{{data.childrenSet[0].id}}"
+            },
+            "deps": "js/selectionModelFactory"
+        },
+        "loadClasses": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableData",
+            "inputData": {
+                "treeLoadInput": "request.treeLoadInput",
+                "data": "{{data}}",
+                "dataProviderName": "classes",
+                "type":"Classes",
+                "isSearch": "{{data.isSearch}}",
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "clsAdmin.selectFirstItem",
+                        "condition": "data.childrenSet.length > 0"
+                    }
+                ]
+            },
+            "outputData": {
+                "response": "tableSummaries",
+                "childrenSet": "children1"
+            },
+            "deps": "js/classifyAdminTreeTableService"
+        },
+        "loadClassesForExpand": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableData",
+            "inputData": {
+                "treeLoadInput": "request.treeLoadInput",
+                "data": "{{data}}",
+                "dataProviderName": "classes",
+                "type":"Classes",
+                "isSearch": false,
+                "subPanelContext": "{{props.subPanelContext}}",
+                "expand": true
+            },
+            "outputData": {
+                "response": "tableSummaries"
+            },
+            "deps": "js/classifyAdminTreeTableService"
+        },
+        "loadColumns": {
+            "actionType": "JSFunction",
+            "method": "loadColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.classes}}",
+                "gridoptions": "{{gridOptions}}"
+            },
+            "deps": "js/classifyAdminTreeTableService"
+        },
+        "loadPropertiesActionJS": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadPropertiesJS",
+            "inputData": {
+                "data": "{{data}}",
+                "dataProviderName": "classes",
+                "type": "Classes",
+                "propertyLoadInput": "request.propertyLoadInput"
+            },
+            "outputData": {},
+            "deps": "js/classifyAdminTreeTableService"
+        },
+        "doSearchInit": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "checkSearch"
+                },
+                {
+                    "action": "doSearch",
+                    "condition": "data.isSearch === true"
+                }
+            ]
+        },
+        "doSearch":
+        {
+            "actionType": "dataProvider",
+            "method": "classes"
+        },
+        "checkSearch": {
+            "actionType": "JSFunction",
+            "method": "checkSearch",
+            "inputData": {
+                "data": "{{data}}",
+                "searchData": "{{props.subPanelContext.searchState}}",
+                "isNextPage": false
+            },
+            "outputData": {
+                "isSearch": ""
+            },
+            "deps": "js/classifyAdminTreeTableService"
+        }
+    },
+
+    "dataProviders": {
+        "classes": {
+            "initializeAction": "loadClasses",
+            "nextAction": "loadClassesForExpand",
+            "focusAction": "loadClasses",
+            "treeLoadResult": "action.result.treeLoadResult",
+            "editContext": "TABLE_CONTEXT",
+            "inputData": {
+                "accessMode": "tree"
+            },
+            "response": "data.response",
+            "selectionModelMode": "single"
+        },
+        "getTableDetails": {
+            "action": "loadPropertiesActionJS",
+            "propertyLoadResult": "action.result.propertyLoadResult"
+        }
+    },
+    "columnProviders": {
+        "structureColumnProvider": {
+            "loadColumnAction": "loadColumns",
+            "columns": "{{data.columns}}",
+            "frozenColumnIndex" : -1,
+            "sortCriteria": []
+        }
+    },
+    "grids": {
+        "classesTable": {
+            "dataProvider": "classes",
+            "propertyProvider": "getTableDetails",
+            "columnProvider": "structureColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "useStaticFirstCol": true
+            }
+        }
+    },
+    "conditions": {
+
+    },
+    "onEvent": [
+        {
+            "eventId":"classes.selectionChangeEvent",
+            "cacheEventData": true,
+            "action":"selectNode"
+        },
+        {
+            "eventId": "classes.expansion",
+            "action":"parseExpansion"
+        },
+        {
+            "eventId": "classes.plTable.reload",
+            "action": "doSearch"
+        },
+        {
+            "eventId": "primaryWorkarea.reset",
+            "action": "doSearch"
+        },
+        {
+            "eventId":"classes.filterChangeEvent",
+            "action":"doSearch"
+        },
+        {
+            "eventId":"clsAdmin.setRelease",
+            "action":"doSearch"
+        },
+        {
+            "eventId" : "clsAdmin.selectFirstItem",
+            "action": "selectFirstItem"
+        }
+    ],
+    "messages":{
+
+    },
+    "functions": {
+    },
+    "i18n": {
+        "and":            [ "ClassificationAdminMessages" ],
+        "classesTitle":   [ "ClassificationAdminMessages" ],
+        "noResultsFound": [ "ClassificationAdminMessages" ],
+        "releases" : [ "ClassificationAdminMessages" ],
+        "search":         [ "ClassificationAdminMessages" ]
+    }
+}
+
+

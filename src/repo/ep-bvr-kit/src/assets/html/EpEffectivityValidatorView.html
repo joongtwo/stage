@@ -1,0 +1,18 @@
+<div class="sw-row w-12 h-12">
+    <div class="sw-column w-12">
+        <span id="wiEffectivityToolTip" class="aw-epValidateEffectivity-toolTip"></span>
+        <div class="sw-row aw-epInstructionsEffectivity-summaryRowContainer">
+            <div id="wi-validateEffectivity-name-summary" class="aw-epInstructionsEffectivity-summaryName"></div>
+            <div id="wi-validateEffectivity-summaryRow" class="aw-epInstructionsEffectivity-summaryPlot w-12"></div>
+            <div id="wi-validateEffectivity-upCheckbox-summary" class="aw-epInstructionsEffectivity-SummaryUpCheckbox "></div>
+        </div>
+        <div class="sw-row align-center aw-epValidateEffectivity-message" exist-when="conditions.showMessage">
+            <mfe-message sub-panel-context="subPanelContext.message"></mfe-message>
+        </div>
+        <div class="sw-row h-12 aw-epInstructionsEffectivity-operationsContainer">
+            <div id="wi-validateEffectivity-name-operation" class="aw-epInstructionsEffectivity-operationRowName"></div>
+            <div id="wi-validateEffectivity-operationRow" class="aw-epInstructionsEffectivity-operationPlot w-12" aw-class="[subPanelContext.validateEffectivityData.showMessage ? 'aw-epInstructionsEffectivity-hidePlotShadow' : '']"></div>
+            <div id="wi-validateEffectivity-upCheckbox-operation" class="aw-epInstructionsEffectivity-operationUpCheckbox"></div>
+        </div>
+    </div>
+</div>

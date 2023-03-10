@@ -1,0 +1,11 @@
+<aw-command-panel caption="{{i18n.FileVersionsPanelHeader}}">
+    <aw-include name="DatasetHistoryWithSummary" sub-panel-context="data.subPanelContext"></aw-include>
+    <aw-panel-footer>
+        <aw-button button-type="base" action="downloadFile" enable-when="data.subPanelContext.selected">
+            <aw-i18n>i18n.DownloadVersionButton</aw-i18n>
+        </aw-button>
+        <aw-button action="restoreVersionHandler" enable-when="conditions.isPanelObjectModifiable && conditions.isPreviousRevisionSelected">
+            <aw-i18n>i18n.RestoreVersionButton</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

@@ -1,0 +1,127 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "descriptionHorizontal": {
+            "displayName": "{{i18n.levelsToUpdate}}"
+        },
+        "considerParallelFlowsCheckbox": {
+            "displayName": "{{i18n.considerParallelFlows}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": "{{i18n.considerParallelFlows}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "updateFlowsRadioButtons": {
+            "type": "BOOLEAN",
+            "isEditable": "true",
+            "dbValue": true,
+            "vertical": true,
+            "propertyRadioTrueText": "{{i18n.visibleLevelOnly}}",
+            "propertyRadioFalseText": "{{i18n.allSubLevel}}"
+        },
+        "considerParallelFlowsTooltip": {
+            "extendedTooltipContent": "{{i18n.considerParallelFlowsTooltip}}"
+        }
+    },
+
+    "actions": {
+        "initializeHeaderMessage": {
+            "actionType": "JSFunction",
+            "method": "applyMessagesParams",
+            "inputData": {
+                "messagesData": [
+                    {
+                        "text": "{{i18n.levelsToUpdate}}",
+                        "textParams": [
+                            "{{subPanelContext.loadedObj.props.object_string.dbValues[0]}}"
+                        ]
+                    }
+                ]
+            },
+            "outputData": {
+                "updateFLowsDesc": ""
+            },
+            "deps": "js/mfeMessagesService"
+        },
+        "updateFlowAndClosePopup": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateFlows"
+                },
+                {
+                    "action": "closePopupWindow"
+                }
+            ]
+        },
+
+        "updateFlows": {
+            "actionType": "JSFunction",
+            "method": "updateFlows",
+            "inputData": {
+                "object":"{{props.subPanelContext.loadedObj}}",
+                "parallelFlowsAllowed":"{{data.considerParallelFlowsCheckbox.dbValue}}",
+                "data": "{{!data.updateFlowsRadioButtons.dbValue}}"
+            },
+            "outputData": {
+                 "updateFlowslabel": ""
+            },
+            "deps": "js/epUpdateFlowsService"
+        },
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "inputData": {
+                "popupId": "{{data.popupId}}",
+                "targetEvent": "{{$event}}"
+            },
+            "deps": "js/popupService"
+        }
+
+    },
+
+    "onEvent": [
+        {
+            "eventId": "aw.closePopup",
+            "action": "closePopupWindow"
+        }
+    ],
+
+
+    "i18n": {
+        "update": [
+            "updateFLowsMessages"
+        ],
+        "cancel": [
+            "updateFLowsMessages"
+        ],
+        "levelsToUpdate": [
+            "updateFLowsMessages"
+        ],
+        "allSubLevel": [
+            "updateFLowsMessages"
+        ],
+        "visibleLevelOnly": [
+            "updateFLowsMessages"
+        ],
+        "considerParallelFlows": [
+            "updateFLowsMessages"
+        ],
+        "considerParallelFlowsTooltip": [
+            "updateFLowsMessages"
+        ]
+    },
+
+    "lifecycleHooks": {
+        "onMount": "initializeHeaderMessage"
+    }
+
+
+}

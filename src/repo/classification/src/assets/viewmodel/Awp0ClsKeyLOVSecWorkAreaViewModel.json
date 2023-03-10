@@ -1,0 +1,111 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "lifecycleHooks": {
+        "onInit": "initializeKeylovSWA",
+        "onUpdate": {
+            "action": "reloadKeylovSWA",
+            "observers": [
+                "props.subPanelContext.context.searchState.propertiesSWA"
+            ]
+        }
+    },
+    "props":{
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions":{
+        "reloadKeylovSWA": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initializeKeylovSWA"
+                },
+                {
+                    "action": "keylovLoad"
+                }
+            ]
+        },
+        "initializeKeylovSWA": {
+            "actionType": "JSFunction",
+            "method": "initializeSWA",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext.context.searchState}}",
+                "subLocationName": "KeyLOV"
+            },
+            "outputData": {
+                "currentSecData": "currentSecData",
+                "lovTypeItems": "lovTypeItems",
+                "dataType": "dataType"
+            },
+            "deps":"js/classifyAdminService"
+        },
+        "keylovLoad": {
+            "actionType": "dataProvider",
+            "method": "entryDataProvider"
+        },
+        "loadData": {
+            "actionType": "JSFunction",
+            "method": "loadDataForKeyLOV",
+            "inputData": {
+                "treeLoadInput": "request.treeLoadInput",
+                "data": "{{data}}"
+            },
+            "outputData":{
+                "treeLoadResult":""
+            },
+            "deps": "js/classifyAdminTreeTableService"
+        },
+        "loadColumnsForKeyLOV": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadColumnsForKeyLOV",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.entryDataProvider}}",
+                "type": "{{data.dataType}}"
+            },
+            "deps": "js/classifyAdminTreeTableService"
+        }
+    },
+    "data":{ },
+    "dataProviders": {
+        "entryDataProvider": {
+            "action": "loadData",
+            "initializeAction": "loadData",
+            "treeLoadResult": "{{data.treeLoadResult}}",
+            "inputData": {
+                "accessMode": "tree",
+                "topNodeUid": "top",
+                "selectionData": "{{subPanelContext.selectionData}}"
+            }
+        }
+    },
+    "columnProviders": {
+        "structureColumnProvider": {
+            "loadColumnAction": "loadColumnsForKeyLOV",
+            "columns": "{{data.columns}}",
+            "frozenColumnIndex" : -1,
+            "sortCriteria": []
+        }
+    },
+    "grids": {
+        "entryGridForKeyLOV": {
+            "dataProvider": "entryDataProvider",
+            "columnProvider": "structureColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": false,
+                "enablePinning": false,
+                "enableSorting": false,
+                "useStaticFirstCol": true
+            }
+        }
+    },
+    "i18n": {
+        "dataType":  [ "ClassificationAdminMessages" ],
+        "entries":  [ "ClassificationAdminMessages" ],
+        "metric":  [ "ClassificationAdminMessages" ],
+        "nonMetric":  [ "ClassificationAdminMessages" ],
+        "propertiesTitle":  [ "ClassificationAdminMessages" ]
+    }
+}

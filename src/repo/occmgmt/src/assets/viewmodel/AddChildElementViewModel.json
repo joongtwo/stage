@@ -1,0 +1,55 @@
+{
+    "schemaVersion" : "1.0.0",
+    "data" : {
+        "addElementState":{
+            "initialValues":{
+                "AddOccurrencePropertiesOnCreate" : false,
+                "parentElement" : null,
+                "parentToLoadAllowedTypes" : null,
+                "siblingElement" : null,
+                "elementCreateInput" : null,
+                "fetchPagedOccurrences" : null,
+                "isCopyButtonEnabled" : false,
+                "previousSelectionUid" : "",
+                "Awb0ElementCreateSubView" : false,
+                "numberOfElements" : 1
+            },
+            "meta": {
+
+            }
+        }
+    },
+    "actions" : {
+        "setStateAddElementInputParentElementToSelectedElement": {
+            "actionType": "JSFunction",
+            "method": "setStateAddElementInputParentElementToSelectedElement",
+            "inputData":
+            {
+                "parentUid" : "{{subPanelContext.occContext.currentState.c_uid}}",
+                "data" : "{{data}}",
+                "parentToLoadAllowedTypes" :"{{subPanelContext.occContext.currentState.c_uid}}"
+            },
+            "outputData": {
+                "addElementState" : ""
+            },
+
+            "deps": "js/addElementService"
+        }
+    },
+    "conditions" :{
+        "isParentValid" : {
+            "expression" : "addElementState.parentElement"
+        }
+    },
+    "i18n":
+    {
+       "addElementBtn": ["OccurrenceManagementConstants"]
+    },
+    "lifecycleHooks": {
+        "onMount": "setStateAddElementInputParentElementToSelectedElement"
+    },
+    "onEvent":
+    [
+
+    ]
+}

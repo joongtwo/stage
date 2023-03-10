@@ -1,0 +1,57 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "getChartDataForFilesInFolders": {
+            "actionType": "JSFunction",
+            "method": "createFilesPieChart",
+            "inputData": {
+                "selectedPlants": "{{props.subPanelContext.searchState.selectedPlants}}"
+            },
+            "outputData": {
+                "filesPieChartProvider_chartPoints": ""
+            },
+            "deps": "js/Dpv1ETLDashboardService"
+        }
+    },
+    "dataProviders": {},
+    "chartProviders": {
+        "filesPieChartProvider": {
+            "title": "{{i18n.filesInFolders}}",
+            "chartType": "pie",
+            "chartColorOverrideClass":"aw-dpv-chartEtlHealthReportColor",
+            "loadDataAction": "getChartDataForFilesInFolders",
+            "chartConfig": {
+                "isChartZoomable": true,
+                "isYAxisLinearOrLogarithmic": "logarithmic",
+                "xAxisLabel": "",
+                "yAxisLabel": "",
+                "isDataLabelOnChartEnabled": true
+            }
+        }
+    },
+    "data":{},
+    "i18n": {
+        "filesInFolders": ["DpvMessages"]
+    },
+    "onEvent": [],
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "getChartDataForFilesInFolders",
+                "observers": [
+                    "props.subPanelContext.searchState.selectedPlants"
+                ]
+            }
+        ]
+    },
+    "conditions": {
+        "showPieChart" : {
+            "expression": "data.filesPieChartProvider_chartPoints && data.filesPieChartProvider_chartPoints[0] && data.filesPieChartProvider_chartPoints[0].keyValueDataForChart[0].value != -1"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

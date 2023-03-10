@@ -1,0 +1,296 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "xrtState": {
+            "initialValues": {
+                "context": {}
+            },
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        },
+        "addPanelState": {
+            "initialValues": {
+                "creationType": "",
+                "createdObject": "",
+                "sourceObjects": "",
+                "selectedTab": "",
+                "isDatasetCreate": "",
+                "isAddACopy": "",
+                "formData": "",
+                "selectedRelation": ""
+            },
+            "meta": {
+                "datasetVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+
+    "actions": {
+        "getAllowedFileTypes": {
+            "actionType": "JSFunction",
+            "method": "getAllowedFileTypes",
+            "inputData": {
+                "fileExtnsWithDatasetTypes": "{{ctx.preferences.DRAG_AND_DROP_default_dataset_type}}"
+            },
+            "outputData": {
+                "allowedTypes": "allowedTypes"
+            },
+            "deps": "js/epAttachFilePanelService"
+        },
+        "epCreateAttach": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "publishProgressStart"
+                },
+                {
+                    "action": "initCreateAttachAction"
+                }
+            ]
+        },
+        "initCreateAttachAction": {
+            "actionType": "JSFunctionAsync",
+            "method": "createAttachmentObjectAndAttach",
+            "inputData": {
+                "connectedToObject": "{{subPanelContext.occContext.scopeObject}}",
+                "type": "{{data.addPanelState.datasetVMO.props.datasetType}}",
+                "relationType": "{{data.addPanelState.selectedRelation}}",
+                "objectName": "{{data.addPanelState.datasetVMO.props.datasetName.dbValue}}",
+                "objectDesc": "{{data.addPanelState.datasetVMO.props.datasetDesc.dbValue}}"
+            },
+            "deps": "js/epAttachmentsService"
+        },
+        "publishProgressStart": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "progress.start"
+                } ]
+            }
+        },
+        "getSavedDatasetObject": {
+            "actionType": "JSFunction",
+            "method": "getSavedDatasetObject",
+            "inputData": {
+                "saveResults": "{{parameters.eventData.saveResults}}",
+                "fileType": "{{data.addPanelState.datasetVMO.props.datasetType}}"
+            },
+            "outputData": {
+                "datasetUid": "datasetUid",
+                "namedReference": "namedReference"
+            },
+            "events": {
+                "success": [ {
+                    "name": "epAttachFile.getDatasetWriteTickets"
+                } ]
+            },
+            "deps": "js/epAttachFilePanelService"
+        },
+        "getDatasetWriteTickets": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-FileManagement",
+            "method": "getDatasetWriteTickets",
+            "inputData": {
+                "inputs": [ {
+                    "createNewVersion": true,
+                    "dataset": {
+                        "uid": "{{data.datasetUid}}",
+                        "type": "{{data.addPanelState.datasetVMO.props.datasetType.uiValue}}"
+                    },
+                    "datasetFileInfos": [ {
+                        "allowReplace": true,
+                        "fileName": "{{function:getFileName}}",
+                        "isText": "{{function:isText}}",
+                        "namedReferencedName": "{{data.namedReference}}"
+                    } ]
+                } ]
+            },
+            "outputData": {
+                "fmsTicket1": "commitInfo[0].datasetFileTicketInfos[0].ticket",
+                "commitInfos1": "commitInfo[0]"
+            },
+            "events": {
+                "success": [ {
+                    "name": "epAttachFile.updateFormData"
+                } ]
+            },
+            "deps": "js/epAttachFilePanelService"
+        },
+        "updateFormData": {
+            "actionType": "JSFunction",
+            "method": "updateFormData",
+            "inputData": {
+                "formData": "{{data.addPanelState.formData}}",
+                "key": "fmsTicket",
+                "value": "{{data.fmsTicket1}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "epAttachFile.uploadFile"
+                } ]
+            },
+            "deps": "js/fileUploadUtils"
+        },
+        "uploadFile": {
+            "actionType": "RESTService",
+            "serviceName": "",
+            "method": "POST",
+            "inputData": {
+                "request": {
+                    "method": "POST",
+                    "url": "{{Constants.fmsUrl}}",
+                    "headers": {
+                        "Content-type": "undefined"
+                    },
+                    "data": "{{data.addPanelState.formData}}"
+                }
+            },
+            "events": {
+                "success": [ {
+                    "name": "epAttachFile.commitDatasetFiles"
+                } ]
+            }
+        },
+        "commitDatasetFiles": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-FileManagement",
+            "method": "commitDatasetFiles",
+            "inputData": {
+                "commitInput": [
+                    "{{data.commitInfos1}}"
+                ]
+            },
+            "events": {
+                "success": [ {
+                        "name": "epAttachFile.datasetAttached",
+                        "excludeLocalDataCtx": true,
+                        "eventData": {
+                            "dataset": "{{data.commitInfos1.dataset}}",
+                            "connectedToObject": "{{subPanelContext.occContext.scopeObject[0]}}"
+                        }
+                    },
+                    {
+                        "name": "progress.end"
+                    },
+                    {
+                        "name": "epAttachFile.closePanelWindow"
+                    }
+                ]
+            },
+            "policy": {
+                "types": [ {
+                    "name": "Dataset",
+                    "properties": [ {
+                        "name": "ref_list",
+                        "modifiers": [ {
+                            "name": "withProperties",
+                            "Value": "true"
+                        } ]
+                    } ]
+
+                } ]
+            }
+        },
+        "closePanelWindow": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+
+        }
+    },
+    "onEvent": [ {
+            "eventId": "epAttachFile.getDatasetWriteTickets",
+            "action": "getDatasetWriteTickets"
+        },
+        {
+            "eventId": "epAttachFile.commitDatasetFiles",
+            "action": "commitDatasetFiles"
+        },
+        {
+            "eventId": "epAttachFile.closePanelWindow",
+            "action": "closePanelWindow"
+        },
+        {
+            "eventId": "epAttachFile.updateFormData",
+            "action": "updateFormData"
+        },
+        {
+            "eventId": "epAttachFile.uploadFile",
+            "action": "uploadFile"
+        },
+        {
+            "eventId": "ep.saveEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "getSavedDatasetObject"
+        }
+    ],
+    "functions": {
+        "isText": {
+            "functionName": "isText",
+            "parameters": [
+                "{{data.addPanelState.datasetVMO.props.datasetType.uiValue}}"
+            ]
+        },
+        "getFileName": {
+            "functionName": "getFileName",
+            "parameters": [
+                "{{data.addPanelState}}"
+            ]
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "dataProviders": {
+        "getDatasetTypeListProvider": {
+            "response": "{{data.addPanelState.datasetTypeList}}",
+            "totalFound": "{{data.addPanelState.datasetTypeList.length}}"
+        },
+        "getDatasetReferenceListProvider": {
+            "response": "{{data.addPanelState.references}}",
+            "totalFound": "{{data.addPanelState.references.length}}"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getAllowedFileTypes"
+    },
+    "i18n": {
+        "cancel": [
+            "EPMessages"
+        ],
+        "done": [
+            "EPMessages"
+        ],
+        "attachFile": [
+            "DetailsMessages"
+        ]
+
+    }
+}

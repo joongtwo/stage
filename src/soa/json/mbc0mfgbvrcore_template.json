@@ -1,0 +1,1781 @@
+{
+  "BusinessObjectInterface": [
+    {
+      "createRelease": "tc10000.1.2",
+      "description": "Interface Name for Business Object Mbc0OperatorActionStorage",
+      "libraryName": "Mbc0mfgbvrcore",
+      "name": "Mbc0OperatorActionStorage",
+      "namespace": "mbc0mfgbvrcore",
+      "primaryInterface": "true",
+      "typeName": "Mbc0OperatorActionStorage"
+    }
+  ],
+  "Date": "Thu Jan 02 11:36:38 AM 2020",
+  "Library": [
+    {
+      "createRelease": "tc10000.1.2",
+      "description": "Core services for manufacturing applications on BVR platform",
+      "isThirdParty": "false",
+      "name": "Mbc0SoaMfgBvrCore",
+      "namespace": "Mbc0::Soa::MfgBvrCore",
+      "serviceLibrary": "true"
+    },
+    {
+      "DependentOn": [
+        {
+          "name": "metaframework"
+        },
+        {
+          "name": "tccore"
+        },
+        {
+          "name": "tc"
+        },
+        {
+          "name": "cxpom"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "Infrastructure model and services for manufacturing applications on BVR",
+      "isThirdParty": "false",
+      "name": "Mbc0mfgbvrcore",
+      "namespace": "",
+      "serviceLibrary": "false"
+    }
+  ],
+  "MetaEnum": [
+    {
+      "MetaEnumLiteral": [
+        {
+          "description": "",
+          "name": "SAVE_ERROR"
+        },
+        {
+          "description": "",
+          "name": "SAVE_WARNING"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "Severity of given error",
+      "isPublished": "false",
+      "name": "SaveErrorSeverity",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    }
+  ],
+  "Operation": [
+    {
+      "ParameterInfo": [
+        {
+          "description": "The object for which the report is needed and the requested report type",
+          "parameterName": "input"
+        }
+      ],
+      "canOverride": "false",
+      "component": "ManufacturingProcessPlanner",
+      "createRelease": "tc10000.1.2",
+      "dependencies": "",
+      "description": "This operation generates a report file for the given object. <br />The report is generated in serveral steps:<br />- Data is exported in PLMXML format using a pre-configured transfer mode<br />- The PLMXML is converted to .html file using a configurable xslt file<br />- The .html is then converted to a .pdf file using fop tool (should be installed at the server side machine by the customer)<br />The parameters for the report are configured in a preference named Mbc0Report. Each entry in the preference should have the following format:<br /><Report type><Transfer mode name><XSLT dataset name><Report logo dataset><Report fop configuration dataset (for special fonts)><br />For now the operation supports only PDF reports.",
+      "exceptionCondition": "an error will be given if for some reason the system failed to generate the report",
+      "id": "generateReport#const,std::vector<Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports::GenerateReportInp1>,&",
+      "interface": "Mbc0::Soa::MfgBvrCore::Reports",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "generateReport",
+      "opTemplate": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports::GenerateReportResponse#Mbc0::Soa::MfgBvrCore::Reports::generateReport#const,std::vector<Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports::GenerateReportInp1>,&",
+      "returnDescription": "The requested report",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "The object for which the report is needed and the requested report type",
+          "parameterName": "input"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Awp0AWS",
+      "createRelease": "tc10000.1.4",
+      "dependencies": "",
+      "description": "This operation generates a report file for the given object. <br />The report is generated in serveral steps:<br />- Data is exported in PLMXML format using a pre-configured transfer mode<br />- The PLMXML is converted to .html file using a configurable xslt file<br />- The .html is then converted to a .pdf file using fop tool (should be installed at the server side machine by the customer)<br />The parameters for the report are configured in a preference named Mbc0Report. Each entry in the preference should have the following format:<br /><br />For now the operation supports only PDF reports.",
+      "exceptionCondition": "an error will be given if for some reason the system failed to generate the report",
+      "id": "generateReport2#const,std::vector<Mbc0::Soa::Internal::MfgBvrCore::_2015_03::Reports::GenerateReportInp2>,&",
+      "interface": "Mbc0::Soa::MfgBvrCore::Reports",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "generateReport2",
+      "opTemplate": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports::GenerateReportResponse#Mbc0::Soa::MfgBvrCore::Reports::generateReport2#const,std::vector<Mbc0::Soa::Internal::MfgBvrCore::_2015_03::Reports::GenerateReportInp2>,&",
+      "returnDescription": "The requested report",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A list of objects for which the operation should return the relevant variant options. The objects passed to this parameter are expected to be of type <b>ImanItemBOPLine</b>",
+          "parameterName": "sourceObject"
+        }
+      ],
+      "canOverride": "false",
+      "component": "ManufacturingProcessPlanner",
+      "createRelease": "tc10000.1.2",
+      "dependencies": "",
+      "description": "This operation returns the variant option relevant for a given ImanItemBOPLine, and the returned options are the ones attached to the top level line for that structure.<br />This operation supports only legacy variants.",
+      "exceptionCondition": "",
+      "id": "getOptions#const,std::vector<Teamcenter::BusinessObject>,&",
+      "interface": "Mbc0::Soa::MfgBvrCore::DataManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "getOptions",
+      "opTemplate": "Mbc0::Soa::MfgBvrCore::_2014_06::DataManagement::GetOptionsResponse#Mbc0::Soa::MfgBvrCore::DataManagement::getOptions#const,std::vector<Teamcenter::BusinessObject>,&",
+      "returnDescription": "This operation returns a struct containing the relevant options and their values for each input object. ",
+      "useCase": "User wants to set a variant condition on operation line. For that, the application will call the GetOptions operation to get the relevant options for that operation line. <br />The service operation will find the operation line's root Plant BOP and will get the variant options from that Plant BOP. These options will then be used in the variant condition."
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "xml input",
+          "parameterName": "xmlInput"
+        }
+      ],
+      "canOverride": "false",
+      "component": "ManufacturingProcessPlanner",
+      "createRelease": "tc10000.1.4",
+      "dependencies": "",
+      "description": "load object",
+      "exceptionCondition": "",
+      "id": "loadObjectData#const,std::string",
+      "interface": "Mbc0::Soa::MfgBvrCore::DataManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "loadObjectData",
+      "opTemplate": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::LoadObjectResponse#Mbc0::Soa::MfgBvrCore::DataManagement::loadObjectData#const,std::string",
+      "returnDescription": "return loaded objects",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "xml input.",
+          "parameterName": "xmlInput"
+        }
+      ],
+      "canOverride": "false",
+      "component": "ManufacturingProcessPlanner",
+      "createRelease": "tc10000.1.4",
+      "dependencies": "",
+      "description": "same as loadObjectdata the only diff is the return type which now contain a map of a map instead of just a single map",
+      "exceptionCondition": "",
+      "id": "loadObjectData2#const,std::string",
+      "interface": "Mbc0::Soa::MfgBvrCore::DataManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "loadObjectData2",
+      "opTemplate": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::LoadObjectResponse2#Mbc0::Soa::MfgBvrCore::DataManagement::loadObjectData2#const,std::string",
+      "returnDescription": "loaded objects",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "sections vector of all load sections",
+          "parameterName": "sections"
+        }
+      ],
+      "canOverride": "false",
+      "component": "ManufacturingProcessPlanner",
+      "createRelease": "tc10000.1.4",
+      "dependencies": "",
+      "description": "load objects",
+      "exceptionCondition": "",
+      "id": "loadObjectData3#const,std::vector<Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::DataSection>,&",
+      "interface": "Mbc0::Soa::MfgBvrCore::DataManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "loadObjectData3",
+      "opTemplate": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::LoadObjectResponse2#Mbc0::Soa::MfgBvrCore::DataManagement::loadObjectData3#const,std::vector<Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::DataSection>,&",
+      "returnDescription": "loaded objects",
+      "useCase": ""
+    },
+    {
+      "DeprecationInfo": [
+        {
+          "deprecatedDescription": "Change return type to allow multiple values",
+          "deprecatedRelease": "tc10000.1.4"
+        }
+      ],
+      "ParameterInfo": [
+        {
+          "description": "XML input.",
+          "parameterName": "xmlInput"
+        }
+      ],
+      "canOverride": "false",
+      "component": "ManufacturingProcessPlanner",
+      "createRelease": "tc10000.1.2",
+      "dependencies": "",
+      "description": "returns all data that is neccessery to render the application page.",
+      "exceptionCondition": "",
+      "id": "loadObjectPageData#const,std::string",
+      "interface": "Mbc0::Soa::MfgBvrCore::DataManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "loadObjectPageData",
+      "opTemplate": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::LoadObjectResponse#Mbc0::Soa::MfgBvrCore::DataManagement::loadObjectPageData#const,std::string",
+      "returnDescription": "loaded object and its relevant page data.",
+      "useCase": "fdsfdsfs"
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "Required data changes, in XML format",
+          "parameterName": "input"
+        },
+        {
+          "description": "A map between the client ID (client generated string that is used in the response to correlate the input object and the result object) and a business object that needs to be updated.<br />The input business objects to this operation are expected to be of type ImanItemBOPLine or Mbc0OperatorAction. ",
+          "parameterName": "relatedObjects"
+        }
+      ],
+      "canOverride": "false",
+      "component": "ManufacturingProcessPlanner",
+      "createRelease": "tc10000.1.2",
+      "dependencies": "",
+      "description": "This operation receives a given set of data changes that happened in an application, and runs the proper actions to persist them in bulk. All data is saved to the database by the end of the operation.",
+      "exceptionCondition": "",
+      "id": "saveData#const,std::string,&$const,Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::ClientIDToRelatedObjects,&",
+      "interface": "Mbc0::Soa::MfgBvrCore::DataManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "saveData",
+      "opTemplate": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::SaveResponse#Mbc0::Soa::MfgBvrCore::DataManagement::saveData#const,std::string,&$const,Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::ClientIDToRelatedObjects,&",
+      "returnDescription": "The updated data.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "The save input containing all save sections, additional parameters if needed and the related objects for save",
+          "parameterName": "saveInput"
+        },
+        {
+          "description": "Required data changes, in XML format",
+          "parameterName": "input"
+        },
+        {
+          "description": "A map between the client ID (client generated string that is used in the response to correlate the input object and the result object) and a business object that needs to be updated",
+          "parameterName": "relatedObjects"
+        }
+      ],
+      "canOverride": "false",
+      "component": "ManufacturingProcessPlanner",
+      "createRelease": "tc11000.2.1",
+      "dependencies": "",
+      "description": "This operation receives a given set of data changes that happened in an application, and runs the proper actions to persist them in bulk. All data is saved to the database by the end of the operation.",
+      "exceptionCondition": "",
+      "id": "saveData2#const,Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveInput,&$const,std::string,&$const,Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::ClientIDToRelatedObjects2,&",
+      "interface": "Mbc0::Soa::MfgBvrCore::DataManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "saveData2",
+      "opTemplate": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveResponse2#Mbc0::Soa::MfgBvrCore::DataManagement::saveData2#const,Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveInput,&$const,std::string,&$const,Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::ClientIDToRelatedObjects2,&",
+      "returnDescription": "The updated data.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "The save input containing all save sections, additional parameters if needed and the related objects for save",
+          "parameterName": "saveInput"
+        },
+        {
+          "description": "Required data changes, in XML format",
+          "parameterName": "input"
+        }
+      ],
+      "canOverride": "false",
+      "component": "ManufacturingProcessPlanner",
+      "createRelease": "tc11000.2.1",
+      "dependencies": "",
+      "description": "This operation receives a given set of data changes that happened in an application, and runs the proper actions to persist them in bulk. All data is saved to the database by the end of the operation.",
+      "exceptionCondition": "",
+      "id": "saveData3#const,Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveInput,&$const,std::string,&",
+      "interface": "Mbc0::Soa::MfgBvrCore::DataManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "false",
+      "name": "saveData3",
+      "opTemplate": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveResponse3#Mbc0::Soa::MfgBvrCore::DataManagement::saveData3#const,Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveInput,&$const,std::string,&",
+      "returnDescription": "The updated data.",
+      "useCase": ""
+    }
+  ],
+  "OperationTemplate": [
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::BusinessObject",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A list of objects for which the operation should return the relevant variant options. The objects passed to this parameter are expected to be of type <b>ImanItemBOPLine</b>",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "sourceObject"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Mbc0::Soa::MfgBvrCore::_2014_06::DataManagement::GetOptionsResponse",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "tc10000.1.2",
+      "description": "This operation returns the variant option relevant for a given ImanItemBOPLine, and the returned options are the ones attached to the top level line for that structure.<br />This operation supports only legacy variants.",
+      "id": "Mbc0::Soa::MfgBvrCore::_2014_06::DataManagement::GetOptionsResponse#Mbc0::Soa::MfgBvrCore::DataManagement::getOptions#const,std::vector<Teamcenter::BusinessObject>,&",
+      "name": "Mbc0::Soa::MfgBvrCore::DataManagement::getOptions",
+      "returnConst": "false",
+      "returnDescription": "This operation returns a struct containing the relevant options and their values for each input object. ",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "std::string",
+              "qualifier": ""
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "xml input",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "xmlInput"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::LoadObjectResponse",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "tc10000.1.4",
+      "description": "load object",
+      "id": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::LoadObjectResponse#Mbc0::Soa::MfgBvrCore::DataManagement::loadObjectData#const,std::string",
+      "name": "Mbc0::Soa::MfgBvrCore::DataManagement::loadObjectData",
+      "returnConst": "false",
+      "returnDescription": "return loaded objects",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "std::string",
+              "qualifier": ""
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "xml input.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "xmlInput"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::LoadObjectResponse2",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "tc10000.1.4",
+      "description": "same as loadObjectdata the only diff is the return type which now contain a map of a map instead of just a single map",
+      "id": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::LoadObjectResponse2#Mbc0::Soa::MfgBvrCore::DataManagement::loadObjectData2#const,std::string",
+      "name": "Mbc0::Soa::MfgBvrCore::DataManagement::loadObjectData2",
+      "returnConst": "false",
+      "returnDescription": "loaded objects",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::DataSection",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "sections vector of all load sections",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "sections"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::LoadObjectResponse2",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "tc10000.1.4",
+      "description": "load objects",
+      "id": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::LoadObjectResponse2#Mbc0::Soa::MfgBvrCore::DataManagement::loadObjectData3#const,std::vector<Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::DataSection>,&",
+      "name": "Mbc0::Soa::MfgBvrCore::DataManagement::loadObjectData3",
+      "returnConst": "false",
+      "returnDescription": "loaded objects",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "std::string",
+              "qualifier": ""
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "XML input.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "xmlInput"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::LoadObjectResponse",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "tc10000.1.2",
+      "description": "returns all data that is neccessery to render the application page.",
+      "id": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::LoadObjectResponse#Mbc0::Soa::MfgBvrCore::DataManagement::loadObjectPageData#const,std::string",
+      "name": "Mbc0::Soa::MfgBvrCore::DataManagement::loadObjectPageData",
+      "returnConst": "false",
+      "returnDescription": "loaded object and its relevant page data.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "std::string",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "Required data changes, in XML format",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "input"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::ClientIDToRelatedObjects",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A map between the client ID (client generated string that is used in the response to correlate the input object and the result object) and a business object that needs to be updated.<br />The input business objects to this operation are expected to be of type ImanItemBOPLine or Mbc0OperatorAction. ",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "relatedObjects"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::SaveResponse",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "tc10000.1.2",
+      "description": "This operation receives a given set of data changes that happened in an application, and runs the proper actions to persist them in bulk. All data is saved to the database by the end of the operation.",
+      "id": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::SaveResponse#Mbc0::Soa::MfgBvrCore::DataManagement::saveData#const,std::string,&$const,Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::ClientIDToRelatedObjects,&",
+      "name": "Mbc0::Soa::MfgBvrCore::DataManagement::saveData",
+      "returnConst": "false",
+      "returnDescription": "The updated data.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveInput",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The save input containing all save sections, additional parameters if needed and the related objects for save",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "saveInput"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "std::string",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "Required data changes, in XML format",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "input"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::ClientIDToRelatedObjects2",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A map between the client ID (client generated string that is used in the response to correlate the input object and the result object) and a business object that needs to be updated",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "relatedObjects"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveResponse2",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "tc11000.2.1",
+      "description": "This operation receives a given set of data changes that happened in an application, and runs the proper actions to persist them in bulk. All data is saved to the database by the end of the operation.",
+      "id": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveResponse2#Mbc0::Soa::MfgBvrCore::DataManagement::saveData2#const,Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveInput,&$const,std::string,&$const,Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::ClientIDToRelatedObjects2,&",
+      "name": "Mbc0::Soa::MfgBvrCore::DataManagement::saveData2",
+      "returnConst": "false",
+      "returnDescription": "The updated data.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveInput",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The save input containing all save sections, additional parameters if needed and the related objects for save",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "saveInput"
+        },
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "std::string",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "Required data changes, in XML format",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "input"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveResponse3",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "tc11000.2.1",
+      "description": "This operation receives a given set of data changes that happened in an application, and runs the proper actions to persist them in bulk. All data is saved to the database by the end of the operation.",
+      "id": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveResponse3#Mbc0::Soa::MfgBvrCore::DataManagement::saveData3#const,Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveInput,&$const,std::string,&",
+      "name": "Mbc0::Soa::MfgBvrCore::DataManagement::saveData3",
+      "returnConst": "false",
+      "returnDescription": "The updated data.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "MetaException": [
+        {
+          "name": "Teamcenter::Soa::Server::ServiceException"
+        }
+      ],
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports::GenerateReportInp1",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The object for which the report is needed and the requested report type",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "input"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports::GenerateReportResponse",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "tc10000.1.2",
+      "description": "This operation generates a report file for the given object. <br />The report is generated in serveral steps:<br />- Data is exported in PLMXML format using a pre-configured transfer mode<br />- The PLMXML is converted to .html file using a configurable xslt file<br />- The .html is then converted to a .pdf file using fop tool (should be installed at the server side machine by the customer)<br />The parameters for the report are configured in a preference named Mbc0Report. Each entry in the preference should have the following format:<br /><Report type><Transfer mode name><XSLT dataset name><Report logo dataset><Report fop configuration dataset (for special fonts)><br />For now the operation supports only PDF reports.",
+      "id": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports::GenerateReportResponse#Mbc0::Soa::MfgBvrCore::Reports::generateReport#const,std::vector<Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports::GenerateReportInp1>,&",
+      "name": "Mbc0::Soa::MfgBvrCore::Reports::generateReport",
+      "returnConst": "false",
+      "returnDescription": "The requested report",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "MetaException": [
+        {
+          "name": "Teamcenter::Soa::Server::ServiceException"
+        }
+      ],
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::Reports::GenerateReportInp2",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The object for which the report is needed and the requested report type",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "input"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports::GenerateReportResponse",
+          "qualifier": ""
+        }
+      ],
+      "const": "false",
+      "createRelease": "tc10000.1.4",
+      "description": "This operation generates a report file for the given object. <br />The report is generated in serveral steps:<br />- Data is exported in PLMXML format using a pre-configured transfer mode<br />- The PLMXML is converted to .html file using a configurable xslt file<br />- The .html is then converted to a .pdf file using fop tool (should be installed at the server side machine by the customer)<br />The parameters for the report are configured in a preference named Mbc0Report. Each entry in the preference should have the following format:<br /><br />For now the operation supports only PDF reports.",
+      "id": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports::GenerateReportResponse#Mbc0::Soa::MfgBvrCore::Reports::generateReport2#const,std::vector<Mbc0::Soa::Internal::MfgBvrCore::_2015_03::Reports::GenerateReportInp2>,&",
+      "name": "Mbc0::Soa::MfgBvrCore::Reports::generateReport2",
+      "returnConst": "false",
+      "returnDescription": "The requested report",
+      "returnFreeMemory": "false",
+      "static": "false"
+    }
+  ],
+  "ServiceInterface": [
+    {
+      "createRelease": "tc10000.1.2",
+      "dependencies": "",
+      "description": "This service includes APIs to replace core APIs which are written as ICT or as stateful SOA calls. Such core APIs cannot be used in web applications, and require stateless replacement.",
+      "libraryName": "Mbc0SoaMfgBvrCore",
+      "name": "DataManagement",
+      "namespace": "Mbc0::Soa::MfgBvrCore",
+      "serviceLibraryRef": ""
+    },
+    {
+      "createRelease": "tc10000.1.2",
+      "dependencies": "",
+      "description": "Reports service provides all operations needed for report generation.",
+      "libraryName": "Mbc0SoaMfgBvrCore",
+      "name": "Reports",
+      "namespace": "Mbc0::Soa::MfgBvrCore",
+      "serviceLibraryRef": ""
+    }
+  ],
+  "Struct": [
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::AdditionalPropertiesMap2"
+            }
+          ],
+          "description": "Additional Properties Map.",
+          "name": "additionalPropertiesMap2"
+        }
+      ],
+      "createRelease": "tc10000.1.4",
+      "description": "Additional Properties Map wrapper.<br />a map cannot hold a map as the value thus we need to have a wrapper.",
+      "isPublished": "false",
+      "name": "AdditionalPropertiesMap2Wrapper",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::Entry"
+            }
+          ],
+          "description": "Entry",
+          "name": "entry"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "Data entry",
+      "isPublished": "false",
+      "name": "DataEntry",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "service data.",
+          "name": "serviceData"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::LoadedObjectsMap"
+            }
+          ],
+          "description": "loaded objects map",
+          "name": "loadedObjectsMap"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::RelatedObjectsMap"
+            }
+          ],
+          "description": "related objects map.",
+          "name": "relatedObjectsMap"
+        }
+      ],
+      "createRelease": "tc10000.1.4",
+      "description": "load object response.",
+      "isPublished": "false",
+      "name": "LoadObjectResponse2",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::NameToValuesMap"
+            }
+          ],
+          "description": "Name to values map",
+          "name": "nameToValuesMap"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "Name to values map wrapper",
+      "isPublished": "false",
+      "name": "NameToValuesMapWrapper",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The name of the variant option found in the structure for the given object",
+          "name": "option"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "std::string"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of option values for the returned variant option",
+          "name": "values"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "A list of relevant options and values for the source object",
+      "isPublished": "true",
+      "name": "OptionsAndValues",
+      "namespace": "Mbc0::Soa::MfgBvrCore::_2014_06::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The same object that was given as input, allows the calling application to correlate the result options and values to the given object.",
+          "name": "sourceObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::MfgBvrCore::_2014_06::DataManagement::OptionsAndValues"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of relevant options and values for the source object",
+          "name": "optionsAndValues"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "Returns for each input object the result variant options",
+      "isPublished": "true",
+      "name": "OptionsPerObject",
+      "namespace": "Mbc0::Soa::MfgBvrCore::_2014_06::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::SaveErrorSeverity"
+            }
+          ],
+          "description": "Error severity (Error\\Warning)",
+          "name": "severity"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "int"
+            }
+          ],
+          "description": "Error code (ifail)",
+          "name": "saveErrorCode"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The error text",
+          "name": "saveErrorMessage"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "Struct which contains the errors given by the operation.",
+      "isPublished": "false",
+      "name": "SaveErrorStruct",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The object of the event",
+          "name": "eventObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveObjectEvent"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A vector of the object's events",
+          "name": "events"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "A save event containing all the events for an object",
+      "isPublished": "false",
+      "name": "SaveEvent",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The event's unique id",
+          "name": "eventId"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The object's uid of the event",
+          "name": "eventObjectUid"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The type of the event",
+          "name": "eventType"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::vector<std::string>"
+            }
+          ],
+          "description": "A vector of the event data",
+          "name": "eventData"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::vector<std::string>"
+            }
+          ],
+          "description": "A vector of the related events",
+          "name": "relatedEvents"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "A save event containing all the events for an object",
+      "isPublished": "false",
+      "name": "SaveEvent2",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::DataSection"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "Vector of all save sections",
+          "name": "sections"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::NameToValuesMap"
+            }
+          ],
+          "description": "Additional parameters for save action",
+          "name": "parameters"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::ClientIDToRelatedObjects2"
+            }
+          ],
+          "description": "A map between the client ID (client generated string that is used in the response to correlate the input object and the result object) and a business object that needs to be updated.",
+          "name": "relatedObjects"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "All data needed for save action",
+      "isPublished": "false",
+      "name": "SaveInput",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The type of the event",
+          "name": "eventType"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::vector<std::string>"
+            }
+          ],
+          "description": "A vector of the event data",
+          "name": "eventData"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "An object's event",
+      "isPublished": "false",
+      "name": "SaveObjectEvent",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Service Data contains the list of created or modified objects and also the partial errors is used to report any partial failures.",
+          "name": "serviceData"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::SaveResult"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The resulted objects for each update",
+          "name": "saveResults"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "The data updated by the SaveData operation",
+      "isPublished": "false",
+      "name": "SaveResponse",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The section name",
+          "name": "sectionName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::DataEntry"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "Vector of data entries",
+          "name": "dataEntries"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "The data section",
+      "isPublished": "false",
+      "name": "DataSection",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Service Data contains the list of created or modified objects and also the partial errors is used to report any partial failures",
+          "name": "serviceData"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::SaveResult"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The resulted objects for each update",
+          "name": "saveResults"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveEvent"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "Vector of all events for each object",
+          "name": "saveEvents"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "The data updated by the SaveData operation",
+      "isPublished": "false",
+      "name": "SaveResponse2",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Service Data contains the list of created or modified objects and also the partial errors is used to report any partial failures",
+          "name": "serviceData"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::SaveResult"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The resulted objects for each update",
+          "name": "saveResults"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::SaveEvent2"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "Vector of all events for each object",
+          "name": "saveEvents"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "The data updated by the SaveData operation",
+      "isPublished": "false",
+      "name": "SaveResponse3",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The object that resulted from the save action:<br />In case of create - a new created line<br />In case of update - same line with updated properties, or the new line resulting from move action. <br />In case of delete - null.",
+          "name": "saveResultObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::SaveErrorStruct"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "Errors received as part of the save for this BusinessObject",
+          "name": "saveErrors"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Original ID given in the input.",
+          "name": "clientID"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "Save results",
+      "isPublished": "false",
+      "name": "SaveResult",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The given input client ID for the object the report is generated for.",
+          "name": "clientID"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "File Ticket for the generated report",
+          "name": "reportFileTicket"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "Result struct containing a given object's client ID and the report generated for it.",
+      "isPublished": "false",
+      "name": "FileTicketPair",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports",
+      "scope": "Mbc0::Soa::MfgBvrCore::Reports"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The object for which the report is needed. Only objects of type Mfg0BvrOperation, Mfg0BvrProcess are supported.",
+          "name": "object"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "A unique ID that will be used to associate the results in the output to the given input",
+          "name": "clientID"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The type of the requested report. The type should be taken from the Mbc0Report preference, which contains for each report type the relevant parameters to generate it.",
+          "name": "reportType"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "The object for which a report is needed and the requested report type",
+      "isPublished": "false",
+      "name": "GenerateReportInp1",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports",
+      "scope": "Mbc0::Soa::MfgBvrCore::Reports"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The object for which the report is needed. Only objects of type Mfg0BvrOperation, Mfg0BvrProcess are supported.",
+          "name": "object"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "A unique ID that will be used to associate the results in the output to the given input",
+          "name": "clientID"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The type of the requested report. The type should be taken from the Mbc0Report preference, which contains for each report type the relevant parameters to generate it.",
+          "name": "reportType"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::Mfg0BvrProductVariant"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The product variants to use in order to filter the report (optional)",
+          "name": "productVariant"
+        }
+      ],
+      "createRelease": "tc10000.1.4",
+      "description": "The object for which a report is needed and the requested report type",
+      "isPublished": "false",
+      "name": "GenerateReportInp2",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::Reports",
+      "scope": "Mbc0::Soa::MfgBvrCore::Reports"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports::FileTicketPair"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of result reports for the given objects",
+          "name": "reportFiles"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "Service data contains the list of created or modified objects and also the partial errors.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "Response struct for generateReport operation, returning the result reports for the given input objects.",
+      "isPublished": "false",
+      "name": "GenerateReportResponse",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::Reports",
+      "scope": "Mbc0::Soa::MfgBvrCore::Reports"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Mbc0::Soa::MfgBvrCore::_2014_06::DataManagement::OptionsPerObject"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "List of OptionsPerObject structs, returns for each input object the result variants.",
+          "name": "options"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "The list of created or modified objects and also the partial errors used to report any partial failures",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "A struct containing the relevant options and their values for each input object.",
+      "isPublished": "true",
+      "name": "GetOptionsResponse",
+      "namespace": "Mbc0::Soa::MfgBvrCore::_2014_06::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "service data",
+          "name": "serviceData"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::LoadedObjectsMap"
+            }
+          ],
+          "description": "loaded objects map",
+          "name": "loadedObjectMap"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::AdditionalPropertiesMap"
+            }
+          ],
+          "description": "map for additional properties.",
+          "name": "additionalPropertiesMap"
+        }
+      ],
+      "createRelease": "tc10000.1.4",
+      "description": "load objects response",
+      "isPublished": "false",
+      "name": "LoadObjectResponse",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "the serviceData",
+          "name": "serviceData"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement::LoadedObjects"
+            }
+          ],
+          "description": "a map of loaded Objects.",
+          "name": "loadedObjects"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "load object response.",
+      "isPublished": "false",
+      "name": "LoadObjectResponse",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    }
+  ],
+  "TcVersion": "tc11000.2.0",
+  "Typedef": [
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc10000.1.4",
+      "description": "Map for additional properties. The map key is the name of the property and the map value is a value of the property.",
+      "isPublished": "false",
+      "name": "AdditionalPropertiesMap",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "std::string"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc10000.1.4",
+      "description": "Map for additional properties. The map key is the name of the property and the map value is a vector of the property values.",
+      "isPublished": "false",
+      "name": "AdditionalPropertiesMap2",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "A map between the client ID to the related BusinessObject",
+      "isPublished": "false",
+      "name": "ClientIDToRelatedObjects",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "A map between the client ID to the related BusinessObject",
+      "isPublished": "false",
+      "name": "ClientIDToRelatedObjects2",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement::NameToValuesMapWrapper"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "Entry map",
+      "isPublished": "false",
+      "name": "Entry",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc10000.1.2",
+      "description": "a map of loaded objects.",
+      "isPublished": "false",
+      "name": "LoadedObjects",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2014_06::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::BusinessObject"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc10000.1.4",
+      "description": "loaded objects map with multiple values",
+      "isPublished": "false",
+      "name": "LoadedObjectsMap",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "std::vector<std::string>"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc11000.2.1",
+      "description": "Name to values map",
+      "isPublished": "false",
+      "name": "NameToValuesMap",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2016_04::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement::AdditionalPropertiesMap2Wrapper"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc10000.1.4",
+      "description": "A map where the is Id and the value is a wrapper holding a mapping of properties values.",
+      "isPublished": "false",
+      "name": "RelatedObjectsMap",
+      "namespace": "Mbc0::Soa::Internal::MfgBvrCore::_2015_03::DataManagement",
+      "scope": "Mbc0::Soa::MfgBvrCore::DataManagement"
+    }
+  ],
+  "xmlns": "http://teamcenter.com/BusinessModel/TcBusinessData"
+}

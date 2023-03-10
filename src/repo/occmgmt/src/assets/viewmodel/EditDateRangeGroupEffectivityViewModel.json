@@ -1,0 +1,271 @@
+{
+    "schemaVersion" : "1.0.0",
+
+    "data" :
+    {
+        "egoToEdit":{},
+        "nameBox":{
+            "displayName": "{{i18n.name}}",
+            "type": "STRING",
+            "dbValue": "",
+            "uiValue": "",
+            "isRequired": "true",
+            "maxLength":128
+        },
+        "startDateTime":
+        {
+            "dbValue": "",
+            "type": "DATETIME",
+            "isRequired": "true",
+            "displayName": "{{i18n.startDate}}",
+            "isEditable": "true"
+        },
+
+        "endDateTime":
+        {
+            "dbValue": "",
+            "type": "DATE",
+            "isRequired": "true",
+            "validationCriteria": [ {
+                    "condition": "!conditions.isValidStartAndEndDate",
+                    "value": "{{i18n.dateRangeInvalidMessage}}"
+                } ]
+        },
+        "effectivity" : "",
+        "groupRevision" : {"uid": ""},
+        "endDateOptions":
+        {
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov":true,
+            "displayName": "{{i18n.endDate}}",
+            "isEditable": "true",
+            "dbValue": "",
+            "uiValue": ""
+        },
+        "endDateList":{
+            "type": "STRING",
+            "dbValue":
+            [
+                {"propDisplayValue" :"{{i18n.dateEffectivity}}", "propInternalValue" : "Date"},
+                {"propDisplayValue" :"{{i18n.upText}}", "propInternalValue" : "UP"},
+                {"propDisplayValue" :"{{i18n.soText}}", "propInternalValue" : "SO"}
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onMount":"getDateRangeEditContextAction"
+    },
+    "actions": {
+        "getDateRangeEditContextAction":{
+            "actionType": "JSFunction",
+            "method": "getDateRangeEditContext",
+            "inputData": {
+                "vmo": "{{props.subPanelContext.vmo}}",
+                "i18n" : "{{i18n}}"
+            },
+            "outputData":{
+                "nameBox.dbValue": "nameBox",
+                "startDateTime.dbValue": "startDateTime",
+                "endDateTime.dbValue": "endDateTime",
+                "endDateOptions.dbValue": "endDateOptions",
+                "endDateOptions.uiValue": "endDateOptionsUiValue",
+                "groupRevision.uid": "groupRevision",
+                "egoToEdit.uid":"groupRevision",
+                "egoToEdit.type": "groupRevisionType",
+                "effectivity": "effectivity"
+            },
+            "deps": "js/editGroupEffectivityCommandHandler"
+        },
+        "EditEffectivity": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2010-09-DataManagement",
+            "method": "setProperties",
+            "inputData":
+            {
+                "info":
+                [
+                    {
+                        "object": {
+                            "uid": "{{data.egoToEdit.uid}}",
+                            "type": "{{data.egoToEdit.type}}"
+                        },
+                        "vecNameVal":
+                        [
+                            {
+                                "name": "object_name",
+                                "values":
+                                [
+                                    "{{data.nameBox.dbValue}}"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "EditEffectivity_done"
+                    }
+                ]
+            },
+            "deps": "js/effectivityGroupTableService"
+        },
+        "updateEffectivities": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-StructureManagement-2021-12-EffectivitiesManagement",
+            "method": "createOrUpdateDateEffectivities",
+            "inputData":
+            {
+                "effectivitiesInfo": [{
+                    "clientId" : "editEffectivities",
+                    "effectivityComponent": "{{function:getEffComponent}}",
+                    "endItemComponent": {
+                        "type": "unknownType",
+                        "uid": "AAAAAAAAAAAAAA"
+                    },
+                    "dateRange": "{{function:getDateRange}}",
+                    "openEndedStatus": "{{function:getOpenEndedStatus}}",
+                    "decision": 1
+                }],
+                "effectivityGroupRevision": {
+                    "uid": "{{data.egoToEdit.uid}}",
+                    "type": "ItemRevision"
+                }
+           },
+           "events":
+           {
+               "success":
+               [
+                   {
+                       "name": "updateEffectivities_done"
+                   }
+               ]
+           },
+           "deps": "js/effectivityGroupTableService"
+        },
+        "applyGroupEffectivity":
+        {
+            "actionType": "JSFunction",
+            "method": "applyConfiguration",
+            "inputData":{
+                "value": {
+                    "configContext": {
+                        "r_uid": "{{props.subPanelContext.occContext.productContextInfo.props.awb0CurrentRevRule.dbValues[0]}}",
+                        "eg_uids": "{{function:appendAndApplyEditedGroupEffectivity}}",
+                        "ue": "{{props.subPanelContext.occContext.productContextInfo.props.awb0EffUnitNo.dbValues[0]}}",
+                        "ei_uid": "{{props.subPanelContext.occContext.productContextInfo.props.awb0EffEndItem.dbValues[0]}}",
+                        "var_uids": "{{props.subPanelContext.occContext.productContextInfo.props.awb0VariantRules.dbValues}}",
+                        "iro_uid": "{{props.subPanelContext.occContext.productContextInfo.props.awb0VariantRuleOwningRev.dbValues[0]}}",
+                        "startFreshNavigation": true
+                    },
+                    "transientRequestPref": {
+                        "jitterFreePropLoad" : true,
+                        "userGesture": "EFFECTIVITY_CHANGE"
+                    }
+                },
+                "occContext": "{{props.subPanelContext.occContext}}"
+            },
+            "events": {
+                "success": [{
+                    "name": "complete",
+                    "condition": "conditions.shouldClosePanel",
+                    "eventData":
+                    {
+                        "source": "aw_navigation"
+                    }
+                },{
+                    "name": "navigateToConfigPanel",
+                    "condition": "conditions.shouldNavigateToConfigPanel"
+                }]
+            },
+            "deps": "js/effectivityGroupTableService"
+        },
+        "navigateToConfigPanel":{
+            "actionType": "JSFunction",
+            "method": "goToPrevPanel",
+            "inputData": {
+                "nestedNavigationState": "{{props.subPanelContext.nestedNavigationState}}",
+                "numOfBacks": 2
+            },
+            "deps": "js/nestedNavigationPanelService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "EditEffectivity_done",
+            "action": "updateEffectivities"
+        },
+        {
+            "eventId": "updateEffectivities_done",
+            "action": "applyGroupEffectivity"
+        },
+        {
+            "eventId": "navigateToConfigPanel",
+            "action": "navigateToConfigPanel"
+        }
+    ],
+    "functions": {
+        "appendAndApplyEditedGroupEffectivity": {
+            "functionName": "applyDateEffectivityGroups",
+            "parameters":
+            [
+                "{{data}}",
+                "{{data.groupRevision}}"
+            ]
+        },
+        "getDateRange": {
+            "functionName": "getDateRange",
+            "parameters":
+            [
+                "{{data}}"
+            ]
+        },
+        "getOpenEndedStatus": {
+            "functionName": "getOpenEndedStatus",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getEffComponent": {
+            "functionName": "getEffComponent",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "conditions":
+    {
+        "isValidStartAndEndDate": {
+            "expression": "data.endDateTime.dateApi.dateValue === '' || data.startDateTime.dateApi.dateValue === ''  || data.endDateTime.dbValue > data.startDateTime.dbValue"
+        },
+        "isEndDateVisible" : {
+            "expression": "data.endDateOptions.dbValue !== 'UP' && data.endDateOptions.dbValue !== 'SO'"
+        },
+        "shouldClosePanel": {
+            "expression": "props.subPanelContext.shouldClosePanelOnApply"
+        },
+        "shouldNavigateToConfigPanel": {
+            "expression": "!props.subPanelContext.shouldClosePanelOnApply"
+        }
+    },
+    "i18n":
+    {
+        "upText":["OccurrenceManagementConstants"],
+        "soText":["OccurrenceManagementConstants"],
+        "dateEffectivity":["OccurrenceManagementConstants"],
+        "name":["OccurrenceManagementConstants"],
+        "startDate":["OccurrenceManagementConstants"],
+        "endDate":["OccurrenceManagementConstants"],
+        "dateRangeInvalidMessage":["OccurrenceManagementMessages"],
+        "apply":[ "OccurrenceManagementConstants" ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

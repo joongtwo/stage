@@ -1,0 +1,30 @@
+{
+  "probableImpactedIndicator": {
+    "cellClassName": "aw-border-chartColor2",
+    "gridClassName": "aw-charts-chartColor2",
+    "conditions": {
+      "ImpactAnalysis_IsChartColor1applicableSource": {
+        "expression": {
+          "$source": "localContext.vmo.cm0IsAlreadyImpacted",
+          "$query": {
+            "$eq": true
+          }
+        }
+      }
+    }
+  },
+  "aceChangeColorDecorator": {
+    "cellClassName": "",
+    "gridClassName": "",
+    "subLocationName": "com.siemens.splm.client.occmgmt:OccurrenceManagementSubLocation",
+    "method": "populateMarkupValues",
+    "deps": "js/showMarkupService"
+  },
+  "aceMergeChangeColorDecorator": {
+    "cellClassName": "",
+    "gridClassName": "",
+    "subLocationName": "com.siemens.splm.client.change:mergeChangesSubLocation",
+    "method": "populateMarkupValues",
+    "deps": "js/showMarkupService"
+  }
+}

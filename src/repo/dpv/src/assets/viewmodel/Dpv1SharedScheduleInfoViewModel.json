@@ -1,0 +1,99 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+        "scheduleId": {
+            "displayName": "{{i18n.schId}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "{{ctx.selected.props.Id.displayValues[0]}}",
+            "dispValue": "{{ctx.selected.props.Id.displayValues[0]}}"
+        },
+        "scheduleName": {
+            "displayName": "{{i18n.schName}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "{{ctx.selected.props.Name.displayValues[0]}}",
+            "dispValue": "{{ctx.selected.props.Name.displayValues[0]}}"
+        },
+        "frequency": {
+            "displayName": "{{i18n.schFrequency}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "{{ctx.selected.props.Frequency.displayValues[0]}}",
+            "dispValue": "{{ctx.selected.props.Frequency.displayValues[0]}}"
+        },
+        "nextOccurrence": {
+            "displayName": "{{i18n.schNextOccurrence}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "{{ctx.selected.props.NextOccurrence.displayValues[0]}}",
+            "dispValue": "{{ctx.selected.props.NextOccurrence.displayValues[0]}}"
+        },
+        "description": {
+            "displayName": "{{i18n.schDescription}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "{{ctx.selected.props.Description.displayValues[0]}}",
+            "dispValue": "{{ctx.selected.props.Description.displayValues[0]}}"
+        }
+    },
+    "actions": {
+        "updateScheduleInfoData": {
+            "actionType": "JSFunction",
+            "method": "updateScheduleInfoData",
+            "inputData": {
+                "data" : "{{data}}",
+                "selection": "{{props.subPanelContext.context.searchState.pwaSelection}}"
+            },
+            "outputData": {
+                "scheduleId" : "scheduleId",
+                "scheduleName": "scheduleName",
+                "frequency": "frequency",
+                "nextOccurrence": "nextOccurrence",
+                "description": "description"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        }
+    },
+    "dataProviders": {},
+    "conditions": {},
+    "lifecycleHooks": {
+        "onUpdate": {
+            "action": "updateScheduleInfoData",
+            "observers": [
+                "props.subPanelContext.context.searchState.pwaSelection"
+            ]
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "i18n": {
+        "sharedScheduleLbl": [
+            "DpvMessages"
+        ],
+        "schId": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "schName": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "schFrequency": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "schNextOccurrence": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "schDescription": [
+            "DpvColumnConfigurationMessages"
+        ]
+    }
+}

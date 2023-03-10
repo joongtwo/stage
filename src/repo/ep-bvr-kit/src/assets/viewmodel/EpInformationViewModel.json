@@ -1,0 +1,202 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpInformation_inputObject": {
+            "onChangeAction": "handleInput",
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "xrtState": {
+            "initialValues": {
+                "xrtTypeLoaded": ""
+            },
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        },
+        "isLoading": false
+    },
+    "actions": {
+        "handleInput": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "startLoadingIndicator"
+                },
+                {
+                    "action": "saveInputToData"
+                },
+                {
+                    "action": "setSelection"
+                },
+                {
+                    "action": "updateCommandContext"
+                },
+                {
+                    "action": "updateSelectedCtx"
+                },
+                {
+                    "action": "stopLoadingIndicator"
+                }
+            ]
+        },
+        "saveInputToData": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                 "value": "{{ports.EpInformation_inputObject.syncObject}}"
+            },
+            "outputData": {
+                "inputObject":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setSelection": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": {
+                    "scopeObject": "{{data.inputObject}}",
+                    "xrtType": "{{subPanelContext.xrtType}}",
+                    "noElementSelectedMessageForXRT": "{{subPanelContext.noElementSelectedMessageForXRT}}"
+                }
+            },
+            "outputData": {
+                "inputForXRT":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "updateCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "inputObject": "{{data.inputObject}}",
+                    "handleContext": "INFO_PANEL_CONTEXT"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "updateSelectedCtx": {
+            "actionType": "JSFunction",
+            "method": "updateCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "name": "selected",
+                "value": "{{data.inputObject}}"
+            }
+        },
+        "init": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": {
+                    "scopeObject": "{{subPanelContext.scopeObject}}",
+                    "xrtType": "{{subPanelContext.xrtType}}",
+                    "noElementSelectedMessageForXRT": "{{subPanelContext.noElementSelectedMessageForXRT}}"
+                }
+            },
+            "outputData": {
+                "inputForXRT":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "cancelEdits": {
+            "actionType": "JSFunction",
+            "method": "cancelEdits",
+            "deps": "js/editHandlerService",
+            "events": {
+                "success": [
+                    {
+                        "name": "updateURLParam"
+                    }
+                ]
+            }
+        },
+        "disableEditMode": {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "inputData": {
+                "path": "editInProgress",
+                "value": false
+            },
+            "deps": "js/appCtxService"
+        },
+        "startLoadingIndicator": {
+            "actionType": "JSFunction",
+            "method": "setLoadingIndicator",
+            "inputData": {
+                "isLoading": true
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeMessagesService"
+        },
+        "stopLoadingIndicator": {
+            "actionType": "JSFunction",
+            "method": "setLoadingIndicator",
+            "inputData": {
+                "isLoading": false
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeMessagesService"
+        }
+    },
+
+    "editHandlers": {
+        "infoPanelEditHandler": {
+            "context": "INFO_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+
+    "conditions": {
+        "isLoading": {
+            "expression": "data.isLoading === true"
+        },
+        "hasXRTInput": {
+            "expression": "data.inputForXRT.xrtType && data.inputForXRT.scopeObject.uid"
+        },
+        "noInput": {
+            "expression": "data.isLoading === false && !conditions.hasXRTInput"
+        },
+        "showXrt": {
+            "expression": "data.isLoading === false && conditions.hasXRTInput"
+        }
+    },
+
+    "onEvent": [
+        {
+            "eventId": "editHandlerStateChange",
+            "cacheEventData": true,
+            "action": "cancelEdits",
+            "condition": "state === 'partialSave'"
+        }
+    ],
+
+    "lifecycleHooks": {
+        "onMount": "init",
+        "onUnmount": "disableEditMode"
+    }
+}

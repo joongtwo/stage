@@ -1,0 +1,22 @@
+<aw-command-panel caption="i18n.viewBaseline">
+    <aw-panel-body>
+        <aw-panel-section caption="i18n.currentlyViewingTitle">
+            <aw-list dataprovider="data.dataProviders.selectedBaseline" show-decorators="true">
+                <aw-default-cell vmo="item"></aw-default-cell>
+            </aw-list>
+        </aw-panel-section>
+        <aw-panel-section caption="i18n.availableSectionTitle">
+            <aw-list-filter prop="data.filterBox" dataprovider="data.dataProviders.getBaselines">
+                <aw-default-cell vmo="item"></aw-default-cell>
+            </aw-list-filter>
+        </aw-panel-section>
+    </aw-panel-body>
+
+    <aw-panel-footer>
+        <!-- <aw-button action="viewBaseline" enable-when="data.saw1viewBtn"> -->
+        <aw-button action="viewBaseline" enable-when="data.saw1viewBtn">
+            <aw-i18n>i18n.viewBaselineBtnTitle</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+
+</aw-command-panel>

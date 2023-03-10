@@ -1,0 +1,68 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "getCurrentContexts": {
+            "actionType": "JSFunction",
+            "method": "getCurrentContexts",
+            "inputData": {
+                "occContext":"{{props.subPanelContext.occContext}}"
+            },
+            "outputData": {
+                "currentContexts": ""
+            },
+            "deps": "js/contextConfigurationService"
+        },     
+        "launchContextPopup": {
+            "actionType": "JSFunction",
+            "method": "show",
+            "inputData": {
+                "data": {
+                    "subPanelContext": "{{props.subPanelContext}}",
+                    "options": {
+                        "reference": ".awb0ContextAnchor",
+                        "view": "AceContextPopupContent"
+                    }
+                }
+            },
+            "outputData": {
+                "popupId": "AceContextPopupContentId"
+            },
+            "deps": "js/popupService"
+        },
+        "getCurrentContextDataAction": {
+            "actionType": "dataProvider",
+            "method": "getCurrentContextData"
+        }  
+    },
+    "dataProviders": {
+        "getCurrentContextData": {
+            "action": "getCurrentContexts",
+            "response": "{{data.currentContexts}}",
+            "uidInResponse": "dbValues[0]",
+            "selectionModelMode": "single"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getCurrentContextDataAction"
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "productContextChangedEvent",
+            "action": "getCurrentContextData"
+        },
+        {
+            "eventId": "getCurrentContextData.selectionChangeEvent",
+            "condition": "subPanelContext.occContext.isOpenedUnderAContext && subPanelContext.occContext.elementToPCIMapCount > 1 && dataProvider.selectedObjects.length === 1",
+            "action": "launchContextPopup"
+        }
+    ],
+
+    "i18n": {
+        "contextTitle": [ "OccurrenceManagementConstants" ]
+    }
+}

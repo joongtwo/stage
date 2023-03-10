@@ -1,0 +1,82 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+            "ecnInfo":  {
+                "ecnName":"",
+                "iconId":"indicatorChipTrackingChanges",
+                "isCNReadonly":false
+            }
+    },
+    "actions": {
+        "updateECNInfo": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getLoadTypeInputForCN"
+                },
+                {
+                    "action": "loadCNForBOP"
+                },
+                {
+                    "action": "getObjectFromClientDataModel"
+                },
+                {
+                    "action": "updateECNInfoOnChip"
+                }
+            ]
+        },
+        "getLoadTypeInputForCN": {
+            "actionType": "JSFunction",
+            "method": "getLoadTypeInputs",
+            "inputData": {
+                "loadType": ["getProperties"],
+                "objectUid": "{{ctx.state.params.tracking_cn}}",
+                "props": ["object_string","is_modifiable"]
+            },
+            "outputData": {
+                "loadTypeInputs": ""
+            },
+            "deps": "js/epLoadInputHelper"
+        },
+        "loadCNForBOP": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadObject",
+            "inputData": {
+                "loadTypeInputs": "{{data.loadTypeInputs}}"
+            },
+            "outputData": {
+                "loadedObjectResponse": ""
+            },
+            "deps": "js/epLoadService"
+        },
+        "getObjectFromClientDataModel": {
+            "actionType": "JSFunction",
+            "method": "getObject",
+            "inputData": {
+                "uid": "{{ctx.state.params.tracking_cn}}"
+            },
+            "outputData": {
+                "trackingCN": ""
+            },
+            "deps": "soa/kernel/clientDataModel"
+        },
+        "updateECNInfoOnChip":{
+            "actionType": "JSFunction",
+            "method": "updateECNInfoOnChip",
+            "inputData":
+            {
+                "ecnObj": "{{data.trackingCN}}"
+            },
+            "outputData": {
+                "ecnInfo": ""
+            },
+            "deps": "js/epChangeIndicationService"
+        }
+
+    },
+    "lifecycleHooks": {
+        "onMount": "updateECNInfo"
+    }
+
+
+}

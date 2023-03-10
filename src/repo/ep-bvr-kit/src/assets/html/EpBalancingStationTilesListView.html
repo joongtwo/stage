@@ -1,0 +1,12 @@
+<mfe-loading-message exist-when="data.isLoading"></mfe-loading-message>
+<mfe-message-panel exist-when="!data.isLoading && !conditions.hasStations" messages-data="{messageLines: data.messages.noStationsInTheLine}"></mfe-message-panel>
+<div class="sw-column w-12 aw-epBalancing-stationTileList" exist-when="!data.isLoading && conditions.hasStations">
+    <aw-scrollpanel class="sw-row w-12">
+        <aw-list dataprovider="data.dataProviders.stationTilesProvider">
+            <ep-balancing-station-tile vmo="item" max="{{data.max}}" selection-data="data.prSelectionData" 
+                prs="{{ports.EpBalancingStationTilesList_setBalancingInformation.syncObject.allProcessResources.length > 0}}"
+                problematic="{{ports.EpBalancingStationTilesList_setBalancingInformation.syncObject.problematicStations[item.uid]}}">
+            </ep-balancing-station-tile>
+        </aw-list>
+    </aw-scrollpanel>
+</div>

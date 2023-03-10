@@ -1,0 +1,46 @@
+<aw-base-sublocation provider="summary" class="aw-clsadmin-dashboard">
+    <div class="aw-cls-admin-dash">
+        <div class="aw-clsadmin-summary">
+            <aw-command-panel-section name="clsSummary" caption="i18n.summaryTitle" anchor="data.classificationCommands" collapsed="{{data.summaryCollapsed}}" height="30f">
+                <div class="aw-clsadmin-import" visible-when="conditions.clsImportVisible">
+                    <aw-button action="import">{{i18n.import}}</aw-button>
+                </div>
+                <aw-column-chart class="aw-clsadmin-columnChart" chart-provider="data.chartProvider"></aw-column-chart>
+            </aw-command-panel-section>
+        </div>
+        <div class="sw-row" aw-class="[data.summaryCollapsed ? 'aw-clsadmin-column_panel2' : 'aw-clsadmin-column_panel']">
+            <!--  Nodes column -->
+            <div class="sw-column">
+                <aw-command-panel-section caption="{{data.nodesTitle}}">
+                    <aw-list dataprovider="data.dataProviders.nodes">
+                        <aw-default-cell vmo="item" hideoverlay='true'></aw-default-cell>
+                    </aw-list>
+                </aw-command-panel-section>
+            </div>
+            <!--  Classes column -->
+            <div class="sw-column">
+                <aw-command-panel-section caption="{{data.classesTitle}}">
+                    <aw-list dataprovider="data.dataProviders.classes">
+                        <aw-default-cell vmo="item" hideoverlay='true'></aw-default-cell>
+                    </aw-list>
+                </aw-command-panel-section>
+            </div>
+            <!--  Properties column -->
+            <div class="sw-column">
+                <aw-command-panel-section caption="{{data.propsTitle}}">
+                    <aw-list dataprovider="data.dataProviders.properties">
+                        <aw-default-cell vmo="item" hideoverlay='true'></aw-default-cell>
+                    </aw-list>
+                </aw-command-panel-section>
+            </div>
+            <!--  KeyLov column -->
+            <div class="sw-column">
+                <aw-command-panel-section caption="{{data.keylovTitle}}">
+                    <aw-list dataprovider="data.dataProviders.keylov">
+                        <aw-default-cell vmo="item" hideoverlay='true'></aw-default-cell>
+                    </aw-list>
+                </aw-command-panel-section>
+            </div>
+        </div>
+    </div>
+</aw-base-sublocation>

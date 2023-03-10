@@ -1,0 +1,12 @@
+<aw-command-panel caption="i18n.generateReport">
+    <aw-panel-body>
+        <aw-radiobutton prop="data.reportMode" action="updateFormatList"></aw-radiobutton>
+        <aw-break> </aw-break>
+        <aw-listbox  prop="data.format" list="data.formatList" ></aw-listbox>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-label prop="data.generatingReportLabel" visible-when="data.isReportGenerating"></aw-label>
+        <!--aw-break> </aw-break-->
+        <aw-button size='auto' visible-when="true" action="generate"><aw-i18n>i18n.generate</aw-i18n></aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

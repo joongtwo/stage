@@ -1,0 +1,199 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "render": {
+            "method": "awDiscoveryRecipeChipsRenderFunction",
+            "deps": "js/AwDiscoveryRecipeChipsService",
+            "options": {
+                "elementRefList": [
+                    "chiplist"
+                ]
+            }
+        },
+        "chipOverflowPopup": {
+            "actionType": "popup",
+            "options": {
+                "placement": "bottom-start",
+                "toggleMode": true,
+                "whenParentScrolls": "close",
+                "clickOutsideToClose": true,
+                "anchor": "closePopupAnchor",
+                "resizeToClose": true
+            }
+        },
+        "buildRecipeChips": {
+            "actionType": "JSFunction",
+            "method": "buildRecipeChips",
+            "inputData": {
+                "recipe": "{{props.recipeObject.recipe}}"
+            },
+            "outputData": {
+                "recipeChips": ""
+            },
+            "deps": "js/AwDiscoveryRecipeChipsUtils"
+        },
+        "calculateOverflow": {
+            "actionType": "JSFunction",
+            "method": "calculateOverflow",
+            "inputData": {
+                "elementRefList": "{{parameters.elementRefList}}",
+                "totalVisibleArea": "{{data.visibleChipArea}}",
+                "totalVisibleHeight": "{{data.visibleHeightChipArea}}",
+                "recipeChips": "{{data.recipeChips}}",
+                "currentOverflowChips": "{{data.overflowConfig.overflownChips}}",
+                "displayRecipeChips": "{{data.displayRecipeChips}}",
+                "searchFilterCategoryExpandMore": "{{i18n.searchFilterCategoryExpandMore}}",
+                "visibleChipAreaMaintained":true
+            },
+            "outputData": {
+                "displayRecipeChips": "displayChips",
+                "overflowConfig.overflownChips":"overflownChips",
+                "displayOverflowButton": "displayOverflowButton",
+                "visibleChipArea": "totalVisibleArea",
+                "visibleHeightChipArea": "totalVisibleHeight"
+            },
+            "deps": "js/AwDiscoveryRecipeChipsUtils"
+        },
+        "attachResizeObserver": {
+            "actionType": "JSFunction",
+            "method": "attachResizeObserver",
+            "inputData": {
+                "data": "{{data}}",
+                "elementRefList": "{{parameters.elementRefList}}"
+            },
+            "deps": "js/AwDiscoveryRecipeChipsService"
+        },
+        "removeFilterAction": {
+            "actionType": "JSFunction",
+            "method": "removeSelectedChip",
+            "inputData": {
+                "recipeObject": "{{props.recipeObject}}",
+                "chipToRemove": "{{parameters.chip}}"
+            },
+            "deps": "js/AwDiscoveryRecipeChipsUtils"
+        },
+        "clearRecipe": {
+            "actionType": "JSFunction",
+            "method": "clearRecipe",
+            "inputData": {
+                "recipeObject":"{{props.recipeObject}}"
+            },
+            "deps": "js/AwDiscoveryRecipeChipsUtils"
+        },
+        "clearAllConfirmationMessage": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {}
+                ]
+            },
+            "actionMessages": {
+                "success": [ {
+                    "message": "clearAllMessage"
+                } ]
+            }
+        },
+        "batchActionOnChipBuild":{
+            "actionType": "batchJob",
+            "steps":[
+                {
+                    "action":"buildRecipeChips"
+                },
+                {
+                    "action":"calculateOverflow"
+                }
+            ]
+        },
+        "unMount": {
+            "actionType": "JSFunction",
+            "method": "unMount",
+            "inputData": {
+            },
+            "deps": "js/AwDiscoveryRecipeChipsService"
+        }
+    },
+    "data": {
+        "recipeChips": [],
+        "displayRecipeChips": [],
+        "chipsModel": [],
+        "displayOverflowButton": "",
+        "clearAllDisplayName": "",
+        "visibleHeightChipArea":"",
+        "visibleChipArea": "",
+        "searchFilterCategoryExpandMore":"{{i18n.searchFilterCategoryExpandMore}}",
+        "overflowConfig": {
+            "overflownChips": [],
+            "hideMore": true
+        },
+        "clearAll": {
+            "displayName": "{{i18n.clear}}",
+            "type": "STRING",
+            "uiValue": "{{i18n.clear}}",
+            "isRequired": "false"
+        }
+    },
+    "conditions": {
+        "shouldShowFilterChips": {
+            "expression": "data.recipeChips && data.recipeChips.length > 0"
+        },
+        "shouldEnableChips":{
+            "expression": "props.enableChips"
+        }
+    },
+    "messages": {
+        "clearAllMessage": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.confirmClearAllMsg}}",
+            "messageTextParams": [],
+            "navigationOptions": [ {
+                    "option": "cancel",
+                    "text": "{{i18n.CancelText}}",
+                    "action": ""
+                },
+                {
+                    "option": "clear",
+                    "text": "{{i18n.ClearText}}",
+                    "action": "clearRecipe"
+                }
+            ]
+        }
+    },
+    "onEvent": [
+    ],
+    "i18n": {
+        "ClearText": [
+            "OccurrenceManagementSubsetConstants"
+        ],
+        "CancelText": [
+            "OccurrenceManagementSubsetConstants"
+        ],
+        "confirmClearAllMsg": [
+            "OccurrenceManagementSubsetConstants"
+        ],
+        "searchFilterCategoryExpandMore": ["SearchCoreMessages"]
+    },
+    "lifecycleHooks": {
+        "render": "render",
+        "onUpdate": [
+            {
+                "action": "batchActionOnChipBuild",
+                "observers": [ "props.recipeObject.recipe" ]
+            }
+        ],
+        "onMount": "attachResizeObserver",
+        "onUnmount": "unMount"
+
+    },
+    "props": {
+
+
+
+        "recipe-object":{
+            "type": "object"
+        },
+        "enable-chips" :{
+            "type": "object"
+        }
+    }
+}

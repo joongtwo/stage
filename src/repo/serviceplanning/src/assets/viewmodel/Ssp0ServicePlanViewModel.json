@@ -1,0 +1,77 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "listenPartsViewersId": {
+            "syncObject": {},
+            "onChangeAction": "listenPartsViewersAction"
+        }
+    },
+    "actions": {
+        "listenPartsViewersAction": {
+            "actionType": "JSFunction",
+            "method": "updateVisViewerInstanceId",
+            "inputData": {
+                "syncObject": "{{ports.listenPartsViewersId.syncObject}}",
+                "data": "{{data}}",
+                "viewerId": "PartsViewer"
+            },
+            "deps": "js/ssp0VisViewerUtilityService"
+        },
+        "clearPartsViewer": {
+            "actionType": "JSFunction",
+            "method": "clearPartsViewer",
+            "deps": "js/ssp0GraphicsUtilityService"
+        },
+        "handleSelectionChange": {
+            "actionType": "JSFunction",
+            "method": "handleSelectionChange",
+            "inputData": {
+                "selectedObjects": "{{ctx.selectedVMO}}"
+            },
+            "deps": "js/ssp0SelectionSyncService"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "handleSelectionChange",
+                "observers": [
+                    "ctx.selectedVMO"
+                ]
+            }
+        ],
+        "onMount": "clearPartsViewer"
+    },
+    "data": {
+        "visContext": {},
+        "selectionDataForSummary": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "context": {
+            "pageContext": {
+                "sublocationState": {
+                    "value": {},
+                    "secondaryActiveTabId": "3D"
+                }
+            }
+        },
+        "tabModelsWithPanelId": {
+            "isArray": true,
+            "dbValue": [
+                {
+                    "name": "Parts",
+                    "panelId": "Ssp0Parts"
+                },
+                {
+                    "name": "Tools",
+                    "panelId": "Ssp0Tools"
+                },
+                {
+                    "name": "Skills & Qualifications",
+                    "panelId": "Ssp0Skills"
+                }
+            ]
+        }
+    }
+}

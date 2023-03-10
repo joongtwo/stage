@@ -1,0 +1,144 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpBalancingOperationsSequence_inputObject": {
+            "onChangeAction": "saveInputToData",
+            "syncObject": {}
+        }
+    },
+    "actions" : {
+        "saveInputToData": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "prepareListOfProcessResources",
+                    "condition": "ports.EpBalancingOperationsSequence_inputObject.syncObject.station"
+                },
+                {
+                    "action": "prepareListOfProcessResourcesFromSubPanelContextData",
+                    "condition": "!ports.EpBalancingOperationsSequence_inputObject.syncObject.station"
+                },
+                {
+                    "action": "setStation",
+                    "condition": "ports.EpBalancingOperationsSequence_inputObject.syncObject.station"
+                },
+                {
+                    "action": "setStationFromSubPanelContextData",
+                    "condition": "!ports.EpBalancingOperationsSequence_inputObject.syncObject.station"
+                },
+                {
+                    "action":"updateCommandContext"
+                }
+            ]
+        },
+        "setStation": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{ports.EpBalancingOperationsSequence_inputObject.syncObject.station}}"
+            },
+            "outputData": {
+                "station": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setStationFromSubPanelContextData": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{subPanelContext.sharedSelectionData.stationAndPrSelection.station}}"
+            },
+            "outputData": {
+                "station": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "prepareListOfProcessResources": {
+            "actionType": "JSFunction",
+            "method": "prepareListOfProcessResources",
+            "inputData": {
+                "station": "{{ports.EpBalancingOperationsSequence_inputObject.syncObject.station}}",
+                "pr": "{{ports.EpBalancingOperationsSequence_inputObject.syncObject.pr}}"
+            },
+            "outputData": {
+                "processResources": ""
+            },
+            "deps": "js/epBalancingService"
+        },
+        "prepareListOfProcessResourcesFromSubPanelContextData": {
+            "actionType": "JSFunction",
+            "method": "prepareListOfProcessResources",
+            "inputData": {
+                "station": "{{subPanelContext.sharedSelectionData.stationAndPrSelection.station}}",
+                "pr": "{{subPanelContext.sharedSelectionData.stationAndPrSelection.pr}}"
+            },
+            "outputData": {
+                "processResources": ""
+            },
+            "deps": "js/epBalancingService"
+        },
+        "updateCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "contextObject": "{{data.station}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "render":{
+            "method": "epBalancingOperationSequenceRender",
+            "deps": "js/epBalancingOperationSequenceService",
+            "options": {
+                "elementRefList": [
+                    "root"
+                ]
+            }
+        },
+        "initialize": {
+            "actionType": "JSFunction",
+            "method": "initialize",
+            "inputData": {
+                "elementRefList": "{{parameters.elementRefList}}"
+            },
+            "deps": "js/epBalancingOperationSequenceService"
+        },
+        "handleInit": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initialize"
+                },
+                {
+                    "action": "saveInputToData"
+                }
+            ]
+        },
+        "destroy": {
+            "actionType": "JSFunction",
+            "method": "destroy",
+            "deps": "js/epBalancingOperationSequenceService"
+        }
+    },
+    "data": {
+        "processResources": [],
+        "size": {
+            "initialValues": {
+                "width": ""
+            },
+            "meta": {}
+        }
+    },
+    "lifecycleHooks": {
+        "render": "render",
+        "onMount": "handleInit",
+        "onUnmount": "destroy"
+    }
+}

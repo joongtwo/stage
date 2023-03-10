@@ -1,0 +1,22 @@
+<aw-panel-body class="aw-clsadmin-nodes">
+    <div class="sw-row">
+        <div class="sw-column w-12">
+            <aw-panel-section caption="{{i18n.propertiesTitle}}" visible-when="data.currentSecData.length > 0"
+                collapsed="false">
+                <aw-widget prop="item" aw-repeat="item : data.currentSecData"></aw-widget>
+            </aw-panel-section>
+            <aw-panel-section caption="{{i18n.parent}}" visible-when="data.parentProp.length > 0" collapsed="false">
+                <aw-widget prop="item" aw-repeat="item : data.parentProp"></aw-widget>
+            </aw-panel-section>
+            <aw-panel-section caption="{{i18n.applicationClass}}" visible-when="data.appClassProp.length > 0"
+                collapsed="false">
+                <aw-widget prop="item" aw-repeat="item : data.appClassProp"></aw-widget>
+            </aw-panel-section>
+        </div>
+        <div class="sw-column w-12" exist-when="data.hasImages === true">
+            <aw-command-panel-section caption="i18n.preview">
+                <aw-universal-viewer sub-panel-context="data.selectedUid" enable-multiple-files-per-dataset="true"></aw-universal-viewer>
+            </aw-command-panel-section>
+        </div>
+    </div>
+</aw-panel-body>

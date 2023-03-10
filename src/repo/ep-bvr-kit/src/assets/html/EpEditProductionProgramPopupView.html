@@ -1,0 +1,15 @@
+<aw-panel aw-class="['aw-productionProgram-popupContent']">
+    <aw-panel-body>
+        <mfe-content-container container-direction="HORIZONTAL" class="h-12"container-name="ProductionProgramPopup">
+            <mfe-content-container container-direction="HORIZONTAL" class="w-5" container-name="ProductionProgramPopupInformation">
+                <mfe-content-panel sub-panel-context="data.overviewConfig"></mfe-content-panel>
+            </mfe-content-container>
+            <mfe-content-container container-direction="HORIZONTAL" class="w-7" container-name="ProductionProgramPopupPVs">
+                <mfe-content-panel sub-panel-context="data.productVariantsTabConfig"></mfe-content-panel>
+            </mfe-content-container>
+        </mfe-content-container>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="closePopupWindow" size="auto">{{i18n.close}}</aw-button>
+    </aw-panel-footer>
+</aw-panel>

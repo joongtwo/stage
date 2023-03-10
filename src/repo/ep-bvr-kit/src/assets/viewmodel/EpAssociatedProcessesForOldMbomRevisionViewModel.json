@@ -1,0 +1,180 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "current-processes": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "selectProcessToOpenInWIAuthorMessage": {
+            "text": "{{i18n.selectProcessToOpenInWIAuthorMessage}}",
+            "params": [
+                "{{props.currentProcesses.contextObject.props.object_string.dbValues[0]}}"
+            ]
+        },
+        "selectProcessToOpenInAssemblyPlanningMessage": {
+            "text": "{{i18n.selectProcessToOpenInAssemblyPlanningMessage}}",
+            "params": [
+                "{{props.currentProcesses.contextObject.props.object_string.dbValues}}"
+            ]
+        }
+    },
+    "grids": {
+        "oldRevisionassociatedProcessesTable": {
+            "dataProvider": "oldRevisionassociatedProcessesTableDataProvider",
+            "columnProvider": "oldRevisionassociatedProcessesTableColumnProvider",
+            "addIconColumn": true,
+            "gridOptions": {
+                "enablePinning": true,
+                "enableSorting": false
+            }
+        }
+    },
+    "dataProviders": {
+        "oldRevisionassociatedProcessesTableDataProvider": {
+            "initializeAction": "initialLoadData",
+            "response": "{{data.response.processes}}",
+            "totalFound": "{{data.response.totalFound}}"
+        }
+    },
+    "columnProviders": {
+        "oldRevisionassociatedProcessesTableColumnProvider": {
+            "loadColumnAction": "createColumns"
+        }
+    },
+    "actions": {
+        "createColumns": {
+            "actionType": "JSFunction",
+            "method": "createColumns",
+            "inputData": {
+                "preferenceValues": "EP_OpenInDetailedPlanningPageProcessTableColumnConfiguration",
+                "dataProvider": "{{data.dataProviders.oldRevisionassociatedProcessesTableDataProvider}}"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "closePopup": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupEl": "{{data.associatedProcessesForMbomNodePopupId}}",
+                "targetEvent": "{{$event}}"
+            },
+            "deps": "js/popupService"
+        },
+        "initialLoadData": {
+            "actionType": "JSFunctionAsync",
+            "method": "initialLoadData",
+            "inputData": {
+                "processes": "{{props.currentProcesses.currentRevisionProcesses}}"
+            },
+            "outputData": {
+                "response": ""
+            },
+            "deps": "js/associatedProcessesForMbomNodeService"
+        },
+
+        "openProcessInSelectedPage": {
+            "actionType": "JSFunction",
+            "method": "navigate",
+            "deps": "js/navigationService",
+            "inputData": {
+                "action": {
+                    "actionType": "Navigate",
+                    "navigateTo": "{{props.currentProcesses.navigatePageToSelectedProcess}}"
+                },
+                "navigationParams": {
+                    "uid": "{{data.dataProviders.oldRevisionassociatedProcessesTableDataProvider.selectedObjects[0].uid}}",
+                    "mcn": "{{ctx.state.params.mcn}}",
+                    "impacting_cn": "{{ctx.state.params.tracking_cn}}",
+                    "tracking_cn": "{{ctx.state.params.tracking_cn}}",
+                    "ebomPCI": "{{ctx.epPageContext.ebomPCI.uid}}",
+                    "mbomPCI": "{{ctx.epPageContext.mbomPCI.uid}}",
+                    "processPCI": "{{ctx.epPageContext.processPCI.uid}}",
+                    "productPCI": "{{ctx.epPageContext.productPCI.uid}}",
+                    "productionProgramPCI": "{{ctx.epPageContext.productionProgramPCI.uid}}",
+                    "plantPCI": "{{ctx.epPageContext.plantPCI.uid}}",
+                    "functionalPlanPCI": "{{ctx.epPageContext.functionalPlanPCI.uid}}"
+                }
+            }
+        },
+        
+        "openProcessInAssemblyPlanningOrWIAuthoring": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "openProcessInSelectedPage"
+                },
+                {
+                    "action": "closePopup"
+                }
+            ]
+        },
+        "selectDefaultProcess": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.oldRevisionassociatedProcessesTableDataProvider}}",
+                "objectsToSelect": "{{data.dataProviders.oldRevisionassociatedProcessesTableDataProvider.viewModelCollection.loadedVMObjects[0]}}"
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "refreshAndLinkProcessToCurrentRevisionMBOM":{
+            "actionType": "JSFunction",
+            "method": "addNewObjectsToDataProvider",
+            "inputData": {
+                "nodeObjectUid": ["{{parameters.eventData.eventData}}"],
+                "dataProvider":"{{data.dataProviders.oldRevisionassociatedProcessesTableDataProvider}}",
+                "selectNewOnject":false
+            },
+            "deps": "js/epTableService"
+        }
+    },
+    "conditions": {
+        "hasProcessSelection": {
+                "expression": {
+                    "$source": "data.dataProviders.oldRevisionassociatedProcessesTableDataProvider.selectedObjects.length",
+                    "$query": {
+                        "$gt": 0
+                    }
+                }
+        },
+        
+        "hasCurrentRevisionData": {
+            "expression": "data.dataProviders.oldRevisionassociatedProcessesTableDataProvider.viewModelCollection.loadedVMObjects.length > 0"
+        }
+    },
+    "i18n": {
+        "cancelButtonLabel": [
+            "navigationMessages"
+        ],
+        "openButtonLabel": [
+            "navigationMessages"
+        ],
+        "selectProcessToOpenInWIAuthorMessage": [
+            "navigationMessages"
+        ],
+        "selectProcessToOpenInAssemblyPlanningMessage": [
+            "navigationMessages"
+        ],
+        "errorMessageForCurrentProcess":[
+            "navigationMessages"
+        ]
+    },
+    "onEvent": [
+        {
+            "eventId": "aw.closePopup",
+            "action": "closePopup"
+        },
+        {
+            "eventId": "oldRevisionassociatedProcessesTableDataProvider.modelObjectsUpdated",
+            "action": "selectDefaultProcess"
+        },
+        {
+            "eventId": "ep.associatedProcess",
+            "action": "refreshAndLinkProcessToCurrentRevisionMBOM",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        }
+    ]
+}

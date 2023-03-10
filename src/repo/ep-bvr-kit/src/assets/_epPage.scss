@@ -1,0 +1,238 @@
+// Copyright 2020 Siemens Product Lifecycle Management Software Inc.
+
+.aw-epHeader-separator.aw-vertical-separator {
+    height: rem-calc(24);
+    margin-right: $margin_normal;
+    margin-left: $margin_normal;
+}
+
+.aw-epHeader-unitTitle {
+    display: flex;
+    align-items: center;
+}
+
+.aw-epHeader-unitTitleBox {
+    display: -webkit-box;
+}
+
+.aw-epHeader-indicatorChip {
+    width: rem-calc(20);
+    height: rem-calc(20);
+}
+
+.aw-epHeader-container {
+    flex: 0 0 auto;
+    height: rem-calc(96);
+}
+
+.aw-epHeader-taskContainer {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.aw-epHeader-additionsContainer {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    margin-left: rem-calc(32);
+}
+
+@mixin aw-epHeader-title() {
+    font-size: $fontsize_2x_large;
+    font-weight: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width: rem-calc(150);
+}
+
+.aw-ep-taskHeaderSubTitle {
+    font-size: $fontsize_2x_large;
+    font-weight: normal;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.aw-ep-taskHeaderTitle {
+    font-size: $fontsize_2x_large;
+    font-weight: normal;
+
+    .aw-commandIcon {
+        height: rem-calc(36);
+        align-self: center;
+        margin-right: rem-calc(8);
+    }
+}
+
+.aw-base-icon.aw-epHeader-icon {
+    margin-right: rem-calc(8);
+    height: rem-calc(24);
+    width: rem-calc(24);
+    max-height: rem-calc(24);
+    max-width: rem-calc(24);
+    min-height: rem-calc(24);
+    min-width: rem-calc(24);
+}
+
+.aw-epHeader-workpackageLink {
+    margin-top: rem-calc(1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    &.aw-link.aw-base-normal a {
+        font-size: $fontsize_2x_large;
+        font-weight: normal;
+        white-space: nowrap;
+        border-width: 0;
+    }
+}
+
+.aw-epAuthorPlant-wpLinkFontSize {
+    font-size: $fontsize_normal;
+}
+
+.aw-ep-headerLoading {
+    .aw-mfe-messageLine {
+        font-size: $fontsize_2x_large;
+        font-weight: normal;
+    }
+}
+
+// ========= Open EP Tasks Group Command on Header =========
+div[anchor='epTasks_uiAnchor'] {
+    button.aw-commands-commandIconButton.aw-commands-command.aw-commandId-openEpTasksCommand.aw-commands-commandWrapperHorizontal {
+        @include flexbox();
+        @include align-self(center);
+        max-width: max-content;
+        width: max-content;
+        height: rem-calc(65);
+
+        .aw-commands-showIconLabel.aw-commands-commandIconButtonText {
+            @include align-self(center);
+            font-size: $fontsize_2x_large;
+            max-width: max-content;
+            width: auto;
+
+        }
+
+        .aw-commandIcon.aw-widgets-groupCommand {
+            @include flexbox();
+            @include align-self(center);
+            margin-right: rem-calc(8);
+
+            .aw-commands-svg {
+                margin-top: rem-calc(22);
+            }
+        }
+
+        .aw-commands-svg {
+            width: auto;
+            height: auto;
+
+            svg {
+                height: rem-calc(36);
+                width: rem-calc(36);
+            }
+        }
+
+        .aw-widgets-groupCommandStack {
+            position: relative;
+            bottom: rem-calc(12);
+        }
+    }
+}
+
+// =========  To be used by Task commands shown inside Popups =========
+li[command-id$="TaskSwitcherCommand"].aw-widgets-cellListItem {
+    margin: 0;
+    padding-right: rem-calc(16);
+}
+
+li[command-id$="TaskSwitcherCommand"] {
+    .aw-popup-cellContentContainer {
+        @include flexbox();
+        font-weight: 400;
+        font-size: rem-calc(16);
+
+        .aw-widget-thumbnail {
+            width: rem-calc(48);
+            height: rem-calc(48);
+            padding: rem-calc(5);
+            margin-right: rem-calc(20);
+
+            svg {
+                min-height: rem-calc(38);
+                min-width: rem-calc(38);
+                margin: 0;
+            }
+        }
+    }
+
+    &.aw-widgets-cellListItem.aw-state-selected .aw-widget-thumbnail {
+        background: none;
+    }
+}
+
+.aw-ep-ManagePageTask {
+    .aw-command-bar:not(.aw-layout-userSessionCommands).aw-commands-commandBarVertical {
+        width: 100%;
+
+        .aw-commands-wrapper {
+            padding: 8px rem-calc(16);
+
+            .aw-commands-commandIconButton {
+                width: 100%;
+                max-height: rem-calc(80);
+                border-width: rem-calc(1);
+                border-style: solid;
+
+                .aw-commands-svg {
+                    height: rem-calc(48);
+                    width: rem-calc(48);
+                }
+
+                &.disabled {
+                    opacity: unset;
+
+                    .aw-commandIcon {
+                        opacity: 0.2;
+                    }
+
+                    .aw-commands-commandIconButtonText {
+                        opacity: 0.45;
+                    }
+                }
+            }
+        }
+
+        .aw-command {
+            @include flexbox();
+            @include flex-direction(row);
+            @include justify-content(flex-start);
+            margin-bottom: $margin_large;
+            height: rem-calc(80);
+            align-content: center;
+
+            button {
+                @include flexbox();
+                align-items: center;
+            }
+
+            .aw-commandIcon {
+                margin-right: rem-calc(16);
+                margin-left: rem-calc(16);
+                margin-top: rem-calc(10);
+            }
+
+            .aw-commands-commandIconButtonText {
+                font-weight: $bold_font_weight;
+                font-size: $fontsize_large;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+}

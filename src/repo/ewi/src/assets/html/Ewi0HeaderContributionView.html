@@ -1,0 +1,18 @@
+
+<aw-header-contribution exist-when="conditions.showOperatorSelection">
+    <ewi0-operator-context></ewi0-operator-context>
+</aw-header-contribution>
+
+<div id="ewi-header-panel">
+    <aw-header-contribution class="aw-ewi-headerCollapse">
+        <aw-property-label prop="data.overview"></aw-property-label>
+    </aw-header-contribution>
+</div>
+
+<div class="aw-ewi-headerWrapper" >
+    <aw-header-contribution aw-repeat="result : data.headerProperties">
+        <!-- Header Properties -->
+        <aw-property-label prop="result"></aw-property-label>
+        <aw-property-non-edit-val prop="result"></aw-property-non-edit-val>
+    </aw-header-contribution>
+</div>

@@ -1,0 +1,61 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "activitiesModel": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "actions": {
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "conditions": {
+        "isProcessActivities": {
+            "expression": {
+                "$and": [
+                    {
+                        "$source": "ctx.preferences.EP_TimeAnalysisMode",
+                        "$query": {
+                            "$notNull": true
+                        }
+                    },
+                    {
+                        "$source": "ctx.preferences.EP_TimeAnalysisMode[0]",
+                        "$query": {
+                            "$eq": "CLASSIC_ACTIVITIES"
+                        }
+                    }
+                ]
+            }
+        },
+        "hasSelection": {
+            "expression": "data.activitiesModel.selectedModelObject && data.activitiesModel.selectedModelObject.uid"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getValueInViewModel"
+    },
+    "i18n": {
+        "processDisplayName": [
+            "ActivitiesMessages"
+        ],
+        "operationDisplayName": [
+            "ActivitiesMessages"
+        ]
+    }
+}

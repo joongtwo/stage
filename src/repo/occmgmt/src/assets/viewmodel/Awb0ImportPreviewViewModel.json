@@ -1,0 +1,91 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-sublocation.directive",
+        "js/aw-native-sublocation.directive"
+    ],
+    "actions": {
+        "launchImportPanel": {
+            "actionType": "JSFunction",
+            "method": "launchImportPanelInPreview",
+            "deps": "js/importPreviewService",
+            "inputData": {
+                "commandId": "Awb0ImportFromExcel",
+                "location": "aw_toolsAndInfo"
+            }
+        },
+        "navigateToBack": {
+            "actionType": "JSFunction",
+            "method": "goBack",
+            "deps": "js/locationNavigation.service"
+        },
+        "cleanupPreviewVariablesFromCtx": {
+            "actionType": "JSFunction",
+            "method": "cleanupPreviewVariablesFromCtx",
+            "deps": "js/importPreviewService"
+        }
+    },
+    "data": {
+        "provider": {
+            "breadcrumbConfig": {
+                "noBreadCrumb": "true",
+                "noCriteriaSpecifiedMessage": {
+                    "key": "noCriteriaSpecifiedMessageForNoBreadCrumb",
+                    "source": "OccmgmtImportExportConstants"
+                },
+                "noResultsFoundMessage": {
+                    "key": "",
+                    "source": ""
+                },
+                "resultsFoundMessage": {
+                    "key": "",
+                    "source": ""
+                }
+            },
+            "viewKey": "IFEContext",
+            "name": "com.siemens.splm.client.Awb0ImportPreview:importPreviewSublocation",
+            "label": {
+                "source": "/i18n/OccmgmtImportExportConstants",
+                "key": "previewSubLocationTitle"
+            },
+            "clientScopeURI": "Awb0ImportPreview",
+            "nameToken": "com.siemens.splm.client.Awb0ImportPreview:importPreviewSublocation",
+            "policy": "/policies/occMgmtPropertyPolicy.json",
+            "viewBase": "Awb0ImportPreview",
+            "selectionQueryParamKey": "c_uid",
+            "contextKey": "IFEContext",
+            "defaultDisplayMode": "TreeView",
+            "viewModes": {
+                "TreeView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": false
+                }
+            },
+            "awSubLocationPref": {
+                "hideNavigationArea": false,
+                "hideRightWall": true,
+                "hideFooter": false
+            }
+        },
+        "modelObject": "ctx.modelObjectsToOpen[0]",
+        "importBOMMOde": ""
+    },
+    "lifecycleHooks": {
+        "onUnmount": "cleanupPreviewVariablesFromCtx"
+    },
+    "onEvent": [ {
+            "eventId": "importBOMPreview.navigateToBack",
+            "action": "navigateToBack"
+        },
+        {
+            "eventId": "importPreviewDataProvider.treeNodesLoaded",
+            "cacheEventData": true,
+            "action": "launchImportPanel"
+        },
+        {
+            "eventId": "importBOM.previewTreeLoadFailure",
+            "cacheEventData": true,
+            "action": "launchImportPanel"
+        }
+    ]
+}

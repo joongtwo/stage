@@ -1,0 +1,520 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+        "visibleTabs": "new,palette,search",
+        "isIncludeSubTypes": "true",
+        "numberOfElements": {
+            "displayName":  "{{i18n.Pm1NumberOfElements}}",
+            "type": "INTEGER",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": 1,
+            "dispValue": 1,
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "allowedTypeInfo":
+        {
+            "objectTypeName":"{{ctx.PartMfg.resourceTypesForAdd}}",
+            "searchTypeName":"ItemRevision",
+            "preferredType":"Mfg0MEResource",
+            "allowedTabs":"new,palette,search"
+        },
+        "triggerCreate": {
+            "dbValue": false,
+            "type": "BOOLEAN"
+        },
+        "addPanelState": {
+            "initialValues": {
+                "creationType": "",
+                "createdObject": "",
+                "sourceObjects": "",
+                "selectedTab": ""
+            },
+            "meta": {}
+        },
+        "activeState": {
+            "initialValues": {
+                "activeView": "AddObjectPrimarySub",
+                "context": {}
+            },
+            "meta": {}
+        },
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        },
+        "projectState": {
+            "initialValues": {
+                "selectedProjects": [],
+                "triggerAssign": false
+            },
+            "meta": {
+                "selectedProjects": {
+                    "field": "true",
+                    "type": "OBJECT"
+                },
+                "triggerAssign": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initialize",
+        "onUpdate": {
+            "action": "performPostProcessingAfterCreate",
+            "observers": [ "viewModel.atomicData.addPanelState.createdObject" ]
+        }
+    },
+    "actions": {
+        "initialize": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "pmProcessAddElementInput"
+                }
+            ]
+        },
+        "pmProcessAddElementInput": {
+            "actionType": "JSFunction",
+            "method": "pmProcessAddElementInput",
+            "inputData": {},
+            "outputData": {},
+            "deps": "js/partMfgAddResourceService"
+        },
+        "resetNumberOfElementsToDefault": {
+            "actionType": "JSFunction",
+            "method": "resetNumberOfElements",
+            "inputData": {
+                "data": "{{data.numberOfElements}}"
+            },
+            "outputData": {},
+            "deps": "js/partMfgAddResourceService"
+        },
+
+        "createAndAddResource": {
+            "actionType": "JSFunction",
+            "method": "updateCreateTrigger",
+            "inputData": {
+                "triggerCreate": "{{data.triggerCreate}}",
+                "value": true
+            },
+            "outputData": {
+                "triggerCreate": "triggerCreate"
+            },
+            "deps": "js/addObjectUtils"
+        },
+
+        "newResourceCreatedPostProcessing": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                        "name": "addResource.addResourceToSelectedElement"
+                    },
+                    {
+                        "name": "awPanel.loadNextValues",
+                        "condition": "subPanelContext.panelPinned"
+                    }
+                ]
+            }
+        },
+
+        "addResources": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2019-06-OccurrenceManagement",
+            "method": "addObject2",
+            "inputData": {
+                "input": {
+                    "objectsToBeAdded": "{{function:getElementsToAdd}}",
+                    "parentElement": "{{ctx.PartMfg.parentElement}}",
+                    "inputCtxt": {
+                        "productContext": "{{ctx.PartMfg.productContext}}"
+                    },
+                    "addObjectIntent": "{{ctx.PartMfg.addElement.addObjectIntent}}",
+                    "fetchPagedOccurrences": "{{ctx.PartMfg.addElement.fetchPagedOccurrences}}",
+                    "requestPref": {
+                        "displayMode": [ "Tree" ]
+                    },
+                    "numberOfElements": "{{data.numberOfElements.dbValue}}"
+                }
+            },
+            "outputData": {
+                "addElementResponse": "",
+                "totalObjectsAdded": "result.selectedNewElementInfo.newElements.length"
+            },
+            "events": {
+                "success": [ {
+                        "name": "addElement.clearCreatedElementField"
+                    },
+                    {
+                        "name": "addElement.elementsAdded",
+                        "eventData": {
+                            "objectsToSelect": "{{function:getNewlyAddedChildElements}}",
+                            "addElementResponse": "{{data.addElementResponse}}"
+                        },
+                        "condition": "_internal.conditionStates.areNewElementsAdded"
+                    },
+                    {
+                        "name": "Pm1.setDefaultOccTypeOnElements",
+                        "eventData": {
+                            "newElements": "{{function:getNewlyAddedChildElements}}"
+                        }
+                    }
+                ],
+                "failure": [ {
+                        "name": "addElement.clearCreatedElementField"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [ {
+                        "message": "newElementAddSuccessfulMessage",
+                        "condition": "addPanelState.createdObject && addPanelState.createdObject.props"
+                    },
+                    {
+                        "message": "oneCopiedElementAddSuccessfulMessage",
+                        "condition": "data.createdObject && data.createdObject.length === 1"
+                    },
+                    {
+                        "message": "existingElementAddSuccessfulMessage",
+                        "condition": "addPanelState.sourceObjects.length == 1 && !addPanelState.createdObject"
+                    },
+                    {
+                        "message": "elementsPartiallyAddedMessage",
+                        "condition": "addPanelState.sourceObjects.length > 1"
+                    }
+                ],
+                "failure": [ {
+                    "message": "elementsPartiallyAddedMessage",
+                    "condition": "_internal.conditionStates.areNewElementsAdded"
+                } ]
+            },
+            "deps": "js/partMfgAddResourceService"
+        },
+
+        "geResourcePropertiesToCopy": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2011-06-OperationDescriptor",
+            "method": "getSaveAsDesc",
+            "inputData": {
+                "targetObjects": "{{function:setUnderlyingObjectsOfSourceObjectsAndReturn}}"
+            },
+            "outputData": {
+                "deepCopyInfoMap": "deepCopyInfoMap"
+            },
+            "events": {
+                "success": [ {
+                    "name": "addResource.gotPropertiesThatCouldCopy"
+                } ]
+            },
+            "deps": "js/partMfgAddResourceService"
+        },
+
+        "createSaveAsInput": {
+            "actionType": "JSFunction",
+            "method": "createSaveAsInput",
+            "inputData": {
+                "recentTypeName": "{{data}}"
+            },
+            "outputData": {},
+            "deps": "js/partMfgAddResourceService"
+        },
+
+        "saveAs": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2012-09-DataManagement",
+            "method": "saveAsObjectAndRelate",
+            "inputData": {
+                "relateInfo": "{{data.saveAs.relateInfo}}",
+                "saveAsInput": "{{data.saveAs.saveAsInput}}"
+            },
+            "outputData": {
+                "createdObject": "{{function:getCreatedObjects}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "addResource.addResourceToSelectedElement"
+                } ],
+                "failure": [ {
+                    "name": "addResource.addResourceToSelectedElement",
+                    "condition": "data.createdObject"
+                } ]
+            },
+            "deps": "js/addObjectUtils"
+        },
+
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "condition": "!data._internal.isDestroyed && (!conditions.isPanelPinned || conditions.isPwaSelectionChanged)",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+
+        "clearCreatedElementField": {
+            "actionType": "JSFunction",
+            "method": "clearCreatedElementField",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "addElement.closePanel"
+                } ]
+            },
+            "deps": "js/partMfgAddResourceService"
+        },
+
+        "setDefaultOccTypeOnElements": {
+            "actionType": "JSFunctionAsync",
+            "method": "setDefaultOccTypeOnElements",
+            "inputData": {
+                "newElements": "{{data.eventData.newElements}}",
+                "searchState": "{{props.subPanelContext.searchState}}"
+            },
+            "deps": "js/partMfgAddResourceService"
+        },
+        "performPostProcessingAfterCreate": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "newResourceCreatedPostProcessing",
+                    "condition": "addPanelState.createdObject"
+                }
+            ]
+        },
+        "setActiveView":{
+            "actionType": "JSFunction",
+            "method": "resetActiveView",
+            "inputData": {
+                "stateName": "{{data.activeState}}",
+                "destPanelId": "AddObjectPrimarySub"
+            },
+            "outputData": {
+                "activeState": ""
+            },
+            "deps": "js/addObjectUtils"
+        }
+    },
+
+    "messages": {
+        "oneCopiedElementAddSuccessfulMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Pm1ElementAddSuccessful}}",
+            "messageTextParams": [
+                "{{addPanelState.createdObject.props.object_string.uiValues[0]}}",
+                "{{ctx.PartMfg.addElement.parent.props.object_string.dbValues[0]}}"
+            ]
+        },
+
+        "newElementAddSuccessfulMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Pm1ElementAddSuccessful}}",
+            "messageTextParams": [
+                "{{addPanelState.createdObject.props.object_string.uiValues[0]}}",
+                "{{ctx.PartMfg.addElement.parent.props.object_string.dbValues[0]}}"
+            ]
+        },
+
+        "existingElementAddSuccessfulMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Pm1ElementAddSuccessful}}",
+            "messageTextParams": [
+                "{{addPanelState.sourceObjects[0].props.object_string.uiValues[0]}}",
+                "{{ctx.PartMfg.addElement.parent.props.object_string.dbValues[0]}}"
+            ]
+        },
+
+        "elementsPartiallyAddedMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Pm1MultipleElementAddSuccessful}}",
+            "messageTextParams": [
+                "{{data.totalObjectsAdded}}",
+                "{{ctx.PartMfg.addElement.parent.props.object_string.dbValues[0]}}"
+            ]
+        }
+    },
+    "onEvent": [ {
+            "eventId": "addResource.addResourceToSelectedElement",
+            "action": "addResources"
+        },
+        {
+            "eventId": "awTab.selected",
+            "action": "resetNumberOfElementsToDefault"
+        },
+
+        {
+            "eventId": "getRecentObjsProvider.selectionChangeEvent",
+            "action": "resetNumberOfElementsToDefault"
+        },
+        {
+            "eventId": "performSearch.selectionChangeEvent",
+            "action": "resetNumberOfElementsToDefault"
+        },
+
+        {
+            "eventId": "getClipboardProvider.selectionChangeEvent",
+            "action": "resetNumberOfElementsToDefault"
+        },
+
+        {
+            "eventId": "getFavoriteProvider.selectionChangeEvent",
+            "action": "resetNumberOfElementsToDefault"
+        },
+        {
+            "eventId": "addObject.addOprfailed",
+            "action": "closePanel"
+        },
+        {
+            "eventId": "appCtx.register",
+            "condition": "conditions.isSelectionChangeEventTriggered",
+            "action": "closePanel"
+        },
+        {
+            "eventId": "addResource.gotPropertiesThatCouldCopy",
+            "action": "createSaveAsInput"
+        },
+        {
+            "eventId": "addResource.saveAsInputCreated",
+            "action": "saveAs"
+        },
+        {
+            "eventId": "addElement.closePanel",
+            "action": "closePanel"
+        },
+        {
+            "eventId": "addElement.clearCreatedElementField",
+            "action": "clearCreatedElementField"
+        },
+        {
+            "eventId": "Pm1.setDefaultOccTypeOnElements",
+            "cacheEventData": true,
+            "action": "setDefaultOccTypeOnElements"
+        }
+    ],
+    "conditions": {
+        "areNewElementsAdded": {
+            "expression": "data.totalObjectsAdded>0"
+        },
+        "onlyOneElementAdded": {
+            "expression": "data.addElementResponse.selectedNewElementInfo.newElements.length === 1"
+        },
+        "isPwaSelectionChanged": {
+            "expression": "ctx.PartMfg.addElement.previousSelectionUid !== ctx.selected.uid"
+        },
+        "isPanelPinned": {
+            "expression": "subPanelContext.panelPinned"
+        },
+        "isSelectionChangeEventTriggered": {
+            "expression": "name == 'selected'"
+        },
+        "isNewTabAddButtonVisible": {
+            "expression": "addPanelState.selectedTab.view==='NewTabPageSub' && addPanelState.creationType"
+        },
+        "isPaletteTabAddButtonVisible": {
+            "expression": "addPanelState.selectedTab.view==='PaletteTabPageSub' && addPanelState.sourceObjects.length > 0"
+        },
+        "isSearchTabAddButtonVisible": {
+            "expression": "addPanelState.selectedTab.tabKey==='search' && addPanelState.sourceObjects.length > 0"
+        },
+        "isTreeMode": {
+            "expression": "ctx.ViewModeContext && (ctx.ViewModeContext.ViewModeContext === 'TreeView' || ctx.ViewModeContext.ViewModeContext === 'TreeSummaryView')"
+        },
+        "areNumberOfElementsValid": {
+            "expression": "data.numberOfElements.dbValue>=1 && data.numberOfElements.dbValue<=10000"
+        },
+        "isSingleElementSelected": {
+            "expression": "(addPanelState.selectedTab.view==='PaletteTabPageSub' && addPanelState.sourceObjects.length === 1) || (addPanelState.selectedTab.tabKey==='search' && addPanelState.sourceObjects.length === 1 )"
+        },
+        "areMultipleElementSelected": {
+            "expression": "(addPanelState.selectedTab.view==='PaletteTabPageSub' && addPanelState.sourceObjects.length > 1) || (addPanelState.selectedTab.tabKey==='search' && addPanelState.sourceObjects.length > 1 )"
+        },
+        "isActiveStateAddPanel": {
+            "expression": "data.activeState.activeView ==='AddObjectPrimarySub'"
+        },
+        "hasAnySelection" : {
+            "expression": "addPanelState.sourceObjects && addPanelState.sourceObjects.length > 0"
+        }
+    },
+    "functions": {
+        "getCreateInput": {
+            "functionName": "getCreateInput",
+            "parameters": [
+                "{{data}}",
+                "",
+                "{{addPanelState.creationType}}",
+                "{{editHandlers.addPanelEditHandler}}"
+            ]
+        },
+        "setUnderlyingObjectsOfSourceObjectsAndReturn": {
+            "functionName": "setUnderlyingObjectsOfSourceObjectsAndReturn",
+            "parameters": [
+                "{{data}}",
+                "{{addPanelState.sourceObjects}}"
+            ]
+        },
+        "getElementsToAdd": {
+            "functionName": "getElementsToAdd",
+            "parameters": [
+                "{{data}}",
+                "{{addPanelState.createdObject}}",
+                "{{addPanelState.sourceObjects}}"
+            ]
+        },
+        "getNewlyAddedChildElements": {
+            "functionName": "getNewlyAddedChildElements",
+            "parameters": [ "{{data}}" ]
+        },
+        "shouldFetchColumnConfig": {
+            "functionName": "shouldFetchColumnConfig",
+            "parameters": []
+        }
+    },
+    "i18n": {
+        "Pm1AddElementBtn": [
+            "partmanufacturingMessages"
+        ],
+        "Pm1AddElementCopyButtonText": [
+            "partmanufacturingMessages"
+        ],
+        "Pm1ElementAddSuccessful": [
+            "partmanufacturingMessages"
+        ],
+        "Pm1ToTitle": [
+            "partmanufacturingMessages"
+        ],
+        "Pm1MultipleElementAddSuccessful": [
+            "partmanufacturingMessages"
+        ],
+        "Pm1NumberOfElements": [
+            "partmanufacturingMessages"
+        ]
+    },
+    "ctx": {
+        "PartMfg": {
+            "type": "Object"
+        }
+    }
+}

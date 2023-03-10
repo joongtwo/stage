@@ -1,0 +1,35 @@
+<div class="aw-base-scrollPanel aw-splm-table-overflow-visible" exist-when="!props.subPanelContext.context.contextKey || props.subPanelContext.context.contextKey==='occmgmtContext'">
+    <div class="sw-row" width="fill">
+        <div class="sw-column w-10 aw-occmgmt-whereUsedtrevrulelabel"  > 
+            <div class="sw-row" aw-class="{ 'disabled': !fields.configureStructureTopLevel.value }">
+                <div class="sw-column w-12">
+                    <aw-label prop="data.revisionRuleLabel" ></aw-label>
+                </div>
+            </div>
+            <aw-label prop="data.notUsedInAnyStructure" exist-when="conditions.isTableEmpty" class="aw-occmgmt-noDataFound"></aw-label>
+        </div>
+        <div class="sw-column w-2 aw-occmgmt-whereUsedtoggle">
+            <aw-togglebutton  class="aw-category-toggle" prop="data.configureStructureTopLevel" action='updateToggleLableAndReloadUsedInStructuresTopLevelGrid' visible-when="conditions.validateTCVersion"></aw-togglebutton>
+        </div>
+    </div>
+    <aw-splm-table  gridid="usedInStructuresTopLevelGrid" use-tree="false" show-check-box="dataProviders.usedInStructuresTopLevelDataProvider.selectionModel.isMultiSelectionEnabled()"></aw-splm-table>
+</div>
+
+
+<div class="aw-base-scrollPanel aw-splm-table-overflow-visible" exist-when="props.subPanelContext.context.contextKey==='occmgmtContext2'">
+    <div class="sw-row" width="fill">
+        <div class="sw-column w-10 aw-occmgmt-whereUsedtrevrulelabel" >
+            <div class="aw-row" aw-class="{ 'disabled': !fields.configureStructureTopLevel2.value }">
+                <div class="sw-column w-12">
+                    <aw-label prop="data.revisionRuleLabel" ></aw-label>
+                </div>
+            </div>
+            <aw-label prop="data.notUsedInAnyStructure" exist-when="conditions.isTableEmpty2" class="aw-occmgmt-noDataFound"></aw-label>
+        </div>
+        <div class="sw-column w-2 aw-occmgmt-whereUsedtoggle">
+            <aw-togglebutton  class="aw-category-toggle" prop="data.configureStructureTopLevel2" action='updateToggleLableAndReloadUsedInStructuresTopLevelGrid2' visible-when="conditions.validateTCVersion"></aw-togglebutton>
+        </div>
+    </div>
+    <aw-splm-table  gridid="usedInStructuresTopLevelGrid2" use-tree="false" show-check-box="dataProviders.usedInStructuresTopLevelDataProvider2.selectionModel.isMultiSelectionEnabled()"></aw-splm-table>
+</div>
+

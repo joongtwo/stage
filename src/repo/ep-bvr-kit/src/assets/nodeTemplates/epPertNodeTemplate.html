@@ -1,0 +1,62 @@
+<g xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="epPertNodeTemplate">
+    <g id="detailedNodeTemplate">
+        <g transform="translate(0 0)" node-id='{PropertyBinding("id")}' class="aw-epPert-detailedNode">
+            <rect transform="translate(0 0)" width='{SDFSizePropertyBinding("getWidthValue")}' height='106'
+                class='{SDFBooleanPropertyBinding("isSelected", "aw-epPert-selectedNode","aw-epPert-node")}'> </rect>
+            <image transform="translate(14 27)" width="48px" height="48px"
+                xlink:href='{PropertyBinding("nodeImageValue")}'></image>
+            <text class="aw-epPert-nodeTitle aw-graph-wordwrap" transform="translate(80 51)" data-width="100%-90"
+                data-property-name="nodeTitle">
+                {PropertyBinding("nodeTitle")}
+            </text>
+            <text class="aw-epPert-nodeSubtitle aw-graph-wordwrap" transform="translate(80 69)" data-width="100%-90"
+                data-property-name="nodeSubTitle">
+                {PropertyBinding("nodeSubTitle")}
+            </text>
+            <rect x="6" y="75" width="245" height="32" class="aw-epPert-indicationsRectangle"></rect>
+            <rect x="6" y="75" width="8" height="32" class="aw-epPert-indicationsRectangle"></rect>
+            <!-- Node commands -->
+            <g transform="translate(220 5)"
+                class='{BooleanPropertyBinding("isNodeHovered", "GC_COMMAND_CLASS", "GC_HIDDEN_CLASS")}'
+                data-command-id="epActionsMenuForPERTNodeCommand">
+                <title>{PropertyBinding("epActionsMenuForPERTNodeCommand_tooltip")}</title>
+                <rect transform="translate(0 0)" width="22px" height="22px" class='hidden'></rect>
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="22px"
+                    height="22px" data-sdf-content='{PropertyBinding("epActionsMenuForPERTNodeCommand_icon")}'></svg>
+                <rect transform="translate(0 0)" width="22px" height="22px" fill="transparent"></rect>
+            </g>
+            <g transform='{PropertyBinding("releaseImageTransformValue")}'>
+                <title>{PropertyBinding("releaseImageTooltip")}</title>
+                <image transform="translate(0 0)" width="18px" height="18px"
+                    xlink:href='{PropertyBinding("releaseImage")}'></image>
+            </g>
+            <g transform='{PropertyBinding("workflowImageTransformValue")}'>
+                <title>{PropertyBinding("workflowImageTooltip")}</title>
+                <image transform="translate(0 0)" width="18px" height="18px"
+                    xlink:href='{PropertyBinding("workflowImage")}'></image>
+            </g>
+            <g transform='{PropertyBinding("hasExternalPredecessorsValue")}'
+                class='{BooleanPropertyBinding("hasExternalPredecessors", "GC_COMMAND_CLASS", "GC_HIDDEN_CLASS")}'
+                data-command-id="selectExternalFlowsTabCommand">
+                <title>{PropertyBinding("hasExternalPredecessorsImageTooltip")}</title>
+                <image transform="translate(0 0)" width="18px" height="18px"
+                    xlink:href='{PropertyBinding("hasExternalPredecessors")}'></image>
+            </g>
+            <g transform='{PropertyBinding("hasExternalSuccessorsValue")}'
+                class='{BooleanPropertyBinding("hasExternalSuccessors", "GC_COMMAND_CLASS", "GC_HIDDEN_CLASS")}'
+                data-command-id="selectExternalFlowsTabCommand">
+                <title>{PropertyBinding("hasExternalSuccessorsImageTooltip")}</title>
+                <image transform="translate(0 0)" width="18px" height="18px"
+                    xlink:href='{PropertyBinding("hasExternalSuccessors")}'></image>
+            </g>
+            <rect transform="translate(0 0)" width='6' height='106' class='{PropertyBinding("nodeSidebarClass")}'>
+            </rect>
+            <!-- The border of the node -->
+            <rect transform="translate(0 0)" width='{SDFSizePropertyBinding("getWidthValue")}' height='106' fill="none"
+                class='{SDFBooleanPropertyBinding("isSelected", "aw-epPert-selectedNodeBorder","aw-epPert-nodeBorder")}'>
+            </rect>
+            <rect transform="translate(0 0)" width='{SDFSizePropertyBinding("getWidthValue")}' height='106' fill="none"
+                display='{PropertyBinding("nodeBorderClass")}' class="aw-epPert-highlightedNodeBorder"></rect>
+        </g>
+    </g>
+</g>

@@ -1,0 +1,648 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+    ],
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initializeClassificationTab",
+        "onUnmount": "clearSearchContext",
+        "onUpdate": [
+            {
+                "action": "handleClassificationSelectionBatchJob",
+                "observers": ["viewModel.atomicData.selectionData"]
+            },
+            {
+                "action": "handleObjectCreate",
+                "observers": [ "viewModel.subPanelContext.triggerCreate" ]
+            },
+            {
+                "action": "clsAddPanelTreeCheck",
+                "observers": ["viewModel.atomicData.treeSelectionData.selected"]
+            },
+            {
+                "action": "disableAddACopy",
+                "observers": [ "props.subPanelContext.addElementState.isCopyButtonEnabled" ]
+            },
+            {
+                "action": "buildTitle",
+                "observers": [ "viewModel.atomicData.searchStateForClsTree" ]
+            }
+        ]
+    },
+    "ctx": {
+        "clsLocation": {
+            "type": "object"
+        },
+        "clsTab": {
+            "type": "object"
+        },
+        "mselected": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "classifyPanelCommands" : "classify_panelCommands",
+        "creationRelation": {
+            "displayName": "{{i18n.relation}}",
+            "type": "STRING",
+            "hasLov": true,
+            "dataProvider": "getRelationListProvider"
+        },
+        "selectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "viewSelectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "treeSelectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "searchStateForClsTree": {
+            "initialValues": {},
+            "meta": {
+                "categories": [ {
+                    "filterValues": [ {
+                        "selected": {
+                            "field": "true",
+                            "type": "BOOLEAN"
+                        }
+                    } ]
+                } ]
+            }
+        },
+        "classifyState": {
+            "initialValues": {
+                "attrs": null,
+                "expandAllBlocks": true,
+                "isClassify": true,
+                "showTabTree": true,
+                "editProperties": false,
+                "isViewColumn": true
+            },
+            "meta": {
+                "attrs": [ {
+                    "attr": {
+                        "field": "true"
+                    }
+                } ],
+                "numOfAttrs": {
+                    "type": "INTEGER",
+                    "field": "true"
+                },
+                "currentUnitSystem": {
+                    "type": "object",
+                    "field": "true"
+                },
+                "expandAllBlocks": {
+                    "type": "BOOLEAN"
+                },
+                "isViewColumn": {
+                    "type": "BOOLEAN",
+                    "field": "true"
+                },
+                "shouldRerenderForExpandCollapse":{
+                    "type": "object"
+                }
+            }
+        },
+        "responseState": {
+            "initialValues": {},
+            "meta": {
+                "blockDefinitionMap": {
+                    "type": "object",
+                    "field": "true"
+                }
+            }
+        },
+        "viewContext": {
+            "initialValues": {
+                "showNavigate": "tree"
+            },
+            "meta": {
+                "showNavigate": {
+                    "type": "STRING",
+                    "field": "true"
+                }
+            }
+        },
+        "filterCommand": {
+            "action": "clsAddPanelFiltersToggle",
+            "iconName": "cmdFilterActive",
+            "tooltip": "{{i18n.Filters}}"
+        },
+        "resultsCommand": {
+            "action": "clsAddPanelResultsToggle",
+            "iconName": "cmdFilterActive",
+            "tooltip": "{{i18n.Filters}}"
+        },
+        "treeCommand": {
+            "action": "clsAddPanelTreeToggle",
+            "iconName": "cmdBack",
+            "tooltip": "{{i18n.classNavigate}}"
+        },
+        "treesetCommand": {
+            "action": "clsAddPanelResultsToggle",
+            "iconName": "cmdFilterActive",
+            "tooltip": "{{i18n.Filters}}"
+        },
+        "sortOption": {
+            "type": "INTEGER"
+        }
+    },
+    "selectionModels": {
+        "resultTabModel": {
+            "selectionMode": "multiple"
+        }
+    },
+    "actions": {
+        "initializeClassificationTab": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "findApplicableTypes"
+                },
+                {
+                    "action": "initializeSearchState"
+                }
+            ]
+        },
+        "findApplicableTypes": {
+            "actionType": "JSFunction",
+            "method": "findSubBusinessObjectsAndInvokeSearch",
+            "inputData": {
+                "input": "{{data}}",
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "showSearchFilter": "showSearchFilter",
+                "selectedSearchFilters": "selectedSearchFilters",
+                "sourceSearchFilterMap": "searchFilterMap"
+            },
+            "deps": "js/searchCommonUtils"
+        },
+        "initializeSearchState": {
+            "actionType": "JSFunction",
+            "method": "initializeSearchState",
+            "inputData": {
+                "searchStateForKeyword": "{{data.searchStateForClsTree}}",
+                "sourceSearchFilterMap": "{{data.sourceSearchFilterMap}}",
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "searchStateForClsTree": ""
+            },
+            "deps": "js/searchCommonUtils"
+        },
+        "updateAddCandidate": {
+            "actionType": "JSFunction",
+            "method": "handleSearchSelection",
+            "inputData": {
+                "context": "{{data.selectionData}}",
+                "targetObject": "{{subPanelContext.targetObject}}",
+                "relationMap": "{{subPanelContext.relationMap}}",
+                "addPanelState": "{{subPanelContext.addPanelState}}"
+            },
+            "outputData": {
+                "sourceObjects": "sourceObjects",
+                "sourceModelObjects": "sourceModelObjects",
+                "targetModelObjects": "targetModelObjects"
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "evalObjBasedOnConfigRevRulePaletteSearch": {
+            "actionType": "JSFunction",
+            "method": "evaluateObjsBasedOnConfiguredRevRule",
+            "inputData": {
+                "objectToEvaluateForExactRelation": "{{props.subPanelContext.addPanelState.sourceObjects}}"
+            },
+            "outputData": {
+                "objToRelateBasedOnConfiguredRevRule": ""
+            },
+            "deps": "js/awConfiguredRevService",
+            "events": {
+                "success": [ {
+                    "name": "addObject.existingObjToRelateEvaluated"
+                } ]
+            }
+        },
+        "createRelations": {
+            "actionType": "JSFunctionAsync",
+            "method": "execute",
+            "inputData": {
+                "targetObject": "{{subPanelContext.targetObject}}",
+                "sourceObjects": "{{data.objToRelateBasedOnConfiguredRevRule}}",
+                "relationName": "{{data.creationRelation.dbValue}}"
+            },
+            "events": {
+                "success": [ {
+                        "name": "gwt.CreateOrAddObjectCompleteEvent",
+                        "eventData": {
+                            "createdObjs": "{{data.sourceModelObjects}}"
+                        }
+                    },
+                    {
+                        "name": "cdm.relatedModified",
+                        "eventData": {
+                            "refreshLocationFlag": "{{conditions.isRefreshRequired}}",
+                            "isPinnedFlag": "{{subPanelContext.panelPinned}}",
+                            "relations": "{{data.creationRelation}}",
+                            "relatedModified": "{{data.targetModelObjects}}",
+                            "createdObjects": "{{data.sourceModelObjects}}"
+                        }
+                    },
+                    {
+                        "name": "addObject.objectCreatedWithRelation"
+                    },
+                    {
+                        "name": "complete",
+                        "condition": "!subPanelContext.panelPinned",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ],
+                "failure": [ {
+                    "name": "cdm.relatedModified",
+                    "condition": {
+                        "$source": "errorCodes",
+                        "$query": {
+                            "$all": {
+                                "$source": "code",
+                                "$query": {
+                                    "$eq": 6007
+                                }
+                            }
+                        }
+                    },
+                    "eventData": {
+                        "refreshLocationFlag": "{{conditions.isRefreshRequired}}",
+                        "isPinnedFlag": "{{subPanelContext.panelPinned}}",
+                        "relations": "{{data.creationRelation}}",
+                        "relatedModified": "{{data.targetModelObjects}}",
+                        "createdObjects": "{{data.sourceModelObjects}}"
+                    }
+                } ]
+            },
+            "actionMessages": {
+                "success": [ {
+                        "condition": "props.subPanelContext.addPanelState.length == 1",
+                        "message": "paletteObjectSuccess"
+                    },
+                    {
+                        "condition": "props.subPanelContext.addPanelState.length > 1",
+                        "message": "paletteRelationSuccess"
+                    }
+                ]
+            },
+            "deps": "js/pasteService"
+        },
+        "disableAddACopy": {
+            "actionType": "JSFunction",
+            "method": "disableAddACopyState",
+            "inputData": {
+                "addPanelState": "{{subPanelContext.addElementState}}"
+            },
+            "deps": "js/AwClsAddPanelUtilsService"
+        },
+        "updateRelationList": {
+            "actionType": "JSFunctionAsync",
+            "method": "updateRelationList",
+            "inputData": {
+                "creationType": "{{data.creationType}}",
+                "relationMap": "{{subPanelContext.relationMap}}",
+                "targetObject": "{{subPanelContext.targetObject}}",
+                "type": "{{data.selectionData.selected[0].type}}",
+                "defaultRelation": "{{data.defaultRelation}}",
+                "creationRelation": "{{data.creationRelation}}",
+                "invalidObjectInfo": {
+                    "fileName": "{{data.datasetInfo.fileName}}",
+                    "objectSetSource": "{{ctx.panelContext.objectSetSource}}"
+                },
+                "addPanelState": "{{subPanelContext.addPanelState}}"
+            },
+            "outputData": {
+                "relationList": "relationList",
+                "creationRelation": "creationRelation"
+            },
+            "events": {
+                "success": [ {
+                    "name": "relationList.updated2"
+                } ]
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "getDefaultRelationforSearch": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-12-DataManagement",
+            "method": "getDefaultRelation",
+            "inputData": {
+                "input": [ {
+                    "primaryType": "{{subPanelContext.targetObject.type}}",
+                    "secondaryType": "{{data.selectionData.selected[0].type}}"
+                } ]
+            },
+            "outputData": {
+                "defaultRelation": "output[0].defaultRelation"
+            },
+            "events": {
+                "success": [ {
+                    "name": "relations.updateRelationList2"
+                } ],
+                "failure": [ {
+                    "name": "relations.updateRelationList2"
+                } ]
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "updateRecentTypes": {
+            "actionType": "JSFunction",
+            "method": "updateRecentUsedTypes",
+            "inputData": {
+                "recentTypeName": "{{data.secondaryType}}"
+            },
+            "outputData": {},
+            "deps": "js/addObjectUtils"
+        },
+        "evalConditionForDefaultRelation": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "getDefaultRelationforSearch",
+                    "condition": "subPanelContext.targetObject"
+                } ]
+            }
+        },
+        "handleClassificationSelectionBatchJob": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "evalConditionForDefaultRelation"
+                },
+                {
+                    "action": "updateAddCandidate"
+                },
+                {
+                    "action": "addWorkspaceObjectUidtoData"
+                }
+            ]
+        },
+        "createRelationForPaletteOrSearch": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "addObject.startCreateRelation"
+                } ]
+            }
+        },
+        "handleObjectCreate": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "createRelationForPaletteOrSearch",
+                    "condition": "conditions.readyToStartCreateOperation"
+                }
+            ]
+        },
+        "updateCallbackWithRelatedObject": {
+            "actionType": "JSFunction",
+            "method": "updateCallbackWithCreatedObject",
+            "inputData": {
+                "createdObject": "{{data.sourceModelObjects}}",
+                "addPanelState": "{{props.subPanelContext.addPanelState}}"
+            },
+            "outputData": {},
+            "deps": "js/addObjectUtils"
+        },
+        "clsAddPanelFiltersToggle": {
+            "actionType": "JSFunction",
+            "method": "clsAddPanelToggle",
+            "deps": "js/AwClsAddPanelUtilsService",
+            "inputData": {
+                "context": "{{data.viewContext}}",
+                "viewMode": "filters"
+            },
+            "outputData": {
+                "viewContext": ""
+            }
+        },
+        "clsAddPanelTreeCheck": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clsAddPanelResultsToggle",
+                    "condition": "conditions.treeSelectionMade"
+                }
+            ]
+        },
+        "clsAddPanelResultsToggle": {
+            "actionType": "JSFunction",
+            "method": "clsAddPanelToggle",
+            "deps": "js/AwClsAddPanelUtilsService",
+            "inputData": {
+                "context": "{{data.viewContext}}",
+                "viewMode": "results"
+            },
+            "outputData": {
+                "viewContext": ""
+            }
+        },
+        "clsAddPanelTreeToggle": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clsAddPanelSectionUpdate"
+                },
+                {
+                    "action": "removeSelection"
+                }
+            ]
+        },
+        "clsAddPanelSectionUpdate": {
+            "actionType": "JSFunction",
+            "method": "clsAddPanelToggle",
+            "deps": "js/AwClsAddPanelUtilsService",
+            "inputData": {
+                "context": "{{data.viewContext}}",
+                "viewMode": "tree"
+            },
+            "outputData": {
+                "viewContext": ""
+            }
+        },
+        "removeSelection": {
+            "actionType": "JSFunction",
+            "method": "removeSelection",
+            "deps": "js/AwClsAddPanelUtilsService",
+            "inputData": {
+                "addState": "{{subPanelContext.addPanelState}}"
+            }
+        },
+        "selectFirstItem": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "selectionModel": "{{data.selectionModels.resultTabModel}}",
+                "newSelection": "{{data.searchStateForClsTree.selectedNode.uid}}"
+            },
+            "deps": "js/selectionModelFactory"
+        },
+        "buildTitle": {
+            "actionType": "JSFunctionAsync",
+            "method": "buildTitle",
+            "inputData": {
+                "selectedNode": "{{data.searchStateForClsTree.selectedNode}}",
+                "searchObject": "{{data.searchStateForClsTree}}"
+            },
+            "outputData": {
+                "crumbTitle": ""
+            },
+            "deps": "js/AwClsBreadCrumbService"
+        },
+        "clearSearchContext": {
+            "actionType": "JSFunction",
+            "deps": "js/appCtxService",
+            "method": "unRegisterCtx",
+            "inputData": {
+                "0": "highlighter"
+            }
+        },
+        "addWorkspaceObjectUidtoData": {
+            "actionType": "JSFunction",
+            "method": "addWorkspaceObjectUidtoData",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}",
+                "mselected": "{{data.selectionData.selected}}",
+                "fromAPanel": true
+            },
+            "outputData":
+            {
+                "workspaceObjectUID": "result.uid"
+            },
+            "deps": "js/Ics1ClassificationTabService"
+        }
+    },
+    "dataProviders": {
+        "getRelationListProvider": {
+            "response": "{{data.relationList}}",
+            "totalFound": "{{data.relationList.length}}"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "getDefaultRelationforSearch",
+            "condition": "subPanelContext.hideRelation !== 'true'",
+            "action": "getDefaultRelationforSearch"
+        },
+        {
+            "eventId": "addObject.startCreateRelation",
+            "condition": "data.sourceObjects.length > 0",
+            "action": "evalObjBasedOnConfigRevRulePaletteSearch"
+        },
+        {
+            "eventId": "addObject.existingObjToRelateEvaluated",
+            "action": "createRelations"
+        },
+        {
+            "eventId": "relations.updateRelationList2",
+            "condition": "subPanelContext.hideRelation !== 'true'",
+            "action": "updateRelationList"
+        },
+        {
+            "eventId": "relationList.updated2",
+            "action": "updateRecentTypes"
+        },
+        {
+            "eventId": "addObject.objectCreatedWithRelation",
+            "action": "updateCallbackWithRelatedObject"
+        }
+    ],
+    "functions": {
+        "findSubBusinessObjectsAndInvokeSearch": {
+            "functionName": "findSubBusinessObjectsAndInvokeSearch",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "conditions": {
+        "displayNavigation": {
+            "expression": "(data.viewContext.showNavigate === 'tree' && conditions.isMobileMode) || conditions.nonMobileMode"
+        },
+        "displayNavigationNonMobile": {
+            "expression": "!conditions.isMobileMode"
+        },
+        "displayResults": {
+            "expression": "conditions.nonMobileMode || data.viewContext.showNavigate !== 'tree'"
+        },
+        "displayTree": {
+            "expression": "data.viewContext.showNavigate !== 'filters'"
+        },
+        "doNotDisplayTreeToggle": {
+            "expression": "data.viewContext.showNavigate !== 'tree' && data.viewContext.showNavigate !== 'results'"
+        },
+        "displayToggles": {
+            "expression": "data.viewContext.showNavigate === 'filters' || conditions.displayResults"
+        },
+        "displayFilters": {
+            "expression": "data.viewContext.showNavigate === 'filters'"
+        },
+        "doNotDisplayFilterToggle": {
+            "expression": "conditions.displayFilterToggle && !conditions.displayFilters"
+        },
+        "displayFilterToggle": {
+            "expression": "(data.searchStateForClsTree.endIndex || data.searchStateForClsTree.endIndex > -1) && data.searchStateForClsTree.endIndex !== -1 && !conditions.displayFilters"
+        },
+        "isMobileMode": {
+            "expression": "!subPanelContext.sidenavMode || subPanelContext.sidenavMode === 'mobile'"
+        },
+        "nonMobileMode": {
+            "expression": "subPanelContext.sidenavMode && subPanelContext.sidenavMode !=='mobile'"
+        },
+        "isDesktopMode": {
+            "expression": "!subPanelContext.sidenavMode || subPanelContext.sidenavMode === 'desktop'"
+        },
+        "isTabletMode": {
+            "expression": "!subPanelContext.sidenavMode || subPanelContext.sidenavMode === 'tablet'"
+        },
+        "readyToStartCreateOperation": {
+            "expression": "subPanelContext.triggerCreate && subPanelContext.triggerCreate.dbValue && data.sourceObjects.length > 0"
+        },
+        "displayBreadcrumb": {
+            "expression": "(data.searchStateForClsTree.endIndex || data.searchStateForClsTree.endIndex > -1) && data.searchStateForClsTree.endIndex !== -1 && (!conditions.displayFilters || conditions.nonMobileMode)"
+        },
+        "selectionMade": {
+            "expression": "data.selectionData.selected && data.selectionData.selected.length === 1"
+        },
+        "treeSelectionMade": {
+            "expression": "data.treeSelectionData.selected && data.treeSelectionData.selected.length === 1"
+        },
+        "multipleSelectionsMade": {
+            "expression": "data.selectionData.selected && data.selectionData.selected.length > 1"
+        },
+        "noSelectionMade": {
+            "expression": "!conditions.selectionMade && !conditions.multipleSelectionsMade"
+        }
+    },
+    "messages": {
+    },
+    "i18n": {
+        "classNavigate": [ "ClassificationPanelMessages" ],
+        "searchResults": [
+            "ClassificationPanelMessages"
+        ],
+        "Filters": [
+            "ClassificationPanelMessages"
+        ],
+        "noClsObjSel": [
+            "ClassificationPanelMessages"
+        ]
+    }
+}

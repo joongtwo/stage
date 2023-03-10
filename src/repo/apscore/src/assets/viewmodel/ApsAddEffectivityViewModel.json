@@ -1,0 +1,52 @@
+{
+    "schemaVersion": "1.0.0",
+    "data":{
+        "AuthoringMode":{
+            "type":"STRING",
+            "dbValue": "AUTHOR"
+        }
+    },
+    "actions": {
+
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+        "initialize": {
+            "actionType": "JSFunction",
+            "method": "initializeAddPanel",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/apsEffectivityAuthoringService"
+        }
+    },
+
+    "onEvent": [ {
+            "eventId": "gwt.SubLocationContentSelectionChangeEvent",
+            "action": "closePanel"
+        }
+    ],
+    "lifecycleHooks" :
+    {
+        "onMount": "initialize"
+    },
+    "messages": {
+        "failedToAddEffectivityMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.failedToAddEffectivity}}"
+        }
+    },
+    "i18n": {
+        "add": [ "ApsEffectivityMessages" ],
+        "failedToAddEffectivity": [ "ApsEffectivityMessages" ]
+    }
+}

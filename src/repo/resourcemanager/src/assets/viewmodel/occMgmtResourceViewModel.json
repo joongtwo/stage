@@ -1,0 +1,564 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-column.directive"
+    ],
+    "lifecycleHooks": {
+        "onUnmount": "clearResourceViewData",
+        "onUpdate": [
+            {
+                "action": "swaTabChange",
+                "observers": [ "props.subPanelContext.provider.pageContext.sublocationState.secondaryActiveTabId" ]
+            }
+        ]
+    },
+    "actions": {
+        "checkStructureModifiable": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-03-UiConfig",
+            "method": "getVisibleCommands",
+            "inputData": {
+                "getVisibleCommandsInfo": [ {
+                    "clientScopeURI": "{{ctx.sublocation.clientScopeURI}}",
+                    "commandInfo": [
+                        {
+                            "commandCollectionId": "",
+                            "commandId": "Awb0AddChildElement"
+                        },
+                        {
+                            "commandCollectionId": "",
+                            "commandId": "Awb0RemoveElement"
+                        }
+                    ],
+                    "selectionInfo": [
+                        {
+                            "contextName": "",
+                            "parentSelectionIndex": -1,
+                            "selectedObjects": [
+                                {
+                                    "uid": "{{ctx.occmgmtContext.topElement.uid}}",
+                                    "type": "{{ctx.occmgmtContext.topElement.type}}"
+                                }
+                            ]
+                        }
+                    ]
+                } ]
+            },
+            "outputData": {
+                "ctx.occmgmtContext.isStructureModifiable": "{{function:checkStructureModifiable}}"
+            },
+            "deps": "js/MrmResourceGraphUtils",
+            "events": {
+                "success": [
+                    {
+                        "name": "MrmResourceGraph.drawResourceGraph"
+                    }
+                ]
+            }
+        },
+        "swaTabChange": {
+            "actionType": "JSFunction",
+            "method": "swaTabChange",
+            "inputData": {
+                "subPanelContext": "{{props.subPanelContext.provider}}"
+            },
+            "deps": "js/aceSwaService"
+        },
+        "updateActiveContext": {
+            "actionType": "JSFunction",
+            "method": "updateActiveContext",
+            "inputData": {
+                "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+            },
+            "deps": "js/contextStateMgmtService"
+        },
+        "getGraphViews": {
+            "actionType": "TcSoaService",
+            "serviceName": "RelationshipViewer-2014-11-NetworkEngine",
+            "method": "getViews3",
+            "inputData": {
+                "key": "Relations"
+            },
+            "outputData": {
+                "legendData": "views"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "MrmResourceGraph.initLegendData"
+                    }
+                ]
+            }
+        },
+        "reveal": {
+            "actionType": "dataProvider",
+            "method": "resourceGraphDataProvider"
+        },
+        "initLegendData": {
+            "actionType": "JSFunction",
+            "method": "initLegendData",
+            "inputData": {
+                "ctx": "{{ctx}}",
+                "data": "{{data}}",
+                "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+            },
+            "deps": "js/MrmResourceGraphLegendService"
+        },
+        "initGraphStyle": {
+            "actionType": "JSFunction",
+            "method": "initGraphStyle",
+            "inputData": {
+                "ctx": "{{ctx}}",
+                "data": "{{data}}"
+            },
+            "deps": "js/Rv1RelationBrowserGraphStyles"
+        },
+        "loadResourceData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadResourceData",
+            "inputData": {
+                "methodArgument": {
+                    "resourceLoadInput": "request.listLoadInput",
+                    "dataProviderActionType": "initializeAction",
+                    "uwDataProvider": "{{data.dataProviders.resourceGraphDataProvider}}",
+                    "declViewModel": "{{data}}",
+                    "subPanelContext":"{{props.subPanelContext.provider}}"
+                }
+            },
+            "outputData": {
+                "ctx.locationContext.modelObject": "result.resourceLoadResult.baseModelObject",
+                "ctx.objectQuotaContext.useObjectQuota": "result.resourceLoadResult.useObjectQuotatoUnload",
+                "ctx.changeContext": "result.resourceLoadResult.changeContext",
+                "ctx.occmgmtContext.modelObject": "result.resourceLoadResult.baseModelObject",
+                "ctx.occmgmtContext.productContextInfo": "result.resourceLoadResult.productContextInfo",
+                "ctx.occmgmtContext.openedElement": "result.resourceLoadResult.openedModelObject",
+                "ctx.occmgmtContext.topElement": "result.resourceLoadResult.topModelObject",
+                "ctx.occmgmtContext.sublocationAttributes": "result.resourceLoadResult.sublocationAttributes",
+                "ctx.occmgmtContext.autoSavedSessiontime": "result.resourceLoadResult.autoSavedSessiontime",
+                "ctx.occmgmtContext.searchFilterCategories": "result.resourceLoadResult.filter.searchFilterCategories",
+                "ctx.occmgmtContext.searchFilterMap": "result.resourceLoadResult.filter.searchFilterMap",
+                "ctx.occmgmtContext.recipe": "result.resourceLoadResult.filter.recipe",
+                "ctx.occmgmtContext.sourceContextToInfoMap": "result.resourceLoadResult.sourceContextToInfoMap",
+                "ctx.occmgmtContext.requestPref": "result.resourceLoadResult.requestPref",
+                "ctx.occmgmtContext.configContext": "result.resourceLoadResult.configContext",
+                "ctx.occmgmtContext.startFreshNavigation": "result.resourceLoadResult.startFreshNavigation",
+                "ctx.occmgmtContext.elementToPCIMap": "result.resourceLoadResult.elementToPCIMap",
+                "ctx.occmgmtContext.vmc": "result.resourceLoadResult.vmc",
+                "ctx.occmgmtContext.resourceGraphDataProvider": "result.resourceLoadResult.resourceGraphDataProvider",
+                "dataProviders.resourceGraphDataProvider.openedObject": "result.resourceLoadResult.openedObject",
+                "dataProviders.resourceGraphDataProvider.cursorObject": "result.resourceLoadResult.cursorObject",
+                "totalFound": "result.resourceLoadResult.totalChildCount",
+                "childOccurrences": "result.resourceLoadResult.childOccurrences",
+                "ctx.occmgmtContext.showTopNode": "result.resourceLoadResult.showTopNode",
+                "ctx.occmgmtContext.resourceLoadResult": "result.resourceLoadResult",
+                "ctx.occmgmtContext.selectedModelObjects": "result.resourceLoadResult.selectedModelObjects",
+                "ctx.occmgmtContext.supportedFeatures": "result.resourceLoadResult.supportedFeatures",
+                "ctx.occmgmtContext.treeDataProvider": "undefined"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "checkStructureModifiable"
+                    },
+                    {
+                        "name": "occDataLoadedEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}",
+                            "dataProviderActionType": "initializeAction",
+                            "occContext": "{{props.subPanelContext.provider.occContext}}"
+                        }
+                    },
+                    {
+                        "condition": "!ctx.aceActiveContext.context.vmc || ctx.aceActiveContext.key === props.subPanelContext.provider.contextKey",
+                        "name": "updateActiveContextEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/MrmResourceDataService"
+        },
+        "getGraphStyleDef": {
+            "actionType": "TcSoaService",
+            "serviceName": "RelationshipViewer-2012-10-NetworkEngine",
+            "method": "getGraphStyleDef",
+            "inputData": {},
+            "outputData": {
+                "graphStyleResponse": "{{function:parseGraphStyleXML}}"
+            },
+            "deps": "js/Rv1RelationBrowserGraphStyles"
+        },
+        "drawResourceGraph": {
+            "actionType": "JSFunction",
+            "method": "drawResourceGraph",
+            "inputData": {
+                "ctx": "{{ctx}}",
+                "contextKey": "{{props.subPanelContext.provider.contextKey}}",
+                "data": "{{data}}",
+                "sortedLayoutPreferenceValue": "{{ctx.preferences.RV1_DARB_Sorted_Layouts}}",
+                "concentratedPreferenceValue": "{{ctx.preferences.RV1_DARB_Concentrated}}"
+            },
+            "deps": "js/MrmResourceGraphDrawService"
+        },
+        "graphSelectionChanged": {
+            "actionType": "JSFunction",
+            "method": "graphSelectionChanged",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "data": "{{data.eventMap['awGraph.selectionChanged']}}",
+                "selectionModel": "{{subPanelContext.selectionModel}}",
+                "isStructureModifiable":"{{ctx.occmgmtContext.isStructureModifiable}}"
+            },
+            "deps": "js/MrmResourceGraphSelectionService"
+        },
+        "graphHoverChanged": {
+            "actionType": "JSFunction",
+            "method": "graphHoverChanged",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "data": "{{data.eventMap['awGraph.hoverChanged']}}",
+                "isStructureModifiable":"{{ctx.occmgmtContext.isStructureModifiable}}"
+            },
+
+            "deps": "js/MrmResourceGraphSelectionService"
+        },
+        "showHideAddCommandsOnSelection": {
+            "actionType": "JSFunction",
+            "method": "showHideAddCommandsOnSelection",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}"
+            },
+            "deps": "js/MrmResourceGraphUtils"
+        },
+        "handleGraphItemsMoved": {
+            "actionType": "JSFunction",
+            "method": "handleGraphItemsMoved",
+            "inputData": {
+                "items": "{{data.eventMap['awGraph.graphItemsMoved'].items}}",
+                "graphModel": "{{data.graphModel}}"
+            },
+            "deps": "js/MrmResourceGraphService"
+        },
+        "handleItemsAddedToGraph": {
+            "actionType": "JSFunction",
+            "method": "handleItemsAddedToGraph",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "items": "{{data.eventMap['awGraph.itemsAdded']}}"
+            },
+            "deps": "js/MrmResourceGraphService"
+        },
+        "handleItemsRemovedFromGraph": {
+            "actionType": "JSFunction",
+            "method": "handleItemsRemovedFromGraph",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "items": "{{data.eventMap['awGraph.itemsRemoved']}}"
+            },
+            "deps": "js/MrmResourceGraphService"
+        },
+        "handleModelObjectUpdated": {
+            "actionType": "JSFunction",
+            "method": "handleModelObjectUpdated",
+            "inputData": {
+                "graphModel": "{{data.graphModel}}",
+                "eventData": "{{data.eventData}}"
+            },
+            "deps": "js/MrmResourceGraphService"
+        },
+        "setNodeHeightOnWrappedHeightChanged": {
+            "actionType": "JSFunction",
+            "method": "setNodeHeightOnWrappedHeightChanged",
+            "inputData": {
+                "graphModel": "{{ctx.graph.graphModel}}",
+                "nodes": "{{data.eventMap['awGraph.wrappedHeightChanged'].wrappedHeightChangedNodes}}",
+                "isStructureModifiable":"{{ctx.occmgmtContext.isStructureModifiable}}"
+            },
+            "deps": "js/MrmResourceGraphDrawService"
+        },
+        "clearResourceViewData": {
+            "actionType": "JSFunction",
+            "method": "clearResourceViewData",
+            "inputData": {
+                "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+            },
+            "deps": "js/MrmResourceGraphUtils"
+        }
+    },
+    "data": {
+        "legend": {
+            "tabModels": [
+                {
+                    "panelId": "Rv1LegendFilterSub",
+                    "name": "{{i18n.filter}}"
+                }
+            ]
+        },
+        "graphModel": {
+            "uid": "uuid",
+            "config": {
+                "shadowEffects": [],
+                "enableEdit": false,
+                "minZoom": 0.1,
+                "maxZoom": 1,
+                "autoEdgeRoutingType": "HV_SEGMENT3",
+                "fitViewPosition": "TOP",
+                "hoverDelayTime": 500,
+                "nodeHeightUpdateStrategy": "FIT_WRAP",
+                "movableItems": [
+                    "Node"
+                ],
+                "selectableItems": [
+                    "Node",
+                    "Edge"
+                ],
+                "layout": {
+                    "layoutMode": "IncUpdateLayout",
+                    "defaultOption": "TopToBottom",
+                    "options": [
+                        "TopToBottom",
+                        "RightToLeft",
+                        "LeftToRight",
+                        "BottomToTop",
+                        "Organic",
+                        "Incremental"
+                    ]
+                },
+                "showNodeOverlay": true,
+                "nodeOverlay": {
+                    "zoomThreshold": 0.7,
+                    "graphOverlayHandler": "js/Rv1RelationBrowserOverlayHandler"
+                },
+                "inputMode": "viewInputMode",
+                "tooltipHandler": "js/MrmResourceGraphTooltipHandler",
+                "moveWithoutSelection": true,
+                "enableAutoPan": false,
+                "enableMarqueeSelection": true,
+                "marqueeSelectionModifierKey": [
+                    "shift"
+                ],
+                "enableMultipleSelection": true,
+                "multipleSelectionModifierKey": [
+                    [
+                        "ctrl"
+                    ],
+                    [
+                        "shift"
+                    ]
+                ],
+                "showOverview": true,
+                "showFilter": true,
+                "syncGroupDescendantsVisibilityOnFilter": false,
+                "enableObjectArrangement": true,
+                "enableAutoAlignment": true,
+                "snapToGridByAnchorPoint": false,
+                "showGrid": false,
+                "grid": {},
+                "enableAlignment": false,
+                "alignment": {
+                    "strokeColor": "rgb(0,255,0)",
+                    "strokeWidth": 2,
+                    "strokeDashStyle": "SOLID",
+                    "tolerance": 10,
+                    "separateGridSnapAndAlignment": true
+                },
+                "defaults": {
+                    "nodeSize": {
+                        "width": 300,
+                        "height": 135
+                    },
+                    "nodeStyle": {
+                        "templateId": "MrmResourceTileNodeTemplate",
+                        "borderColor": "rgb(138,66,8)",
+                        "shape": "ELLIPSE"
+                    },
+                    "edgeStyle": {
+                        "dashStyle": "SOLID",
+                        "thickness": 1.0,
+                        "color": "(0,0,0)",
+                        "isHotSpotEdge": true,
+                        "targetArrow": {
+                            "arrowShape": "SIMPLE",
+                            "arrowScale": 1.0,
+                            "fillInterior": true
+                        },
+                        "sourceArrow": {
+                            "arrowShape": "CIRCLE",
+                            "arrowScale": 1.0,
+                            "fillInterior": true
+                        }
+                    },
+                    "portStyle": {
+                        "fillColor": "(0,0,0)",
+                        "size": 0
+                    },
+                    "edgeLabel": {
+                        "maxWidth": 128
+                    },
+                    "portLabel": {
+                        "maxWidth": 96
+                    },
+                    "label": {
+                        "hasBackground": true,
+                        "backgroundFillColor": "argb(1,244,244,244)",
+                        "backgroundStyleClass": "aw-graph-labelBackground",
+                        "backgroundAnchor": [
+                            0.5,
+                            0.5
+                        ],
+                        "textAnchor": [
+                            0.5,
+                            0.5
+                        ],
+                        "contentStyleClass": "aw-widgets-label aw-base-normal aw-graph-label",
+                        "allowWrapping": false,
+                        "textOverflowMode": "ELLIPSIS",
+                        "maxPortLabelWidth": 96,
+                        "maxEdgeLabelWidth": 128,
+                        "maxMoveDistance": 500
+                    }
+                },
+                "customerFilter": "js/Rv1RelationBrowserGraphFilter"
+            },
+            "inputModes": {
+                "viewInputMode": {
+                    "editMode": false,
+                    "enableManualEdgeRouting": false,
+                    "enableNodeResize": false,
+                    "enableLabelEdit": false,
+                    "dragableCursorUrl": "cursor/openhand.cur",
+                    "draggingCursorUrl": "cursor/closedhand.cur"
+                }
+            },
+            "isShowLabel": false,
+            "hoverStyle": {
+                "node": "aw-widgets-cellListItemNodeHovered",
+                "edge": {
+                    "thicknessScale": 1.75
+                }
+            }
+        }
+    },
+    "dataProviders": {
+        "resourceGraphDataProvider": {
+            "initializeAction": "loadResourceData",
+            "focusAction": "loadResourceData",
+            "response": "action.result.resourceLoadResult.childNodes",
+            "totalFound": "action.result.resourceLoadResult.totalChildCount",
+            "selectionModelMode": "multiple",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}",
+                "accessMode": "resource"
+            },
+            "commandsAnchor": "occmgmt_cell_commands"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "awGraph.initialized",
+            "action": "getGraphViews"
+        },
+        {
+            "eventId": "awGraph.initialized",
+            "action": "initGraphStyle"
+        },
+        {
+            "eventId": "Rv1RelationsBrowser.queryGraphStyleDef",
+            "action": "getGraphStyleDef",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "MrmResourceGraph.initLegendData",
+            "action": "initLegendData"
+        },
+        {
+            "eventId": "MrmResourceGraph.legendInitialized",
+            "action": "drawResourceGraph",
+            "condition": "ctx.occmgmtContext.isStructureModifiable !== undefined"
+        },
+        {
+            "eventId": "occMgmtResource.contentLoaded",
+            "action": "reveal"
+        },
+        {
+            "eventId": "MrmResourceGraph.drawResourceGraph",
+            "action": "drawResourceGraph",
+            "condition": "ctx.occmgmtContext.isStructureModifiable !== undefined"
+        },
+        {
+            "eventId": "awGraph.selectionChanged",
+            "action": "graphSelectionChanged",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awGraph.hoverChanged",
+            "action": "graphHoverChanged",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awGraph.graphItemsMoved",
+            "action": "handleGraphItemsMoved",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awGraph.itemsAdded",
+            "action": "handleItemsAddedToGraph",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awGraph.itemsRemoved",
+            "action": "handleItemsRemovedFromGraph",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "cdm.updated",
+            "action": "handleModelObjectUpdated",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "cdm.relatedModified",
+            "action": "handleModelObjectUpdated",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awGraph.wrappedHeightChanged",
+            "action": "setNodeHeightOnWrappedHeightChanged",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "MRM0GcLayoutCommandGroup.popupCommandExecuteEnd",
+            "action": "showHideAddCommandsOnSelection"
+        },
+        {
+            "eventId": "updateActiveContextEvent",
+            "cacheEventData": true,
+            "condition": "contextKey === props.subPanelContext.provider.contextKey",
+            "action": "updateActiveContext"
+        },
+        {
+            "eventId": "checkStructureModifiable",
+            "action": "checkStructureModifiable",
+            "condition": "ctx.occmgmtContext.isStructureModifiable === undefined"
+        }
+    ],
+    "conditions": {
+    },
+    "functions": {
+        "isStructureModifiable": {
+            "functionName": "isStructureModifiable"
+        }
+    },
+    "i18n": {
+        "filter": [
+            "RelationBrowserMessages"
+        ],
+        "objects": [
+            "RelationBrowserMessages"
+        ],
+        "relations": [
+            "RelationBrowserMessages"
+        ]
+    },
+    "messages": {}
+}

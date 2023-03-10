@@ -1,0 +1,66 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-link.directive",
+        "js/aw-property-non-edit-val.directive"
+    ],
+    "actions": {
+        "initializeDateEffectivityConfigurationData": {
+            "actionType": "JSFunction",
+            "method": "initializeDateEffectivityConfigurationData",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "contextKey": "contextKey",
+                "isEffectivityReadOnly": "isEffectivityReadOnly",
+                "currentEffectivity": "currentEffectivity"
+            },
+            "deps": "js/Pca0DateEffectivityConfigurationService"
+        },
+        "openEffectivityDateRangeSubView": {
+            "actionType": "JSFunction",
+            "method": "navigateToEffectivityDateRangeSub",
+            "inputData": {
+                "data": "{{data.data}}"
+            },
+            "deps": "js/Pca0DateEffectivityConfigurationService"
+        },
+        "toggleEffectivityLinkState": {
+            "actionType": "JSFunction",
+            "method": "toggleEffectivityLinkState",
+            "inputData": {
+                "isDisableEffectivityLink": "{{data.eventMap['Pca0DateEffectivity.toggleEffectivityLinkState'].isDisableEffectivityLink}}"
+            },
+            "outputData": {
+                "isEffectivityReadOnly": "isEffectivityReadOnly"
+            },
+            "deps": "js/Pca0DateEffectivityConfigurationService"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "Pca0FilterCriteriaSettings.refreshContent",
+            "action": "initializeDateEffectivityConfigurationData"
+        },
+        {
+            "eventId": "Pca0DateEffectivity.toggleEffectivityLinkState",
+            "action": "toggleEffectivityLinkState",
+            "cacheEventData": true
+        }
+    ],
+    "data": {
+        "contextKey": "",
+        "currentEffectivity": {
+            "uiValue": "",
+            "type": "STRING"
+        },
+        "isEffectivityReadOnly": {
+            "dbValue": false,
+            "type": "BOOLEAN"
+        }
+    },
+    "i18n": {},
+    "lifecycleHooks": {
+        "onMount": "initializeDateEffectivityConfigurationData"
+    }
+}

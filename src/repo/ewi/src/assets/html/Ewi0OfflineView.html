@@ -1,0 +1,19 @@
+<aw-command-panel caption="i18n.offlineTitle">
+    <aw-panel-body>
+
+        <aw-textbox prop="data.packageName"></aw-textbox>
+        <aw-textbox prop="data.password"></aw-textbox>
+
+        <aw-break> </aw-break>
+
+        <aw-label prop="data.offlineOptionsLabel"></aw-label>
+        <aw-radiobutton prop="data.recordingMode"></aw-radiobutton>
+
+        <aw-checkbox prop="data.includeVis" action="setIncludeVis"></aw-checkbox>
+        <aw-break> </aw-break>
+        <aw-textbox prop="data.visHost" visible-when="data.includeVis.dbValue === true"></aw-textbox>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button visible-when="true" action="generatePackage"><aw-i18n>i18n.generate</aw-i18n></aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

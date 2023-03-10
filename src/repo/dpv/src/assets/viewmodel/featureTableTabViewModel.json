@@ -1,0 +1,278 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "updateUseOrigTemplateSettings": {
+            "actionType": "JSFunction",
+            "method": "updateStatFeatOrigSettings",
+            "inputData": {
+                "data": "{{data}}",
+                "state": "{{props.subPanelContext.statFeatureState}}",
+                "origSettingsVal":"{{data.useOrigSettingCheckbox.dbValue}}"
+            },
+            "outputData": {
+                "featAttrTypelistBox": "featAttrTypelistBox",
+                "featOptionslistBox": "featOptionslistBox"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadFeaturesCol1": {
+            "actionType": "JSFunction",
+            "method": "loadStatAttributesColumn",
+            "inputData": {
+                "index": "0"
+            },
+            "outputData": {
+                "searchResultsFeatCol1": "searchResults",
+                "totalFoundFeatCol1": "totalFound"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadFeaturesCol2": {
+            "actionType": "JSFunction",
+            "method": "loadStatAttributesColumn",
+            "inputData": {
+                "index": "1"
+            },
+            "outputData": {
+                "searchResultsFeatCol2": "searchResults",
+                "totalFoundFeatCol2": "totalFound"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadFeaturesCol3": {
+            "actionType": "JSFunction",
+            "method": "loadStatAttributesColumn",
+            "inputData": {
+                "index": "2"
+            },
+            "outputData": {
+                "searchResultsFeatCol3": "searchResults",
+                "totalFoundFeatCol3": "totalFound"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadFeaturesCol4": {
+            "actionType": "JSFunction",
+            "method": "loadStatAttributesColumn",
+            "inputData": {
+                "index": "3"
+            },
+            "outputData": {
+                "searchResultsFeatCol4": "searchResults",
+                "totalFoundFeatCol4": "totalFound"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadAllFeatureTableAttributes":{            
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateOrigSettingCheckBox"
+                },
+                {
+                    "action": "loadFeaturesCol1"
+                },
+                {
+                    "action": "loadFeaturesCol2"
+                },
+                {
+                    "action": "loadFeaturesCol3"
+                },
+                {
+                    "action": "loadFeaturesCol4"
+                },
+                {
+                    "action": "loadFeatureOptions"
+                }
+            ]
+        },
+        "loadFeatureAttrTypes": {
+            "actionType": "JSFunction",
+            "method": "loadFeatureAttrTypes",
+            "inputData": {
+                "statFeatureState": "{{props.subPanelContext.statFeatureState}}"
+            },
+            "outputData": {
+                "featAttrTypelistBoxValues": "featAttrTypelistBoxValues"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "loadFeatureOptions": {
+            "actionType": "JSFunction",
+            "method": "loadFeatureOptions",
+            "inputData": {},
+            "outputData": {
+                "featOptionslistBoxValues": "featOptionslistBoxValues"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "selectStatFeatureCol1": {
+            "actionType": "JSFunction",
+            "method": "selectStatFeature",
+            "inputData": {
+                "searchResults": "{{data.searchResultsFeatCol1}}",
+                "statFeatureState": "{{props.subPanelContext.statFeatureState}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "selectStatFeatureCol2": {
+            "actionType": "JSFunction",
+            "method": "selectStatFeature",
+            "inputData": {
+                "searchResults": "{{data.searchResultsFeatCol2}}",
+                "statFeatureState": "{{props.subPanelContext.statFeatureState}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "selectStatFeatureCol3": {
+            "actionType": "JSFunction",
+            "method": "selectStatFeature",
+            "inputData": {
+                "searchResults": "{{data.searchResultsFeatCol3}}",
+                "statFeatureState": "{{props.subPanelContext.statFeatureState}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "selectStatFeatureCol4": {
+            "actionType": "JSFunction",
+            "method": "selectStatFeature",
+            "inputData": {
+                "searchResults": "{{data.searchResultsFeatCol4}}",
+                "statFeatureState": "{{props.subPanelContext.statFeatureState}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateFeatAttrTypeList":{
+            "actionType": "JSFunction",
+            "method": "updateFeatAttrTypeList",
+            "inputData": {
+                "data": "{{data.featAttrTypelistBox}}",
+                "statFeatureState": "{{props.subPanelContext.statFeatureState}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateFeatOptionsList":{
+            "actionType": "JSFunction",
+            "method": "updateFeatOptionsList",
+            "inputData": {
+                "data": "{{data.featOptionslistBox}}",
+                "statFeatureState": "{{props.subPanelContext.statFeatureState}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "doFeatAttrTypelistProvider": {
+            "actionType": "dataProvider",
+            "method": "featAttrTypelistProvider"
+        },
+        "doFeatOptionslistProvider": {
+            "actionType": "dataProvider",
+            "method": "featOptionslistProvider"
+        },
+        "updateOrigSettingCheckBox": {
+            "actionType": "JSFunction",
+            "method": "updateOrigSettingCheckBox",
+            "inputData": {
+                "useOrigSettingCheckbox": "{{data.useOrigSettingCheckbox}}",
+                "state": "{{props.subPanelContext.statFeatureState}}"
+            },
+            "outputData":{
+                "useOrigSettingCheckbox" : "useOrigSettingCheckbox"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        }
+    },
+    "dataProviders": {
+        "featAttrTypelistProvider": {
+            "response": "{{data.featAttrTypelistBoxValues}}",
+            "moreValuesExist": false
+        },
+        "featOptionslistProvider" : {
+            "response": "{{data.featOptionslistBoxValues}}",
+            "moreValuesExist": false
+        }
+    },
+    "data":{
+        "useOrigSettingCheckbox": {
+            "displayName": "{{i18n.UseOrigFeatStats}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.statFeatureState.useOrigTempSettings}}",
+            "dispValue": "{{i18n.UseOrigFeatStats}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "featAttrTypelistBox":{
+            "displayName": "{{i18n.FeatureAttributeTypes}}",
+            "type": "CHECKBOX",
+            "isArray": true,
+            "dataProvider": "featAttrTypelistProvider",
+            "dbValue": "{{props.subPanelContext.statFeatureState.selectedFeatAttrTypes}}",
+            "renderingHint": "checkboxoptionlov"
+        },
+        "featOptionslistBox":{
+            "displayName": "{{i18n.FeatureAttributeOptions}}",
+            "type": "CHECKBOX",
+            "isArray": true,
+            "dataProvider": "featOptionslistProvider",
+            "renderingHint": "checkboxoptionlov",
+            "dbValue": "{{props.subPanelContext.statFeatureState.selectedFeatOptions}}"
+        }
+    },
+    "functions": {},
+    "i18n": {
+        "UseOrigFeatStats": [ "DpvMessages" ],
+        "FeatureAttributeTypes": [ "DpvMessages" ],
+        "FeatureAttributeOptions": [ "DpvMessages" ]        
+    },
+    "onEvent": [
+        {
+            "eventId": "awTab.selected",
+            "action": "doFeatAttrTypelistProvider"
+        }
+    ],
+    "conditions":{
+        "isQryTypeUseOrigSettingsOff": {
+            "expression": "!props.subPanelContext.qryTypeState.useOrigTempSettings"
+        },
+        "enableFeatTableWidgetsCond": {
+            "expression": "conditions.isQryTypeUseOrigSettingsOff && !props.subPanelContext.statFeatureState.useOrigTempSettings"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "loadAllFeatureTableAttributes",
+        "onUpdate": [
+            {
+                "action": "updateFeatOptionsList",
+                "observers": [
+                    "viewModel.featOptionslistBox"
+                ]
+            },
+            {
+                "action": "updateFeatAttrTypeList",
+                "observers": [
+                    "viewModel.featAttrTypelistBox"
+                ]
+            },
+            {
+                "action": "loadFeatureAttrTypes",
+                "observers": [
+                    "props.subPanelContext.statFeatureState.featAttrTypes"
+                ]
+                
+            },
+            {
+                "action": "loadAllFeatureTableAttributes",
+                "observers": [
+                    "props.subPanelContext.statFeatureState.useOrigTempSettings"
+                    
+                ]
+            }
+        ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "item": { "type": "object" }
+    }
+}

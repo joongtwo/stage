@@ -1,0 +1,234 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "ports": {
+        "propData": {
+            "onChangeAction": "fetchAttrsData",
+            "syncObject": {}
+        }
+    },
+    "lifecycleHooks": {
+        "render": "render",
+        "onUpdate": [
+            {
+                "action": "handleExpandAndCollapseAllBlocks",
+                "observers": [
+                    "props.classifyState.value.shouldRerenderForExpandCollapse"
+                ],
+                "condition": "conditions.needToProcessExpandAndCollapse"
+            }
+        ]
+    },
+    "props": {
+        "classify-state": {
+            "type": "object"
+        },
+        "response-state": {
+            "type": "object"
+        }
+    },
+    "ctx": {
+        "clsTab": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "render": {
+            "method": "awClassificationPropsServiceRenderFunction",
+            "deps": "js/Awp0ClassificationPropertiesService"
+        },
+        "fetchAttrsData": {
+            "actionType": "JSFunction",
+            "method":"fetchAttrsData",
+            "inputData": {
+                "attrData": "{{ports.propData.syncObject}}"
+            },
+            "outputData": {
+                "attributesVisible": "result.attrsVisible",
+                "attr_anno": "result.attr_anno",
+                "filteredAttr_anno": "result.filteredAttr_anno",
+                "filteredAttributes": "result.filteredAttributes",
+                "isFiltered": "result.isFiltered",
+                "selectedClass": "{{result.selectedClass}}"
+            },
+            "deps": "js/classifySyncService"
+        },
+        "clearAllProperties": {
+            "actionType": "JSFunction",
+            "method":"clearAllProperties",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/classifyFullViewService"
+        },
+        "populatePropertyGroupTree": {
+            "actionType": "JSFunction",
+            "method": "populatePropertyGroupTree",
+            "inputData": {
+                "inputArray":"{{data.attr_anno}}"
+            },
+            "deps": "js/classifyViewService"
+        },
+        "filterProperties": {
+            "actionType": "JSFunction",
+            "method": "filterProperties",
+            "inputData": {
+                "data":"{{data}}"
+            },
+            "deps": "js/Awp0ClassificationPropertiesService"
+        },
+        "showHideAnnotations": {
+            "actionType": "JSFunction",
+            "method": "updateShowAnno",
+            "inputData": {
+                "data": "{{data.showAnno}}",
+                "classifyState":"{{props.classifyState}}"
+            },
+            "outputData": {
+                "showAnno": ""
+            },
+            "deps": "js/Awp0ClassificationPropertiesService"
+        },
+        "showAllProp": {
+            "actionType": "JSFunction",
+            "method": "updateShowAllProp",
+            "inputData": {
+                "data": "{{data.showAllProp}}",
+                "classifyState":"{{props.classifyState}}"
+            },
+            "outputData": {
+                "showAllProp": ""
+            },
+            "deps": "js/Awp0ClassificationPropertiesService"
+        },
+        "showMandatory": {
+            "actionType": "JSFunction",
+            "method": "showMandatory",
+            "inputData": {
+                "data": "{{data.showMandatory}}",
+                "classifyState":"{{props.classifyState}}"
+            },
+            "outputData": {
+                "showMandatory": ""
+            },
+            "deps": "js/Awp0ClassificationPropertiesService"
+        },
+        "exitFullScreenMode": {
+            "actionType": "JSFunction",
+            "method": "exitFullScreenMode",
+            "inputData": {
+                "commandContext": "{{props.classifyState}}"
+            },
+            "deps": "js/classifyFullViewModeService"
+        },
+        "handleExpandAndCollapseAllBlocks": {
+            "actionType": "JSFunction",
+            "method": "expandAndCollapseAllCmd",
+            "inputData": {
+                "commandContext": "{{props.classifyState}}"
+            },
+            "deps": "js/Awp0ClassificationPropertiesService"
+        }
+    },
+    "functions": {
+        "getUnitSystem": {
+            "functionName": "getUnitSystem",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getConvertValuesRequest": {
+            "functionName": "getConvertValuesRequest",
+            "parameters": [ "{{data}}" ]
+        },
+        "getRequest": {
+            "functionName": "getRequest",
+            "parameters": [ "{{ctx}}" ]
+        }
+    },
+    "dataProviders": {
+
+    },
+    "columnProviders": {
+
+    },
+    "grids": {
+
+    },
+    "data": {
+        "propFilter" : {
+            "dbValue": "",
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "propertyDisplayName": "",
+            "requiredText": "{{i18n.searchPlaceholder}}"
+        },
+        "showAllProp": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "showMandatory": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "showAnno": {
+            "type": "BOOLEAN",
+            "dbValue": true
+        },
+        "expandAllBlocks": {
+            "type": "BOOLEAN",
+            "dbValue": true,
+            "field": "true"
+        },
+        "propFilterText": {
+            "dbValue": "{{i18n.searchPlaceholder}}"
+        },
+        "classifyPropCommands": "classify_propCommands"
+    },
+    "onEvent": [
+        {
+            "eventId": "classify.showHideAnnotations",
+            "action": "showHideAnnotations",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "classify.showAllProp",
+            "action": "showAllProp",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "classify.showMandatory",
+            "action": "showMandatory",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "locationChangeSuccess",
+            "action": "exitFullScreenMode"
+        }
+    ],
+    "conditions": {
+        "showUnitSystem": {
+            "expression": "data.leafClassDescriptions.unitBase === 'METRIC'"
+        },
+        "classifyFullScreenCmdCondition": {
+            "expression": "!ctx.classifyFullscreen || ctx.classifyFullscreen === false"
+        },
+        "classifyExitFullScreenCmdCondition": {
+            "expression": "ctx.classifyFullscreen === true"
+        },
+        "needToProcessExpandAndCollapse": {
+            "expression": "props.classifyState.value.shouldRerenderForExpandCollapse !== undefined"
+        }
+    },
+    "i18n": {
+        "properties": [ "ClassificationPanelMessages" ],
+        "searchPlaceholder": [ "ClassificationPanelMessages" ]
+    },
+    "editHandlers": {
+        "icoProps0EditHandler": {
+            "context": "EDIT_CLS_PROPERTIES"
+        }
+    }
+}

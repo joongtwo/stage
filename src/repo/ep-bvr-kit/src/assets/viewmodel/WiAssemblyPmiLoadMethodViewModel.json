@@ -1,0 +1,160 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "method1BatchAction": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "method1Action"
+                },
+                {
+                    "action": "hideMenu"
+                }
+            ]
+        },
+        "method2BatchAction": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "method2Action"
+                },
+                {
+                    "action": "hideMenu"
+                }
+            ]
+        },
+        "method3BatchAction": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "method3Action"
+                },
+                {
+                    "action": "hideMenu"
+                }
+            ]
+        },
+        "method4BatchAction": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "method4Action"
+                },
+                {
+                    "action": "hideMenu"
+                }
+            ]
+        },
+        "method5BatchAction": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "method5Action"
+                },
+                {
+                    "action": "hideMenu"
+                }
+            ]
+        },
+        "method1Action": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "pmiLoadMethodSelected",
+                        "eventData": {
+                            "selectedMethod": "method1"
+                        },
+                        "excludeLocalDataCtx": true
+                    }
+                ]
+            }
+        },
+        "method2Action": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "pmiLoadMethodSelected",
+                        "eventData": {
+                            "selectedMethod": "method2"
+                        },
+                        "excludeLocalDataCtx": true
+                    }
+                ]
+            }
+        },
+        "method3Action": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "pmiLoadMethodSelected",
+                        "eventData": {
+                            "selectedMethod": "method3"
+                        },
+                        "excludeLocalDataCtx": true
+                    }
+                ]
+            }
+        },
+        "method4Action": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "pmiLoadMethodSelected",
+                        "eventData": {
+                            "selectedMethod": "method4"
+                        },
+                        "excludeLocalDataCtx": true
+                    }
+                ]
+            }
+        },
+        "method5Action": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "pmiLoadMethodSelected",
+                        "eventData": {
+                            "selectedMethod": "method5"
+                        },
+                        "excludeLocalDataCtx": true
+                    }
+                ]
+            }
+        },
+        "hideMenu":{
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": "pmiMethodMenu"
+            },
+            "deps": "js/popupService"
+        }
+    },
+    "i18n": {
+        "method1": [ "wiPmiMessages" ],
+        "method2": [ "wiPmiMessages" ],
+        "method3": [ "wiPmiMessages" ],
+        "method4": [ "wiPmiMessages" ],
+        "method5": [ "wiPmiMessages" ],
+        "loadedAssembly": [ "wiPmiMessages" ],
+        "partFromLoadedAssembly": [ "wiPmiMessages" ],
+        "consumptionOfAnOperation": [ "wiPmiMessages" ],
+        "consumptionOfOperationfromAllPrevious": [ "wiPmiMessages" ],
+        "partSelectionMethod": [ "wiPmiMessages" ],
+        "operationSelectionMethod": [ "wiPmiMessages" ],
+        "scopeSelectionMethod": [ "wiPmiMessages" ],
+        "assignUnderScope": ["wiPmiMessages"],
+        "assignUnderScopeAll": ["wiPmiMessages"]
+    }
+}
+

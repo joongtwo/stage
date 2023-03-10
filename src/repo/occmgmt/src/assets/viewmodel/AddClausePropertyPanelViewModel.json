@@ -1,0 +1,136 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-tab-set.directive"
+    ],
+    "data": {
+        "addPropertyForClauseTabsModel": {
+            "isArray": "true",
+            "dbValue": [
+                {
+                    "panelId": "GetClausePropertyFromPalette",
+                    "name": "{{i18n.paletteTabTitle}}",
+                    "recreatePanel": true,
+                    "selectedTab": true
+                },
+                {
+                    "panelId": "GetClausePropertyBySearch",
+                    "name": "{{i18n.searchText}}",
+                    "recreatePanel": true
+                }
+            ]
+        }
+    },
+    "actions": {
+        "closeRevisionRulePanelAction": {
+            "actionType": "JSFunction",
+            "method": "closeRevisionRulePanel",
+            "inputData": {
+                "isClauseModified": "{{props.subPanelContext.nestedNavigationState.isClauseModified}}"
+            },
+            "actionMessages": {
+                "success": [ {
+                    "message": "confirmClosePanel",
+                    "condition": "props.subPanelContext.nestedNavigationState.isClauseModified === true"
+                } ]
+            },
+            "deps": "js/revisionRuleAdminPanelService"
+        },
+        "closeRevisionRuleAdminPanelAction": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "unRegisterRevisionRuleAdminCtx"
+                },
+                {
+                    "action": "closeRevisionRuleAdminPanel"
+                }
+            ]
+        },
+        "unRegisterRevisionRuleAdminCtx": {
+            "actionType": "JSFunction",
+            "method": "unRegisterCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "path": "RevisionRuleAdmin"
+            }
+        },
+        "closeRevisionRuleAdminPanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "navigationPanel"
+                        }
+                    }
+                ]
+            }
+        },
+        "backToRevisionRuleAdminPanel": {
+            "actionType": "JSFunction",
+            "method": "goToPrevPanel",
+            "inputData": {
+                "nestedNavigationState": "{{props.subPanelContext.nestedNavigationState}}",
+                "numOfBacks":"{{props.subPanelContext.nestedNavigationState.views.length}}"
+            },
+            "events": {
+                "success":[
+                    {
+                        "name": "RevisionRuleAdminPanel.UpdateDataProvider"
+                    }
+                ]
+            },
+            "deps": "js/nestedNavigationPanelService"
+        }
+    },
+    "messages": {
+        "confirmClosePanel": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.cancelEditMsg}}",
+            "messageTextParams": [
+                "{{ctx.RevisionRuleAdmin.currentlySelectedRevisionRule.props.object_string.dbValues[0]}}"
+            ],
+            "navigationOptions": [ {
+                    "option": "Cancel",
+                    "text": "{{i18n.backToEdit}}"
+                },
+                {
+                    "option": "Proceed",
+                    "text": "{{i18n.discard}}",
+                    "action": "closeRevisionRuleAdminPanelAction"
+                }
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "RevisionRuleAdminPanel.closeRevisionRulePanel",
+            "action": "closeRevisionRulePanelAction"
+        },
+        {
+            "eventId": "navigateToRevisionRuleAdminMainPanel",
+            "action": "backToRevisionRuleAdminPanel"
+        }
+    ],
+    "conditions": {},
+    "functions": {},
+    "i18n": {
+        "paletteTabTitle": [
+            "awAddDirectiveMessages"
+        ],
+        "searchText": [
+            "UIMessages"
+        ],
+        "cancelEditMsg": [
+            "RevisionRuleAdminConstants"
+        ],
+        "backToEdit": [
+            "RevisionRuleAdminConstants"
+        ],
+        "discard": [
+            "RevisionRuleAdminConstants"
+        ]
+    }
+}

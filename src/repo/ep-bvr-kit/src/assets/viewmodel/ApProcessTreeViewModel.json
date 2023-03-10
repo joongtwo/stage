@@ -1,0 +1,186 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "apProcessTree_workAreaAssignment": {
+            "onChangeAction": "handleWorkAreaSelection",
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "processTreeContext": {
+            "editContext": "{{ctx.mfgReadOnlyMode.readOnlyMode === true ? '': 'EP_PROCESS_TREE_TABLE_EDIT_CONTEXT'}}",
+            "objectUid": "{{ctx.epPageContext.loadedObject.uid}}",
+            "isTopNode": true,
+            "preferenceName": "EP_ProcessTreeAssemblyPlanningColumnConfiguration",
+            "isLeafProperty": "hasChildren",
+            "relatedObjectMapKey": "childAssembly",
+            "loadTypes": [
+                "CommonExpand"
+            ],
+            "additionalPolicyObjects": {
+                "name": "ApProcessTree",
+                "types": [
+                    {
+                        "name": "BOMLine",
+                        "properties": [
+                            {
+                                "name": "mbc0hasSubElements"
+                            },
+                            {
+                                "name": "bl_sequence_no"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mfg0BvrOperation",
+                        "properties": [
+                            {
+                                "name": "bl_parent"
+                            },
+                            {
+                                "name": "fnd0bl_line_object_type"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mfg0BvrProcess",
+                        "properties": [
+                            {
+                                "name": "bl_parent"
+                            },
+                            {
+                                "name": "Mfg0sub_elements"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "ImanItemBOPLine",
+                        "properties": [
+                            {
+                                "name": "bl_rev_last_release_status"
+                            },
+                            {
+                                "name": "bl_rev_checked_out_user"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mfg0BvrProcessArea",
+                        "properties": [{
+                                "name": "Mfg0LinkedBOELine"
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Mfg0BvrProcessStation",
+                        "properties": [
+                            {
+                                "name":  "Mfg0processResources"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "additionalLoadParamsForRootLoadInputData": [
+                {
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandProcessDetailedPlanning"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "TOP_WITH_CHILDREN"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "rootsProperty",
+                    "attributeValue": "RootObject"
+                }
+            ],
+            "additionalLoadParamsForChildLoadInputData": [
+                {
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandProcessDetailedPlanning"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "CHILDREN"
+                }
+            ],
+            "epTreeTableCommandAnchor": "apProcessTree_OnHoverCommand",
+            "clientColumns": [
+                {
+                    "clientColumn": true,
+                    "name": "graphicVisibility",
+                    "propertyDisplayName": "{{i18n.GraphicVisibilityColumnName}}"
+                },
+                {
+                    "clientColumn": true,
+                    "name": "releaseStatusFlag",
+                    "propertyDisplayName": "{{i18n.releaseStatusFlagColumnName}}"
+                },
+                {
+                    "clientColumn": true,
+                    "name": "changeIndication",
+                    "propertyDisplayName": "{{i18n.ChangeIndicationColumnName}}"
+                }
+            ],
+            "treeNavigationColumnIndex": 3,
+            "initializeAction": "initializeLoadDataForTree",
+            "relationName": ["Mbc0CutPaste","elb0allocatedOpsByPV"]
+        }
+    },
+    "actions": {
+        "handleWorkAreaSelection": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "workAreaSelection": "{{ports.apProcessTree_workAreaAssignment.syncObject}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "processTreeContext.tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getValueInViewModel"
+    },
+    "i18n": {
+        "GraphicVisibilityColumnName": ["BvrGraphicsMessages"],
+        "ChangeIndicationColumnName": ["changeIndicationMessages"],
+        "releaseStatusFlagColumnName": ["AssemblyMessages"]
+    },
+    "conditions": {
+        "isProcessObjectUidAvailable": {
+            "expression": {
+                "$source": "data.processTreeContext.objectUid",
+                "$query": {
+                    "$notNull": true
+                }
+            }
+        }
+    }
+}

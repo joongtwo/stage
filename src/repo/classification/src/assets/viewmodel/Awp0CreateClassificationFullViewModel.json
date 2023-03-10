@@ -1,0 +1,210 @@
+{
+    "schemaVersion": "1.0.0",
+    "lifecycleHooks": {
+        "onMount": "initialize",
+        "onUpdate": [{
+            "action": "selectNode",
+            "observers": [
+                "props.classifyState.selectedNode.uid"
+            ]
+        }
+    ]
+    },
+    "ctx": {
+        "clsLocation": {
+            "type": "object"
+        },
+        "clsTab": {
+            "type": "object"
+        },
+        "clsPanel": {
+            "type": "object"
+        }
+    },
+    "props": {
+        "classify-state": {
+            "type": "object"
+        },
+        "collapsed": {
+            "type": "BOOLEAN"
+        },
+        "response-state": {
+            "type": "object"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "section-title": {
+            "type": "STRING"
+        },
+        "workspace-object-uid": {
+            "type": "string"
+        },
+         "sort-option":{
+            "type":"object"
+        }
+    },
+    "ports": {
+        "attrData": {
+            "syncObject": {}
+        }
+    },
+    "actions": {
+        "updateAttrData": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "attrData",
+                "syncObject": {
+                    "attrsVisible": "{{data.eventData.attrsVisible}}",
+                    "attr_anno": "{{data.eventData.attr_anno}}",
+                    "filteredAttr_anno": "{{data.eventData.filteredAttr_anno}}",
+                    "isFiltered": "{{data.eventData.isFiltered}}",
+                    "selectedClass": "{{data.eventData.selectedClass}}"
+                }
+            }
+        },
+        "selectNode": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "getNodeData"
+                },
+                {
+                    "action": "detectNodeType"
+                }
+            ]
+        },
+        "getNodeData": {
+            "actionType": "JSFunction",
+            "method":"getNodeData",
+            "inputData": {
+                "classifyState": "{{props.classifyState}}",
+                "nodeState": "{{data.classifyNodeState}}"
+            },
+            "outputData": {
+                "selectedNode": ""
+            },
+            "deps": "js/classifyNodeService"
+        },
+        "detectNodeType": {
+            "actionType": "JSFunction",
+            "method": "detectNodeType",
+            "inputData": {
+                "selectedNode": "{{props.classifyState.selectedNode}}",
+                "classifyState": "{{props.classifyState}}",
+                "responseState": "{{props.responseState}}",
+                "data": "{{data}}",
+                "workspaceObjectUid": "{{props.workspaceObjectUid}}"
+            },
+            "deps": "js/classifyNodeService"
+        },
+        "setTableEditable": {
+            "actionType": "JSFunction",
+            "method": "setTableEditable",
+            "inputData": {
+                "data": "{{data}}",
+                "dataProvider": "{{data.dataProviders.PropDataProvider}}"
+            },
+            "deps": "js/classifyFullviewTableService"
+        },
+        "loadSuggestions": {
+            "actionType": "JSFunction",
+            "method": "loadSuggestions",
+            "inputData": {
+                "data": "{{data}}",
+                "treeInTab": "{{data.treeInTab}}"
+            },
+            "deps": "js/classifyFullViewService"
+        },
+        "initialize": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getICSPreferences"
+                }
+            ]
+        },
+        "getICSPreferences":
+        {
+            "actionType": "JSFunction",
+            "method": "getICSPreferenceValues",
+            "inputData": {
+                "prefValues": "{{ctx.preferences.ICS_attribute_displayable_properties}}"
+            },
+            "outputData": {
+                "displayPreferences": ""
+            },
+            "deps": "js/classifyFullViewService"
+        },
+        "setSuggestedSectionState": {
+            "actionType": "JSFunction",
+            "method": "setSuggestedSectionState",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/classifyFullViewService"
+        }
+    },
+
+    "data": {
+        "classifyNodeState": {
+            "initialValues": {
+            },
+            "meta": {
+                "selectedNode":{
+                    "type": "object",
+                    "field": "true"
+                }
+            }
+        },
+        "suggestedClassSelected": false,
+        "suggestedSectionCollapse": false,
+        "classificationTreeCommands": "classify_searchCommand"
+    },
+
+    "dataProviders": {
+    },
+    "columnProviders": {
+    },
+    "grids": {
+    },
+    "conditions": {
+        "pasteMode": {
+            "expression": "ctx.pasteIsClicked && ctx.IcoReplica"
+        },
+        "isPanel": {
+            "expression": "props.classifyState.value.isClassifyPanel"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "awPanelSection.collapse",
+            "criteria": {
+                "caption": "Suggested Classifications"
+            },
+            "cacheEventData": true,
+            "action": "setSuggestedSectionState"
+        }
+    ],
+
+    "functions": {},
+
+    "messages": {
+        "classifyAndViewFailure": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        },
+        "nonStorageClassMessage":
+        {
+          "messageType": "WARNING",
+          "messageText": "{{i18n.nonStorageClass}}",
+          "messageTextParams":
+          [
+            "{{data.selectedClass.displayName}}"
+          ]
+        }
+    },
+
+    "i18n": {
+        "nonStorageClass":   [ "ClassificationPanelMessages" ]
+    }
+}

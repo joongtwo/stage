@@ -1,0 +1,757 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "gridSelectionState": {
+            "initialValues": {
+                "selectionInfo": {},
+                "isFreeFormOptionValueSelected": false
+            },
+            "meta": {
+                "selectionInfo": {
+                    "type": "OBJECT",
+                    "field": "true"
+                },
+                "isFreeFormOptionValueSelected": {
+                    "type": "BOOELAN",
+                    "field": "true"
+                }
+            }
+        },
+        "parentNode": {
+            "$$treeLevel": -1,
+            "childNdx": 0,
+            "displayName": "",
+            "iconURL": null,
+            "id": "variabilityTreeData",
+            "levelNdx": -1,
+            "svgString": "",
+            "type": "unknown",
+            "uid": "variabilityTreeData",
+            "visible": true
+        },
+        "topGrid": {
+            "initialValues": {
+                "gridNodes": [ "__Pca0_Constraints_Subject_Section__" ],
+                "expandAll": false,
+                "expandOptions": {
+                    "initialExpandStatusLevel": 2,
+                    "collapseAllLevel": 1,
+                    "summaryLevel": 1
+                },
+                "businessObjectToSelectionMap": {},
+                "backupOfBusinessObjectToSelectionMap": {},
+                "viewModelObjectMap": {},
+                "variabilityNodes": []
+            },
+            "meta": {
+                "businessObjectToSelectionMap": {
+                    "type": "OBJECT",
+                    "field": "true"
+                },
+                "backupOfBusinessObjectToSelectionMap": {
+                    "type": "OBJECT",
+                    "field": "true"
+                },
+                "expandOptions": {
+                    "type": "OBJECT",
+                    "field": "true"
+                },
+                "expandAll": {
+                    "type": "BOOLEAN",
+                    "field": "true"
+                },
+                "gridNodes": {
+                    "type": "OBJECT",
+                    "field": "true"
+                }
+            }
+        },
+        "bottomGrid": {
+            "initialValues": {
+                "gridNodes": [ "__Pca0_Constraints_Condition_Section__" ],
+                "expandAll": true,
+                "expandOptions": {
+                    "initialExpandStatusLevel": 2,
+                    "collapseAllLevel": 1,
+                    "summaryLevel": 1
+                },
+                "businessObjectToSelectionMap": {},
+                "backupOfBusinessObjectToSelectionMap": {},
+                "viewModelObjectMap": {},
+                "variabilityNodes": []
+            },
+            "meta": {
+                "businessObjectToSelectionMap": {
+                    "type": "OBJECT",
+                    "field": "true"
+                },
+                "backupOfBusinessObjectToSelectionMap": {
+                    "type": "OBJECT",
+                    "field": "true"
+                },
+                "expandOptions": {
+                    "type": "OBJECT",
+                    "field": "true"
+                },
+                "expandAll": {
+                    "type": "BOOLEAN",
+                    "field": "true"
+                },
+                "gridNodes": {
+                    "type": "OBJECT",
+                    "field": "true"
+                }
+            }
+        },
+        "treeMaps": {},
+        "variabilityProps": {
+            "initialValues": {
+                "columnProperties": [],
+                "multiGrid": true,
+                "expandAll": false,
+                "availableConstraintTypes": [],
+                "newConstraints": [],
+                "dirtyElements": []
+            },
+            "meta": {
+                "columnProperties": {
+                    "type": "OBJECT",
+                    "field": "true"
+                },
+                "multiGrid": {
+                    "type": "BOOLEAN",
+                    "field": "true"
+                },
+                "soaResponse": {
+                    "type": "OBJECT"
+                },
+                "availableConstraintTypes": {
+                    "type": "ARRAY"
+                },
+                "newConstraints": {
+                    "comment": "this is to contain properties of added constraints not yet available in soaResponse.viewModelObjectMap",
+                    "type": "ARRAY"
+                }
+            }
+        },
+        "constraintsEditHandler": {
+            "context": "ConfiguratorCtx"
+        }
+    },
+    "conditions": {
+        "isVariabilityDataLoaded": {
+            "expression": "data.variabilityProps.soaResponse !== undefined"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "Pca0ConstraintsGrid.reloadData",
+            "action": "refreshBottomTreeData"
+        },
+        {
+            "eventId": "Pca0ConstraintsGrid.loadConstrantGridData",
+            "action": "checkNoOfConstraintsAndloadVariabilityData"
+        },
+        {
+            "eventId": "Pca0Constraints.addVariabilityToConstraintTree",
+            "action": "addVariabilityToConstraintTree",
+            "criteria": {
+                "isTopGrid" : false
+            },
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "Pca0Constraints.launchAddVariabilityPanel",
+            "action": "launchAddVariabilityPanel",
+            "criteria": {
+                "commandContext.isTopGrid" : false
+            },
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "Pca0ConstraintsGrid.expandCollapseAllAction",
+            "action": "handleExpandCollapseAllAction",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "topConstraintsGrid.plTable.resizeCheck",
+            "action": "registerScrollSync"
+        },
+        {
+            "eventId": "columnArrange",
+            "cacheEventData": true,
+            "action": "handleColumnArrange",
+            "criteria": {
+                "name": "topConstraintsGrid"
+            }
+        },
+        {
+            "eventId": "Pca0ConstraintsGrid.showPropertiesInformationChanged",
+            "action": "handleShowPropertiesInformationChanged"
+        },
+        {
+            "eventId": "Pca0ConstraintsGrid.sectionsConfigurationChanged",
+            "action": "handleShowPropertiesInformationChanged",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "bottomConstraintsGrid.plTable.toggleTreeNode",
+            "action": "updateBottomTableSummary",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "Pca0ConstraintsGrid.updateColumnWidth",
+            "cacheEventData": true,
+            "action": "updateColWidth"
+        },
+        {
+            "eventId": "Pca0ConstraintsGridEditorViewModel.saveEdits",
+            "action": "saveEdits",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "Pca0VariabilityTreeEditService.populateUserEdits",
+            "action": "populateBottomUserEdits",
+            "criteria": {
+                "gridId": "bottomConstraintsGrid"
+            },
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "Pca0VariabilityTreeEditService.populateUserEdits",
+            "action": "populateTopUserEdits",
+            "criteria": {
+                "gridId": "topConstraintsGrid"
+            },
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "Pca0ConstraintsGridEditorViewModel.processPartialErrorsAfterSave",
+            "action": "processPartialErrorsAfterSave",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "Pca0ConstraintsGridEditorViewModel.processPartialErrors",
+            "action": "processPartialErrors",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "Pca0ConstraintsGridEditorViewModel.postProcessSaveEdits",
+            "action": "postProcessSaveEdits"
+        },
+        {
+            "eventId": "Pca0ConstraintsGridEditorViewModel.handleCancel",
+            "action": "handleCancel",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "Pca0VariabilityTree.editModeActivated",
+            "action": "handleStartEdits",
+            "criteria": {
+                "editingContext": "ConfiguratorCtx"
+            }
+        },
+        {
+            "eventId": "Pca0ConstraintsGridEditor.cacheLoadedConstraintTypes",
+            "action": "cacheLoadedConstraintTypes",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "Pca0ConstraintsGridEditor.constraintCreated",
+            "action": "postProcessCreatedConstraint",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "Pca0ConstraintsGrid.addNewConstraintToGrid",
+            "action": "addNewConstraintToVMC",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "Pca0ConstraintsGrid.updateSavedUnsavedColumns",
+            "action": "updateDirtyElements",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "Pca0ConstraintsGrid.initGridData",
+            "action": "initGridData"
+        }
+    ],
+    "actions": {
+        "addVariabilityToConstraintTree": {
+            "actionType": "JSFunction",
+            "method": "addVariabilityToConstraintTree",
+            "inputData": {
+                "eventData": "{{parameters.eventData}}",
+                "targetDataProvider":  "{{data.dataProviders.bottomGridTreeDataProvider}}",
+                "selectedObjects": "{{data.atomicDataRef.bottomGrid}}",
+                "variabilityData":"{{data.atomicDataRef.variabilityProps}}"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "launchAddVariabilityPanel": {
+            "actionType": "JSFunction",
+            "method": "openPickAndChoosePanel",
+            "inputData": {
+                "commandContext": "{{function:populateCommandContext}}",
+                "commandId": "{{parameters.eventData.commandId}}",
+                "location": "{{parameters.eventData.location}}",
+                "config": "{{parameters.eventData.config}}"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "updateColWidth": {
+            "actionType": "JSFunction",
+            "method": "updateColumnWidth",
+            "inputData": {
+                "eventData": "{{data.eventMap['Pca0ConstraintsGrid.updateColumnWidth']}}",
+                "treeDataProviders": "{{data.dataProviders.bottomGridTreeDataProvider}}",
+                "vmData": "{{data.atomicDataRef.variabilityProps}}"
+            },
+            "outputData": {
+                "dataProviders.bottomGridTreeDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "updateBottomTableSummary": {
+            "actionType": "JSFunction",
+            "method": "updateSummary",
+            "inputData": {
+                "viewModelTreeNode": "{{parameters.eventData}}",
+                "treeDataProvider": "{{data.dataProviders.bottomGridTreeDataProvider}}",
+                "bottomGridData": "{{atomicDataRef.bottomGrid}}",
+                "viewModelObjects": "{{atomicData.variabilityProps.soaResponse.viewModelObjectMap}}"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "handleShowPropertiesInformationChanged": {
+            "actionType": "JSFunction",
+            "method": "handleShowPropertiesInformationChanged",
+            "inputData": {
+                "vmData": "{{data.atomicDataRef}}",
+                "changeDataInGrids": "{{parameters.eventData}}"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "registerScrollSync": {
+            "actionType": "JSFunction",
+            "method": "registerScrollSync",
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "handleColumnArrange": {
+            "actionType": "JSFunction",
+            "method": "handleColumnArrange",
+            "inputData": {
+                "gridDataProvider": "{{data.dataProviders.bottomGridTreeDataProvider}}",
+                "eventData": "{{data.eventData}}"
+            },
+            "outputData": {
+                "dataProviders.bottomGridTreeDataProvider.columnConfig": "result.columnConfig"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "refreshBottomTreeData": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "bottomConstraintsGrid.plTable.reload"
+                } ]
+            }
+        },
+        "initActions": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "initConstraintsGridEditor"
+                },
+                {
+                    "action": "initSettingsCache"
+                }
+            ]
+        },
+        "initConstraintsGridEditor": {
+            "actionType": "JSFunction",
+            "method": "initConstraintsGridEditor",
+            "inputData": {
+                "declViewModel": "{{data}}"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "initSettingsCache": {
+            "actionType": "JSFunction",
+            "method": "initSettingsCache",
+            "inputData": {
+                "topGridData": "{{atomicDataRef.topGrid}}",
+                "bottomGridData": "{{atomicDataRef.bottomGrid}}"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "doGridUnmount": {
+            "actionType": "JSFunction",
+            "method": "gridUnmount",
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "handlePrimarySelectionChange": {
+            "actionType": "JSFunction",
+            "method": "leaveConfirmation",
+            "inputData": {},
+            "events": {
+                "success": [ {
+                    "name": "Pca0ConstraintsGrid.loadConstrantGridData"
+                },
+                {
+                    "name": "Pca0ConstraintsGrid.initGridData"
+                }],
+                "failure": [ {
+                    "name": "Pca0ConstraintsGrid.loadConstrantGridData"
+                } ]
+            },
+            "deps": "js/editHandlerService"
+        },
+        "displayErrorMessage": {
+            "actionType": "JSFunction",
+            "method": "showMessageIfLargeNumberOfConstraintsSelected",
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "checkNoOfConstraintsAndloadVariabilityData": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "displayErrorMessage",
+                    "condition" : "props.subPanelContext.selection.length > 500"
+                },
+                {
+                    "action": "loadConstrantGridData"
+                }
+            ]
+        },
+        "loadConstrantGridData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ProductConfiguratorAw-2022-12-ConfiguratorManagement",
+            "method": "getVariantExpressionData3",
+            "inputData": {
+                "variantExpressionDataInput": "{{function:prepareSOAInputToGetConstraints}}"
+            },
+            "outputData": {
+                "initialized": "{{function:getVariabilityData}}"
+            },
+            "events":{
+                "success":[{
+                    "name": "Pca0ConstraintsGrid.reloadData"
+                }]
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "loadDataProviderForBottomGrid": {
+            "actionType": "JSFunction",
+            "method": "loadBottomGridDataProvider",
+            "inputData": {
+                "treeLoadInput": "{{data.treeLoadInput.parentNode}}",
+                "gridDataProvider": "{{data.dataProviders.bottomGridTreeDataProvider}}",
+                "variabilityData": "{{data.atomicDataRef.variabilityProps}}",
+                "gridProps": "{{data.atomicDataRef.bottomGrid}}",
+                "vmGridSelectionState": "{{data.atomicDataRef.gridSelectionState}}"
+            },
+            "outputData": {
+                "bottomGridTreeLoadResult": "treeLoadResult",
+                "dataProviders.bottomGridTreeDataProvider.columnConfig": "treeColumnConfig",
+                "treeLoadInput.parentNode": "parentNode"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "handleExpandCollapseAllAction": {
+            "actionType": "JSFunction",
+            "method": "handleExpandCollapseAllAction",
+            "inputData": {
+                "eventData": "{{parameters.eventData}}",
+                "topGridData": "{{data.atomicDataRef.topGrid}}",
+                "bottomGridData": "{{data.atomicDataRef.bottomGrid}}"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "populateBottomUserEdits": {
+            "actionType": "JSFunction",
+            "method": "populateUserEdits",
+            "inputData": {
+                "treeMaps": "",
+                "variabilityProps": "{{data.atomicDataRef.variabilityProps}}",
+                "eventData": "{{parameters.eventData}}",
+                "gridData": "{{atomicDataRef.bottomGrid}}"
+            },
+            "outputData": {
+                "variabilityProps": ""
+            },
+            "deps": "js/Pca0VariabilityTreeEditService"
+        },
+        "populateTopUserEdits": {
+            "actionType": "JSFunction",
+            "method": "populateUserEdits",
+            "inputData": {
+                "treeMaps": "",
+                "variabilityProps": "{{data.atomicDataRef.variabilityProps}}",
+                "eventData": "{{parameters.eventData}}",
+                "gridData": "{{atomicDataRef.topGrid}}"
+            },
+            "outputData": {
+                "variabilityProps": ""
+            },
+            "deps": "js/Pca0VariabilityTreeEditService"
+        },
+        "saveEdits": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ProductConfiguratorAw-2022-12-ConfiguratorManagement",
+            "method": "setVariantExpressionData3",
+            "inputData": {
+                "input": {
+                    "configPerspective": "",
+                    "selectedExpressions": "{{function:convertConstraintsExpressionDataToJsonString}}",
+                    "requestInfo": {
+                        "requestType": []
+                    }
+                }
+            },
+            "outputData": {
+                "ServiceData": "ServiceData"
+            },
+            "events": {
+                "failure": [ {
+                    "name": "Pca0ConstraintsGridEditorViewModel.processPartialErrorsAfterSave",
+                    "eventData": {
+                        "ServiceData": "{{data.ServiceData}}"
+                    }
+
+                } ],
+                "success": [ {
+                    "name": "Pca0ConstraintsGridEditorViewModel.postProcessSaveEdits"
+                } ]
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "processPartialErrorsAfterSave": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "processPartialErrors"
+                },
+                {
+                    "action": "updateSavedAndUnsavedCols"
+                }
+            ]
+        },
+        "processPartialErrors": {
+            "actionType": "JSFunction",
+            "method": "processPartialErrors",
+            "inputData": {
+                "eventData": "{{parameters.eventData.ServiceData}}"
+            },
+            "deps": "js/pca0CommonUtils"
+        },
+        "updateSavedAndUnsavedCols": {
+            "actionType": "JSFunction",
+            "method": "updateSavedAndUnsavedCols",
+            "inputData": {
+                "selectedObjects": "{{atomicData.bottomGrid.businessObjectToSelectionMap}}",
+                "ServiceData": "{{data.ServiceData}}"
+            },
+            "outputData": {
+                "savedColumns" : ""
+            },
+            "events": {
+                "success": [ {
+                        "name": "Pca0ConstraintsGrid.updateSavedUnsavedColumns",
+                        "eventData": {
+                            "savedColumns": "{{data.savedColumns}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/pca0CommonUtils"
+        },
+        "postProcessSaveEdits": {
+            "actionType": "JSFunction",
+            "method": "postProcessSaveEdits",
+            "inputData": {
+                "vmGridData": "{{data.atomicDataRef}}"
+            },
+            "events": {
+                "success": [ {
+                        "name": "Pca0ConstraintsGrid.updateSavedUnsavedColumns"
+                    }
+                ]
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "handleCancel": {
+            "actionType": "JSFunction",
+            "method": "handleCancel",
+            "inputData": {
+                "vmGridData": "{{data.atomicDataRef}}"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "handleStartEdits": {
+            "actionType": "JSFunction",
+            "method": "handleStartEdits",
+            "inputData": {
+                "editHandler": "{{data.constraintsEditHandler}}"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "cacheLoadedConstraintTypes": {
+            "actionType": "JSFunction",
+            "method": "cacheLoadedConstraintTypes",
+            "inputData": {
+                "loadedConstraintTypes": "{{parameters.eventData.loadedConstraintTypes}}",
+                "vmData": "{{data.atomicDataRef}}"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "postProcessCreatedConstraint": {
+            "actionType": "JSFunction",
+            "method": "postProcessCreatedConstraint",
+            "inputData": {
+                "constraint": "{{parameters.eventData.constraint}}",
+                "vmData": "{{data.atomicDataRef}}"
+            },
+            "events": {
+                "success": [ {
+                        "name": "Pca0ConstraintsGrid.RefreshTopHeader"
+                    },
+                    {
+                        "name": "Pca0ConstraintsGrid.addNewConstraintToGrid",
+                        "eventData": {
+                            "constraint": "{{parameters.eventData.constraint.uid}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "addNewConstraintToVMC": {
+            "actionType": "JSFunction",
+            "method": "addNewConstraintToVMC",
+            "inputData": {
+                "constraint": "{{parameters.eventData.constraint}}",
+                "treeDataProvider": "{{data.dataProviders.bottomGridTreeDataProvider}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "bottomConstraintsGrid.plTable.reload"
+                } ]
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "updateDirtyElements": {
+            "actionType": "JSFunction",
+            "method": "updateDirtyElements",
+            "inputData": {
+                 "treeDataProvider": "{{data.dataProviders.bottomGridTreeDataProvider}}",
+                 "selectedObjects": "{{atomicData.bottomGrid.businessObjectToSelectionMap}}",
+                 "eventData": "{{parameters.eventData}}"
+            },
+            "deps": "js/pca0CommonUtils"
+        },
+        "initGridData": {
+            "actionType" : "JSFunction",
+            "method": "initGridData",
+            "inputData": {
+                "topGridData" : "{{data.atomicDataRef.topGrid}}",
+                "bottomGridData": "{{data.atomicDataRef.bottomGrid}}"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initActions",
+        "onUnmount": "doGridUnmount",
+        "onUpdate": [ {
+                "action": "handlePrimarySelectionChange",
+                "observers": [ "props.subPanelContext.selection" ]
+            },
+            {
+                "action": "refreshBottomTreeData",
+                "observers": [ "viewModel.atomicData.bottomGrid.expandAll" ]
+            }
+        ]
+    },
+    "functions": {
+        "populateCommandContext": {
+            "functionName": "populateCommandContextForAddVariabilityPanel",
+            "parameters": [
+                "{{parameters.eventData}}",
+                "{{data.dataProviders.bottomGridTreeDataProvider}}",
+                "{{atomicData.bottomGrid}}"
+            ]
+        },
+        "prepareSOAInputToGetConstraints": {
+            "functionName": "prepareSOAInputToGetConstraints"
+        },
+        "getVariabilityData": {
+            "functionName": "getVariabilityData",
+            "parameters": [
+                "{{data.atomicDataRef}}"
+            ]
+        },
+        "convertConstraintsExpressionDataToJsonString": {
+            "functionName": "convertConstraintsExpressionDataToJsonString",
+            "parameters": [
+                "{{data.atomicDataRef}}"
+            ]
+        }
+    },
+    "dataProviders": {
+        "bottomGridTreeDataProvider": {
+            "action": "loadDataProviderForBottomGrid",
+            "initializeAction": "loadDataProviderForBottomGrid",
+            "commandsAnchor": "aw_bottomGridEditor_splmTable_commandsMenu",
+            "gridId": "bottomConstraintsGrid",
+            "inputData": {
+                "accessMode": "tree",
+                "topNodeUid": "variabilityTreeData"
+            },
+            "treeLoadResult": "{{data.bottomGridTreeLoadResult}}"
+        }
+    },
+    "columnProviders": {
+        "treeColumnProvider": {
+            "columns": "{{data.columns}}"
+        }
+    },
+    "grids": {
+        "bottomConstraintsGrid": {
+            "dataProvider": "bottomGridTreeDataProvider",
+            "columnProvider": "treeColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "headerHeight": 0,
+                "enableSorting": false
+            }
+        }
+    }
+}

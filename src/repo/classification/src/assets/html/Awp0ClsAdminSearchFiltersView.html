@@ -1,0 +1,24 @@
+<aw-command-panel caption="i18n.Filters" class="aw-clsadmin-filters" >
+    <!-- Releases-->
+    <aw-cls-release-box exist-when="conditions.isReleasesActive" releases-state="fields.releasesState" sub-panel-context="props.subPanelContext"></aw-cls-release-box>
+
+    <!-- Properties -->
+    <aw-panel-body class="aw-base-scrollPanel">
+        <aw-command-panel-section caption="i18n.propertiesTitle">
+            <aw-list dataprovider="data.dataProviders.addFilterListProvider">
+                <aw-include name="Awp0ClsAddFilterCell" sub-panel-context="{...props.subPanelContext, item:item, appliedFilterDetails:data.appliedFilterDetails, filterState:data.filterState }"></aw-include>
+            </aw-list>
+            <div>
+                <aw-icon-button button-type="button" class="aw-layout-right" command="data.addFilter"
+                    visible-when="fields.filterState.value.showAddFilter === true"></aw-icon-button>
+            </div>
+        </aw-command-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="performFilter"
+            visible-when="fields.filterState.value.showApplyFilters === true">
+            <aw-i18n>{{i18n.applyFilters}}</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>
+

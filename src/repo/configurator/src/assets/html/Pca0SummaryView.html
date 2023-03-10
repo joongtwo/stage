@@ -1,0 +1,103 @@
+<aw-panel-section id="fscSummaryPanelSectionHeader" exist-when="props.summarystate.isHorizontalLayout">
+    <div class="aw-cfg-fscSummaryHeader">
+        <div class="aw-widgets-cellListCellTitleBlock">
+            <h3 title="{{i18n.summaryTitle}}" class="aw-widgets-cellListCellTitle">{{i18n.summaryTitle}}</h3>
+        </div>
+    </div>
+    <div>
+        <aw-guidance-message message="completenessStatusGuidanceInfo" exist-when="props.summarystate.isCompletenessStatusChipEnabled === false" closable="false" banner-style="true" show-icon="true" show-type="false">
+        </aw-guidance-message>
+        <aw-chip chip="data.validAndIncompletenessStatusChipData" exist-when="conditions.ValidAndInComplete" button-type="caution" class="aw-cfg-completenessStatus"></aw-chip>
+        <aw-chip chip="data.validAndCompletenessStatusChipData" exist-when="conditions.ValidAndComplete" button-type="positive" class="aw-cfg-completenessStatus"></aw-chip>
+        <aw-chip chip="data.invalidStatusChipData" button-type="negative" exist-when="conditions.InValid" class="aw-cfg-completenessStatus"></aw-chip>
+        <div exist-when="data.violationLabel  && data.violationLabel.length > 0" class="violationsInSummary">
+            <aw-icon class="aw-cfg-violationImage errorIndicatorinSummary" icon-id="indicatorError" exist-when="conditions.ViolationSeverityError"></aw-icon>
+            <aw-icon class="aw-cfg-violationImage infoIndicatorinSummary" icon-id="indicatorWarning" exist-when="conditions.ViolationSeverityWarning"></aw-icon>
+            <aw-icon class="aw-cfg-violationImage warningIndicatorinSummary" icon-id="indicatorInfo" exist-when="conditions.ViolationSeverityInfo"></aw-icon>
+            <span aw-class="{'aw-cfg-violationImage': props.summarystate.violationSeverity == ''}">{{data.violationLabel}}</span>
+        </div>
+    </div>
+    <div class="aw-cfg-fscIndicatorContainer aw-cfg-fscSummarySectionIndicatorContainer">
+        <aw-icon-button class="aw-cfg-summaryChevron aw-cfg-fscSummaryChevronStyle" command="data.variantsExpandCommand" aria-label="{{data.variantsExpandCommand.iconName}}" exist-when="data.variantsSectionExpand"></aw-icon-button>
+        <aw-icon-button class="aw-cfg-summaryChevron aw-cfg-fscSummaryChevronStyle" command="data.variantsCollapseCommand" aria-label="{{data.variantsCollapseCommand.iconName}}" exist-when="!data.variantsSectionExpand"></aw-icon-button>
+        <div class="aw-cfg-fscSummarySectionLabel" title="{{i18n.variant}}">{{i18n.variant}}
+        </div>
+    </div>
+    <div exist-when="data.variantsSectionExpand">
+        <div class="aw-cfg-fscSummaryVariantLabel">
+            <aw-list dataprovider="data.dataProviders.loadedSavedVariantsProvider" show-decorators="data.dataProviders.showDecorators">
+                <aw-default-cell class="aw-cfg-fscSummaryVariantCell" vmo="item"></aw-default-cell>
+            </aw-list>
+        </div>
+    </div>
+    <div class="aw-cfg-fscIndicatorContainer aw-cfg-fscSummarySectionIndicatorContainer">
+        <aw-icon-button id="Pca0SelectionsChevronExpand" class="aw-cfg-summaryChevron aw-cfg-fscSummaryChevronStyle" command="data.userSelectionsExpandCommand" aria-label="{{data.userSelectionsExpandCommand.iconName}}" exist-when="data.userSelectionsSectionExpand"></aw-icon-button>
+        <aw-icon-button id="Pca0SelectionsChevronCollapse" class="aw-cfg-summaryChevron aw-cfg-fscSummaryChevronStyle" command="data.userSelectionsCollapseCommand" aria-label="{{data.userSelectionsCollapseCommand.iconName}}" exist-when="!data.userSelectionsSectionExpand"></aw-icon-button>
+        <div class="aw-cfg-fscSummarySectionLabel" title="{{i18n.userSelectionsTitle}}">{{i18n.userSelectionsTitle}}
+        </div>
+    </div>
+</aw-panel-section>
+<!-- Scrollable section "User Selections"-->
+<aw-panel-body panel-id="Pca0SummaryScrollableSections" exist-when="data.userSelectionsSectionExpand && props.summarystate.isHorizontalLayout">
+    <div class="aw-cfg-fscSummaryUserSelectionsList aw-cfg-fscSummaryPadding">
+        <!--Product Models-->
+        <aw-panel-section class="aw-cfg-fscSummaryProductModelSelection" caption="{{i18n.productsTitle}}" exist-when="data.productSelections.hasData && data.productSelections.selModelImage !== ''">
+            <aw-image class="aw-cfg-fscSummaryModelImage" source="data.productSelections.selModelImage"></aw-image>
+            <div class="aw-cfg-fscSummaryProductSelectionCell">{{data.productSelections.selModelName}}</div>
+        </aw-panel-section>
+        <pca0-summary-selections sub-panel-context="data.productSelections.productModelsSelectionsList"> </pca0-summary-selections>
+        <!--User Selections-->
+        <pca0-summary-selections  focused="data.focused"  sub-panel-context="data.userSelectionsList" > </pca0-summary-selections>
+    </div>
+</aw-panel-body>
+
+<!-- Second look - the Vertical layout, it's all in one scroll panel-->
+<aw-panel-body panel-id="Pca0SummaryStackedView" exist-when="props.summarystate.isHorizontalLayout === false">
+    <div class="aw-cfg-fscSummaryHeader">
+        <div class="aw-widgets-cellListCellTitleBlock">
+            <h3 title="{{i18n.summaryTitle}}" class="aw-widgets-cellListCellTitle">{{i18n.summaryTitle}}</h3>
+        </div>
+    </div>
+    <div>
+        <aw-guidance-message message="completenessStatusGuidanceInfo" exist-when="props.summarystate.isCompletenessStatusChipEnabled === false" closable="false" banner-style="true" show-icon="true" show-type="false">
+        </aw-guidance-message>
+        <aw-chip chip="data.validAndIncompletenessStatusChipData" exist-when="conditions.ValidAndInComplete" button-type="caution" class="aw-cfg-completenessStatus"></aw-chip>
+        <aw-chip chip="data.validAndCompletenessStatusChipData" exist-when="conditions.ValidAndComplete" button-type="positive" class="aw-cfg-completenessStatus"></aw-chip>
+        <aw-chip chip="data.invalidStatusChipData" button-type="negative" exist-when="conditions.InValid" class="aw-cfg-completenessStatus"></aw-chip>
+        <div exist-when="data.violationLabel && data.violationLabel.length > 0" class="violationsInSummary">
+            <aw-icon class="aw-cfg-violationImage errorIndicatorinSummary" icon-id="indicatorError" exist-when="conditions.ViolationSeverityError"></aw-icon>
+            <aw-icon class="aw-cfg-violationImage infoIndicatorinSummary" icon-id="indicatorWarning" exist-when="conditions.ViolationSeverityWarning"></aw-icon>
+            <aw-icon class="aw-cfg-violationImage warningIndicatorinSummary" icon-id="indicatorInfo" exist-when="conditions.ViolationSeverityInfo"></aw-icon>
+            <span aw-class="{'aw-cfg-violationImage': props.summarystate.violationSeverity == ''}">{{data.violationLabel}}</span>
+        </div>
+    </div>
+    <div class="aw-cfg-fscIndicatorContainer aw-cfg-fscSummarySectionIndicatorContainer">
+        <aw-icon-button class="aw-cfg-summaryChevron aw-cfg-fscSummaryChevronStyle" command="data.variantsExpandCommand" aria-label="{{data.variantsExpandCommand.iconName}}" exist-when="data.variantsSectionExpand"></aw-icon-button>
+        <aw-icon-button class="aw-cfg-summaryChevron aw-cfg-fscSummaryChevronStyle" command="data.variantsCollapseCommand" aria-label="{{data.variantsCollapseCommand.iconName}}" exist-when="!data.variantsSectionExpand"></aw-icon-button>
+        <div class="aw-cfg-fscSummarySectionLabel" title="{{i18n.variant}}">{{i18n.variant}}
+        </div>
+    </div>
+    <div exist-when="data.variantsSectionExpand">
+        <div class="aw-cfg-fscSummaryVariantLabel">
+            <aw-list dataprovider="data.dataProviders.loadedSavedVariantsProvider" show-decorators="data.dataProviders.showDecorators">
+                <aw-default-cell class="aw-cfg-fscSummaryVariantCell" vmo="item"></aw-default-cell>
+            </aw-list>
+        </div>
+    </div>
+    <div class="aw-cfg-fscIndicatorContainer aw-cfg-fscSummarySectionIndicatorContainer">
+        <aw-icon-button id="Pca0SelectionsChevronExpand" class="aw-cfg-summaryChevron aw-cfg-fscSummaryChevronStyle" command="data.userSelectionsExpandCommand" aria-label="{{data.userSelectionsExpandCommand.iconName}}" exist-when="data.userSelectionsSectionExpand"></aw-icon-button>
+        <aw-icon-button id="Pca0SelectionsChevronCollapse" class="aw-cfg-summaryChevron aw-cfg-fscSummaryChevronStyle" command="data.userSelectionsCollapseCommand" aria-label="{{data.userSelectionsCollapseCommand.iconName}}" exist-when="!data.userSelectionsSectionExpand"></aw-icon-button>
+        <div class="aw-cfg-fscSummarySectionLabel" title="{{i18n.userSelectionsTitle}}">{{i18n.userSelectionsTitle}}
+        </div>
+    </div>
+    <div class="aw-cfg-fscSummaryUserSelectionsList aw-cfg-fscSummaryPadding" exist-when="data.userSelectionsSectionExpand">
+        <!--Product Models-->
+        <aw-panel-section class="aw-cfg-fscSummaryProductModelSelection" caption="{{i18n.productsTitle}}" exist-when="data.productSelections.hasData && data.productSelections.selModelImage !== ''">
+            <aw-image class="aw-cfg-fscSummaryModelImage" source="data.productSelections.selModelImage"></aw-image>
+            <div class="aw-cfg-fscSummaryProductSelectionCell">{{data.productSelections.selModelName}}</div>
+        </aw-panel-section>
+        <pca0-summary-selections sub-panel-context="data.productSelections.productModelsSelectionsList"> </pca0-summary-selections>
+        <pca0-summary-selections  focused="data.focused"  sub-panel-context="data.userSelectionsList" > </pca0-summary-selections>
+    </div>
+</aw-panel-body>
+

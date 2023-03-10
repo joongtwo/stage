@@ -1,0 +1,68 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "endItemListBox": {
+            "displayName": "{{i18n.selectedEndItem}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true"
+        },
+        "endItemListBoxValues": {
+            "propertyName": "endItem",
+            "propertyDisplayName": " {{i18n.selectedEndItem}}",
+            "type": "STRING",
+            "dbValue": "{{subPanelContext.validateEffectivityData.endItemList}}"
+        }
+    },
+    "actions": {
+        "publishCancelEffectivityAction": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "epValidateEffectivityPopup.cancelRequest"
+                } ]
+            }
+        },
+        "publishSaveEffectivityAction": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "epValidateEffectivity.saveEffectivityRequest"
+                } ]
+            }
+        },
+        "endItemSelectionChangeAction": {
+            "actionType": "JSFunction",
+            "method": "updateEffectivityData",
+            "deps": "js/epValidateEffectivityService",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}",
+                "keyToUpdate": "endItem",
+                "dataToUpdate": "{{data.endItemListBox.dbValue}}"
+            }
+        }
+    },
+    "conditions": {
+        "isSaveEnabled": {
+            "expression": "ctx.epEffectivity.dirty"
+        }
+    },
+    "i18n": {
+        "cancel": [
+            "InstructionsEffectivityMessages"
+        ],
+        "save": [
+            "InstructionsEffectivityMessages"
+        ],
+        "selectedEndItem": [
+            "InstructionsEffectivityMessages"
+        ]
+    }
+}

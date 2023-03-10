@@ -1,0 +1,146 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/visible-when.directive",
+        "js/exist-when.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-list.directive",
+        "js/aw-icon.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-include.directive",
+        "js/aw-panel-header.directive",
+        "js/aw-back-button.directive",
+        "js/aw-break.directive"
+    ],
+    "actions": {
+        "queryDC_SkdDML": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-06-DataManagement",
+            "method": "getAvailableTypes",
+            "inputData": {
+                "classes": [ {
+                    "baseClass": "DC_SkdDML",
+                    "exclusionTypes": [
+                        ""
+                    ]
+                } ]
+            },
+            "outputData":
+            {
+
+                "TC_SkdDMLs": "inputClassToTypes"
+            }
+        },
+        "handleTypeSelection": {
+            "actionType": "JSFunction",
+            "method": "importTypeSelectionJs",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "selectedType": "selectedType"
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+        "clearSelectedType": {
+            "actionType": "JSFunction",
+            "method": "clearSelectedType",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        }
+    },
+    "data":
+    {
+        "selectedType": {
+            "type": "STRING",
+            "dbValue": ""
+        },
+        "importMapping": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "importMappingList": {
+            "type": "STRING",
+            "dbValue": [ {
+                "propDisplayValue": "{{i18n.importTopic}}",
+                "propDisplayDescription":"",
+                "dispValue":"{{i18n.importTopic}}",
+                "propInternalValue": "Topic"
+            },
+            {
+                "propDisplayValue": "{{i18n.importDitaMap}}",
+                "propDisplayDescription":"",
+                "dispValue":"{{i18n.importDitaMap}}",
+                "propInternalValue": "DitaMap"
+            },
+            {
+                "propDisplayValue": "{{i18n.importDMRL}}",
+                "propDisplayDescription":"",
+                "dispValue":"{{i18n.importDMRL}}",
+                "propInternalValue": "DMRL"
+            },
+            {
+                "propDisplayValue": "{{i18n.importGraphic}}",
+                "propDisplayDescription":"",
+                "dispValue":"{{i18n.importGraphic}}",
+                "propInternalValue": "Graphic"
+            },
+            {
+                "propDisplayValue":"{{i18n.importSNS}}",
+                "propDisplayDescription":"",
+                "dispValue":"{{i18n.importSNS}}",
+                "propInternalValue": "SNS"
+            },
+            {
+                "propDisplayValue": "{{i18n.importTranslation}}",
+                "propDisplayDescription":"",
+                "dispValue":"{{i18n.importTranslation}}",
+                "propInternalValue": "Translation"
+            }
+        ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "awPanel.reveal1",
+            "criteria": {
+                "panelId": "Ctm1ImportContent"
+            },
+            "action": "queryDC_SkdDML"
+        }
+    ],
+    "conditions": {
+        "ctm1HasS1000d": {
+            "expression": "data.TC_SkdDMLs.length !== 0"
+        }
+    },
+    "i18n": {
+        "Ctm1ImportContentTitle": [ "ContentMgmtMessages" ],
+        "selectImportCommand": [ "ContentMgmtMessages" ],
+        "importDitaMap": ["ContentMgmtMessages"],
+        "importTopic": ["ContentMgmtMessages"],
+        "importTranslation": ["ContentMgmtMessages"],
+        "importGraphic": ["ContentMgmtMessages"],
+        "importSNS": ["ContentMgmtMessages"],
+        "importDMRL": ["ContentMgmtMessages"]
+    }
+}

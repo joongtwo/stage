@@ -1,0 +1,9 @@
+<aw-command-panel caption="i18n.classNavigate" anchor="data.classificationTreeCommands" class="aw-clspanel-treeNavigate"
+    context="fields.sortOption">
+    <aw-toolbar first-anchor="classify_navigateCommands" second-anchor=""
+        context="{subPanelContext: props.subPanelContext, navigateState: data.navigateState, selectionData: data.selectionData}"></aw-toolbar>
+    <awp0-classification-navigate has-releases="true"
+        sub-panel-context="{selectionData: data.selectionData, searchState: props.subPanelContext.searchState}"
+        sort-option="fields.sortOption" navigate-state="fields.navigateState">
+    </awp0-classification-navigate>
+</aw-command-panel>

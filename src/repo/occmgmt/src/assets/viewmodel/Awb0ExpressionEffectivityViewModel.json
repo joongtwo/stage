@@ -1,0 +1,148 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "expEffPanelState": {
+            "initialValues": {
+                "activeView": "ps0DisplayEffectivities",
+                "previousView": "",
+                "dateOrUnitEffectivityTypeRadioButton":{
+                    "type": "BOOLEAN",
+                    "dbValue": true
+                },
+                "endItemVal":{
+                    "dbValue": null,
+                    "uiValue": null
+                },
+                "unitRangeText": {
+                    "dbValue": null
+                },
+                "startDate": {
+                    "type": "DATE",
+                    "dbValue": null
+                },
+                "endDate": {
+                    "type": "DATETIME",
+                    "dbValue": null
+                },
+                "endDateOptions": {
+                    "dbValue": "Date"
+                },
+                "effectivities":{
+                },
+                "editEffectivity":{
+                }
+            },
+            "meta": { }
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "updateUnitEffectivityContext": {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "inputData": {
+                "path": "expressionEffectivity.isOnlyUnitEffectivityApplicable",
+                "value": true
+            },
+            "deps": "js/appCtxService"
+        },
+        "clearUnitEffectivityContext": {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "inputData": {
+                "path": "expressionEffectivity.isOnlyUnitEffectivityApplicable",
+                "value": null
+            },
+            "deps": "js/appCtxService"
+        },
+        "backAction":
+        {
+            "actionType": "JSFunction",
+            "method": "backActionMethod",
+            "inputData":
+            {
+                "destinationPanelId":"ps0DisplayEffectivities",
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "expEffPanelState":""
+            },
+            "deps": "js/expressionEffectivityService"
+        },
+        "backToPrevious":
+        {
+            "actionType": "JSFunction",
+            "method": "backActionData",
+            "inputData":
+            {
+                "destinationPanelId":"{{data.expEffPanelState.previousView}}",
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "expEffPanelState":""
+            },
+            "deps": "js/expressionEffectivityService"
+        },
+        "clearUnitEffectivityContextAndResetState": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clearUnitEffectivityContext"
+                },
+                {
+                    "action": "backAction"
+                }
+            ]
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                     "condition": "conditions.isPwaSelectionChanged",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "awPanel.reveal",
+            "condition": "subPanelContext.occContext.supportedFeatures.Awb0RevisibleOccurrenceFeature === true",
+            "action": "updateUnitEffectivityContext"
+        }
+    ],
+    "lifecycleHooks": {
+        "onUnmount": "clearUnitEffectivityContextAndResetState",
+        "onUpdate": [{
+            "action": "closePanel",
+            "observers": [ "props.subPanelContext.occContext.selectedModelObjects" ]
+        }]
+    },
+    "i18n": {
+        "elementEffectivityTitle": [
+            "OccurrenceManagementConstants"
+        ],
+        "ps0AddEffectivitiesCmd": [
+            "PSConstants"
+        ],
+        "edit": [
+            "OccurrenceManagementConstants"
+        ],
+        "endItemMessage": [
+            "OccurrenceManagementConstants"
+        ]
+    },
+    "conditions": {
+        "isPwaSelectionChanged": {
+            "expression": "props.subPanelContext.occContext.selectedModelObjects[0].props.awb0Parent.dbValues[0] === null"
+        }
+    }
+}

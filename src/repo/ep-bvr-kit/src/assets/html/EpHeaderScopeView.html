@@ -1,0 +1,16 @@
+<div class="sw-row align-center" exist-when="ctx.ep.loadedProductObject">
+    <aw-separator is-vertical="true" class="aw-epHeader-separator"></aw-separator>
+    <div class="aw-epHeader-icon aw-base-icon">
+        <aw-image source="ctx.ep.loadedProductObject.typeIconURL"></aw-image>
+    </div>
+    <span class="aw-ep-taskHeaderSubTitle">{{ctx.ep.loadedProductObject.props.bl_rev_object_name.displayValues[0]}}</span>
+</div>
+<div class="sw-row align-center" exist-when="ctx.ep.scopeObject.props">
+    <aw-separator is-vertical="true" class="aw-epHeader-separator"></aw-separator>
+    <div class="aw-epHeader-icon aw-base-icon">
+        <aw-image source="ctx.ep.scopeObject.typeIconURL"></aw-image>
+    </div>
+    <span class="aw-ep-taskHeaderSubTitle">{{ctx.ep.scopeObject.props.bl_rev_object_name?ctx.ep.scopeObject.props.bl_rev_object_name.displayValues[0]:ctx['location.titles'].headerTitle}}</span>
+</div>
+<mfe-loading-message exist-when="!ctx.ep.scopeObject" class="aw-ep-headerLoading"></mfe-loading-message>
+

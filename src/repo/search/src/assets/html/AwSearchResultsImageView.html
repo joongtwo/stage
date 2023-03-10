@@ -1,0 +1,11 @@
+<span class="aw-widgets-propertyNonEditValue aw-search-inContentSearchBox"
+    exist-when="subPanelContext.searchState.totalFound===0 && !(subPanelContext.searchState.thresholdExceeded === 'true')">{{i18n.noFiltersFound}}</span>
+<span class="aw-widgets-propertyNonEditValue aw-search-inContentSearchBox"
+    exist-when="subPanelContext.searchState.totalFound===0 && subPanelContext.searchState.thresholdExceeded==='true'">{{data.thresholdExceededMessage}}</span>
+<aw-list dataprovider="data.dataProviders.imageDataProvider" show-decorators="true"
+    exist-when="conditions.populatedSearchString"
+    show-context-menu="true" show-check-box="subPanelContext.showCheckBox">
+    <div class='w-12'>
+        <aw-image-cell vmo="item"></aw-image-cell>
+    </div>
+</aw-list>

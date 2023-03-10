@@ -1,0 +1,112 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "search": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "",
+                    "clientScopeURI": "",
+                    "columnsToExclude": [],
+                    "hostingClientName": "",
+                    "operationType": ""
+                },
+                "saveColumnConfigData": {
+                    "columnConfigId": "",
+                    "clientScopeURI": "",
+                    "columns": [],
+                    "scope": "",
+                    "scopeName": ""
+                },
+                "searchInput": {
+                    "internalPropertyName": "",
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "providerName": "Awp0FullTextSearchProvider",
+                    "searchCriteria":
+                    {
+                       "searchString": "**{{data.stxFilterBox.dbValue}}*"
+                    },
+                    "searchFilterFieldSortType": "Priority",
+                    "searchFilterMap6": {
+                        "WorkspaceObject.object_type": [{
+                        "searchFilterType": "StringFilter",
+                        "stringValue": "Mes0MESTXElementRevision",
+                        "selected": false,
+                        "stringDisplayValue": "",
+                        "startDateValue": "",
+                        "endDateValue": "",
+                        "startNumericValue": 0,
+                        "endNumericValue": 0,
+                        "count": 0,
+                        "startEndRange": ""
+                        }]
+                    },
+                    "searchSortCriteria": [],
+                    "startIndex": "{{data.dataProviders.performStandardTextSearch.startIndex}}"
+                }
+            },
+            "policy": {
+                "types":
+                [
+                    {
+                        "name": "Mes0MESTXElementRevision",
+                        "properties": [{
+                            "name": "epw0body_cleartext"
+                        },
+                        {
+                            "name": "epw0mes0WIStrings"
+                        },
+                        {
+                            "name": "object_string"
+                        }]
+                    }
+                ]
+            },
+            "outputData": {
+                "searchResults": "{{function:getStandardTextElementRevisionList}}"
+            },
+            "deps": "js/wiStandardText.service"
+        },
+        "addSelectedStandardText": {
+            "actionType": "JSFunction",
+            "method": "addSelectedStandardText",
+            "inputData": {
+                "data": "{{parameters.eventData.selectedObjects}}"
+            },
+            "deps": "js/wiStandardText.service"
+        }
+    },
+
+    "data": {
+        "stxFilterBox": {
+            "displayName": "MyFilter",
+            "type": "STRING",
+            "autofocus": true,
+            "requiredText": "{{i18n.filterMessage}}"
+        }
+    },
+
+    "dataProviders": {
+        "performStandardTextSearch": {
+            "action": "search",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.searchResults.length}}"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "performStandardTextSearch.selectionChangeEvent",
+            "action": "addSelectedStandardText",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        }
+    ],
+    "i18n": {
+        "filterMessage": [
+            "InstructionsEditorMessages"
+        ]
+    }
+}

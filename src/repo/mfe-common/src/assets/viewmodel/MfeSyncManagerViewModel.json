@@ -1,0 +1,100 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-id": {
+            "type": "string"
+        }
+    },
+    "ports":{
+        "MfeSyncManager_setSyncObject":{
+            "onChangeAction": "onSyncObjectChange",
+            "syncObject": {}
+        },
+        "MfeSyncManager_getSingularSyncObject":{
+            "syncObject": {}
+        },
+        "MfeSyncManager_getMultipleSyncObject":{
+            "syncObject": {}
+        }
+    },
+    "data":{
+        "singularSyncObject": null,
+        "multipleSyncObjects": []
+    },
+    "actions":{
+        "onSyncObjectChange":{
+           "actionType":"batchJob",
+           "steps":[
+               {
+                    "action":"saveSingleSyncObject"
+               },
+               {
+                   "action":"saveMultipleSyncObjects",
+                   "condition":"!conditions.isSingleSyncObjectUpdated && !data.isSameObjectUpdate"
+               },
+               {    
+                    "action":"updateSingularSyncObjectPort",
+                    "condition":"conditions.isSingleSyncObjectUpdated"
+               },   
+               {
+                    "action":"updateMultipleSyncObjectsPort",
+                    "condition":"conditions.isMultipleSyncObjectsUpdated"
+               }
+           ]
+        },
+        "saveSingleSyncObject": {
+            "actionType": "JSFunction",
+            "method": "saveSingleObjectOnlyOrNull",
+            "inputData": {
+                "viewModelData": "{{data.singularSyncObject}}",
+                "newInput": "{{ports.MfeSyncManager_setSyncObject.syncObject}}"
+            },
+            "outputData": {
+                "singularSyncObject":"syncObject",
+                "isSingleSyncObjectUpdated":"isSingleSyncObjectUpdated",
+                "isMultipleSyncObjectsUpdated":false,
+                "isSameObjectUpdate":"isSameObjectUpdate",
+                "multipleSyncObjects":null
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "updateSingularSyncObjectPort": {
+            "actionType": "Sync",
+            "inputData":{
+                "port": "MfeSyncManager_getSingularSyncObject",
+                "syncObject": "{{data.singularSyncObject}}"
+            }
+        },
+        "saveMultipleSyncObjects":{
+            "actionType": "JSFunction",
+            "method": "saveMultipleObjects",
+            "inputData": {
+                "viewModelData": "{{data.multipleSyncObjects}}",
+                "newInput": "{{ports.MfeSyncManager_setSyncObject.syncObject}}"
+            },
+            "outputData": {
+                "multipleSyncObjects" :"multipleSyncObjects",
+                "isMultipleSyncObjectsUpdated" : "isMultipleSyncObjectsUpdated",
+                "isSingleSyncObjectUpdated":false,
+                "isSameObjectUpdate":false,
+                "singularSyncObject":null
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "updateMultipleSyncObjectsPort": {
+            "actionType": "Sync",
+            "inputData":{
+                "port": "MfeSyncManager_getMultipleSyncObject",
+                "syncObject": "{{data.multipleSyncObjects}}"
+            }
+        }
+    },
+    "conditions":{
+        "isSingleSyncObjectUpdated":{
+            "expression": "data.isSingleSyncObjectUpdated"
+        },
+        "isMultipleSyncObjectsUpdated":{
+            "expression": "data.isMultipleSyncObjectsUpdated"
+        }
+    }
+}

@@ -1,0 +1,390 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-column.directive",
+        "js/aw-splm-table.directive",
+        "js/aw-command-bar.directive",
+        "js/aw-row.directive"
+    ],
+
+    "actions": {
+
+        "loadProbableImpacted": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadProbableImpactedTree",
+            "inputData": {
+                "treeLoadInput": "request.treeLoadInput",
+                "dataProvider": "{{data.dataProviders.probableImpactedDataProvider}}",
+                "inContextData" :"{{data}}",
+                "props":"{{props}}"
+            },
+            "outputData": {
+                "dataProviders.probableImpactedDataProvider.columnConfig": "columnConfig",
+                "treeLoadResult":"treeLoadResult",
+                "updateProbableImpactedDataProviderInParentState":"{{function:updateProbableImpactedDataProviderInParentState}}"
+            },
+
+            "deps": "js/Cm1ImpactedWidgetService"
+        },
+        "loadInitialColumns": {
+            "actionType": "JSFunction",
+            "method": "loadInitialColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.probableImpactedDataProvider}}"
+            },
+            "deps": "js/Cm1ChangeSummaryService"
+        },
+        "createImpactedRelationSoaCall": {
+            "actionType": "JSFunction",
+            "method": "execute",
+            "deps": "js/pasteService",
+            "inputData": {
+                "targetObject": "{{props.changeObject}}",
+                "sourceObjects": "{{data.dataProviders.probableImpactedDataProvider.selectedObjects}}",
+                "relationType": "CMHasImpactedItem"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "resetPersistedImpactedTable.refreshTable"
+                    },
+                    {
+                        "name": "calculateColorIndicatorForProbableImpacted"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "resetPersistedImpactedTable.refreshTable"
+                    },
+                    {
+                        "name": "calculateColorIndicatorForProbableImpacted"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "condition": "data.dataProviders.probableImpactedDataProvider.selectedObjects.length === 1",
+                        "message": "pasteImpactedSuccessMessage"
+                    },
+                    {
+                        "condition": "data.dataProviders.probableImpactedDataProvider.selectedObjects.length > 1",
+                        "message": "pasteMultipleImpactedSuccessMessage"
+                    }
+                ]
+            }
+        },
+
+        "calculateColorIndicatorForProbableImpactedAction": {
+            "actionType": "JSFunction",
+            "method": "calculateColorIndicatorForProbableImpacted",
+            "inputData": {
+                "parentState": "{{data.eventMap['calculateColorIndicatorForProbableImpacted'].parentState}}"
+            },
+            "deps": "js/Cm1ImpactedWidgetService"
+        },
+        "setViewerContext": {
+            "actionType": "JSFunction",
+            "method": "setViewerContext",
+            "deps": "js/Cm1ChangeSummaryService"
+        },
+        "expandAndSelectFirstLevelTreeNode":{
+            "actionType": "JSFunction",
+            "method": "expandAndSelectFirstLevelTreeNode",
+            "inputData": {
+                "data": "{{data}}",
+                "loadedTreeNodes": "{{data.dataProviders.probableImpactedDataProvider.viewModelCollection.loadedVMObjects}}",
+                "cm1ImpactWidgetState":"{{props.cm1ImpactWidgetState}}"
+            },
+            "deps": "js/Cm1ImpactedWidgetService"
+        },
+        "calculateColorIndicatorForPersistedImpacted": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "calculateColorIndicatorForPersistedImpacted",
+                    "eventData": {
+                        "parentState": "{{props.cm1ImpactWidgetState}}"
+                    }
+                } ]
+            }
+        },
+        "calculateColorIndicatorForProbableImpacted": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "calculateColorIndicatorForProbableImpacted",
+                    "eventData": {
+                        "parentState": "{{props.cm1ImpactWidgetState}}"
+                    }
+                } ]
+            }
+        },
+        "impactAnalysisTableRefreshTable": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "condition":"commandContext.name === probableImpactedDataProvider",
+                        "name":"probableImpactedGrid.plTable.clientRefresh"
+                    }
+                ]
+            }
+        },
+        "saveColumnConfigLoadData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-03-UiConfig",
+            "method": "saveUIColumnConfigs",
+            "inputData": {
+                "columnConfigurations": [ {
+                    "clientScopeURI": "{{data.clientScopeURI}}",
+                    "columnConfigId": "{{data.dataProviders.probableImpactedDataProvider.columnConfig.columnConfigId}}",
+                    "columns": "{{data.dataProviders.probableImpactedDataProvider.newColumns}}",
+                    "scope": "LoginUser",
+                    "scopeName": ""
+                } ]
+            },
+            "outputData": {}
+        },
+        "resetColumnConfig" : {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2022-06-UiConfig",
+            "method": "getOrResetUIColumnConfigs3",
+            "inputData": {
+                "getOrResetUiConfigsIn": [{
+                    "scope": "LoginUser",
+                    "scopeName": "",
+                    "clientName": "AWClient",
+                    "resetColumnConfig": true,
+                    "columnConfigQueryInfos":
+                        [{
+                            "clientScopeURI": "{{data.clientScopeURI}}",
+                            "operationType": "configured",
+                            "columnsToExclude": []
+                        }],
+                    "businessObjects": [{}]
+                }]
+            },
+            "outputData": {
+                "dataProviders.probableImpactedDataProvider.columnConfig": "columnConfigurations[0].columnConfigurations[0]"
+            }
+        },
+        "doArrangeEvent" : {
+            "actionType": "JSFunctionAsync",
+            "method": "arrangeColumns",
+            "inputData": {
+                "declViewModel": "{{data}}",
+                "eventData": "{{data.eventData}}"
+            },
+            "deps": "js/columnArrangeService"
+        },
+        "updateParentState":{
+            "actionType": "JSFunction",
+            "method": "updateParentState",
+            "inputData": {
+                "selectedObjects": "{{data.dataProviders.probableImpactedDataProvider.selectedObjects}}",
+                "dataProviderName":"{{data.dataProviders.probableImpactedDataProvider}}",
+                "cm1ImpactWidgetState": "{{props.cm1ImpactWidgetState}}"
+            },
+            "deps": "js/Cm1ImpactedWidgetService"
+        },
+        "setProbableImpactedTableSelection": {
+            "actionType": "JSFunction",
+            "method": "setProbableImpactedTableSelection",
+            "inputData": {
+                "data": "{{data}}",
+                "props": "{{props}}"
+            },
+            "deps": "js/Cm1ImpactedWidgetService"
+        },
+        "clearTableData": {
+            "actionType": "JSFunction",
+            "method": "clearTableData",
+            "inputData": {
+                "tabs": "{{props.cm1ImpactWidgetState}}"
+            },
+            "deps": "js/Cm1ImpactedWidgetService"
+        }
+    },
+    "lifecycleHooks": {
+        "onUnmount": "clearTableData"
+    },
+    "functions": {
+        "getCreateInputToCreteImpactedRelation": {
+            "functionName": "getCreateInputToCreteImpactedRelation",
+            "parameters": [
+                "{{subPanelContext}}"
+            ]
+        },
+        "updateProbableImpactedDataProviderInParentState":{
+            "functionName":"updateDataProvidersInParentState",
+            "parameters":[
+                "{{data.dataProviders.probableImpactedDataProvider}}",
+                "{{props.cm1ImpactWidgetState}}"
+            ]
+        }
+    },
+
+    "onEvent": [
+        {
+            "eventId": "probableImpactedDataProvider.treeNodesLoaded",
+            "action": "setViewerContext"
+        },
+        {
+            "eventId": "probableImpactedDataProvider.treeNodesLoaded",
+            "cacheEventData": true,
+            "action": "expandAndSelectFirstLevelTreeNode"
+        },
+        {
+            "eventId": "probableImpactedDataProvider.treeNodesLoaded",
+            "action": "calculateColorIndicatorForProbableImpacted"
+        },
+        {
+            "eventId": "probableImpactedGrid.plTable.toggleTreeNode",
+            "action": "calculateColorIndicatorForPersistedImpacted"
+        },
+
+        {
+            "eventId": "calculateColorIndicatorForProbableImpacted",
+            "cacheEventData": true,
+            "action": "calculateColorIndicatorForProbableImpactedAction"
+        },
+        {
+            "eventId": "probableImpactedDataProvider.selectionChangeEvent",
+            "action": "updateParentState"
+        },
+        {
+            "eventId": "probableImpactedDataProvider.selectionChangeEvent",
+            "action": "calculateColorIndicatorForPersistedImpacted"
+        },
+        {
+            "eventId": "setProbableImpactedTableSelection",
+            "action": "setProbableImpactedTableSelection"
+        },
+
+        {
+            "eventId": "createImpactedRelationSoaCall.probableImpactedTable",
+            "action": "createImpactedRelationSoaCall"
+        }
+
+    ],
+
+    "conditions": {
+        "isCallRelatedProvider": {
+            "expression": "data.dataProviders.probableImpactedDataProvider.selectedObjects.length === 1"
+        }
+    },
+    "props": {
+        "cm1-impact-widget-state":{
+            "type":"object"
+        },
+        "change-object":{
+            "type":"object"
+        },
+        "selected-problem-item":{
+            "type":"object"
+        },
+        "sub-panel-context":{
+            "type":"object"
+        }
+    },
+    "data": {
+        "probableImpactedTablePrevSel": {
+            "type": "STRING",
+            "dbValue": null
+        },
+        "addToImpactedCommand": "cm1_addImpactedItemCommands"
+    },
+
+    "columnProviders": {
+        "probableImpactedColumnProvider": {
+            "columns": [{}],
+            "saveColumnAndLoadAction" : "saveColumnConfigLoadData",
+            "resetColumnAction" : "resetColumnConfig",
+            "frozenColumnIndex" : 0
+        }
+    },
+
+    "dataProviders": {
+        "probableImpactedDataProvider": {
+            "initializeAction": "loadProbableImpacted",
+            "nextAction": "loadProbableImpacted",
+            "previousAction": "loadProbableImpacted",
+            "treeLoadResult": "action.result.treeLoadResult",
+            "editContext": "TABLE_CONTEXT",
+            "inputData": {
+                "accessMode": "tree",
+                "selectionModel": "{{subPanelContext.selectionModel}}",
+                "selectionData":"{{subPanelContext.selectionData}}"
+            },
+            "response": "data.response",
+            "selectionModelMode": "multiple",
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        }
+    },
+
+    "grids": {
+        "probableImpactedGrid": {
+            "dataProvider": "probableImpactedDataProvider",
+            "columnProvider": "probableImpactedColumnProvider",
+            "enableArrangeMenu": true,
+            "addIconColumn": false,
+            "gridOptions": {
+                "useStaticFirstCol": true,
+                "enableSorting": true,
+                "isFilteringEnabled": false,
+                "enableExpandAndPaginationInEdit": true,
+                "textBundle": {
+                    "TwistieTooltipCollapsed": "{{i18n.TwistieTooltipCollapsed}}",
+                    "TwistieTooltipExpanded": "{{i18n.TwistieTooltipExpanded}}"
+                },
+                "maxRowsToShow": 10
+            },
+
+            "deps": "js/Cm1ImpactedWidgetService"
+        }
+    },
+
+    "messages": {
+        "pasteImpactedSuccessMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.pasteImpactedSuccessMessage}}",
+            "messageTextParams": [
+                "{{data.dataProviders.probableImpactedDataProvider.selectedObjects[0].props.object_string.uiValues[0]}}",
+                "{{props.changeObject.props.object_string.uiValues[0]}}"
+            ]
+        },
+        "pasteMultipleImpactedSuccessMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.pasteMultipleImpactedSuccessMessage}}",
+            "messageTextParams": [
+                "{{data.dataProviders.probableImpactedDataProvider.selectedObjects}}",
+                "{{ctx.pselected.props.object_string.uiValues[0]}}"
+            ]
+        }
+    },
+
+    "i18n": {
+        "TwistieTooltipCollapsed": [
+            "ChangeMessages"
+        ],
+        "TwistieTooltipExpanded": [
+            "ChangeMessages"
+        ],
+        "pasteImpactedSuccessMessage": [
+            "ChangeMessages"
+        ],
+        "pasteMultipleImpactedSuccessMessage": [
+            "ChangeMessages"
+        ],
+        "proposedImpactedTitle": [
+            "ChangeMessages"
+        ],
+        "revisionRuleLabel": [
+            "ChangeMessages"
+        ]
+    }
+}

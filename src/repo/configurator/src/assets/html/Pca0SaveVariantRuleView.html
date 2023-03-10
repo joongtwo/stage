@@ -1,0 +1,13 @@
+<aw-form name="createVariantRuleInput" >
+    <aw-panel-body>
+        <aw-xrt type="CREATE" object-type="{{ctx.fscContext.createVariantPreference}}" xrt-state="data.xrtState"></aw-xrt>
+        <aw-panel-section>
+            <aw-radiobutton prop="data.attachVariantRuleToContent"></aw-radiobutton>
+        </aw-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="createVariantRule" visible-when="formProp.attributes.valid">
+            <aw-i18n>i18n.saveCmd</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-form>

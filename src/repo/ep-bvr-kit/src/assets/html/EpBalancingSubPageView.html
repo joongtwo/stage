@@ -1,0 +1,38 @@
+<aw-sublocation sub-location-preference="data.awSubLocationPref"
+    sub-panel-context="{provider : data.provider, occContext:data.occContext}">
+    <mfe-loading-message exist-when="!ctx.epPageContext.loadedObject.uid || !ctx.ep.scopeObject.uid">
+    </mfe-loading-message>
+    <mfe-content-container container-direction="HORIZONTAL" container-name="BalancingPage" class="h-12"
+        exist-when="ctx.epPageContext.loadedObject.uid && ctx.ep.scopeObject.uid">
+
+        <mfe-content-container container-direction="VERTICAL" container-name="BalancingPageOverview"
+            class="aw-epBalancing-overviewContainer w-1">
+            <mfe-content-panel sub-panel-context="data.overviewContext"></mfe-content-panel>
+        </mfe-content-container>
+
+        <mfe-content-container container-direction="VERTICAL" container-name="BalancingPageTiles" class="w-3">
+            <mfe-content-panel sub-panel-context="data.stationTilesContext"></mfe-content-panel>
+        </mfe-content-container>
+
+        <mfe-content-container container-direction="VERTICAL" container-name="BalancingPageSingleStation"
+            class="flex-auto" aw-class="[ctx.ep.balancingShowProductBOP ? 'w-5' : 'w-7']">
+            <mfe-content-container container-direction="HORIZONTAL" container-name="BalancingPageOperations"
+                aw-class="[ctx.maximizedVertically === undefined ? 'h-7' : 'h-12']">
+                <mfe-content-panel sub-panel-context="data.operationsContext"></mfe-content-panel>
+            </mfe-content-container>
+            <mfe-content-container container-direction="HORIZONTAL" container-name="BalancingPageSequence"
+             aw-class="[ctx.maximizedVertically === undefined ? 'h-5' : 'aw-epBalancing-maximizedVertically']">
+                <mfe-content-panel sub-panel-context="data.sequenceContext"></mfe-content-panel>
+            </mfe-content-container>
+        </mfe-content-container>
+
+        <mfe-content-container container-direction="VERTICAL" container-name="BalancingPageProductBOP" class="w-2"
+            exist-when="ctx.ep.balancingShowProductBOP">
+            <mfe-content-panel sub-panel-context="data.productBOPContext"></mfe-content-panel>
+        </mfe-content-container>
+
+    </mfe-content-container>
+    <mfe-sync-manager view-id="EpSelectedProcessResourceBalancingPageSyncManager"></mfe-sync-manager>
+    <mfe-sync-manager view-id="EpSelectedStationBalancingPageSyncManager"></mfe-sync-manager>
+    <ep-balancing-manager exist-when="ctx.ep.scopeObject"></ep-balancing-manager>
+</aw-sublocation>

@@ -1,0 +1,115 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-radiobutton.directive",
+        "js/exist-when.directive"
+    ],
+    "actions": {
+        "setEventPropertiesOnPopupPanelAction": {
+            "actionType": "JSFunction",
+            "method": "setEventPropertiesOnPopupPanel",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "eventPropertyValues.dbValue": "radioListArray",
+                "eventProperty.dbValue": "defaultPropertyName"
+            },
+            "deps": "js/eventColorPopupPanelService"
+        },
+        "readPreferencesForShowColorAction": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2010-04-Session",
+            "method": "getPreferences2",
+            "inputData": {
+                "preferenceNames": [ {
+
+                    "scope": "User",
+                    "names": [
+                        "PP_Event_Color_Coding_Default_Configuration"
+                    ]
+                } ]
+            },
+            "outputData": {
+                "getPreferenceValueResponse": ""
+            },
+            "events": {
+                "success": [ {
+
+                    "name": "eventColorPopupPanel.setEventPropertiesOnPopupPanelEvent"
+                } ]
+            }
+        },
+        "selectPropertyAction": {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "name": "preferences.PP_Event_Color_Coding_Default_Configuration",
+                "value": [ "{{data.eventProperty.dbValue}}" ]
+            },
+            "events": {
+                "success": [ {
+                        "name": "planTimelineChart.getEventsAndUpdateColorProperty"
+                    },
+                    {
+                        "name": "eventColorPopupPanel.closePopupWindowEvent"
+                    }
+                ]
+            }
+        },
+        "closePopupWindowAction": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": null,
+                "targetEvent": "{{$event}}"
+            },
+            "deps": "js/popupService"
+        }
+    },
+    "dataProviders": {},
+    "data": {
+        "eventProperty": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "",
+            "vertical": true,
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "eventPropertyValues": {
+            "type": "STRING",
+            "dbValue": []
+        }
+    },
+    "functions": {
+        "getEventList": {
+            "functionName": "getEventList",
+            "parameters": []
+        }
+    },
+    "onEvent": [ {
+            "eventId": "eventColorPopupPanel.setEventPropertiesOnPopupPanelEvent",
+            "action": "setEventPropertiesOnPopupPanelAction"
+        },
+        {
+            "eventId": "eventColorPopupPanel.closePopupWindowEvent",
+            "action": "closePopupWindowAction"
+        }
+    ],
+    "i18n": {
+        "Pgp0SetDefaultColor": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "TimelineSearchBy": [
+            "ProgramPlanningCommandPanelsMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onMount": "readPreferencesForShowColorAction"
+    }
+}

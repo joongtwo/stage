@@ -1,0 +1,56 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "actions": {
+        "setActiveView": {
+            "actionType": "JSFunction",
+            "method": "resetActiveView",
+            "inputData": {
+                "stateName": "{{data.activeState}}",
+                "destPanelId": "Pgp0CopyFromPlan"
+            },
+            "outputData": {
+                "activeState": ""
+            },
+            "deps": "js/addObjectUtils"
+        }
+    },
+
+    "data": {
+        "addUserPanelState": {
+            "initialValues": {
+                "creationType": "",
+                "createdObject": "",
+                "sourceObjects": "",
+                "selectedTab": "",
+                "xrtTypeLoaded": ""
+            },
+            "meta": {}
+        },
+        "activeState": {
+            "initialValues": {
+                "activeView": "Pgp0CopyFromPlan",
+                "prePanelId": "Pgp0CopyFromPlan",
+                "context": {}
+            },
+            "meta": {}
+        }
+    },
+
+    "conditions": { },
+
+    "onEvent": [ ],
+
+    "lifecycleHooks": {
+
+    },
+
+    "i18n": {
+        "pgp0CopyFromPlanTitle": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "copy": [
+            "ProgramPlanningCommandPanelsMessages"
+        ]
+    }
+}

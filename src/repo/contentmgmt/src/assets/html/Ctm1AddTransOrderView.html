@@ -1,0 +1,17 @@
+<aw-command-panel caption="i18n.createTranslationOrder">
+
+    <aw-panel-body>
+        <aw-textbox  prop="data.orderName"></aw-textbox>
+        <aw-textbox  prop="data.orderTitle"></aw-textbox>
+        <aw-textbox  prop="data.orderDescription"></aw-textbox>
+        <aw-listbox  prop="data.translationOffice" list="data.translationOfficeList" ></aw-listbox>
+        <aw-date prop="data.dateDetails"></aw-date>
+    </aw-panel-body>
+
+    <aw-panel-footer>
+        <aw-button action="Ctm1CreateTranslationOrderAction" visible-when="conditions.createOrderVisible" >
+            <aw-i18n>i18n.create</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+
+</aw-command-panel>

@@ -1,0 +1,86 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "init":{
+            "actionType":"batchJob",
+            "steps":[
+                {
+                    "action":"getAlternativesList"
+                },
+                {
+                    "action": "setAlternativesList"
+                }
+            ]
+        },
+        "filterAlternativeList": {
+            "actionType": "JSFunction",
+            "method": "filterAltCCList",
+            "inputData": {
+                "filterText": "{{data.filterBox.dbValue}}",
+                "alternativeData": "{{data.allAltCCsList}}",
+                "startIndex": "{{data.dataProviders.setAllOrSearchAltList.startIndex}}"
+            },
+            "outputData": {
+                "filteredAltCCsList": "alternatives",
+                "totalFound": "totalFound"
+            },
+            "deps": "js/searchPartialAlternativeService"
+        },
+        "setAlternativesList": {
+            "actionType": "dataProvider",
+            "method": "setAllOrSearchAltList"
+        },
+        "closePopUpAction ": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "inputData": {
+                "popupId": "{{data.popupId}}"
+            },
+            "deps": "js/declpopupService"
+        },
+        "getAlternativesList": {
+            "actionType": "JSFunction",
+            "method": "getAllAltList",
+            "outputData": {
+                "allAltCCsList": ""
+            },
+            "deps": "js/searchPartialAlternativeService"
+        }
+    },
+    "data": {
+        "filterBox": {
+            "displayName": "MyFilter",
+            "type": "STRING",
+            "dbValue": ""
+        }
+    },
+    "conditions": {
+        "isAlternativeExist": {
+            "expression": "data.filterBox.dbValue.length === 0"
+        }
+    },
+   "dataProviders": {
+        "setAllOrSearchAltList": {
+            "action": "filterAlternativeList",
+            "commandsAnchor": "alternativeOpen_cellCommands",
+            "response": "{{data.filteredAltCCsList}}",
+            "totalFound": "{{data.totalFound}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "aw.closePopup",
+            "action": "closePopUpAction "
+        }
+    ],
+    "lifecycleHooks": {
+        "onMount": "init"
+    },
+    "i18n": {}
+}

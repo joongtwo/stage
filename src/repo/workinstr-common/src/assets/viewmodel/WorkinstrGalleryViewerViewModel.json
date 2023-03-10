@@ -1,0 +1,106 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "widgets": {
+            "type": "object"
+        },
+        "tab-model": {
+            "type": "object"
+        },
+        "gallery-model": {
+            "type": "object"
+        }
+    },
+
+    "data":
+    {
+    },
+
+    "actions":
+    {
+        "handleInput": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "closeMarkupPanel",
+                    "condition": "conditions.isMarkupPanelOpen"
+                },
+                {
+                    "action": "clearViewerData"
+                },
+                {
+                    "action": "setViewerData"
+                },
+                {
+                    "action": "setCommandContext"
+                }
+            ]
+        },
+
+        "closeMarkupPanel":{
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source":"toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+
+        "clearViewerData": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": ""
+            },
+            "outputData": {
+                "viewerData": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+
+        "setViewerData": {
+            "actionType": "JSFunctionAsync",
+            "method": "inputUpdated",
+            "inputData": {
+                "widgets": "{{props.widgets}}",
+                "tabModel": "{{props.tabModel}}",
+                "item": "{{props.galleryModel.selectedItem}}"
+            },
+            "outputData": {
+                "viewerData": ""
+            },
+            "deps": "js/workinstrGalleryViewerService"
+        },
+
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{props.tabModel}}",
+                "commandContext": {
+                    "viewerData": "{{data.viewerData}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        }
+    },
+
+    "conditions": {
+        "isMarkupPanelOpen": {
+            "expression": "ctx.activeToolsAndInfoCommand && ctx.activeToolsAndInfoCommand.commandId === 'Awp0MarkupMain'"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onUpdate": [{
+            "action":"handleInput",
+            "observers":["props.galleryModel.selectedItem"]
+        }]
+    }
+}

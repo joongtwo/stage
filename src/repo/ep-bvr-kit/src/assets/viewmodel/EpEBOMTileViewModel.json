@@ -1,0 +1,77 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "commandbarContext": {
+            "addProductLabelCaption": "{{i18n.addProduct}}",
+            "boTypeName": "",
+            "exclusionBOTypeNames": [],
+            "objectTypesToSearch": [],
+            "preferenceSuffixForTypesToSearch": "Ebom",
+            "buttonName": "{{i18n.addProduct}}",
+            "placeHolderForSearch": "{{i18n.productSearchPlaceHolder}}",
+            "commandTitles": {
+                "epAddStructureTitle": "{{i18n.add}}"
+            }
+        }
+    },
+    "actions": {
+        "addVMOAndRevRuleToStructureContext": {
+            "actionType": "JSFunction",
+            "method": "addVMOAndRevRuleToStructureContext",
+            "inputData": {
+                "contextPath": "epTaskPageContext.EbomStructureContext"
+            },
+            "deps": "js/manageWorkPackageService"
+        },
+        "clearTaskPageContextForManagePage": {
+            "actionType": "JSFunction",
+            "method": "removeContextsFromCtx",
+            "inputData": {
+                "contextPaths": [
+                    "epTaskPageContext.EbomStructureContext",
+                    "epTaskPageContext.ebomStructure",
+                    "epTaskPageContext.ebomRootElement",
+                    "epTaskPageContext.ebomPCI",
+                    "epTaskPageContext.ebomStructureConfigFlags"
+                ]
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "conditions": {
+        "isTileDataAvailable": {
+            "expression": "ctx.epTaskPageContext.EbomStructureContext && ctx.epTaskPageContext.EbomStructureContext.vmo"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "addVMOAndRevRuleToStructureContext"
+    },
+    "onEvent": [{
+            "eventId": "ep.addRemoveEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "clearTaskPageContextForManagePage",
+            "condition": "removedSaveEvent.includes(ctx.epTaskPageContext.EbomStructureContext.uid)"
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "addVMOAndRevRuleToStructureContext",
+            "condition": "addedSaveEvent !== undefined"
+        }
+    ],
+    "i18n": {
+        "add": [
+            "AdminMessages"
+        ],
+        "addProduct": [
+            "AdminMessages"
+        ],
+        "productSearchPlaceHolder": [
+            "AdminMessages"
+        ]
+    }
+}

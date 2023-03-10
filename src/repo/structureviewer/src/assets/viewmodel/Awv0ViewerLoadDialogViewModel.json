@@ -1,0 +1,33 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "stopButtonClicked":{
+            "actionType":"JSFunction",
+            "method":"stopButtonClicked",
+            "inputData":{
+                "viewerCtxData": "{{props.viewerctxdata}}",
+                "viewerCtxNamespace": "{{props.viewerstateprop.viewerCtxNamespace}}"
+            },
+            "outputData": {
+                "buttonWasClicked": ""
+            },
+            "deps": "js/structureViewerDataService"
+        }
+    },
+    "props": {
+        "viewerStateProp": {
+            "type": "object"
+        },
+        "viewerCtxData": {
+            "type": "object"
+        }
+    },
+    "conditions":{
+        "stopButtonIsVisible": {
+            "expression": "props.viewerstateprop.viewerStopButtonVisible"
+        }
+    },
+    "i18n": {
+        "Stop": [ "StructureViewerMessages" ]
+    }
+}

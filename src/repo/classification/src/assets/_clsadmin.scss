@@ -1,0 +1,174 @@
+// // Copyright 2020 Siemens Product Lifecycle Management Software Inc.
+
+// // mixins
+// @import 'mixins/mixins';
+
+
+.aw-clsadmin-float {
+    float: right;
+}
+
+.aw-clsadmin-nodes {
+    padding: 0;
+    .sw-column {
+        overflow-y: auto;
+    }
+}
+
+.aw-clsadmin-column2 .aw-base-blk-button {
+    margin: 8px 0;
+}
+//import in top line
+.aw-clsadmin-import {
+    margin: $margin_normal;
+}
+.aw-clsadmin-import .sw-button{
+    width: 100px;
+    float: right;
+    padding: $padding_xsmall;
+}
+//import in Summary line
+.aw-clsadmin-import2 {
+    margin: 8px;
+}
+
+.aw-clsadmin-import2 .aw-base-blk-button {
+    margin: 0;
+}
+
+.aw-clsadmin-column_panel .sw-column {
+    width: 100%;
+    .aw-base-scrollPanel {
+        height: calc(100vh - 580px);
+        .aw-widgets-cellListWidget .aw-widgets-cellListItem {
+            max-width: rem-calc(420);
+        }
+    }
+}
+
+.aw-clsadmin-column_panel {
+    padding-left: $padding_small;
+    height: calc(100vh - 480px);
+}
+.aw-clsadmin-column_panel2 {
+    margin-top: -42px;
+    height: calc(100vh - 95px);
+}
+
+.aw-clsadmin-column_panel {
+    .sw-column {
+        width: 100%
+    }
+}
+
+.aw-clsadmin-dashboard {
+    width: 96%;
+    .aw-layout-flexbox {
+        height: 95%;
+    }
+}
+
+.aw-cls-admin-dash {
+    width: 100%;
+}
+
+.aw-clsadmin-columnChart {
+    height: 250px;
+    padding: 0 350px 0 0;
+    width: 50%
+}
+
+.aw-clsadmin-summary {
+    padding-left: $padding_small;
+    width: 100%
+}
+
+.aw-clsadmin-objects .aw-negative-button  {
+    border: none;
+    padding: 0;
+    margin: 0;
+}
+
+.aw-clsadmin-objectNames{
+    padding-right: 4px;
+    padding-top: 5px;
+}
+
+.aw-clsadmin-objectNamesList{
+    padding-bottom: 5px;
+}
+
+.aw-clsadmin-objects .aw-widgets-chip:not(.disabled):not(.aw-widgets-staticChip) {
+    box-shadow: none;
+}
+
+.aw-clsadmin-objects .aw-widgets-chip:not(.disabled):not(.aw-widgets-staticChip):hover {
+    box-shadow: none;
+}
+
+.aw-clsadmin-classTable aw-splm-table,
+.aw-clsadmin-classAttrTable aw-splm-table,
+.aw-clsadmin-nodeTable aw-splm-table,
+.aw-clsadmin-keyLovTable aw-splm-table,
+.aw-clsadmin-propertyTable aw-splm-table {
+    .aw-splm-tableViewport {
+        overflow-x: hidden;
+    }
+    .aw-splm-tablePinnedRow.ui-grid-row .ui-grid-cell:last-child {
+        border: none;
+    }
+    .aw-splm-tablePinnedRow.ui-grid-row .ui-grid-cell:last-child:focus {
+        border: 2px solid;
+    }
+}
+
+.aw-clsadmin-classes aw-splm-table {
+    .aw-splm-tableHeaderCell:last-of-type .aw-splm-tableHeaderCellSplitter {
+        display: none;
+    }
+}
+
+//Adjust sections in SWA
+.aw-clsadmin-attributes,
+.aw-clsadmin-associations {
+    .sw-section.sw-section-content {
+        height: calc(100% - 36px);
+        padding-right: 0;
+        overflow-x: hidden;
+    }
+}
+
+.aw-clsadmin-attributes {
+    .aw-splm-tableContainer {
+        overflow-x: hidden;
+
+        .aw-splm-tableViewport {
+            overflow-x: hidden;
+        }
+    }
+}
+
+.aw-clsadmin-propertyTable .aw-search-inContentSearchBox,
+.aw-clsadmin-keyLovTable .aw-search-inContentSearchBox,
+.aw-clsadmin-classTable .aw-search-inContentSearchBox,
+.aw-clsadmin-nodeTable .aw-search-inContentSearchBox {
+    width: auto;
+    padding: 16px 16px 10px 16px;
+}
+
+.aw-clsadmin-cellListCellContent {
+    float: left;
+    width: 100%;
+}
+
+.aw-clsadmin-filters .aw-panelSection {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.aw-clsadmin-importPanel {
+    .sw-property.sw-row .sw-property-name {
+        width: 0;
+        min-width: 0;
+    }
+}

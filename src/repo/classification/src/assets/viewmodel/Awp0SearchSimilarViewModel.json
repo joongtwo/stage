@@ -1,0 +1,218 @@
+{
+    "schemaVersion" : "1.0.0",
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "loadSearchSimilarClasses",
+                "observers": [
+                    "props.subPanelContext.selectionData.value.selected[0]"
+                ]
+            }
+        ]
+    },
+    "imports":
+    [
+    ],
+    "actions":
+    {
+        "loadSearchSimilarClasses": {
+            "actionType": "dataProvider",
+            "method": "searchSimilarDataProvider"
+        },
+        "loadData": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTreeStructure",
+            "inputData": {
+                "treeLoadInput": "request.treeLoadInput",
+                "data": "{{data}}",
+                "selectedIco": "{{props.subPanelContext.selectionData.value.selected}}"
+            },
+            "outputData": {
+                "response": ""
+            },
+            "deps": "js/searchSimilarService",
+            "events": {
+                "success": [
+                    {
+                        "name": "searchSimilarDataProvider.selectedClassNode"
+                    }
+                ]
+            }
+        },
+        "selectLastNode": {
+            "actionType": "JSFunction",
+            "method": "selectLastNode",
+            "inputData": {
+                "selectionModel": "{{data.dataProviders.searchSimilarDataProvider.selectionModel}}",
+                "result": "{{data.data.response.treeLoadResult}}"
+            },
+            "deps": "js/searchSimilarService"
+        },
+        "loadColumns": {
+            "actionType": "JSFunction",
+            "method": "loadColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.searchSimilarDataProvider}}",
+                "gridoptions": "{{gridOptions}}"
+            },
+            "deps": "js/searchSimilarService"
+        },
+        "loadPropertiesActionJS": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadPropertiesJS",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.searchSimilarDataProvider}}",
+                "propertyLoadInput": "request.propertyLoadInput"
+            },
+            "outputData": {},
+            "deps": "js/searchSimilarService"
+        },
+        "getClasses":{
+            "actionType": "JSFunction",
+            "method": "getSearchSimilarClasses",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/searchSimilarService"
+        },
+        "reloadSearchSimilar":{
+            "actionType": "JSFunction",
+            "method": "reloadSearchSimilar",
+            "inputData": {
+            },
+            "deps": "js/searchSimilarService"
+        },
+        "clickSearchSimilar": {
+            "actionType": "JSFunction",
+            "method": "clickSearchSimilar",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.searchSimilarDataProvider}}"
+            },
+            "deps": "js/searchSimilarService"
+        },
+        "openClassificationLocation": {
+            "actionType": "JSFunction",
+            "method": "openClassificationLocation",
+            "inputData": {
+            },
+            "deps": "js/searchSimilarService"
+        },
+        "closeSearchSimilarPanel": {
+            "actionType": "JSFunction",
+            "method": "activateCommandPanel",
+            "deps": "js/commandPanel.service",
+            "inputData": {
+                "commandId": "Awp0SearchSimilar",
+                "location": "aw_toolsAndInfo"
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "Awp0SearchSimilar.contentLoaded",
+            "action": "reloadSearchSimilar"
+        },
+        {
+            "eventId": "performSearch.selectionChangeEvent",
+            "action": "reloadSearchSimilar",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "Ics1ClassificationTabViewer.contentUnloaded",
+            "action": "closeSearchSimilarPanel",
+            "condition":"ctx.activeToolsAndInfoCommand.commandId === 'Awp0SearchSimilar'"
+        },
+        {
+            "eventId": "reload.SearchSimilar",
+            "action": "getClasses"
+        },
+        {
+            "eventId": "open.classificationLocation",
+            "action": "openClassificationLocation"
+        },
+        {
+            "eventId": "search.similarReload",
+            "action": "reloadSearchSimilar"
+        },
+        {
+            "eventId": "searchSimilarDataProvider.selectedClassNode",
+            "action": "selectLastNode"
+        }
+    ],
+    "data":
+    {
+        "searchSimilarPropCommands":"searchSimilar_propCommands"
+    },
+
+    "i18n":
+    {
+        "search":             [ "ClassificationPanelMessages" ],
+        "Classes":             [ "ClassificationPanelMessages" ],
+        "SearchSimilar":             [ "ClassificationPanelMessages" ],
+        "noClasses":             [ "ClassificationPanelMessages" ]
+    },
+
+    "messages":
+    {
+
+    },
+    "dataProviders": {
+        "searchSimilarDataProvider": {
+            "action":"loadData",
+            "initializeAction": "loadData",
+            "treeLoadResult": "action.result.treeLoadResult",
+            "treePageSize": 250,
+            "inputData": {
+                "accessMode": "tree",
+                "enablePropEdit": false
+            },
+            "cacheCollapse": true,
+            "response": "{{data.response}}",
+            "selectionModelMode": "single"
+        },
+        "searchSimilarPropertyProvider": {
+            "action": "loadPropertiesActionJS",
+            "propertyLoadResult": "action.result.propertyLoadResult"
+        }
+    },
+    "columnProviders": {
+        "searchSimilarColumnProvider": {
+            "loadColumnAction": "loadColumns",
+            "columns": "{{data.columns}}",
+            "frozenColumnIndex": -1,
+            "sortCriteria": []
+        }
+    },
+    "grids": {
+        "searchSimilarGrid": {
+            "dataProvider": "searchSimilarDataProvider",
+            "columnProvider": "searchSimilarColumnProvider",
+            "propertyProvider": "searchSimilarPropertyProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "useStaticFirstCol": true,
+                "enableExpansionStateCaching": false,
+                "enableGridMenu": false,
+                "enablePinning": false,
+                "enableSorting": false
+            }
+        }
+    },
+     "functions":
+    {
+        "detectNodeType":
+        {
+        "functionName": "detectNodeType",
+        "parameters":
+        [
+            "{{selectedNode}}",
+            "{{data}}"
+        ]
+        }
+    },
+    "conditions": {
+        "isIcoSelected": {
+            "expression": "props.subPanelContext.selectionData.selected[0].modelType.parentTypeName === 'Cls0Object' || props.subPanelContext.selectionData.selected[0].modelType.name === 'icm0'"
+        }
+    }
+}

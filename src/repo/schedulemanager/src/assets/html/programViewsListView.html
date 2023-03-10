@@ -1,0 +1,10 @@
+<div class="aw-layout-flexColumn">
+    <div class="aw-layout-alignItemsTop aw-schedulemanager-searchPanel">
+        <aw-listbox class="aw-layout-flexRow aw-schedulemanager-searchCriteriaList" prop="data.option" list="data.optionList" action="setSelectedProgramViewsOption" is-select-only="true"></aw-listbox>
+    </div>
+    <aw-scrollpanel>
+        <aw-list dataprovider="data.dataProviders.listDataProvider" show-context-menu="true" visible-when="props.subPanelContext.searchState.totalFound > 0">
+            <aw-default-cell vmo="item"></aw-default-cell>
+        </aw-list>
+    </aw-scrollpanel>
+</div>

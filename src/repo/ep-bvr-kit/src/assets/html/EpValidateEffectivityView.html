@@ -1,0 +1,20 @@
+<div class="sw-column h-12">
+    <!--Toolbar Section-->
+    <div class="sw-row afx-alt-content-background aw-epValidateEffectivity-endItemRow justify-justified">
+        <div class="sw-column align-left align-top">
+            <aw-listbox prop="data.endItemListBox" list="data.endItemListBoxValues.dbValue" class="sw-row aw-epValidateEffectivity-endItemFilterBoxContainer" action="endItemSelectionChangeAction">
+            </aw-listbox>
+        </div>
+    </div>
+    <!--Graphics Section-->
+    <ep-effectivity-validator sub-panel-context="{...props.subPanelContext}"></ep-effectivity-validator>
+    <!--Button Section-->
+    <div class="sw-row sw-button-group justify-right justify-bottom aw-epValidateEffectivity-buttonRow">
+        <aw-button button-type="base" size='auto' class="large" action="publishCancelEffectivityAction">
+            <aw-i18n>i18n.cancel</aw-i18n>
+        </aw-button>
+        <aw-button size='auto' class="large" action="publishSaveEffectivityAction" enable-when="conditions.isSaveEnabled">
+            <aw-i18n>i18n.save</aw-i18n>
+        </aw-button>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+    ],
+    "actions":{
+        "reveal": {
+            "actionType": "JSFunction",
+            "method": "setWorksetReplayToolTip",
+            "inputData": {
+                "replayWorksetText": "{{data.replayWorksetText}}"
+            },
+            "deps": "js/createWorksetService"
+        }
+    },
+    "data": {
+        "replayWorkset": {
+            "uiValue": "{{i18n.replayTitle}}",
+            "type": "STRING"
+        },
+        "replayWorksetText": {
+            "uiValue": "",
+            "type": "STRING"
+        }
+    },
+    "onEvent": [ {
+        "eventId": "Awb0ReplayWorksetExtendedTooltip.contentLoaded",
+        "action": "reveal"
+      }
+    ],
+    "i18n": {
+        "replayTitle": [
+            "OccurrenceManagementSubsetConstants"
+        ]
+    }
+}

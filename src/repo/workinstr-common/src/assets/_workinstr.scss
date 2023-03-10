@@ -1,0 +1,190 @@
+// Copyright 2018 Siemens Product Lifecycle Management Software Inc.
+/* workinstr-common */
+
+.aw-workinstr-hidden {
+    display: none;
+}
+
+.aw-workinstr-mainPanel {
+    position: relative;
+    display: inherit;
+
+    aw-viewer-header {
+        display: none;
+    }
+}
+
+workinstr-snapshot-viewer,
+workinstr-fulltext-viewer,
+.aw-workinstr-mainPanel,
+.aw-workinstr-viewerStyle {
+    width: 100%;
+    height: 100%;
+}
+
+workinstr-cortona-viewer,
+workinstr-video-viewer {
+    width: 100%;
+}
+
+.aw-workinstr-galleryCell {
+    text-align: center;
+}
+
+.aw-workinstr-documentGallerySliderPanel {
+    position: absolute;
+    overflow: hidden;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: rem-calc(134);
+}
+
+
+@media all and (max-height:575px) {
+    .aw-workinstr-documentGallerySliderPanel {
+        height: rem-calc(74);
+    }
+}
+
+.aw-workinstr-instructionStyle {
+    margin-top: $margin_normal;
+    margin-left: $margin_normal;
+}
+
+.aw-workinstr-documentGalleryContentPanelNoSlider,
+.aw-workinstr-documentGalleryContentPanel {
+    width: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+
+    .aw-viewerjs-border {
+        border: 0;
+    }
+
+    .aw-viewerjs-innerContent {
+        height: 100%;
+        padding: $padding_normal;
+    }
+}
+
+.aw-workinstr-documentGalleryContentPanel {
+    bottom: rem-calc(134);
+}
+
+@media all and (max-height:575px) {
+    .aw-workinstr-documentGalleryContentPanel {
+        bottom: rem-calc(74);
+    }
+}
+
+.aw-workinstr-documentGalleryContentPanelNoSlider {
+    bottom: 0;
+}
+
+/*======================= Header styling ===========================*/
+
+.aw-workinstr-headerPropertiesPanel .aw-widgets-propertyLabelTopValueContainer {
+    min-width: 5%;
+}
+
+.aw-workinstr-workarea .aw-layout-workarea {
+    width: calc(100% - 20px);
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+@media all and (max-width: $narrowMode_max_width) {
+    .aw-workinstr-headerCommandsBar {
+        display: none;
+    }
+
+    .aw-workinstr-workarea .aw-layout-headerLeft,
+    .aw-workinstr-workarea .aw-layout-primaryWorkarea {
+        display: block;
+    }
+
+    .aw-workinstr-workarea .aw-layout-summaryLocation {
+        display: none;
+    }
+}
+
+.aw-workinstr-workarea .aw-layout-subLocationTitles {
+    display: none;
+}
+
+@media all and (min-width: $narrowMode_max_width) {
+    .aw-workinstr-headerCommandsBar {
+        display: block;
+    }
+}
+
+.aw-workinstr-headerCommandsBar {
+    float: right;
+    margin-left: 5px;
+}
+
+.aw-workinstr-headerCommandsBar .aw-commands-commandIconButton {
+    padding: 3px;
+    margin: 0;
+}
+
+/*======================= Overview panel styling ===========================*/
+
+
+.aw-workinstr-overviewGraphNodePropertyText {
+    font-size: $fontsize_large;
+}
+
+.aw-workinstr-overviewGraphNode {
+    fill: transparent;
+}
+
+.aw-workinstr-overviewCommandBar {
+
+    .aw-workinstr-hierarchyLayoutOverviewCmd,
+    .aw-workinstr-overviewCmd {
+        display: flex;
+        height: rem-calc(32);
+        align-items: center;
+        border: $button_border;
+        padding: $button_padding_small;
+        cursor: pointer;
+
+        &:last-child {
+            border-top-right-radius: rem-calc(4);
+            border-bottom-right-radius: rem-calc(4);
+        }
+
+        &:not(:last-child) {
+            border-right: 0;
+        }
+
+        .aw-workinstr-overviewCmdTxt {
+            padding: $padding_normal;
+        }
+
+        svg {
+            width: rem-calc(16);
+            vertical-align: sub;
+        }
+    }
+}
+
+.aw-workinstr-hierarchyLayoutOverviewCmd {
+    border-top-left-radius: rem-calc(4);
+    border-bottom-left-radius: rem-calc(4);
+}
+
+.aw-workinstr-overviewGraph {
+    height: 100%;
+    width: 100%;
+
+    .aw-graph-container {
+        overflow: hidden;
+    }
+}
+
+/*======================= Overview panel styling END ===========================*/

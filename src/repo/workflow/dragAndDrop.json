@@ -1,0 +1,105 @@
+{
+  "actions": {
+    "dragUserAssignmentAction": {
+      "actionType": "syncFunction",
+      "method": "dragUserAssignmentAction",
+      "inputData": {
+        "props": "{{props}}"
+      },
+      "deps": "js/Awp0WorkflowAssignmentDragDropService"
+    },
+    "dragOverAssignmentAction": {
+      "actionType": "syncFunction",
+      "method": "dragOverAssignmentAction",
+      "inputData": {
+        "props": "{{props}}"
+      },
+      "deps": "js/Awp0WorkflowAssignmentDragDropService"
+    },
+    "dropOnAssignmentAction": {
+      "actionType": "syncFunction",
+      "method": "dropOnAssignmentAction",
+      "inputData": {
+        "props": "{{props}}"
+      },
+      "deps": "js/Awp0WorkflowAssignmentDragDropService"
+    },
+    "dragTaskListStartAction": {
+      "actionType": "syncFunction",
+      "method": "dragUserListStartAction",
+      "deps": "js/taskListArragementsDragDrop"
+    },
+    "dragOverTaskAction": {
+      "actionType": "syncFunction",
+      "method": "dragOverTreeTable",
+      "inputData": {
+        "props": "{{props}}"
+      },
+      "deps": "js/taskListArragementsDragDrop"
+    },
+    "dropOnTaskTableAction": {
+      "actionType": "syncFunction",
+      "method": "dropOnTreeTable",
+      "inputData": {
+        "props": "{{props}}"
+      },
+      "deps": "js/taskListArragementsDragDrop"
+    }
+  },
+  "dragHandlers": {
+    "dragHandlerForList": {
+      "views": [
+        "AwSearchResultsList",
+        "AwPeoplePicker"
+      ],
+      "dragActions": {
+        "dragStart": "dragUserAssignmentAction"
+      },
+      "activeWhen": {
+        "condition": "conditions.allowDragFromAssignmentsToSubmitToWorkflow"
+      }
+    },
+    "dragHandlerForTaskTab": {
+      "views": [
+        "Awp0TasksTab"
+      ],
+      "dragActions": {
+        "dragStart": "dragTaskListStartAction"
+      }
+    }
+  },
+  "dropHandlers": {
+    "dropHandlerForTreeTable": {
+      "views": [
+        "Awp0TemplateAssignmentPanelSub",
+        "Awp0WorkflowAssignment",
+        "Awp0WorkflowAssignmentCategory",
+        "Awp0WorkflowAssignmentParticipantCategory",
+        "AwSearchResultsList",
+        "AwPeoplePicker"
+      ],
+      "dropActions": {
+        "dragOver": "dragOverAssignmentAction",
+        "drop": "dropOnAssignmentAction"
+      },
+      "activeWhen": {
+        "condition": "conditions.allowDragFromAssignmentsToSubmitToWorkflow"
+      }
+    },
+    "dropHandlerForTaskTab": {
+      "activeWhen": true,
+      "views": [
+        "Awp0TasksTab"
+      ],
+      "dropActions": {
+        "dragOver": "dragOverTaskAction",
+        "drop": "dropOnTaskTableAction"
+      }
+    }
+  },
+  "conditions": {
+    "allowDragFromAssignmentsToSubmitToWorkflow": {
+      "expression": "1===1"
+    }
+  }
+}

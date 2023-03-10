@@ -1,0 +1,147 @@
+{
+    "schemaVersion" : "1.0.0",
+    "props":{
+        "viewer-atomic-data":{
+            "type": "object"
+        },
+        "sub-panel-context":{
+            "type": "object"
+        }
+    },
+    "actions":
+        {
+            "renderSnapshotViewer":{
+                "method": "snapshotViewerRenderFn",
+                "deps": "js/workinstrSnapshotViewerService"
+            },
+            "initializeSnapshotViewerOnMount":{
+                "actionType": "batchJob",
+            "steps": [ {
+                    "action": "setThumbnailUrl"
+                },
+                {
+                    "action": "initializeSnapshotViewer"
+                }
+            ]
+            },
+
+            "setThumbnailUrl":{
+                "actionType": "JSFunction",
+                "method": "setThumbnailUrl",
+                "inputData": {
+                    "viewerCtxObj": "{{props.subPanelContext.fileData.file}}"
+                },
+                "outputData":{
+                    "thumbnailUrl":""
+                },
+                "deps": "js/workinstrSnapshotViewerService"
+            },
+
+            "initializeSnapshotViewer":{
+                "actionType": "JSFunctionAsync",
+                "method": "initializeSnapshotViewer",
+                "inputData": {
+                    "subPanelContext": "{{props.subPanelContext}}",
+                    "isReload":"false",
+                    "viewerAtomicData":"{{props.viewerAtomicData}}"
+                },
+                "outputData":{
+                    "workInstrViewerInstance":""
+                },
+                "deps": "js/workinstrSnapshotViewerService"
+            },
+            "reLoad3dViewer":{
+                "actionType": "JSFunction",
+                "method": "reload3DViewer",
+                "inputData": {
+                    "workInstrViewerInstance":"{{data.workInstrViewerInstance}}",
+                    "subPanelContext": "{{props.subPanelContext}}"
+                },
+                "deps": "js/workinstrSnapshotViewerService"
+            },
+            "onWorkinstrSelectionChange":{
+                "actionType": "JSFunction",
+                "method": "onWorkinstrSelectionChange",
+                "inputData": {
+                    "workInstrViewerInstance":"{{data.workInstrViewerInstance}}",
+                    "event": "{{data.eventData}}"
+                },
+                "deps": "js/workinstrSnapshotViewerService"
+            },
+            "updateGeometricMeasureStatus":{
+                "actionType": "JSFunction",
+                "method": "updateViewerContextData",
+                "inputData": {
+                    "contextNamespace":"{{props.subPanelContext.fileData.contextNamespace}}",
+                    "propertyName":"Awv0GeometricAnalysisMeasure",
+                    "propertyValue":"{{props.viewerAtomicData.viewerSubCommandsList.Awv0GeometricAnalysisMeasure}}"
+                },
+                "deps": "js/workinstrSnapshotViewerService"
+            },
+            "updateGeometricQueryStatus":{
+                "actionType": "JSFunction",
+                "method": "updateViewerContextData",
+                "inputData": {
+                    "contextNamespace":"{{props.subPanelContext.fileData.contextNamespace}}",
+                    "propertyName":"Awv0GeometricAnalysisQuery",
+                    "propertyValue":"{{props.viewerAtomicData.viewerSubCommandsList.Awv0GeometricAnalysisQuery}}"
+                },
+                "deps": "js/workinstrSnapshotViewerService"
+            },
+            "updateCommandContext":{
+                "actionType": "JSFunction",
+                "method": "setCommandContext",
+                "inputData": {
+                    "subPanelContext":"{{props.subPanelContext}}",
+                    "viewerAtomicData":"{{props.viewerAtomicData}}"
+                },
+                "deps": "js/workinstrSnapshotViewerService"
+            },
+            "clearCommandContext":{
+                "actionType": "JSFunction",
+                "method": "setCommandContext",
+                "inputData": {
+                    "subPanelContext":"{{props.subPanelContext}}",
+                    "viewerAtomicData":null
+                },
+                "deps": "js/workinstrSnapshotViewerService"
+            }
+
+        },
+        "lifecycleHooks": {
+            "render":"renderSnapshotViewer",
+            "onMount":"initializeSnapshotViewerOnMount",
+            "onUnmount":"clearCommandContext",
+            "onUpdate": [
+                {
+                    "action": "updateGeometricMeasureStatus",
+                    "observers": [ "props.viewerAtomicData.viewerSubCommandsList.Awv0GeometricAnalysisMeasure" ]
+                },
+                {
+                    "action": "updateGeometricQueryStatus",
+                    "observers": [ "props.viewerAtomicData.viewerSubCommandsList.Awv0GeometricAnalysisQuery" ]
+                },
+                {
+                    "action": "updateCommandContext",
+                    "observers": [ "props.viewerAtomicData.viewerViewMode", "props.viewerAtomicData.viewerPreference.AWC_visSelectionDisplay"]
+                }
+            ]
+        },
+        "onEvent":
+        [
+            {
+                "eventId":"workinstr.selectionChange",
+                "action":"onWorkinstrSelectionChange",
+                "cacheEventData": true
+            },
+            {
+                "eventId":"workinstr.reLoad3dViewer",
+                "action":"reLoad3dViewer",
+                "cacheEventData": true
+            }
+        ],
+        "i18n":
+        {
+            "LOADING_TEXT":["BaseMessages"]
+        }
+    }

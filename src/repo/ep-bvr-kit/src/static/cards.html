@@ -1,0 +1,136 @@
+<html>
+
+<head>
+
+<title>Data cards</title>
+
+<style>
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: navy;
+  background-color: white;
+  white-space: nowrap;
+}
+.parent{
+  cursor: pointer;
+  cursor: hand;
+}
+.branch{
+  display: none;
+  margin-left: 12px;
+}
+</style>
+
+<script language="JavaScript">
+function toggleExpansion(brn, img){
+  var objBrn = document.getElementById(brn).style;
+  if(objBrn.display=="block")
+    objBrn.display="none";
+  else
+    objBrn.display="block";
+
+  var objImg = document.getElementById(img);
+  if(objImg.src.indexOf("plus.gif")>=0)
+    objImg.src = "icons/minus.gif";
+  else
+    objImg.src = "icons/plus.gif";
+}
+</script>
+
+</head>
+
+<body leftmargin="6" topmargin="6" marginwidth="6" marginheight="6" onContextMenu="return false;">
+
+<span class="parent" onClick="toggleExpansion('brn_SBW', 'img_SBW')">
+  <img src="icons/plus.gif" id="img_SBW">SBW [F-SBW]<br>
+</span>
+<span class="branch" id="brn_SBW">
+  <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+   href="cards/SBW/en-US/index.html">Basic operation [SBW]</a><br>
+</span>
+
+<span class="parent" onClick="toggleExpansion('brn_UAS', 'img_UAS')">
+  <img src="icons/plus.gif" id="img_UAS">UAS [F-UAS]<br>
+</span>
+<span class="branch" id="brn_UAS">
+  <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+   href="cards/UAS-BASE/en-US/index.html">Basic operation [UAS-BASE]</a><br>
+  <span class="parent" onClick="toggleExpansion('brn_UAS_SO', 'img_UAS_SO')">
+    <img src="icons/plus.gif" id="img_UAS_SO">Standard operations [F-UAS-SO]<br>
+  </span>
+  <span class="branch" id="brn_UAS_SO">
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/UAS-SO-UNPAC/en-US/index.html">Unpack [UAS-SO-UNPAC]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/UAS-SO-TREAT/en-US/index.html">Treat [UAS-SO-TREAT]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/UAS-SO-ELEC/en-US/index.html">Electric Assemble Cables [UAS-SO-ELEC]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/UAS-SO-CLAMP/en-US/index.html">Clamp and Unclamp [UAS-SO-CLAMP]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/UAS-SO-BOND/en-US/index.html">Bonding operation [UAS-SO-BOND]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/UAS-SO-MARK/en-US/index.html">Mark [UAS-SO-MARK]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/UAS-SO-ASSEM/en-US/index.html">Assemble standard parts [UAS-SO-ASSEM]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/UAS-SO-INSP/en-US/index.html">Inspect or Measure [UAS-SO-INSP]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/UAS-SO-FAST/en-US/index.html">Fastening operation [UAS-SO-FAST]</a><br>
+  </span>
+</span>
+
+<span class="parent" onClick="toggleExpansion('brn_MEK', 'img_MEK')">
+  <img src="icons/plus.gif" id="img_MEK">MEK [F-MEK]<br>
+</span>
+<span class="branch" id="brn_MEK">
+  <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+   href="cards/MEK-BASE/en-US/index.html">Basic operation [MEK-BASE]</a><br>
+  <span class="parent" onClick="toggleExpansion('brn_MEK_SO', 'img_MEK_SO')">
+    <img src="icons/plus.gif" id="img_MEK_SO">Standard operations [F-MEK-SO]<br>
+  </span>
+  <span class="branch" id="brn_MEK_SO">
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/MEK-SO-UNPAC/en-US/index.html">Unpack [MEK-SO-UNPAC]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/MEK-SO-TREAT/en-US/index.html">Treat [MEK-SO-TREAT]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/MEK-SO-CLAMP/en-US/index.html">Clamp and Unclamp [MEK-SO-CLAMP]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/MEK-SO-BODYM/en-US/index.html">Body motions [MEK-SO-BODYM]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/MEK-SO-MARK/en-US/index.html">Mark [MEK-SO-MARK]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/MEK-SO-ASSEM/en-US/index.html">Assemble standard parts [MEK-SO-ASSEM]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/MEK-SO-INSP/en-US/index.html">Inspect or Measure [MEK-SO-INSP]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/MEK-SO-FAST/en-US/index.html">Fasten [MEK-SO-FAST]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/MEK-SO-TRANS/en-US/index.html">Transport [MEK-SO-TRANS]</a><br>
+  </span>
+</span>
+
+<span class="parent" onClick="toggleExpansion('brn_MOS', 'img_MOS')">
+  <img src="icons/plus.gif" id="img_MOS">MOS [F-MOS]<br>
+</span>
+<span class="branch" id="brn_MOS">
+  <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+   href="cards/MOS-BASE/en-US/index.html">Basic operation [MOS-BASE]</a><br>
+  <span class="parent" onClick="toggleExpansion('brn_MOS_SO', 'img_MOS_SO')">
+    <img src="icons/plus.gif" id="img_MOS_SO">Standard operations [F-MOS-SO]<br>
+  </span>
+  <span class="branch" id="brn_MOS_SO">
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/MOS-SO-INFO/en-US/index.html">Information [MOS-SO-INFO]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/MOS-SO-BODYM/en-US/index.html">Body movements [MOS-SO-BODYM]</a><br>
+    <img src="icons/card.gif"><a style="text-decoration:none" target="content"
+     href="cards/MOS-SO-CLASS/en-US/index.html">Response time class (DP system) [MOS-SO-CLASS]</a><br>
+  </span>
+</span>
+
+</body>
+
+</html>

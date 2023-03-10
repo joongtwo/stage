@@ -1,0 +1,80 @@
+{
+    "schemaVersion": "1.0.0",
+    "data":
+    {
+
+    },
+    "actions":
+    {
+        "loadInsertLevelTableData": {
+            "actionType": "JSFunction",
+            "method": "loadInsertLevelTableData",
+            "inputData": {
+            },
+            "outputData": {
+                "totalSelectedElems": "totalSelectedElems",
+                "selectedElems": "selectedElems"
+            },
+            "deps": "js/insertElementService"
+        }
+    },
+
+    "dataProviders": {
+        "selectedElemsDataProvider": {
+            "action": "loadInsertLevelTableData",
+            "response": "{{data.selectedElems}}",
+            "totalFound": "{{data.totalSelectedElems}}",
+            "inputData": {
+                "selectionModelMode": "single",
+                "enablePropEdit": false
+            }
+
+        }
+    },
+
+    "columnProviders": {
+        "selectedElemsColumnProvider": {
+            "columns": [
+
+                {
+                    "name": "Name",
+                    "displayName": "{{i18n.selectedElementsTableHeaderTitile}}",
+                    "typeName": "OBJECT",
+                    "enableColumnMenu": false,
+                    "enableSorting": false,
+                    "enableColumnMoving": false,
+                    "enableColumnResizing": false,
+                    "width": 234
+
+
+                }
+            ]
+        }
+    },
+
+    "grids": {
+        "selectedElemsTable": {
+            "dataProvider": "selectedElemsDataProvider",
+            "columnProvider": "selectedElemsColumnProvider",
+            "addIconColumn": true,
+
+            "gridOptions": {
+                "enableSorting": false,
+                "enableGridMenu": false,
+                "maxRowsToShow": 3
+
+                }
+        }
+    },
+    "i18n":
+    {
+        "selectedElementsTableHeaderTitile":
+        [
+            "OccurrenceManagementConstants"
+        ],
+        "aboveTitle":
+        [
+            "OccurrenceManagementConstants"
+        ]
+    }
+}

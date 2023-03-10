@@ -1,0 +1,30 @@
+{
+    "schemaVersion" : "1.0.0",
+    "actions": 
+    {
+    },
+    "data": 
+    {
+    },    
+    "functions": {},
+    "props": {
+        "sub-panel-context":{
+            "type":"object"
+        }
+    },
+    "conditions": {
+        "showOverviewCond": {
+            "expression": "props.subPanelContext.provider.pageContext.secondaryActiveTabId==='Dpv1ETLDashboardOverviewTable'"
+        },
+        "showHealthReportCond": {
+            "expression": "props.subPanelContext.provider.pageContext.secondaryActiveTabId==='Dpv1ETLDashboardHealthReportTable'"
+        },
+        "showDeviceReportCond": {
+            "expression": "props.subPanelContext.provider.pageContext.secondaryActiveTabId==='Dpv1ETLDashboardDeviceReportTable'"
+        }
+    },
+    "messages": {},    
+    "i18n": 
+    {
+    }
+}

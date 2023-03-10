@@ -1,0 +1,29 @@
+<aw-panel-body>
+    <aw-panel-section caption="i18n.logicalObject">
+    </aw-panel-section>
+    <aw-panel-section caption="i18n.properties">
+        <aw-widget prop="data.internalName"></aw-widget>
+        <aw-widget prop="data.name"></aw-widget>
+        <aw-widget prop="data.description" hint="textarea"></aw-widget>
+    </aw-panel-section>
+    <aw-type-selector
+        prop="data.rootListProp"
+        search-input="data._rootSearchInput"
+        include="POM_object"
+        load-sub-types="true"
+        auto-select-on-unique-type="true"
+        selection-data="data.rootSelectionData">
+    </aw-type-selector>
+    <aw-checkbox prop="data.retrieveClassificationData" visible-when="conditions.supportClassificationData"></aw-checkbox>
+    <aw-type-selector
+        prop="data.parentListProp"
+        search-input="data._parentSearchInput"
+        include="Fnd0LogicalObject"
+        load-sub-types="true"
+        auto-select-on-unique-type="true"
+        selection-data="data.parentSelectionData">
+    </aw-type-selector>
+ </aw-panel-body>
+<aw-panel-footer>
+    <aw-button action="add" size="auto" enable-when="conditions.isValidToAdd"><aw-i18n>i18n.add</aw-i18n></aw-button>
+</aw-panel-footer>

@@ -1,0 +1,67 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "name": {
+            "displayName": "{{i18n.name}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": ""
+        },
+
+        "description": {
+            "displayName": "{{i18n.description}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": ""
+        },
+
+        "url": {
+            "displayName": "URL",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": ""
+        }
+    },
+
+    "actions": {
+        "epAddWebLink": {
+            "actionType": "batchJob",
+            "steps": [
+                { "action": "doAddWebLink" },
+                { "action": "closePopupWindow" }
+            ]
+        },
+
+        "doAddWebLink": {
+            "actionType": "JSFunction",
+            "method": "addWebLink",
+            "inputData": {
+                "data": "{{data}}",
+                "scopeObject": "{{subPanelContext.scopeObject}}"
+            },
+            "deps": "js/epWebLinkService"
+        },
+
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "deps": "js/popupService"
+        }
+    },
+
+    "i18n": {
+        "name": [ "EPMessages" ],
+        "description": [ "EPMessages" ],
+        "url": [ "DetailsMessages" ],
+        "cancel": [ "EPMessages" ],
+        "create": [ "EPMessages" ]
+    }
+}

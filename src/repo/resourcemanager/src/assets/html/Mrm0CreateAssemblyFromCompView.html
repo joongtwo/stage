@@ -1,0 +1,28 @@
+<aw-command-panel caption="i18n.mrm0CreateAssemblyFromCompTitle">
+    <aw-panel-section caption="i18n.mrm0TargetClassification">
+        <div class="aw-default-cell sw-row">
+            <aw-pic source="data.selectedTargetClassInfo.currentTargetClassSourceIcon"></aw-pic>
+            <span class="sw-column justify-center">{{data.selectedTargetClassInfo.currentTargetClassName}}</span>
+        </div>
+        <div>
+            <span class="aw-clspanel-tooltipLabel">{{data.targetClassPathLabel.path}}</span>
+            <span>{{data.selectedTargetClassInfo.currentTargetClassPath}}</span>
+        </div>
+        <aw-listbox prop="data.targetClassesListBox" list="data.targetClassesList" action="targetClassChange">
+        </aw-listbox>
+    </aw-panel-section>
+    <aw-form name="createInputsFormValidator" aw-form-validator="" visible-when="data.activeState.value.activeView === 'AddObjectPrimarySub'">
+        <aw-add include-types="{{data.mappedTargetResourceData.createDefaultResourceTypes}}" type-filter="WorkspaceObject" load-sub-types="{{data.mappedTargetResourceData.loadSubTypes}}"
+            preferred-type="{{data.mappedTargetResourceData.preferredType}}" visible-tabs="new" max-recent-count="5" xrt-state="data.xrtState"
+            edit-handler="editHandlers.addPanelEditHandler" active-state="data.activeState" project-state="data.projectState"
+            add-panel-state="fields.addPanelState" exist-when="data.mappedTargetResourceData">
+        </aw-add>
+    </aw-form>
+    <aw-checkbox prop="data.onMapResourceOpenInNewTab"></aw-checkbox>
+    <aw-panel-footer>
+        <aw-button action="mapResource" visible-when="data.mappedTargetResourceData && formProp.attributes.valid">
+            <aw-i18n>i18n.create</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+    <aw-add-navigate active-state="data.activeState" project-state="data.projectState" action="actions.setActiveView"></aw-add-navigate>
+</aw-command-panel>

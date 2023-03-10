@@ -1,0 +1,184 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "EpBalancingManager_getBalancingInformation": {
+            "syncObject": {
+                "balancingScope": null,
+                "balancingStations": [],
+                "scopeTaktTime": 0,
+                "maxStationsCycleTime": 0,
+                "numberOfStations": 0,
+                "allProcessResources": [],
+                "numberOfUniqueProcessResources": 0,
+                "totalWaitTime": 0,
+                "unassignedTime": 0,
+                "lineHasOverridingTaktTime": false,
+                "problematicStations": [],
+                "maxTimeInLine": 0
+            }
+        }
+    },
+    "data": {},
+    "actions": {
+        "stationsChanged": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "calculateInformation"
+                },
+                {
+                    "action": "registerReloadTiles"
+                },
+                {
+                    "action": "registerReloadProperties"
+                }
+            ]
+        },
+        "calculateInformation": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "calculateBalancingInformation"
+                },
+                {
+                    "action": "publishBalancingDataToPort"
+                }
+            ]
+        },
+        "loadStations": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "loadBalancingStations"
+                },
+                {
+                    "action": "publishBalancingDataToPort"
+                }
+            ]
+        },
+        "loadBalancingStations": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadBalancingStations",
+            "inputData": {
+                "objectUid": "{{ctx.ep.scopeObject.uid}}"
+            },
+            "outputData": {
+                "balancingScope": "balancingScope",
+                "balancingStations": "balancingStations",
+                "scopeTaktTime": "scopeTaktTime"
+            },
+            "deps": "js/epBalancingService"
+        },
+        "calculateBalancingInformation": {
+            "actionType": "JSFunction",
+            "method": "calculateBalancingInformation",
+            "inputData": {
+                "balancingStations": "{{data.balancingStations}}",
+                "scopeTaktTime": "{{data.scopeTaktTime}}"
+            },
+            "outputData": {
+                "maxStationsCycleTime": "maxStationsCycleTime",
+                "numberOfStations": "numberOfStations",
+                "allProcessResources": "allProcessResources",
+                "numberOfUniqueProcessResources": "numberOfUniqueProcessResources",
+                "totalWaitTime": "totalWaitTime",
+                "unassignedTime": "unassignedTime",
+                "lineHasOverridingTaktTime": "lineHasOverridingTaktTime",
+                "problematicStations": "problematicStations",
+                "maxTimeInLine": "maxTimeInLine"
+            },
+            "deps": "js/epBalancingService"
+        },
+        "publishBalancingDataToPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpBalancingManager_getBalancingInformation",
+                "syncObject": {
+                    "balancingScope": "{{data.balancingScope}}",
+                    "balancingStations": "{{data.balancingStations}}",
+                    "scopeTaktTime": "{{data.scopeTaktTime}}",
+                    "maxStationsCycleTime": "{{data.maxStationsCycleTime}}",
+                    "numberOfStations": "{{data.numberOfStations}}",
+                    "allProcessResources": "{{data.allProcessResources}}",
+                    "numberOfUniqueProcessResources": "{{data.numberOfUniqueProcessResources}}",
+                    "totalWaitTime": "{{data.totalWaitTime}}",
+                    "unassignedTime": "{{data.unassignedTime}}",
+                    "lineHasOverridingTaktTime": "{{data.lineHasOverridingTaktTime}}",
+                    "problematicStations": "{{data.problematicStations}}",
+                    "maxTimeInLine": "{{data.maxTimeInLine}}"
+                }
+            }
+        },
+        "registerReloadTiles": {
+            "actionType": "JSFunction",
+            "method": "registerReloadInput",
+            "inputData": {
+                "name": "StationTile",
+                "type": "StationTile",
+                "object": "{{data.balancingStations}}"
+            },
+            "deps": "js/epReloadService"
+        },
+        "registerReloadProperties": {
+            "actionType": "JSFunction",
+            "method": "registerReloadInput",
+            "inputData": {
+                "name": "StationAllocatedOpsByPV",
+                "type": "getProperties",
+                "object": "{{data.balancingStations}}",
+                "propertiesToReload": [
+                    "elb0allocatedOpsByPV"
+                ]
+            },
+            "deps": "js/epReloadService"
+        },
+        "unregisterReload": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "unregisterReloadTiles"
+                },
+                {
+                    "action": "unregisterReloadProperties"
+                }
+            ]
+        },
+        "unregisterReloadTiles": {
+            "actionType": "JSFunction",
+            "method": "unregisterReloadInput",
+            "inputData": {
+                "name": "StationTile"
+            },
+            "deps": "js/epReloadService"
+        },
+        "unregisterReloadProperties": {
+            "actionType": "JSFunction",
+            "method": "unregisterReloadInput",
+            "inputData": {
+                "name": "StationAllocatedOpsByPV"
+            },
+            "deps": "js/epReloadService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "ep.productVariant.changed",
+            "action": "calculateInformation"
+        },
+        {
+            "eventId": "ep.saveEvents",
+            "cacheEventData": true,
+            "action": "calculateInformation"
+        }
+    ],
+    "lifecycleHooks": {
+        "onMount": "loadStations",
+        "onUpdate": [ {
+                "action": "calculateInformation",
+                "observers": [
+                    "viewModel.data.balancingStations"
+                ]
+            }
+        ],
+        "onUnmount": "unregisterReloadInput"
+    }
+}

@@ -1,0 +1,27 @@
+<aw-panel-header>
+    <aw-flex-row align-content="end" width="100%">
+        <aw-label prop="data.selectFile"></aw-label>
+    </aw-flex-row>
+    <aw-flex-row align-content="start" width="100%">
+        <aw-flex-column width="fill">
+            <aw-file-upload file-change-action="updateFormData1" type-filter=".json" is-required="true"></aw-file-upload>
+        </aw-flex-column>
+    </aw-flex-row>
+</aw-panel-header>
+<!-- Flat list of  parsed json or package contents -->
+<aw-panel-body>
+    <aw-command-panel-section class="aw-clsadmin-objects" caption="{{data.captionName}}" visible-when="conditions.validFile && data.captionName.length!=0">
+
+        <div aw-repeat="objectName: data.objectNames" class="aw-clsadmin-objectNamesList">
+            <aw-flex-row>
+                <label class="aw-clsadmin-objectNames">{{objectName[0]}}</label>
+                <aw-chip chip="data.errorIcon" visible-when="objectName[1].length!=0" extended-tooltip="{{objectName[1]}}" extended-tooltip-context="objectName"></aw-chip>
+            </aw-flex-row>
+        </div>
+    </aw-command-panel-section>
+</aw-panel-body>
+<aw-panel-footer>
+    <aw-button action="uploadAndImport" visible-when="conditions.importButtonDisplay">
+        <aw-i18n>i18n.import</aw-i18n>
+    </aw-button>
+</aw-panel-footer>

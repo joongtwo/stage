@@ -1,0 +1,62 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+    },
+    "actions": {
+        "getStationAndProcessResourceList": {
+            "actionType": "JSFunction",
+            "method": "getStationAndProcessResourceList",
+            "inputData": {
+                "inputObj": "{{subPanelContext.inputObj}}",
+                "operations": "{{subPanelContext.operations}}"
+            },
+            "outputData": {
+                "station": "station",
+                "prList": "prList"
+            },
+            "deps": "js/epProcessResourceListForAssignPopupService"
+        },
+        "doDataProvider": {
+            "actionType": "dataProvider",
+            "method": "processResourceDataProvider"
+        },
+        "assignOperations": {
+            "actionType": "batchJob",
+            "steps": [{
+                "action": "assignOperationAction",
+                "condition": "data.dataProviders.processResourceDataProvider.selectedObjects.length > 0"
+            }]
+        },
+        "assignOperationAction": {
+            "actionType": "JSFunction",
+            "method": "assignOperationsToProcessResource",
+            "inputData": {
+                "processResource": "{{data.dataProviders.processResourceDataProvider.selectedObjects[0]}}",
+                "operations": "{{subPanelContext.operations}}"
+            },
+            "deps": "js/epProcessResourceListForAssignPopupService"
+        }
+    },
+    "dataProviders": {
+        "processResourceDataProvider": {
+            "action": "getStationAndProcessResourceList",
+            "response": "{{data.prList}}",
+            "totalFound": "{{data.prList.length}}"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "doDataProvider",
+        "onUpdate": [{
+            "action": "assignOperations",
+            "observers": ["viewModel.dataProviders.processResourceDataProvider.selectedObjects"]
+        }]
+    },
+    "i18n": {
+        "unassign": ["BalancingMessages"]
+    }
+}

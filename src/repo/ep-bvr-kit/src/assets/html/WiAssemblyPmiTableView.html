@@ -1,0 +1,56 @@
+<div class="sw-column w-12">
+    <div class="sw-row aw-epInstructionsPmi-guidanceMessage aw-epInstructionsPmi-guidanceMessageColor">
+        <div class="sw-column w-11 align-left">
+            <div class="sw-row">
+                <div class="sw-column align-left"">
+                        <aw-icon class=" aw-epInstructionsPmi-guidanceMessageIcon" icon-id="cmdPMIBlue">
+                    </aw-icon>
+                </div>
+
+                <div class="sw-column align-left" exist-when="conditions.noMethodSelected">
+                    <aw-link id="epPmiMethodSelectionLink" prop="data.noMethodLink" action="showMethodMenu"></aw-link>
+                </div>
+                <div class="sw-column align-left" exist-when="!conditions.noMethodSelected">
+                    <aw-link id="epPmiMethodSelectionLink" exist-when="conditions.byTopAssyMethodSelected" prop="data.method1Link" action="showMethodMenu"></aw-link>
+                    <aw-link id="epPmiMethodSelectionLink" exist-when="conditions.bySelectedAssyMethodSelected" prop="data.method2Link" action="showMethodMenu"></aw-link>
+                    <aw-link id="epPmiMethodSelectionLink" exist-when="conditions.bySelectedOperationMethodSelected" prop="data.method3Link" action="showMethodMenu"></aw-link>
+                    <aw-link id="epPmiMethodSelectionLink" exist-when="conditions.byAssignedScopeUnderPartMethodSelected" prop="data.method4Link" action="showMethodMenu"></aw-link>
+                    <aw-link id="epPmiMethodSelectionLink" exist-when="conditions.byAssignedAllInScopeUnderPartMethodSelected" prop="data.method5Link" action="showMethodMenu"></aw-link>
+                </div>
+                <div class="sw-column align-left">
+                    <aw-icon-button class="aw-epInstructionsPmi-methodDropDownIconButton" command="data.methodDropDownMenu"></aw-icon-button>
+                </div>
+
+                <div class="sw-column align-left align-stretch" align-content="stretch">
+                    <span class="aw-guidance-messageText aw-epInstructionsPmi-messageText" exist-when="conditions.byTopAssyMethodSelected" title="Showing PMI content based on the loaded Assembly">
+                        Showing PMI content based on the loaded Assembly
+                        </span>
+                    <span class="aw-guidance-messageText aw-epInstructionsPmi-messageText" exist-when="conditions.bySelectedAssyMethodSelected" title="Showing PMI content based on {{data.pmiContext.displayName}}">
+                        Showing PMI content based on "<span class="aw-epInstructionsPmi-highlightedText"> {{data.pmiContext.displayName}}</span>"
+                    </span>
+                    <span class="aw-guidance-messageText aw-epInstructionsPmi-messageText" exist-when="conditions.bySelectedOperationMethodSelected && conditions.pmiContextDefined" title="Showing PMIs for consumed parts for {{data.pmiContext.displayName}}">
+                        Showing PMIs for consumed parts for "<span class="aw-epInstructionsPmi-highlightedText"> {{data.pmiContext.displayName}}</span>"
+                    </span>
+                    <span class="aw-guidance-messageText aw-epInstructionsPmi-messageText" exist-when="conditions.byAssignedScopeUnderPartMethodSelected" title="PMI content assigned to scope of {{data.pmiContext.displayName}} (in assembly)">
+                        PMI content assigned to scope of "<span class="aw-epInstructionsPmi-highlightedText"> {{data.pmiContext.displayName}}</span>" (in assembly)
+                    </span>
+                    <span class="aw-guidance-messageText aw-epInstructionsPmi-messageText" exist-when="conditions.byAssignedAllInScopeUnderPartMethodSelected" title="PMI content assigned to scope of {{data.pmiContext.displayName}} (all)">
+                        PMI content assigned to scope of "<span class="aw-epInstructionsPmi-highlightedText"> {{data.pmiContext.displayName}}</span>" (all)
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="sw-column align-right w-1" align-content="end" exist-when="conditions.activeSelectedMethod">
+            <aw-icon-button class="aw-epInstructionsPmi-methodIconButton" command="data.applyMethod"></aw-icon-button>
+        </div>
+    </div>
+
+    <div class="sw-row h-12">
+        <mfe-message exist-when="conditions.noMethodSelected" sub-panel-context="data.messages.noValidMethod"></mfe-message>
+        <mfe-message exist-when="conditions.operationMissing" sub-panel-context="data.messages.noValidInput"></mfe-message>
+        <mfe-message exist-when="conditions.hasNoAssociatedPMIs" sub-panel-context="data.messages.noAssociatedPMIs"></mfe-message>
+        <mfe-loading-message exist-when="conditions.isLoading"></mfe-loading-message>
+        <aw-splm-table class="aw-ep-pmiTable" visible-when="conditions.showTable" gridid="assemblyPmiTable"></aw-splm-table>
+    </div>
+
+</div>

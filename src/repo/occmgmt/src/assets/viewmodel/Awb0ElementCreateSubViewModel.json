@@ -1,0 +1,127 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "createSubType" :{
+            "props": {
+                "type_name": {
+                    "dbValues": ["PSOccurrence"]
+                }
+            },
+            "propertyDescriptors": {}
+        },
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "actions": {
+        "render": {
+            "method": "addElementCreateSubViewRenderFunction",
+            "deps": "js/addElementCreateSubViewService"
+        },
+        "addPropertiesAndSetCreateInputContext": {
+            "actionType": "JSFunction",
+            "method": "buildElementCreateInputAndUpdateState",
+            "inputData": {
+                "value": "{{data}}",
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "outputData": {},
+            "events": {
+                "success": [
+                    {
+                        "name": "setCreateInputContextSuccess",
+                        "excludeLocalDataCtx": true
+                    }
+                ]
+            },
+            "deps": "js/addElementService"
+        },
+
+        "initializePanel": {
+            "actionType": "JSFunction",
+            "method": "updateValueOnCtxOrState",
+            "inputData": {
+                "pathOnCtxOrState, ": "Awb0ElementCreateSubView",
+                "value": true,
+                "target" : "{{props.subPanelContext.addElementState}}"
+            },
+            "deps": "js/occmgmtUtils",
+            "events": {
+                "success": [{
+                    "name": "awb0Element.initializePanelProperties"
+                }]
+            }
+        },
+        "destroyPanel": {
+            "actionType": "JSFunction",
+            "method": "updateValueOnCtxOrState",
+            "inputData": {
+                "pathOnCtxOrState, ": "Awb0ElementCreateSubView",
+                "value": false,
+                "target" : "{{props.subPanelContext.addElementState}}"
+            },
+            "deps": "js/occmgmtUtils"
+        },
+        "assignInitialValuesToXrtProperties": {
+            "actionType": "JSFunction",
+            "method": "assignInitialValuesToXrtProperties",
+            "inputData": {
+                "createType": "{{data.creationType.props.type_name.dbValues[0]}}",
+                "editHandler": "{{editHandlers.addSubPanelEditHandler}}"
+            },
+            "deps": "js/addElementService"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "awb0Element.addElementProperties",
+            "action": "addPropertiesAndSetCreateInputContext"
+        },
+        {
+            "eventId": "awb0Element.resetCreateInputPropertiesToDefault",
+            "action": "initializePanelProperties"
+        },
+        {
+            "eventId": "awb0Element.initializePanelProperties",
+            "action": "initializePanelProperties"
+        }
+    ],
+    "conditions": {
+        "areElementPropertiesSupported": {
+            "expression": "!( subPanelContext.addPanelState.value.sourceObjects.length > 0 && subPanelContext.addPanelState.value.sourceObjects[0].modelType && props.subPanelContext.addPanelState.value.sourceObjects[0].modelType.typeHierarchyArray.indexOf('Awb0Element') > -1)"
+        },
+        "isNewTabSelected" : {
+            "expression" : "subPanelContext.addPanelState.value.selectedTab.view==='NewTabPageSub'"
+        }
+    },
+    "lifecycleHooks": {
+        "render":"render",
+        "onMount": "initializePanel",
+        "onUnmount": "destroyPanel",
+        "onUpdate": {
+            "action": "assignInitialValuesToXrtProperties",
+            "observers": [ "props.subPanelContext.addPanelState.sourceObjects[0].props.object_string.dbValue" ]
+        }
+    },
+    "editHandlers": {
+        "addSubPanelEditHandler": {
+            "context": "CREATE_SUB_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "i18n": {
+        "numberOfElements": [
+            "OccurrenceManagementConstants"
+        ],
+        "invalidNoOfElements": [
+            "OccurrenceManagementMessages"
+        ]
+    }
+}

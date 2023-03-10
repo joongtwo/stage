@@ -1,0 +1,1144 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions":{
+        "ClosePopUpAction": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        },
+        "addFrequency":{
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-MfgBvrCore-2016-04-DataManagement",
+            "method": "saveData3",
+            "deps": "js/Ssp1AddFrequencyService",
+            "inputData": {
+                "saveInput": {
+                    "relatedObjects":"{{function:getRelatedObject}}",
+                    "sections": [
+                        {
+                            "sectionName":"ObjectsToCreate",
+                            "dataEntries": [
+                                {
+                                    "entry": {
+                                        "ItemProps": {
+                                            "nameToValuesMap": "{{function:getNameToValuesMap}}" 
+                                        },
+                                        "Object":{
+                                            "nameToValuesMap":{
+                                                "Type": ["SSP0Frequency"],
+                                                "connectTo": ["{{ctx.selectedVMO.uid}}"]
+                                            }
+                                        },
+                                        "RevProps": {
+                                            "nameToValuesMap": {
+                                                "ssp0FrequencyExpression": ["{{function:getFinalExpression}}"]
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"frequency.added"
+                    }
+                ]
+            },
+            "actionMessages":{
+                "success":[
+                    {
+                        "message": "newFrequencyAdded"
+                    }
+                ],
+                "failure":[
+                    {
+                        "message": "newFrequencyFailed"
+                    }
+                ]
+            },
+            "outputData": {
+                "addedFrequency": "output[0].objects[0]",
+                "serviceData": "ServiceData"
+            }
+
+        },
+        "getCharObject":{
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-09-DataManagement",
+            "method": "expandGRMRelationsForPrimary",
+            "inputData":
+            {
+                "primaryObjects":"{{data.partLoadResult}}",
+
+                "pref":
+                {
+                    "expItemRev": false,
+                    "returnRelations": true,
+                    "info":
+                    [
+                        {
+                            "relationTypeName": "NeutralCharacteristics",
+                            "otherSideObjectTypes": ""
+                        }
+                    ]
+                }
+            },
+
+            "policy":
+            {
+                "types":
+                [
+                    {
+                        "name": "LifeCharDefinition",
+                        "properties":
+                        [
+                            {
+                                "name": "charName",
+                                "name": "charUnit",
+                                "name": "isDerived"
+                            }
+                        ]
+                    },
+
+                    {
+                        "name": "ObsCharDefinition",
+                        "properties":
+                        [
+                            {
+                                "name": "charName",
+                                "name": "charUnit",
+                                "name": "isDerived"
+                            }
+                        ]
+                    },
+
+                    {
+                        "name": "DateCharDefinition",
+                        "properties":
+                        [
+                            {
+                                "name": "charName",
+                                "name": "charUnit",
+                                "name": "isDerived"
+                            }
+                        ]
+                    },
+                    {
+                        "name":"Smr0StringCharDefinition",
+                        "properties":[
+                            {
+                                "name":"smr0CharacteristicValues"
+                            }
+                        ]
+                    },
+                    {
+                        "name":"Smr0BoolCharDefinition",
+                        "properties":[
+                            {
+                                "name":"smr0CharacteristicValues"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "loadedCharacteristics"
+                    }
+                ]
+            },
+            "outputData":
+            {
+                "charList":"ServiceData.modelObjects",
+                "modelProperty": "{{dataParseDefinitions:convertGRMRelations}}"
+            }
+        },
+        "loadCharacteristicsLists": {
+            "actionType": "JSFunction",
+            "method": "populateCharacteristicsLists",
+            "inputData":
+            {
+                "input": "{{data.charList}}"
+            },
+            "outputData": {
+                "lifeCharacteristicList": "lifeCharacteristicList",
+                "observationCharacteristicList": "observationCharacteristicList",
+                "dateCharacteristicList": "dateCharacteristicList"
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "searchCharacteristicsAfterUntil": {
+            "actionType": "JSFunction",
+            "method": "searchCharacteristicsAfterUntil",
+            "inputData": {
+                "selected": "{{data}}"
+            },
+            "outputData": {
+                "searchAfterUntilResults": ""
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "searchCharacteristicsKeyword": {
+            "actionType": "JSFunction",
+            "method": "searchCharacteristicsKeyword",
+            "inputData": {
+                "selected": "{{data}}"
+            },
+            "outputData": {
+                "searchCharacteristicsResults": ""
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "saveFrequency": {
+            "actionType": "JSFunction",
+            "method": "saveFrequency",
+            "inputData": {
+                "selected": "{{data}}"
+            },
+            "outputData": {
+                "savedExpressionsList" : "savedExpressionsList",
+                "savedExpressionsCount" : "savedExpressionsCount"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"ssp1AddFrequency.updateDataProvider",
+                        "eventData":{
+                            "data":"{{data}}"
+                        }
+                    },
+                    {
+                        "name": "ssp1AddFrequency.resetFrequencyFields"
+                    }
+                ]
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "revealExprList": {
+            "actionType": "dataProvider",
+            "method": "fetchExpressions"
+        },
+        "removeFrequencyExpression": {
+            "actionType": "JSFunction",
+            "method": "removeFreqExpression",
+            "inputData": {
+                "savedExpressionsList": "{{data.savedExpressionsList}}",
+                "exprId": "{{data.eventMap['ssp1AddFrequency.removeExpressionLine'].exprId}}"
+            },
+            "outputData": {
+                "savedExpressionsList" : "savedExpressionsList",
+                "savedExpressionsCount" : "savedExpressionsCount"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"ssp1AddFrequency.updateDataProvider",
+                        "eventData":{
+                            "data":"{{data}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "moveUpFrequencyExpression": {
+            "actionType": "JSFunction",
+            "method": "moveUpFreqExpression",
+            "inputData": {
+                "savedExpressionsList": "{{data.savedExpressionsList}}",
+                "exprId": "{{data.eventMap['ssp1AddFrequency.moveUpExpressionLine'].exprId}}"
+            },
+            "outputData": {
+                "savedExpressionsList" : "savedExpressionsList",
+                "savedExpressionsCount" : "savedExpressionsCount"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"ssp1AddFrequency.updateDataProvider",
+                        "eventData":{
+                            "data":"{{data}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "moveDownFrequencyExpression": {
+            "actionType": "JSFunction",
+            "method": "moveDownFreqExpression",
+            "inputData": {
+                "savedExpressionsList": "{{data.savedExpressionsList}}",
+                "exprId": "{{data.eventMap['ssp1AddFrequency.moveDownExpressionLine'].exprId}}"
+            },
+            "outputData": {
+                "savedExpressionsList" : "savedExpressionsList",
+                "savedExpressionsCount" : "savedExpressionsCount"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"ssp1AddFrequency.updateDataProvider",
+                        "eventData":{
+                            "data":"{{data}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "getPartRevisionProperties": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "attributes": [
+                    "bl_revision"
+                ],
+                "objects": "{{function:getBvrPartRevisionUid}}"
+            },
+            "outputData": {
+                "partBvrLoadResult": "{{function:setPartRevision}}"
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "getPartProperties": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "attributes": [
+                    "items_tag"
+                ],
+                "objects": "{{data.partBvrLoadResult}}"
+            },
+            "outputData": {
+                "partLoadResult": "{{function:setPartUids}}"
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "loadNeutralCharacteristics": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getPartRevisionProperties"
+                },
+                {
+                    "action": "getPartProperties"
+                },
+                {
+                    "action": "getCharObject"
+                }
+            ]
+        },
+        "refreshList": {
+            "actionType": "JSFunction",
+            "method": "refreshFrequencyList",
+            "inputData": {
+                "data":"{{data.savedExpressionsList}}"
+            },
+            "outputData": {
+                "savedExpressionsList" : "savedExpressionsList",
+                "savedExpressionsCount" : "savedExpressionsCount"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"ssp1AddFrequency.updateDataProvider",
+                        "eventData":{
+                            "data":"{{data}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "groupFrequencies": {
+            "actionType": "JSFunction",
+            "method": "groupFrequencies",
+            "inputData": {
+                "savedExpressionsList": "{{data.savedExpressionsList}}",
+                "selectedExprObjects": "{{data.dataProviders.fetchExpressions.selectedObjects}}"
+            },
+            "outputData": {
+                "savedExpressionsList" : "savedExpressionsList",
+                "savedExpressionsCount" : "savedExpressionsCount"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"ssp1AddFrequency.updateDataProvider",
+                        "eventData":{
+                            "data":"{{data}}"
+                        }
+                    },
+                    {
+                        "name": "refreshList"
+                    }
+                ]
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "ungroupFrequencies": {
+            "actionType": "JSFunction",
+            "method": "ungroupFrequencies",
+            "inputData": {
+                "savedExpressionsList": "{{data.savedExpressionsList}}",
+                "selectedExprObjects": "{{data.dataProviders.fetchExpressions.selectedObjects}}"
+            },
+            "outputData": {
+                "savedExpressionsList" : "savedExpressionsList",
+                "savedExpressionsCount" : "savedExpressionsCount"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"ssp1AddFrequency.updateDataProvider",
+                        "eventData":{
+                            "data":"{{data}}"
+                        }
+                    },
+                    {
+                        "name": "refreshList"
+                    }
+                ]
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "resetFrequencyFields": {
+            "actionType": "JSFunction",
+            "method": "resetFrequencyFields",
+            "inputData": {
+                "data":"{{data}}"
+            },
+            "outputData": {
+                "phraseSeperator": "phraseSeperator",
+                "keywords": "keywords",
+                "frequencyCharacteristics": "frequencyCharacteristics",
+                "frequencyValue": "frequencyValue",
+                "afterUntil": "afterUntil",
+                "toleranceSign": "toleranceSign",
+                "toleranceValue": "toleranceValue",
+                "toleranceType": "toleranceType",
+                "afterUntilCharacteristic": "afterUntilCharacteristic",
+                "afterUntilValue": "afterUntilValue",
+                "characteristicType": "characteristicType",
+                "characteristicTypeAdvanced": "characteristicTypeAdvanced",
+                "frequencyOperators": "frequencyOperators",
+                "operatorsValue": "operatorsValue",
+                "advancedOperators": "advancedOperators",
+                "advancedOperatorsValue": "advancedOperatorsValue",
+                "frequencyDateTime": "frequencyDateTime",
+                "advancedDateTime": "advancedDateTime"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"ssp1AddFrequency.updateDataProvider",
+                        "eventData":{
+                            "data":"{{data}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "resetFieldsOnChangePhaseSeperator": {
+            "actionType": "JSFunction",
+            "method": "resetFieldsOnChangePhaseSeperator",
+            "inputData": {
+                "data":"{{data}}"
+            },
+            "outputData": {
+                "keywords": "keywords",
+                "frequencyCharacteristics": "frequencyCharacteristics",
+                "frequencyValue": "frequencyValue",
+                "afterUntil": "afterUntil",
+                "toleranceSign": "toleranceSign",
+                "toleranceValue": "toleranceValue",
+                "toleranceType": "toleranceType",
+                "afterUntilCharacteristic": "afterUntilCharacteristic",
+                "afterUntilValue": "afterUntilValue",
+                "characteristicType": "characteristicType",
+                "characteristicTypeAdvanced": "characteristicTypeAdvanced",
+                "frequencyOperators": "frequencyOperators",
+                "operatorsValue": "operatorsValue",
+                "advancedOperators": "advancedOperators",
+                "advancedOperatorsValue": "advancedOperatorsValue",
+                "frequencyDateTime": "frequencyDateTime",
+                "advancedDateTime": "advancedDateTime"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"ssp1AddFrequency.updateDataProvider",
+                        "eventData":{
+                            "data":"{{data}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "resetFieldsOnChangeKeywords": {
+            "actionType": "JSFunction",
+            "method": "resetFieldsOnChangeKeywords",
+            "inputData": {
+                "data":"{{data}}"
+            },
+            "outputData": {
+                "frequencyCharacteristics": "frequencyCharacteristics",
+                "frequencyValue": "frequencyValue",
+                "afterUntil": "afterUntil",
+                "toleranceSign": "toleranceSign",
+                "toleranceValue": "toleranceValue",
+                "toleranceType": "toleranceType",
+                "afterUntilCharacteristic": "afterUntilCharacteristic",
+                "afterUntilValue": "afterUntilValue",
+                "characteristicType": "characteristicType",
+                "characteristicTypeAdvanced": "characteristicTypeAdvanced",
+                "frequencyOperators": "frequencyOperators",
+                "operatorsValue": "operatorsValue",
+                "advancedOperators": "advancedOperators",
+                "advancedOperatorsValue": "advancedOperatorsValue",
+                "frequencyDateTime": "frequencyDateTime",
+                "advancedDateTime": "advancedDateTime"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"ssp1AddFrequency.updateDataProvider",
+                        "eventData":{
+                            "data":"{{data}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "resetFieldsOnChangeCharacteristics": {
+            "actionType": "JSFunction",
+            "method": "resetFieldsOnChangeCharacteristics",
+            "inputData": {
+                "data":"{{data}}"
+            },
+            "outputData": {
+                "frequencyValue": "frequencyValue",
+                "afterUntil": "afterUntil",
+                "toleranceSign": "toleranceSign",
+                "toleranceValue": "toleranceValue",
+                "toleranceType": "toleranceType",
+                "afterUntilCharacteristic": "afterUntilCharacteristic",
+                "afterUntilValue": "afterUntilValue",
+                "characteristicType": "characteristicType",
+                "characteristicTypeAdvanced": "characteristicTypeAdvanced",
+                "frequencyOperators": "frequencyOperators",
+                "operatorsValue": "operatorsValue",
+                "advancedOperators": "advancedOperators",
+                "advancedOperatorsValue": "advancedOperatorsValue",
+                "frequencyDateTime": "frequencyDateTime",
+                "advancedDateTime": "advancedDateTime"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"ssp1AddFrequency.updateDataProvider",
+                        "eventData":{
+                            "data":"{{data}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "resetFieldsOnChangeAdvancedCharacteristics": {
+            "actionType": "JSFunction",
+            "method": "resetFieldsOnChangeAdvancedCharacteristics",
+            "inputData": {
+                "data":"{{data}}"
+            },
+            "outputData": {
+                "afterUntilValue": "afterUntilValue",
+                "characteristicTypeAdvanced": "characteristicTypeAdvanced",
+                "advancedOperators": "advancedOperators",
+                "advancedOperatorsValue": "advancedOperatorsValue",
+                "advancedDateTime": "advancedDateTime"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"ssp1AddFrequency.updateDataProvider",
+                        "eventData":{
+                            "data":"{{data}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        },
+        "resetFieldsOnChangeAfterUntil": {
+            "actionType": "JSFunction",
+            "method": "resetFieldsOnChangeAfterUntil",
+            "inputData": {
+                "data":"{{data}}"
+            },
+            "outputData": {
+                "afterUntilCharacteristic": "afterUntilCharacteristic",
+                "afterUntilValue": "afterUntilValue",
+                "characteristicTypeAdvanced": "characteristicTypeAdvanced",
+                "advancedOperators": "advancedOperators",
+                "advancedOperatorsValue": "advancedOperatorsValue",
+                "advancedDateTime": "advancedDateTime"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"ssp1AddFrequency.updateDataProvider",
+                        "eventData":{
+                            "data":"{{data}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ssp1AddFrequencyService"
+        }
+
+    },
+    "conditions": {
+        "requiredFieldsEntered": {
+            "expression": "data.frequencyName.dbValue && conditions.enablePhraseSeperator"
+        },
+        "enableAfterUntilValue": {
+            "expression": "data.afterUntil.dbValue != '' && ( data.afterUntilCharacteristic.dbValue != 'Manufacture Date' && data.afterUntilCharacteristic.dbValue != 'Install Date' ) && data.characteristicTypeAdvanced != 'Observation' && data.characteristicTypeAdvanced != 'Date'"
+        },
+        "enablePhraseSeperator": {
+            "expression": "data.savedExpressionsCount != 0 && data.savedExpressionsList"
+        },
+        "isPhraseSeperatorSelected": {
+            "expression": "(data.phraseSeperator.dbValue != '' && data.phraseSeperator) || !conditions.enablePhraseSeperator"
+        },
+        "isKeywordSelected": {
+            "expression": "data.keywords.dbValue != '' && data.keywords"
+        },
+        "isAfterUntilSelected": {
+            "expression": "data.afterUntil.dbValue != '' && data.afterUntil"
+        },
+        "enableFrequencyValue": {
+            "expression": "conditions.isKeywordSelected && ( data.frequencyCharacteristics.dbValue != 'Manufacture Date' && data.frequencyCharacteristics.dbValue != 'Install Date' ) && data.characteristicType != 'Observation' && data.characteristicType != 'Date'"
+        },
+        "isCharacteristicSelected": {
+            "expression": "data.frequencyCharacteristics.dbValue != '' && data.frequencyCharacteristics"
+        },
+        "enableTolerance": {
+            "expression": "conditions.isCharacteristicSelected && data.characteristicType != 'Date'"
+        },
+        "isObservationCharacteristic":{
+            "expression": "conditions.isCharacteristicSelected && data.characteristicType == 'Observation'"
+        },
+        "isObservationCharacteristicAdvanced":{
+            "expression": "conditions.isAfterUntilSelected && data.afterUntilCharacteristic.dbValue !='' && data.characteristicTypeAdvanced == 'Observation'"
+        },
+        "isDateCharacteristic":{
+            "expression": "conditions.isCharacteristicSelected && data.characteristicType == 'Date'"
+        },
+        "isDateCharacteristicAdvanced":{
+            "expression": "conditions.isAfterUntilSelected && data.afterUntilCharacteristic.dbValue !='' && data.characteristicTypeAdvanced == 'Date'"
+        },
+        "isValueVisible":{
+            "expression": "data.characteristicType != 'Date' && data.characteristicType != 'Observation' && ( data.frequencyCharacteristics.dbValue != 'Manufacture Date' && data.frequencyCharacteristics.dbValue != 'Install Date' )"
+        },
+        "isToleranceVisible":{
+            "expression": "data.characteristicType != 'Date' && ( data.frequencyCharacteristics.dbValue != 'Manufacture Date' && data.frequencyCharacteristics.dbValue != 'Install Date' )"
+        },
+        "isAdvancedValueVisible":{
+            "expression": "data.characteristicTypeAdvanced != 'Date' && data.characteristicTypeAdvanced != 'Observation' && ( data.afterUntilCharacteristic.dbValue != 'Manufacture Date' && data.afterUntilCharacteristic.dbValue != 'Install Date' )"
+        }
+    },
+    "lifecycleHooks": {
+        "onInit": "loadNeutralCharacteristics"
+    },
+    "onEvent": [
+        {
+            "eventId": "frequency.added",
+            "action": "ClosePopUpAction"
+        },
+        {
+            "eventId": "frequency.added",
+            "action": "doGridDataProvider"
+        },        
+        {
+            "eventId": "loadedCharacteristics",
+            "action": "loadCharacteristicsLists"
+        },
+        {
+            "eventId": "ssp1AddFrequency.updateDataProvider",
+            "action": "revealExprList"
+        },
+        {
+            "eventId": "ssp1AddFrequency.removeExpressionLine",
+            "action": "removeFrequencyExpression",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ssp1AddFrequency.moveUpExpressionLine",
+            "action": "moveUpFrequencyExpression",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ssp1AddFrequency.moveDownExpressionLine",
+            "action": "moveDownFrequencyExpression",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ssp1AddFrequency.AddFrequencyToList",
+            "action": "saveFrequency"
+        },
+        {
+            "eventId": "ssp1AddFrequency.groupFrequencies",
+            "action": "groupFrequencies"
+        },
+        {
+            "eventId": "ssp1AddFrequency.ungroupFrequencies",
+            "action": "ungroupFrequencies"
+        },
+        {
+            "eventId": "refreshList",
+            "action": "refreshList"
+        },
+        {
+            "eventId": "ssp1AddFrequency.resetFrequencyFields",
+            "action": "resetFrequencyFields"
+        }
+    ],
+    "functions":{
+        "getRelatedObject":{
+            "functionName": "getRelatedObject",
+            "parameters": ["{{ctx.selectedVMO}}"]
+        },
+        "getFinalExpression":{
+            "functionName": "getFinalExpression",
+            "parameters": ["{{data.savedExpressionsList}}"]
+        },
+        "getBvrPartRevisionUid":{
+            "functionName": "getBvrPartRevisionUid",
+            "parameters": ["{{ctx.selectedVMO}}"]
+        },
+        "getNameToValuesMap":{
+            "functionName": "getNameToValuesMap",
+            "parameters": ["{{data}}"]
+        },
+        "setPartUids":{
+            "functionName": "setPartUids",
+            "parameters": ["{{ctx.MROPartList[0].uid}}"]
+        }
+    },
+    "data":{
+        "frequencyId": {
+            "type": "STRING",
+            "displayName": "{{i18n.FrequencyId}}",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "frequencyName": {
+            "type": "STRING",
+            "displayName": "{{i18n.FrequencyName}}",
+            "isRequired": "true",
+            "dbValue": ""
+        },
+        "frequencyDesc": {
+            "type": "STRING",
+            "displayName": "{{i18n.Description}}",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "phraseSeperator": {
+            "type": "STRING",
+            "displayName": "{{i18n.PhraseSeperator}}",
+            "dataProvider": "phraseSeperatorValues",
+            "dbValue": "",
+            "isRequired": "true"
+        },
+        "keywords": {
+            "type": "STRING",
+            "displayName": "{{i18n.Keywords}}",
+            "dataProvider": "keywordValues",
+            "isRequired": "true",
+            "dbValue": ""
+        },
+        "frequencyValue": {
+            "type": "DOUBLE",
+            "displayName": "{{i18n.Value}}",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "frequencyCharacteristics": {
+            "type": "STRING",
+            "displayName": "{{i18n.Characteristics}}",
+            "dataProvider": "searchCharacteristics",
+            "dbValue": "",
+            "isRequired": "true"
+        },
+        "frequencyDateTime": {
+            "type": "DATE",
+            "displayName": "{{i18n.Date}}",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "frequencyOperators": {
+            "type": "STRING",
+            "displayName": "{{i18n.Operators}}",
+            "isRequired": "false",
+            "dataProvider": "operatorValues",
+            "dbValue": ""
+        },
+        "operatorsValue": {
+            "type": "DOUBLE",
+            "displayName": "{{i18n.Value}}",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "toleranceSign": {
+            "displayName": "{{i18n.Tolerance}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "dataProvider": "toleranceSignListBoxValues",
+            "dbValue": ""
+        },
+        "toleranceValue": {
+            "type": "DOUBLE",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "toleranceType": {
+            "type": "STRING",
+            "isRequired": "false",
+            "dataProvider": "toleranceTypeListBoxValues",
+            "dbValue": ""
+        },
+        "afterUntil": {
+            "displayName": "{{i18n.AfterUntil}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "dataProvider": "afterUntilListBoxValues",
+            "dbValue": ""
+        },
+        "afterUntilValue": {
+            "displayName": "{{i18n.Value}}",
+            "type": "DOUBLE",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "afterUntilCharacteristic": {
+            "displayName": "{{i18n.Characteristics}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "dataProvider": "searchAfterUntil",
+            "dbValue": ""
+        },
+        "advancedOperators": {
+            "displayName": "{{i18n.Operators}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "dataProvider": "operatorValues",
+            "dbValue": ""
+        },
+        "advancedOperatorsValue": {
+            "displayName": "{{i18n.Value}}",
+            "type": "DOUBLE",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "advancedDateTime": {
+            "displayName": "{{i18n.Date}}",
+            "type": "DATE",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "projectsAnchor": "freq_expressions_barCommands",
+        "messages": {
+            "noExpressionAdded": [
+                {
+                    "text": "{{i18n.addExpressionToList}}"
+                }
+            ]
+        }
+    },
+    "dataProviders":{
+        "frequencyProvider": {
+            "response":"{{data.addedFrequency}}"
+        },
+        "searchAfterUntil": {
+            "action": "searchCharacteristicsAfterUntil",
+            "response": "{{data.searchAfterUntilResults}}"
+        },
+        "searchCharacteristics": {
+            "action": "searchCharacteristicsKeyword",
+            "response": "{{data.searchCharacteristicsResults}}"
+        },
+        "fetchExpressions": {
+            "response": "{{data.savedExpressionsList}}",
+            "totalFound": "{{data.savedExpressionsCount}}",
+            "selectionModelMode": "multiple",
+            "commandsAnchor": "freq_expressions_cellCommands"
+        },
+        "toleranceSignListBoxValues": {
+            "response": [
+                {
+                    "propDisplayValue": "",
+                    "dispValue": "",
+                    "propInternalValue": ""
+                },
+                {
+                    "propDisplayValue": "+",
+                    "dispValue": "+",
+                    "propInternalValue": "+"
+                },
+                {
+                    "propDisplayValue": "-",
+                    "dispValue": "-",
+                    "propInternalValue": "-"
+                },
+                {
+                    "propDisplayValue": "+-",
+                    "dispValue": "+-",
+                    "propInternalValue": "+-"
+                }
+            ]
+        },
+        "toleranceTypeListBoxValues": {
+            "response": [
+                {
+                    "propDisplayValue": "",
+                    "dispValue": "",
+                    "propInternalValue": ""
+                },
+                {
+                    "propDisplayValue": "%",
+                    "dispValue": "%",
+                    "propInternalValue": "%"
+                }
+            ]
+        },
+        "afterUntilListBoxValues": {
+            "response": [
+                {
+                    "propDisplayValue": "",
+                    "dispValue": "",
+                    "propInternalValue": ""
+                },
+                {
+                    "propDisplayValue": "{{i18n.After}}",
+                    "dispValue": "{{i18n.After}}",
+                    "propInternalValue": "After"
+                },
+                {
+                    "propDisplayValue": "{{i18n.Until}}",
+                    "dispValue": "{{i18n.Until}}",
+                    "propInternalValue": "Until"
+                }
+            ]
+        },
+        "phraseSeperatorValues": {
+            "response": [
+                {
+                    "propDisplayValue": "",
+                    "dispValue": "",
+                    "propInternalValue": ""
+                },
+                {
+                    "propDisplayValue": "{{i18n.And}}",
+                    "dispValue": "{{i18n.And}}",
+                    "propInternalValue": "And"
+                },
+                {
+                    "propDisplayValue": "{{i18n.Then}}",
+                    "dispValue": "{{i18n.Then}}",
+                    "propInternalValue": "Then"
+                },
+                {
+                    "propDisplayValue": "{{i18n.Or}}",
+                    "dispValue": "{{i18n.Or}}",
+                    "propInternalValue": "Or"
+                }
+            ]
+        },
+        "operatorValues": {
+            "response": [
+                {
+                    "propDisplayValue": "",
+                    "dispValue": "",
+                    "propInternalValue": ""
+                },
+                {
+                    "propDisplayValue": "{{i18n.GreaterThan}}",
+                    "dispValue": "{{i18n.GreaterThan}}",
+                    "propInternalValue": ">"
+                },
+                {
+                    "propDisplayValue": "{{i18n.LessThan}}",
+                    "dispValue": "{{i18n.LessThan}}",
+                    "propInternalValue": "<"
+                }
+            ]
+        },
+        "keywordValues": {
+            "response": [
+                {
+                    "propDisplayValue": "",
+                    "dispValue": "",
+                    "propInternalValue": ""
+                },
+                {
+                    "propDisplayValue": "{{i18n.At}}",
+                    "dispValue": "{{i18n.At}}",
+                    "propInternalValue": "At"
+                },
+                {
+                    "propDisplayValue": "{{i18n.Every}}",
+                    "dispValue": "{{i18n.Every}}",
+                    "propInternalValue": "Every"
+                },
+                {
+                    "propDisplayValue": "{{i18n.Within}}",
+                    "dispValue": "{{i18n.Within}}",
+                    "propInternalValue": "Within"
+                },
+                {
+                    "propDisplayValue": "{{i18n.When}}",
+                    "dispValue": "{{i18n.When}}",
+                    "propInternalValue": "When"
+                }
+            ]
+        }
+    },
+    "i18n": {
+        "AddFrequency": [
+            "ServicePlannerConstants"
+        ],
+        "Cancel":[
+            "ssp0Messages"
+        ],
+        "Add":[
+            "ssp0Messages"
+        ],
+        "FrequencyId": [
+            "ServicePlannerConstants"
+        ],
+        "FrequencyName": [
+            "ServicePlannerConstants"
+        ],
+        "Description": [
+            "ServicePlannerConstants"
+        ],
+        "FrequencyExpression": [
+            "ServicePlannerConstants"
+        ],
+        "FrequencyClause": [
+            "ServicePlannerConstants"
+        ],
+        "PhraseSeperator": [
+            "ServicePlannerConstants"
+        ],
+        "Keywords": [
+            "ServicePlannerConstants"
+        ],
+        "Date": [
+            "ServicePlannerConstants"
+        ],
+        "Time": [
+            "ServicePlannerConstants"
+        ],
+        "Operators": [
+            "ServicePlannerConstants"
+        ],
+        "Properties": [
+            "ServicePlannerConstants"
+        ],
+        "newFrequencyAdded":[
+            "ssp0Messages"
+        ],
+        "EnterExpression":[
+            "ServicePlannerConstants"
+        ],
+        "addExpressionToList": [
+            "ssp0Messages"
+        ],
+        "newFrequencyFailed":[
+            "ssp0Messages"
+        ],
+        "Tolerance": [
+            "ServicePlannerConstants"
+        ],
+        "AfterUntil": [
+            "ServicePlannerConstants"
+        ],
+        "Value": [
+            "ServicePlannerConstants"
+        ],
+        "Advanced": [
+            "ServicePlannerConstants"
+        ],
+        "After": [
+            "ServicePlannerConstants"
+        ],
+        "Until": [
+            "ServicePlannerConstants"
+        ],
+        "And": [
+            "ServicePlannerConstants"
+        ],
+        "Then": [
+            "ServicePlannerConstants"
+        ],
+        "Or": [
+            "ServicePlannerConstants"
+        ],
+        "At": [
+            "ServicePlannerConstants"
+        ],
+        "Every": [
+            "ServicePlannerConstants"
+        ],
+        "Within": [
+            "ServicePlannerConstants"
+        ],
+        "When": [
+            "ServicePlannerConstants"
+        ],
+        "CreateButtonTitle": [
+            "ServicePlannerConstants"
+        ],
+        "GreaterThan": [
+            "ServicePlannerConstants"
+        ],
+        "LessThan": [
+            "ServicePlannerConstants"
+        ]
+    },
+    "messages":
+    {
+        "newFrequencyAdded":
+        {
+            "messageType": "INFO",
+            "messageText": "{{i18n.newFrequencyAdded}}"
+
+        },
+        "newFrequencyFailed":
+        {
+            "messageType": "ERROR",
+            "messageText": "{{data.serviceData.partialErrors[0].errorValues[0].message}}"
+
+        }
+    }
+}

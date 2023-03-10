@@ -1,0 +1,123 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "commandbarContext": {
+            "objectBaseType": "MEWorkarea",
+            "createProductLabelCaption": "{{i18n.createPlantHeaderTitle}}",
+            "addProductLabelCaption": "{{i18n.addPlant}}",
+            "boTypeName": "MEWorkareaRevision",
+            "exclusionBOTypeNames": [],
+            
+            "preferenceSuffixForTypesToSearch": "Plant",
+            "buttonName": "{{i18n.addPlant}}",
+            "placeHolderForSearch": "{{i18n.productSearchPlaceHolder}}",
+            "commandTitles": {
+                "epAddStructureTitle": "{{i18n.useExistingPlant}}",
+                "epCreateStructureTitle": "{{i18n.createNewPlant}}"
+            }
+        }
+    },
+    "actions": {
+        "updateStructureContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "addVMOAndRevRuleToStructureContext"
+                },
+                {
+                    "action": "setCommandContext"
+                }
+            ]
+        },
+        "addVMOAndRevRuleToStructureContext": {
+            "actionType": "JSFunction",
+            "method": "addVMOAndRevRuleToStructureContext",
+            "inputData": {
+                "contextPath": "epTaskPageContext.plantStructureContext"
+            },
+            "deps": "js/manageWorkPackageService"
+        },
+        "clearTaskPageContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "clearTaskPageContextForManagePage"
+                },
+                {
+                    "action": "clearCommandContext"
+                }
+            ]
+        },
+        "clearTaskPageContextForManagePage": {
+            "actionType": "JSFunction",
+            "method": "removeContextsFromCtx",
+            "inputData": {
+                "contextPaths": [
+                    "epTaskPageContext.plantStructureContext",
+                    "epTaskPageContext.rootPlant",
+                    "epTaskPageContext.plantPCI",
+                    "epTaskPageContext.rootPlantConfigFlags"
+                ]
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": "{{ctx.epTaskPageContext.plantStructureContext}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "clearCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": ""
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        }
+    },
+    "conditions": {
+        "isTileDataAvailable": {
+            "expression": "ctx.epTaskPageContext.plantStructureContext && ctx.epTaskPageContext.plantStructureContext.vmo"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "updateStructureContextAndCommandContext"
+    },
+    "onEvent": [{
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "clearTaskPageContextAndCommandContext",
+            "condition": "removedSaveEvent.includes(ctx.epTaskPageContext.plantStructureContext.uid)"
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "updateStructureContextAndCommandContext",
+            "condition": "addedSaveEvent !== undefined"
+        }
+    ],
+    "i18n": {
+        "createPlantHeaderTitle": [
+            "AdminMessages"
+        ],
+        "productSearchPlaceHolder": [
+            "AdminMessages"
+        ],
+        "addPlant": [
+            "AdminMessages"
+        ],
+        "createNewPlant": [
+            "AdminMessages"
+        ],
+        "useExistingPlant": [
+            "AdminMessages"
+        ]
+    }
+}

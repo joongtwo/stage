@@ -1,0 +1,71 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-add.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive",
+        "js/visible-when.directive"
+    ],
+    "data": {
+        "visibleTabs": "palette,search",
+        "addPanelState": {
+            "initialValues": {
+                "sourceObjects": "",
+                "selectedTab": ""
+            },
+            "meta": {}
+        }
+    },
+    "actions": {
+        "openInViewSelectedElement": {
+            "actionType": "JSFunction",
+            "method": "navigateWithGivenParams",
+            "inputData": {
+                "urlParamsMap": "{{ctx.panelContext.context.urlParams}}",
+                "urlParamsWithValue": {
+                    "rootQueryParamKey": "{{addPanelState.sourceObjects[0].uid}}"
+                }
+            },
+            "events": {
+
+                "success": [ {
+                        "name": "productChangedEvent"
+                    },
+                    {
+                        "name": "openInView.closePanel"
+                    }
+                ]
+            },
+            "deps": "js/occmgmtNavigationService"
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        }
+    },
+    "onEvent": [ {
+
+        "eventId": "openInView.closePanel",
+        "action": "closePanel"
+
+    } ],
+    "conditions": {
+        "isSingleElementSelected": {
+            "expression": "(addPanelState.selectedTab.view==='PaletteTabPageSub' && addPanelState.sourceObjects.length === 1) || (addPanelState.selectedTab.tabKey==='search' && addPanelState.sourceObjects.length === 1 )"
+        }
+    },
+    "i18n": {
+        "openInView": [ "occmgmtSplitViewsConstants" ],
+        "openInViewBtn": [ "occmgmtSplitViewsConstants" ]
+    }
+}

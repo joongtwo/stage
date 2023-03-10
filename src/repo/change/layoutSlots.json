@@ -1,0 +1,23 @@
+{
+  "slots": {
+    "Cm1MergeChangesHeaderTitleSlot": {
+      "name": "aw_headerTitle",
+      "view": "Cm1MergeChangesHeaderTitle",
+      "activeWhen": {
+        "condition": "conditions.IsMergeChangesSubLocation"
+      }
+    },
+    "Cm1MergeChangesTaskBarSlot": {
+      "name": "aw_taskBar",
+      "view": "Cm1MergeChangesTaskbar",
+      "activeWhen": {
+        "condition": "conditions.IsMergeChangesSubLocation"
+      }
+    }
+  },
+  "conditions": {
+    "IsMergeChangesSubLocation": {
+      "expression": "ctx.sublocation.nameToken === 'com.siemens.splm.client.change:mergeChangesSubLocation'"
+    }
+  }
+}

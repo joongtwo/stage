@@ -1,0 +1,810 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "WiAssemblyPmiTable_selectedOperation": {
+            "onChangeAction": "setOperationContext",
+            "syncObject": {}
+        },
+        "wiAssemblyPmiTalbe_selectedAssembly": {
+            "onChangeAction": "setAssemblyContext",
+            "syncObject": {}
+        },
+        "WiAssemblyPmiTable_selectedPmis":{
+            "syncObject": {}
+        },
+        "WiAssemblyPmiTable_selectPmis": {
+            "onChangeAction": "setSelection",
+            "syncObject": {}
+        }
+
+    },
+    "data": {
+        "messages": {
+            "noValidMethod": [{
+                "text": "{{i18n.selectMethodMessage}}"
+            }],
+            "noValidInput": [{
+                "text": "{{i18n.selectProcessOrOperation}}"
+            }],
+            "noAssociatedPMIs": [{
+                "text": "{{i18n.noAssociatedPMIs}}"
+            }]
+        },
+        "columnConfigPreference": "EP_AssemblyPMIsColumnConfiguration",
+        "listOfPmis": [],
+        "selectedMethod": "",
+        "pmiContext": {
+            "uid": "",
+            "displayName": ""
+        },
+        "operationContext": {
+            "uid": "",
+            "displayName": ""
+        },
+        "assemblyContext": {
+            "uid": "",
+            "displayName": ""
+        },
+        "noMethodLink": {
+            "displayName": "{{i18n.selectMethod}}",
+            "type": "STRING"
+        },
+        "method1Link": {
+            "displayName": "{{i18n.method1}}",
+            "type": "STRING"
+        },
+        "method2Link": {
+            "displayName": "{{i18n.method2}}",
+            "type": "STRING"
+        },
+        "method3Link": {
+            "displayName": "{{i18n.method3}}",
+            "type": "STRING"
+        },
+        "method4Link": {
+            "displayName": "{{i18n.method4}}",
+            "type": "STRING"
+        },
+        "method5Link": {
+            "displayName": "{{i18n.method5}}",
+            "type": "STRING"
+        },
+        "methodDropDownMenu": {
+            "action": "showMethodMenu",
+            "iconName": "miscComboBoxLinkTriangleBlue"
+        },
+        "applyMethod": {
+            "action": "applyMethodAction",
+            "iconName": "PublishBlue",
+            "tooltip": "{{i18n.updatingAssemblyPmiTableContent}}"
+        }
+    },
+    "actions": {
+        "addDefindInPropToVmos": {
+            "actionType": "JSFunction",
+            "method": "addDefindInPropToVmos",
+            "inputData": {
+                "pmiVmos": "{{data.dataProviders.assemblyPmiDataProvider.viewModelCollection.loadedVMObjects}}",
+                "pmiColumnConfiguration": "{{ctx.preferences.EP_AssemblyPMIsColumnConfiguration}}"
+            },
+            "deps": "js/wiPmiService"
+        },
+        "setSelection": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.assemblyPmiDataProvider}}",
+                "objectsToSelect": "{{ports.WiAssemblyPmiTable_selectPmis.syncObject}}"
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "saveAssignmentToggleValueAndRefreshAssignmentStatus": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "loadAssignmentStatusData"
+                },
+                {
+                    "action": "updatePmisAssignemntStatus"
+                },
+                {
+                    "action": "refreshTable"
+                }
+            ]
+        },
+        "loadAssignmentStatusData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadAssignmentStatusData",
+            "inputData": {
+                "contextProcessUid": "{{ctx.epPageContext.loadedObject.uid}}",
+                "vmos": "{{data.dataProviders.assemblyPmiDataProvider.viewModelCollection.loadedVMObjects}}",
+                "toggleValue": "{{props.subPanelContext.sharedSelectionData.isIndicationToggleOn}}"
+            },
+            "deps": "js/wiPmiAssignmentStatusService"
+        },
+        "updatePmisAssignemntStatus": {
+            "actionType": "JSFunction",
+            "method": "updatePmisAssignemntStatus",
+            "deps": "js/wiPmiAssignmentStatusService",
+            "inputData": {
+                "vmos": "{{data.dataProviders.assemblyPmiDataProvider.viewModelCollection.loadedVMObjects}}",
+                "toggleValue": "{{props.subPanelContext.sharedSelectionData.isIndicationToggleOn}}"
+            }
+        },
+        "saveLastAppliedLoadMethod": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetObj": "{{subPanelContext.lastAppliedLoadMethod}}",
+                "sourceObj": {
+                    "pmiContext": "{{data.pmiContext}}",
+                    "selectedMethod": "{{data.selectedMethod}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "onMount": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "loadPmiTypeDescription"
+                },
+                {
+                    "action": "restoreLastAppliedMethod"
+                },
+                {
+                    "action": "setOperationContext"
+                },
+                {
+                    "action": "setAssemblyContext"
+                },
+                {
+                    "action": "loadAssemblyPmisDataProviderAction"
+                },
+                {
+                    "action": "unsetLocalLoad"
+                }
+            ]
+        },
+        "updateTabContentCount": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetObj": "{{subPanelContext.lastAppliedLoadMethod}}",
+                "sourceObj": {
+                    "contentCount": "{{data.dataProviders.assemblyPmiDataProvider.viewModelCollection.loadedVMObjects.length}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "restoreLastAppliedMethod": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInViewModel",
+            "inputData": {
+                "targetObj": "{{data}}",
+                "sourceObj": {
+                    "pmiContext": "{{subPanelContext.lastAppliedLoadMethod.pmiContext}}",
+                    "selectedMethod": "{{subPanelContext.lastAppliedLoadMethod.selectedMethod}}"
+                }
+            },
+            "outputData":{
+                "pmiContext": "pmiContext",
+                "selectedMethod": "selectedMethod"
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "unsetLocalLoad": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": false
+            },
+            "outputData":{
+                "fetchFromCache":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "resetCurrentPmisAndLoad": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "resetCurrentPmis"
+                },
+                {
+                    "action": "setSelectedMethod",
+                    "condition": "conditions.eventMethodDefined"
+                },
+                {
+                    "action": "setPmiContextToTopAssy",
+                    "condition": "conditions.byTopAssyMethodSelected"
+                },
+                {
+                    "action": "setPmiContextToSelectedAssembly",
+                    "condition": "conditions.bySelectedAssyMethodSelected"
+                },
+                {
+                    "action": "setPmiContextToSelectedOperation",
+                    "condition": "conditions.bySelectedOperationMethodSelected"
+                },
+                {
+                    "action": "setPmiContextToSelectedAssembly",
+                    "condition": "conditions.byAssignedScopeUnderPartMethodSelected"
+                },
+                {
+                    "action": "setPmiContextToSelectedAssembly",
+                    "condition": "conditions.byAssignedAllInScopeUnderPartMethodSelected"
+                },
+                {
+                    "action": "loadAssemblyPmisDataProviderAction"
+                },
+                {
+                    "action": "saveLastAppliedLoadMethod"
+                }
+            ]
+        },
+        "refreshTable": {
+            "actionType": "JSFunction",
+            "method": "refreshTable",
+            "inputData": {
+                "tableId": "assemblyPmiTable"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "resetCurrentPmis": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+               "value": null
+            },
+            "outputData":{
+                "listOfPmis":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "loadAssemblyPmisDataProviderAction": {
+            "actionType": "dataProvider",
+            "method": "assemblyPmiDataProvider"
+        },
+        "setSelectedMethod": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{data.eventMap.pmiLoadMethodSelected.selectedMethod}}"
+            },
+            "outputData":{
+                "selectedMethod":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setPmiContextToTopAssy": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": {
+                    "uid": "{{ctx.ep.loadedProductObject.uid}}",
+                    "displayName": "{{ctx.ep.loadedProductObject.props.object_string.uiValues[0]}}"
+                }
+            },
+            "outputData":{
+                "pmiContext":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setPmiContextToSelectedAssembly": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{data.assemblyContext}}"
+            },
+            "outputData":{
+                "pmiContext":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setPmiContextToSelectedOperation": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{data.operationContext}}"
+            },
+            "outputData":{
+                "pmiContext":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setOperationContext": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": {
+                    "uid": "{{ports.WiAssemblyPmiTable_selectedOperation.syncObject.uid}}",
+                    "displayName": "{{ports.WiAssemblyPmiTable_selectedOperation.syncObject.props.object_string.uiValues[0]}}"
+                }
+            },
+            "outputData":{
+                "operationContext":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setAssemblyContext": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": {
+                    "uid": "{{ports.wiAssemblyPmiTalbe_selectedAssembly.syncObject.uid}}",
+                    "displayName": "{{ports.wiAssemblyPmiTalbe_selectedAssembly.syncObject.props.object_string.uiValues[0]}}"
+                }
+            },
+            "outputData":{
+                "assemblyContext":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "loadAssemblyPmis": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadAssemblyPmis",
+            "deps": "js/wiPmiService",
+            "inputData": {
+                "contextUid": "{{data.pmiContext.uid}}",
+                "selectedMethod": "{{data.selectedMethod}}",
+                "columnPolicyObj": "{{data.dataProviders.assemblyPmiDataProvider.policy}}",
+                "sortCriteria": "{{data.columnProviders.assemblyPmiColumnProvider.sortCriteria}}",
+                "columnFilters": "{{data.columnProviders.assemblyPmiColumnProvider.columnFilters}}",
+                "fetchFromCache": "{{data.fetchFromCache}}"
+            },
+            "outputData": {
+                "listOfPmis": ""
+            }
+        },
+        "loadPmiTypeDescription": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2015-10-Session",
+            "method": "getTypeDescriptions2",
+            "inputData": {
+                "typeNames": [
+                    "Mci0PMIObject"
+                ]
+            }
+        },
+        "createColumns": {
+            "actionType": "JSFunction",
+            "method": "createColumns",
+            "inputData": {
+                "preferenceValues": "{{data.columnConfigPreference}}",
+                "dataProvider": "{{data.dataProviders.assemblyPmiDataProvider}}",
+                "columnProvider": {
+                    "clientColumns": [{
+                            "clientColumn": true,
+                            "name": "graphicVisibility",
+                            "propertyDisplayName": "{{i18n.GraphicVisibilityColumnName}}",
+                            "enableColumnMoving": false
+                        },
+                        {
+                            "clientColumn": true,
+                            "enableColumnMoving": false,
+                            "name": "assignmentIndication",
+                            "propertyDisplayName": "{{i18n.AssignmentIndicationColumnName}}"
+                        }
+                    ],
+                    "enableSorting": true,
+                    "isFilteringEnabled": true,
+                    "enableColumnMoving": true
+                },
+                "additionalPolicyObjects": {},
+                "tableCmdColumnPropName": "mci0PmiDescription"
+            },
+            "outputData": {
+                "dataProviders.assemblyPmiDataProvider.columnConfig": "columnConfig",
+                "dataProviders.assemblyPmiDataProvider.policy": "policy"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "savedAfterModifyOfTableColumns": {
+            "actionType": "JSFunction",
+            "method": "saveResizedColumnsWidth",
+            "inputData": {
+                "preferenceName": "{{data.columnConfigPreference}}",
+                "columns": "{{data.eventMap.columnArrange.columns}}"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "showMethodMenu": {
+            "actionType": "JSFunction",
+            "method": "show",
+            "inputData": {
+                "data": {
+                    "declView": "WiAssemblyPmiLoadMethod",
+                    "options": {
+                        "reference": "*[data-id='epPmiMethodSelectionLink']",
+                        "height": 260,
+                        "width": 335,
+                        "flipBehavior": "fixed",
+                        "placement": "bottom-start",
+                        "hasArrow": false,
+                        "draggable": false,
+                        "autoFocus": false
+                    },
+                    "subPanelContext": {
+                        "assemblyLoaded":"{{ctx.ep.loadedProductObject.uid}}",
+                        "assemblyContextDefined":"{{data.assemblyContext.uid}}",
+                        "operationContextDefined":"{{data.operationContext.uid}}"
+                    }
+                }
+            },
+            "deps": "js/popupService"
+        },
+        "updateAssignmentIndication": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "loadAssignmentStatusFromServer"
+                },
+                {
+                    "action": "updatePmisAssignemntStatusbyUids"
+                },
+                {
+                    "action": "refreshTable"
+                }
+            ]
+        },
+        "loadAssignmentStatusFromServer": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadAssignmentStatusFromServer",
+            "inputData": {
+                "contextProcessUid": "{{ctx.epPageContext.loadedObject.uid}}",
+                "characteristicPmiUidsToUpdate": "{{data.eventMap['ep.addRemoveEvents'].AssignedPMIs.relatedEvents.assignmentUpdate}}"
+            },
+            "deps": "js/wiPmiAssignmentStatusService"
+        },
+        "updatePmisAssignemntStatusbyUids": {
+            "actionType": "JSFunction",
+            "method": "updatePmisAssignemntStatusbyUids",
+            "deps": "js/wiPmiAssignmentStatusService",
+            "inputData": {
+                "vmos": "{{data.dataProviders.assemblyPmiDataProvider.viewModelCollection.loadedVMObjects}}",
+                "characteristicPmiUidsToUpdate": "{{data.eventMap['ep.addRemoveEvents'].AssignedPMIs.relatedEvents.assignmentUpdate}}",
+                "toggleValue": "{{props.subPanelContext.sharedSelectionData.isIndicationToggleOn}}"
+            }
+        },
+        "onDataProviderVmoCollectionChange": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "addDefindInPropToVmos"
+                },
+                {
+                    "action": "loadAssignmentStatusData"
+                },
+                {
+                    "action": "refreshTable"
+                }
+            ]
+        },
+        "closePmiInformationPopup": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "mfePopup.closePopupWindow"
+                    }
+                ]
+            }
+        },
+        "applyMethodAction": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "closePmiInformationPopup"
+                },
+                {
+                    "action": "resetCurrentPmisAndLoad"
+                }
+            ]
+        },
+        "updateSelectedPmisSyncObjectsPort": {
+            "actionType": "Sync",
+            "inputData":{
+                "port": "WiAssemblyPmiTable_selectedPmis",
+                "syncObject": "{{data.eventMap['assemblyPmiDataProvider.selectionChangeEvent'].selectedObjects}}"
+            }
+        },
+        "setPmiSelection": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "assemblyPmiDataProvider.selectAction",
+                        "eventData": {
+                            "setSelection": "{{data.eventMap['pmiDetailedCommandclicked'].pmiVmo}}"
+                        }
+                    }
+                ]
+            }
+        },
+        "updateCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "inputObject": "{{ports.WiAssemblyPmiTable_selectedPmis.syncObject}}",
+                    "selection": "{{data.eventMap['assemblyPmiDataProvider.selectionChangeEvent'].selectedObjects}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "postSelectionChangeAction": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "updateSelectedPmisSyncObjectsPort"
+                },
+                {
+                    "action": "updateCommandContext"
+                },
+                {
+                    "action": "selectAllAssociatedPmi"
+                }
+            ]
+        },
+        "selectAllAssociatedPmi":{
+            "actionType": "JSFunction",
+            "method": "selectAllAssociatedPmi",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.assemblyPmiDataProvider}}",
+                "objectsToSelect": "{{data.eventMap['assemblyPmiDataProvider.selectionChangeEvent'].selectedObjects}}"
+            },
+            "deps": "js/wiPmiService"
+        }
+    },
+    "grids": {
+        "assemblyPmiTable": {
+            "dataProvider": "assemblyPmiDataProvider",
+            "columnProvider": "assemblyPmiColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableSorting": true,
+                "isFilteringEnabled": true
+            }
+        }
+    },
+    "dataProviders": {
+        "assemblyPmiDataProvider": {
+            "action": "loadAssemblyPmis",
+            "response": "{{data.listOfPmis}}",
+            "totalFound": "{{data.listOfPmis.length}}",
+            "commandsAnchor": "pmiTable_tableRow_uiAnchor",
+            "selectionModelMode": "multiple"
+        }
+    },
+    "columnProviders": {
+        "assemblyPmiColumnProvider": {
+            "loadColumnAction": "createColumns",
+            "resetColumnAction": "savedAfterModifyOfTableColumns",
+            "saveColumnAndLoadAction": "savedAfterModifyOfTableColumns",
+            "frozenColumnIndex": -1
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "onMount",
+        "onUpdate":
+            {
+                "action": "saveAssignmentToggleValueAndRefreshAssignmentStatus",
+                "observers": [
+                    "props.subPanelContext.sharedSelectionData.isIndicationToggleOn"
+                ]
+            }
+    },
+    "conditions": {
+        "hasValidInput": {
+            "expression": {
+                "$source": "ports.WiAssemblyPmiTable_selectedOperation.syncObject",
+                "$query": {
+                    "$notNull": true
+                }
+            }
+        },
+        "hasPmisOrIsTableFiltered": {
+            "expression": {
+                "$or": [{
+                        "$source": "data.listOfPmis.length",
+                        "$query": {
+                            "$gt": 0
+                        }
+                    },
+                    {
+                        "$source": "data.columnProviders.assemblyPmiColumnProvider.columnFilters.length",
+                        "$query": {
+                            "$gt": 0
+                        }
+                    }
+                ]
+            }
+        },
+        "showTable": {
+            "expression": {
+                "$and": [{
+                        "$source": "conditions.noMethodSelected",
+                        "$query": {
+                            "$eq": false
+                        }
+                    },
+                    {
+                        "$source": "conditions.pmiContextDefined",
+                        "$query": {
+                            "$eq": true
+                        }
+                    },
+                    {
+                        "$source": "conditions.hasPmisOrIsTableFiltered",
+                        "$query": {
+                            "$eq": true
+                        }
+                    }
+                ]
+            }
+        },
+        "isLoading": {
+            "expression": {
+                "$and": [{
+                        "$source": "conditions.noMethodSelected",
+                        "$query": {
+                            "$eq": false
+                        }
+                    },
+                    {
+                        "$source": "conditions.pmiContextDefined",
+                        "$query": {
+                            "$eq": true
+                        }
+                    },
+                    {
+                        "$source": "data.listOfPmis",
+                        "$query": {
+                            "$isNull": true
+                        }
+                    }
+                ]
+            }
+        },
+        "hasNoAssociatedPMIs": {
+            "expression": {
+                "$and": [{
+                        "$source": "conditions.pmiContextDefined",
+                        "$query": {
+                            "$eq": true
+                        }
+                    },
+                    {
+                        "$source": "conditions.hasPmisOrIsTableFiltered",
+                        "$query": {
+                            "$eq": false
+                        }
+                    },
+                    {
+                        "$source": "data.selectedMethod",
+                        "$query": {
+                            "$ne": ""
+                        }
+                    },
+                    {
+                        "$source": "conditions.isLoading",
+                        "$query": {
+                            "$ne": true
+                        }
+                    }
+                ]
+            }
+        },
+        "noMethodSelected": {
+            "expression": "data.selectedMethod===''"
+        },
+        "byTopAssyMethodSelected": {
+            "expression": "data.selectedMethod==='method1'"
+        },
+        "bySelectedAssyMethodSelected": {
+            "expression": "data.selectedMethod==='method2'"
+        },
+        "bySelectedOperationMethodSelected": {
+            "expression": "data.selectedMethod==='method3'"
+        },
+        "byAssignedScopeUnderPartMethodSelected": {
+            "expression": "data.selectedMethod==='method4'"
+        },
+        "byAssignedAllInScopeUnderPartMethodSelected": {
+            "expression": "data.selectedMethod==='method5'"
+        },
+        "operationMissing": {
+            "expression": "!conditions.showTable && !conditions.operationContextDefined && conditions.operationBasedMethodSelected && !conditions.hasNoAssociatedPMIs"
+        },
+        "eventMethodDefined": {
+            "expression": "data.eventMap.pmiLoadMethodSelected.selectedMethod !== undefined"
+        },
+        "assemblyLoaded": {
+            "expression": "ctx.ep.loadedProductObject.uid"
+        },
+        "pmiContextDefined": {
+            "expression": "data.pmiContext.uid !== undefined && data.pmiContext.uid !== ''"
+        },
+        "operationContextDefined": {
+            "expression": "data.operationContext.uid !== undefined && data.operationContext.uid !== ''"
+        },
+        "operationBasedMethodSelected": {
+            "expression": "conditions.bySelectedOperationMethodSelected"
+        },
+        "activeSelectedMethod": {
+            "expression": "(conditions.operationBasedMethodSelected && conditions.operationContextDefined) || (conditions.byTopAssyMethodSelected && conditions.assemblyLoaded) || ((conditions.bySelectedAssyMethodSelected || conditions.byAssignedScopeUnderPartMethodSelected || conditions.byAssignedAllInScopeUnderPartMethodSelected) && conditions.assemblyContextDefined)"
+        },
+        "assemblyContextDefined": {
+            "expression": "data.assemblyContext.uid !== undefined && data.assemblyContext.uid !== ''"
+        },
+        "isSortOrFilterApplied": {
+            "expression": "data.columnProviders.assemblyPmiColumnProvider.columnFilters || data.columnProviders.assemblyPmiColumnProvider.sortCriteria && data.columnProviders.assemblyPmiColumnProvider.sortCriteria.length > 0"
+        }
+    },
+    "onEvent": [{
+            "eventId": "assemblyPmiDataProvider.selectionChangeEvent",
+            "action": "postSelectionChangeAction",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "assemblyPmiDataProvider.modelObjectsUpdated",
+            "action": "onDataProviderVmoCollectionChange",
+            "condition": "data.listOfPmis.length > 0"
+        },
+        {
+            "eventId": "assemblyPmiDataProvider.modelObjectsUpdated",
+            "action": "updateTabContentCount"
+        },
+        {
+            "eventId": "assemblyPmiDataProvider.modelObjectsUpdated",
+            "condition": "conditions.isSortOrFilterApplied",
+            "action": "closePmiInformationPopup"
+        },
+        {
+            "eventId": "pmiLoadMethodSelected",
+            "action": "resetCurrentPmisAndLoad",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "columnArrange",
+            "action": "savedAfterModifyOfTableColumns",
+            "cacheEventData": true,
+            "condition": "name === 'assemblyPmiTable'"
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "updateAssignmentIndication",
+            "condition": "AssignedPMIs !== undefined && subPanelContext.sharedSelectionData.isIndicationToggleOn"
+        },
+        {
+            "eventId": "pmiDetailedCommandclicked",
+            "cacheEventData":true,
+            "action": "setPmiSelection",
+            "condition": "pmiVmo.modelType.typeHierarchyArray.indexOf('Mci0PMICharacteristic') >-1"
+        }
+    ],
+    "i18n": {
+        "name": ["wiPmiMessages"],
+        "id": [ "wiPmiMessages"],
+        "nominalValue": ["wiPmiMessages"],
+        "uom": [ "wiPmiMessages"],
+        "selectProcessOrOperation": ["wiPmiMessages"],
+        "noAssociatedPMIs": ["wiPmiMessages" ],
+        "connectedParts": ["wiPmiMessages" ],
+        "more": [ "wiPmiMessages"],
+        "GraphicVisibilityColumnName": [ "InstructionsMessages" ],
+        "method1": ["wiPmiMessages" ],
+        "method2": [ "wiPmiMessages"],
+        "method3": ["wiPmiMessages"],
+        "method4": [ "wiPmiMessages"],
+        "method5": [ "wiPmiMessages"],
+        "selectMethod": ["wiPmiMessages"],
+        "update": ["wiPmiMessages"],
+        "selectMethodMessage": ["wiPmiMessages"],
+        "AssignmentIndicationColumnName": ["wiPmiMessages"],
+        "updatingAssemblyPmiTableContent": ["wiPmiMessages"]
+    }
+}

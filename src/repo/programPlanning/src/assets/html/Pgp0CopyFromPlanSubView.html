@@ -1,0 +1,18 @@
+<aw-panel-body scrollable="false">
+    <aw-panel-section>
+        <aw-label prop="data.source" sub-panel-context="props.subPanelContext"></aw-label>
+        <aw-label prop="data.target"></aw-label>
+        <aw-break></aw-break>
+        <aw-date prop="data.displayDate"></aw-date>
+        <aw-checkbox prop="data.categoryIncludeChecklists"  visible-when="ctx.isPsi0TemplateInstalled"></aw-checkbox>
+        <aw-checkbox prop="data.categoryIncludeDeliverables"  visible-when="ctx.isPsi0TemplateInstalled"></aw-checkbox>
+        <aw-checkbox prop="data.runInBackgroundCheckBox" visible-when="true"></aw-checkbox>
+    </aw-panel-section>
+</aw-panel-body>
+<aw-panel-footer visible-when="true">
+    <!-- panel-footer button for paste sub Panel -->
+    <aw-button size="auto" default="true" action="saveAsPlan" enable-when="data.displayDate.dateApi.dateValue && !data.displayDate.error">
+        <aw-i18n>i18n.paste</aw-i18n>
+    </aw-button>
+</aw-panel-footer>
+

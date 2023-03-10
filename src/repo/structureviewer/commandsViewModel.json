@@ -1,0 +1,338 @@
+{
+  "commands": {
+    "Awb0ShowInViewerCommand": {
+      "iconId": "cmd3DView",
+      "isGroup": false,
+      "title": "{{i18n.showResultsInViewer}}",
+      "description": "{{i18n.Awb0ShowInViewerCommandDesc}}"
+    },
+    "Awv0ShowModelViewPalette": {
+      "iconId": "cmdShowInfoPanel",
+      "isGroup": false,
+      "title": "{{i18n.ShowModelViewPalette}}",
+      "description": "{{i18n.ShowModelViewPalette}}"
+    },
+    "Awv0Explode": {
+      "iconId": "cmdExplode",
+      "isGroup": false,
+      "title": "{{i18n.explodeText}}",
+      "description": "{{i18n.explodeDesc}}"
+    }
+  },
+  "commandHandlers": {
+    "Awb0ShowInViewerCommandHandler": {
+      "id": "Awb0ShowInViewerCommand",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.isViewerVisibleWithSearchCriteria"
+      },
+      "action": "applySearchCiteriaInViewerAction"
+    },
+    "Awb0SaveSession3DCommandHandler": {
+      "id": "Awb0SaveSession",
+      "action": "saveSessionPendingChanges3DBatch",
+      "visibleWhen": true,
+      "activeWhen": {
+        "condition": "conditions.isSaveSessionActiveFor3D"
+      },
+      "enableWhen": {
+        "condition": "conditions.isSaveSessionActiveFor3D"
+      }
+    },
+    "Awb0ResetSession3DHandler": {
+      "id": "Awb0ResetSession",
+      "action": "showConfirmationMessageForReset",
+      "visibleWhen": {
+        "condition": "conditions.isResetApplicable3D"
+      },
+      "activeWhen": {
+        "condition": "conditions.isResetApplicable3D"
+      }
+    },
+    "Awv0ShowModelViewPaletteHandler": {
+      "id": "Awv0ShowModelViewPalette",
+      "action": "showModelViewPalettePanel",
+      "visibleWhen": {
+        "condition": "conditions.showModelViewPaletteCommand"
+      },
+      "activeWhen": {
+        "condition": "conditions.showModelViewPaletteCommand"
+      }
+    },
+    "Awv0ExplodeCommandHandler": {
+      "id": "Awv0Explode",
+      "action": "setupExplodeSubToolbar",
+      "activeWhen": {
+        "condition": "conditions.isExplodeViewVisible"
+      },
+      "selectWhen": {
+        "condition": "conditions.isExplodeToolbarLaunched"
+      },
+      "visibleWhen": {
+        "condition": "conditions.isExplodeViewVisible"
+      },
+      "enableWhen": {
+        "condition": "conditions.isExplodedViewEnabled"
+      }
+    }
+  },
+  "commandPlacements": {
+    "Awb0ShowInViewerCommandPlacement": {
+      "id": "Awb0ShowInViewerCommand",
+      "uiAnchor": "aw_search_objects",
+      "priority": 100
+    },
+    "Awv0ShowModelViewPaletteOneStep": {
+      "id": "Awv0ShowModelViewPalette",
+      "uiAnchor": "aw_3dViewer",
+      "priority": 300
+    },
+    "Awv0ExplodeToolsAndInfo": {
+      "id": "Awv0Explode",
+      "uiAnchor": "aw_3dViewer",
+      "priority": 71,
+      "showGroupSelected": true
+    }
+  },
+  "actions": {
+    "applySearchCiteriaInViewerAction": {
+      "actionType": "JSFunction",
+      "deps": "js/structureSearchService",
+      "method": "applySearchCiteriaInViewer",
+      "inputData": {
+        "context": "{{commandContext}}"
+      }
+    },
+    "Awb0SaveAsAppSessionCommandPanelAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Awb0SaveAsSession",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "saveSessionPendingChanges3D": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-ActiveWorkspaceBom-2020-05-OccurrenceManagement",
+      "method": "updateWorkingContext",
+      "inputData": {
+        "input": [
+          {
+            "productInfo": "{{commandContext.occContext.productContextInfo}}",
+            "workingContext": "{{function:getWorkContextObject}}",
+            "saveResult": true,
+            "operation": "Save"
+          }
+        ]
+      },
+      "outputData": {
+        "partialErrors": "partialErrors",
+        "errorMessages": "{{partialErrors[0].errorValues[0].message}}"
+      },
+      "actionMessages": {
+        "failure": [
+          {
+            "condition": "partialErrors && partialErrors[0].errorValues[0].code === 126262",
+            "message": "saveAppSessionConfirmPopup"
+          }
+        ]
+      },
+      "deps": "soa/kernel/clientDataModel"
+    },
+    "aceSaveSessionSuccessEvent": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "ace.saveSessionSuccess"
+          }
+        ]
+      }
+    },
+    "saveSessionPendingChanges3DBatch": {
+      "actionType": "batchJob",
+      "steps": [
+        {
+          "action": "saveSessionPendingChanges3D",
+          "condition": "!conditions.isSessionWithWorksetOpen3D"
+        },
+        {
+          "action": "aceSaveSessionSuccessEvent"
+        }
+      ]
+    },
+    "overwriteAppSessionPendingChangesAction": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-ActiveWorkspaceBom-2020-05-OccurrenceManagement",
+      "method": "updateWorkingContext",
+      "inputData": {
+        "input": [
+          {
+            "productInfo": "{{commandContext.occContext.productContextInfo}}",
+            "workingContext": "{{function:getWorkContextObject}}",
+            "saveResult": true,
+            "operation": "Overwrite"
+          }
+        ]
+      },
+      "events": {
+        "success": [
+          {
+            "name": "ace.saveSessionSuccess"
+          }
+        ]
+      },
+      "deps": "soa/kernel/clientDataModel"
+    },
+    "showModelViewPalettePanel": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "awsidenav.openClose",
+            "eventData": {
+              "id": "globalNavigationSideNav",
+              "includeView": "disclosure",
+              "keepOthersOpen": true,
+              "closeWhenCommandHidden": true,
+              "config": {
+                "width": "500",
+                "height": "FULL"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "setupExplodeSubToolbar": {
+      "actionType": "JSFunction",
+      "method": "toggleExplodeSubCommandsToolbar",
+      "inputData": {
+        "viewerContextData": "{{commandContext.viewerContextData}}"
+      },
+      "deps": "js/explodeViewService"
+    }
+  },
+  "conditions": {
+    "isViewerVisibleWithSearchCriteria": {
+      "expression": "commandContext.preFilterContext && commandContext.preFilterContext.occContext && commandContext.preFilterContext.occContext.currentState.spageId === 'Awv0StructureViewerPageContainer' && commandContext.searchState && commandContext.searchState.totalFound > 0"
+    },
+    "isSessionSaveDisabledIn3D": {
+      "expression": "commandContext.occContext.disableSaveSessionButtonForViewer"
+    },
+    "isTcReleaseAtLeast13AndAbove": {
+      "expression": "ctx.tcSessionData.tcMajorVersion >=13"
+    },
+    "isTypeFnd0AppSession3D": {
+      "expression": "ctx.aceActiveContext.context.topElement.modelType.typeHierarchyArray.indexOf( 'Fnd0AppSession' ) > -1"
+    },
+    "isFnd0SnapshotOpened3D": {
+      "expression": "ctx.aceActiveContext.context.topElement.modelType.typeHierarchyArray.indexOf( 'Fnd0Snapshot' ) > -1"
+    },
+    "isWriteAccessProvided3D": {
+      "expression": "ctx.aceActiveContext.context.modelObject.props.is_modifiable.dbValues[0]==='1'"
+    },
+    "isSaveSessionActive3D": {
+      "expression": "conditions.isTcReleaseAtLeast13AndAbove && conditions.isTypeFnd0AppSession3D && !conditions.isFnd0SnapshotOpened3D && conditions.isWriteAccessProvided3D"
+    },
+    "isSaveSessionActiveFor3D": {
+      "expression": "conditions.isSaveSessionActive3D && conditions.isTcReleaseAtLeast13AndAbove && conditions.is3DViewerPageEnabled && !conditions.isSessionSaveDisabledIn3D"
+    },
+    "is3DViewerPageEnabled": {
+      "expression": "commandContext.occContext.currentState.spageId === 'Awv0StructureViewerPageContainer'"
+    },
+    "isResetApplicable3D": {
+      "expression": "conditions.is3DViewerPageEnabled"
+    },
+    "showModelViewPaletteCommand": {
+      "expression": "ctx.awDefaultViewer.hasDisclosedMVData && commandContext.viewerAtomicData.isViewerRevealed && commandContext.viewerAtomicData.viewerViewMode === 'VIEWER3D'"
+    },
+    "isExplodeToolbarLaunched": {
+      "expression": "commandContext.viewerAtomicData.isExplodeViewVisible === true"
+    },
+    "isExplodedViewEnabled": {
+      "expression": "commandContext.viewerAtomicData.isViewerRevealed && commandContext.viewerAtomicData.viewerViewMode === 'VIEWER3D' && !commandContext.viewerAtomicData.isLogicalSelected"
+    },
+    "isExplodeViewVisible": {
+      "expression": "commandContext.occmgmtContext && commandContext.occmgmtContext.currentState.spageId === 'Awv0StructureViewerPageContainer' && commandContext.viewerAtomicData.viewerPreference && commandContext.viewerAtomicData.viewerPreference.AWV0ViewerRenderOption[0] === 'CSR'"
+    },
+    "isSessionWithWorksetOpen3D": {
+      "expression": "conditions.isTypeFnd0AppSession3D && ctx.aceActiveContext.context.appSessionWorksetNode !== undefined"
+    }
+  },
+  "functions": {
+    "getWorkContextObject": {
+      "functionName": "getObject",
+      "parameters": [
+        "{{commandContext.occContext.workingContextObj.uid}}"
+      ]
+    }
+  },
+  "messages": {
+    "saveAppSessionConfirmPopup": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.saveSessionConfirmPopupMsg}}",
+      "messageTextParams": [
+        "{{data.partialErrors[0].errorValues[0].message}}"
+      ],
+      "navigationOptions": [
+        {
+          "option": "cancel",
+          "text": "{{i18n.CancelText}}",
+          "action": ""
+        },
+        {
+          "option": "overwrite",
+          "text": "{{i18n.OverwriteText}}",
+          "action": "overwriteAppSessionPendingChangesAction"
+        },
+        {
+          "option": "saveas",
+          "text": "{{i18n.SaveAsAppSessionCmd}}",
+          "action": "Awb0SaveAsAppSessionCommandPanelAction"
+        }
+      ]
+    }
+  },
+  "onEvent": [
+    {
+      "eventId": "confirmSaveSessionEvent",
+      "message": "saveAppSessionConfirmPopup"
+    }
+  ],
+  "i18n": {
+    "structureViewerPageTitle": [
+      "StructureViewerConstants"
+    ],
+    "showResultsInViewer": [
+      "StructureViewerConstants"
+    ],
+    "Awb0ShowInViewerCommandDesc": [
+      "StructureViewerConstants"
+    ],
+    "SaveAsAppSessionCmd": [
+      "StructureViewerConstants"
+    ],
+    "saveSessionConfirmPopupMsg": [
+      "StructureViewerConstants"
+    ],
+    "CancelText": [
+      "StructureViewerConstants"
+    ],
+    "OverwriteText": [
+      "StructureViewerConstants"
+    ],
+    "ShowModelViewPalette": [
+      "StructureViewerConstants"
+    ],
+    "explodeText": [
+      "StructureViewerMessages"
+    ],
+    "explodeDesc": [
+      "StructureViewerMessages"
+    ]
+  }
+}

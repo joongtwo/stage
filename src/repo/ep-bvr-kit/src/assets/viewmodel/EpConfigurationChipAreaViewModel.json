@@ -1,0 +1,87 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "configuration-chips-data": {
+            "type": "object"
+        }
+    },
+    "data": {},
+    "actions": {
+        "setStructuresConfigData": {
+            "actionType": "JSFunctionAsync",
+            "method": "getWPStructuresList",
+            "inputData": {
+                "configData": [
+                    {
+                        "chipLabel": {
+                            "type": "STRING",
+                            "dispValue": "{{i18n.ebomStructureConfigChipTitle}}"
+                        },
+                        "context": "{{props.configurationChipsData.ebomStructure}}",
+                        "structureName": "ebomPCI",
+                        "pci":"{{props.configurationChipsData.ebomPCI}}",
+                        "confligFlags":"{{props.configurationChipsData.ebomStructureConfigFlags}}"
+                    },
+                    {
+                        "chipLabel": {
+                            "type": "STRING",
+                            "dispValue": "{{i18n.mbomStructureConfigChipTitle}}"
+                        },
+                        "context": "{{props.configurationChipsData.mbomStructure}}",
+                        "structureName": "mbomPCI",
+                        "pci":"{{props.configurationChipsData.mbomPCI}}",
+                        "confligFlags":"{{props.configurationChipsData.mbomStructureConfigFlags}}"
+                    },
+                    {
+                        "chipLabel": {
+                            "type": "STRING",
+                            "dispValue": "{{i18n.processStructureConfigChipTitle}}"
+                        },
+                        "context": "{{props.configurationChipsData.processStructure}}",
+                        "structureName": "processPCI",
+                        "pci":"{{props.configurationChipsData.processPCI}}",
+                        "confligFlags":"{{props.configurationChipsData.processStructureConfigFlags}}"
+                    },
+                    {
+                        "chipLabel": {
+                            "type": "STRING",
+                            "dispValue": "{{i18n.plantStructureConfigChipTitle}}"
+                        },
+                        "context": "{{props.configurationChipsData.rootPlant}}",
+                        "structureName": "plantPCI",
+                        "pci":"{{props.configurationChipsData.plantPCI}}",
+                        "confligFlags":"{{props.configurationChipsData.rootPlantConfigFlags}}"
+                    }
+                ]
+            },
+            "outputData": {
+                "structuresConfigData": ""
+            },
+            "deps": "js/epStructureConfigurationChipService"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "setStructuresConfigData",
+                "observers": [
+                    "props.configurationChipsData"
+                ]
+            }
+        ]
+    },
+    "i18n": {
+        "ebomStructureConfigChipTitle": [
+            "structureConfigurationMessages"
+        ],
+        "mbomStructureConfigChipTitle": [
+            "structureConfigurationMessages"
+        ],
+        "processStructureConfigChipTitle": [
+            "structureConfigurationMessages"
+        ],
+        "plantStructureConfigChipTitle": [
+            "structureConfigurationMessages"
+        ]
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+
+    ],
+    "data": {},
+    "actions":
+    {
+        "buildCrumbs":
+        {
+            "actionType": "JSFunction",
+            "method": "buildNavigateBreadcrumb",
+            "inputData":
+            {
+               "totalFound": "{{props.subPanelContext.searchState.totalFound}}",
+               "selectedObjects": "{{props.subPanelContext.searchState.pwaSelection}}"
+            },
+            "outputData":
+            {
+                "crumbs": "crumbs"
+            },
+            "deps": "js/userMgmtService"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [ {
+            "action": "buildCrumbs",
+            "observers": [ "props.subPanelContext.searchState.totalFound", "props.subPanelContext.searchState.pwaSelection" ]
+        } ]
+    }
+}

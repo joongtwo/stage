@@ -1,0 +1,909 @@
+{
+  "Date": "Thu Aug 30 12:31:51 AM 2018",
+  "Library": [
+    {
+      "createRelease": "tc9000.1.2",
+      "description": "This soa library contains SOA operations required for Electronic Work Instruction project.",
+      "isThirdParty": "false",
+      "name": "Ewi0SoaEwia",
+      "namespace": "Ewi0::Soa::Ewia",
+      "serviceLibrary": "true"
+    }
+  ],
+  "Operation": [
+    {
+      "ParameterInfo": [
+        {
+          "description": "The input object for the report generation SOA.",
+          "parameterName": "input"
+        }
+      ],
+      "canOverride": "false",
+      "component": "",
+      "createRelease": "tc9000.1.2",
+      "dependencies": "",
+      "description": "Generates printable report for the EWI.",
+      "exceptionCondition": "",
+      "id": "generatePrintableReport#const,std::vector<Ewi0::Soa::Ewia::_2012_10::DataManagement::GeneratePrintReportInput>,&",
+      "interface": "Ewi0::Soa::Ewia::DataManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "generatePrintableReport",
+      "opTemplate": "Ewi0::Soa::Ewia::_2012_10::DataManagement::GeneratePrintReportResponse#Ewi0::Soa::Ewia::DataManagement::generatePrintableReport#const,std::vector<Ewi0::Soa::Ewia::_2012_10::DataManagement::GeneratePrintReportInput>,&",
+      "returnDescription": "The printable report object.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "the vector of cortona files for which read ticket is required.",
+          "parameterName": "input"
+        }
+      ],
+      "canOverride": "false",
+      "component": "",
+      "createRelease": "tc9000.1.2",
+      "dependencies": "",
+      "description": "Returns the file read ticket of the Cortona 3D animation (.wrl) file from the given Cortona build file.",
+      "exceptionCondition": "",
+      "id": "getCortonaAnimationFileTicket#const,std::vector<Ewi0::Soa::Ewia::_2012_10::DataManagement::CortonaFileInput>,&",
+      "interface": "Ewi0::Soa::Ewia::DataManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "getCortonaAnimationFileTicket",
+      "opTemplate": "Ewi0::Soa::Ewia::_2012_10::DataManagement::CortonaFileResponse#Ewi0::Soa::Ewia::DataManagement::getCortonaAnimationFileTicket#const,std::vector<Ewi0::Soa::Ewia::_2012_10::DataManagement::CortonaFileInput>,&",
+      "returnDescription": "The file read ticket of animation file.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "the input",
+          "parameterName": "input"
+        }
+      ],
+      "canOverride": "false",
+      "component": "",
+      "createRelease": "tc9000.1.2",
+      "dependencies": "",
+      "description": "This operation returns the given relation/property data of input business objects. For every relation/property, you can specify the type of required objects you want to load. In case you want to load all of the objects related, then pass empty list of types.",
+      "exceptionCondition": "",
+      "id": "getRelated#const,Ewi0::Soa::Ewia::_2012_10::DataManagement::GetRelatedInputInfo,&",
+      "interface": "Ewi0::Soa::Ewia::DataManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "getRelated",
+      "opTemplate": "Ewi0::Soa::Ewia::_2012_10::DataManagement::GetRelatedResponse#Ewi0::Soa::Ewia::DataManagement::getRelated#const,Ewi0::Soa::Ewia::_2012_10::DataManagement::GetRelatedInputInfo,&",
+      "returnDescription": "The relations/properties data by given types.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "The input vector.",
+          "parameterName": "input"
+        }
+      ],
+      "canOverride": "false",
+      "component": "",
+      "createRelease": "tc9000.1.2",
+      "dependencies": "",
+      "description": "Load required work package data for Ewi.",
+      "exceptionCondition": "",
+      "id": "loadWorkPackageData#const,std::vector<Ewi0::Soa::Ewia::_2012_10::DataManagement::LoadWorkPackageInput>,&",
+      "interface": "Ewi0::Soa::Ewia::DataManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "loadWorkPackageData",
+      "opTemplate": "Ewi0::Soa::Ewia::_2012_10::DataManagement::LoadWorkPackageDataResponse#Ewi0::Soa::Ewia::DataManagement::loadWorkPackageData#const,std::vector<Ewi0::Soa::Ewia::_2012_10::DataManagement::LoadWorkPackageInput>,&",
+      "returnDescription": "Required work package data for Ewi.",
+      "useCase": ""
+    },
+    {
+      "ParameterInfo": [
+        {
+          "description": "A vector containing the input structures.",
+          "parameterName": "input"
+        }
+      ],
+      "canOverride": "false",
+      "component": "Awp0AWS",
+      "createRelease": "tc10000.1.4",
+      "dependencies": "",
+      "description": "This operation loads work package data with optional configuration parameters to the EWI (Electronic Work Instructions) application. Work package is a Collaboration Context object packaging manufacturing structures with specific configuration settings. The additionl configuration parameters can be used to apply further , on-demand, configuration settings on top of the work package configuration.",
+      "exceptionCondition": "",
+      "id": "loadWorkPackageDataConfigured#const,std::vector<Ewi0::Soa::Ewia::_2015_03::DataManagement::LoadWorkPackageConfiguredInput>,&",
+      "interface": "Ewi0::Soa::Ewia::DataManagement",
+      "isPostActionAllowed": "false",
+      "isPreActionAllowed": "false",
+      "isPreConditionAllowed": "false",
+      "isPublished": "true",
+      "name": "loadWorkPackageDataConfigured",
+      "opTemplate": "Ewi0::Soa::Ewia::_2012_10::DataManagement::LoadWorkPackageDataResponse#Ewi0::Soa::Ewia::DataManagement::loadWorkPackageDataConfigured#const,std::vector<Ewi0::Soa::Ewia::_2015_03::DataManagement::LoadWorkPackageConfiguredInput>,&",
+      "returnDescription": "The requested work package data.<br />The following partial errors may be returned:<br /><ul><ul><li type=\"disc\">115001 - The operation \"loadWorkPackageData\" has failed because the input does not contain work package information. Please contact your system administrator.</li><li type=\"disc\">115002 - The creation of an Electronic Work Instruction object for the work package has failed. Please contact your system administrator.</li><li type=\"disc\">115003 - The creation of an Electronic Work Instruction object for the current step has failed. Please contact your system administrator.</li><li type=\"disc\">115004 - None of the preferred navigation structures are found in the selected work package. Either add a value to the preference \"EWI_NavigationStructure\" (in order to open a different navigation structure), or select a different work package.</li><li type=\"disc\">115007 - Teamcenter Electronic Work Instructions (EWI) license is not installed. Please contact your system administrator.</li></ul></ul>",
+      "useCase": ""
+    }
+  ],
+  "OperationTemplate": [
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::GeneratePrintReportInput",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The input object for the report generation SOA.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "input"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::GeneratePrintReportResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc9000.1.2",
+      "description": "Generates printable report for the EWI.",
+      "id": "Ewi0::Soa::Ewia::_2012_10::DataManagement::GeneratePrintReportResponse#Ewi0::Soa::Ewia::DataManagement::generatePrintableReport#const,std::vector<Ewi0::Soa::Ewia::_2012_10::DataManagement::GeneratePrintReportInput>,&",
+      "name": "Ewi0::Soa::Ewia::DataManagement::generatePrintableReport",
+      "returnConst": "false",
+      "returnDescription": "The printable report object.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::CortonaFileInput",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "the vector of cortona files for which read ticket is required.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "input"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::CortonaFileResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc9000.1.2",
+      "description": "Returns the file read ticket of the Cortona 3D animation (.wrl) file from the given Cortona build file.",
+      "id": "Ewi0::Soa::Ewia::_2012_10::DataManagement::CortonaFileResponse#Ewi0::Soa::Ewia::DataManagement::getCortonaAnimationFileTicket#const,std::vector<Ewi0::Soa::Ewia::_2012_10::DataManagement::CortonaFileInput>,&",
+      "name": "Ewi0::Soa::Ewia::DataManagement::getCortonaAnimationFileTicket",
+      "returnConst": "false",
+      "returnDescription": "The file read ticket of animation file.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::GetRelatedInputInfo",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "the input",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "input"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::GetRelatedResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc9000.1.2",
+      "description": "This operation returns the given relation/property data of input business objects. For every relation/property, you can specify the type of required objects you want to load. In case you want to load all of the objects related, then pass empty list of types.",
+      "id": "Ewi0::Soa::Ewia::_2012_10::DataManagement::GetRelatedResponse#Ewi0::Soa::Ewia::DataManagement::getRelated#const,Ewi0::Soa::Ewia::_2012_10::DataManagement::GetRelatedInputInfo,&",
+      "name": "Ewi0::Soa::Ewia::DataManagement::getRelated",
+      "returnConst": "false",
+      "returnDescription": "The relations/properties data by given types.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::LoadWorkPackageInput",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "The input vector.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "input"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::LoadWorkPackageDataResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc9000.1.2",
+      "description": "Load required work package data for Ewi.",
+      "id": "Ewi0::Soa::Ewia::_2012_10::DataManagement::LoadWorkPackageDataResponse#Ewi0::Soa::Ewia::DataManagement::loadWorkPackageData#const,std::vector<Ewi0::Soa::Ewia::_2012_10::DataManagement::LoadWorkPackageInput>,&",
+      "name": "Ewi0::Soa::Ewia::DataManagement::loadWorkPackageData",
+      "returnConst": "false",
+      "returnDescription": "Required work package data for Ewi.",
+      "returnFreeMemory": "false",
+      "static": "false"
+    },
+    {
+      "OperationParameter": [
+        {
+          "OperationParameterDataTypeRef": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ewi0::Soa::Ewia::_2015_03::DataManagement::LoadWorkPackageConfiguredInput",
+                  "qualifier": ""
+                }
+              ],
+              "dataType": "std::vector",
+              "qualifier": "&"
+            }
+          ],
+          "const": "true",
+          "defaultValue": "",
+          "description": "A vector containing the input structures.",
+          "freeOutputMemory": "false",
+          "inputOutput": "Input",
+          "name": "input"
+        }
+      ],
+      "OperationReturnDataTypeRef": [
+        {
+          "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::LoadWorkPackageDataResponse",
+          "qualifier": ""
+        }
+      ],
+      "accessControl": "false",
+      "const": "false",
+      "createRelease": "tc10000.1.4",
+      "description": "This operation loads work package data with optional configuration parameters to the EWI (Electronic Work Instructions) application. Work package is a Collaboration Context object packaging manufacturing structures with specific configuration settings. The additionl configuration parameters can be used to apply further , on-demand, configuration settings on top of the work package configuration.",
+      "id": "Ewi0::Soa::Ewia::_2012_10::DataManagement::LoadWorkPackageDataResponse#Ewi0::Soa::Ewia::DataManagement::loadWorkPackageDataConfigured#const,std::vector<Ewi0::Soa::Ewia::_2015_03::DataManagement::LoadWorkPackageConfiguredInput>,&",
+      "name": "Ewi0::Soa::Ewia::DataManagement::loadWorkPackageDataConfigured",
+      "returnConst": "false",
+      "returnDescription": "The requested work package data.<br />The following partial errors may be returned:<br /><ul><ul><li type=\"disc\">115001 - The operation \"loadWorkPackageData\" has failed because the input does not contain work package information. Please contact your system administrator.</li><li type=\"disc\">115002 - The creation of an Electronic Work Instruction object for the work package has failed. Please contact your system administrator.</li><li type=\"disc\">115003 - The creation of an Electronic Work Instruction object for the current step has failed. Please contact your system administrator.</li><li type=\"disc\">115004 - None of the preferred navigation structures are found in the selected work package. Either add a value to the preference \"EWI_NavigationStructure\" (in order to open a different navigation structure), or select a different work package.</li><li type=\"disc\">115007 - Teamcenter Electronic Work Instructions (EWI) license is not installed. Please contact your system administrator.</li></ul></ul>",
+      "returnFreeMemory": "false",
+      "static": "false"
+    }
+  ],
+  "ServiceInterface": [
+    {
+      "createRelease": "tc9000.1.2",
+      "dependencies": "",
+      "description": "Contains general data management operations for EWI",
+      "libraryName": "Ewi0SoaEwia",
+      "name": "DataManagement",
+      "namespace": "Ewi0::Soa::Ewia",
+      "serviceLibraryRef": ""
+    }
+  ],
+  "Struct": [
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::ImanFile"
+            }
+          ],
+          "description": "The file object from which to get the animation file",
+          "name": "fileObject"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The input structure for cortona animation file.",
+      "isPublished": "true",
+      "name": "CortonaFileInput",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::ImanFile"
+            }
+          ],
+          "description": "The file object for which cortona wrl file read ticket is returned.",
+          "name": "fileObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The file read ticket.",
+          "name": "fileReadTicket"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The output structure which contains the file read ticket of the animation file.",
+      "isPublished": "true",
+      "name": "CortonaFileOutput",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The uid of the work package business object.",
+          "name": "workPackageUid"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The uid of the current step to load.",
+          "name": "currentStepUid"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "bool"
+            }
+          ],
+          "description": "Indicates whether the header properties are needed or not.",
+          "name": "loadHeaderProperties"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The input for LoadWorkPackageData",
+      "isPublished": "true",
+      "name": "LoadWorkPackageInput",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "the object whose related objects are given",
+          "name": "object"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "the relation name",
+          "name": "relation"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::RelatedObjectInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "the related objects vector",
+          "name": "relatedObjects"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The information about related obejcts of a business object",
+      "isPublished": "true",
+      "name": "ObjectRelationsInfo",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Holds the name of the property.",
+          "name": "propertyName"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "Holds the value of the property.",
+          "name": "propertyValue"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "Holds the information of the property",
+      "isPublished": "true",
+      "name": "PropertyInfo",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The related object such as dataset.",
+          "name": "relatedObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::FileTicketPair"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "A vector of file/ticket pairs.",
+          "name": "fileTicketsVector"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The information of the related object.",
+      "isPublished": "true",
+      "name": "RelatedObjectInfo",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::PropertyInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "Header properties that will be shown in Ewi location header.",
+          "name": "headerProperties"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The work package business object whose uid is mentioned in the input.",
+          "name": "workPackage"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The current step business object whose uid is mentioned in the input.",
+          "name": "currentStep"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The uid of the next step. Null if current step is the last step in the work package.",
+          "name": "nextStepUid"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The uid of the next step. Null if the current step if the first step in the work package.",
+          "name": "previousStepUid"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The data of the Ewi work package.",
+      "isPublished": "true",
+      "name": "WorkPackageData",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::CortonaFileOutput"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "the vector of cortona file output.",
+          "name": "output"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "service data",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The response of the cortona file soa.",
+      "isPublished": "true",
+      "name": "CortonaFileResponse",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::BusinessObject"
+            }
+          ],
+          "description": "The business object.",
+          "name": "busObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The ticket that corresponds to the file.",
+          "name": "ticket"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "A pair that handles a business object and its related file ticket.",
+      "isPublished": "true",
+      "name": "FileTicketPair",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The context object whose data will be printed.",
+          "name": "contextObject"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The scope configuration of the print.  i.e. Print the whole work package or single step or single step with children, etc...",
+          "name": "reportScope"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The input object for generating report.",
+      "isPublished": "true",
+      "name": "GeneratePrintReportInput",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "The service data.",
+          "name": "serviceData"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::FileTicketPair"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The list of context objects and matching report file tickets.",
+          "name": "reportFilesInfo"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The GeneratePrintableReport SOA response object.",
+      "isPublished": "true",
+      "name": "GeneratePrintReportResponse",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Teamcenter::BusinessObject"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The vector of business objects for which relations needs to be loaded.",
+          "name": "businessObjects"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::RelationsMap"
+            }
+          ],
+          "description": "The map of relations to load. This map contains the name of the relation/property and the list of types to load from the given relation/property.",
+          "name": "relations"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "This is a container of Business Objects and their relations to load. For every relation, a list of specific types from that relation needs to be specified.",
+      "isPublished": "true",
+      "name": "GetRelatedInputInfo",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "The service data.",
+          "name": "serviceData"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::ObjectRelationsInfo"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "the vector of related objects information",
+          "name": "relatedObjectsInfo"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The response of get related soa operation",
+      "isPublished": "true",
+      "name": "GetRelatedResponse",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The UID of the work package business object (CCobject or subtype of it).",
+          "name": "workPackageUid"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "description": "The UID of the current step in the navigated structure that needs to be loaded into EWI.",
+          "name": "currentStepUid"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "bool"
+            }
+          ],
+          "description": "If true, the header properties are needed. The header proeprites are properties of the work package object. They are needed usually only at the first time the work package data is loaded.",
+          "name": "loadHeaderProperties"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Ewi0::Soa::Ewia::_2015_03::DataManagement::StringMap"
+            }
+          ],
+          "description": "A map (string, string) containing the configuration parameters. The keys are the parameter names, the values are the parameter values.The legal (key,value) pairs are:<br /><ul><ul><li type=\"disc\">(\"revrule\",The name of the revision rule to configure by)</li><li type=\"disc\">(\"date\",The effective date in the format MM-dd-yyyy)</li><li type=\"disc\">(\"unitno\",The effective unit number)</li><li type=\"disc\">(\"enditem\",The UID of the End Item)</li></ul></ul>",
+          "name": "configParamsMap"
+        }
+      ],
+      "createRelease": "tc10000.1.4",
+      "description": "This structure contains the parameters required to load a work package data in EWI.",
+      "isPublished": "true",
+      "name": "LoadWorkPackageConfiguredInput",
+      "namespace": "Ewi0::Soa::Ewia::_2015_03::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "StructElement": [
+        {
+          "DataTypeRefParam": [
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "Ewi0::Soa::Ewia::_2012_10::DataManagement::WorkPackageData"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "description": "The returned work package data.",
+          "name": "workPackageDataInfo"
+        },
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "Teamcenter::Soa::Server::ServiceData"
+            }
+          ],
+          "description": "The service data.",
+          "name": "serviceData"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The response of loadWorkPackageData for ewi.",
+      "isPublished": "true",
+      "name": "LoadWorkPackageDataResponse",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    }
+  ],
+  "TcVersion": "tc12000.0.0",
+  "Typedef": [
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "DataTypeRefParam": [
+                {
+                  "dataType": "std::string"
+                }
+              ],
+              "dataType": "std::vector"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc9000.1.2",
+      "description": "The map of relations/properties to the type of objects to load from given related objects.",
+      "isPublished": "true",
+      "name": "RelationsMap",
+      "namespace": "Ewi0::Soa::Ewia::_2012_10::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    },
+    {
+      "DataTypeRefParam": [
+        {
+          "DataTypeRefParam": [
+            {
+              "dataType": "std::string"
+            },
+            {
+              "dataType": "std::string"
+            }
+          ],
+          "dataType": "std::map"
+        }
+      ],
+      "createRelease": "tc10000.1.4",
+      "description": "A map of string key to the string value.",
+      "isPublished": "true",
+      "name": "StringMap",
+      "namespace": "Ewi0::Soa::Ewia::_2015_03::DataManagement",
+      "scope": "Ewi0::Soa::Ewia::DataManagement"
+    }
+  ],
+  "xmlns": "http://teamcenter.com/BusinessModel/TcBusinessData"
+}

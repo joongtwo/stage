@@ -1,0 +1,106 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "cellObjectUid": "{{subPanelContext.uid}}",
+        "tooltipWithNoView": {
+            "extendedTooltipContent":"{{data.thumbnailLabel}}"
+        },
+        "tooltipWithView": {
+            "view": "EpVisualsGalleryCellTooltip",
+            "extendedTooltipContent":"{{data.thumbnailLabel}}"
+        },
+        "tooltipWithEffectivity": {
+            "view": "EpProductViewEffectivityCellTooltip"
+        },
+        "thumbnailLabel":"",
+        "labelId": ""
+    },
+    "actions": {
+        "initialize": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getLabelId"
+                },
+                {
+                    "action": "getThumbnailDisplayName"
+                }
+            ]
+        },
+        "getLabelId": {
+            "actionType": "JSFunction",
+            "method": "getLabelId",
+            "inputData": {
+                "objectUid": "{{subPanelContext.uid}}"
+            },
+            "outputData": {
+                "labelId": ""
+            },
+            "deps": "js/epVisualsGalleryService"
+        },
+        "getThumbnailDisplayName": {
+            "actionType": "JSFunction",
+            "method": "getThumbnailDisplayName",
+            "inputData": {
+                "object": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "thumbnailLabel": ""
+            },
+            "deps": "js/epVisualsGalleryService"
+        },
+        "updateThumbnailDisplayName": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{data.eventMap['epVisualsGalleryCell.updateThumbnailDisplayName'].thumbnailDisplayName}}"
+            },
+            "outputData": {
+                "thumbnailLabel": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initialize"
+    },
+    "onEvent": [
+        {
+            "eventId": "epVisualsGalleryCell.updateThumbnailDisplayName",
+            "cacheEventData": true,
+            "condition": "conditions.isUpdated",
+            "action": "updateThumbnailDisplayName"
+        },
+        {
+            "eventId": "EPRenameVisualDataset",
+            "action": "getThumbnailDisplayName",
+            "criteria":
+            {
+                "status": "fail"
+            }
+        }
+    ],
+    "conditions": {
+        "isUpdated": {
+            "expression": {
+                "$source": "objectUid",
+                "$query": {
+                    "$eq": "{{data.cellObjectUid}}"
+                }
+            }
+        },
+        "isEffectivityPresent": {
+            "expression": {
+                "$source": "subPanelContext.effectivities.length",
+                "$query": {
+                    "$gt": 0
+                }
+            }
+        }
+    }
+}

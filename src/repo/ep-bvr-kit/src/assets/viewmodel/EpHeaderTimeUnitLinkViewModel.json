@@ -1,0 +1,64 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "timeUnitLink": {
+            "displayName": "",
+            "type": "STRING"
+        }
+    },
+    "dataProviders":{
+        "timeUnitsListDataProvider": {
+            "dataProviderType": "Static",
+            "action": "loadTimeUnits",
+            "response": "{{data.timeUnitsResponseData}}",
+            "totalFound": "{{data.timeUnitsResponseData.length}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "actions": {
+        "loadTimeUnits": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadObjectData",
+            "inputData": {
+                "data": "{{data.dataProviders}}"
+            },
+            "outputData": {
+                "timeUnitsResponseData": ""
+            },
+            "deps": "js/epTimeUnitsService"
+        },
+        "timeUnitChangesSuccessEvent": {
+            "actionType": "JSFunction",
+            "method": "changeTimeUnit",
+            "inputData": {
+                "data": {
+                    "staticDisplayValue":"{{data.eventData.property.dbValue.staticDisplayValue}}"
+                }
+            },
+            "deps": "js/epTimeUnitsService"
+        },
+        "getCurrentTimeUnitForLink": {
+            "actionType": "JSFunction",
+            "method": "getCurrentTimeUnitLong",
+            "outputData": {
+                "timeUnitLink.propertyDisplayName": ""
+            },
+            "deps": "js/epTimeUnitsService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "awlinkPopup.selected",
+            "cacheEventData": true,
+            "action": "timeUnitChangesSuccessEvent"
+        }
+    ],
+    "i18n": {
+        "timeUnitLinkLabel": [
+            "EPMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onMount": "getCurrentTimeUnitForLink"
+    }
+}

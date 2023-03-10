@@ -1,0 +1,87 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-flex-column.directive",
+        "js/aw-flex-row.directive",
+        "js/visible-when.directive",
+        "js/aw-tab-set.directive",
+        "js/aw-layout-slot.directive",
+        "js/aw-advanced-bar.directive"
+    ],
+    "data": {},
+    "actions": {
+        "buildSubPages": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getAvailableSubPages"
+                },
+                {
+                    "action":"updateTabs"
+                },
+                {
+                    "action": "constructTabs"
+                }
+            ]
+        },
+        "getAvailableSubPages": {
+            "actionType": "JSFunctionAsync",
+            "method": "getAvailableSubpages",
+            "deps": "js/page.service",
+            "inputData": {
+                "parentState": null,
+                "additionalEvalEnv": {
+                    "epObjectToNavigate": "{{ctx.ep.scopeObject}}",
+                    "ngpObjectToNavigate": "{{ctx.ngp.scopeObject}}"
+                }
+            },
+            "outputData": {
+                "availablePages": ""
+            }
+        },
+        "constructTabs": {
+            "actionType": "JSFunctionAsync",
+            "method": "constructTabs",
+            "deps": "js/awHeaderService",
+            "inputData": {
+                "availablePages": "{{data.availablePages}}"
+            },
+            "outputData": {
+                "subLocationTabs": ""
+            }
+        },
+        "updateTabs": {
+            "actionType": "JSFunction",
+            "method": "updateTabs",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "subLocationTabCond": ""
+            },
+            "deps": "js/defaultLocationService"
+        },
+        "switchSubLocation": {
+            "actionType": "JSFunction",
+            "method": "switchSubLocation",
+            "inputData": {
+                "pageId": "{{data.pageId}}",
+                "tabTitle": "{{data.tabTitle}}",
+                "subLocationTabs": "{{data.subLocationTabs}}",
+                "data":"{{data}}"
+            },
+            "deps": "js/awHeaderService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "mfe.scopeObjectChanged",
+            "action": "buildSubPages"
+        },
+        {
+            "eventId": "appCtx.register",
+            "condition": "name === 'state' ",
+            "action": "updateTabs"
+        }
+    ]
+}

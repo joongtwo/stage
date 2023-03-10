@@ -1,0 +1,108 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "defaultDownArrowVisible": true,
+        "isPanelVisible":false,
+        "downArrowCommand": {
+            "action": "setCollapsible",
+            "iconName": "miscChevronDown",
+            "tooltip": "{{i18n.showMore}}"
+        },
+        "upArrowCommand": {
+            "action": "setCollapsible",
+            "iconName": "miscChevronUp",
+            "tooltip": "{{i18n.showLess}}"
+        }
+    },
+    "actions": {
+        "setCollapsible": {
+            "actionType": "JSFunction",
+            "method": "setVisiblity",
+            "inputData": {
+                "input": "{{data}}"
+            },
+            "outputData": {
+                "isPanelVisible": "isPanelVisible",
+                "defaultDownArrowVisible": "defaultDownArrowVisible"
+            },
+            "deps": "js/swiService"
+        },
+        "processRelatedObjects": {
+            "actionType": "JSFunction",
+            "method": "processRelatedObjects",
+            "inputData": {
+                "relatedObjects": "{{props.subPanelContext.relatedObjects}}",
+                "partApplicabilityToolTipKey":"{{i18n.partApplicabilityToolTipKey}}"
+            },
+            "outputData": {
+                "frequencyValue": "frequencyExpString",
+                "faultCodes": "faultCodeString",
+                "requiresValue": "requiresString",
+                "requiredByValues": "requiredByString",
+                "satisfiesValue": "satisfiesString",
+                "satisfiedByValues": "satisfiedByString",
+                "descriptionValue":"serviceReqDescriptionValue",
+                "partApplicabilityValue":"partApplicabilityString",
+                "partApplicabilityToolTip":"partApplicabilityToolTip"
+            },
+            "deps": "js/swiService"
+        }
+    },
+    "conditions": {
+        "isPanelVisible": {
+            "expression": "data.isPanelVisible && (data.requiresValue!==''||data.satisfiedByValues!==''||data.requiredByValues!==''||data.satisfiesValue!=='')"
+        },
+        "isIconButtonVisible": {
+            "expression": "data.defaultDownArrowVisible && (data.requiresValue!==''||data.satisfiedByValues!==''||data.requiredByValues!==''||data.satisfiesValue!==''||data.partApplicabilityValue!=='')"
+        }
+    },
+    "onEvent": [],
+    "lifecycleHooks": {
+        
+        "onMount": "processRelatedObjects"
+    },
+    "functions": {},
+    "messages": {},
+    "i18n": {
+        
+        "frequency": [
+            "swiMessages"
+        ],
+        "faultCode": [
+            "swiMessages"
+        ],
+        "description": [
+            "swiMessages"
+        ],
+        "requires": [
+            "swiMessages"
+        ],
+        "satisfies": [
+            "swiMessages"
+        ],
+        "requiredBy": [
+            "swiMessages"
+        ],
+        "satisfiedBy": [
+            "swiMessages"
+        ],
+        "showMore": [
+            "swiMessages"
+        ],
+        "showLess": [
+            "swiMessages"
+        ],
+        "partApplicability": [
+            "swiMessages"
+        ],
+        "partApplicabilityToolTipKey": [
+            "swiMessages"
+        ]
+
+    }
+}

@@ -1,0 +1,148 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "actions": {
+        "regenerateFindNumberAndClosePopup": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "regenerateFindNumber"
+                },
+                {
+                    "action": "reloadTableAction"
+                },
+                {
+                    "action": "closePopupWindow"
+                }
+            ]
+        },
+        "regenerateFindNumber": {
+            "actionType": "JSFunctionAsync",
+            "method": "regenerateFindNumber",
+            "inputData": {
+                "object":"{{props.subPanelContext.loadedObj}}",
+                "startNumber": "{{data.startNumber.dbValue}}",
+                "increment": "{{data.increment.dbValue}}",
+                "isRecursive":"{{data.includeDescendentCheckBox.dbValue}}",
+                "isBasedOnFlows":"{{data.considerFlowsCheckBox.dbValue}}"
+            },
+            "outputData":{
+                "regenerateRefreshEventData":""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "ep.regenerateFindNumberRefreshEvent",
+                        "eventData": {
+                            "selectedNode": "{{data.regenerateRefreshEventData.selectedNode}}",
+                            "wiEditorData": "{{data.regenerateRefreshEventData.wiEditorData}}"
+                        },
+                        "excludeLocalDataCtx": true
+                    }
+                ]
+            },
+            "deps": "js/epRegenerateFindNumberService",
+            "actionMessages": {
+                "success": [{
+                        "condition": "data.regenerateRefreshEventData",
+                        "message": "successMessage"
+                    }
+                ]
+            }
+        },
+        "reloadTableAction": {
+            "actionType": "JSFunction",
+            "method": "reloadTable",
+            "inputData": {
+                "tableId": "EpTreeTable"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": "{{data.popupId}}",
+                "targetEvent": "{{$event}}"
+            },
+            "deps": "js/popupService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "aw.closePopup",
+            "action": "closePopupWindow"
+        }
+    ],
+    "messages":{
+        "successMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.success}}"
+        }
+    },
+    "data": {
+        "startNumber": {
+            "displayName": "{{i18n.startNumberDisplayName}}",
+            "type": "INTEGER",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": 10,
+            "dispValue": 10,
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "increment": {
+            "displayName": "{{i18n.incrementDisplayName}}",
+            "type": "INTEGER",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": 10,
+            "dispValue": 10,
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "considerFlowsCheckBox": {
+            "displayName": "{{i18n.considerFlowsDisplayName}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "includeDescendentCheckBox": {
+            "displayName": "{{i18n.includeDescendentDisplayName}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+    "i18n": {
+        "submit": [
+            "regenerateFindNumberMessages"
+        ],
+        "cancel": [
+            "regenerateFindNumberMessages"
+        ],
+        "startNumberDisplayName": [
+            "regenerateFindNumberMessages"
+        ],
+        "incrementDisplayName": [
+            "regenerateFindNumberMessages"
+        ],
+        "success": [
+            "regenerateFindNumberMessages"
+        ],
+        "considerFlowsDisplayName":[
+            "regenerateFindNumberMessages"
+        ],
+        "includeDescendentDisplayName":[
+            "regenerateFindNumberMessages"
+        ]
+
+    }
+}

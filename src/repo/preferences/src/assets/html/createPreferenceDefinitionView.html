@@ -1,0 +1,33 @@
+<aw-command-panel caption="i18n.preferenceCreateDefinitionPanelTitle">
+    <aw-panel-body>
+        <!-- Name, Product Area -->
+        <aw-textbox prop="data.fnd0PreferenceName"> </aw-textbox>
+        <aw-listbox prop="data.fnd0ProductArea"> </aw-listbox>
+        <aw-break></aw-break>
+
+        <!-- Description, Protection Scope -->
+        <aw-widget prop="data.fnd0Description"> </aw-widget>
+        <aw-listbox prop="data.fnd0ProtectionScope" list="data.protectionScopeList"> </aw-listbox>
+        <aw-break></aw-break>
+
+        <!-- Environment Enabled -->
+        <aw-property-label prop="data.fnd0EnvironmentLabelProp"></aw-property-label>
+        <aw-checkbox prop="data.fnd0Environment"> </aw-checkbox>
+        <aw-break></aw-break>
+        <aw-break></aw-break>
+
+        <!-- Preference type, MultiValued, Values -->
+        <aw-listbox prop="data.fnd0ValueType" list="data.typeValues.dbValue" action="updateValuesVMProp"> </aw-listbox>
+        <aw-property-label prop="data.fnd0IsMultiValueLabelProp"></aw-property-label>
+        <aw-checkbox prop="data.fnd0IsMultiValue" action="updateValuesVMProp"> </aw-checkbox>
+        <aw-break></aw-break>
+
+        <aw-widget prop="data.fnd0PreferenceValues"></aw-widget>
+        <aw-break></aw-break>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="createNewPreference" visible-when="formProp.attributes.valid">
+            <aw-i18n>i18n.addPreferenceButtonText</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

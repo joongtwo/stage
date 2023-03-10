@@ -1,0 +1,8 @@
+<div class="sw-column w-12" exist-when="data.backgroundPartsEbomTreeContext.objectUid">
+    <div class="sw-row aw-ep-searchBoxStyle">
+        <ep-structure-search sub-panel-context="fields.epEbomTreeSearchContext"></ep-structure-search>
+    </div>
+    <div class="sw-row h-12">
+        <ep-tree-table view-id="EpBackgroundPartsEbomTree_EpTreeTable" sub-panel-context="{...data.backgroundPartsEbomTreeContext,  ...props.subPanelContext}" structure-search-context="fields.epEbomTreeSearchContext"></ep-tree-table>
+    </div>
+</div>

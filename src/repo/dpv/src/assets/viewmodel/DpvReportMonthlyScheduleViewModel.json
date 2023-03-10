@@ -1,0 +1,152 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "selectEveryXMonth": {
+            "actionType": "JSFunction",
+            "method": "selectEveryXMonth",
+            "inputData": {
+                "everyXMonthVal": "{{data.everyXMonths.dbValue}}",
+                "cronModelState": "{{props.subPanelContext.cronModelState}}"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "updateDayOfMonth": {
+            "actionType": "JSFunction",
+            "method": "updateDayOfMonth",
+            "inputData": {
+                "dayOfMonthVal": "{{data.dayOfMonth.dbValue}}",
+                "cronModelState": "{{props.subPanelContext.cronModelState}}"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "updateMonthlyScheduleVals": {
+            "actionType": "JSFunction",
+            "method": "updateMonthlyScheduleVals",
+            "inputData": {
+                "cronModelState": "{{props.subPanelContext.cronModelState}}",
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "dayOfMonth": "dayOfMonth",
+                "everyXMonths": "everyXMonths"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        }
+    },
+    "data": {
+        "dayLbl": {
+            "displayName": "{{i18n.day}}",
+            "dbValue": "day",
+            "type": "STRING",
+            "dispValue": "{{i18n.day}}",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "dayOfMonth": {
+            "displayName": "",
+            "type": "INTEGER",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": 1,
+            "uiValue": 1,
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "ofEveryLbl": {
+            "displayName": "{{i18n.ofEvery}}",
+            "dbValue": "ofEvery",
+            "type": "STRING",
+            "dispValue": "{{i18n.ofEvery}}",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "monthsLbl": {
+            "displayName": "{{i18n.months}}",
+            "dbValue": "months",
+            "type": "STRING",
+            "dispValue": "{{i18n.months}}",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "everyXMonths": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "1",
+            "uiValue": "1",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "everyXMonthsList": {
+            "type": "STRING",
+            "dbValue": [
+                {
+                    "propDisplayValue": "1",
+                    "propInternalValue": "1"
+                },
+                {
+                    "propDisplayValue": "2",
+                    "propInternalValue": "2"
+                },
+                {
+                    "propDisplayValue": "3",
+                    "propInternalValue": "3"
+                },
+                {
+                    "propDisplayValue": "4",
+                    "propInternalValue": "4"
+                },
+                {
+                    "propDisplayValue": "5",
+                    "propInternalValue": "5"
+                },
+                {
+                    "propDisplayValue": "6",
+                    "propInternalValue": "6"
+                }
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateDayOfMonth",
+            "criteria": {
+                "condition": "conditions.dayOfMonthChange"
+            },
+            "cacheEventData": true
+        }
+    ],
+    "lifecycleHooks": {
+        "onUpdate": [ {
+            "action": "updateMonthlyScheduleVals",
+            "observers": [
+                "props.subPanelContext.cronModelState.monthly_dayVal"
+            ]
+        } ]
+    },
+    "functions": {},
+    "messages": {},
+    "i18n": {
+        "monthlySchedule": [
+            "DpvMessages"
+        ],
+        "months": [
+            "DpvMessages"
+        ],
+        "day": [
+            "DpvMessages"
+        ],
+        "ofEvery": [
+            "DpvMessages"
+        ]
+    },
+    "conditions": {
+        "dayOfMonthChange": {
+            "expression": "data.dayOfMonth.dbValue",
+            "trackValues": true
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

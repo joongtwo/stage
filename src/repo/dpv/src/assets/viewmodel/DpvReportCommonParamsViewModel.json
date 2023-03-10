@@ -1,0 +1,412 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "updateShift": {
+            "actionType": "JSFunction",
+            "method": "updateShift",
+            "inputData": {
+                "qryTypeState": "{{props.subPanelContext.qryTypeState}}",
+                "shiftVal": "{{data.shift.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateQueryType": {
+            "actionType": "JSFunction",
+            "method": "updateQueryType",
+            "inputData": {
+                "qryTypeState": "{{props.subPanelContext.qryTypeState}}",
+                "queryTypeVal": "{{data.queryType.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateLastNJobs": {
+            "actionType": "JSFunction",
+            "method": "updateLastNJobs",
+            "inputData": {
+                "qryTypeState": "{{props.subPanelContext.qryTypeState}}",
+                "queryTypeVal": "{{data.lastNJobs.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateDaysJob": {
+            "actionType": "JSFunction",
+            "method": "updateDaysJob",
+            "inputData": {
+                "qryTypeState": "{{props.subPanelContext.qryTypeState}}",
+                "queryTypeVal": "{{data.days.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateHrsJob": {
+            "actionType": "JSFunction",
+            "method": "updateHrsJob",
+            "inputData": {
+                "qryTypeState": "{{props.subPanelContext.qryTypeState}}",
+                "queryTypeVal": "{{data.hours.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateMinsJob": {
+            "actionType": "JSFunction",
+            "method": "updateMinsJob",
+            "inputData": {
+                "qryTypeState": "{{props.subPanelContext.qryTypeState}}",
+                "queryTypeVal": "{{data.minutes.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateFromDate": {
+            "actionType": "JSFunction",
+            "method": "updateFromDate",
+            "inputData": {
+                "qryTypeState": "{{props.subPanelContext.qryTypeState}}",
+                "queryTypeVal": "{{data.fromDate.dateApi.dateObject}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateToDate": {
+            "actionType": "JSFunction",
+            "method": "updateToDate",
+            "inputData": {
+                "qryTypeState": "{{props.subPanelContext.qryTypeState}}",
+                "queryTypeVal": "{{data.toDate.dateApi.dateObject}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateFromJob": {
+            "actionType": "JSFunction",
+            "method": "updateFromJob",
+            "inputData": {
+                "qryTypeState": "{{props.subPanelContext.qryTypeState}}",
+                "queryTypeVal": "{{data.fromJob.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateToJob": {
+            "actionType": "JSFunction",
+            "method": "updateToJob",
+            "inputData": {
+                "qryTypeState": "{{props.subPanelContext.qryTypeState}}",
+                "queryTypeVal": "{{data.toJob.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "resetCommonParams": {
+            "actionType": "JSFunction",
+            "method": "resetCommonParams",
+            "inputData": {
+                "data": "{{data}}",
+                "qryTypeState": "{{props.subPanelContext.qryTypeState}}"
+            },
+            "outputData": {
+                "queryType": "queryType",
+                "shift": "shift",
+                "lastNJobs": "lastNJobs",
+                "days": "days",
+                "hours": "hours",
+                "minutes": "minutes",
+                "fromDate": "fromDate",
+                "toDate": "toDate",
+                "fromJob": "fromJob",
+                "toJob": "toJob"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        }
+    },
+    "dataProviders": {},
+    "data": {
+        "queryType": {
+            "displayName": "{{i18n.qtLabelQueryType}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "{{props.subPanelContext.qryTypeState.qryType}}"
+        },
+        "queryTypeList": {
+            "type": "STRING",
+            "dbValue": [ {
+                "propDisplayValue": "{{i18n.queryTypeNone}}",
+                "propInternalValue": "-1"
+            },
+            {
+                "propDisplayValue": "{{i18n.queryTypeLastNumJobs}}",
+                "propInternalValue": "0"
+            },
+            {
+                "propDisplayValue": "{{i18n.queryTypeLastJobsBasedOnTime}}",
+                "propInternalValue": "1"
+            },
+            {
+                "propDisplayValue": "{{i18n.queryTypeDateTimeRange}}",
+                "propInternalValue": "2"
+            },
+            {
+                "propDisplayValue": "{{i18n.queryTypeDateTimeMultipleJobs}}",
+                "propInternalValue": "3"
+            },
+            {
+                "propDisplayValue": "{{i18n.queryTypeDateTimeSingleJob}}",
+                "propInternalValue": "4"
+            }
+        ]
+        },
+        "shift": {
+            "displayName": "{{i18n.qtLabelShift}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "{{props.subPanelContext.qryTypeState.shift}}",
+            "dispValue": "{{i18n.shiftValAll}}"
+        },                   
+        "shiftList": {
+            "type": "STRING",
+            "dbValue": [ {
+                "propDisplayValue": "{{i18n.shiftValAll}}",
+                "dispValue": "All",
+                "propInternalValue": "0"
+            },
+            {
+                "propDisplayValue": "1",
+                "dispValue": "1",
+                "propInternalValue": "1"
+            },
+            {
+                "propDisplayValue": "2",
+                "dispValue": "2",
+                "propInternalValue": "2"
+            },
+            {
+                "propDisplayValue": "3",
+                "dispValue": "3",
+                "propInternalValue": "3"
+            },
+            {
+                "propDisplayValue": "4",
+                "dispValue": "4",
+                "propInternalValue": "4"
+            }
+        ]
+        },
+        "lastNJobs": {
+            "displayName": "{{i18n.LastNumberOfJobs}}",
+            "type": "INTEGER",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.qryTypeState.lastNJobs}}",
+            "uiValue": "{{props.subPanelContext.qryTypeState.lastNJobs}}",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "days": {
+            "displayName": "{{i18n.LastJobsBasedOnDays}}",
+            "type": "INTEGER",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.qryTypeState.lastJobsDays}}",
+            "uiValue": "{{props.subPanelContext.qryTypeState.lastJobsDays}}",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "hours": {
+            "displayName": "{{i18n.LastJobsBasedOnHours}}",
+            "type": "INTEGER",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.qryTypeState.lastJobsHrs}}",
+            "uiValue": "{{props.subPanelContext.qryTypeState.lastJobsHrs}}",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "minutes": {
+            "displayName": "{{i18n.LastJobsBasedOnMinutes}}",
+            "type": "INTEGER",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.qryTypeState.lastJobsMins}}",
+            "uiValue": "{{props.subPanelContext.qryTypeState.lastJobsMins}}",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "fromDate": {
+            "displayName":"{{i18n.fromDate}}",
+            "type":"DATETIME",
+            "isEditable": "true",
+            "dbValue":"{{props.subPanelContext.qryTypeState.fromDate}}",
+            "uiValue":"{{props.subPanelContext.qryTypeState.fromDate}}",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"            
+        },
+        "toDate":{
+            "displayName":"{{i18n.toDate}}",
+            "type":"DATETIME",
+            "isEditable": "true",
+            "dbValue":"{{props.subPanelContext.qryTypeState.toDate}}",
+            "uiValue":"{{props.subPanelContext.qryTypeState.toDate}}",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "fromJob": {
+            "displayName": "{{i18n.FromJobOrSingleJob}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.qryTypeState.fromOrSingleJob}}",
+            "uiValue": "{{props.subPanelContext.qryTypeState.fromOrSingleJob}}",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "toJob": {
+            "displayName": "{{i18n.ToJob}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.qryTypeState.toJob}}",
+            "uiValue": "{{props.subPanelContext.qryTypeState.toJob}}",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateLastNJobs",
+            "criteria": {
+                "condition": "conditions.lastNJobsChange"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateDaysJob",
+            "criteria": {
+                "condition": "conditions.daysChange"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateHrsJob",
+            "criteria": {
+                "condition": "conditions.hoursChange"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateMinsJob",
+            "criteria": {
+                "condition": "conditions.minutesChange"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateFromDate",
+            "criteria": {
+                "condition": "conditions.fromDateChange"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateToDate",
+            "criteria": {
+                "condition": "conditions.toDateChange"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateFromJob",
+            "criteria": {
+                "condition": "conditions.fromJobChange"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateToJob",
+            "criteria": {
+                "condition": "conditions.toJobChange"
+            },
+            "cacheEventData": true
+        }
+    ],
+    "functions": {},
+    "conditions":{
+        "showShiftAndQryType":{
+            "expression": "!props.subPanelContext.qryTypeState.useOrigTempSettings || props.subPanelContext.qryTypeState.useOrigTempSettings === false"
+        },
+        "showLastNJobsData":{
+            "expression": "data.queryType.dbValue === '0' && conditions.showShiftAndQryType"
+        },
+        "showLastJobsTimeData":{
+            "expression": "data.queryType.dbValue === '1'"
+        },
+        "showDateTimeData":{
+            "expression": "data.queryType.dbValue >= '2'"
+        },
+        "showFromOrSingleJob":{
+            "expression": "data.queryType.dbValue >= '3'"
+        },
+        "showToJob":{
+            "expression": "data.queryType.dbValue === '3'"
+        },
+        "lastNJobsChange": {
+            "expression": "data.lastNJobs.dbValue",
+            "trackValues": true
+        },
+        "daysChange": {
+            "expression": "data.days.dbValue",
+            "trackValues": true
+        },
+        "hoursChange": {
+            "expression": "data.hours.dbValue",
+            "trackValues": true
+        },
+        "minutesChange": {
+            "expression": "data.minutes.dbValue",
+            "trackValues": true
+        },
+        "fromDateChange": {
+            "expression": "data.fromDate.dbValue",
+            "trackValues": true
+        },
+        "toDateChange": {
+            "expression": "data.toDate.dbValue",
+            "trackValues": true
+        },
+        "fromJobChange": {
+            "expression": "data.fromJob.dbValue",
+            "trackValues": true
+        },
+        "toJobChange": {
+            "expression": "data.toJob.dbValue",
+            "trackValues": true
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [ {
+            "action": "resetCommonParams",
+            "observers": [
+                "props.subPanelContext.qryTypeState.useOrigTempSettings"
+            ]
+        } ]
+    },
+    "i18n": {
+        "LastNumberOfJobs": [ "DpvMessages" ],
+        "LastJobsBasedOnDays": [ "DpvMessages" ],
+        "LastJobsBasedOnHours": [ "DpvMessages" ],
+        "LastJobsBasedOnMinutes": [ "DpvMessages" ],
+        "FromJobOrSingleJob": [ "DpvMessages" ],
+        "ToJob": [ "DpvMessages" ],
+        "qtLabelShift": [ "DpvMessages" ],
+        "qtLabelQueryType": [ "DpvMessages" ],
+        "shiftValAll": [ "DpvMessages" ],
+        "queryTypeNone": ["DpvMessages"],
+        "queryTypeLastNumJobs": ["DpvMessages"],
+        "queryTypeLastJobsBasedOnTime": ["DpvMessages"],
+        "queryTypeDateTimeRange": ["DpvMessages"],
+        "queryTypeDateTimeMultipleJobs": ["DpvMessages"],
+        "queryTypeDateTimeSingleJob": ["DpvMessages"],
+        "fromDate": ["DpvMessages"],
+        "toDate": ["DpvMessages"]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

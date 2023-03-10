@@ -1,0 +1,217 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "handleMissingInSrcIconVisibility": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "getMissingInSrcData"
+                },
+                {
+                    "action": "setMissingInSrcIconVisibility"
+                },
+                {
+                    "action": "getChangeIndicationData"
+                },
+                {
+                    "action": "setChangeIndicationIconVisibility",
+                    "condition": "data.affectedUIds!=='' && props.subPanelContext.sharedSelectionData.isIndicationToggleOn === true"
+                }
+            ]
+        },
+        "updateProcessIcon": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "getChangeIndicationData"
+                },
+                {
+                    "action": "setChangeIndicationIconVisibility",
+                    "condition": "data.affectedUIds!=='' && props.subPanelContext.sharedSelectionData.isIndicationToggleOn === true"
+                }
+            ]
+        },
+        "getMissingInSrcData": {
+            "actionType": "JSFunction",
+            "method": "getProperty",
+            "inputData": {
+                "name": "{{ctx.epPageContext.loadedObject.uid}}",
+                "propertyName": "accountabilityResponse"
+            },
+            "outputData": {
+                "missingInSrc": "result.missingInSrc"
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "getChangeIndicationData": {
+            "actionType": "JSFunction",
+            "method": "getProperty",
+            "inputData": {
+                "name": "{{ctx.epTaskPageContext.loadedObject.uid}}",
+                "propertyName": "ChangeLoadedProcessIndication"
+            },
+            "outputData": {
+                "affectedUIds": ""
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "setChangeIndicationIconVisibility": {
+            "actionType": "JSFunction",
+            "method": "setIconOnTab",
+            "inputData": {
+                "contentPanelData": "{{data.contentPanelData}}",
+                "tabKey": "WiProcessTree",
+                "shouldBeVisible": "{{data.affectedUIds}}",
+                "iconName": "indicatorImpacted"
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "setMissingInSrcIconVisibility": {
+            "actionType": "JSFunction",
+            "method": "setIconOnTab",
+            "inputData": {
+                "contentPanelData": "{{data.contentPanelData}}",
+                "tabKey": "WiProcessTree",
+                "shouldBeVisible": "{{data.missingInSrc.length}}",
+                "iconName": "indicatorPanelContainsMissingInSource"
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+
+        },
+        "updateContentPanelData": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "showEpAssemblyTreeView",
+                    "condition": "!data.manageConsumptionMode.isEnabled"
+                },
+                {
+                    "action": "showEpManageConsumptionView",
+                    "condition": "data.manageConsumptionMode.isEnabled"
+                },
+                {
+                    "action": "getMissingInSrcData",
+                    "condition": "props.subPanelContext.sharedSelectionData.isIndicationToggleOn"
+                },
+                {
+                    "action": "setMissingInSrcIconVisibility",
+                    "condition": "props.subPanelContext.sharedSelectionData.isIndicationToggleOn"
+                },
+                {
+                    "action": "getChangeIndicationData",
+                    "condition": "props.subPanelContext.sharedSelectionData.isIndicationToggleOn"
+                },
+                {
+                    "action": "setChangeIndicationIconVisibility",
+                    "condition": "data.affectedUIds!=='' && props.subPanelContext.sharedSelectionData.isIndicationToggleOn === true"
+                }
+            ]
+        },
+        "showEpAssemblyTreeView": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInViewModelUsingPath",
+            "inputData": {
+                "targetObj": "{{data.contentPanelData}}",
+                "path": "tabs",
+                "sourceObj": [ {
+                        "name": "{{i18n.assemblyTitle}}",
+                        "tabKey": "EpAssemblyTree"
+                    },
+                    {
+                        "name": "{{i18n.processTitle}}",
+                        "tabKey": "WiProcessTree"
+                    },
+                    {
+                        "name": "{{i18n.backgroundPartsTitle}}",
+                        "tabKey": "EpBackgroundPartsTree"
+                    }
+                ]
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "showEpManageConsumptionView": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInViewModelUsingPath",
+            "inputData": {
+                "targetObj": "{{data.contentPanelData}}",
+                "path": "tabs",
+                "sourceObj": [ {
+                        "name": "{{i18n.assemblyTitle}}",
+                        "tabKey": "EpManageConsumption"
+                    },
+                    {
+                        "name": "{{i18n.processTitle}}",
+                        "tabKey": "WiProcessTree"
+                    }
+                ]
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "data": {
+        "contentPanelData": {
+            "tabs": [ {
+                    "name": "{{i18n.assemblyTitle}}",
+                    "tabKey": "EpAssemblyTree"
+                },
+                {
+                    "name": "{{i18n.processTitle}}",
+                    "tabKey": "WiProcessTree"
+                }
+            ],
+            "cmdDisplayOption": "menu"
+        },
+        "manageConsumptionMode": {
+            "initialValues": {
+                "isEnabled": false
+            },
+            "meta": {}
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "updateContentPanelData",
+        "onUpdate": [ {
+                "action": "updateContentPanelData",
+                "observers": [
+                    "viewModel.atomicData.manageConsumptionMode.isEnabled",
+                    "props.subPanelContext.sharedSelectionData.isIndicationToggleOn"
+                ]
+            }
+
+        ]
+    },
+    "i18n": {
+        "assemblyTitle": [
+            "InstructionsMessages"
+        ],
+        "processTitle": [
+            "InstructionsMessages"
+        ],
+        "backgroundPartsTitle": [
+            "BackgroundPartsMessages"
+        ]
+    },
+    "onEvent": [ {
+            "eventId": "epObjectPropertyCache.accountabilityResponseUpdated",
+            "action": "handleMissingInSrcIconVisibility"
+        },
+        {
+            "eventId": "epObjectPropertyCache.ChangeLoadedProcessIndicationUpdated",
+            "action": "updateProcessIcon"
+        }
+    ]
+}

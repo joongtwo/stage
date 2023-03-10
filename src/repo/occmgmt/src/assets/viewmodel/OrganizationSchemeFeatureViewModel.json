@@ -1,0 +1,104 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports": [                
+                "js/aw-include.directive",
+                "js/aw-panel-section.directive"               
+               ],
+
+    "actions":
+    {
+        "initializeOrganizationSchemeSection":
+        {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "populateContextKey"
+                },
+                {
+                    "action": "initializeOrganizationSchemeSectionInfo"
+                }
+            ]
+        },
+
+        "updateOrganizationSchemeSection":
+        {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "populateContextKey"
+                },
+                {
+                    "action": "initializeOrganizationSchemeSectionInfo"
+                }               
+            ]
+        },
+
+        "initializeOrganizationSchemeSectionInfo":
+        {
+            "actionType": "JSFunction",
+            "method": "getOrganizationSchemeInfo",
+            "inputData":
+            {
+                "data": "{{data}}"
+            },
+            "outputData":
+            {
+                "currentOrganizationScheme": "currentOrganizationScheme",
+                "currentApplicationModel": "currentApplicationModel"
+            },
+            "deps": "js/partitionConfigurationService"
+        },
+
+        "populateContextKey": {
+            "actionType": "JSFunction",
+            "method": "populateContextKey",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData":{
+                "contextKeyObject":"contextKeyObject",
+                "contextKey":"contextKey",
+                "viewKey":"viewKey"
+            },
+            "deps": "js/aceStructureConfigurationService"
+        }
+    },
+    
+    "lifecycleHooks": {
+        "onMount":"initializeOrganizationSchemeSection",
+        "onUpdate": [ {
+            "action": "updateOrganizationSchemeSection",
+            "observers": [ "props.subPanelContext.occContext.productContextInfo" ]
+        }]
+    },
+    
+    "onEvent": [
+
+       
+    ],
+
+    "messages":
+    {
+    },
+
+    "data":
+    {
+        "currentOrganizationScheme":
+        {
+            "uiValue": "{{data.currentOrganizationScheme}}",
+            "type": "STRING"
+        },
+        "currentApplicationModel":
+        {
+            "uiValue": "{{data.currentApplicationModel}}",
+            "type": "STRING"
+        }
+    },
+    "i18n":{
+        "OrganizationSchemeSectionName": ["Occmgmt4GFMessages"]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

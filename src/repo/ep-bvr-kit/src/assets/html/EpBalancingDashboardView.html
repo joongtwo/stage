@@ -1,0 +1,9 @@
+<div class="sw-row w-12 h-12 aw-epBalancing-dashboardPanel">
+    <div class="aw-epBalancing-trackingCnInfo">
+        <ep-cn-indication exist-when="conditions.isTrackingCn"></ep-cn-indication>
+        <aw-separator is-vertical="true" exist-when="conditions.hasInputObjectName && conditions.isTrackingCn"></aw-separator>
+    </div>
+    <aw-listbox prop="data.productVariants" list="data.productVariantsList" class="aw-epBalancing-dashboardProductVariants" action="pvSelectionChanged" exist-when="conditions.hasProductVariants"></aw-listbox>
+    <aw-separator is-vertical="true" exist-when="conditions.hasProductVariants"></aw-separator>
+    <ep-balancing-chips-bar information="data.information"></ep-balancing-chips-bar>
+</div>

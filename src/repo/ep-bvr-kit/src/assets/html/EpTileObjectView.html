@@ -1,0 +1,16 @@
+<div class="sw-row aw-mfe-manageWpTileContainer justify-top align-center w-12">
+    <aw-model-icon class="sw-cell-image" vmo="subPanelContext.vmo" hideoverlay="hideoverlay"></aw-model-icon>
+    <div class="sw-column my-normal">
+        <div class="sw-row align-center justify-left">
+            <label class="aw-manageTile-title" title="{{subPanelContext.vmo.cellHeader1}}">{{subPanelContext.vmo.cellHeader1}}</label>
+            <aw-separator is-vertical="true" class="aw-mfe-tileSeparator"></aw-separator>
+            <label class="aw-widgets-cellListCellTitleBlock" title="{{subPanelContext.vmo.cellHeader2}}">{{subPanelContext.vmo.cellHeader2}}</label>
+            <aw-separator is-vertical="true" class="aw-mfe-tileSeparator"></aw-separator>
+            <label>{{subPanelContext.vmo.cellProperties.Revision.value}}</label>
+        </div>
+        <div class="sw-row align-center justify-left" exist-when="subPanelContext.revisionRule">
+            <label class="aw-mfe-manageWpTileRevRuleContent">{{data.revisionRule}}: </label>
+            <label class="aw-mfe-manageWpTileRevRuleVal">{{subPanelContext.revisionRule}}</label>
+        </div>
+    </div>
+</div>

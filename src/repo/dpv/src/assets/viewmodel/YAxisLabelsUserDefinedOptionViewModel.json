@@ -1,0 +1,128 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "updateYAxisFromUserDefined": {
+            "actionType": "JSFunction",
+            "method": "updateYAxisFromUserDefined",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "fromUserDefinedVal": "{{data.fromUserDefined.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateYAxisToUserDefined": {
+            "actionType": "JSFunction",
+            "method": "updateYAxisToUserDefined",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "toUserDefinedVal": "{{data.toUserDefined.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateUserDefinedOption": {
+            "actionType": "JSFunction",
+            "method": "updateUserDefinedOption",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "userDefinedOptionVal": "{{data.userDefinedOption.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        }
+    },
+    "data": {
+        "toUserDefined": {
+            "displayName": "{{i18n.yAxisLabelTo}}",
+            "type": "DOUBLE",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.toUserDefined}}",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_LEFT"
+        },
+        "fromUserDefined": {
+            "displayName": "{{i18n.yAxisLabelFrom}}",
+            "type": "DOUBLE",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.fromUserDefined}}",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_LEFT"
+        },
+        "userDefinedOption": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.userDefinedOption}}",
+            "dispValue": "{{i18n.optionRelToMean}}"
+        },
+        "userDefinedOptionList": {
+            "type": "STRING",
+            "dbValue": [
+                {
+                    "propDisplayValue": "{{i18n.optionRelToMean}}",
+                    "dispValue": "relToMean",
+                    "propInternalValue": "0"
+                },
+                {
+                    "propDisplayValue": "{{i18n.optionRelToTarget}}",
+                    "dispValue": "relToTarget",
+                    "propInternalValue": "1"
+                },
+                {
+                    "propDisplayValue": "{{i18n.optionRelToNormal}}",
+                    "dispValue": "relToNormal",
+                    "propInternalValue": "2"
+                },
+                {
+                    "propDisplayValue": "{{i18n.optionMidRange}}",
+                    "dispValue": "midRange",
+                    "propInternalValue": "3"
+                }
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateYAxisFromUserDefined",
+            "criteria": {
+                "condition": "conditions.fromUserDefinedChange"
+            },
+            "cacheEventData": true
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateYAxisToUserDefined",
+            "criteria": {
+                "condition": "conditions.toUserDefinedChange"
+            },
+            "cacheEventData": true
+        }
+    ],
+    "functions": {},
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "messages": {},
+    "conditions": {
+        "fromUserDefinedChange": {
+            "expression": "data.fromUserDefined.dbValue",
+            "trackValues": true
+        },
+        "toUserDefinedChange": {
+            "expression": "data.toUserDefined.dbValue",
+            "trackValues": true
+        }
+    },
+    "i18n": {
+        "yAxisLabelTo": [ "DpvMessages"],
+        "yAxisLabelFrom": [ "DpvMessages"],
+        "optionRelToMean": [ "DpvMessages"],
+        "optionRelToTarget": [ "DpvMessages"],
+        "optionRelToNormal": [ "DpvMessages"],
+        "optionMidRange": [ "DpvMessages"]
+    }
+}

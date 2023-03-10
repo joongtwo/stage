@@ -1,0 +1,87 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2020.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+
+/*=========================================================================*/
+/*========================== EP work instructions =========================*/
+/*=========================================================================*/
+
+.aw-ep-wiNavigationArea {
+    width: 24%
+}
+
+.aw-ep-wiEditorArea {
+    width: 37%
+}
+
+.aw-ep-epGraphicsArea {
+    width: 100%
+}
+
+
+.aw-ep-toggleSyncMessage {
+    max-height: rem-calc(30);
+    .aw-guidance-container {
+        flex-direction: row-reverse;
+    }
+
+    .aw-guidanceText-container {
+        margin: rem-calc(6) $margin_normal $margin_normal $margin_normal;
+    }
+}
+
+.aw-ep-toggleSyncIcon {
+    .aw-base-icon {
+        height: 16px;
+        width: 16px;
+    }
+
+    margin-left: $margin_large;
+    margin-right: -$margin_large;
+}
+
+.aw-ep-wiScopeLabel.sw-property.sw-row {
+    margin-bottom: 0;
+
+    .sw-property-val {
+        align-self: auto;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+        flex-basis: content;
+        font-weight: $aw_notification_cell_read_title_prop_font_weight;
+    }
+    .sw-property-name {
+        align-self: auto;
+        flex-shrink: 0;
+        flex-basis: content;
+        min-width: 0;
+    }
+}
+
+.aw-ep-missingInSourcePanel {
+    .aw-aria-border {
+        border-width: 0;
+    }
+    border-top: 2px solid;
+}
+
+.aw-ep-animationRight {
+    position: relative;
+    animation-name: animateright;
+    animation-duration: 0.3s;
+}
+
+@keyframes animateright {
+    from {
+        right: -400px;
+    }
+
+    to {
+        right: 0;
+    }
+}

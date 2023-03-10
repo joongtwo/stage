@@ -1,0 +1,19 @@
+<mfe-loading-message exist-when="conditions.isLoading"></mfe-loading-message>
+<mfe-message exist-when="!conditions.hasInput" sub-panel-context="data.messages.selectElementForAttachments"></mfe-message>
+<mfe-message exist-when="conditions.noFiles" sub-panel-context="data.messages.noFilesAttached"></mfe-message>
+<div class="sw-row w-12" exist-when="conditions.showFiles">
+    <div class="sw-column w-3 aw-epDetails-filesList">
+        <aw-scrollpanel>
+            <aw-list dataprovider="data.dataProviders.attachedFilesList">
+                <div class="sw-row align-center">
+                    <img src="{{item.typeIconURL}}" class="aw-epDetails-fileIcon">
+                    <strong>{{item.props.object_string.dbValues[0]}}</strong>
+                </div>
+            </aw-list>
+        </aw-scrollpanel>
+    </div>
+    <aw-separator is-vertical="true"></aw-separator>
+    <div class="sw-column w-9 aw-epFile-preview">
+        <ep-information view-path="viewPath" view-id ="EpFiles_epInformation" sub-panel-context="{...subPanelContext, ...data.subPanelContextForInformation}"></ep-information>
+    </div>
+</div>

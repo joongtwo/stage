@@ -1,0 +1,272 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-textbox.directive",
+        "js/aw-listbox.directive",
+        "js/aw-checkbox.directive",
+        "js/aw-widget.directive",
+        "js/aw-break.directive",
+        "js/aw-property-label.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-i18n.directive",
+        "js/aw-button.directive"
+    ],
+    "actions": {
+        "reveal": {
+            "actionType": "JSFunction",
+            "method": "populateLists",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/createPreferencesService"
+        },
+        "createNewPreference": {
+            "actionType": "JSFunction",
+            "method": "createPreference",
+            "inputData": {
+                "data": "{{data}}",
+                "errorMessage": "{{i18n.unsuccessfullyCreatedNewPreference}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/createPreferencesService",
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "createNewPreferenceFailure"
+                    }
+                ]
+            }
+        },
+        "updateValuesVMProp": {
+            "actionType": "JSFunction",
+            "method": "updateValuesVMProp",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "fnd0PreferenceValues": ""
+            },
+            "deps": "js/createPreferencesService"
+        }
+    },
+    "onEvent": [],
+    "dataParseDefinitions": {},
+    "data": {
+        "nameTitle": "{{i18n.Name}}",
+        "ProductArea": "{{i18n.ProductArea}}",
+        "descriptionTitle": "{{i18n.Description}}",
+        "typeTitle": "{{i18n.ValueType}}",
+        "isArrayTitle": "{{i18n.IsMultiValue}}",
+        "valuesTitle": "{{i18n.Values}}",
+        "protectionScopeTitle": "{{i18n.ProtectionScope}}",
+        "environmentTitle": "{{i18n.Environment}}",
+        "fnd0PreferenceName": {
+            "displayName": "{{i18n.Name}}",
+            "type": "STRING",
+            "isRequired": "true"
+        },
+        "fnd0ProductArea": {
+            "displayName": "{{i18n.ProductArea}}",
+            "type": "STRING",
+            "hasLov": "true",
+            "isRequired": "true",
+            "dataProvider": "productAreaProvider",
+            "emptyLOVEntry": false
+        },
+        "fnd0Description": {
+            "displayName": "{{i18n.Description}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true"
+        },
+        "fnd0ProtectionScope": {
+            "displayName": "{{i18n.ProtectionScope}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "{{i18n.User}}",
+            "uiValue": "{{i18n.User}}",
+            "dispValue": " ",
+            "dataProvider":"protectionScopeProvider"
+        },
+        "fnd0Environment": {
+            "displayName": "{{i18n.enabledEnv}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "uiValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "fnd0EnvironmentLabelProp": {
+            "displayName": "{{i18n.Environment}}"
+        },
+        "fnd0ValueType": {
+            "displayName": "{{i18n.ValueType}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "{{i18n.String}}",
+            "uiValue": "{{i18n.String}}",
+            "dispValue": " "
+        },
+        "fnd0IsMultiValue": {
+            "displayName": "{{i18n.yes}}",
+            "type": "BOOLEAN",
+            "dbValue": false,
+            "uiValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "fnd0IsMultiValueLabelProp": {
+            "displayName": "{{i18n.IsMultiValue}}"
+        },
+        "fnd0PreferenceValues": {
+            "displayName": "{{i18n.Values}}",
+            "type": "STRING",
+            "isArray": "false"
+        },
+        "typeValues": {
+            "type": "STRING",
+            "dbValue": [
+                {
+                    "propDisplayValue": "{{i18n.String}}",
+                    "propInternalValue": "String",
+                    "dispValue": "String"
+                },
+                {
+                    "propDisplayValue": "{{i18n.Logical}}",
+                    "propInternalValue": "Logical",
+                    "dispValue": "Logical"
+                },
+                {
+                    "propDisplayValue": "{{i18n.Integer}}",
+                    "propInternalValue": "Integer",
+                    "dispValue": "Integer"
+                },
+                {
+                    "propDisplayValue": "{{i18n.Double}}",
+                    "propInternalValue": "Double",
+                    "dispValue": "Double"
+                },
+                {
+                    "propDisplayValue": "{{i18n.Date}}",
+                    "propInternalValue": "Date",
+                    "dispValue": "Date"
+                }
+            ]
+        },
+        "localizedProtectionScopes": {
+            "User": "{{i18n.User}}",
+            "Role": "{{i18n.Role}}",
+            "Group": "{{i18n.Group}}",
+            "Site": "{{i18n.Site}}",
+            "System": "{{i18n.System}}"
+        }
+    },
+    "dataProviders": {
+        "productAreaProvider": {
+            "action": "reveal",
+            "response": "{{data.productAreaList}}"
+        },
+        "protectionScopeProvider": {
+            "action": "reveal",
+            "response": "{{data.protectionScopeList}}"
+        }
+    },
+    "i18n": {
+        "Name": [
+            "preferenceMessages"
+        ],
+        "ProductArea": [
+            "preferenceMessages"
+        ],
+        "Description": [
+            "preferenceInfoMessages"
+        ],
+        "ProtectionScope": [
+            "preferenceInfoMessages"
+        ],
+        "IsMultiValue": [
+            "preferenceInfoMessages"
+        ],
+        "Values": [
+            "preferenceMessages"
+        ],
+        "location": [
+            "preferenceMessages"
+        ],
+        "ValueType": [
+            "preferenceInfoMessages"
+        ],
+        "Environment": [
+            "preferenceInfoMessages"
+        ],
+        "preferenceCreateDefinitionPanelTitle": [
+            "createPreferenceMessages"
+        ],
+        "addPreferenceButtonText": [
+            "createPreferenceMessages"
+        ],
+        "String": [
+            "preferenceInfoMessages"
+        ],
+        "Integer": [
+            "preferenceInfoMessages"
+        ],
+        "Double": [
+            "preferenceInfoMessages"
+        ],
+        "Logical": [
+            "preferenceInfoMessages"
+        ],
+        "Date": [
+            "preferenceInfoMessages"
+        ],
+        "yes": [
+            "preferenceInfoMessages"
+        ],
+        "unsuccessfullyCreatedNewPreference": [
+            "createPreferenceMessages"
+        ],
+        "User": [
+            "preferenceMessages"
+        ],
+        "Role": [
+            "preferenceMessages"
+        ],
+        "Group": [
+            "preferenceMessages"
+        ],
+        "Site": [
+            "preferenceMessages"
+        ],
+        "System": [
+            "preferenceMessages"
+        ],
+        "enabledEnv": [
+            "preferenceInfoMessages"
+        ]
+    },
+    "conditions": {},
+    "functions": {},
+    "messages": {
+        "createNewPreferenceFailure": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    }
+}

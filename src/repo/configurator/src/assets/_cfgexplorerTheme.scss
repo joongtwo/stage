@@ -1,0 +1,44 @@
+/* Copyright (c) 2022 Siemens */
+
+/* Change inline dirty first column styling */
+.aw-splm-tableRow .ui-grid-cell .aw-jswidgets-tablecell.aw-cfg-variabilityExplorerCell-dirty {
+    background-color: $Siemens_Blue_24;
+}
+
+.aw-cfg-headerBackgroundCell {
+    background-color: #CCD0D5; // header color
+}
+
+.aw-jswidgets-grid .ui-grid-row.aw-cfg-headerBackgroundCell {
+    background-color: #CCD0D5; // header color
+}
+
+.aw-splm-table .aw-splm-tableViewport.ui-grid-row:hover.ui-grid-row-selected .ui-grid-cell .aw-jswidgets-tablecell.aw-cfg-variabilityExplorerCell-dirty {
+    background: $cell_list_item_selected_hover;
+}
+
+.aw-cfg-showRedIndicator {
+    background-color: $AW_Red;
+}
+
+/* Constraint Grid Editor: color palette for Constraint Type*/
+.aw-cfg-inclusionRule {
+    color: $Status_Green_3; // #1f6b1f
+}
+.aw-cfg-exclusionRule {
+    color: $Siemens_Red_29; // #840000
+}
+.aw-cfg-exceptionRule {
+    color: $Charting_Brown_3; // #4c402f
+}
+.aw-cfg-availabilityRule {
+    color: $Charting_Purple_Base; //#7f4664
+}
+.aw-cfg-defaultRule {
+    color: $Siemens_Blue_3; // #004669
+}
+
+// This style will highlight required cell if its empty while filling row in table
+.aw-cfg-variabilityExplorerCellRequired {
+    border-color: $AW_Red;
+}

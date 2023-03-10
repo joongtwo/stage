@@ -1,0 +1,224 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-button.directive",
+        "js/aw-form.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-i18n.directive",
+        "js/aw-radiobutton.directive",
+        "js/aw-xrt.directive",
+        "js/visible-when.directive"
+
+    ],
+    "actions": {
+        "createVariantRule": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2012-10-DataManagement",
+            "method": "createRelateAndSubmitObjects",
+            "inputData": {
+                "inputs": "{{function:getConfigCreateInput}}"
+            },
+            "outputData": {
+                "variantRule": "{{function:getCreatedVariantRule}}",
+                "ServiceData": "ServiceData"
+            },
+            "events": {
+                "success": [ {
+                        "name": "Pca0SaveVariantRule.setExpression",
+                        "eventData": {
+                            "variantRule": "{{data.variantRule}}",
+                            "attachVariantRuleToContent": "{{data.attachVariantRuleToContent.dbValue}}"
+                        }
+                    },
+                    {
+                        "name": "handleNewVariantRuleCreated"
+                    }
+                ],
+                "failure": [ {
+                    "name": "Pca0FullScreenConfiguration.processPartialError",
+                    "eventData": {
+                        "ServiceData": "{{data.ServiceData}}"
+                    }
+
+                } ]
+            },
+            "deps": "js/configuratorUtils"
+        },
+        "setExpression": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ProductConfiguratorAw-2022-12-ConfiguratorManagement",
+            "method": "variantConfigurationView3",
+            "inputData": {
+                "input": {
+                    "configPerspective": "{{function:getFscConfigPerspective}}",
+                    "selectedContext": "{{function:getSelectionForVariantContext}}",
+                    "activeVariantRules": [ "{{data.eventMap['Pca0SaveVariantRule.setExpression'].variantRule}}" ],
+                    "scopes": [ "{{function:getCurrentGroup}}" ],
+                    "selectedExpressions": "{{function:convertSelectedExpressionJsonObjectToString}}",
+                    "payloadStrings": "{{function:getPayloadStrings}}",
+                    "requestInfo": {
+                        "requestType": [ "createUpdateVariantRule" ],
+                        "configurationControlMode": [ "{{function:getConfigurationMode}}" ],
+                        "profileSettings": [ "{{function:getProfileSettingsForFsc}}" ],
+                        "attachVariantRuleToContent": [ "{{function:getAttachVariantRuleToContent}}" ],
+                        "ruleDateTranslationMode": [ "{{ctx.fscContext.appliedSettings.ruleDateTranslationMode === undefined ? \"\" : ctx.fscContext.appliedSettings.ruleDateTranslationMode}}" ]
+                    }
+                }
+            },
+            "events": {
+                "success": [ {
+                        "name": "Pca0SaveVariant.closePanel"
+                    },
+                    {
+                        "name": "Pca0SaveVariant.resetDirtyFlag",
+                        "eventData": {
+                            "variantRuleVMO": "{{data.variantRuleVMO}}",
+                            "variantContext": "{{subPanelContext.variantContext}}"
+                        }
+                    }
+                ],
+                "failure": [ {
+                    "name": "Pca0FullScreenConfiguration.processPartialError",
+                    "eventData": {
+                        "ServiceData": "{{data.ServiceData}}"
+                    }
+
+                } ]
+            },
+            "outputData": {
+                "variantRuleVMO": "{{function:getVariantRuleVMO}}",
+                "ServiceData": "ServiceData"
+            },
+            "deps": "js/configuratorUtils"
+        },
+        "handleNewVariantRuleCreated": {
+            "actionType": "JSFunction",
+            "method": "publishNewVariantRuleCreated",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/configuratorService"
+        }
+
+    },
+    "functions": {
+        "getFscConfigPerspective": {
+            "functionName": "getFscConfigPerspective",
+            "parameters": [ "{{ctx.panelContext.variantRuleData}}" ]
+        },
+        "getCurrentGroup": {
+            "functionName": "getCurrentGroup",
+            "parameters": [ "{{subPanelContext.variantContext}}" ]
+        },
+        "getPayloadStrings": {
+            "functionName": "getPayloadStrings"
+        },
+        "getSelectionForVariantContext": {
+            "functionName": "getSelectionForVariantContext",
+            "parameters": [ "{{subPanelContext.variantContext}}" ]
+        },
+        "getConfigCreateInput": {
+            "functionName": "getConfigCreateInput",
+            "parameters": [
+                "{{data}}",
+                "{{ctx.fscContext.createVariantPreference}}",
+                "{{editHandlers.addPanelEditHandler}}"
+            ]
+        },
+        "getCreatedVariantRule": {
+            "functionName": "getCreatedVariantRule",
+            "parameters": []
+        },
+        "getConfigurationMode": {
+            "functionName": "getConfigurationMode",
+            "parameters": [ "{{subPanelContext.variantContext}}" ]
+        },
+        "getVariantRuleVMO": {
+            "functionName": "getVariantRuleVMO",
+            "parameters": [ "{{subPanelContext.variantContext}}", "{{subPanelContext.variantContext}}" ]
+        },
+        "getIsFscContext": {
+            "functionName": "getIsFscContext",
+            "parameters": [ "{{subPanelContext.variantContext}}" ]
+        },
+        "getProfileSettingsForFsc": {
+            "functionName": "getProfileSettingsForFsc",
+            "parameters": [ "{{subPanelContext.variantContext}}" ]
+        },
+        "getAttachVariantRuleToContent": {
+            "functionName": "getAttachVariantRuleToContent",
+            "parameters": [ "{{data}}" ]
+        },
+        "convertSelectedExpressionJsonObjectToString": {
+            "functionName": "convertSelectedExpressionJsonObjectToString",
+            "parameters": [ "{{ctx.fscContext.selectedExpressions}}" ]
+        }
+    },
+    "ctx": {
+        "fscContext": {
+            "type": "object"
+        },
+        "panelContext": {
+            "type": "object"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "Pca0SaveVariantRule.setExpression",
+            "cacheEventData": true,
+            "action": "setExpression"
+        }, {
+            "eventId": "handleNewVariantRuleCreated",
+            "action": "handleNewVariantRuleCreated"
+        }
+
+    ],
+    "data": {
+        "attachVariantRuleToContent": {
+            "displayName": "{{i18n.variantRuleScope}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE",
+            "vertical": true,
+            "propertyRadioFalseText": "{{i18n.attachVariantRuleWithConfiguratorContext}}",
+            "propertyRadioTrueText": "{{i18n.attachVariantRuleWithProduct}}"
+        },
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "i18n": {
+        "saveCmd": [
+            "ConfiguratorMessages"
+        ],
+        "attachVariantRuleWithConfiguratorContext": [
+            "FullScreenConfigurationMessages"
+        ],
+        "saveAsCmd": [
+            "ConfiguratorMessages"
+        ],
+        "attachVariantRuleWithProduct": [
+            "FullScreenConfigurationMessages"
+        ],
+        "variantRuleScope": [
+            "FullScreenConfigurationMessages"
+        ]
+    }
+}

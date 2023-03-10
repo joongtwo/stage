@@ -1,0 +1,154 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "actions":
+    {
+        "closePanel":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+        "backAction":
+        {
+            "actionType": "JSFunction",
+            "method": "setActiveView",
+            "inputData":
+            {
+                "destinationPanelId":"DisplayAndRemoveEffectivities",
+                "data": "{{data}}"
+
+            },
+            "outputData": {
+                "sharedData":""
+            },
+            "deps": "js/aceEffectivityService"
+        },
+        "backToPrevious":
+        {
+            "actionType": "JSFunction",
+            "method": "setActiveView",
+            "inputData":
+            {
+                "destinationPanelId":"AddEffectivities",
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "sharedData":""
+            },
+            "deps": "js/aceEffectivityService"
+        },
+        "viewBatchJobAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "closePanel",
+                    "condition": "(props.subPanelContext.occContext.currentState.c_uid === props.subPanelContext.occContext.currentState.t_uid && data.sharedData.activeView === 'AddEffectivities' || data.sharedData.activeView === 'EditEffectivities') || (props.subPanelContext.occContext.selectedModelObjects[0].props.awb0Parent.dbValues[0] === null)"
+                }
+            ]
+        }
+    },
+
+    "onEvent": [
+                    {
+                        "eventId": "primaryWorkArea.selectionChangeEvent",
+                        "cacheEventData": true,
+                        "action": "closePanel",
+                        "condition": "dataProvider.selectedObjects[0].modelType.typeHierarchyArray.indexOf( 'Fgf0PartitionElement' ) > -1 "
+                    }
+                ],
+    "i18n":
+    {
+        "elementEffectivityTitle":[ "OccurrenceManagementConstants"],
+        "addElementBtn":[ "OccurrenceManagementConstants"],
+        "cancel":[ "OccurrenceManagementConstants"],
+        "saveButtonText":[ "OccurrenceManagementConstants" ],
+        "effectivityTitle":[ "OccurrenceManagementConstants"],
+        "addEffectivities": ["OccurrenceManagementConstants"],
+        "edit": ["OccurrenceManagementConstants"],
+        "endItemMessage":[ "OccurrenceManagementConstants"],
+        "dateEffectivity":[ "OccurrenceManagementConstants"],
+        "unitEffectivity":[ "OccurrenceManagementConstants"]
+    },
+    "lifecycleHooks": {
+        "onUpdate": [ {
+            "action": "viewBatchJobAction",
+            "observers": [ "props.subPanelContext.occContext.selectedModelObjects" ]
+        }]
+    },
+    "data": {
+        "sharedData": {
+            "initialValues": {
+                "activeView": "DisplayAndRemoveEffectivities",
+                "previousView": "",
+                "dateOrUnitEffectivityTypeRadioButton":{
+                    "type": "BOOLEAN",
+                    "dbValue": true
+                },
+                "endItemVal":{
+                    "dbValue": null,
+                    "uiValue": null
+                },
+                "nameBox" : {
+                    "dbValue": null
+                },
+                "nameBoxForUnit" : {
+                    "dbValue": null
+                },
+                "unitRangeText": {
+                    "dbValue": null
+                },
+                "isShared": {
+                    "type": "BOOLEAN",
+                    "dbValue": false
+                },
+                "isSharedForUnit": {
+                    "type": "BOOLEAN",
+                    "dbValue": false
+                },
+                "startDate": {
+                    "type": "DATE",
+                    "dbValue": null
+                },
+                "endDate": {
+                    "type": "DATE",
+                    "dbValue": null
+                },
+                "endDateOptions": {
+                    "dbValue": "Date",
+                    "uiValue" : "Date"
+                },
+                "isProtected": {
+                    "type": "BOOLEAN",
+                    "dbValue": false
+                },
+                "selectedCell": {
+                    "uid": null,
+                    "type": null
+                },
+                "isTimeEnabled": {
+                    "type": "BOOLEAN",
+                    "value": false
+                }
+            },
+            "meta": { }
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

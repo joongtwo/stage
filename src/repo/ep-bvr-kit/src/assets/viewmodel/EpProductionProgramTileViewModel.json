@@ -1,0 +1,206 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "messages": [
+            {
+                "text": "{{i18n.setProductionProgramMessage}}"
+            }
+        ]
+    },
+    "actions": {
+        "updateStructureContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "addVMOAndRevRuleToStructureContext"
+                },
+                {
+                    "action": "initCommandContext"
+                }
+            ]
+        },
+        "addVMOAndRevRuleToStructureContext": {
+            "actionType": "JSFunction",
+            "method": "addVMOAndRevRuleToStructureContext",
+            "inputData": {
+                "contextPath": "epTaskPageContext.productionProgramStructureContext"
+            },
+            "deps": "js/manageWorkPackageService"
+        },
+        "clearTaskPageContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clearTaskPageContextForManagePage"
+                },
+                {
+                    "action": "clearCommandContext"
+                }
+            ]
+        },
+        "clearTaskPageContextForManagePage": {
+            "actionType": "JSFunction",
+            "method": "removeContextsFromCtx",
+            "inputData": {
+                "contextPaths": [
+                    "epTaskPageContext.productionProgramStructureContext"
+                ]
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": "{{ctx.epTaskPageContext.productionProgramStructureContext}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "clearCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": ""
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "initCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "objectBaseType": "Mfg0MEProdPrgColRevision",
+                    "addProductLabelCaption": "{{i18n.addProductionProgramCaption}}",
+                    "boTypeName": "",
+                    "exclusionBOTypeNames": [],
+                    "objectTypesToSearch": [
+                        "Mfg0MEProdPrgColRevision"
+                    ],
+                    "preferenceSuffixForTypesToSearch": "",
+                    "buttonName": "{{i18n.addProductionProgram}}",
+                    "placeHolderForSearch": "{{i18n.ProductionProgramSearchPlaceHolder}}",
+                    "selection": "{{ctx.epTaskPageContext.productionProgramStructureContext}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "generateProductVariants": {
+            "actionType": "JSFunctionAsync",
+            "method": "generateProductVariants",
+            "actionMessages": {
+                "success": [ {
+                    "message": "editProductionProgramConfirmationMsg"
+                } ]
+            },
+            "deps": "js/epProductionProgramService"
+        },
+        "openEditProductionProgramPopupAfterCreate": {
+            "actionType": "JSFunctionAsync",
+            "method": "show",
+            "inputData": {
+                "options": {
+                    "view": "EpEditProductionProgramPopup",
+                    "caption": "{{i18n.editProductionProgramPopupTitle}}",
+                    "height": "560",
+                    "width": "680",
+                    "preset": "modal",
+                    "independent": true,
+                    "draggable": true
+                }
+            },
+            "outputData": {
+                "popupObj": ""
+            },
+            "deps": "js/popupService"
+        }
+    },
+    "conditions": {
+        "isTileDataAvailable": {
+            "expression": "ctx.epTaskPageContext.productionProgramStructureContext"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "updateStructureContextAndCommandContext",
+        "onUpdate": {
+            "action": "setCommandContext",
+            "observers": [ "viewModel.ctx.epTaskPageContext.productionProgramStructureContext" ]
+        }
+    },
+    "ctx": {
+        "epTaskPageContext": {
+            "type": "object"
+        }
+    },
+    "messages": {
+        "editProductionProgramConfirmationMsg": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.editPPconfirmationMessage}}",
+            "messageTextParams": [
+                "{{ctx.epTaskPageContext.productionProgramCollection.props.object_string.dbValues}}"
+
+            ],
+            "navigationOptions": [ {
+                    "option": "later",
+                    "text": "{{i18n.later}}"
+                },
+                {
+                    "option": "edit",
+                    "text": "{{i18n.editProductionProgramPopupTitle}}",
+                    "action": "openEditProductionProgramPopupAfterCreate"
+                }
+            ]
+
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "clearTaskPageContextAndCommandContext",
+            "condition": "removedSaveEvent.includes(ctx.epTaskPageContext.productionProgramStructureContext.uid)"
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "updateStructureContextAndCommandContext",
+            "condition": "addedSaveEvent !== undefined"
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "generateProductVariants",
+            "condition": "addedSaveEvent.includes(ctx.epTaskPageContext.productionProgramStructureContext.uid)"
+
+        }
+    ],
+    "i18n": {
+        "setProductionProgramMessage": [
+            "AdminMessages"
+        ],
+        "addProductionProgram": [
+            "AdminMessages"
+        ],
+        "ProductionProgramSearchPlaceHolder": [
+            "AdminMessages"
+        ],
+        "addProductionProgramCaption": [
+            "AdminMessages"
+        ],
+        "editPPconfirmationMessage": [
+            "AdminMessages"
+        ],
+        "editProductionProgramPopupTitle": [
+            "AdminMessages"
+        ],
+        "later": [
+            "AdminMessages"
+        ]
+    }
+}

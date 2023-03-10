@@ -1,0 +1,59 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "data": {
+        "productBopStructureData": {
+            "editContext": "",
+            "objectUid": "{{ctx.epPageContext.functionalPlan.uid}}",
+            "isTopNode": true,
+            "preferenceName": "EP_FunctionalPlanBalancingColumnPreference",
+            "isLeafProperty": "hasChildren",
+            "relatedObjectMapKey": "childAssembly",
+            "additionalLoadParamsForRootLoadInputData": [
+                {
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandProcessDetailedPlanning"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "TOP_WITH_CHILDREN"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "rootsProperty",
+                    "attributeValue": "RootObject"
+                }
+            ],
+            "additionalLoadParamsForChildLoadInputData": [
+                {
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandProcessDetailedPlanning"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "CHILDREN"
+                }
+            ],
+            "treeNavigationColumnIndex": 0,
+            "initializeAction": "initializeLoadDataForTree",
+            "relationName": ["Mbc0CutPaste","elb0allocatedOpsByPV"]
+        },
+        "epProductBopSearchContext": {
+            "initialValues": {
+                "searchObjectType": "Mfg0BvrOperation",
+                "searchPlaceholderString": "{{i18n.searchOperation}}",
+                "searchScopeUid": "{{ctx.epPageContext.functionalPlan.uid}}"
+            },
+            "meta": {}
+        }
+    },
+    "conditions": {
+        "isProductBOPExists": {
+            "expression": "ctx.epTaskPageContext.functionalPlan"
+        }
+    }
+}

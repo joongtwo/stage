@@ -1,0 +1,383 @@
+{
+    "schemaVersion" : "1.0.0",
+
+    "i18n":
+    {
+        "failedToRemoveEffectivity":["OccurrenceManagementConstants"],
+        "edit":["OccurrenceManagementConstants"],
+        "elementEffectivityTitle": ["OccurrenceManagementConstants"],
+        "elementEffectivities": ["OccurrenceManagementConstants"],
+        "effectivityTitle": ["OccurrenceManagementConstants"],
+        "elementSelected": ["OccurrenceManagementConstants"],
+        "effectivityRemovedSuccessfully": ["OccurrenceManagementMessages"],
+        "appendEffMessage": ["OccurrenceManagementMessages"]
+    },
+    "data":
+    {
+        "commandDisplayAndRemoveEffectivity":"awb0_commandDisplayAndRemoveEffectivity"
+    },
+
+    "dataProviders":
+    {
+        "getAppliedEffectivities":
+        {
+            "action": "searchAppliedEffectivities",
+            "response": "{{data.effectivitiesFound}}",
+            "totalFound": "{{data.effectivitiesTotalFound}}",
+            "selectionModelMode": "multiple",
+            "commandsAnchor": "occmgmt_effectivity_cell_commands"
+        }
+    },
+
+    "actions":
+    {
+        "setEffectivityTypeOncontext" : {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "inputData":
+            {
+                "path" : "elementEffectivity.currentEffectivityType",
+                "value" : "Element"
+            },
+            "deps": "js/appCtxService"
+        },
+
+        "removeEffectivities":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2016-03-OccurrenceManagement",
+            "method": "addOrRemoveOccurrenceEffectivities",
+            "inputData":
+            {
+                "input": {
+                    "addOrRemove": false,
+                    "effectivities": "{{data.dataProviders.getAppliedEffectivities.selectedObjects}}",
+                    "elements":"{{props.subPanelContext.occContext.selectedModelObjects}}"
+                }
+            },
+            "outputData":
+            {
+                "occurrenceConfigured": "updated",
+                "occurrenceUnconfigured": "deleted",
+                "error": "error",
+                "errorValues":"errorValues"
+            },
+            "events":
+            {
+                "success": [
+                    {
+                        "name": "occurrenceUpdatedByEffectivityEvent",
+                        "eventData":
+                        {
+                            "updated" : "{{data.occurrenceConfigured}}",
+                            "deleted" : "{{data.occurrenceUnconfigured}}",
+                            "addedEffectivities": "{{data.dataProviders.getAppliedEffectivities.selectedObjects}}",
+                            "viewToReact": "{{props.subPanelContext.provider.contextKey}}",
+                            "state" : "COMPLETED",
+                            "source"  : "toolAndInfoPanel"
+                        }
+                    },
+                    {
+                        "name": "displayAndRemoveEffectivities.effectivitiesRemovedSuccessfully",
+                        "eventData":
+                        {
+                            "configured":"{{data.occurrenceConfigured}}"
+                        },
+                        "condition": "data.occurrenceConfigured && data.occurrenceConfigured.includes(props.subPanelContext.occContext.selectedModelObjects[0].uid)"
+                    },
+                    {
+                        "name": "aceElementsDeSelectedEvent",
+                         "eventData":
+                        {
+                            "elementsToDeselect": ["{{props.subPanelContext.occContext.selectedModelObjects[0]}}"]
+                        },
+                        "condition": "data.occurrenceUnconfigured && data.occurrenceUnconfigured.includes(props.subPanelContext.occContext.selectedModelObjects[0].uid)"
+                    },
+                    {
+                        "name": "closePanelEvent"
+                    }
+                ],
+                "failure":[
+                    {
+                        "name": "occurrenceUpdatedByEffectivityEvent",
+                        "eventData":
+                        {
+                            "state" : "FAILED",
+                            "source"  : "toolAndInfoPanel"
+                        }
+                    },
+                    {
+                        "name": "aceElementsDeSelectedEvent",
+                        "eventData":
+                        {
+                            "elementsToDeselect": ["{{props.subPanelContext.occContext.selectedModelObjects[0]}}"]
+                        },
+                        "condition": "data.occurrenceUnconfigured && data.occurrenceUnconfigured.includes(props.subPanelContext.occContext.selectedModelObjects[0].uid)"
+                    }
+                ]
+            },
+             "actionMessages":
+             {
+                 "failure":
+                 [
+                    {
+                        "condition": "errorCode.code==126225",
+                        "message": "failedToRemoveEffectivityMessage"
+                    }
+                ],
+                "success": [
+                    {
+                        "condition": "props.subPanelContext.occContext.selectedModelObjects.length > 1",
+                        "message": "succsessfullyRemoveEffectivityMessage"
+                    }
+                ]
+            }
+        },
+
+        "getAppliedEffectivitiesAction":
+        {
+            "actionType": "dataProvider",
+            "method": "getAppliedEffectivities"
+        },
+
+        "getSelectedElementAction":
+        {
+            "actionType": "JSFunction",
+            "method": "getSelectedElements",
+            "inputData": {
+                "data": "{{data.i18n}}",
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "outputData":
+            {
+                "elementSelectedMessage" : "elementSelectedMessage"
+            },
+            "deps": "js/sharedEffectivityService"
+        },
+
+        "searchAppliedEffectivities":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Query-2014-11-Finder",
+            "method": "performSearch",
+            "inputData":
+            {
+                "searchInput":
+                {
+                    "maxToLoad": 20,
+                    "maxToReturn": 20,
+                    "providerName": "Awb0EffectivityProvider",
+                    "searchFilterFieldSortType": "Alphabetical",
+                    "startIndex": "{{data.dataProviders.getAppliedEffectivities.startIndex}}",
+                    "searchCriteria":
+                    {
+                        "elementUid": "{{props.subPanelContext.occContext.selectedModelObjects[0].uid}}",
+                        "productContextUid": "{{props.subPanelContext.occContext.productContextInfo.uid}}"
+                    },
+
+                    "searchFilterMap":
+                    {
+                    },
+                    "searchSortCriteria":
+                    [
+                    ],
+                    "attributesToInflate":
+                    [
+                    ],
+                    "internalPropertyName": ""
+                }
+            },
+            "outputData":
+            {
+                "effectivitiesFound": "searchResults",
+                "effectivitiesTotalFound": "totalFound"
+            },
+
+            "deps": "js/sharedEffectivityService"
+        },
+
+        "navigateToEditPanelAction": {
+            "actionType": "JSFunction",
+            "method": "updateValueOnCtxOrState",
+            "inputData": {
+                "path": "",
+                "value": {
+                    "previousView": "{{props.subPanelContext.sharedData.activeView}}",
+                    "activeView": "EditEffectivities"
+                },
+                "target": "{{props.subPanelContext.sharedData}}"
+            },
+            "deps": "js/occmgmtUtils"
+        },
+
+        "populateEditEffectivityPropertiesAction" :
+        {
+            "actionType": "JSFunction",
+            "method": "populateEditEffectivityProperties",
+            "deps": "js/editEffectivityCommandHandler",
+            "inputData": {
+                "vmo": "{{data.eventData}}",
+                "commandContext" : "{{props.subPanelContext.sharedData}}"
+            }
+        },
+
+        "pwaSelectionChangeBatchAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getSelectedElementAction",
+                    "condition": "props.subPanelContext.occContext.selectedModelObjects.length > 1"
+                }
+            ]
+        },
+
+        "setPreviousSelectedUid": {
+            "actionType": "JSFunction",
+            "method": "updateValueOnCtxOrState",
+            "inputData": {
+                "path": "",
+                "value": {
+                    "previousSelectionUid": "{{ctx.selected.uid}}"
+                },
+                "target": "{{props.subPanelContext.sharedData}}"
+            },
+            "deps": "js/occmgmtUtils"
+        },
+
+        "effectivityBatchJob": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setEffectivityTypeOncontext"
+                },
+                {
+                    "action": "getSelectedElementAction",
+                    "condition": "props.subPanelContext.occContext.selectedModelObjects.length > 1"
+                },
+                {
+                    "action": "setPreviousSelectedUid"
+                },
+                {
+                    "action": "getInitialDateEffectivityConfigurationData"
+                }
+            ]
+        },
+
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "condition": "conditions.isPwaSelectionChanged",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+
+        "getInitialDateEffectivityConfigurationData": {
+            "actionType": "JSFunction",
+            "method": "getInitialDateEffectivityConfigurationData",
+            "inputData": {
+                "data": "{{data}}",
+                "occContext": "{{props.subPanelContext.occContext}}",
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "outputData": {
+                "currentEffectiveDate": "currentEffectiveDate",
+                "isTimeEnabled": "isTimeEnabled",
+                "dateTimeFormat": "dateTimeFormat"
+            },
+            "deps": "js/aceEffectivityService"
+        },
+
+        "updateDateWidgetTypeAction": {
+            "actionType": "JSFunction",
+            "method": "updateDateWidgetType",
+            "inputData": {
+                "subPanelContext": "{{props.subPanelContext}}",
+                "data": "{{data}}"
+            },
+            "deps": "js/aceEffectivityService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "effectivityBatchJob",
+        "onUpdate": [ {
+            "action": "getAppliedEffectivitiesAction",
+            "observers": [ "props.subPanelContext.occContext.selectedModelObjects" ]
+        },
+        {
+            "action": "pwaSelectionChangeBatchAction",
+            "observers": [ "props.subPanelContext.occContext.selectedModelObjects" ]
+        },
+        {
+            "action": "updateDateWidgetTypeAction",
+            "observers": ["viewModel.data.isTimeEnabled"]
+        } ]
+    },
+    "onEvent": [
+        {
+            "eventId": "displayAndRemoveEffectivities.effectivitiesRemovedSuccessfully",
+            "action" : "getAppliedEffectivitiesAction"
+        },
+        {
+            "eventId": "removeEffectivitiesEvent",
+            "cacheEventData": true,
+            "action": "removeEffectivities"
+        },
+        {
+            "eventId": "navigateToEditPanel",
+            "cacheEventData": true,
+            "action": "navigateToEditPanelAction"
+        },
+        {
+            "eventId": "navigateToEditPanel",
+            "cacheEventData": true,
+            "action": "populateEditEffectivityPropertiesAction"
+        },
+        {
+            "eventId": "closePanelEvent",
+            "action": "closePanel"
+        }
+    ],
+
+     "messages":
+     {
+         "failedToRemoveEffectivityMessage":
+         {
+            "messageType": "INFO",
+            "messageText": "{{i18n.failedToRemoveEffectivity}}",
+            "messageTextParams":
+            [
+                "{{ctx.selected.props.awb0Name.dbValue}}"
+            ]
+         },
+         "succsessfullyRemoveEffectivityMessage":
+         {
+            "messageType": "INFO",
+            "messageText": "{{i18n.effectivityRemovedSuccessfully}}",
+            "messageTextParams":
+            [
+                "{{props.subPanelContext.occContext.selectedModelObjects.length}}"
+            ]
+         }
+     },
+     "conditions": {
+        "isSingleSelected":
+        {
+            "expression": "props.subPanelContext.occContext.selectedModelObjects.length === 1"
+        },
+        "isPwaSelectionChanged":
+        {
+            "expression": "data.occurrenceUnconfigured && data.occurrenceUnconfigured.includes(props.subPanelContext.occContext.selectedModelObjects[0].uid)"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

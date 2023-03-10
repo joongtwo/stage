@@ -1,0 +1,117 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+        "js/aw-panel.directive",
+        "js/aw-widget.directive"
+    ],
+
+    "actions":
+    {
+        "updateDataSource": {
+            "actionType": "JSFunction",
+            "method": "addHtmlPanelInDataSource",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "{{data.subPanelContext.xrtType}}",
+                "panelID": "Ctm1Civ0COM4DataModuleCode"
+            },
+            "deps": "js/addObjectUtils"
+        }
+    },
+
+    "data":
+    {
+        "revision__skdmodelic": {
+            "dbValue": "",
+            "displayName": "{{i18n.modelIdentification}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "requiredText": "A-Z 0-9 {2,14}",
+            "maxLength": "14"
+        },
+        "revision__skdsendid": {
+            "dbValue": "",
+            "displayName": "{{i18n.senderIdCode}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "maxLength": "5",
+            "requiredText": "A-Z 0-9 {5}"
+        },
+        "revision__skddiyear": {
+            "dbValue": "",
+            "displayName": "{{i18n.yearOfDataIssue}}",
+            "type": "NUMBER",
+            "isRequired": "true",
+            "isEditable": "true",
+            "maxLength": "4",
+            "requiredText": "0-9 {4}"
+        },
+        "revision__skdseqnum": {
+            "dbValue": "",
+            "displayName": "{{i18n.sequentialNumber}}",
+            "type": "NUMBER",
+            "isRequired": "true",
+            "isEditable": "true",
+            "maxLength": "5",
+            "requiredText": "0-9 {5}"
+        },
+        "revision__skdctype": {
+            "dbValue": "",
+            "displayName": "{{i18n.commentType}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "maxLength": "1",
+            "requiredText": "q, i, r"
+        }
+    },
+
+    "dataProviders":
+    {
+
+    },
+
+    "functions":
+    {
+    },
+
+    "lifecycleHooks": {
+        "onMount": "updateDataSource",
+        "onUpdate": {
+            "action": "updateDataSource",
+            "observers": [ "viewModel.data" ]
+        }
+    },
+
+    "onEvent":
+    [
+
+    ],
+
+    "conditions":
+    {
+
+    },
+
+    "preferences":
+    [
+
+    ],
+
+    "messages":
+    {
+
+    },
+
+    "i18n":
+    {
+        "modelIdentification": ["ContentMgmtMessages"],
+        "senderIdCode": ["ContentMgmtMessages"],
+        "yearOfDataIssue": ["ContentMgmtMessages"],
+        "sequentialNumber": ["ContentMgmtMessages"],
+        "commentType": ["ContentMgmtMessages"]
+    }
+}

@@ -1,0 +1,145 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "reveal": {
+            "actionType": "dataProvider",
+            "method": "getRevisionsProvider"
+        },
+        "getRevisionList": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "objects": [
+                    {
+                        "uid": "{{ctx.panelContext.targetObject.uid}}"
+                    },
+                    {
+                        "uid": "{{ctx.panelContext.targetObject.props.fnd0DeliverableInstance.dbValue}}"
+                    }
+                ],
+                "attributes": [
+                    "revision_list",
+                    "sch_task_deliverable_list",
+                    "fnd0DeliverableInstance",
+                    "SchTaskDeliverable"
+                ]
+            },
+            "outputData": {
+                "searchResult": "{{function:loadSchTaskDelRevisions}}"
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "soaFailureMessage"
+                    }
+                ]
+            },
+            "deps": "js/Saw1SchTaskDeliverableReplaceRevision"
+        },
+        "replaceSchTaskDelRevision": {
+            "actionType": "JSFunction",
+            "method": "replaceSchTaskDelRevision",
+            "inputData": {
+               "ctx": "{{ctx}}",
+               "data": "{{data}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "cdm.relatedModified",
+                        "eventData": {
+                            "relatedModified": [
+                                "{{ctx.panelContext.parentSelection}}"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "soaFailureMessage"
+                    }
+                ]
+            },
+            "deps": "js/Saw1SchTaskDeliverableReplaceRevision"
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "condition": "ctx.panelContext.targetObject.uid !== props.subPanelContext.selectionData.selected[0].uid",
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        }
+    },
+    "functions": {
+        "loadSchTaskDelRevisions": {
+            "functionName": "loadSchTaskDelRevisions",
+            "parameters": [
+                "{{ctx.panelContext.targetObject}}"
+            ]
+        }
+    },
+    "conditions": {
+        "isRevisionSelected": {
+            "expression": "data.dataProviders.getRevisionsProvider.selectedObjects.length > 0"
+        }
+    },
+    "onEvent": [  {
+            "eventId": "Saw1SchTaskDeliverableReplaceRevision.contentUnloaded",
+            "action": "unSubscribeEvent"
+        }
+    ],
+    "data": {
+        "outputData": {}
+    },
+    "dataProviders": {
+        "getRevisionsProvider": {
+            "action": "getRevisionList",
+            "response": "{{data.searchResult.revisions}}",
+            "totalFound": "{{data.searchResult.length}}",
+            "noResultsFound": "",
+            "selectionModelMode": "single"
+        }
+    },
+    "messages": {
+        "soaFailureMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": {
+            "action": "closePanel",
+            "observers": ["props.subPanelContext.selectionData.selected[0].uid"]
+        }
+    },
+    "i18n": {
+        "saw1ReplaceRevisionCommandTitle": [
+            "ScheduleManagerMessages"
+        ],
+        "saw1Revisions": [
+            "ScheduleManagerMessages"
+        ],
+        "saw1Replace": [
+            "ScheduleManagerMessages"
+        ],
+        "zeroSearchResults": [
+            "ScheduleManagerMessages"
+        ]
+    }
+}

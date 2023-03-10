@@ -1,0 +1,41 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "render": {
+            "method": "occTypePickerRenderFunction",
+            "deps": "js/occurrenceTypesService"
+        },
+        "loadOccTypes": {
+            "actionType": "JSFunction",
+            "method": "loadOccTypes",
+            "inputData": {
+                "vmo": "{{props.vmo}}"
+            },
+            "outputData": {
+                "occTypes": "searchResults",
+                "moreValuesExist": "moreValuesExist"
+            },
+            "deps": "js/occurrenceTypesService"
+        }
+    },
+    "data": {},
+    "conditions": {},
+    "onEvent": [],
+    "dataProviders": {
+        "occTypesDataProvider": {
+            "action": "loadOccTypes",
+            "response": "{{data.occTypes}}",
+            "moreValuesExist": "{{data.moreValuesExist}}"
+        }
+    },
+    "lifecycleHooks": {
+        "render": "render"
+    },
+    "props": {
+        "prop": {
+            "type": "field"
+        }
+    },
+    "i18n": {}
+}

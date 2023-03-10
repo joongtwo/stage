@@ -1,0 +1,34 @@
+{
+    "schemaVersion": "1.0.0",
+     "ports": {
+        "EpValidationMessage_inputObject": {
+            "onChangeAction": "setInputObject",
+            "syncObject": {}
+        }
+    },
+    "actions": {
+        "setInputObject": {
+            "actionType": "JSFunction",
+            "method": "setInputObject",
+            "inputData": {
+                "value": "{{ports.EpValidationMessage_inputObject.syncObject}}"
+            },
+            "outputData": {
+                "inputObject": ""
+            },
+            "deps": "js/epValidationTableService"
+        }
+    },
+    "data": {
+        "messages": {
+            "runValidationsMessage": [ {
+                "text": "{{i18n.runValidationsMessage}}",
+                "iconId": "cmdPlay"
+            } ]
+        },
+        "inputObject": ""
+    },
+    "i18n": {
+        "runValidationsMessage": [ "epValidationMessages" ]
+    }
+}

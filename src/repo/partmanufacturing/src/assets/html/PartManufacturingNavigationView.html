@@ -1,0 +1,15 @@
+<aw-show-object-page header-title="subPanelContext.showObjectContext.displayName" browser-sub-title="subPanelContext.showObjectContext.displayName">
+    <aw-show-object-header headerVMO="subPanelContext.openedObject"
+        header-data="subPanelContext.headerData"
+        header-props="subPanelContext.showObjectContext.xrtViewModel.data._headers">
+        <object-nav-breadcrumb sub-panel-context="{baseSelection:data._sublocation && data._sublocation.baseSelection ? data._sublocation.baseSelection : subPanelContext.openedObject}"
+            obj-nav-state="data.objNavState">
+        </object-nav-breadcrumb>
+        <aw-global-search></aw-global-search>
+        <aw-logo></aw-logo>
+    </aw-show-object-header>
+    <aw-tab-container tab-container-model="subPanelContext.showObjectContext.subLocationTabs"
+        callback="subPanelContext.showObjectContext.api" tab-set-id="primary">
+    </aw-tab-container>
+    <aw-standard-sublocation sub-panel-context="{attachmentsState: data.attachmentsState}" search-state="data.resourcesState" provider="data._sublocation" base-selection="subPanelContext.openedObject"></aw-standard-sublocation>
+</aw-show-object-page>

@@ -1,0 +1,332 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "swiVisibilityChangePort": {
+            "syncObject": {
+                "id": "unknown",
+                "show": false
+            }
+        },
+        "listenSwiViewersId": {
+            "syncObject": {},
+            "onChangeAction": "listenSwiViewersActionBatchJob"
+        }
+    },
+    "data": {
+        "visContext": {},
+        "swiViewerContext": {
+            "tabs": [
+                {
+                    "name": "{{i18n.graphicsTitle}}",
+                    "tabKey": "SwiGraphics"
+                }
+            ]
+        },
+        "_awSubLocationPref": {
+            "hideRightWall": true
+        },
+        "instructionsContext": {
+            "sharedCommandAnchor": "swiInstructions",
+            "tabs": [
+                {
+                    "autoSelectTabOnLoad": true,
+                    "displayTab": true,
+                    "name": "{{i18n.instructionsTitle}}",
+                    "pageId": "Swi_Instructions",
+                    "tabKey": "Swi_Instructions",
+                    "viewId": "Swi_Instructions",
+                    "viewName": "SwiInstructions",
+                    "workareaName": "topLeftPanelTabs",
+                    "viewMode": {
+                        "name": "SwiInstructions"
+                    }
+                }
+            ]
+        },
+        "partsToolsSkillsContext": {
+            "sharedCommandAnchor": "swiPartsToolsSKills",
+            "tabs": [
+                {
+                    "displayTab": true,
+                    "name": "{{i18n.partsTitle}}",
+                    "pageId": "Swi_Parts",
+                    "tabKey": "Swi_Parts",
+                    "viewId": "SwiParts",
+                    "viewName": "SwiParts",
+                    "workareaName": "bottomLeftPanelTabs",
+                    "viewMode": {
+                        "name": "SwiParts"
+                    }
+                },
+                {
+                    "displayTab": true,
+                    "name": "{{i18n.toolsTitle}}",
+                    "pageId": "Swi_Tools",
+                    "tabKey": "Swi_Tools",
+                    "viewId": "Swi_Tools",
+                    "viewName": "SwiTools",
+                    "workareaName": "bottomLeftPanelTabs",
+                    "viewMode": {
+                        "name": "SwiTools"
+                    }
+                },
+                {
+                    "displayTab": true,
+                    "name": "{{i18n.skillsTitle}}",
+                    "pageId": "Swi_Skills",
+                    "tabKey": "Swi_Skills",
+                    "viewId": "Swi_Skills",
+                    "viewName": "SwiSkills",
+                    "workareaName": "bottomLeftPanelTabs",
+                    "viewMode": {
+                        "name": "Swi_Skills"
+                    }
+                }
+            ]
+        },
+        "swiAtomicData": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "ctx": {
+        "swiContext": null
+    },
+    "actions": {
+        "initializeAction": {
+            "actionType": "JSFunction",
+            "method": "initialize",
+            "outputData": {
+                "modelObject": "modelObject"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "initializeSOAEvent"
+                    }
+                ]
+            },
+            "deps": "js/swiService"
+        },
+        "initializeSOA": {
+            "actionType": "TcSoaService",
+            "serviceName": "svcworkinstructionsaw-2021-06-SvcWorkInstructionsAw",
+            "method": "getServiceWorkInstructions2",
+            "inputData": {
+                "input": [
+                    {
+                        "uid": "{{ctx.swiContext.uid}}",
+                        "object_type": "{{ctx.swiContext.type}}"
+                    }
+                ]
+            },
+            "events":
+            {
+                "failure":[
+                    {
+                        "name": "swi.showPartialErrors"
+                    }
+                ]
+            },
+            "policy": {
+                "types": [ {
+                        "name": "SSP0FrequencyRevision",
+                        "properties": [ {
+                            "name": "ssp0FrequencyExpression"
+                        } ]
+                }
+            ]
+        },
+            "outputData": {
+                "instructionsContext.swiItemsList": "output[0].swiItems",
+                "instructionsContext.ServiceData": "ServiceData",
+                "instructionsContext.relatedObjects":"output[0].relatedObjects"
+            }
+        },
+        "showPartialErrors":{
+            "actionType": "JSFunction",
+            "method": "showPartialErrors",
+            "inputData": {
+                "ServiceData": "{{data.ServiceData}}"
+            },
+            "deps": "js/swiService"
+        },
+        "initializeLoadObjects": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-09-DataManagement",
+            "method": "loadObjects",
+            "inputData": {
+                "uids": [
+                    "{{ctx.state.params.uid}}"
+                ]
+            },"policy": {
+                "types": [
+                    {
+                        "name": "SSP0ServiceReq",
+                        "properties": [
+                            {
+                                "name": "object_desc",
+                                "modifiers": [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            }
+                        ]
+                    },{
+                        "name": "SSP0ServiceReqRevision",
+                        "properties": [
+                            {
+                                "name": "object_desc",
+                                "modifiers": [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            },{
+                                "name": "items_tag",
+                                "modifiers": [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            }
+                        ]
+                    },{
+                        "name": "SSP0BvrServiceRequirement",
+                        "properties": [
+                            {
+                                "name": "bl_item_object_desc",
+                                "modifiers": [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            },{
+                                "name": "bl_item_object_name",
+                                "modifiers": [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            },{
+                                "name": "bl_item",
+                                "modifiers": [
+                                    {
+                                        "name": "withProperties",
+                                        "Value": "true"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "initializeEvent"
+                    }
+                ]
+            }
+        },
+        "listenSwiViewersActionBatchJob": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "listenSwiViewersAction"
+                },
+                {
+                    "action": "loadGraphics"
+                }
+            ]
+        },
+        "loadGraphics": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "swiVisibilityChangePort",
+                "syncObject": {
+                    "id": "{{ctx.state.params.uid}}",
+                    "show": true,
+                    "options": {
+                        "idSchemaType": "object_uid"
+                    }
+                }
+            }
+        },
+        "listenSwiViewersAction": {
+            "actionType": "JSFunction",
+            "method": "updateVisViewerInstanceId",
+            "inputData": {
+                "syncObject": "{{ports.listenSwiViewersId.syncObject}}",
+                "data": "{{data}}",
+                "viewerId": "SwiViewer"
+            },
+            "deps": "js/swiVisViewerUtilityService"
+        }
+    },
+    "conditions": {},
+    "onEvent": [
+        {
+            "eventId": "initializeSOAEvent",
+            "action": "initializeSOA"
+        },
+        {
+            "eventId": "initializeEvent",
+            "action": "initializeAction"
+        },
+        {
+            "eventId":"swi.showPartialErrors",
+            "action": "showPartialErrors"
+        }
+    ],
+    "lifecycleHooks": {
+        "onInit": "initializeLoadObjects"
+    },
+    "functions": {
+        "initialize": {
+            "functionName": "initialize",
+            "parameters": []
+        }
+    },
+    "messages": {},
+    "i18n": {
+        "graphicsTitle": [
+            "swiMessages"
+        ],
+        "nextStepName": [
+            "swiMessages"
+        ],
+        "previousStepName": [
+            "swiMessages"
+        ],
+        "instructionsTitle": [
+            "swiMessages"
+        ],
+        "partsTitle": [
+            "swiMessages"
+        ],
+        "toolsTitle": [
+            "swiMessages"
+        ],
+        "skillsTitle": [
+            "swiMessages"
+        ]
+    }
+}

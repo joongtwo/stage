@@ -1,0 +1,15 @@
+<div id="ewi-cortona-instructions-viewer" >
+    <div class="aw-workinstr-contentPanelStyle aw-ewi-cortonaWorkInstructionViewerStyle" visible-when="valuesStrings && valuesStrings.length > 0">
+        <div class="aw-widgets-propertyContainer" ng-repeat="title in titlesStrings">
+            <p class="aw-widgets-propertyLabel aw-widgets-propertyLabelTop" visible-when="title!==''">{{title}}:&nbsp;</p>
+            <p class="aw-widgets-propertyNonEditValue">{{valuesStrings[$index]}}</p>
+        </div>
+    </div>
+
+    <div class="aw-ewi-workInstructionViewerStyle aw-workinstr-contentPanelStyle" visible-when="wiStrings && wiStrings.length > 0">
+        <div class="aw-ewi-workInstructionStyle" ng-repeat="wiStr in wiStrings">
+            <p visible-when="wiStr!==''">{{wiStr}}</p>
+        </div>
+    </div>
+</div>
+

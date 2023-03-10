@@ -1,0 +1,678 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "selectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "ganttChartState": {
+            "initialValues": {
+                "zoomLevels": [ "year", "month", "quarter", "week", "day" ]
+            },
+            "meta": {}
+        }
+    },
+    "actions": {
+        "initializePlanTimeline": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "initializeTimelineChartState"
+                },
+                {
+                    "action": "subscribeEventsForTimeline"
+                }
+            ]
+        },
+        "initializeTimelineChartState": {
+            "actionType": "JSFunction",
+            "method": "initializeTimelineChartState",
+            "inputData": {
+                "schedule": "{{props.schedule}}",
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "outputData": {
+                "isTimelineChartStateInited": "isTimelineChartStateInited",
+                "timelineDataService": "timelineDataService"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "updateParentSelection": {
+            "actionType": "JSFunction",
+            "method": "updateParentSelection",
+            "inputData": {
+                "localSelectionData": "{{data.selectionData}}",
+                "parentSelectionData": "{{props.selectionData}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "updateLocalSelection": {
+            "actionType": "JSFunction",
+            "method": "updateLocalSelection",
+            "inputData": {
+                "localSelectionData": "{{data.selectionData}}",
+                "parentSelectionData": "{{props.selectionData}}",
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "pushInitialDataToTimeline": {
+            "actionType": "JSFunction",
+            "method": "pushInitialDataToTimeline",
+            "inputData": {
+                "timelineDataService": "{{data.timelineDataService}}",
+                "treeTableData": "{{props.subPanelContext.treeTableData}}",
+                "timelineData": "{{props.subPanelContext.timelineData}}",
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "outputData": {
+                "isTimelineDataInited": "isTimelineDataInited"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "subscribeEventsForTimeline": {
+            "actionType": "JSFunction",
+            "method": "subscribeEvents",
+            "inputData": {
+                "timelineDataService": "{{data.timelineDataService}}",
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "outputData": {
+                "eventSubscriptions": "eventSubscriptions"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "pushEventsToTimeline": {
+            "actionType": "JSFunction",
+            "method": "pushEventsToTimeline",
+            "inputData": {
+                "timelineData": "{{props.subPanelContext.timelineData}}",
+                "atomicDataRef": "{{data.atomicDataRef}}",
+                "timelineDataService": "{{data.timelineDataService}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "setZoomLevel": {
+            "actionType": "JSFunction",
+            "method": "setZoomLevel",
+            "inputData": {
+                "zoomLevel": "{{ctx.preferences.AWC_Timeline_Zoom_Level[0]}}",
+                "atomicDataRef": "{{data.atomicDataRef}}",
+                "planObject": "{{props.plan}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "checkForDependentEvents": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "objects": "{{data.eventData.eventObjects}}",
+                "attributes": [
+                    "Prg0EventDependencyRel"
+                ]
+            },
+            "events": {
+                "success": [ {
+                        "condition": "data.eventMap[planTimeline.eventsDragged].eventObjects[0].props.Prg0EventDependencyRel.dbValues.length > 0",
+                        "name": "showEventDragErrorMsg",
+                        "eventData": {
+                            "updateTaskInfo": "{{data.eventMap[planTimeline.eventsDragged]}}"
+                        }
+                    },
+                    {
+                        "name": "callMoveEventSOAEvent",
+                        "eventData": {
+                            "updateTaskInfo": "{{data.eventMap[planTimeline.eventsDragged]}}"
+                        }
+                    }
+                ]
+            }
+        },
+        "callMoveEventSOA": {
+            "actionType": "TcSoaService",
+            "serviceName": "ProgramInfra-2021-12-ProgramManagement",
+            "method": "moveEvents",
+            "inputData": {
+                "events": "{{data.eventData.eventObjects}}",
+                "newEventDate": "{{function:formatNewPlannedDate}}",
+                "updateSecondaryEvents": "{{data.eventData.updateSecondaryEvents}}",
+                "runInBackground": false
+            },
+            "events": {
+                "failure": [ {
+                    "name": "cdm.updated",
+                    "eventData": {
+                        "updatedObjects": "{{data.eventData.eventObjects}}"
+                    }
+                } ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "SOAFailureMessage"
+                } ]
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "callSetPropertiesSOA": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2010-09-DataManagement",
+            "method": "setProperties",
+            "inputData": {
+                "info": [ {
+                    "object": "{{data.eventData.event}}",
+                    "vecNameVal": [ {
+                        "name": "prg0PlannedDate",
+                        "values": [
+                            "{{function:formatPlannedDateForEvent}}"
+                        ]
+                    } ]
+                } ]
+            },
+            "events": {
+                "failure": [ {
+                    "name": "cdm.updated",
+                    "eventData": {
+                        "updatedObjects": [ "{{data.eventData.event}}" ]
+                    }
+                } ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "SOAFailureMessage"
+                } ]
+            },
+            "deps": "js/TimelineUtils"
+        },
+        "createEventDependency": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "createRelations",
+            "inputData": {
+                "input": [ {
+                    "primaryObject": "{{data.eventMap.createEventDependency.succTask}}",
+                    "secondaryObject": "{{data.eventMap.createEventDependency.predTask}}",
+                    "relationType": "Prg0EventDependencyRel",
+                    "clientId": ""
+                } ]
+            },
+            "outputData": {
+                "createdEventDepSD": "ServiceData",
+                "eventDependencyObj": "output[0].relation"
+            },
+            "events": {
+                "success": [ {
+                    "name": "createEventDependencySuccess"
+                } ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "SOAFailureMessage"
+                } ]
+            }
+        },
+        "createEventDependencyObject": {
+            "actionType": "JSFunction",
+            "method": "createEventDependency",
+            "inputData": {
+                "predecessorEvent": "{{data.eventMap.createEventDependency.predTask.uid}}",
+                "successorEvent": "{{data.createdEventDepSD.updated[0]}}",
+                "dependencyUid": "{{data.eventDependencyObj.uid}}",
+                "timelineDataService": "{{data.timelineDataService}}",
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "toggleEventDependenciesDisplay": {
+            "actionType": "JSFunction",
+            "method": "toggleEventDependenciesDisplay",
+            "inputData": {
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "fetchEventDependencies": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-09-DataManagement",
+            "method": "expandGRMRelationsForPrimary",
+            "inputData": {
+                "primaryObjects": "{{data.eventData}}",
+                "pref": {
+                    "expItemRev": false,
+                    "returnRelations": true,
+                    "info": [ {
+                        "relationTypeName": "Prg0EventDependencyRel"
+                    } ]
+                }
+            },
+            "outputData": {
+                "eventDependencies": "{{function:prepareEventDepsForTimeline}}"
+            },
+            "policy": {
+                "types": [ {
+                    "name": "Prg0EventDependencyRel",
+                    "properties": [ {
+                            "name": "primary_object",
+                            "modifiers": [ {
+                                "name": "withProperties",
+                                "Value": "true"
+                            } ]
+                        },
+                        {
+                            "name": "secondary_object",
+                            "modifiers": [ {
+                                "name": "withProperties",
+                                "Value": "true"
+                            } ]
+                        }
+                    ]
+                } ]
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "confirmDeleteOfEventDependency": {
+            "actionType": "JSFunction",
+            "method": "confirmDeleteOfEventDependency",
+            "inputData": {
+                "dependency": "{{data.eventData}}",
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "deleteEventDependency": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "deleteObjects",
+            "inputData": {
+                "objects": {
+                    "$adapt": "{{props.selectionData.selected}}"
+                }
+            },
+            "events": {
+                "success": [ {
+                    "name": "planNavigationTree.dependenciesDeleted",
+                    "eventData": {
+                        "dependenciesInfo": "{{props.selectionData.selected}}"
+                    }
+                } ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "SOAFailureMessage"
+                } ]
+            }
+        },
+        "selectObjectOnTimeline": {
+            "actionType": "JSFunction",
+            "method": "selectObjectOnTimeline",
+            "inputData": {
+                "dependency": "{{data.eventData.eventUidToSelect}}",
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "readColorProperty": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "getEventsFromTimeline"
+                },
+                {
+                    "action": "getColorProperty"
+                }
+            ]
+        },
+        "getEventsFromTimeline": {
+            "actionType": "JSFunction",
+            "method": "getEventsFromTimeline",
+            "inputData": {
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "outputData": {
+                "eventsInTimeline": ""
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "getColorProperty": {
+            "actionType": "JSFunctionAsync",
+            "method": "getPropertiesUnchecked",
+            "inputData": {
+                "eventsInTimeline": "{{data.eventsInTimeline}}",
+                "properties": [ "pgp0EventColor" ]
+            },
+            "events": {
+                "success": [ {
+                    "name": "planTimelineChart.updateTimelineEvents",
+                    "eventData": {
+                        "eventsInTimeline": "{{data.eventsInTimeline}}"
+                    }
+                } ]
+            },
+            "deps": "soa/dataManagementService"
+        },
+        "updateTimelineEvents": {
+            "actionType": "JSFunctionAsync",
+            "method": "updateTimelineEvents",
+            "inputData": {
+                "eventsInTimeline": "{{data.eventsInTimeline}}",
+                "atomicDataRef": "{{data.atomicDataRef}}",
+                "timelineDataService": "{{data.timelineDataService}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "addEventsInTimeline": {
+            "actionType": "JSFunction",
+            "method": "onEventsAdded",
+            "inputData": {
+                "eventsInTimeline": "{{data.eventData}}",
+                "timelineDataService": "{{data.timelineDataService}}",
+                "atomicDataRef": "{{data.atomicDataRef}}",
+                "parentSelection": "{{props.selectionData}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "onMilestonesAdded": {
+            "actionType": "JSFunction",
+            "method": "onMilestonesAdded",
+            "inputData": {
+                "eventsInTimeline": "{{data.eventData}}",
+                "timelineDataService": "{{data.timelineDataService}}",
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "removeMilestonesForPlans": {
+            "actionType": "JSFunction",
+            "method": "removeMilestonesForPlans",
+            "inputData": {
+                "eventsInTimeline": "{{data.eventData}}",
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "destroyPlanTimeline": {
+            "actionType": "JSFunction",
+            "method": "unsubscribeEvents",
+            "inputData": {
+                "eventSubscriptions": "{{data.eventSubscriptions}}"
+            },
+            "outputData": {
+                "eventSubscriptions": "eventSubscriptions"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "toggleEventInfo": {
+            "actionType": "JSFunction",
+            "method": "showHideEventInfo",
+            "inputData": {
+                "atomicDataRef": "{{data.atomicDataRef}}",
+                "showOrHideInfo": "{{ctx.showEventProperties}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "hideAllMilestones": {
+            "actionType": "JSFunction",
+            "method": "hideAllMilestones",
+            "inputData": {
+                "dataProvider": "{{subPanelContext.treeTableData.rootNode}}",
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "showAllMilestones": {
+            "actionType": "JSFunction",
+            "method": "showAllMilestones",
+            "inputData": {
+                "dataProvider": "{{subPanelContext.treeTableData.rootNode}}",
+                "timelineData": "{{subPanelContext.planNavigationContext}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "updateTimelineRowHeight": {
+            "actionType": "JSFunction",
+            "method": "updateTimelineRowHeight",
+            "inputData": {
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "deps": "js/Pgp0PlanTimelineLayoutService"
+        },
+        "scrollToDateInTimeline": {
+            "actionType": "JSFunction",
+            "method": "scrollToDateInTimeline",
+            "inputData": {
+                "dateString": "{{data.eventData.dateString}}",
+                "isToday": "{{data.eventData.isToday}}",
+                "i18n": "{{data.i18n}}",
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        },
+        "updateTimelineZoomLevelPref": {
+            "actionType": "JSFunction",
+            "method": "updateTimelineZoomLevelPref",
+            "inputData": {
+                "prefValue": "{{ctx.preferences.AWC_Timeline_Zoom_Level[0]}}",
+                "schedule": "{{props.schedule}}",
+                "newZoomLevel": "{{data.ganttChartState.zoomLevel}}"
+            },
+            "deps": "js/Pgp0PlanTimelineChartService"
+        }
+    },
+    "conditions": {
+        "isTimelineChartStateInited": {
+            "expression": "data.isTimelineChartStateInited"
+        },
+        "pgp0IsTCVersion133OrLater": {
+            "expression": "(ctx.tcSessionData.tcMajorVersion > 13 || (ctx.tcSessionData.tcMajorVersion === 13 && ctx.tcSessionData.tcMinorVersion >= 3))"
+        },
+        "pgp0IsLessThanTC133": {
+            "expression": "(ctx.tcSessionData.tcMajorVersion < 13 || (ctx.tcSessionData.tcMajorVersion === 13 && ctx.tcSessionData.tcMinorVersion <= 2))"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initializePlanTimeline",
+        "onUnmount": "destroyPlanTimeline",
+        "onUpdate": [ {
+                "action": "updateParentSelection",
+                "observers": [ "viewModel.atomicData.selectionData" ]
+            },
+            {
+                "action": "updateLocalSelection",
+                "observers": [ "props.selectionData" ]
+            },
+            {
+                "action": "pushInitialDataToTimeline",
+                "observers": [ "viewModel.atomicData.ganttChartState.ganttInitialized" ]
+            },
+            {
+                "action": "pushEventsToTimeline",
+                "observers": [ "props.subPanelContext.timelineData" ]
+            },
+            {
+                "action": "updateTimelineZoomLevelPref",
+                "observers": [ "viewModel.atomicData.ganttChartState.zoomLevel" ]
+            }
+        ]
+    },
+    "functions": {
+        "formatNewPlannedDate": {
+            "functionName": "formatNewPlannedDate",
+            "parameters": [
+                "{{data.eventData.updates}}"
+            ]
+        },
+        "prepareEventDepsForTimeline": {
+            "functionName": "prepareEventDepsForTimeline",
+            "parameters": [
+                "{{data.atomicDataRef}}",
+                "{{data.timelineDataService}}"
+            ]
+        }
+    },
+    "ctx": {
+        "showEventProperties": null
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "plan": {
+            "type": "object"
+        },
+        "tree-action-state": {
+            "type": "object"
+        },
+        "selection-data": {
+            "type": "object"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "appCtx.update",
+            "criteria": {
+                "name": "preferences",
+                "target": "AWC_Timeline_Zoom_Level"
+            },
+            "action": "setZoomLevel"
+        },
+        {
+            "eventId": "appCtx.update",
+            "criteria": {
+                "name": "showEventProperties"
+            },
+            "action": "toggleEventInfo"
+        },
+        {
+            "eventId": "planTimeline.eventsDragged",
+            "cacheEventData": true,
+            "condition": "conditions.pgp0IsTCVersion133OrLater",
+            "action": "checkForDependentEvents"
+        },
+        {
+            "eventId": "planTimeline.eventsDragged",
+            "cacheEventData": true,
+            "action": "callSetPropertiesSOA",
+            "condition": "conditions.pgp0IsLessThanTC133"
+        },
+        {
+            "eventId": "callMoveEventSOAEvent",
+            "action": "callMoveEventSOA"
+        },
+        {
+            "eventId": "createEventDependency",
+            "cacheEventData": true,
+            "action": "createEventDependency"
+        },
+        {
+            "eventId": "createEventDependencySuccess",
+            "cacheEventData": true,
+            "action": "createEventDependencyObject"
+        },
+        {
+            "eventId": "toggleEventDependenciesDisplay",
+            "cacheEventData": true,
+            "action": "toggleEventDependenciesDisplay"
+        },
+        {
+            "eventId": "fetchEventDependencies",
+            "cacheEventData": true,
+            "action": "fetchEventDependencies"
+        },
+        {
+            "eventId": "planTimelineChart.confirmDeleteOfEventDependency",
+            "cacheEventData": true,
+            "action": "confirmDeleteOfEventDependency"
+        },
+        {
+            "eventId": "deleteEventConfirmationMessage",
+            "cacheEventData": true,
+            "message": "deleteEventConfirmationMessage"
+        },
+        {
+            "eventId": "planTimelineChart.selectEventOnTimeline",
+            "cacheEventData": true,
+            "action": "selectObjectOnTimeline"
+        },
+        {
+            "eventId": "planTimelineChart.getEventsAndUpdateColorProperty",
+            "action": "readColorProperty"
+        },
+        {
+            "eventId": "planTimelineChart.updateTimelineEvents",
+            "cacheEventData": true,
+            "action": "updateTimelineEvents"
+        },
+        {
+            "eventId": "planNavigationTree.eventsAdded",
+            "cacheEventData": true,
+            "action": "addEventsInTimeline"
+        },
+        {
+            "eventId": "planTimelineChart.milestonesAdded",
+            "cacheEventData": true,
+            "action": "onMilestonesAdded"
+        },
+        {
+            "eventId": "planTimelineChart.hideMilestones",
+            "cacheEventData": true,
+            "action": "removeMilestonesForPlans"
+        },
+        {
+            "eventId": "planTimelineChart.hideAllMilestones",
+            "action": "hideAllMilestones"
+        },
+        {
+            "eventId": "planTimelineChart.showAllMilestones",
+            "action": "showAllMilestones"
+        },
+        {
+            "eventId": "LayoutChangeEvent",
+            "action": "updateTimelineRowHeight",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "scrollToDateInTimeline",
+            "action": "scrollToDateInTimeline",
+            "cacheEventData": true
+        }
+    ],
+    "messages": {
+        "SOAFailureMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        },
+        "deleteEventConfirmationMessage": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.removeEventDependencyMessageConfirmation}}",
+            "messageTextParams": [
+                "{{data.eventMap.deleteEventConfirmationMessage.secondaryEventName}}",
+                "{{data.eventMap.deleteEventConfirmationMessage.primaryEventName}}"
+            ],
+            "navigationOptions": [ {
+                    "option": "Cancel",
+                    "text": "{{i18n.cancelOptionText}}",
+                    "action": ""
+                },
+                {
+                    "option": "Delete",
+                    "text": "{{i18n.DeleteCommandTitle}}",
+                    "action": "deleteEventDependency"
+                }
+            ]
+        }
+    },
+    "i18n": {
+        "removeEventDependencyMessageConfirmation": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "DeleteCommandTitle": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "cancelOptionText": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0GoToOutOfBoundAfter": [
+            "ProgramPlanningCommandPanelsMessages"
+        ],
+        "Pgp0GoToOutOfBoundBefore": [
+            "ProgramPlanningCommandPanelsMessages"
+        ]
+    }
+}

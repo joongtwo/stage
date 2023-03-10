@@ -1,0 +1,562 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "ports": {
+        "EpDetailsArea_inputObjects": {
+            "onChangeAction": "handleInputToEpDetailsArea",
+            "syncObject": {}
+        },
+        "EpDetailsArea_updateTabContentCountPort": {
+            "onChangeAction": "updateTabContentCountData",
+            "syncObject": {}
+        }
+
+    },
+    "props":{
+        "occ-context":{
+            "type": "object"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+     },
+    "data": {
+        "contentPanelData": {
+            "tabs": [ {
+                    "name": "{{i18n.partTitle}}",
+                    "tabKey": "WiPartsTable",
+                    "loadInputObject": {
+                        "propertiesToLoad": [ "Mfg0all_material" ]
+                    },
+                    "occContext":"{{props.occContext}}"
+                },
+                {
+                    "name": "{{i18n.resourcesTitle}}",
+                    "tabKey": "WiResourcesTable",
+                    "loadInputObject": {
+                        "propertiesToLoad": [ "Mfg0used_equipment" ]
+                    },
+                    "occContext":"{{props.occContext}}"
+                },
+                {
+                    "name": "{{i18n.workareaTitle}}",
+                    "tabKey": "EpWorkareaTable",
+                    "loadInputObject": {
+                        "propertiesToLoad": [ "Mfg0assigned_workarea" ]
+                    }
+                },
+                {
+                    "name": "{{i18n.summaryTitle}}",
+                    "tabKey": "EpInformation",
+                    "xrtType": "SUMMARY",
+                    "noElementSelectedMessageForXRT": [{
+                        "text": "{{i18n.epInformationNoSelectionMessage}}"
+                    }]
+                },
+                {
+                    "name": "{{i18n.filesTitle}}",
+                    "tabKey": "EpFiles",
+                    "xrtType": "SUMMARY",
+                    "loadInputObject": {
+                        "propertiesToLoad": [ "mbc0AttachedFiles" ]
+                    },
+                    "occContext":"{{props.occContext}}"
+                },
+                {
+                    "name": "{{i18n.documentsTitle}}",
+                    "tabKey": "EpDocuments",
+                    "xrtType": "SUMMARY",
+                    "loadInputObject": {
+                        "loadTypes": [ "GetWeblinks" ],
+                        "propertiesToLoad": [ "mbc0AssignedDocuments" ],
+                        "loadedObjectMapKeys": [ "WebLink" ]
+                    }
+                },
+                {
+                    "name": "{{i18n.externalFlowsTitle}}",
+                    "namePrefix": "{{i18n.externalFlowsTitle}}",
+                    "tabKey": "EpExternalFlows",
+                    "loadInputObject": {
+                        "loadTypes": [
+                            "GetScopeFlows"
+                        ],
+                        "relatedObjectMapKey": [
+                            "ExternalPredecessors",
+                            "ExternalSuccessors"
+                        ]
+                    }
+                },
+                {
+                    "name": "{{i18n.assignedPmisTitle}}",
+                    "tabKey": "WiAssignedPmiTable",
+                    "loadInputObject": {
+                        "propertiesToLoad": [ "epw0Inspections" ]
+                    },
+                    "showWhen":{
+                        "condition": "conditions.isOnWIPage"
+                    }
+                },
+                {
+                    "name": "{{i18n.inspectionTitle}}",
+                    "tabKey": "EpInspectionDefinitionsTable",
+                    "loadTypes": [ "GetInspectionDefinition" ],
+                    "relatedObjectMapKey": [ "InspectionDefinitions" ],
+                    "loadInputObject": {
+                        "loadTypes": [ "GetInspectionDefinition" ],
+                        "relatedObjectMapKey": [
+                            "InspectionDefinitions"
+                        ]
+                    }
+                },
+                {
+                    "name": "{{i18n.dcdsTitle}}",
+                    "tabKey": "EpDCDsTable",
+                    "loadInputObject": {
+                        "propertiesToLoad": [ "mes0DCDNodes" ]
+                    }
+                }
+            ],
+            "cmdDisplayOption": "menu",
+            "tabSetId": "EpDetailsAreaTabSet"
+        }
+    },
+
+    "actions": {
+        "updateTabContentCountData": {
+            "actionType": "JSFunction",
+            "method": "setLabelOnTab",
+            "inputData": {
+                "contentPanelData":"{{data.contentPanelData}}",
+                "tabKey":"{{ports.EpDetailsArea_updateTabContentCountPort.syncObject.tabKey}}",
+                "name":"{{ports.EpDetailsArea_updateTabContentCountPort.syncObject.tabName}}",
+                "namePrefix":"{{ports.EpDetailsArea_updateTabContentCountPort.syncObject.namePrefix}}"
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "initDisplayNameWithQuantityData": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getListOfTabsToDisplayNameWithQuantity"
+                },
+                {
+                    "action": "getAllPropertiesToLoad"
+                },
+                {
+                    "action": "updateVisibleTabs"
+                }
+
+            ]
+        },
+        "selectExternalFlowsTab": {
+            "actionType": "JSFunctionAsync",
+            "method": "changeTab",
+            "inputData": {
+                "0": "EpDetailsAreaTabSet",
+                "1": "EpExternalFlows"
+            },
+            "deps": "js/tabRegistry.service"
+        },
+        "getListOfTabsToDisplayNameWithQuantity": {
+            "actionType": "JSFunction",
+            "method": "getListOfTabsToDisplayNameWithQuantity",
+            "inputData": {
+                "tabsData": "{{data.contentPanelData}}"
+            },
+            "deps": "js/epTabsService"
+        },
+
+        "getAllPropertiesToLoad": {
+            "actionType": "JSFunction",
+            "method": "getAllPropertiesToLoad",
+            "inputData": {
+                "tabsData": "{{data.contentPanelData}}"
+            },
+            "deps": "js/epTabsService"
+        },
+
+        "handleInputToEpDetailsArea": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getSingleInputObj"
+                },
+                {
+                    "action": "calculateContentCountForEachTab",
+                    "condition": "conditions.isInputObjectUpdated"
+                },
+                {
+                    "action": "getChangeIndicationDataOnInputChange"
+
+                },
+                {
+                    "action": "setChangeIndicationIconVisibility",
+                    "condition" : "data.affectedUIds !== '' && subPanelContext.sharedSelectionData.isIndicationToggleOn === true && ctx.state.params.tracking_cn !== null"
+
+                },
+                {
+                    "action": "resetChangeIndicationIconVisibility",
+                    "condition" : "data.affectedUIds === '' && ctx.state.params.tracking_cn !== null"
+
+                },
+                 {
+                    "action": "calculatePmiMissingInSrcIconVisibility"
+                },
+                {
+                    "action": "setIconOnPmiTab"
+                },
+                {
+                    "action": "calculateImpactedPmiIconVisibility"
+                },
+                {
+                    "action": "setImpactedIconOnPmiTab",
+                    "condition" : "data.hasMismatchedPmi || !data.hasMissingInSrcPmi"
+                }
+
+            ]
+        },
+        "saveInputToData": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{ports.EpDetailsArea_inputObjects.syncObject}}"
+            },
+            "outputData": {
+                "inputObject": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "getSingleInputObj": {
+            "actionType": "JSFunction",
+            "method": "handleNewInputForSingleObject",
+            "inputData": {
+                "data": "{{data.inputObject}}",
+                "input": "{{ports.EpDetailsArea_inputObjects.syncObject}}"
+            },
+            "outputData": {
+                "inputObject" : "inputObject",
+                "isInputObjectUpdated" : "isInputObjectUpdated"
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "calculateContentCountForEachTab": {
+            "actionType": "JSFunctionAsync",
+            "method": "calculateContentCountForEachTab",
+            "inputData": {
+                "objUid": "{{data.inputObject.uid}}",
+                "tabsData": "{{data.contentPanelData}}"
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "getChangeIndicationDataOnInputChange":{
+                "actionType": "JSFunction",
+                "method": "getProperties",
+                "inputData": {
+                    "name": "{{ports.EpDetailsArea_inputObjects.syncObject.props.Mfg0consumed_material.dbValues}}",
+                    "selectedContext": "{{ports.EpDetailsArea_inputObjects.syncObject}}"
+                },
+                "outputData": {
+                    "affectedUIds": ""
+                },
+                "deps": "js/epChangeIndicationService"
+
+        },
+        "getChangeIndicationData": {
+            "actionType": "JSFunction",
+            "method": "getProperties",
+            "inputData": {
+                "name": "{{data.contentPanelData.tabs[0].contentData}}",
+                "selectedContext": "{{data.inputObject}}"
+            },
+            "outputData": {
+                "affectedUIds": ""
+            },
+            "deps": "js/epChangeIndicationService"
+        },
+        "setChangeIndicationIconVisibility": {
+            "actionType": "JSFunction",
+            "method": "setIconOnTab",
+            "inputData": {
+                "contentPanelData": "{{data.contentPanelData}}",
+                "tabKey": "WiPartsTable",
+                "shouldBeVisible": "{{data.affectedUIds}}",
+                "iconName": "indicatorImpacted"
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "resetChangeIndicationIconVisibility": {
+            "actionType": "JSFunction",
+            "method": "setIconOnTab",
+            "inputData": {
+                "contentPanelData": "{{data.contentPanelData}}",
+                "tabKey": "WiPartsTable",
+                "shouldBeVisible": false
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "handleAddRemoveEvent": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getSingleInputObj",
+                    "condition": "conditions.isInputObjectSelected"
+                },
+                {
+                    "action": "calculatePmiMissingInSrcIconVisibility"
+                },
+                {
+                    "action": "selectExternalFlowsTab",
+                    "condition": "data.eventData.ExternalSuccessors !== undefined"
+                },
+                {
+                    "action": "setIconOnPmiTab"
+                },
+                {
+                    "action": "calculateImpactedPmiIconVisibility"
+                },
+                {
+                    "action": "setImpactedIconOnPmiTab",
+                    "condition" : "data.hasMismatchedPmi || !data.hasMissingInSrcPmi"
+                }
+            ]
+        },
+        "updateTabIcons": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "getChangeIndicationData"
+                },
+                {
+                    "action": "setChangeIndicationIconVisibility",
+                    "condition" : "data.affectedUIds!==''"
+                },
+                {
+                    "action": "resetChangeIndicationIconVisibility",
+                    "condition" : "data.affectedUIds === ''"
+
+                }
+            ]
+        },
+        "setPmiTabMissingInSrcIconVisibility":{
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "calculatePmiMissingInSrcIconVisibility"
+                },
+                {
+                    "action": "setIconOnPmiTab"
+                },
+                {
+                    "action": "calculateImpactedPmiIconVisibility"
+                },
+                {
+                    "action": "setImpactedIconOnPmiTab",
+                    "condition" : "data.hasMismatchedPmi || !data.hasMissingInSrcPmi"
+                }
+            ]
+        },
+        "calculatePmiMissingInSrcIconVisibility":{
+            "actionType": "JSFunction",
+            "method": "hasMissingInSrcPmi",
+            "inputData": {
+                "objUid":"{{data.inputObject.uid}}"
+            },
+            "outputData": {
+                "hasMissingInSrcPmi": ""
+            },
+            "deps": "js/wiPmiAssignmentStatusService"
+        },
+        "setIconOnPmiTab": {
+            "actionType": "JSFunction",
+            "method": "setIconOnTab",
+            "inputData": {
+                "contentPanelData": "{{data.contentPanelData}}",
+                "tabKey": "WiAssignedPmiTable",
+                "shouldBeVisible": "{{data.hasMissingInSrcPmi}}",
+                "iconName": "indicatorPanelContainsMissingInSource"
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "calculateImpactedPmiIconVisibility":{
+            "actionType": "JSFunction",
+            "method": "hasMismatchedPmi",
+            "inputData": {
+                "objUid":"{{data.inputObject.uid}}"
+            },
+            "outputData": {
+                "hasMismatchedPmi": ""
+            },
+            "deps": "js/wiPmiAssignmentStatusService"
+        },
+        "setImpactedIconOnPmiTab": {
+            "actionType": "JSFunction",
+            "method": "setIconOnTab",
+            "inputData": {
+                "tabData": "{{data.contentPanelData}}",
+                "tabKey": "wiAssignedPmiTable",
+                "shouldBeVisible": "{{data.hasMismatchedPmi}}",
+                "iconName": "indicatorImpacted"
+            },
+            "deps": "js/epTabsService"
+        },
+        "updateTabIconOnToggle":{
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "removeProperty",
+                    "condition" : "subPanelContext.sharedSelectionData.isIndicationToggleOn === false && ctx.state.params.tracking_cn !== null"
+                },
+                {
+                    "action": "getChangeIndicationData",
+                    "condition" : "subPanelContext.sharedSelectionData.isIndicationToggleOn && ctx.state.params.tracking_cn !== null"
+                },
+                {
+                    "action": "setChangeIndicationIconVisibility",
+                    "condition" : "subPanelContext.sharedSelectionData.isIndicationToggleOn === true && ctx.state.params.tracking_cn !== null"
+                },
+                {
+                    "action": "resetChangeIndicationIconVisibility",
+                    "condition" : "subPanelContext.sharedSelectionData.isIndicationToggleOn === false && ctx.state.params.tracking_cn !== null"
+                }
+            ]
+        },
+        "removeProperty": {
+            "actionType": "JSFunction",
+            "method": "clearPropertyKeyCache",
+            "inputData": {
+                "name": "{{data.inputObject.uid}}",
+                "propertyName": "ChangePartIndication"
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "updateVisibleTabs": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "showWiWorkareaTab",
+                    "condition": "conditions.isOnWIPage"
+                },
+                {
+                    "action": "showEpWorkareaTab",
+                    "condition": "!conditions.isOnWIPage"
+                }
+            ]
+        },
+        "showWiWorkareaTab": {
+            "actionType": "JSFunction",
+            "method": "updateTabKeyInTabsArray",
+            "inputData": {
+                "tabs": "{{data.contentPanelData.tabs}}",
+                "currentTabKey": "EpWorkareaTable",
+                "newTabKey": "WiWorkareaTable"
+            },
+            "outputData": {
+                "contentPanelData.tabs": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "showEpWorkareaTab": {
+            "actionType": "JSFunction",
+            "method": "updateTabKeyInTabsArray",
+            "inputData": {
+                "tabs": "{{data.contentPanelData.tabs}}",
+                "currentTabKey": "WiWorkareaTable",
+                "newTabKey": "EpWorkareaTable"
+            },
+            "outputData": {
+                "contentPanelData.tabs": ""
+            },
+            "deps": "js/epTabsService"
+        }
+    },
+    "conditions":{
+        "isOnWIPage": {
+            "expression": "ctx.sublocation.nameToken === 'workInstructions'"
+        },
+        "isTrackingCN": {
+            "expression": "ctx.state.params.tracking_cn !== null && subPanelContext.sharedSelectionData.isIndicationToggleOn === true"
+        },
+        "isInputObjectUpdated": {
+            "expression":"data.isInputObjectUpdated"
+        },
+        "isInputObjectSelected": {
+            "expression": "ports.EpDetailsArea_inputObjects.syncObject && ports.EpDetailsArea_inputObjects.syncObject.uid"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "ep.deleteEvents",
+            "cacheEventData": true,
+            "action": "saveInputToData",
+            "condition": "data.inputObject.uid && deleteSaveEvents.includes(data.inputObject.uid)"
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "handleAddRemoveEvent"
+        },
+        {
+            "eventId": "epObjectPropertyCache.accountabilityResponseUpdated",
+            "action": "setPmiTabMissingInSrcIconVisibility"
+        },
+        {
+            "eventId": "epDetailsTableDataProvider.modelObjectsUpdated",
+            "action": "updateTabIcons",
+            "condition": "conditions.isTrackingCN"
+        },
+        {
+            "eventId": "epPostPackOrUnpackEvent",
+            "cacheEventData": true,
+            "action": "calculateContentCountForEachTab"
+        },
+        {
+            "eventId": "epObjectPropertyCache.ChangeIndicationUpdated",
+            "action": "setPmiTabMissingInSrcIconVisibility"
+        }
+    ],
+    "i18n": {
+        "partTitle": [ "DetailsMessages" ],
+        "resourcesTitle": [ "DetailsMessages" ],
+        "workareaTitle": [ "DetailsMessages" ],
+        "summaryTitle": [ "DetailsMessages" ],
+        "filesTitle": [ "DetailsMessages" ],
+        "documentsTitle": [ "DetailsMessages" ],
+        "assignedPmisTitle": [ "DetailsMessages" ],
+        "epInformationNoSelectionMessage": [ "DetailsMessages" ],
+        "dcdsTitle": [ "DetailsMessages" ],
+        "externalFlowsTitle": ["DetailsMessages"],
+        "inspectionTitle": [ "DetailsMessages" ]
+    },
+    "lifecycleHooks": {
+        "onMount": "initDisplayNameWithQuantityData",
+        "onUnmount": "removeProperty",
+        "onUpdate":
+        [
+            {
+                "action": "updateTabIconOnToggle",
+                "observers": [
+                    "props.subPanelContext.sharedSelectionData.isIndicationToggleOn"
+                ]
+            },
+            {
+                "action": "updateVisibleTabs",
+                "observers": [
+                    "viewModel.ctx.sublocation.nameToken"
+                ]
+            }
+        ]
+    }
+}

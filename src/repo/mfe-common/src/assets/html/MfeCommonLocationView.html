@@ -1,0 +1,9 @@
+<div class="sw-column w-12 h-12">
+    <aw-layout-slot name="mfe_header" context="data" class="aw-layout-fit" exist-when="!conditions.isTaskbarFullScreen"></aw-layout-slot>
+    <aw-layout-slot name="mfe_taskBar" context="data" class="aw-layout-fit"></aw-layout-slot>
+    <div class="sw-row aw-layout-subLocation">
+        <div class="sw-column w-12" aw-class="[ctx.sidenavCommandId ? 'aw-mfe-subpageContentWithLeftPanelOpened':'']">
+            <ui-view class="sw-column"></ui-view>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,361 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "dateOrUnitEffectivityTypeRadioButton": {
+            "type": "BOOLEAN",
+            "isRequired": "true",
+            "propertyRadioTrueText": "{{i18n.dateEffectivity}}",
+            "propertyRadioFalseText": "{{i18n.unitEffectivity}}",
+            "dbValue": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "startDate": {
+            "dbValue": "",
+            "type": "DATE",
+            "isRequired": "true",
+            "displayName": "{{i18n.startDate}}",
+            "validationCriteria": [ {
+                "condition": "conditions.isStartDateValidationFailed",
+                "value": ""
+            } ]
+        },
+        "endDate": {
+            "dbValue": "",
+            "type": "DATE",
+            "isRequired": "true",
+            "validationCriteria": [ {
+                "condition": "conditions.isEndDateValidationFailed",
+                "value": ""
+            } ]
+        },
+        "endDateOptions": {
+            "dbValue": "Date",
+            "type": "STRING",
+            "isRequired": "true",
+            "displayName": "{{i18n.endDate}}",
+            "hasLov": true,
+            "isEditable": "true"
+        },
+        "endDateList": {
+            "type": "STRING",
+            "dbValue": [
+                { "propDisplayValue": "{{i18n.dateEffectivity}}", "propInternalValue": "Date" },
+                { "propDisplayValue": "{{i18n.upText}}", "propInternalValue": "UP" },
+                { "propDisplayValue": "{{i18n.soText}}", "propInternalValue": "SO" }
+            ]
+        },
+        "unitRangeText": {
+            "displayName": "{{i18n.unitEffectivity}}",
+            "type": "STRING",
+            "dbValue": "",
+            "isRequired": "true",
+            "validationCriteria": [ {
+                "condition": "conditions.isUnitRangeValidationFailed",
+                "value": ""
+            } ]
+        }
+    },
+    "conditions": {
+        "isValidUnitRange": {
+            "expression": "conditions.isUnitEffectivityApplicable && (data.unitRangeText.dbValue !== '' && data.unitRangeText.dbValue !== 'undefined')"
+        },
+        "startDateChangedCondition": {
+            "expression": "data.startDate.dbValue",
+            "trackValues": true
+        },
+        "isStartDateValidationFailed": {
+            "expression": "data.isInvalidStartDate"
+        },
+        "isEndDateValidationFailed": {
+            "expression": "data.isInvalidEndDate"
+        },
+        "isEndDateGreaterThanStartDate": {
+            "expression": "data.endDate.dbValue > data.startDate.dbValue"
+        },
+        "endDateChangedCondition": {
+            "expression": "data.endDate.dbValue",
+            "trackValues": true
+        },
+        "endDateOptionsChangedCondition": {
+            "expression": "data.endDateOptions.dbValue",
+            "trackValues": true
+        },
+        "unitRangeTextChangedCondition": {
+            "expression": "data.unitRangeText.dbValue",
+            "trackValues": true
+        },
+        "isUnitEffectivityApplicable": {
+            "expression": "!data.dateOrUnitEffectivityTypeRadioButton.dbValue"
+        },
+
+        "isUnitRangeValidationFailed": {
+            "expression": "!data.isValidUnitCriteria"
+        },
+        "isUnitValidationPassed": {
+            "expression": "data.isValidUnitCriteria"
+        },
+        "isValidDateRange": {
+            "expression": "!conditions.isUnitEffectivityApplicable && (data.startDate.dbValue !== '' && (data.endDateOptions.dbValue !== 'Date' || (data.endDate.dbValue !== '' && conditions.isEndDateGreaterThanStartDate && !conditions.isEqualDate)))"
+        },
+        "isAddOrEditButtonVisible": {
+            "expression": "conditions.isValidUnitRange || conditions.isValidDateRange"
+        }
+    },
+
+    "i18n": {
+        "dateEffectivity": [ "ApsEffectivityMessages" ],
+        "unitEffectivity": [ "ApsEffectivityMessages" ],
+        "startDate": [ "ApsEffectivityMessages" ],
+        "endDate": [ "ApsEffectivityMessages" ],
+        "upText": [ "ApsEffectivityMessages" ],
+        "soText": [ "ApsEffectivityMessages" ],
+        "add": [ "ApsEffectivityMessages" ],
+        "save": [ "ApsEffectivityMessages" ],
+        "dateEffectivityPlaceholder": [ "ApsEffectivityMessages" ]
+    },
+       "actions": {
+        "onUpdateIsStartDateValid": {
+            "actionType": "JSFunction",
+            "method": "updateField",
+            "inputData": {
+                "fields": "{{fields}}",
+                "fieldNameToValidate": "startDate"
+            },
+            "deps": "js/occmgmtUtils"
+        },
+        "onUpdateIsEndDateValid": {
+            "actionType": "JSFunction",
+            "method": "updateField",
+            "inputData": {
+                "fields": "{{fields}}",
+                "fieldNameToValidate": "endDate"
+            },
+            "deps": "js/occmgmtUtils"
+        },
+        "onUpdateIsEndDateValidBatchJob": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "onUpdateIsEndDateValid",
+                    "condition": "data.endDate.touched == true "
+                }
+            ]
+        },
+        "onUpdateEndDateBatchJob": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "onUpdateEndDate",
+                    "condition": "data.startDate.dbValue!== '' && data.endDate.dbValue!== '' && data.endDate.touched == true "
+                }
+            ]
+        },
+        "onUpdateEndDate": {
+            "actionType": "JSFunction",
+            "method": "updateField",
+            "inputData": {
+                "fields": "{{fields}}",
+                "fieldNameToValidate": "endDate"
+            },
+            "deps": "js/occmgmtUtils"
+        },
+        "setEffectivity": {
+            "actionType": "JSFunction",
+            "method": "setProperties",
+            "inputData": {
+                "data": "{{data}}",
+                "apsExpEffState": "{{props.subPanelContext.apsExpEffState}}"
+            },
+            "outputData": {
+                "unitRangeText": "unitRangeText",
+                "dateOrUnitEffectivityTypeRadioButton": "dateOrUnitEffectivityTypeRadioButton",
+                "startDate.dbValue": "startDate.dbValue",
+                "endDateOptions": "endDateOptions",
+                "endDate.dbValue": "endDate.dbValue"
+            },
+            "deps": "js/apsEffectivityAuthoringService"
+        },
+        "authorEffectivity": {
+            "actionType": "TcSoaService",
+            "serviceName": "ConfigFilterCriteria-2017-05-EffectivityManagement",
+            "method": "setEffectivityConditionSubsets",
+            "inputData": {
+                "productName": "",
+                "productNamespace": "",
+                "actionCode": 1,
+                "effectivityConditions": [ {
+                    "targetObjects": [ "{{function:getContextObject}}" ],
+                    "expression": {
+                        "effectivityTable": "{{function:getExpressionTableForAddEffectivity}}"
+                    }
+                } ]
+            },
+            "events": {
+                "success": [ {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    },
+                    {
+                        "name": "apsEffectivity.UpdatePartialContextEvent"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "failedToAddEffectivityMessage"
+                } ]
+            },
+            "deps": "js/apsEffectivityAuthoringService"
+        },
+        "editEffectivity": {
+            "actionType": "TcSoaService",
+            "serviceName": "ConfigFilterCriteria-2017-05-EffectivityManagement",
+            "method": "setEffectivityConditionSubsets",
+            "inputData": {
+                "productName": "",
+                "productNamespace": "",
+                "actionCode": 1,
+                "effectivityConditions": [ {
+                    "targetObjects": [ "{{function:getContextObject}}" ],
+                    "expression": {
+                        "effectivityTable": "{{function:getExpressionTableForEditEffectivity}}"
+                    }
+                } ]
+            },
+            "events": {
+                "success": [ {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    },
+                    {
+                        "name": "apsEffectivity.UpdatePartialContextEvent"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "failedToEditEffectivityMessage"
+                } ]
+            },
+            "deps": "js/apsEffectivityAuthoringService"
+        },
+        "validateUnitCriteria": {
+            "actionType": "JSFunction",
+            "method": "validateUnitCriteria",
+            "inputData": {
+                "unitRangeText": "{{data.unitRangeText}}"
+            },
+            "outputData": {
+                "unitRangeText.validationCriteria[0].value": "errorMsg",
+                "isValidUnitCriteria": "isValidUnitCriteria"
+            },
+            "deps": "js/apsEffectivityAuthoringService"
+        },
+        "onUpdateIsUnitValid": {
+            "actionType": "JSFunction",
+            "method": "updateField",
+            "inputData": {
+                "fields": "{{fields}}",
+                "fieldNameToValidate": "unitRangeText"
+            },
+            "deps": "js/occmgmtUtils"
+        },
+        "validateEndDateCriteria":{
+            "actionType": "JSFunction",
+            "method": "validateDateCriteria",
+            "inputData": {
+                "startDate": "{{data.startDate}}",
+                "endDate": "{{data.endDate}}"
+            },
+            "outputData": {
+
+                "endDate.validationCriteria[0].value": "errorMsg",
+
+                "isInvalidEndDate": "isInvalidDate"
+
+            },
+            "deps": "js/apsEffectivityAuthoringService"
+        },
+        "validateStartDateCriteria": {
+            "actionType": "JSFunction",
+            "method": "validateDateCriteria",
+            "inputData": {
+                "startDate": "{{data.startDate}}",
+                "endDate": "{{data.endDate}}"
+            },
+            "outputData": {
+
+                "startDate.validationCriteria[0].value": "errorMsg",
+
+                "isInvalidStartDate": "isInvalidDate"
+
+            },
+            "deps": "js/apsEffectivityAuthoringService"
+        }
+    },
+    "functions": {
+        "getExpressionTableForAddEffectivity": {
+            "functionName": "getExpressionTableForAddEffectivity",
+            "parameters": [ "{{data}}", "{{props.subPanelContext}}" ]
+        },
+        "getExpressionTableForEditEffectivity": {
+            "functionName": "getExpressionTableForEditEffectivity",
+            "parameters": [ "{{data}}", "{{props.subPanelContext}}" ]
+        },
+        "getContextObject": {
+            "functionName": "getContextObject",
+            "parameters": [ "{{}}" ]
+        }
+    },
+
+"lifecycleHooks" :
+{
+    "onMount": "setEffectivity",
+    "onUpdate": [
+        {
+            "action": "validateUnitCriteria",
+            "observers": [ "viewModel.data.unitRangeText.dbValue" ]
+        },
+        {
+            "action": "validateStartDateCriteria",
+            "observers": [ "viewModel.data.startDate.dbValue" ]
+        },
+        {
+            "action": "validateEndDateCriteria",
+            "observers": [ "viewModel.data.endDate.dbValue" ]
+        },
+        {
+            "action": "onUpdateEndDateBatchJob",
+            "observers": ["viewModel.data.endDate.dbValue", "viewModel.data.startDate.dbValue"]
+        },
+        {
+            "action": "onUpdateIsStartDateValid",
+            "observers": ["viewModel.data.isInvalidStartDate"]
+
+        },
+        {
+            "action": "onUpdateIsEndDateValidBatchJob",
+            "observers": ["viewModel.data.isInvalidEndDate"]
+
+        },
+        {
+            "action": "onUpdateIsUnitValid",
+            "observers": ["viewModel.data.isValidUnitCriteria"]
+        }
+    ]
+},
+
+"props": {
+
+    "sub-panel-context": {
+
+        "type": "object"
+
+    }
+
+}
+}

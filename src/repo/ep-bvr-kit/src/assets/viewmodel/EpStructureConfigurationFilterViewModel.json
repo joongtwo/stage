@@ -1,0 +1,113 @@
+{
+    "schemaVersion": "1.0.0",
+    "props":{
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {},
+    "actions": {
+        "initialConfiguration":{
+            "actionType":"batchJob",
+            "steps":[
+                {
+                    "action":"updateBaseViewVisibility"
+                },
+                {
+                    "action":"updateCurrentDateEffectivity",
+                    "condition":"subPanelContext.configData.effectivityDate"
+                },
+                {
+                    "action":"updateCurrentUnitEffectivity",
+                    "condition":"subPanelContext.configData.effectiveUnit"
+                },
+                {
+                    "action":"updateCurrentVariantRuleEffectivity",
+                    "condition":"subPanelContext.configData.variantRule || subPanelContext.configData.variantRule===null"
+                }
+            ]
+        },
+        "updateBaseViewVisibility":{
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "target": "{{props.subPanelContext.configData}}",
+                "updtedValue": {
+                    "isBaseViewVisible": true
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+
+        "updateCurrentDateEffectivity":{
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "awConfigPanel.effectivityDateChanged",
+                        "eventData": {
+                            "effectivityDate": "{{subPanelContext.configData.effectivityDate}}",
+                            "viewKey":"{{subPanelContext.occContext.viewKey}}",
+                            "currentEffectiveDate":"{{subPanelContext.configData.effectivityDateVmo}}",
+                            "isReinitialize":true
+                        }
+                    }
+                ]
+            }
+        },
+        "updateCurrentUnitEffectivity":{
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "awConfigPanel.unitEffectivityChanged",
+                        "eventData": {
+                            "effectiveUnit": "{{subPanelContext.configData.effectiveUnit}}",
+                            "viewKey":"{{subPanelContext.occContext.viewKey}}",
+                            "isReinitialize":true
+                        }
+                    }
+                ]
+            }
+        },
+        "updateCurrentVariantRuleEffectivity":{
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "awConfigPanel.variantInfoChanged",
+                        "eventData": {
+                            "index": 0,
+                            "viewKey":"{{subPanelContext.occContext.viewKey}}",
+                            "variantRules": "{{subPanelContext.configData.variantRule}}",
+                            "selectedObject":"{{subPanelContext.configData.variantRuleVmo}}",
+                            "isReinitialize":true
+                        }
+                    }
+                ]
+            }
+        },
+
+        "onUnmount":{
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "target": "{{props.subPanelContext.configData}}",
+                "updtedValue": {
+                    "isBaseViewVisible": false
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+
+
+    "lifecycleHooks": {
+        "onMount":"initialConfiguration",
+        "onUnmount":"onUnmount"
+    }
+
+}

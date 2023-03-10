@@ -1,0 +1,16 @@
+{
+  "slots": {
+    "snapShotInDiscussionSlot": {
+      "name": "ac0_snapshot",
+      "view": "ShowSnapshotsInDiscussion",
+      "activeWhen": {
+        "condition": "conditions.discussionModuleRestricitonsForSnapshot"
+      }
+    }
+  },
+  "conditions": {
+    "discussionModuleRestricitonsForSnapshot": {
+      "expression": "(ctx.tcSessionData.tcMajorVersion > 13 || (ctx.tcSessionData.tcMajorVersion === 13 && ctx.tcSessionData.tcMinorVersion >= 3))"
+    }
+  }
+}

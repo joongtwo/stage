@@ -1,0 +1,82 @@
+{
+    "schemaVersion": "1.0.0",
+    "props":{
+    },
+    "data":{
+        "stations": [],
+        "bubbleSelection": {
+            "initialValues": {
+                "selected": false,
+                "productVariant": "",
+                "processResource": ""
+            },
+            "meta": {}
+        },
+        "bubbleTooltip": {
+            "initialValues": {
+                "productVariant": "",
+                "processResource": ""
+            },
+            "meta": {}
+        },
+        "mouse": {
+            "initialValues": {
+                "x": ""
+            },
+            "meta": {}
+        }
+    },
+    "actions":{
+        "initialize": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initRef"
+                },
+                {
+                    "action": "loadTimeDistribution"
+                }
+            ]
+        },
+        "initRef": {
+            "actionType": "JSFunction",
+            "method": "initialize",
+            "inputData": {
+                "elementRefList": "{{parameters.elementRefList}}"
+            },
+            "deps": "js/epBalancingTimeDistributionService"
+        },
+        "loadTimeDistribution": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTimeDistribution",
+            "inputData": {
+                "objectUid": "{{ctx.ep.scopeObject.uid}}",
+                "elementRefList": "{{parameters.elementRefList}}"
+            },
+            "outputData": {
+                "stations": "stations"
+            },
+            "deps": "js/epBalancingTimeDistributionDataService"
+        },
+        "render":{
+            "method": "epBalancingTimeDistributionRender",
+            "deps": "js/epBalancingTimeDistributionService",
+            "options": {
+                "elementRefList": [
+                    "panel",
+                    "root"
+                ]
+            }
+        },
+        "destroy": {
+            "actionType": "JSFunction",
+            "method": "destroy",
+            "deps": "js/epBalancingTimeDistributionService"
+        }
+    },
+    "lifecycleHooks": {
+        "render": "render",
+        "onMount": "initialize",
+        "onUnmount": "destroy"
+    }
+}

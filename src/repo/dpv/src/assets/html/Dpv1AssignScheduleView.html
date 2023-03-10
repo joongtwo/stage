@@ -1,0 +1,10 @@
+<aw-panel>
+    <aw-panel-body>
+        <aw-tab-set tabs="data.assignScheduleTabs" sub-panel-context='{...subPanelContext,qryTypeState:data.qryTypeState,assignScheduleState:data.assignScheduleState,cronModelState:data.cronModelState,runningScheduleState:data.runningScheduleState}'></aw-tab-set>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button class="medium" button-type="base" action="closePopupWindow" size="auto">{{i18n.closeBtn}}</aw-button>
+        <aw-button class="medium" action="assignSchedule" size="auto" enable-when="conditions.assignCond">{{i18n.assignReportBtn}}</aw-button>
+        <aw-button class="medium" action="unAssignSchedule" size="auto" enable-when="conditions.unAssignCond">{{i18n.unAssignReportBtn}}</aw-button>
+    </aw-panel-footer>
+</aw-panel>

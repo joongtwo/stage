@@ -1,0 +1,478 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+    ],
+    "ports": {
+    },
+    "ctx": {
+        "mselected": ""
+    },
+    "lifecycleHooks": {
+        "onMount": "initIcoUid",
+        "onUpdate":[
+            {
+                "action": "closePanel",
+                "observers": [
+                    "viewModel.data.modelObjects"
+                ]
+            },
+            {
+                "action": "initializePanel",
+                "observers": [
+                    "viewModel.data.graphicsTemplateInfos"
+                ]
+            },
+            {
+                "action": "initializeButton",
+                "observers": [
+                    "viewModel.data.partFamilyTemplatesList",
+                    "viewModel.data.templatePartAvailable"
+                ]
+            }
+        ]
+    },
+    "props": {
+        "icouid": {
+            "type": "string"
+        }
+    },
+    "actions": {
+        "initializePanel": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "convertTemplatesToLists"
+                },
+                {
+                    "action": "loadEmptyProperties"
+                }
+            ]
+        },
+        "initializeButton": {
+            "actionType": "JSFunction",
+            "method": "initializeUpdateGraphicsPanel",
+            "deps": "js/classifyUpdateGraphicsService",
+            "inputData": {
+                "updateTargetBtn": "{{updateTargetBtn}}",
+                "selectedButton": "{{conditions.startOnPartFamilyTemplates}}"
+            },
+            "outputData": {
+                "updateTargetBtn": ""
+            }
+        },
+        "initIcoUid":{
+            "actionType": "JSFunction",
+            "method": "getIcoUidForGB",
+            "deps": "js/classifyUpdateGraphicsService",
+            "inputData": {
+                "icoResponse": "{{props.viewModel.ctx.ICO_response}}",
+                "wsoObj": "{{props.subPanelContext.selectionData.selected[0}}",
+                "prevIcoUid": "{{data.icoUid}}"
+            },
+            "outputData": {
+                "icoUid": ""
+            },
+            "events": {
+                "success": [ {
+                        "name": "classify.loadTemplates"
+                    }
+                ]
+            }
+        },
+        "loadTemplates":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ClassificationCommon-2021-06-Classification",
+            "method": "getGraphicsTemplateInfo",
+            "inputData":
+            {
+                "classificationObjects": ["{{conditions.isStandaloneObjSelected ? data.icoUid : ctx.mselected[0].uid}}"],
+                "classificationClasses": []
+            },
+            "outputData":
+            {
+                "graphicsTemplateInfos": "graphicsTemplateInfos"
+            }
+        },
+        "divideTemplates":
+        {
+            "actionType": "JSFunction",
+            "method": "divideTemplateTypes",
+            "inputData":
+            {
+                "input": "{{data.graphicsTemplateInfos[0].templatesInfos}}"
+            },
+            "outputData":
+            {
+                "partFamilyTemplatesListValues": "result.partFamilyTemplates",
+                "templatePartListValues": "result.templatePartTemplates"
+            },
+            "deps": "js/classifyUpdateGraphicsService"
+        },
+        "partFamilyTemplatesConversion":
+        {
+            "actionType": "JSFunction",
+            "method": "createListModelObjects",
+            "inputData":
+            {
+                "input": "{{data.partFamilyTemplatesListValues}}",
+                "propName": "templateName"
+            },
+            "outputData":
+            {
+                "partFamilyTemplatesList": ""
+            },
+            "deps": "js/listBoxService"
+        },
+        "templatePartConversion":
+        {
+            "actionType": "JSFunction",
+            "method": "createListModelObjects",
+            "inputData":
+            {
+                "input": "{{data.templatePartListValues}}",
+                "propName": "templateName"
+            },
+            "outputData":
+            {
+                "templatePartsList": ""
+            },
+            "deps": "js/listBoxService"
+        },
+        "convertTemplatesToLists":
+        {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "divideTemplates"
+                },
+                {
+                    "action": "partFamilyTemplatesConversion"
+                },
+                {
+                    "action": "templatePartConversion"
+                }
+            ]
+        },
+        "tableContentsUpdate":
+        {
+            "actionType": "dataProvider",
+            "method": "templatePartDataProvider"
+        },
+        "loadEmptyProperties":
+        {
+            "actionType": "JSFunction",
+            "method": "createGraphicsBuilderTableProps",
+            "inputData":
+            {
+                "emptyTemplatePartProperties": "{{data.templatePartListBox.dbValue.emptyProperties}}",
+                "emptyPartFamilyTemplateProperties": "{{data.templateListPartFamilyBox.dbValue.emptyProperties}}"
+            },
+            "outputData":
+            {
+                "emptyPropsList": ""
+            },
+            "deps": "js/classifyUpdateGraphicsService"
+        },
+        "handleSaveData":
+        {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "prepTemplateObjectForGraphicsMsg"
+                },
+                {
+                    "action": "saveData"
+                }
+            ]
+        },
+        "prepTemplateObjectForGraphicsMsg":
+        {
+            "actionType": "JSFunction",
+            "method": "prepTemplateObjectForGraphicsMsg",
+            "inputData":
+            {
+                "updateTarget": "{{data.updateTargetBtn.dbValue}}",
+                "partFamilyVal": "{{data.templateListPartFamilyBox.dbValue}}",
+                "templateObjVal": "{{data.templatePartListBox.dbValue}}"
+            },
+            "outputData":
+            {
+                "templateObject": ""
+            },
+            "deps": "js/classifyUpdateGraphicsService"
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+        "graphicsBuilt":
+        {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "closePanel"
+                }
+            ]
+        },
+        "saveData":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ClassificationCommon-2021-06-Classification",
+            "method": "saveGraphicsMember",
+            "inputData":
+            {
+                "requestObjects": [
+                    {
+                        "templateObject": "{{data.templateObject}}",
+                        "classificationObject": "{{props.icouid ? props.icouid : ctx.mselected[0].uid}}",
+                        "createPartFile": "{{data.createPartFileBtn.dbValue}}",
+                        "createJTFile": "{{data.createJTFileBtn.dbValue}}",
+                        "recreateFromTemplate": false
+                    }
+                ]
+            },
+            "outputData": {
+                "partialErrors": "partialErrors",
+                "modelObjects": "modelObjects"
+            },
+            "actionMessages": {
+                "success":[{
+                    "message": "templateCreationSuccess"
+                }],
+                "failure": [ {
+                    "condition": "data.partialErrors.length",
+                    "message": "soaCallHasPartialErrors"
+                }]
+            }
+        }
+    },
+    "functions": {
+    },
+    "dataProviders": {
+        "templatePartDataProvider": {
+            "action": "loadEmptyProperties",
+            "initializeAction": "loadEmptyProperties",
+            "response": "{{data.emptyPropsList}}"
+        },
+        "templatePartFamilyDataProvider":{
+            "action": "loadEmptyProperties",
+            "initializeAction": "loadEmptyProperties",
+            "response": "{{data.emptyPropsList}}"
+        }
+    },
+    "columnProviders": {
+        "templatePartTableProvider": {
+            "columns": [
+                {
+                    "name": "id",
+                    "displayName": "{{i18n.emptyPropsID}}",
+                    "width": 70,
+                    "pinnedLeft": true,
+                    "enableColumnMenu": true
+                },
+                {
+                    "name": "annotation",
+                    "displayName": "{{i18n.emptyPropsAnnotation}}",
+                    "width": 80,
+                    "pinnedLeft": true,
+                    "enableColumnMenu": true
+                },
+                {
+                    "name": "name",
+                    "displayName": "{{i18n.emptyPropsName}}",
+                    "width": 170,
+                    "pinnedLeft": false,
+                    "enableColumnMenu": true
+                }
+            ]
+        },
+        "templatePartFamilyTableProvider": {
+            "columns": [
+                {
+                    "name": "id",
+                    "displayName": "{{i18n.emptyPropsID}}",
+                    "width": 70,
+                    "pinnedLeft": true,
+                    "enableColumnMenu": true
+                },
+                {
+                    "name": "annotation",
+                    "displayName": "{{i18n.emptyPropsAnnotation}}",
+                    "width": 80,
+                    "pinnedLeft": true,
+                    "enableColumnMenu": true
+                },
+                {
+                    "name": "name",
+                    "displayName": "{{i18n.emptyPropsName}}",
+                    "width": 170,
+                    "pinnedLeft": false,
+                    "enableColumnMenu": true
+                }
+            ]
+        }
+    },
+    "grids": {
+        "templatePartTable": {
+            "dataProvider": "templatePartDataProvider",
+            "columnProvider": "templatePartTableProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": false,
+                "enablePinning": true,
+                "enableSorting": false
+            }
+        },
+        "templatePartFamilyTable":{
+            "dataProvider": "templatePartFamilyDataProvider",
+            "columnProvider": "templatePartFamilyTableProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": false,
+                "enablePinning": true,
+                "enableSorting": false
+            }
+        }
+    },
+    "data": {
+        "icoUid": "",
+        "createJTFileBtn": {
+            "dbValue": false,
+            "displayName": "{{i18n.createJTFileLbl}}",
+            "dispValue": "",
+            "isEditable": "true",
+            "isRequired": "false",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT",
+            "type": "BOOLEAN"
+        },
+        "createPartFileBtn": {
+            "dbValue": false,
+            "displayName": "{{i18n.createPartFileLbl}}",
+            "dispValue": "",
+            "isEditable": "true",
+            "isRequired": "false",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT",
+            "type": "BOOLEAN"
+        },
+        "errorIcon": {
+            "chipType": "STATIC",
+            "iconId": "indicatorWarning",
+            "labelDisplayName": "Warning",
+            "labelInternalName": "Warning",
+            "buttonType": "caution",
+            "showLabel": true
+        },
+        "templateListPartFamilyBox": {
+            "dbValue": "",
+            "displayName": "{{i18n.templates}}",
+            "dispValue": "",
+            "hasLov": true,
+            "isRequired": true,
+            "type": "STRING"
+        },
+        "templatePartListBox": {
+            "dbValue": "",
+            "displayName": "{{i18n.templates}}",
+            "dispValue": "",
+            "hasLov": true,
+            "isRequired": true,
+            "type": "STRING"
+        },
+        "updateTargetBtn": {
+            "dbValue": true,
+            "isRequired": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT",
+            "propertyRadioFalseText": "{{i18n.templatePart}}",
+            "propertyRadioTrueText": "{{i18n.partFamily}}",
+            "type": "BOOLEAN",
+            "vertical": true
+        }
+    },
+    "messages": {
+        "soaCallHasPartialErrors": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.graphicsBuilderPartialError}}",
+            "messageTextParams": [
+                "{{data.partialErrors[0].errorValues[0].message}}"
+            ]
+        },
+        "templateCreationSuccess": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.templateCreated}}",
+            "messageTextParams": [
+                "{{ctx.mselected[0].cellHeader1}}"
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "classify.loadTemplates",
+            "action": "loadTemplates"
+        }
+    ],
+    "conditions": {
+        "anyTemplateTypesAvailable": {
+            "expression": "data.graphicsTemplateInfos[0].templatesInfos.length"
+        },
+        "canCreateJTFile": {
+            "expression": "data.createPartFileBtn.dbValue"
+        },
+        "panelEnabled": {
+            "expression": "conditions.anyTemplateTypesAvailable && ((conditions.showPartFamily && conditions.partFamilyTemplatesAvailable) || (conditions.showTemplatePart && conditions.templatePartAvailable))"
+        },
+        "partFamilyTemplatesAvailable": {
+            "expression": "data.partFamilyTemplatesList.length"
+        },
+        "showEmptyPropsList": {
+            "expression": "conditions.templatePartAvailable && data.emptyPropsList.length"
+        },
+        "showPartFamily": {
+            "expression": "data.updateTargetBtn.dbValue"
+        },
+        "showTemplatePart": {
+            "expression": "!data.updateTargetBtn.dbValue"
+        },
+        "startOnPartFamilyTemplates": {
+            "expression": "conditions.partFamilyTemplatesAvailable || !conditions.anyTemplateTypesAvailable"
+        },
+        "submitValid": {
+            "expression": "conditions.panelEnabled && ( ( conditions.showPartFamily && data.templateListPartFamilyBox.dbValue ) || ( conditions.showTemplatePart && data.templatePartListBox.dbValue ) )"
+        },
+        "templatePartAvailable": {
+            "expression": "data.templatePartsList.length"
+        },
+        "showAttrMappingWarForPartFamilyTemplate":{
+            "expression": "conditions.partFamilyTemplatesAvailable && data.emptyPropsList.length && conditions.showPartFamily && data.templateListPartFamilyBox.dbValue"
+        },
+        "showAttrMappingWarForTemplatePart":{
+            "expression": "conditions.templatePartAvailable && data.emptyPropsList.length && conditions.showTemplatePart && data.templatePartListBox.dbValue"
+        },
+        "isStandaloneObjSelected": {
+            "expression": "ctx.selected.modelType.typeHierarchyArray[0].includes('Sml0')"
+        }
+    },
+    "i18n": {
+        "createJTFileLbl": [ "ClassificationPanelMessages" ],
+        "createPartFileLbl": [ "ClassificationPanelMessages" ],
+        "emptyPropsAnnotation": [ "ClassificationPanelMessages" ],
+        "emptyPropsID": [ "ClassificationPanelMessages" ],
+        "emptyPropsName": [ "ClassificationPanelMessages" ],
+        "graphicBuilderAttrMapWar": [ "ClassificationPanelMessages" ],
+        "graphicsBuilderPartialError": [ "ClassificationPanelMessages" ],
+        "partFamily": [ "ClassificationPanelMessages" ],
+        "templateCreated": [ "ClassificationPanelMessages" ],
+        "templatePart": [ "ClassificationPanelMessages" ],
+        "templates": [ "ClassificationPanelMessages" ],
+        "updateGraphicsCommandPanelTitle": [ "ClassificationPanelMessages" ],
+        "updateGraphicsLbl": [ "ClassificationPanelMessages" ]
+    }
+}

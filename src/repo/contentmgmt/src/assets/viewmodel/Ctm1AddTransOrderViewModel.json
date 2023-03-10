@@ -1,0 +1,188 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-listbox.directive",
+        "js/aw-button.directive",
+        "js/aw-date.directive",
+        "js/aw-textbox.directive",
+        "js/aw-i18n.directive"
+    ],
+    "actions": {
+        "reveal": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                        "name": "ctm1.resetLocal"
+                    },
+                    {
+                        "name": "ctm1.getTranslationOffices"
+                    }
+                ]
+            }
+        },
+        "Ctm1GetTranslationOffices": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "__ctm0_TranslOffice_Query",
+                        "searchID": "TRANSL_OFFICE_QUERY",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0",
+                        "lastEndIndex": "0",
+                        "object_name": "*",
+                        "startIndex": "0"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "translOfficeName",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "policy": {
+                "types": [ {
+                    "name": "DCt_Language",
+                    "properties": [ {
+                        "name": "languageName"
+                    } ]
+                } ]
+            },
+
+            "events": {
+                "success": [ {
+                    "name": "ctm1.restoreLocal"
+                } ],
+                "failure": [ {
+                    "name": "ctm1.restoreLocal"
+                } ]
+            },
+
+            "outputData": {
+                "translationOfficeList": "{{function:getLovFromQuery}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+        "Ctm1CreateTranslationOrderAction": {
+            "actionType": "JSFunction",
+            "method": "createTranslationOrder",
+            "deps": "js/Ctm1ContentMgmtTranslationService",
+            "inputData": {
+                "data": "{{data}}"
+            }
+        },
+
+        "resetLocal": {
+            "actionType": "JSFunction",
+            "method": "resetLocal",
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "restoreLocal": {
+            "actionType": "JSFunction",
+            "method": "restoreLocal",
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        }
+    },
+    "functions": {
+        "getLovFromQuery": {
+            "functionName": "getLovFromQuery",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "onEvent": [ {
+            "eventId": "ctm1.getTranslationOffices",
+            "action": "Ctm1GetTranslationOffices",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.resetLocal",
+            "action": "resetLocal"
+        },
+        {
+            "eventId": "ctm1.restoreLocal",
+            "action": "restoreLocal"
+        }
+    ],
+    "data": {
+        "orderName": {
+            "displayName": "{{i18n.translationOrderName}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "orderTitle": {
+            "displayName": "{{i18n.translationOrderTitle}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "orderDescription": {
+            "displayName": "{{i18n.translationOrderDescription}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "dateDetails": {
+            "displayName": "{{i18n.translationOrderDate}}",
+            "type": "DATE",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "translationOffice": {
+            "displayName": "{{i18n.translationOffice}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "translationOfficeList": {
+            "type": "STRING",
+            "dbValue": []
+        }
+    },
+    "conditions": {
+        "createOrderVisible": {
+            "expression": "data.dateDetails.dbValue > 0 && data.translationOffice.dbValue != '' && data.orderDescription.dbValue != '' && data.orderTitle.dbValue != '' && data.orderName.dbValue != ''"
+        }
+    },
+    "lifecycleHooks": {
+        "onInit": "reveal"
+    },
+    "i18n": {
+        "create": [ "ContentMgmtMessages" ],
+        "translationOrderName": [ "ContentMgmtMessages" ],
+        "translationOrderTitle": [ "ContentMgmtMessages" ],
+        "translationOrderDescription": [ "ContentMgmtMessages" ],
+        "translationOrderDate": [ "ContentMgmtMessages" ],
+        "translationOffice": [ "ContentMgmtMessages" ],
+        "createTranslationOrder": [ "ContentMgmtMessages" ]
+    }
+}

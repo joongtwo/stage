@@ -1,0 +1,37 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": 
+    [
+        "js/aw-command-panel.directive",
+        "js/aw-search-box.directive"
+    ],
+    
+    "actions": 
+    { 
+        "searchLo":
+        {
+            "actionType": "JSFunction",
+            "method": "searchLogicalObject",
+            "inputData": 
+            {
+                "searchString": "{{data.searchLoBox.dbValue}}"
+            },
+            "deps": "js/Awp0LogicalObjectService"
+        }
+    },
+
+    "data": 
+    {
+        "searchLoBox":
+        {
+            "displayName": "",
+            "type": "STRING",
+            "dbValue": "{{ctx.search.criteria.searchString}}"
+        }
+    },
+        
+    "i18n": 
+    {
+        "search": [ "LogicalObjectMessages" ]
+    }
+}

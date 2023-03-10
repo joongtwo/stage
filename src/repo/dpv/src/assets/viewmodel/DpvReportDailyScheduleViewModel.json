@@ -1,0 +1,60 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "loadSevenDaysOfWeek": {
+            "actionType": "JSFunction",
+            "method": "loadSevenDaysOfWeek",
+            "inputData": {
+                "cronModelState": "{{props.subPanelContext.cronModelState}}"
+            },
+            "outputData": {
+                "sevenDaysOfWeek": "sevenDaysOfWeek"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "selectDayOfWeek": {
+            "actionType": "JSFunction",
+            "method": "selectDayOfWeek",
+            "inputData": {
+                "sevenDaysOfWeek":"{{data.sevenDaysOfWeek}}",
+                "cronModelState": "{{props.subPanelContext.cronModelState}}"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        }
+    },
+    "data": {
+        "onDaysLabel": {
+            "displayName": "{{i18n.onDays}}",
+            "dbValue": "onDays",
+            "type": "STRING",
+            "dispValue": "{{i18n.onDays}}",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        }
+    },
+    "functions": {},
+    "messages": {},
+    "i18n": {
+        "dailySchedule": [
+            "DpvMessages"
+        ],
+        "onDays": [
+            "DpvMessages"
+        ]
+    },
+    "conditions": {},
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "item": { "type": "object" }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [ {
+            "action": "loadSevenDaysOfWeek",
+            "observers": [
+                "props.subPanelContext.cronModelState.daily_selectedDaysOfWeek"
+            ]
+        } ]
+    } 
+}

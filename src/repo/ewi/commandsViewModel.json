@@ -1,0 +1,1221 @@
+{
+  "commands": {
+    "Ewi0OperationsCellOpen": {
+      "iconId": "cmdOpen",
+      "title": "{{i18n.showObjectCommandTitle}}"
+    },
+    "Ewi0OpenVVI": {
+      "iconId": "cmdOpen",
+      "title": "{{i18n.openInVVI}}"
+    },
+    "Ewi03DView": {
+      "iconId": "cmd3DView",
+      "title": "{{i18n.3DView}}"
+    },
+    "Ewi02DView": {
+      "iconId": "cmd2DView",
+      "title": "{{i18n.2DView}}"
+    },
+    "Ewi0TravelerCellOpen": {
+      "iconId": "cmdOpen",
+      "title": "{{i18n.showObjectCommandTitle}}"
+    },
+    "Ewi0CollectedAttachmentsCellOpen": {
+      "iconId": "cmdOpen",
+      "title": "{{i18n.showObjectCommandTitle}}"
+    },
+    "Ewi0CollectedAttachmentsCellDownload": {
+      "iconId": "cmdDownload",
+      "title": "{{i18n.downloadAttachment}}"
+    },
+    "Ewi0CollectedAttachmentsCellDelete": {
+      "iconId": "cmdDelete",
+      "title": "{{i18n.deleteAttachment}}"
+    },
+    "Ewi0CollectedAttachments": {
+      "iconId": "cmdCollectedAttachments",
+      "title": "{{i18n.collectedAttachments}}"
+    },
+    "Ewi0StepStatus": {
+      "iconId": "cmdSetStepStatus",
+      "title": "{{i18n.stepStatus}}"
+    },
+    "Ewi0PinObjectToHome": {
+      "iconId": "cmdPin",
+      "title": "{{i18n.pinObjectToHome}}"
+    },
+    "Ewi0UnpinObjectFromHome": {
+      "iconId": "cmdUnpin",
+      "title": "{{i18n.unpinObjectFromHome}}"
+    },
+    "Ewi0FullScreen": {
+      "iconId": "cmdFullScreen",
+      "title": "{{i18n.ewiFullScreenCommand}}"
+    },
+    "Ewi0ExitFullScreen": {
+      "iconId": "cmdExitFullScreen",
+      "title": "{{i18n.ewiFullScreenCommandExit}}"
+    },
+    "Ewi0ObjectInfo": {
+      "iconId": "cmdShowInfoPanel",
+      "title": "{{i18n.information}}"
+    },
+    "Ewi0Pack": {
+      "iconId": "cmdPack",
+      "title": "{{i18n.pack}}"
+    },
+    "Ewi0Unpack": {
+      "iconId": "cmdUnpack",
+      "title": "{{i18n.unpack}}"
+    },
+    "Ewi0SerialAndLot": {
+      "iconId": "cmdEdit",
+      "title": "{{i18n.editSerialAndLotTooltip}}"
+    },
+    "Ewi0EditDCD": {
+      "iconId": "cmdEdit",
+      "title": "{{i18n.editDCDTooltip}}"
+    },
+    "Ewi0AggregateParts": {
+      "iconId": "cmdShowAggregatedPartsAndTools",
+      "title": "{{i18n.aggregateCurrentAndSub}}"
+    },
+    "Ewi0AggregateTools": {
+      "iconId": "cmdShowAggregatedPartsAndTools",
+      "title": "{{i18n.aggregateCurrentAndSub}}"
+    },
+    "Ewi0ShowOverview": {
+      "iconId": "cmdEWIOverview",
+      "title": "{{i18n.overview}}"
+    },
+    "Ewi0GenerateReport": {
+      "iconId": "cmdGenerateReport",
+      "title": "{{i18n.generateReport}}"
+    },
+    "EwiClosePopupCmd": {
+      "iconId": "cmdClosePanel",
+      "isGroup": false,
+      "title": "{{i18n.close}}"
+    },
+    "Ewi0CreateChangeInContext": {
+      "iconId": "cmdCreateChange",
+      "isGroup": false,
+      "title": "{{i18n.createChange}}"
+    },
+    "Ewi0Offline": {
+      "iconId": "cmdExport",
+      "title": "{{i18n.offline}}"
+    }
+  },
+  "commandHandlers": {
+    "ewi0LaunchMarkupFromCapturedCellInListCommandHandler": {
+      "id": "Awp0LaunchMarkup",
+      "activeWhen": {
+        "condition": "!conditions.ewi0SubLocationCommandCondition"
+      },
+      "visibleWhen": false
+    },
+    "ewi0OperationsCellOpenCommandHandler": {
+      "id": "Ewi0OperationsCellOpen",
+      "action": "ewi0navigateToSelectedObject",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "ewi0CutCommandHandler": {
+      "id": "Awp0Cut",
+      "activeWhen": {
+        "condition": "conditions.ewi0SubLocationCommandCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.ewi0NotSubLocationCommandCondition"
+      }
+    },
+    "ewi0CutCtxMenuCommandHandler": {
+      "id": "Awp0CutContextMenu",
+      "activeWhen": {
+        "condition": "conditions.ewi0SubLocationCommandCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.ewi0NotSubLocationCommandCondition"
+      }
+    },
+    "ewi0CopyCommandHandler": {
+      "id": "Awp0Copy",
+      "activeWhen": {
+        "condition": "conditions.ewi0SubLocationCommandCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.ewi0NotSubLocationCommandCondition"
+      }
+    },
+    "ewi0CopyCtxMenuCommandHandler": {
+      "id": "Awp0CopyContextMenu",
+      "activeWhen": {
+        "condition": "conditions.ewi0SubLocationCommandCondition"
+      },
+      "visibleWhen": {
+        "condition": "conditions.ewi0NotSubLocationCommandCondition"
+      }
+    },
+    "ewi0OpenGroupCommandHandler": {
+      "id": "Awp0OpenGroup",
+      "visibleWhen": false,
+      "activeWhen": {
+        "condition": "!conditions.ewi0SubLocationCommandCondition"
+      }
+    },
+    "ewi0PasteGroupCommandHandler": {
+      "id": "Awp0PasteGroup",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "!conditions.ewi0NotSubLocationCommandCondition"
+      }
+    },
+    "ewi0NewGroupCommandHandler": {
+      "id": "Awp0NewGroup",
+      "visibleWhen": false,
+      "activeWhen": {
+        "condition": "conditions.ewi0SubLocationCommandCondition"
+      }
+    },
+    "ewi0EditGroupCommandHandler": {
+      "id": "Awp0EditGroup",
+      "visibleWhen": false,
+      "activeWhen": {
+        "condition": "conditions.ewi0SubLocationCommandCondition"
+      }
+    },
+    "ewi0ManageGroupCommandHandler": {
+      "id": "Awp0ManageGroup",
+      "visibleWhen": false,
+      "activeWhen": {
+        "condition": "conditions.ewi0SubLocationCommandCondition"
+      }
+    },
+    "ewi0ShareGroupCommandHandler": {
+      "id": "Awp0ShareGroup",
+      "visibleWhen": false,
+      "activeWhen": {
+        "condition": "conditions.ewi0SubLocationCommandCondition"
+      }
+    },
+    "ewi0ViewGroupCommandHandler": {
+      "id": "Awp0ViewGroup",
+      "visibleWhen": false,
+      "activeWhen": {
+        "condition": "conditions.ewi0SubLocationCommandCondition"
+      }
+    },
+    "ewi0OpenVVICommandHandler": {
+      "id": "Ewi0OpenVVI",
+      "action": "ewi0OpenVVICommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0OpenVVICommandCondition"
+      }
+    },
+    "ewi03DViewCommandHandler": {
+      "id": "Ewi03DView",
+      "action": "ewi03DViewCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi03DViewCommandCondition"
+      }
+    },
+    "ewi02DViewCommandHandler": {
+      "id": "Ewi02DView",
+      "action": "ewi02DViewCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi02DViewCommandCondition"
+      }
+    },
+    "ewi0TravelerCellOpenCommandHandler": {
+      "id": "Ewi0TravelerCellOpen",
+      "action": "ewi0TravelerCellOpenCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "ewi0CollectedAttachmentsCellOpenCommandHandler": {
+      "id": "Ewi0CollectedAttachmentsCellOpen",
+      "action": "ewi0CollectedAttachmentsCellOpenCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "ewi0CollectedAttachmentsCellDownloadCommandHandler": {
+      "id": "Ewi0CollectedAttachmentsCellDownload",
+      "action": "ewi0CollectedAttachmentsCellDownloadCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "ewi0CollectedAttachmentsCellDeleteCommandHandler": {
+      "id": "Ewi0CollectedAttachmentsCellDelete",
+      "action": "ewi0CollectedAttachmentsCellDeleteCommandAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "ewi0CollectedAttachmentsCommandHandler": {
+      "id": "Ewi0CollectedAttachments",
+      "action": "ewi0CollectedAttachmentsCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0ExecutionEnabled"
+      }
+    },
+    "ewi0PinObjectToHomeCommandHandler": {
+      "id": "Ewi0PinObjectToHome",
+      "action": "ewi0PinObjectToHomeCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0PinObjectToHomeCommandCondition"
+      }
+    },
+    "ewi0UnpinObjectFromHomeCommandHandler": {
+      "id": "Ewi0UnpinObjectFromHome",
+      "action": "ewi0UnpinObjectFromHomeCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0UnpinObjectFromHomeCommandCondition"
+      }
+    },
+    "ewi0FullScreenCommandHandler": {
+      "id": "Ewi0FullScreen",
+      "action": "ewi0FullScreenCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0FullScreenCommandCondition"
+      }
+    },
+    "ewi0ExitFullScreenCommandHandler": {
+      "id": "Ewi0ExitFullScreen",
+      "action": "ewi0ExitFullScreenCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0ExitFullScreenCommandCondition"
+      }
+    },
+    "ewi0ObjectInfoCommandHandler": {
+      "id": "Ewi0ObjectInfo",
+      "action": "ewi0ObjectInfoCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0ObjectInfoCommandCondition"
+      }
+    },
+    "ewi0PackCommandHandler": {
+      "id": "Ewi0Pack",
+      "action": "ewi0PackOrUnpackCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0PackCommandCondition"
+      }
+    },
+    "ewi0UnpackCommandHandler": {
+      "id": "Ewi0Unpack",
+      "action": "ewi0PackOrUnpackCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0UnpackCommandCondition"
+      }
+    },
+    "ewi0SerialAndLotCommandHandler": {
+      "id": "Ewi0SerialAndLot",
+      "action": "ewi0SerialAndLotCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0SerialAndLotCommandCondition"
+      }
+    },
+    "ewi0EditDCDCommandHandler": {
+      "id": "Ewi0EditDCD",
+      "action": "ewi0EditDCDCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0EditDCDCommandCondition"
+      }
+    },
+    "ewi0AggregatePartsCommandHandler": {
+      "id": "Ewi0AggregateParts",
+      "action": "ewi0AggregatePartsCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0AggregatePartsCommandCondition"
+      },
+      "selectWhen": {
+        "condition": "conditions.ewi0AggregatePartsSelectWhenCondition"
+      }
+    },
+    "ewi0AggregateToolsCommandHandler": {
+      "id": "Ewi0AggregateTools",
+      "action": "ewi0AggregateToolsCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0AggregateToolsCommandCondition"
+      },
+      "selectWhen": {
+        "condition": "conditions.ewi0AggregateToolsSelectWhenCondition"
+      }
+    },
+    "ewi0GenerateReportCommandHandler": {
+      "id": "Ewi0GenerateReport",
+      "action": "ewi0GenerateReportCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0SubLocationCommandCondition"
+      }
+    },
+    "ewi0StepStatusCommandHandler": {
+      "id": "Ewi0StepStatus",
+      "action": "ewi0StepStatusCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0ExecutionEnabled"
+      }
+    },
+    "ewi0ShowOverviewCommandHandler": {
+      "id": "Ewi0ShowOverview",
+      "action": "ewi0ShowOverviewCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0SubLocationCommandCondition"
+      }
+    },
+    "EwiClosePopupCmdHandler": {
+      "id": "EwiClosePopupCmd",
+      "action": "EwiClosePopupAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "EwiCloseEditablePanelCommandHandler": {
+      "id": "Awp0CloseCommandPanel",
+      "action": "ewi0CloseEditablePanelAction",
+      "activeWhen": {
+        "condition": "conditions.ewi0IsEditablePanelOpenCondition"
+      },
+      "visibleWhen": true
+    },
+    "Ewi0CreateChangeInContextCommandHandler": {
+      "id": "Ewi0CreateChangeInContext",
+      "action": "ewi0CreateChangeInContextAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0CreateChangeInContextCommandCondition"
+      }
+    },
+    "Ewi0OfflineCommandHandler": {
+      "id": "Ewi0Offline",
+      "action": "ewi0OfflineCommandAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ewi0OfflineCommandCondition"
+      }
+    }
+  },
+  "commandPlacements": {
+    "ewi0OperationsCellOpenDisplay": {
+      "id": "Ewi0OperationsCellOpen",
+      "uiAnchor": "ewiOperationsCellCommands",
+      "priority": 0,
+      "cellDisplay": {
+        "hover": true,
+        "position": "TOP_RIGHT",
+        "selected": true
+      }
+    },
+    "ewi0OpenVVIDisplay": {
+      "id": "Ewi0OpenVVI",
+      "uiAnchor": "workinstrPanel",
+      "priority": 400
+    },
+    "ewi03DViewDisplay": {
+      "id": "Ewi03DView",
+      "uiAnchor": "workinstrPanel",
+      "priority": 450
+    },
+    "ewi02DViewDisplay": {
+      "id": "Ewi02DView",
+      "uiAnchor": "workinstrPanel",
+      "priority": 450
+    },
+    "ewi0TravelerCellOpenDisplay": {
+      "id": "Ewi0TravelerCellOpen",
+      "uiAnchor": "travelerCellCommands",
+      "priority": 0,
+      "cellDisplay": {
+        "hover": true,
+        "position": "TOP_RIGHT",
+        "selected": true
+      }
+    },
+    "ewi0CollectedAttachmentsCellOpenDisplay": {
+      "id": "Ewi0CollectedAttachmentsCellOpen",
+      "uiAnchor": "collectedAttachmentsCellCommands",
+      "priority": 0,
+      "cellDisplay": {
+        "hover": true,
+        "position": "TOP_RIGHT",
+        "selected": true
+      }
+    },
+    "ewi0CollectedAttachmentsCellDownloadDisplay": {
+      "id": "Ewi0CollectedAttachmentsCellDownload",
+      "uiAnchor": "collectedAttachmentsCellCommands",
+      "priority": 0,
+      "cellDisplay": {
+        "hover": true,
+        "position": "MIDDLE_RIGHT",
+        "selected": true
+      }
+    },
+    "ewi0CollectedAttachmentsCellDeleteDisplay": {
+      "id": "Ewi0CollectedAttachmentsCellDelete",
+      "uiAnchor": "collectedAttachmentsCellCommands",
+      "priority": 0,
+      "cellDisplay": {
+        "hover": true,
+        "position": "BOTTOM_RIGHT",
+        "selected": true
+      }
+    },
+    "ewi0PinObjectToHomeDisplay": {
+      "id": "Ewi0PinObjectToHome",
+      "uiAnchor": "aw_rightWall",
+      "priority": 200
+    },
+    "ewi0UnpinObjectFromHomeDisplay": {
+      "id": "Ewi0UnpinObjectFromHome",
+      "uiAnchor": "aw_rightWall",
+      "priority": 200
+    },
+    "ewi0FullScreenDisplay": {
+      "id": "Ewi0FullScreen",
+      "uiAnchor": "workinstrPanel",
+      "priority": 500
+    },
+    "ewi0ExitFullScreenDisplay": {
+      "id": "Ewi0ExitFullScreen",
+      "uiAnchor": "workinstrPanel",
+      "priority": 500
+    },
+    "ewi0ObjectInfoDisplay": {
+      "id": "Ewi0ObjectInfo",
+      "uiAnchor": "workinstrPanel",
+      "priority": 0
+    },
+    "ewi0PackDisplay": {
+      "id": "Ewi0Pack",
+      "uiAnchor": "workinstrPanel",
+      "priority": 0
+    },
+    "ewi0UnpackDisplay": {
+      "id": "Ewi0Unpack",
+      "uiAnchor": "workinstrPanel",
+      "priority": 0
+    },
+    "ewi0SerialAndLotDisplay": {
+      "id": "Ewi0SerialAndLot",
+      "uiAnchor": "workinstrPanel",
+      "priority": 0
+    },
+    "ewi0EditDCDDisplay": {
+      "id": "Ewi0EditDCD",
+      "uiAnchor": "workinstrPanel",
+      "priority": 0
+    },
+    "ewi0AggregatePartsDisplay": {
+      "id": "Ewi0AggregateParts",
+      "uiAnchor": "workinstrPanel",
+      "priority": 0
+    },
+    "ewi0AggregateToolsDisplay": {
+      "id": "Ewi0AggregateTools",
+      "uiAnchor": "workinstrPanel",
+      "priority": 0
+    },
+    "ewi0GenerateReportDisplay": {
+      "id": "Ewi0GenerateReport",
+      "uiAnchor": "aw_rightWall",
+      "priority": 500
+    },
+    "ewi0StepStatusDisplay": {
+      "id": "Ewi0StepStatus",
+      "uiAnchor": "aw_rightWall",
+      "priority": 700
+    },
+    "ewi0CollectedAttachmentsDisplay": {
+      "id": "Ewi0CollectedAttachments",
+      "uiAnchor": "aw_rightWall",
+      "priority": 600
+    },
+    "ewi0ShowOverviewDisplay": {
+      "id": "Ewi0ShowOverview",
+      "uiAnchor": "aw_rightWall",
+      "priority": 300
+    },
+    "ewi0EwiClosePopupCmdPlacement": {
+      "id": "EwiClosePopupCmd",
+      "uiAnchor": "ewiPopupAnchor",
+      "priority": 0
+    },
+    "Ewi0CreateChangeInContextDisplay": {
+      "id": "Ewi0CreateChangeInContext",
+      "uiAnchor": "aw_rightWall",
+      "priority": 800
+    },
+    "ewi0OfflineDisplay": {
+      "id": "Ewi0Offline",
+      "uiAnchor": "aw_rightWall",
+      "priority": 900
+    }
+  },
+  "actions": {
+    "ewi0CloseEditablePanelAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "ewi0CloseEditablePanel"
+          }
+        ]
+      }
+    },
+    "ewi0OpenVVICommandAction": {
+      "actionType": "JSFunctionAsync",
+      "method": "openInVisulisationApplication",
+      "inputData": {
+        "selectedSnapshot": "{{commandContext.tabModel.viewerData.fileData.file}}"
+      },
+      "deps": "js/workinstrSnapshotService"
+    },
+    "ewi03DViewCommandAction": {
+      "actionType": "JSFunction",
+      "method": "show3DView",
+      "inputData": {
+        "data": "{{commandContext.tabModel}}"
+      },
+      "deps": "js/ewiService"
+    },
+    "ewi02DViewCommandAction": {
+      "actionType": "JSFunction",
+      "method": "show2DView",
+      "inputData": {
+        "data": "{{commandContext.tabModel}}"
+      },
+      "deps": "js/ewiService"
+    },
+    "ewi0navigateToSelectedObject": {
+      "actionType": "JSFunction",
+      "method": "navigateToSelectedObject",
+      "inputData": {
+        "selectedUid": "{{commandContext.vmo.uid}}"
+      },
+      "deps": "js/ewiService"
+    },
+    "ewi0TravelerCellOpenCommandAction": {
+      "actionType": "batchJob",
+      "steps": [
+        {
+          "action": "ewi0navigateToSelectedObject"
+        },
+        {
+          "action": "EwiClosePopupAction"
+        }
+      ]
+    },
+    "ewi0CollectedAttachmentsCellOpenCommandAction": {
+      "actionType": "JSFunction",
+      "method": "navigateToObject",
+      "inputData": {
+        "selectedUid": "{{commandContext.vmo.uid}}"
+      },
+      "deps": "js/workinstrUtilsService"
+    },
+    "ewi0CollectedAttachmentsCellDownloadCommandAction": {
+      "actionType": "JSFunction",
+      "method": "execute",
+      "deps": "js/viewFileCommandHandler",
+      "inputData": {
+        "vmo": "{{commandContext.vmo}}"
+      }
+    },
+    "ewi0CollectedAttachmentsCellDeleteCommandAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "ewi.confirmDeleteCollectedAttachmentsCell"
+          }
+        ]
+      }
+    },
+    "ewi0CollectedAttachmentsCommandAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ewi0CollectedAttachments",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "ewi0PinObjectToHomeCommandAction": {
+      "actionType": "JSFunction",
+      "method": "getPinData",
+      "inputData": {
+        "selectedObject": "{{ctx.mselected[0]}}"
+      },
+      "outputData": {
+        "pinParams": "pinParams",
+        "pinRevObject": "revObject"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "ewi.pinObject"
+          }
+        ]
+      },
+      "deps": "js/ewiService"
+    },
+    "pinObject": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-AWS2-2018-05-DataManagement",
+      "method": "pinObjects",
+      "inputData": {
+        "input": [
+          {
+            "uid": "{{data.pinRevObject.uid}}",
+            "actionParams": "{{data.pinParams}}",
+            "templateId": ""
+          }
+        ]
+      },
+      "events": {
+        "success": [
+          {
+            "name": "cdm.updated",
+            "eventData": {
+              "updatedObjects": "{{ctx.mselected}}"
+            }
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "message": "pinObjectSuccessMessage"
+          }
+        ],
+        "failure": [
+          {
+            "message": "pinObjectFailedMessage"
+          }
+        ]
+      }
+    },
+    "ewi0UnpinObjectFromHomeCommandAction": {
+      "actionType": "JSFunction",
+      "method": "getItemRevisionOfBomLine",
+      "inputData": {
+        "selectedObject": "{{ctx.mselected[0]}}"
+      },
+      "outputData": {
+        "unPinRevObject": ""
+      },
+      "events": {
+        "success": [
+          {
+            "name": "ewi.unPinObject"
+          }
+        ]
+      },
+      "deps": "js/ewiService"
+    },
+    "unPinObject": {
+      "actionType": "TcSoaService",
+      "serviceName": "Internal-AWS2-2018-05-DataManagement",
+      "method": "unpinObjects",
+      "inputData": {
+        "uidsToUnpin": [
+          "{{data.unPinRevObject.uid}}"
+        ],
+        "returnGateway": false
+      },
+      "events": {
+        "success": [
+          {
+            "name": "cdm.updated",
+            "eventData": {
+              "updatedObjects": "{{ctx.mselected}}"
+            }
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "message": "unpinObjectSuccessMessage"
+          }
+        ],
+        "failure": [
+          {
+            "message": "unpinObjectFailedMessage"
+          }
+        ]
+      }
+    },
+    "ewi0FullScreenCommandAction": {
+      "actionType": "JSFunction",
+      "method": "setFullScreen",
+      "inputData": {
+        "workareaName": "{{commandContext.tabModel.workareaName}}"
+      },
+      "deps": "js/ewiService"
+    },
+    "ewi0ExitFullScreenCommandAction": {
+      "actionType": "JSFunction",
+      "method": "setFullScreen",
+      "inputData": {
+        "workareaName": "{{commandContext.tabModel.workareaName}}"
+      },
+      "deps": "js/ewiService"
+    },
+    "ewi0ObjectInfoCommandAction": {
+      "actionType": "popup",
+      "inputData": {
+        "options": {
+          "preset": "modal",
+          "ignoreLimit": true,
+          "view": "Ewi0ObjectInfo",
+          "caption": "{{commandContext.tabModel.selectedObjects[0].props.bl_rev_object_name.uiValue}}",
+          "subPanelContext": "{{commandContext.tabModel.selectedObjects[0]}}",
+          "width": "90vw",
+          "height": "90vh",
+          "anchor": "ewiPopupAnchor"
+        }
+      },
+      "outputData": {
+        "popupId": "id"
+      }
+    },
+    "ewi0EditDCDCommandAction": {
+      "actionType": "activateCommandPanel",
+      "inputData": {
+        "commandId": "Ewi0EditDCD",
+        "location": "aw_toolsAndInfo",
+        "context": "{{commandContext.tabModel.selectedObjects[0]}}"
+      }
+    },
+    "packUnpackAction": {
+      "actionType": "TcSoaService",
+      "serviceName": "StructureManagement-2010-09-Structure",
+      "method": "packOrUnpack",
+      "inputData": {
+        "lines": "{{commandContext.tabModel.selectedObjects}}",
+        "flag": "{{function:getPackUnpackFlag}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "ewi.refreshData"
+          }
+        ]
+      },
+      "deps": "js/ewiService"
+    },
+    "ewi0PackOrUnpackCommandAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "ewi.refreshView"
+          },
+          {
+            "name": "ewi.packUnpack"
+          }
+        ]
+      }
+    },
+    "ewi0AggregatePartsCommandAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "ewi.refreshView"
+          },
+          {
+            "name": "ewi.toggleAggregateParts"
+          }
+        ]
+      }
+    },
+    "ewi0AggregateToolsCommandAction": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "ewi.refreshView"
+          },
+          {
+            "name": "ewi.toggleAggregateTools"
+          }
+        ]
+      }
+    },
+    "ewi0GenerateReportCommandAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ewi0GenerateReport",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "ewi0StepStatusCommandAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ewi0StepStatus",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "ewi0SerialAndLotCommandAction": {
+      "actionType": "activateCommandPanel",
+      "inputData": {
+        "commandId": "Ewi0EditSerialAndLot",
+        "location": "aw_toolsAndInfo",
+        "context": "{{commandContext.tabModel.selectedObjects[0]}}",
+        "config": {
+          "isPinUnpinEnabled": true
+        }
+      }
+    },
+    "ewi0ShowOverviewCommandAction": {
+      "actionType": "popup",
+      "inputData": {
+        "options": {
+          "preset": "modal",
+          "ignoreLimit": true,
+          "view": "Ewi0Overview",
+          "caption": "{{i18n.overview}}",
+          "width": "90vw",
+          "height": "90vh",
+          "anchor": "ewiPopupAnchor"
+        }
+      },
+      "outputData": {
+        "popupId": "id"
+      }
+    },
+    "refreshView": {
+      "actionType": "JSFunction",
+      "method": "refreshView",
+      "deps": "js/ewiService",
+      "inputData": {
+        "tab": "{{commandContext.tabModel}}"
+      }
+    },
+    "EwiClosePopupAction": {
+      "actionType": "JSFunction",
+      "method": "hide",
+      "inputData": {
+        "popupId": "{{data.popupId}}"
+      },
+      "deps": "js/popupService"
+    },
+    "EwiDeleteCollectedAttachmentsCell": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "collectedAttachments.deleteAttachment"
+          }
+        ]
+      }
+    },
+    "ewi0CreateChangeInContextAction": {
+      "actionType": "JSFunction",
+      "method": "openCreateChangePanel",
+      "deps": "js/Cm1ChangeCommandService",
+      "inputData": {
+        "commandId": "Cm1ShowCreateChangeInContext",
+        "location": "aw_toolsAndInfo",
+        "params": "{{ctx.state.params}}"
+      }
+    },
+    "ewi0OfflineCommandAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ewi0Offline",
+        "location": "aw_toolsAndInfo"
+      }
+    }
+  },
+  "onEvent": [
+    {
+      "eventId": "ewi.refreshView",
+      "action": "refreshView"
+    },
+    {
+      "eventId": "ewi.packUnpack",
+      "action": "packUnpackAction"
+    },
+    {
+      "eventId": "ewi.pinObject",
+      "action": "pinObject"
+    },
+    {
+      "eventId": "ewi.unPinObject",
+      "action": "unPinObject"
+    },
+    {
+      "eventId": "ewi.confirmDeleteCollectedAttachmentsCell",
+      "message": "confirmDeleteCollectedAttachmentsCell"
+    }
+  ],
+  "functions": {
+    "getPackUnpackFlag": {
+      "functionName": "getPackUnpackFlag",
+      "parameters": [
+        "{{commandContext.tabModel.selectedObjects[0].props.bl_quantity.value}}"
+      ]
+    }
+  },
+  "conditions": {
+    "ewi0OpenVVICommandCondition": {
+      "expression": "commandContext.tabModel.viewerData.fileData.file.type === 'SnapShotViewData'"
+    },
+    "workinstr0IsInViewer3dMode": {
+      "expression": "commandContext.tabModel.viewerAtomicData.getValue().viewerViewMode === 'VIEWER3D'"
+    },
+    "ewi03DViewCommandCondition": {
+      "expression": "ctx.workinstr0Vis.visLicense === true && commandContext.tabModel.viewerData.fileData.viewer === 'Awp0ImageViewer' && commandContext.tabModel.viewerData.fileData.file.type === 'SnapShotViewData'"
+    },
+    "ewi02DViewCommandCondition": {
+      "expression": "commandContext.tabModel.viewerData.fileData.viewer === 'WorkinstrSnapshotViewer' && commandContext.tabModel.viewerData.fileData.file.type === 'SnapShotViewData' && conditions.workinstr0IsInViewer3dMode"
+    },
+    "ewi0PinObjectToHomeCommandCondition": {
+      "expression": "conditions.ewi0SubLocationCommandCondition && ctx.visibleServerCommands.Ewi0PinObjectToHome"
+    },
+    "ewi0UnpinObjectFromHomeCommandCondition": {
+      "expression": "conditions.ewi0SubLocationCommandCondition && ctx.visibleServerCommands.Ewi0UnpinObjectFromHome"
+    },
+    "ewi0FullScreenCommandCondition": {
+      "expression": "!ctx.EWI0FullScreen && ctx.preferences.EWI_Layout[0] !=='SinglePanelLayout' && ctx.EWI0WindowSize > 650 && commandContext.tabModel.workareaName !== 'popupMainPanelTabs'"
+    },
+    "ewi0ExitFullScreenCommandCondition": {
+      "expression": "ctx.EWI0FullScreen  && ctx.preferences.EWI_Layout[0] !=='SinglePanelLayout' && ctx.EWI0WindowSize > 650 && commandContext.tabModel.workareaName !== 'popupMainPanelTabs'"
+    },
+    "ewi0IsNotLeaf": {
+      "expression": "ctx.mselected[0].props.ewi0numberOfSubElements.dbValues[0] !== '0'"
+    },
+    "ewi0ExecutionEnabled": {
+      "expression": "conditions.ewi0SubLocationCommandCondition && ctx.preferences.EWI_ExecutionEnabled[0] === 'true'"
+    },
+    "ewi0ShowAggregate": {
+      "expression": "ctx.mselected[0].modelType.typeHierarchyArray.indexOf( 'Mfg0BvrProcessArea' ) === -1 || ctx.mselected[0].modelType.typeHierarchyArray.indexOf( 'Mfg0BvrProcessStation' ) > -1"
+    },
+    "ewi0isToolSelected": {
+      "expression": "commandContext.tabModel.selectedObjects.length > 0 && commandContext.tabModel.selectedObjects[0].modelType.typeHierarchyArray.indexOf( 'Mfg0BvrEquipment' ) > -1"
+    },
+    "ewi0isPartSelected": {
+      "expression": "commandContext.tabModel.selectedObjects.length > 0 && commandContext.tabModel.selectedObjects[0].modelType.typeHierarchyArray.indexOf( 'Mfg0BvrPart' ) > -1"
+    },
+    "ewi0isToolOrPartSelected": {
+      "expression": "commandContext.tabModel.selectedObjects.length > 0 && (commandContext.tabModel.selectedObjects[0].modelType.typeHierarchyArray.indexOf( 'Mfg0BvrPart' ) > -1 || commandContext.tabModel.selectedObjects[0].modelType.typeHierarchyArray.indexOf( 'Mfg0BvrEquipment' ) > -1)"
+    },
+    "ewi0PartsSerialCondition": {
+      "expression": "commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_PartIsSerializedProperty[0]].value == 'True' || commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_PartIsSerializedProperty[0]].value == 'true' || commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_PartIsSerializedProperty[0]].value == 'TRUE' || commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_PartIsSerializedProperty[0]].value === true"
+    },
+    "ewi0PartsLotCondition": {
+      "expression": "commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_PartIsLotProperty[0]].value == 'True' || commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_PartIsLotProperty[0]].value == 'true' || commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_PartIsLotProperty[0]].value == 'TRUE' || commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_PartIsLotProperty[0]].value === true"
+    },
+    "ewi0PartsSerialAndLotCommandCondition": {
+      "expression": "conditions.ewi0isPartSelected && (conditions.ewi0PartsSerialCondition || conditions.ewi0PartsLotCondition )"
+    },
+    "ewi0ToolsSerialCondition": {
+      "expression": "commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_ToolIsSerializedProperty[0]].value == 'True' || commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_ToolIsSerializedProperty[0]].value == 'true' || commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_ToolIsSerializedProperty[0]].value == 'TRUE' || commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_ToolIsSerializedProperty[0]].value === true"
+    },
+    "ewi0ToolsLotCondition": {
+      "expression": "commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_ToolIsLotProperty[0]].value == 'True' || commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_ToolIsLotProperty[0]].value == 'true' || commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_ToolIsLotProperty[0]].value == 'TRUE' || commandContext.tabModel.selectedObjects[0].props[ctx.preferences.EWI_ToolIsLotProperty[0]].value === true"
+    },
+    "ewi0ToolsSerialAndLotCommandCondition": {
+      "expression": "conditions.ewi0isToolSelected && (conditions.ewi0ToolsSerialCondition || conditions.ewi0ToolsLotCondition)"
+    },
+    "ewi0SerialAndLotCommandCondition": {
+      "expression": "conditions.ewi0ExecutionEnabled && (conditions.ewi0PartsSerialAndLotCommandCondition || conditions.ewi0ToolsSerialAndLotCommandCondition)"
+    },
+    "ewi0IsEditablePanelOpenCondition": {
+      "expression": "ctx.sidenavCommandId === 'Ewi0EditSerialAndLot' || ctx.sidenavCommandId === 'Ewi0StepStatus'"
+    },
+    "ewi0EditDCDCommandCondition": {
+      "expression": "conditions.ewi0ExecutionEnabled && commandContext.tabModel.selectedObjects.length > 0 && commandContext.tabModel.selectedObjects[0].modelType.typeHierarchyArray.indexOf( 'Mes0BvrDCD' ) > -1"
+    },
+    "ewi0ObjectInfoCommandCondition": {
+      "expression": "commandContext.tabModel.selectedObjects.length > 0 && (commandContext.tabModel.selectedObjects[0].modelType.typeHierarchyArray.indexOf( 'Mfg0BvrPart' ) > -1 || commandContext.tabModel.selectedObjects[0].modelType.typeHierarchyArray.indexOf( 'Mfg0BvrEquipment' ) > -1 || commandContext.tabModel.selectedObjects[0].modelType.typeHierarchyArray.indexOf( 'ImanItemBOPLine' ) > -1 )"
+    },
+    "ewi0ShouldPackCondition": {
+      "expression": "commandContext.tabModel.selectedObjects[0].props.bl_quantity.value === '' || commandContext.tabModel.selectedObjects[0].props.bl_quantity.value === '0' || commandContext.tabModel.selectedObjects[0].props.bl_quantity.value === '1'"
+    },
+    "ewi0PackCommandCondition": {
+      "expression": "conditions.ewi0isToolOrPartSelected && conditions.ewi0ShouldPackCondition"
+    },
+    "ewi0UnpackCommandCondition": {
+      "expression": "conditions.ewi0isToolOrPartSelected && !conditions.ewi0ShouldPackCondition"
+    },
+    "ewi0AggregatePartsCommandCondition": {
+      "expression": "commandContext.tabModel.name === 'Parts'"
+    },
+    "ewi0AggregatePartsSelectWhenCondition": {
+      "expression": "conditions.ewi0AggregatePartsCommandCondition && commandContext.tabModel.relations.ewi0aggregateSubsqMaterial"
+    },
+    "ewi0AggregateToolsCommandCondition": {
+      "expression": "commandContext.tabModel.name === 'Tools'"
+    },
+    "ewi0AggregateToolsSelectWhenCondition": {
+      "expression": "conditions.ewi0AggregateToolsCommandCondition && commandContext.tabModel.relations.ewi0aggregateSubsqEquipment"
+    },
+    "ewi0SubLocationCommandCondition": {
+      "expression": "ctx.sublocation.clientScopeURI === 'Ewi0EwiSubLocation'"
+    },
+    "ewi0NotSubLocationCommandCondition": {
+      "expression": "ctx.sublocation.clientScopeURI !== 'Ewi0EwiSubLocation'"
+    },
+    "ewi0CreateChangeInContextCommandCondition": {
+      "expression": "conditions.ewi0SubLocationCommandCondition && ctx.visibleServerCommands.Ewi0ShowCreateChangeInContextCmdCond"
+    },
+    "ewi0OfflineCommandCondition": {
+      "expression": "conditions.ewi0SubLocationCommandCondition && ctx.preferences.EWI_OfflineEnabled[0] === 'true'"
+    }
+  },
+  "messages": {
+    "pinObjectSuccessMessage": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.pinObjectSuccess}}",
+      "messageTextParams": [
+        "{{ctx.mselected[0].props.object_string.dbValues[0]}}"
+      ]
+    },
+    "pinObjectFailedMessage": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.pinObjectFailed}}"
+    },
+    "unpinObjectSuccessMessage": {
+      "messageType": "INFO",
+      "messageText": "{{i18n.unPinObjectSuccess}}",
+      "messageTextParams": [
+        "{{ctx.mselected[0].props.object_string.dbValues[0]}}"
+      ]
+    },
+    "unpinObjectFailedMessage": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.unPinObjectFailed}}"
+    },
+    "confirmDeleteCollectedAttachmentsCell": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.deleteMsg}}",
+      "navigationOptions": [
+        {
+          "option": "Cancel",
+          "text": "{{i18n.cancel}}"
+        },
+        {
+          "option": "Delete",
+          "text": "{{i18n.delete}}",
+          "action": "EwiDeleteCollectedAttachmentsCell"
+        }
+      ]
+    }
+  },
+  "i18n": {
+    "overview": [
+      "EWIMessages"
+    ],
+    "information": [
+      "EWIMessages"
+    ],
+    "aggregateCurrentAndSub": [
+      "EWIMessages"
+    ],
+    "generateReport": [
+      "EWIMessages"
+    ],
+    "pack": [
+      "EWIMessages"
+    ],
+    "unpack": [
+      "EWIMessages"
+    ],
+    "editSerialAndLotTooltip": [
+      "EWIMessages"
+    ],
+    "pinObjectToHome": [
+      "EWIMessages"
+    ],
+    "pinObjectFailed": [
+      "EWIMessages"
+    ],
+    "pinObjectSuccess": [
+      "EWIMessages"
+    ],
+    "unpinObjectFromHome": [
+      "EWIMessages"
+    ],
+    "unPinObjectFailed": [
+      "EWIMessages"
+    ],
+    "unPinObjectSuccess": [
+      "EWIMessages"
+    ],
+    "stepStatus": [
+      "EWIMessages"
+    ],
+    "close": [
+      "EWIMessages"
+    ],
+    "collectedAttachments": [
+      "EWIMessages"
+    ],
+    "downloadAttachment": [
+      "EWIMessages"
+    ],
+    "deleteAttachment": [
+      "EWIMessages"
+    ],
+    "deleteMsg": [
+      "EWIMessages"
+    ],
+    "2DView": [
+      "WorkinstrMessages"
+    ],
+    "3DView": [
+      "WorkinstrMessages"
+    ],
+    "openInVVI": [
+      "EWIMessages"
+    ],
+    "editDCDTooltip": [
+      "EWIMessages"
+    ],
+    "createChange": [
+      "EWIMessages"
+    ],
+    "offline": [
+      "EWIMessages"
+    ],
+    "ewiFullScreenCommand": [
+      "EWIMessages"
+    ],
+    "ewiFullScreenCommandExit": [
+      "EWIMessages"
+    ]
+  }
+}

@@ -1,0 +1,759 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+        "compareOption": {
+            "displayName": "{{i18n.CompareOptions}}",
+            "type": "INTEGER",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dataProvider": "compareOptionsDataProvider",
+            "emptyLOVEntry": false
+        },
+        "FULL_MATCH": {
+            "displayName": "{{i18n.MatchedTitle}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.compareContext.displayOptions.MatchType.FULL_MATCH}}",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "PARTIAL_MATCH": {
+            "displayName": "{{i18n.DifferentTitle}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "MISSING_TARGET": {
+            "displayName": "{{i18n.UniqueSourceTitle}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "MISSING_SOURCE": {
+            "displayName": "{{i18n.UniqueTargetTitle}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "AC_DYNAMIC_IDIC": {
+            "displayName": "{{i18n.DynamicEquivalenceTitle}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "resultsLabel": {
+            "displayName": "{{i18n.resultsTitle}}",
+            "type": "STRING",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT",
+            "propertyLabelDisplay": "NO_PROPERTY_LABEL"
+        },
+        "displayOptionsTitle": {
+            "displayName": "{{i18n.DisplayTitle}}",
+            "type": "STRING",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT",
+            "propertyLabelDisplay": "NO_PROPERTY_LABEL"
+        },
+        "equivalenceTitle": {
+            "displayName": "{{i18n.EquivalenceTitle}}",
+            "type": "STRING",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT",
+            "propertyLabelDisplay": "NO_PROPERTY_LABEL"
+        },
+        "actionLabel": {
+            "displayName": "{{i18n.Action}}",
+            "type": "STRING",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP",
+            "uiValue": "{{i18n.Action}}"
+        },
+        "timestampLabel": {
+            "displayName": "{{i18n.Time}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{subPanelContext.compareContext.timestampOfStoredResults}}",
+            "dispValue": "{{subPanelContext.compareContext.timestampOfStoredResults}}"
+        },
+        "backgroundOption": {
+            "displayName": "{{i18n.BackgroundOption}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT",
+            "dbValue": ""
+        },
+        "isLicensePresent": false,
+        "isSourcePanelCollapsed": false,
+        "isTargetPanelCollapsed": true,
+        "selectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "selectionData2": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "compareMount",
+        "onUpdate": [ {
+                "action": "updatePartialMatchdbValue",
+                "observers": [ "props.subPanelContext.compareContext.displayOptions.MatchType.PARTIAL_MATCH" ]
+            },
+            {
+                "action": "updateMissingTargetdbValue",
+                "observers": [ "props.subPanelContext.compareContext.displayOptions.MatchType.MISSING_TARGET" ]
+            },
+            {
+                "action": "updateMissingSourcedbValue",
+                "observers": [ "props.subPanelContext.compareContext.displayOptions.MatchType.MISSING_SOURCE" ]
+            },
+            {
+                "action": "updateAcDynamicIdic",
+                "observers": [ "props.subPanelContext.compareContext.displayOptions.Equivalence" ]
+            },
+            {
+                "action": "handleSourceSelection",
+                "observers": [ "viewModel.atomicData.selectionData.selected" ]
+            },
+            {
+                "action": "handleTargetSelection",
+                "observers": [ "viewModel.atomicData.selectionData2.selected" ]
+            },
+            {
+                "action": "propagateSelectionToPanel",
+                "observers": [ "props.subPanelContext.occContext.selectedModelObjects" ]
+            },
+            {
+                "action": "propagateSelectionToPanel",
+                "observers": [ "props.subPanelContext.inactiveContext.selectedModelObjects" ]
+            }
+        ],
+        "onUnmount": "clearCompareContextForPartitionCompare"
+    },
+    "dataProviders": {
+        "getSourceDiffResults": {
+            "initializeAction": "getSourceDifferences",
+            "nextAction": "getNextSourceDifferences",
+            "response": "{{data.sourceDifferences}}",
+            "totalFound": "{{data.srcTotalFound}}",
+            "selectionModelMode": "single",
+            "inputData": {
+                "selectionData": "{{fields.selectionData}}"
+            }
+        },
+
+        "getTargetDiffResults": {
+            "initializeAction": "getTargetDifferences",
+            "nextAction": "getNextTargetDifferences",
+            "response": "{{data.targetDifferences}}",
+            "totalFound": "{{data.trgTotalFound}}",
+            "selectionModelMode": "single",
+            "inputData": {
+                "selectionData": "{{fields.selectionData2}}"
+            }
+        },
+        "compareOptionsDataProvider": {
+            "action": "revealCompareOptions",
+            "response": "{{data.compareOptionsList}}",
+            "totalFound": "{{data.compareOptionsList.length}}"
+        }
+    },
+    "actions": {
+        "compareMount": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "setUpCompareContext"
+                },
+                {
+                    "action": "revealCompareOptionsAndSetInitialValue"
+                },
+                {
+                    "action": "updatePartialMatchdbValue"
+                },
+                {
+                    "action": "updateMissingTargetdbValue"
+                },
+                {
+                    "action": "updateMissingSourcedbValue"
+                },
+                {
+                    "action": "updateAcDynamicIdic"
+                },
+                {
+                    "action": "setCompareResultSectionTitles"
+                }
+            ]
+        },
+        "setUpCompareContext": {
+            "actionType": "JSFunction",
+            "method": "setUpCompareContext",
+            "inputData": {
+                "compareContext": "{{subPanelContext.compareContext}}"
+            },
+            "deps": "js/structureCompareService"
+        },
+        "clearCompareContextForPartitionCompare": {
+            "actionType": "JSFunction",
+            "method": "clearCompareContextForPartitionCompare",
+            "inputData": {
+                "compareContext": "{{subPanelContext.compareContext}}",
+                "data":"{{data}}"
+            },
+            "deps": "js/structureCompareService"
+        },
+        "revealCompareOptionsAndSetInitialValue": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "revealCompareOptions"
+                },
+                {
+                    "action": "setInitialCompareOption"
+                }
+            ]
+        },
+        "revealCompareOptions": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2018-12-Compare",
+            "method": "getCompareOptions",
+            "inputData": {
+                "sourceObject": {
+                    "type": "{{subPanelContext.occContext.selectedModelObjects[0].type}}",
+                    "uid": "{{subPanelContext.occContext.selectedModelObjects[0].uid}}"
+                },
+                "targetObject": {
+                    "type": "{{subPanelContext.inactiveContext.selectedModelObjects[0].type}}",
+                    "uid": "{{subPanelContext.inactiveContext.selectedModelObjects[0].uid}}"
+                }
+            },
+            "outputData": {
+                "compareOptionsList": "{{function:getCompareOptionsList}}"
+            },
+            "deps": "js/awStructureCompareOptionsService"
+        },
+        "setInitialCompareOption": {
+            "actionType": "JSFunction",
+            "method": "setInitialCompareOption",
+            "inputData": {
+                "compareOption": "{{data.compareOption}}",
+                "depth": "{{subPanelContext.compareContext.depth}}"
+            },
+            "outputData": {
+                "compareOption": ""
+            },
+            "deps": "js/awStructureCompareOptionsService"
+        },
+        "updatePartialMatchdbValue": {
+            "actionType": "JSFunction",
+            "method": "updatedbValue",
+            "inputData": {
+                "par1": "{{subPanelContext.compareContext.displayOptions.MatchType.PARTIAL_MATCH}}"
+            },
+            "outputData": {
+                "PARTIAL_MATCH.dbValue": ""
+            },
+            "deps": "js/awStructureCompareOptionsService"
+        },
+        "updateMissingTargetdbValue": {
+            "actionType": "JSFunction",
+            "method": "updatedbValue",
+            "inputData": {
+                "par1": "{{subPanelContext.compareContext.displayOptions.MatchType.MISSING_TARGET}}"
+            },
+            "outputData": {
+                "MISSING_TARGET.dbValue": ""
+            },
+            "deps": "js/awStructureCompareOptionsService"
+        },
+        "updateMissingSourcedbValue": {
+            "actionType": "JSFunction",
+            "method": "updatedbValue",
+            "inputData": {
+                "par1": "{{subPanelContext.compareContext.displayOptions.MatchType.MISSING_SOURCE}}"
+            },
+            "outputData": {
+                "MISSING_SOURCE.dbValue": ""
+            },
+            "deps": "js/awStructureCompareOptionsService"
+        },
+        "updateAcDynamicIdic": {
+            "actionType": "JSFunction",
+            "method": "updatedbValue",
+            "inputData": {
+                "par1": "{{subPanelContext.compareContext.displayOptions.Equivalence.AC_DYNAMIC_IDIC}}"
+            },
+            "outputData": {
+                "AC_DYNAMIC_IDIC.dbValue": ""
+            },
+            "deps": "js/awStructureCompareOptionsService"
+        },
+        "setCompareResultSectionTitles": {
+            "actionType": "JSFunction",
+            "method": "setCompareResultSectionTitles",
+            "inputData": {
+                "data":"{{data}}",
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "sourceTitle": "sourceTitle",
+                "targetTitle": "targetTitle"
+            },
+            "deps": "js/structureCompareService"
+        },
+        "toggleSourceAndTargetPanelCollapseState": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "toggleSourcePanelCollapseState"
+                },
+                {
+                    "action": "toggleTargetPanelCollapseState"
+                }
+            ]
+        },
+        "toggleSourcePanelCollapseState": {
+            "actionType": "JSFunction",
+            "method": "toggleSourcePanelCollapseState",
+            "inputData": {
+                "panelName": "{{parameters.panelName}}",
+                "isCollapsed": "{{parameters.isCollapsed}}"
+            },
+            "outputData": {
+                "isSourcePanelCollapsed": ""
+            },
+            "deps": "js/structureCompareService"
+        },
+        "toggleTargetPanelCollapseState": {
+            "actionType": "JSFunction",
+            "method": "toggleTargetPanelCollapseState",
+            "inputData": {
+                "panelName": "{{parameters.panelName}}"
+            },
+            "outputData": {
+                "isTargetPanelCollapsed": ""
+            },
+            "deps": "js/structureCompareService"
+        },
+        "collapseSourceAndTargetPanels": {
+            "actionType": "JSFunction",
+            "method": "collapseSourceAndTargetPanels",
+            "outputData": {
+                "isSourcePanelCollapsed": "isSourcePanelCollapsed",
+                "isTargetPanelCollapsed": "isTargetPanelCollapsed"
+            },
+            "deps": "js/structureCompareService"
+        },
+        "getSourceDifferences": {
+            "actionType": "JSFunction",
+            "method": "getFirstSourceDifferences",
+            "inputData": {
+                "compareContext": "{{subPanelContext.compareContext}}"
+            },
+            "outputData": {
+                "sourceDifferences": "sourceDifferences",
+                "srcTotalFound": "srcTotalFound",
+                "dataProviders.getSourceDiffResults.cursorObject": "cursorObject",
+                "isSourcePanelCollapsed": "isSourcePanelCollapsed"
+            },
+            "deps": "js/awStructureCompareDiffService"
+        },
+        "getTargetDifferences": {
+            "actionType": "JSFunction",
+            "method": "getFirstTargetDifferences",
+            "inputData": {
+                "compareContext": "{{subPanelContext.compareContext}}"
+            },
+            "outputData": {
+                "targetDifferences": "targetDifferences",
+                "trgTotalFound": "trgTotalFound",
+                "dataProviders.getTargetDiffResults.cursorObject": "cursorObject"
+            },
+            "deps": "js/awStructureCompareDiffService"
+        },
+        "getNextSourceDifferences": {
+            "actionType": "JSFunction",
+            "method": "getNextSourceDifferences",
+            "inputData": {
+                "compareContext": "{{subPanelContext.compareContext}}",
+                "cursorObject": "{{data.dataProviders.getSourceDiffResults.cursorObject}}"
+            },
+            "outputData": {
+                "sourceDifferences": "sourceDifferences",
+                "srcTotalFound": "srcTotalFound",
+                "dataProviders.getSourceDiffResults.cursorObject": "cursorObject"
+            },
+            "deps": "js/awStructureCompareDiffService"
+        },
+        "getNextTargetDifferences": {
+            "actionType": "JSFunction",
+            "method": "getNextTargetDifferences",
+            "inputData": {
+                "compareContext": "{{subPanelContext.compareContext}}",
+                "cursorObject": "{{data.dataProviders.getTargetDiffResults.cursorObject}}"
+            },
+            "outputData": {
+                "targetDifferences": "targetDifferences",
+                "trgTotalFound": "trgTotalFound",
+                "dataProviders.getTargetDiffResults.cursorObject": "cursorObject"
+            },
+            "deps": "js/awStructureCompareDiffService"
+        },
+        "revealSourceDiff": {
+            "actionType": "dataProvider",
+            "method": "getSourceDiffResults"
+        },
+        "revealTargetDiff": {
+            "actionType": "dataProvider",
+            "method": "getTargetDiffResults"
+        },
+        "performCompare": {
+            "actionType": "JSFunction",
+            "method": "executeFromComparePanel",
+            "inputData": {
+                "compareContext": "{{subPanelContext.compareContext}}",
+                "usrSelectedDepth": "{{data.compareOption.dbValue}}",
+                "backgroundOption": "{{data.backgroundOption.dbValue}}"
+            },
+            "outputData": {},
+            "events": {
+                "success": [ {
+                    "name": "complete",
+                    "condition": "data.backgroundOption.dbValue === true",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                },
+                    {
+                        "name": "setCompareResultSectionTitles"
+                    }
+                ]
+            },
+            "deps": "js/structureCompareService",
+            "actionMessages": {
+                "failure": [ {
+                    "message": "performCompareFailure"
+                } ]
+            }
+        },
+        "handleSourceSelection": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "activateLeftView"
+                },
+                {
+                    "action": "handleSourceSelectionModel"
+                }
+            ]
+        },
+        "handleSourceSelectionModel": {
+            "actionType": "JSFunction",
+            "method": "propagateSelectionToGrid",
+            "inputData": {
+                "occContext": "{{subPanelContext.occContext}}",
+                "dp": "{{data.dataProviders.getSourceDiffResults}}",
+                "triggeredFromDiffPanel": true
+            },
+            "deps": "js/structureCompareService"
+        },
+        "handleTargetSelection": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "activateRightView"
+                },
+                {
+                    "action": "handleTargetSelectionModel"
+                }
+            ]
+        },
+        "handleTargetSelectionModel": {
+            "actionType": "JSFunction",
+            "method": "propagateSelectionToGrid",
+            "inputData": {
+                "occContext": "{{subPanelContext.occContext}}",
+                "dp": "{{data.dataProviders.getTargetDiffResults}}",
+                "triggeredFromDiffPanel": true
+            },
+            "deps": "js/structureCompareService"
+        },
+        "activateLeftView": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "ace.activateWindow",
+                    "eventData": {
+                        "key": "occmgmtContext"
+                    }
+                } ]
+            }
+        },
+        "activateRightView": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "ace.activateWindow",
+                    "eventData": {
+                        "key": "occmgmtContext2"
+                    }
+                } ]
+            }
+        },
+        "focusSourceDiffResults": {
+            "actionType": "JSFunction",
+            "method": "focusDiffResults",
+            "inputData": {
+                "gridLocation": 1,
+                "dataProvider": "{{data.dataProviders.getSourceDiffResults}}"
+            },
+            "deps": "js/awStructureCompareService"
+        },
+        "focusTargetDiffResults": {
+            "actionType": "JSFunction",
+            "method": "focusDiffResults",
+            "inputData": {
+                "gridLocation": 2,
+                "dataProvider": "{{data.dataProviders.getTargetDiffResults}}"
+            },
+            "deps": "js/awStructureCompareService"
+        },
+        "updateFullMatch": {
+            "actionType": "JSFunction",
+            "method": "updateMatchTypes",
+            "inputData": {
+                "property": "{{data.FULL_MATCH}}",
+                "compareContext": "{{subPanelContext.compareContext}}"
+            },
+            "deps": "js/awStructureCompareOptionsService"
+        },
+        "updatePartialMatch": {
+            "actionType": "JSFunction",
+            "method": "updateMatchTypes",
+            "inputData": {
+                "property": "{{data.PARTIAL_MATCH}}",
+                "compareContext": "{{subPanelContext.compareContext}}"
+            },
+            "deps": "js/awStructureCompareOptionsService"
+        },
+        "updateMissingSource": {
+            "actionType": "JSFunction",
+            "method": "updateMatchTypes",
+            "inputData": {
+                "property": "{{data.MISSING_SOURCE}}",
+                "compareContext": "{{subPanelContext.compareContext}}"
+            },
+            "deps": "js/awStructureCompareOptionsService"
+        },
+        "updateMissingTarget": {
+            "actionType": "JSFunction",
+            "method": "updateMatchTypes",
+            "inputData": {
+                "property": "{{data.MISSING_TARGET}}",
+                "compareContext": "{{subPanelContext.compareContext}}"
+            },
+            "deps": "js/awStructureCompareOptionsService"
+        },
+        "updateDynamicIDIC": {
+            "actionType": "JSFunction",
+            "method": "updateEquivalenceTypes",
+            "inputData": {
+                "property": "{{data.AC_DYNAMIC_IDIC}}",
+                "compareContext": "{{subPanelContext.compareContext}}"
+            },
+            "deps": "js/awStructureCompareOptionsService"
+        },
+        "resetBackgroundOption": {
+            "actionType": "JSFunction",
+            "method": "resetBackgroundOption",
+            "inputData": {
+                "backgroundOption": "{{data.backgroundOption}}"
+            },
+            "outputData": {
+                "backgroundOption": ""
+            },
+            "deps": "js/awStructureCompareOptionsService"
+        },
+        "propagateSelectionToPanel": {
+            "actionType": "JSFunction",
+            "method": "propagateSelectionToPanel",
+            "inputData": {
+                "occContext": "{{subPanelContext.occContext}}",
+                "inactiveContext": "{{subPanelContext.inactiveContext}}",
+                "data": "{{data}}",
+                "isInCompareMode": "{{subPanelContext.compareContext.isInCompareMode}}"
+            },
+            "deps": "js/structureCompareService"
+        }
+    },
+    "functions": {
+        "getCompareOptionsList": {
+            "functionName": "getCompareOptionsList",
+            "parameters": [
+                "{{data}}",
+                "{{subPanelContext.compareContext}}"
+            ]
+        }
+    },
+    "conditions": {
+        "isInCompareMode": {
+            "expression": "subPanelContext.compareContext != undefined && subPanelContext.compareContext.isInCompareMode ||( subPanelContext.compareContext.isInCompareMode || subPanelContext.compareContext.isInMultiLevelCompare)"
+        },
+        "isEquivalenceSectionVisible": {
+            "expression": "data.isLicensePresent && !conditions.isPartitionSchemeApplied"
+        },
+        "isPartitionSchemeApplied": {
+            "expression": "(subPanelContext.occContext.productContextInfo.props.fgf0PartitionScheme.isNulls === undefined && subPanelContext.occContext.productContextInfo.props.fgf0PartitionScheme.dbValues.length >0) || (subPanelContext.inactiveContext.productContextInfo.props.fgf0PartitionScheme.isNulls === undefined && subPanelContext.inactiveContext.productContextInfo.props.fgf0PartitionScheme.dbValues.length >0)"
+        },
+        "isTopLineSelected": {
+            "expression": "subPanelContext.occContext.selectedModelObjects[0].props.awb0Parent.isNulls[0]===true || subPanelContext.inactiveContext.selectedModelObjects[0].props.awb0Parent.isNulls[0]===true"
+        },
+        "isPartitionSelected": {
+            "expression": "conditions.isPartitionSchemeApplied && (subPanelContext.occContext.selectedModelObjects[0].type==='Fgf0PartitionElement' || subPanelContext.inactiveContext.selectedModelObjects[0].type==='Fgf0PartitionElement')"
+        },
+        "isCompareButtonEnable": {
+            "expression": "!conditions.isPartitionSchemeApplied || (!conditions.isPartitionSelected && !conditions.isTopLineSelected ) || (conditions.isPartitionSelected && subPanelContext.occContext.selectedModelObjects[0].type === subPanelContext.inactiveContext.selectedModelObjects[0].type && compareOption.dbValue === 1)"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "propagateSelectionToPanelEvent",
+            "action": "propagateSelectionToPanel"
+        },
+        {
+            "eventId": "compareOptionsDataProvider.validSelectionEvent",
+            "condition": "selectedObjects[0].propInternalValue === 1",
+            "action": "resetBackgroundOption"
+        },
+        {
+            "eventId": "awPanelSection.collapse",
+            "condition": "( name === 'target' && isCollapsed === false ) || ( name === 'source' && data.isSourcePanelCollapsed !== isCollapsed )",
+            "action": "toggleSourceAndTargetPanelCollapseState",
+            "inputArgs": {
+                "panelName": "{{eventData.name}}",
+                "isCollapsed": "{{eventData.isCollapsed}}"
+            }
+        },
+        {
+            "eventId": "awPanelSection.collapse",
+            "condition": "subPanelContext.compareContext.isInCompareMode && name==='options' && isCollapsed === false",
+            "action": "collapseSourceAndTargetPanels"
+        },
+        {
+            "eventId": "Awb0Compare.contentLoaded",
+            "condition": "conditions.isInCompareMode",
+            "action": "revealSourceDiff"
+        },
+        {
+            "eventId": "Awb0Compare.contentLoaded",
+            "condition": "conditions.isInCompareMode",
+            "action": "revealTargetDiff"
+        },
+        {
+            "eventId": "getSourceDiffResults.reset",
+            "action": "revealSourceDiff"
+        },
+        {
+            "eventId": "getTargetDiffResults.reset",
+            "action": "revealTargetDiff"
+        },
+        {
+            "eventId": "getSourceDiffResults.focusSelection",
+            "action": "focusSourceDiffResults"
+        },
+        {
+            "eventId": "getTargetDiffResults.focusSelection",
+            "action": "focusTargetDiffResults"
+        },
+        {
+            "eventId": "setCompareResultSectionTitles",
+            "action": "setCompareResultSectionTitles"
+        }
+    ],
+    "messages": {
+        "performCompareFailure": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "i18n": {
+        "StructureCompareDifferenceTitle": [
+            "StructureCompareConstants"
+        ],
+        "SingleLevelCompare": [
+            "StructureCompareConstants"
+        ],
+        "MultiLevelCompare": [
+            "StructureCompareConstants"
+        ],
+        "ComponentLevelCompare": [
+            "StructureCompareConstants"
+        ],
+        "compareButtonTitle": [
+            "StructureCompareConstants"
+        ],
+        "Action": [
+            "StructureCompareConstants"
+        ],
+        "noDifferences": [
+            "StructureCompareConstants"
+        ],
+        "CompareOptions": [
+            "StructureCompareConstants"
+        ],
+        "BackgroundOption": [
+            "StructureCompareConstants"
+        ],
+        "Time": [
+            "StructureCompareConstants"
+        ],
+        "totalDifferences": [
+            "StructureCompareConstants"
+        ],
+        "LevelsTitle": [
+            "StructureCompareConstants"
+        ],
+        "DisplayTitle": [
+            "StructureCompareConstants"
+        ],
+        "EquivalenceTitle": [
+            "StructureCompareConstants"
+        ],
+        "resultsTitle": [
+            "StructureCompareConstants"
+        ],
+        "MatchedTitle": [
+            "StructureCompareConstants"
+        ],
+        "DifferentTitle": [
+            "StructureCompareConstants"
+        ],
+        "UniqueSourceTitle": [
+            "StructureCompareConstants"
+        ],
+        "UniqueTargetTitle": [
+            "StructureCompareConstants"
+        ],
+        "DynamicEquivalenceTitle": [
+            "StructureCompareConstants"
+        ],
+        "compareTitle": [
+            "CompareSplitViewConstants"
+        ],
+        "RevisionRule": [
+            "CompareSplitViewConstants"
+        ],
+        "emptyCompareResults": [
+            "CompareSplitViewConstants"
+        ]
+    }
+}

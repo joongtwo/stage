@@ -1,0 +1,249 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "EpHighLevelPlanningDetailsArea_inputObjects": {
+            "onChangeAction": "handleInputToEpHighLevelPlanningDetailsArea",
+            "syncObject": {}
+        },
+        "EpHighLevelPlanningDetailsArea_updateTabContentCountPort": {
+            "onChangeAction": "updateTabContentCountData",
+            "syncObject": {}
+        }
+    },
+    "props":{
+        "occ-context":{
+            "type": "object"
+        }
+     },
+    "data": {
+        "contentPanelData": {
+            "tabs": [
+                {
+                    "name": "{{i18n.summaryTitle}}",
+                    "tabKey": "EpInformation",
+                    "xrtType": "SUMMARY",
+                    "noElementSelectedMessageForXRT": [{
+                        "text": "{{i18n.epInformationNoSelectionMessage}}"
+                    }]
+                },
+                {
+                    "name": "{{i18n.filesTitle}}",
+                    "tabKey": "EpFiles",
+                    "xrtType": "SUMMARY",
+                    "loadInputObject": {
+                        "propertiesToLoad": [ "mbc0AttachedFiles" ]
+                    },
+                    "occContext":"{{props.occContext}}"
+                },
+                {
+                    "name": "{{i18n.documentsTitle}}",
+                    "tabKey": "EpDocuments",
+                    "xrtType": "SUMMARY",
+                    "loadInputObject": {
+                        "loadTypes": [ "GetWeblinks" ],
+                        "propertiesToLoad": [ "mbc0AssignedDocuments" ],
+                        "loadedObjectMapKeys": [ "WebLink" ]
+                    }
+                },
+                {
+                    "name": "{{i18n.scopingTitle}}",
+                    "namePrefix": "{{i18n.scopingTitle}}",
+                    "tabKey": "EpScoping",
+                    "loadInputObject": {
+                        "loadTypes": [ "GetScopeAssembly" ],
+                        "additionalPropertiesToLoad": [ "ScopingRelation" ],
+                        "relatedObjectMapKey": ["associatedAssembly"]
+                    }
+                },
+                {
+                    "name": "{{i18n.externalFlowsTitle}}",
+                    "tabKey": "EpExternalFlows",
+                    "loadInputObject": {
+                        "loadTypes": [
+                            "GetScopeFlows"
+                        ],
+                        "relatedObjectMapKey": [
+                            "ExternalPredecessors",
+                            "ExternalSuccessors"
+                        ]
+                    }
+                }
+            ],
+            "tabSetId": "EpDetailsAreaTabSet"
+        }
+    },
+    "actions": {
+        "initDisplayNameWithQuantityData": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "removeIrrelevantTabs",
+                    "condition": "!conditions.isScopePlantBOP"
+                },
+                {
+                    "action": "getListOfTabsToDisplayNameWithQuantity"
+                },
+                {
+                    "action": "getAllPropertiesToLoad"
+                }
+            ]
+        },
+        "getListOfTabsToDisplayNameWithQuantity": {
+            "actionType": "JSFunction",
+            "method": "getListOfTabsToDisplayNameWithQuantity",
+            "inputData": {
+                "tabsData": "{{data.contentPanelData}}"
+            },
+            "deps": "js/epTabsService"
+        },
+        "getAllPropertiesToLoad": {
+            "actionType": "JSFunction",
+            "method": "getAllPropertiesToLoad",
+            "inputData": {
+                "tabsData": "{{data.contentPanelData}}"
+            },
+            "deps": "js/epTabsService"
+        },
+        "handleInputToEpHighLevelPlanningDetailsArea": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getSingleInputObj"
+                },
+
+                {
+                    "action": "calculateContentCountForEachTab",
+                    "condition": "conditions.isInputObjectUpdated"
+                }
+            ]
+        },
+        "getSingleInputObj": {
+            "actionType": "JSFunction",
+            "method": "handleNewInputForSingleObject",
+            "inputData": {
+                "data": "{{data.inputObject}}",
+                "input": "{{ports.EpHighLevelPlanningDetailsArea_inputObjects.syncObject}}"
+
+            },
+            "outputData": {
+                "inputObject" : "inputObject",
+                "isInputObjectUpdated" : "isInputObjectUpdated"
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "calculateContentCountForEachTab": {
+            "actionType": "JSFunctionAsync",
+            "method": "calculateContentCountForEachTab",
+            "inputData": {
+                "objUid": "{{data.inputObject.uid}}",
+                "tabsData": "{{data.contentPanelData}}"
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "updateTabContentCountData": {
+            "actionType": "JSFunction",
+            "method": "setLabelOnTab",
+            "inputData": {
+                "contentPanelData":"{{data.contentPanelData}}",
+                "tabKey":"{{ports.EpHighLevelPlanningDetailsArea_updateTabContentCountPort.syncObject.tabKey}}",
+                "name":"{{ports.EpHighLevelPlanningDetailsArea_updateTabContentCountPort.syncObject.tabName}}",
+                "namePrefix":"{{ports.EpHighLevelPlanningDetailsArea_updateTabContentCountPort.syncObject.namePrefix}}"
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "removeIrrelevantTabs": {
+            "actionType": "JSFunction",
+            "method": "removeTabs",
+            "inputData": {
+                "tabsData": "{{data.contentPanelData}}",
+                "tabsToBeRemoved": ["EpScoping"]
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "handleAddRemoveEvent": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "selectExternalFlowsTab",
+                    "condition": "parameters.eventData.ExternalSuccessors !== undefined"
+                },
+                {
+                    "action": "getSingleInputObj"
+                },
+                {
+                    "action": "calculateContentCountForEachTab",
+                    "condition": "conditions.isInputObjectUpdated"
+                }
+            ]
+        },
+        "saveInputToData": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{ports.EpHighLevelPlanningDetailsArea_inputObjects.syncObject}}"
+            },
+            "outputData": {
+                "inputObject": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "selectExternalFlowsTab": {
+            "actionType": "JSFunctionAsync",
+            "method": "changeTab",
+            "inputData": {
+                "0": "EpDetailsAreaTabSet",
+                "1": "EpExternalFlows"
+            },
+            "deps": "js/tabRegistry.service"
+        }
+    },
+    "conditions": {
+        "isInputObjectUpdated": {
+            "expression":"data.isInputObjectUpdated"
+        },
+        "isScopePlantBOP": {
+            "expression": "ctx.ep.scopeObject.modelType.typeHierarchyArray.includes('Mfg0BvrPlantBOP')"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "ep.addRemoveEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "handleAddRemoveEvent"
+        },
+        {
+            "eventId": "ep.deleteEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "saveInputToData",
+            "condition": "data.inputObject.uid && deleteSaveEvents.includes(data.inputObject.uid)"
+        },
+        {
+            "eventId": "epWebLinkCreated",
+            "action": "calculateContentCountForEachTab"
+        }
+    ],
+    "i18n": {
+        "summaryTitle": [ "DetailsMessages" ],
+        "filesTitle": [ "DetailsMessages" ],
+        "documentsTitle": [ "DetailsMessages" ],
+        "epInformationNoSelectionMessage": [ "DetailsMessages" ],
+        "scopingTitle": [ "PlanningMessages" ],
+        "externalFlowsTitle": [ "DetailsMessages" ]
+    },
+    "lifecycleHooks": {
+        "onMount": "initDisplayNameWithQuantityData"
+    }
+}

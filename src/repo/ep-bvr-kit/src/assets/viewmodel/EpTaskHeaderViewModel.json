@@ -1,0 +1,216 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "initializeData": {
+            "actionType": "JSFunction",
+            "method": "init",
+            "deps": "js/epInitializationService"
+        },
+        "loadDataAndUpdateHeader": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initializeData"
+                },
+                {
+                    "action": "initReadOnlyMode"
+                },
+                {
+                    "action": "resetEpContext"
+                },
+                {
+                    "action": "loadModel"
+                },
+                {
+                    "action": "setReadOnlyModeByEffectivity",
+                    "condition": "conditions.isReadOnlyEffectivityModeDataDefined"
+                },
+                {
+                    "action": "setReadOnlyModeViewOtherConfiguration",
+                    "condition": "conditions.isReadOnlyModeViewOtherConfiguration"
+                },
+                {
+                    "action": "getDisplayName"
+                },
+                {
+                    "action": "updateHeaderTitle"
+                },
+                {
+                    "action": "setReadOnlyModeCheckedOutByOther",
+                    "condition": "conditions.isCheckedOutByOtherReadOnlyMode"
+                },
+                {
+                    "action": "loadAndSaveStateLicenses"
+                },
+                {
+                    "action": "loadAndSaveCurrentStateDeployedTemplateInfo"
+                }
+            ]
+        },
+        "loadAndSaveStateLicenses":{
+            "actionType":"JSFunction",
+            "method":"loadAndSaveCurrentStateLicenses",
+            "inputData":{
+                "ctxLicensePath":"ep.licenses"
+            },
+            "deps":"js/mfeLicenseManager"
+        },
+        "loadAndSaveCurrentStateDeployedTemplateInfo":{
+            "actionType":"JSFunctionAsync",
+            "method":"loadAndSaveCurrentStateDeployedTemplateInfo",
+            "inputData":{
+                "ctxDeplyedTemplatePath":"ep.deployedTemplates"
+            },
+            "deps":"js/mfeDeployedTemplateManager"
+        },
+        "resetEpContext": {
+            "actionType": "JSFunction",
+            "method": "resetEpContext",
+            "deps": "js/epInitializationService"
+        },
+        "loadModel": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadModel",
+            "deps": "js/epInitializationService",
+            "outputData": {
+                "readOnlyEffectivityModeData": ""
+            }
+        },
+        "destroy": {
+            "actionType": "JSFunction",
+            "method": "destroy",
+            "deps": "js/epInitializationService"
+        },
+        "initReadOnlyMode": {
+            "actionType": "JSFunction",
+            "method": "setReadOnlyMode",
+            "inputData": {
+                "readOnly": false,
+                "message": ""
+            },
+            "deps": "js/mfeReadOnlyService"
+        },
+        "setReadOnlyModeByEffectivity": {
+            "actionType": "JSFunction",
+            "method": "setReadOnlyMode",
+            "inputData": {
+                "readOnly": true,
+                "message": "readOnlyModeTextWarningMsg"
+            },
+            "deps": "js/mfeReadOnlyService"
+        },
+        "setReadOnlyModeCheckedOutByOther": {
+            "actionType": "JSFunction",
+            "method": "setReadOnlyMode",
+            "inputData": {
+                "readOnly": true,
+                "message": "readOnlyModeCheckedOutByOtherWarningMsg"
+            },
+            "deps": "js/mfeReadOnlyService"
+        },
+        "setReadOnlyModeViewOtherConfiguration": {
+            "actionType": "JSFunction",
+            "method": "setReadOnlyMode",
+            "inputData": {
+                "readOnly": true,
+                "message": "readOnlyModeViewOtherConfigurationWarningMsg"
+            },
+            "deps": "js/mfeReadOnlyService"
+        },
+        "getDisplayName": {
+            "actionType": "JSFunction",
+            "method": "getDisplayName",
+            "deps": "js/typeDisplayName.service",
+            "inputData": {
+                "modelObject": "{{ctx.ep.scopeObject}}"
+            },
+            "outputData": {
+                "epScopeObjectHeaderTitle": ""
+            }
+        },
+        "updateHeaderTitle": {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "path": "location.titles.headerTitle",
+                "value": "{{data.epScopeObjectHeaderTitle}}"
+            }
+        }
+    },
+    "conditions": {
+        "isReadOnlyEffectivityModeDataDefined": {
+            "expression": "data.readOnlyEffectivityModeData !== undefined"
+        },
+        "isReadOnlyMode": {
+            "expression": {
+                "$and": [
+                    {
+                        "$source": "ctx.mfgReadOnlyMode",
+                        "$query": {
+                            "$notNull": true
+                        }
+                    },
+                    {
+                        "$source": "ctx.mfgReadOnlyMode.readOnlyMode",
+                        "$query": {
+                            "$eq": true
+                        }
+                    }
+                ]
+            }
+        },
+        "isCheckedOutByOtherReadOnlyMode": {
+            "expression": "data.readOnlyEffectivityModeData === undefined && ctx.ep.scopeObject.props.bl_rev_checked_out_user && ctx.ep.scopeObject.props.bl_rev_checked_out_user.dbValues[0] !== ' ' && ctx.ep.scopeObject.props.bl_rev_checked_out_user.dbValues[0] !== ctx.userSession.props.user.displayValues[0]"
+        },
+        "isEpPageContextAvailable":{
+            "expression":"ctx.epPageContext"
+        },
+        "isReadOnlyModeViewOtherConfiguration": {
+            "expression": "data.readOnlyEffectivityModeData !== undefined && data.readOnlyEffectivityModeData.viewOtherConfigurationReadOnlyText !== '' "
+        }
+    },
+    "messages": {
+        "readOnlyModeTextWarningMsg": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.readOnlyModeCaption}}",
+            "messageTextParams": [
+                "{{data.readOnlyEffectivityModeData.selectedRevisionRule}}",
+                "{{data.readOnlyEffectivityModeData.SelectedPlanUnit}}",
+                "{{data.readOnlyEffectivityModeData.selectedEndItem}}"
+            ]
+        },
+        "readOnlyModeCheckedOutByOtherWarningMsg": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.readOnlyModeCheckedOutByOther}}",
+            "messageTextParams": [
+                "{{ctx.ep.scopeObject.props.bl_rev_checked_out_user.dbValues[0]}}"
+            ]
+        },
+        "readOnlyModeViewOtherConfigurationWarningMsg": {
+            "messageType": "WARNING",
+            "messageText": "{{i18n.readOnlyModeViewOtherConfiguration}}",
+            "messageTextParams": [
+                "{{data.readOnlyEffectivityModeData.viewOtherConfigurationReadOnlyText}}"
+            ]
+        }
+    },
+    "preferences": [
+        "EP_EffectivityMode"
+    ],
+    "i18n": {
+        "readOnlyModeCaption": [
+            "EPMessages"
+        ],
+        "readOnlyModeCheckedOutByOther": [
+            "EPMessages"
+        ],
+        "readOnlyModeViewOtherConfiguration":[
+            "EPMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onMount": "loadDataAndUpdateHeader",
+        "onUnmount": "destroy"
+    }
+}

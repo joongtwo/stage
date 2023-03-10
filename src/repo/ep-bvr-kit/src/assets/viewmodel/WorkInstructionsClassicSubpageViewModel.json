@@ -1,0 +1,228 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "WiClassicSubPage_updateIndicationContextPort": {
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "provider": {
+            "label": "{{i18n.WorkInstructionsTitle}}",
+            "priority": 3,
+            "name": "workInstructions",
+            "clientScopeURI": "workInstructions",
+            "nameToken": "workInstructions"
+        },
+        "awSubLocationPref": {
+            "hideRightWall": true
+        },
+        "occContext": {
+            "initialValues": {
+                "selectedModelObjects": [],
+                "viewKey": "",
+                "productContextInfo": null,
+                "elementToPCIMapCount": null,
+                "supportedFeatures": null,
+                "skipReloadOnConfigParamChange": true
+            },
+            "meta": {}
+        },
+        "sharedSelectionData": {
+            "initialValues": {
+                "isIndicationToggleOn": false
+            },
+            "meta": {}
+        },
+        "configurationChipsData": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "actions": {
+        "clearOccContextNClosePanelCommandAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clearOccContext"
+                },
+                {
+                    "action": "closeSetEffectivityPanel"
+                }
+            ]
+        },
+        "clearOccContext": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetAtomicData": "{{fields.occContext}}",
+                "updatedValues": {
+                    "selectedModelObjects": [
+                        ""
+                    ]
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "closeSetEffectivityPanel": {
+            "actionType": "JSFunction",
+            "method": "closeSetEffectivityPanel",
+            "inputData": {
+                "id": "aw_toolsAndInfo"
+            },
+            "deps": "js/epSetEffectivityService"
+        },
+        "setSelectionInOccContextForEffectivitySubscribe": {
+            "actionType": "JSFunctionAsync",
+            "method": "initOccContext",
+            "inputData": {
+                "occContext": "{{fields.occContext}}",
+                "value": [
+                    "{{data.eventMap['setSelectionInOccContextForEffectivity'].selectionForSetEffectivity}}"
+                ]
+            },
+            "deps": "js/epSetEffectivityService"
+        },
+        "init": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "registerLeaveHandler"
+                },
+                {
+                    "action": "initializeEPPage"
+                },
+                {
+                    "action": "updateSharedSelectionPort"
+                },
+                {
+                    "action": "initialiseConfigurationChips"
+                },
+                {
+                    "action": "epPageInitializeComplete"
+                }
+            ]
+        },
+
+        "epPageInitializeComplete":{
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+               "initialize":true
+            },
+            "outputData": {
+                "pageIntializeComplete": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }, 
+
+        "initializeEPPage": {
+            "actionType": "JSFunctionAsync",
+            "method": "initializeEPPage",
+            "inputData": {
+                "provider": "{{data.provider}}"
+            },
+            "outputData": {
+                "stateContext": "stateContext",
+                "propertyPolicyId": "propertyPolicyId"
+            },
+            "deps": "js/epInitializationService"
+        },
+        "registerLeaveHandler": {
+            "actionType": "JSFunction",
+            "method": "init",
+            "deps": "js/epLeavePlaceHandler"
+        },
+        "destroy": {
+            "actionType": "JSFunction",
+            "method": "destroy",
+            "deps": "js/epLeavePlaceHandler"
+        },
+        "updateSharedSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "WiClassicSubPage_updateIndicationContextPort",
+                "syncObject": "{{fields.sharedSelectionData}}"
+            }
+        },
+        "initialiseConfigurationChips": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetContext": "{{fields.configurationChipsData}}",
+                "updatedValues": {
+                    "ebomStructure": "{{ctx.epPageContext.ebomStructure}}",
+                    "ebomPCI": "{{ctx.epTaskPageContext.ebomPCI}}",
+                    "ebomStructureConfigFlags": "{{ctx.epTaskPageContext.ebomStructureConfigFlags}}",
+                    "mbomStructure": "{{ctx.epPageContext.mbomStructure}}",
+                    "mbomPCI": "{{ctx.epTaskPageContext.mbomPCI}}",
+                    "mbomStructureConfigFlags": "{{ctx.epTaskPageContext.mbomStructureConfigFlags}}",
+                    "processStructure": "{{ctx.epPageContext.processStructure}}",
+                    "processPCI": "{{ctx.epTaskPageContext.processPCI}}",
+                    "processStructureConfigFlags": "{{ctx.epTaskPageContext.processStructureConfigFlags}}",
+                    "rootPlant": "{{ctx.epPageContext.rootPlant}}",
+                    "plantPCI": "{{ctx.epTaskPageContext.plantPCI}}",
+                    "rootPlantConfigFlags": "{{ctx.epTaskPageContext.rootPlantConfigFlags}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "setSelectionInOccContextForEffectivity",
+            "action": "setSelectionInOccContextForEffectivitySubscribe",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "complete",
+            "action": "clearOccContextNClosePanelCommandAction"
+        },
+        {
+            "eventId": "ep.pageContext.changed",
+            "action": "initialiseConfigurationChips"
+        }
+    ],
+    "conditions": {
+        "isSyncedWithViewer": {
+            "expression": "ctx.epWiSelectionMode === 'GRAPHICS'"
+        },
+        "isSyncedWithEditor": {
+            "expression": "ctx.epWiSelectionMode === 'EDITOR'"
+        },
+        "shouldShowActivitiesOrValidationPanel": {
+            "expression": {
+                "$or": [
+                    {
+                        "$source": "ctx.epPageContext.showActivities",
+                        "$query": {
+                            "$eq": true
+                        }
+                    },
+                    {
+                        "$source": "ctx.epPageContext.showValidationPanel",
+                        "$query": {
+                            "$eq": true
+                        }
+                    }
+                ]
+            }
+        },
+        "isValidationMode": {
+            "expression": {
+                "$source": "ctx.epPageContext.showValidationPanel",
+                "$query": {
+                    "$eq": true
+                }
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "init",
+        "onUnmount": "destroy"
+    },
+    "i18n": {
+        "WorkInstructionsTitle": [
+            "InstructionsMessages"
+        ]
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "tabModel": {
+            "initialValues": {},
+            "meta": {}
+        }
+
+    },
+    "actions": {
+        "updateTabModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{props.subPanelContext}}"
+            },
+            "outputData": {
+                "tabModel": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "updateTabModel"
+
+    }
+}

@@ -1,0 +1,80 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports":
+    [
+        "js/visible-when.directive",
+        "js/aw-add.directive",
+        "js/aw-form.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive"
+    ],
+    "data": {
+        "addPanelState": {
+            "initialValues": {
+                "sourceObjects": "",
+                "selectedTab": ""
+            },
+            "meta": {}
+        }
+    },
+    "actions": {
+        "addProcessAttachments": {
+            "actionType": "JSFunction",
+            "method": "updateSharedDataWithTargets",
+            "inputData": {
+                "sharedData": "{{props.subPanelContext.sharedData}}",
+                "sourceObjects": "{{addPanelState.sourceObjects}}"
+            },
+            "outputData": {
+                "sharedData":""
+            },
+            "events": {
+                "success": [ {
+                    "name": "createTask.addTarget"
+                } ]
+            },
+            "deps": "js/createTaskService"
+        },
+        "navigateToTaskPanel": {
+            "actionType": "JSFunction",
+            "method": "backToCreateTaskActionData",
+            "inputData": {
+                "sharedData": "{{props.subPanelContext.sharedData}}"
+            },
+            "deps": "js/createTaskService"
+        }
+    },
+
+    "ctx": {
+        "getClipboardProvider": {
+            "type": "object"
+        },
+        "getRecentObjsProvider": {
+            "type": "object"
+        }
+    },
+    "conditions": {
+        "isAddButtonVisible": {
+            "expression": "conditions.isPaletteTabAddButtonVisible || conditions.isSearchTabAddButtonVisible"
+        },
+        "isPaletteTabAddButtonVisible": {
+            "expression": "conditions.isPaletteTabSelected &&  addPanelState.sourceObjects && addPanelState.sourceObjects.length==1"
+        },
+        "isSearchTabAddButtonVisible": {
+            "expression": "!conditions.isPaletteTabSelected && addPanelState.sourceObjects && addPanelState.sourceObjects.length==1"
+        },
+        "isPaletteTabSelected": {
+            "expression": "addPanelState.selectedTab.view==='PaletteTabPageSub'"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "createTask.addTarget",
+            "action": "navigateToTaskPanel"
+        }
+    ],
+    "i18n": {
+        "add": [ "tcxsimplifiedMessages" ]
+    }
+}

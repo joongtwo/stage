@@ -1,0 +1,9 @@
+<aw-command-panel caption="i18n.reassignTaskCommandTitle">
+    <aw-people-picker visible-when="data.isDataInit" sub-panel-context="{...props.subPanelContext, addUserPanelState : data.addUserPanelState}"></aw-people-picker>
+    <aw-panel-footer class="sw-column">
+        <aw-widget prop="data.comments" hint="textarea" visible-when="conditions.isValidToAdd" > </aw-widget>
+        <div class='sw-button-group justify-right align-right'>
+            <aw-button size="auto" action="reassign" visible-when="true" enable-when="conditions.isValidToAdd"><aw-i18n>i18n.reassign</aw-i18n></aw-button>
+        </div>
+    </aw-panel-footer>
+</aw-command-panel>

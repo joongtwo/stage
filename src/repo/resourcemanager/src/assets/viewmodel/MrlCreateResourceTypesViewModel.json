@@ -1,0 +1,431 @@
+{
+    "schemaVersion": "1.0.0",
+    "lifecycleHooks": {
+        "onMount": "initialize"
+    },
+    "actions": {
+        "initialize": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getSelectedObjectUid",
+                    "condition": "ctx.pwaSelectionInfo && ctx.pwaSelectionInfo.currentSelectedCount === 1"
+                },
+                {
+                    "action": "getCreateNewResourceData",
+                    "condition": "!ctx.pwaSelectionInfo || ctx.pwaSelectionInfo.currentSelectedCount !== 1"
+                },
+                {
+                    "action": "loadICOsOfSelectedObject",
+                    "condition": "ctx.pwaSelectionInfo && ctx.pwaSelectionInfo.currentSelectedCount === 1"
+                }
+            ]
+        },
+        "getSelectedObjectUid": {
+            "actionType": "JSFunction",
+            "method": "getUidOfObject",
+            "outputData": {
+                "selectedObjectUid": ""
+            },
+            "deps": "js/MrmUtils"
+        },
+        "getCreateNewResourceData": {
+            "actionType": "JSFunction",
+            "method": "getCreateNewResourceData",
+            "inputData": {
+                "classParents":"{{data.classParents}}",
+                "clsObjectDefs":"{{data.clsObjectDefs}}"
+            },
+            "outputData": {
+                "createNewResourceData": ""
+            },
+            "deps": "js/MrmUtils"
+        },
+        "loadICOsOfSelectedObject": {
+            "actionType": "dataProvider",
+            "method": "performSearch"
+        },
+        "getIcos": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-IcsAw-2019-12-Classification",
+            "method": "findClassificationInfo3",
+            "inputData": {
+                "workspaceObjects": [
+                    {
+                        "uid": "{{data.selectedObjectUid}}"
+                    }
+                ],
+                "searchCriterias": [],
+                "classificationDataOptions": 8
+            },
+            "outputData": {
+                "classParents":"classParents",
+                "clsClassDescriptors": "clsClassDescriptors",
+                "clsObjectDefs": "clsObjectDefs",
+                "icoCells": "{{function:generateCells}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name":"getCreateNewResourceData"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "createResourceFailed"
+                    }
+                ]
+            },
+            "deps": "js/classifyFullViewService"
+        },
+        "createResourceObject": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2012-10-DataManagement",
+            "method": "createRelateAndSubmitObjects",
+            "inputData": {
+                "inputs": "{{function:getCreateInput}}"
+            },
+            "outputData": {
+                "createdObject": "{{function:getCreatedObject}}",
+                "createResourceObjectResponse": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "performPostCreateResource"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "createResourceObjectSuccess",
+                        "condition": "data.classifyInSameClass.dbValue === false || !data.icoCells || data.icoCells.length > 1"
+                    }
+                ],
+                "failure": [
+                    {
+                        "message": "createResourceFailed",
+                        "condition": "data.createResourceObjectResponse.ServiceData.partialErrors.length > 0"
+                    }
+                ]
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "performPostCreateResource": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "classifyNewCreatedResource",
+                    "condition": "data.icoCells && data.icoCells.length === 1 && data.classifyInSameClass.dbValue === true"
+                },
+                {
+                    "action": "addResourceToMRLNewResourcesFolder"
+                },
+                {
+                    "action": "onCreateResourceOpenInNewTab",
+                    "condition": "data.onCreateResourceOpenInNewTab.dbValue === true"
+                },
+                {
+                    "action": "closeCreateResourcePanel",
+                    "condition": "data.onCreateResourceOpenInNewTab.dbValue === false"
+                }
+            ]
+        },
+        "classifyNewCreatedResource": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-IcsAw-2018-12-Classification",
+            "method": "saveClassificationObjects2",
+            "inputData": {
+                "classificationObjects": [
+                    {
+                        "clsObject": "",
+                        "workspaceObject": {
+                            "uid": "{{data.createdObject.uid}}",
+                            "type": "{{data.createdObject.type}}"
+                        },
+                        "properties": "{{function:getClassificationProperties}}",
+                        "blockDataMap": ""
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "createResourceObjectSuccess"
+                    }
+                ],
+                "failure": [
+                    {
+                        "message": "createResourceFailed"
+                    }
+                ]
+            },
+            "deps": "js/mrlCreateNewResourceService"
+        },
+        "onCreateResourceOpenInNewTab": {
+            "actionType": "Navigate",
+            "navigateTo": "com_siemens_splm_clientfx_tcui_xrt_showObject",
+            "navigationParams": {
+                "uid": "{{data.createdObject.uid}}",
+                "pageId": "tc_xrt_Content"
+            },
+            "navigateIn": "newTab",
+            "events": {
+                "success": [
+                    {
+                        "name": "closeCreateResourcePanel"
+                    }
+                ]
+            }
+        },
+        "addResourceToMRLNewResourcesFolder": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "createRelations",
+            "inputData": {
+                "input": [ {
+                    "primaryObject": {
+                        "uid": "{{ctx.mrlDashboard.mrlNewResourcesFolderUid}}",
+                        "type": "Folder"
+                    },
+                    "secondaryObject": "{{data.createdObject}}",
+                    "relationType": "contents",
+                    "clientId": ""
+                } ]
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "reloadNewResources",
+                        "condition": "conditions.isNewResourcesSublocationSelected"
+                    }
+                ]
+            }
+        },
+        "refreshPWAOfNewResourcesSubLocation": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "primaryWorkarea.reset"
+                    }
+                ]
+            }
+        },
+        "closeCreateResourcePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+        "updateCopyValuesOption": {
+            "actionType": "JSFunction",
+            "method": "updateCopyValuesOption",
+            "inputData": {
+                "classifyInSameClass": "{{data.classifyInSameClass}}",
+                "copyValues": "{{data.copyValues}}"
+            },
+            "outputData": {
+                "copyValues": ""
+            },
+            "deps": "js/mrlCreateNewResourceService"
+        },
+        "setActiveView": {
+            "actionType": "JSFunction",
+            "method": "resetActiveView",
+            "inputData": {
+                "stateName": "{{data.activeState}}",
+                "destPanelId": "AddObjectPrimarySub"
+            },
+            "outputData": {
+                "activeState": ""
+            },
+            "deps": "js/addObjectUtils"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "performPostCreateResource",
+            "action": "performPostCreateResource"
+        },
+        {
+            "eventId": "getCreateNewResourceData",
+            "action": "getCreateNewResourceData"
+        },
+        {
+            "eventId": "reloadNewResources",
+            "action": "refreshPWAOfNewResourcesSubLocation"
+        },
+        {
+            "eventId": "closeCreateResourcePanel",
+            "action": "closeCreateResourcePanel"
+        }
+    ],
+    "functions": {
+        "getCreateInput": {
+            "functionName": "getCreateInput",
+            "parameters": [
+                "{{data}}",
+                "",
+                "{{addPanelState.creationType}}",
+                "{{editHandlers.addPanelEditHandler}}"
+            ]
+        },
+        "getCreatedObject": {
+            "functionName": "getCreatedObject",
+            "parameters": []
+        },
+        "getClassificationProperties": {
+            "functionName": "getClassificationProperties",
+            "parameters": [
+                "{{data.clsClassDescriptors}}",
+                "{{data.clsObjectDefs}}",
+                "{{data.copyValues.dbValue}}"
+            ]
+        }
+    },
+    "dataProviders": {
+        "performSearch": {
+            "action": "getIcos",
+            "inputData": {
+                "selectionData": "{{subPanelContext.selectionData}}"
+            },
+            "response": "{{data.icoCells}}",
+            "totalFound": "{{data.icoCells.length}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "i18n": {
+        "create": [
+            "mrlMessages"
+        ],
+        "createResourceObjectSuccessfully": [
+            "mrlMessages"
+        ],
+        "onCreateResourceOpenInNewTab": [
+            "mrlMessages"
+        ],
+        "mrlClassification": [
+            "mrlMessages"
+        ],
+        "classifyInSameClass": [
+            "mrlMessages"
+        ],
+        "mrlCopyValues": [
+            "mrlMessages"
+        ]
+    },
+    "conditions": {
+        "isNewResourcesSublocationSelected": {
+            "expression": "ctx.sublocation.historyNameToken === 'mrlNewResources'"
+        }
+    },
+    "messages": {
+        "createResourceObjectSuccess": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.createResourceObjectSuccessfully}}",
+            "messageTextParams": [
+                "{{data.createdObject.props.object_name.dbValues[0]}}"
+            ]
+        },
+        "createResourceFailed": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "data": {
+        "classifyInSameClass": {
+            "displayName": "{{i18n.classifyInSameClass}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "copyValues": {
+            "displayName": "{{i18n.mrlCopyValues}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "onCreateResourceOpenInNewTab": {
+            "displayName": "{{i18n.onCreateResourceOpenInNewTab}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "icoCellTooltip": {
+            "view": "clsCellTooltip"
+        },
+        "addPanelState": {
+            "initialValues": {
+                "creationType": "",
+                "createdObject": "",
+                "sourceObjects": "",
+                "selectedTab": ""
+            },
+            "meta": {}
+        },
+        "activeState": {
+            "initialValues": {
+                "activeView": "AddObjectPrimarySub",
+                "context": {}
+            },
+            "meta": {}
+        },
+        "projectState": {
+            "initialValues": {
+                "selectedProjects": [],
+                "triggerAssign": false
+            },
+            "meta": {
+                "selectedProjects": {
+                    "field": "true",
+                    "type": "OBJECT"
+                },
+                "triggerAssign": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        },
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

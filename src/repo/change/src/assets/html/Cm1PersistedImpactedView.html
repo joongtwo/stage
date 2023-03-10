@@ -1,0 +1,16 @@
+<aw-column width="35%" height="fill">
+    <div exist-when="conditions.isLoadImpactedTable">
+        
+        <div class="aw-xrt-objectSetToolbar">
+            <aw-command-bar anchor="cm1_addImpactedItemCommandsLeft" context="data.dataProviders.persistedImpactedDataProvider" class="aw-commands-commandBarHorizontalLeft"
+                alignment="HORIZONTAL"></aw-command-bar>
+            <div class="aw-xrt-objectSetCommandPanel">
+                <aw-command-bar anchor="cm1_addImpactedItemCommandsRight" context="data" class="aw-commands-commandBarHorizontalLeft" alignment="HORIZONTAL"></aw-command-bar>
+            </div>
+        </div>
+        <div class="aw-layout-flexColumn aw-base-scrollPanel aw-splm-table-overflow-visible">
+            <aw-splm-table gridid="persistedImpactedGrid" use-tree="false" show-check-box="data.dataProviders.persistedImpactedDataProvider.selectionModel.multiSelectEnabled"
+            ></aw-splm-table>
+        </div>
+     </div>
+</aw-column>

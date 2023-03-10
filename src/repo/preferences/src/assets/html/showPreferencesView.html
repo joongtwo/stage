@@ -1,0 +1,16 @@
+<div class="sw-column h-12 w-12 flex-shrink">
+    <div class="sw-row wrapper row: flex-shrink afx-default-background justify-left aw-preferences-breadcrumb">
+        <aw-include name="{{data._provider.breadcrumbConfig.vm}}"
+            sub-panel-context="{'searchState': fields.searchState}">
+        </aw-include>
+    </div>
+    <div class="sw-row h-12 w-12">
+        <aw-include class="aw-preferences-orgTreePanelContainer" name="preferencesOrgTree" exist-when="ctx.isAdmin"></aw-include>
+        <aw-splitter is-primary-splitter="false" direction="{{props.isHorizontalOrientation ? 'HORIZONTAL':''}}" exist-when="ctx.isAdmin">
+        </aw-splitter>
+        <aw-standard-sublocation sub-panel-context="{'searchState': fields.searchState}" provider="data._provider"
+            search-state="data.searchState" base-selection="props.baseSelection" selection-model="props.selectionModel">
+        </aw-standard-sublocation>
+    </div>
+</div>
+

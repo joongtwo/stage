@@ -1,0 +1,77 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "occ-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "tabModel": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "contentPanelData": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "actions": {
+        "setContentPanelData": {
+            "actionType": "JSFunction",
+            "method": "setContentPanelData",
+            "inputData": {
+                "contentPanelData": "{{props.subPanelContext}}",
+                "currentContentPanelData": "{{data.contentPanelData}}"
+            },
+            "outputData": {
+                "contentPanelData": "initData"
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "updateTabModelBatchAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateTabModel",
+                    "condition": "conditions.shouldReload"
+                }
+            ]
+        },
+        "updateTabModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{data.selectedTab}}"
+            },
+            "outputData": {
+                "tabModel": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "conditions": {
+        "shouldReload": {
+            "expression": "props.subPanelContext.reloadSelectedTab"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "setContentPanelData",
+        "onUpdate": [
+            {
+                "action": "updateTabModel",
+                "observers": [
+                    "viewModel.data.selectedTab"
+                ]
+            },
+            {
+                "action": "updateTabModelBatchAction",
+                "observers": [
+                    "props.subPanelContext.reloadSelectedTab"
+                ]
+            }
+        ]
+    }
+}

@@ -1,0 +1,116 @@
+{
+    "schemaVersion": "1.0.0",
+    "dataProviders": {},
+    "i18n": {
+        "workPackageLinkLabel": [
+            "AuthorPlantMessages"
+        ]
+    },
+    "actions": {
+        "getLoadTypeInput": {
+            "actionType": "JSFunction",
+            "method": "getLoadTypeInputs",
+            "inputData": {
+                "loadType": ["Header"],
+                "objectUid": "{{ctx.state.params.cc_uid}}"
+            },
+            "outputData": {
+                "loadTypeInputs": ""
+            },
+            "deps": "js/epLoadInputHelper"
+        },
+        "loadObject": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadObject",
+            "parameters": {
+                "loadTypeInputs": "{{result.loadTypeInputs}}"
+            },
+            "inputData": {
+                "loadTypeInputs": "{{parameters.loadTypeInputs}}",
+                "replaceContext": true
+            },
+            "deps": "js/epLoadService"
+        },
+        "getWorkPackageForLink": {
+            "actionType": "JSFunction",
+            "method": "getCtx",
+            "inputData": {
+                "path": "epPageContext.collaborationContext.props.object_string.dbValues[0]"
+            },
+            "outputData": {
+                "workPackageLink.propertyDisplayName": ""
+            },
+            "deps": "js/appCtxService"
+        },
+        "updateTags": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getLoadTypeInput",
+                    "outputArg": [
+                        "loadTypeInputs"
+                    ]
+                },
+                {
+                    "action": "loadObject",
+                    "inputArg": {
+                        "loadTypeInputs": "{{actionData.loadTypeInputs}}"
+                    },
+                    "outputArg": [
+                        "loadObjectResponse"
+                    ]
+                },
+                {
+                    "action": "getWorkPackageForLink"
+                },
+                {
+                    "action": "updatePlatformVersion"
+                }
+            ]
+        },
+        "navigateToManagePage": {
+            "actionType": "JSFunction",
+            "method": "navigateToManagePage",
+            "inputData": {
+                "objectToNavigate": "{{ctx.epPageContext.collaborationContext}}"
+            },
+            "deps": "js/epNavigationService"
+        },
+        "updateAceTreeLoadDataResult": {
+            "actionType": "JSFunction",
+            "method": "updateCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "name": "aceTreeLoadDataResult",
+                "value": "{{data.eventMap['occDataProvider.treeNodesLoaded'].treeLoadResult}}"
+            }
+        },
+        "updatePlatformVersion": {
+            "actionType": "JSFunction",
+            "method": "updatePlatformVersion",
+            "deps": "js/epInitializationService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "occDataProvider.treeNodesLoaded",
+            "cacheEventData": true,
+            "action": "updateAceTreeLoadDataResult"
+        }
+    ],
+    "data" : {
+        "workPackageLink": {
+            "displayName": "",
+            "type": "STRING"
+        }
+    },
+    "messages": {},
+    "conditions": {},
+    "grids": {},
+    "dataParseDefinitions": {},
+    "functions": {},
+    "columnProviders": {},
+    "lifecycleHooks": {
+        "onMount": "updateTags"
+    }
+}

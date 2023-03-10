@@ -1,0 +1,63 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "addSelectedVisual": {
+            "actionType": "JSFunction",
+            "method": "addSelectedVisual",
+            "inputData": {
+                "data": "{{parameters.eventData.selectedObjects}}"
+            },
+            "deps": "js/wiVisuals.service"
+        },
+        "filterVisualsList": {
+            "actionType": "JSFunction",
+            "method": "filterVisualsList",
+            "inputData": {
+                "data": "{{data.visualsFilterBox.dbValue}}",
+                "startIndex": "{{data.dataProviders.performVisualsSearch.startIndex}}"
+            },
+            "outputData": {
+                "searchResults": "filteredListOfVisuals",
+                "totalFound": "totalFound"
+            },
+            "deps": "js/wiVisuals.service"
+        },
+        "showInitialFilterVisualsList": {
+            "actionType": "dataProvider",
+            "method": "performVisualsSearch"
+        }
+    },
+
+    "data": {
+        "visualsFilterBox": {
+            "displayName": "MyFilter",
+            "type": "STRING",
+            "autofocus": "true",
+            "requiredText": "{{i18n.filterVisualsListMessage}}"
+        }
+    },
+
+    "dataProviders": {
+        "performVisualsSearch": {
+            "action": "filterVisualsList",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "performVisualsSearch.selectionChangeEvent",
+            "action": "addSelectedVisual",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        }
+    ],
+    "lifecycleHooks": {
+        "onMount": "showInitialFilterVisualsList"
+    },
+    "i18n": {
+        "filterVisualsListMessage": [
+            "InstructionsEditorMessages"
+        ]
+    }
+}

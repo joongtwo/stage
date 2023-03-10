@@ -1,0 +1,19 @@
+<aw-command-panel caption="i18n.saveas">
+    <!-- <aw-form name="saveAsPanelForm" visible-when="data.activeView!=='AssignProjectSub'"> -->
+    <div class="aw-layout-flexColumn" show-when="data.activeState.value.activeView !=='AssignProjectSub'">
+        <div class='aw-xrt-tabsContainer aw-create-tabsContainer'>
+            <aw-tab-container tab-container-model="data.tabModels" exist-when="data.tabModels"
+                callback="data.tabApiCallback" tab-set-id='SaveAsRevision'>
+                <aw-tab tab-model='tab' aw-repeat='tab: data.tabModels'></aw-tab>
+            </aw-tab-container>
+        </div>
+        <div class='aw-layout-flexColumn'>
+            <aw-include name="{{data.activeTab.view}}" exist-when="data.activeTab"
+            sub-panel-context="{ ...subPanelContext, activeState: data.activeState, projectState: data.projectState, reviseSaveAsInfo: ctx.panelContext }"></aw-include>
+        </div>
+    </div>
+
+    <div class="aw-layout-flexColumn" exist-when="data.activeState.value.activeView==='AssignProjectSub'">
+        <aw-navigate-panel title="i18n.BACK_BUTTON_TITLE" pre-panel-id="Awp0ShowSaveAs" panel-id="AssignProjectSub" action="updateActiveView" sub-panel-context="{ ...subPanelContext, projectState: data.projectState }" active-state="data.activeState"></aw-navigate-panel>
+    </div>
+</aw-command-panel>

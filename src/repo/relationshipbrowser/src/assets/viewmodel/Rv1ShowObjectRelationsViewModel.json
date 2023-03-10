@@ -1,0 +1,238 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-list-filter.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-include.directive"
+    ],
+
+    "actions": {
+        "init": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "setPanelTitle"
+                },
+                {
+                    "action": "queryNetworkData"
+                }
+            ]
+        },
+        "parseRelatedObjects": {
+            "actionType": "JSFunction",
+            "method": "parseRelatedObjects",
+            "inputData": {
+                "data": "{{data}}",
+                "graphModel": "{{ctx.panelContext.graphModel}}"
+            },
+            "outputData": {
+                "parsedNodes": "result.parsedNodes",
+                "nodeModelMap": "result.nodeModelMap",
+                "nodeEdgesMap": "result.nodeEdgesMap",
+                "allDirections": "result.allDirections",
+                "actionState": {
+                    "callObjRelationsDataProvider": {}
+                }
+            },
+            "deps": "js/Rv1ShowObjectRelationsService"
+        },
+        "callObjRelationsDataProvider": {
+            "actionType": "dataProvider",
+            "method": "dataProviderHiddenNodeList"
+        },
+        "actionHiddenNodeList": {
+            "actionType": "JSFunction",
+            "method": "functionHiddenNodeList",
+            "inputData": {
+                "data": "{{data}}",
+                "incoming": "{{data.parsedNodes.incoming}}",
+                "outgoing": "{{data.parsedNodes.outgoing}}",
+                "both": "{{data.parsedNodes.both}}",
+                "legendFilters": "{{ctx.panelContext.legendFilters}}",
+                "listOrderPref": "{{ctx.preferences.RV1_DARB_Hide_Unhide_List_Order_Incoming_First[0]}}"
+            },
+            "outputData": {
+                "nodes": "",
+                "actionState": true
+            },
+            "deps": "js/Rv1ShowObjectRelationsService"
+        },
+        "actionHideUnhideNodes": {
+            "actionType": "JSFunction",
+            "method": "functionHideUnhideNodes",
+            "inputData": {
+                "data": "{{data}}",
+                "selectedObject": "{{data.dataProviders.dataProviderHiddenNodeList.selectedObjects[0]}}",
+                "graphActionState": "{{ctx.panelContext.graphActionState}}"
+            },
+            "deps": "js/Rv1ShowObjectRelationsService"
+        },
+        "itemsAddedToGraph": {
+            "actionType": "JSFunction",
+            "method": "graphVisibilityChanged",
+            "inputData": {
+                "eventData": "{{data.eventData}}",
+                "listedNodes": "{{data.nodes}}",
+                "isHidden" : false
+            },
+            "outputData": {
+                "actionState": ""
+            },
+            "deps": "js/Rv1ShowObjectRelationsService"
+        },
+        "itemsRemovedFromGraph": {
+            "actionType": "JSFunction",
+            "method": "graphVisibilityChanged",
+            "inputData": {
+                "eventData": "{{data.eventData}}",
+                "listedNodes": "{{data.nodes}}",
+                "isHidden" : true
+            },
+            "outputData": {
+                "actionState": ""
+            },
+            "deps": "js/Rv1ShowObjectRelationsService"
+        },
+        "setPanelTitle": {
+            "actionType": "JSFunction",
+            "method": "getDisplayName",
+            "inputData": {
+                "modelObject": "{{ports.inputSelection.syncObject.nodes[0].model.nodeObject}}"
+            },
+            "outputData": {
+                "selectionDisplayName": ""
+            },
+            "deps": "js/typeDisplayName.service"
+        },
+        "setFilterInfo": {
+            "actionType": "JSFunction",
+            "method": "setFilterInfo",
+            "inputData": {
+                "legendState": "{{ctx.graph.legendState}}"
+            },
+            "outputData": {
+                "filterInfo": ""
+            },
+            "deps": "js/Rv1ShowObjectRelationsService"
+        },
+        "queryNetworkData": {
+            "actionType": "TcSoaService",
+            "serviceName": "RelationshipViewer-2012-10-NetworkEngine",
+            "method": "queryNetwork2",
+            "inputData": {
+                "input": {
+                    "graphParamMap": {
+                        "direction": [ "all" ]
+                    },
+                    "queryMode": "ExpandAndDegree",
+                    "rootIds": [ "{{ports.inputSelection.syncObject.nodes[0].model.nodeObject.uid}}" ],
+                    "serviceCursor": 0,
+                    "viewName": "{{ctx.graph.legendState.activeView.internalName}}",
+                    "inquiries": []
+                }
+            },
+            "policy": {
+                "types": "{{ctx.panelContext.queryNetworkPolicy}}"
+            },
+            "outputData": {
+                "graphData": "graph"
+            },
+
+            "events": {
+                "success": [ {
+                    "name": "Rv1RelationBrowser.RelationsFetched"
+                } ],
+
+                "failure": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            },
+            "deps": "js/Rv1ShowObjectRelationsService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "setFilterInfo",
+        "onUpdate": [ {
+            "action": "callObjRelationsDataProvider",
+            "observers": [ "viewModel.atomicData.actionState.callObjRelationsDataProvider" ]
+        } ]
+    },
+    "ports": {
+        "inputSelection": {
+            "syncObject": {},
+            "onChangeAction": "init"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "Rv1RelationBrowser.RelationsFetched",
+            "action": "parseRelatedObjects"
+        },
+        {
+            "eventId": "awGraph.itemsRemoved",
+            "action": "itemsRemovedFromGraph",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awGraph.itemsAdded",
+            "action": "itemsAddedToGraph",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "dataProviderHiddenNodeList.selectionChangeEvent",
+            "action": "actionHideUnhideNodes",
+            "condition": "selectedObjects.length === 1"
+        }
+    ],
+
+    "data": {
+        "filterBox": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "actionState": {
+            "initialValues": {
+            },
+            "meta": {}
+        },
+        "nodeModelMap": {},
+        "nodeEdgesMap": {},
+        "allDirections": []
+    },
+    "dataProviders": {
+        "dataProviderHiddenNodeList": {
+            "action": "actionHiddenNodeList",
+            "uidInResponse": "uid",
+            "response": "{{data.nodes}}",
+            "totalFound": "{{data.nodes.length}}",
+            "deps": "js/Rv1ShowObjectRelationsService"
+        }
+    },
+    "conditions": {
+    },
+    "i18n": {
+        "direction": [
+            "RelationBrowserMessages"
+        ],
+        "incoming": [
+            "RelationBrowserMessages"
+        ],
+        "outgoing": [
+            "RelationBrowserMessages"
+        ],
+        "both": [
+            "RelationBrowserMessages"
+        ],
+        "showObjectRelationsTitle": [
+            "RelationBrowserMessages"
+        ],
+        "noResultsFound": [
+            "RelationBrowserMessages"
+        ]
+
+    }
+}

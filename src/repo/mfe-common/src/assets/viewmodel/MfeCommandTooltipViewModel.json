@@ -1,0 +1,29 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "resolveI18n": {
+            "actionType": "JSFunctionAsync",
+            "method": "resolveI18n",
+            "inputData": {
+                "props": "{{props}}"
+            },
+            "outputData": {
+                "tooltipData": ""
+            },
+            "deps": "js/mfeGenericTooltipUtil"
+        },
+        "render": {
+            "method": "renderMfeGenericTooltip",
+            "deps": "js/mfeGenericTooltipUtil"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "resolveI18n",
+        "render": "render"
+    }
+}

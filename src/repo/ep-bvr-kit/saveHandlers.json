@@ -1,0 +1,62 @@
+[
+  {
+    "conditions": {
+      "$or": [
+        {
+          "EP_ACITIVITIES_TABLE_EDIT_CONTEXT._editing": {
+            "$eq": "true"
+          }
+        }
+      ]
+    },
+    "target": {
+      "method": "getSaveHandler",
+      "deps": "js/epActivitiesSaveHandlerService"
+    }
+  },
+  {
+    "conditions": {
+      "$or": [
+        {
+          "EP_DETAILS_TABLE_EDIT_CONTEXT._editing": {
+            "$eq": "true"
+          }
+        }
+      ]
+    },
+    "target": {
+      "method": "getSaveHandler",
+      "deps": "js/epSaveHandlerService"
+    }
+  },
+  {
+    "conditions": {
+      "$or": [
+        {
+          "EP_PROCESS_TREE_TABLE_EDIT_CONTEXT._editing": {
+            "$eq": "true"
+          }
+        }
+      ]
+    },
+    "target": {
+      "method": "getSaveHandler",
+      "deps": "js/epSaveHandlerService"
+    }
+  },
+  {
+    "conditions": {
+      "$or": [
+        {
+          "EP_PRODUCT_VARIANTS_TABLE_EDIT_CONTEXT._editing": {
+            "$eq": "true"
+          }
+        }
+      ]
+    },
+    "target": {
+      "method": "getSaveHandler",
+      "deps": "js/epProductionProgramSaveService"
+    }
+  }
+]

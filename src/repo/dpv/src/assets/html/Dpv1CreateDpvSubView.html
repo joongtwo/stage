@@ -1,0 +1,13 @@
+
+<aw-panel-header>
+        <aw-back-button title="{{data.dataProviders.awTypeSelector.selectedObjects[0].cellHeader1}}" pre-panel-id="Dpv1CreateDpvObjectTypes"></aw-back-button>
+</aw-panel-header>
+<aw-panel-body>
+    <aw-panel-section>
+        <aw-xrt type="CREATE" object-type="{{data.dataProviders.awTypeSelector.selectedObjects[0].props.type_name.dbValue}}" xrt-state="data.xrtState"></aw-xrt>
+    </aw-panel-section>
+
+</aw-panel-body>
+<aw-panel-footer>
+    <aw-button action="createDpvObject"><aw-i18n>i18n.create</aw-i18n></aw-button>
+</aw-panel-footer>

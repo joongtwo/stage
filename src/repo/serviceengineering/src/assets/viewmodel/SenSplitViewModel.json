@@ -1,0 +1,211 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-splitter.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-sublocation.directive",
+        "js/aw-include.directive",
+        "js/exist-when.directive",
+        "js/aw-class.directive"
+    ],
+    "data": {
+        "awSubLocationPref": {
+            "hideRightWall": true
+        },
+        "_ebomSublocation":
+        {
+            "viewKey": "ebomContext",
+            "tabSetId": "ebomContext",
+            "name": "ServiceEngineeringSublocation",
+            "clientScopeURI": "Sen1EbomManagement",
+            "nameToken": "ServiceEngineeringSublocation",
+            "policy": "/policies/senPropertyPolicy.json",
+            "viewBase": "SenEbom",
+            "selectionQueryParamKey": "c_uid",
+            "openMode":"ebom_only",
+            "contextKey":"ebomContext",
+            "showTopNode":true,
+            "showXrt":false,
+
+            "viewModes": {
+                "TreeView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": false
+                }
+            },
+            "urlParams":{
+                "productContextQueryParamKey":"pci_uid",
+                "topElementQueryParamKey": "t_uid",
+                "selectionQueryParamKey": "c_uid",
+                "openStructureQueryParamKey": "o_uid",
+                "pageIdQueryParamKey": "pageId",
+                "rootQueryParamKey": "cc_uid"
+            },
+            "dataProviderName": "ebomDataProvider",
+            "gridId": "senEbomTree",
+            "editContext": "ebomDataProvider",
+            "editSupportParamKeys": [ "c_uid", "o_uid", "pci_uid", "c_uid2", "o_uid2",  "pci_uid2" ],
+            "baseSelection":"",
+            "defaultDisplayMode": "TreeView",
+            "awSubLocationPref": {
+                "hideNavigationArea": true,
+                "hideRightWall": true,
+                "hideToolsAndInfoArea": true,
+                "hideFooter": true,
+                "orientation": "HORIZONTAL"
+            },
+
+
+            "context": {
+                "search":{
+
+
+
+                    "hideInContentSearchBox":true
+                }
+            }
+
+
+        },
+        "_sbomSublocation":
+        {
+            "viewKey": "sbomContext",
+            "tabSetId": "sbomContext",
+            "name": "ServiceEngineeringSublocation",
+            "clientScopeURI": "Sen1SbomManagement",
+            "nameToken": "ServiceEngineeringSublocation",
+            "policy": "/policies/senPropertyPolicy.json",
+            "viewBase": "SenSbom",
+            "selectionQueryParamKey": "c_uid",
+            "openMode":"sbom_only",
+            "contextKey":"sbomContext",
+            "showTopNode":true,
+            "showXrt":false,
+            "viewModes": {
+                "TreeView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": false
+                }
+            },
+            "urlParams":{
+                "productContextQueryParamKey":"pci_uid2",
+                "topElementQueryParamKey": "t_uid2",
+                "selectionQueryParamKey": "c_uid2",
+                "openStructureQueryParamKey": "o_uid2",
+                "pageIdQueryParamKey": "pageId2",
+                "rootQueryParamKey": "cc_uid"
+            },
+            "dataProviderName": "sbomDataProvider",
+            "gridId": "senSbomTree",
+            "editContext": "sbomDataProvider",
+            "editSupportParamKeys": [ "c_uid", "o_uid", "pci_uid", "c_uid2", "o_uid2", "pci_uid2" ],
+            "baseSelection":"",
+            "defaultDisplayMode": "TreeView",
+            "awSubLocationPref": {
+                "hideNavigationArea": true,
+                "hideRightWall": true,
+                "hideToolsAndInfoArea": true,
+                "hideFooter": true,
+                "orientation": "HORIZONTAL"
+            },
+            "context": {
+                "search":{
+                    "hideInContentSearchBox":true
+                }
+            }
+
+
+        },
+        "occContext": {
+            "initialValues": {
+                "configContext": {},
+                "displayToggleOptions":{},
+                "supportedFeatures": {},
+                "productContextInfo":{},
+                "readOnlyFeatures":{},
+                "currentState": {},
+                "previousState": {},
+                "transientRequestPref":{},
+                "persistentRequestPref": { "defaultClientScopeUri": "Awb0OccurrenceManagement", "splitMode":"true" },
+                "viewKey": "ebomContext",
+                "disabledFeatures":[],
+                "isRowSelected": false
+            },
+            "meta": {}
+
+        },
+        "occContext2": {
+            "initialValues": {
+                "configContext": {},
+                "displayToggleOptions":{},
+                "supportedFeatures": {},
+                "productContextInfo":{},
+                "readOnlyFeatures":{},
+                "currentState": {},
+                "previousState": {},
+                "transientRequestPref":{},
+                "persistentRequestPref": { "defaultClientScopeUri": "Awb0OccurrenceManagement", "splitMode":"true" },
+                "viewKey": "sbomContext",
+                "disabledFeatures":[],
+                "isRowSelected": false
+            },
+            "meta": {}
+        }
+    },
+    "ctx":{
+        "modelObjectsToOpen":null,
+        "sentaskPageContext":null,
+        "requestPref":null,
+        "requestPref.savedSessionMode":null,
+        "skipAutoBookmark":null,
+        "hideRightWall":null,
+        "splitView.mode":null,
+        "splitView.viewKeys":null,
+        "aceActiveContext": null
+    },
+    "actions":{
+        "getData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadSEData",
+            "deps": "js/senSplitViewerService",
+            "outputData": {
+                "_sbomSublocation.baseSelection":"result.data[0].sbomContextInfo",
+                "_ebomSublocation.baseSelection":"result.data[0].ebomContextInfo"
+            }
+        },
+        "soaCallForPLFDisplayNames":{
+            "actionType": "JSFunction",
+            "method": "soaCallForPLFDisplayNames",
+            "deps": "js/senLoadSbomClientColumns"
+        },
+        "activateLeftView": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "ace.activateWindow",
+                    "eventData": {
+                        "key": "{{data._ebomSublocation.contextKey}}"
+                    }
+                } ]
+            }
+        },
+        "activateRightView": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "ace.activateWindow",
+                    "eventData": {
+                        "key": "{{data._sbomSublocation.contextKey}}"
+                    }
+                } ]
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onInit": "getData",
+        "onMount":"soaCallForPLFDisplayNames"
+    }
+
+}

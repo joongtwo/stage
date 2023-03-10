@@ -1,0 +1,188 @@
+{
+  "newClassificationComponentLocation": {
+    "params": {
+      "componentId": null,
+      "embeddedLocationView": null,
+      "uid": null
+    },
+    "url": "/newClassificationComponentLocation",
+    "view": "Awp0Classification"
+  },
+  "com_siemens_splm_classificationLocation": {
+    "data": {
+      "browserSubTitle": {
+        "source": "/i18n/ClassificationPanelMessages",
+        "key": "Classification"
+      },
+      "headerTitle": {
+        "source": "/i18n/ClassificationPanelMessages",
+        "key": "Classification"
+      }
+    },
+    "view": "AwSearchLocation",
+    "parent": "root"
+  },
+  "showClassification": {
+    "data": {
+      "priority": 1,
+      "label": {
+        "source": "/i18n/ClassificationPanelMessages",
+        "key": "Classification"
+      }
+    },
+    "parent": "com_siemens_splm_classificationLocation",
+    "view": "showClassificationPage",
+    "url": "/showClassification"
+  },
+  "ClsAttrProp": {
+    "data": {
+      "source": "/i18n/ClassificationPanelMessages",
+      "key": "Classification"
+    },
+    "url": "/clsattrprop",
+    "view": "ClsAttrPropTest",
+    "parent": "showUIComp"
+  },
+  "ClsTree": {
+    "data": {
+      "source": "/i18n/ClassificationPanelMessages",
+      "key": "Classification"
+    },
+    "url": "/clstree",
+    "view": "ClsTreeTest",
+    "parent": "showUIComp"
+  },
+  "ClsVNCProp": {
+    "data": {
+      "source": "/i18n/ClassificationPanelMessages",
+      "key": "Classification"
+    },
+    "url": "/clsvncprop",
+    "view": "AwClsVncParentTest",
+    "parent": "showUIComp"
+  },
+  "ClsNavigate": {
+    "data": {
+      "source": "/i18n/ClassificationPanelMessages",
+      "key": "Classification"
+    },
+    "url": "/clsnavigate",
+    "view": "ClsNavigateTest",
+    "parent": "showUIComp"
+  },
+  "ClsReleaseBox": {
+    "data": {
+      "source": "/i18n/ClassificationPanelMessages",
+      "key": "Classification"
+    },
+    "url": "/AwClsRelease",
+    "view": "AwClsReleaseBox",
+    "parent": "showUIComp"
+  },
+  "ClsPropertyGroup": {
+    "data": {
+      "source": "/i18n/ClassificationPanelMessages",
+      "key": "Classification"
+    },
+    "url": "/clspropertygroup",
+    "view": "ClsPropertyGroupTest",
+    "parent": "showUIComp"
+  },
+  "ClsGraphicsPanel": {
+    "data": {
+      "source": "/i18n/ClassificationPanelMessages",
+      "key": "Classification"
+    },
+    "url": "/clsgraphicspanel",
+    "view": "AwClsUpdateGraphicsParentTest",
+    "parent": "showUIComp"
+  },
+  "ClsPanel": {
+    "params": {
+      "componentId": null,
+      "embeddedLocationView": null,
+      "uid": null
+    },
+    "url": "/newClassificationComponentLocationTest",
+    "view": "Awp0Classification",
+    "parent": "showUIComp"
+  },
+  "com_siemens_splm_classificationManagerLocation": {
+    "data": {
+      "browserSubTitle": {
+        "source": "/i18n/ClassificationAdminMessages",
+        "key": "clsManagerTitle"
+      },
+      "headerTitle": {
+        "source": "/i18n/ClassificationAdminMessages",
+        "key": "clsManagerTitle"
+      }
+    },
+    "view": "AwSearchLocation",
+    "parent": "root"
+  },
+  "showClassificationDashboard": {
+    "data": {
+      "priority": 1,
+      "label": {
+        "source": "/i18n/ClassificationAdminMessages",
+        "key": "dashboardTitle"
+      },
+      "context": {
+        "hideRightWall": true
+      }
+    },
+    "parent": "com_siemens_splm_classificationManagerLocation",
+    "url": "/showClassificationDashboard",
+    "view": "showClassificationDashboardSublocation"
+  },
+  "clsNodes": {
+    "data": {
+      "priority": 2,
+      "label": {
+        "source": "/i18n/ClassificationAdminMessages",
+        "key": "nodesTitle"
+      }
+    },
+    "parent": "com_siemens_splm_classificationManagerLocation",
+    "url": "/nodes",
+    "view": "clsNodesSublocation"
+  },
+  "clsClasses": {
+    "data": {
+      "isXrtApplicable": false,
+      "priority": 3,
+      "label": {
+        "source": "/i18n/ClassificationAdminMessages",
+        "key": "classesTitle"
+      }
+    },
+    "parent": "com_siemens_splm_classificationManagerLocation",
+    "url": "/classes",
+    "view": "clsClassesSublocation"
+  },
+  "clsProperty": {
+    "data": {
+      "priority": 4,
+      "label": {
+        "source": "/i18n/ClassificationAdminMessages",
+        "key": "propertiesTitle"
+      }
+    },
+    "parent": "com_siemens_splm_classificationManagerLocation",
+    "url": "/property",
+    "view": "clsPropertiesSublocation"
+  },
+  "clsKeylov": {
+    "data": {
+      "priority": 5,
+      "label": {
+        "source": "/i18n/ClassificationAdminMessages",
+        "key": "keylovTitle"
+      }
+    },
+    "parent": "com_siemens_splm_classificationManagerLocation",
+    "url": "/keylov",
+    "view": "clsKeyLovSublocation"
+  }
+}

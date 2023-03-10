@@ -1,0 +1,457 @@
+{
+  "commands": {
+    "preferenceFilter": {
+      "iconId": "cmdFilterActive",
+      "isGroup": false,
+      "title": "{{i18n.preferenceFilterTitle}}"
+    },
+    "createPreferenceDefinition": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.createPreferenceDefinitionCommandTitle}}",
+      "description": "{{i18n.createPreferenceDefinitionDesc}}"
+    },
+    "createPreferenceOverride": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.createPreferenceOverrideCommandTitle}}",
+      "description": "{{i18n.createPreferenceOverrideDesc}}"
+    },
+    "createProductArea": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.createProductAreaCommandTitle}}",
+      "description": "{{i18n.createProductAreaDesc}}"
+    },
+    "deleteProductArea": {
+      "iconId": "cmdDelete",
+      "isGroup": false,
+      "title": "{{i18n.deleteProductAreaCommandTitle}}",
+      "description": "{{i18n.deleteProductAreaDesc}}"
+    },
+    "deletePreferenceDefinition": {
+      "iconId": "cmdDelete",
+      "isGroup": false,
+      "title": "{{i18n.deletePreferenceDefinitionCommandTitle}}",
+      "description": "{{i18n.deletePreferenceDefinitionDesc}}"
+    },
+    "deletePreferenceInstance": {
+      "iconId": "cmdDelete",
+      "isGroup": false,
+      "title": "{{i18n.deletePreferenceInstanceCommandTitle}}",
+      "description": "{{i18n.deletePreferenceInstanceDesc}}"
+    },
+    "exportPreferences": {
+      "iconId": "cmdExport",
+      "isGroup": false,
+      "title": "{{i18n.exportPreferencesCommandTitle}}"
+    },
+    "importPreferences": {
+      "iconId": "cmdImport",
+      "isGroup": false,
+      "title": "{{i18n.importPreferencesCommandTitle}}"
+    }
+  },
+  "commandHandlers": {
+    "Prf1SelectAllHandler": {
+      "id": "Awp0SelectAll",
+      "activeWhen": {
+        "condition": "conditions.preferencePage"
+      },
+      "visibleWhen": false
+    },
+    "Prf1QuickAccessHandler": {
+      "id": "cmdQuickAccess",
+      "activeWhen": {
+        "condition": "conditions.preferencePage"
+      },
+      "visibleWhen": false
+    },
+    "Prf1EnableMultiSelectHandler": {
+      "id": "Awp0EnableMultiSelect",
+      "activeWhen": {
+        "condition": "conditions.preferencePage"
+      },
+      "visibleWhen": false
+    },
+    "preferenceFilterCommandHandler": {
+      "id": "preferenceFilter",
+      "action": "activatePreferenceFilter",
+      "activeWhen": {
+        "condition": "conditions.preferencePage"
+      },
+      "visibleWhen": true,
+      "enableWhen": {
+        "condition": "conditions.preferenceFilterCommandVisible"
+      }
+    },
+    "Prf1ShowTableViewPrefHandler": {
+      "id": "Awp0ShowTableView",
+      "activeWhen": {
+        "condition": "conditions.preferencePage"
+      },
+      "visibleWhen": false
+    },
+    "Prf1OpenGroupCommandHandler": {
+      "id": "Awp0OpenGroup",
+      "activeWhen": {
+        "condition": "conditions.preferencePage"
+      },
+      "visibleWhen": false
+    },
+    "createPreferenceDefinitionHandler": {
+      "id": "createPreferenceDefinition",
+      "action": "createPreferenceDefinitionAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.createPreferenceDefinitionCommandVisible"
+      }
+    },
+    "createPreferenceOverrideHandler": {
+      "id": "createPreferenceOverride",
+      "action": "createPreferenceOverrideAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.createPreferenceOverrideCommandVisible"
+      }
+    },
+    "createProductAreaHandler": {
+      "id": "createProductArea",
+      "action": "createProductAreaAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.createProductAreaCommandVisible"
+      }
+    },
+    "deleteProductAreaHandler": {
+      "id": "deleteProductArea",
+      "action": "deleteProductAreaAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.deleteProductAreaCommandVisible"
+      }
+    },
+    "deletePreferenceDefinitionHandler": {
+      "id": "deletePreferenceDefinition",
+      "action": "confirmDeletePreferenceDefinitionAction",
+      "activeWhen": {
+        "condition": "conditions.isPreferenceSelected"
+      },
+      "visibleWhen": {
+        "condition": "conditions.deletePreferenceDefinitionCommandVisible"
+      }
+    },
+    "deletePreferenceInstanceHandler": {
+      "id": "deletePreferenceInstance",
+      "action": "confirmDeletePreferenceInstanceAction",
+      "activeWhen": {
+        "condition": "conditions.isPreferenceSelected"
+      },
+      "visibleWhen": {
+        "condition": "conditions.deletePreferenceInstanceCommandVisible"
+      }
+    },
+    "exportPreferencesInstanceHandler": {
+      "id": "exportPreferences",
+      "action": "exportPreferencesAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.exportPreferencesCommandVisible"
+      }
+    },
+    "importPreferencesInstanceHandler": {
+      "id": "importPreferences",
+      "action": "importPreferencesAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.importPreferencesCommandVisible"
+      }
+    }
+  },
+  "commandPlacements": {
+    "PreferenceFilterToolbar": {
+      "id": "preferenceFilter",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 1270
+    },
+    "createPreferenceDefinitionDisplay": {
+      "id": "createPreferenceDefinition",
+      "uiAnchor": "aw_rightWall",
+      "priority": 20,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "createPreferenceOverrideDisplay": {
+      "id": "createPreferenceOverride",
+      "uiAnchor": "aw_rightWall",
+      "priority": 20,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "createProductAreaDisplay": {
+      "id": "createProductArea",
+      "uiAnchor": "aw_rightWall",
+      "priority": 20,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "deletePreferenceInstanceDisplay": {
+      "id": "deletePreferenceInstance",
+      "uiAnchor": "aw_rightWall",
+      "priority": 50,
+      "parentGroupId": "Awp0EditGroup"
+    },
+    "deletePreferenceDefinitionDisplay": {
+      "id": "deletePreferenceDefinition",
+      "uiAnchor": "aw_rightWall",
+      "priority": 100,
+      "parentGroupId": "Awp0EditGroup"
+    },
+    "deleteProductAreaDisplay": {
+      "id": "deleteProductArea",
+      "uiAnchor": "aw_rightWall",
+      "priority": 300,
+      "parentGroupId": "Awp0EditGroup"
+    },
+    "exportPreferencesDisplay": {
+      "id": "exportPreferences",
+      "uiAnchor": "aw_toolsAndInfo",
+      "priority": 100,
+      "parentGroupId": "Awp0ShareGroup"
+    },
+    "importPreferencesDisplay": {
+      "id": "importPreferences",
+      "uiAnchor": "aw_toolsAndInfo",
+      "priority": 100,
+      "parentGroupId": "Awp0ShareGroup"
+    }
+  },
+  "actions": {
+    "activatePreferenceFilter": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Awp0SearchFilter",
+        "location": "aw_navigation"
+      }
+    },
+    "createPreferenceDefinitionAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/createPreferencesService",
+      "inputData": {
+        "commandId": "createPreferenceDefinition",
+        "location": "aw_toolsAndInfo",
+        "prefCtx": "{{ctx.tcadmconsole.preferences}}"
+      }
+    },
+    "createPreferenceOverrideAction": {
+      "actionType": "JSFunction",
+      "method": "activateUserOverridePanel",
+      "deps": "js/createPreferencesService",
+      "inputData": {
+        "commandId": "createPreferenceOverride",
+        "location": "aw_toolsAndInfo",
+        "selectedPreference": "{{ctx.selected}}",
+        "overrideLocationList": "{{ctx.overrideLOVList}}",
+        "prefCtx": "{{ctx.tcadmconsole.preferences}}"
+      }
+    },
+    "createProductAreaAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/createProductAreaService",
+      "inputData": {
+        "commandId": "createProductArea",
+        "location": "aw_toolsAndInfo",
+        "prefCtx": "{{ctx.tcadmconsole.preferences}}"
+      }
+    },
+    "deleteProductAreaAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/deleteProductAreaService",
+      "inputData": {
+        "commandId": "deleteProductArea",
+        "location": "aw_toolsAndInfo",
+        "prefCtx": "{{ctx.tcadmconsole.preferences}}"
+      }
+    },
+    "confirmDeletePreferenceDefinitionAction": {
+      "actionType": "JSFunctionAsync",
+      "method": "confirmDeletePreferenceDefinition",
+      "deps": "js/deletePreferencesService",
+      "inputData": {
+        "data": "{{data}}",
+        "selectedPreference": "{{ctx.selected}}",
+        "prefCtx": "{{ctx.tcadmconsole.preferences}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "deletePreferenceDefinitionEventId"
+          }
+        ]
+      }
+    },
+    "deletePreferenceDefinitionAction": {
+      "actionType": "JSFunction",
+      "method": "deletePreferenceDefinition",
+      "deps": "js/deletePreferencesService",
+      "inputData": {
+        "selectedPreference": "{{ctx.selected}}"
+      }
+    },
+    "confirmDeletePreferenceInstanceAction": {
+      "actionType": "JSFunctionAsync",
+      "method": "confirmDeletePreferenceInstance",
+      "deps": "js/deletePreferencesService",
+      "inputData": {
+        "data": "{{data}}",
+        "selectedPreference": "{{ctx.selected}}",
+        "prefCtx": "{{ctx.tcadmconsole.preferences}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "deletePreferenceInstanceEventId"
+          }
+        ]
+      }
+    },
+    "deletePreferenceInstanceAction": {
+      "actionType": "JSFunction",
+      "method": "deletePreferenceInstance",
+      "deps": "js/deletePreferencesService",
+      "inputData": {
+        "selectedPreference": "{{ctx.selected}}"
+      },
+      "actionMessages": {
+        "failure": [
+          {
+            "message": "deletePreferenceInstanceActionFailure"
+          }
+        ]
+      }
+    },
+    "exportPreferencesAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/exportPreferencesService",
+      "inputData": {
+        "commandId": "exportPreferences",
+        "location": "aw_toolsAndInfo",
+        "prefCtx": "{{ctx.tcadmconsole.preferences}}"
+      }
+    },
+    "importPreferencesAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/importPreferencesService",
+      "inputData": {
+        "commandId": "importPreferences",
+        "location": "aw_toolsAndInfo",
+        "prefCtx": "{{ctx.tcadmconsole.preferences}}"
+      }
+    }
+  },
+  "onEvent": [
+    {
+      "eventId": "deletePreferenceDefinitionEventId",
+      "action": "deletePreferenceDefinitionAction"
+    },
+    {
+      "eventId": "deletePreferenceInstanceEventId",
+      "action": "deletePreferenceInstanceAction"
+    }
+  ],
+  "messages": {
+    "deletePreferenceInstanceActionFailure": {
+      "messageType": "ERROR",
+      "messageText": "{{errorCode}}"
+    }
+  },
+  "conditions": {
+    "preferencePage": {
+      "expression": "ctx.sublocation.clientScopeURI==='Prf1PreferenceResults'"
+    },
+    "preferenceFilterCommandVisible": {
+      "expression": "ctx.sublocation.clientScopeURI==='Prf1PreferenceResults' && ctx.search.tableLoaded === true && ctx.search.totalFound > 0"
+    },
+    "isPreferenceSelected": {
+      "expression": "ctx.sublocation.clientScopeURI==='Prf1PreferenceResults' && ctx.pwaSelectionInfo.currentSelectedCount === 1"
+    },
+    "createPreferenceDefinitionCommandVisible": {
+      "expression": "ctx.sublocation.clientScopeURI==='Prf1PreferenceResults' && ctx.tcadmconsole.preferences.isUserSystemAdmin && ctx.search.tableLoaded"
+    },
+    "createPreferenceOverrideCommandVisible": {
+      "expression": "conditions.isPreferenceSelected === true && ctx.tcadmconsole.preferences.isUserOverrideValid"
+    },
+    "createProductAreaCommandVisible": {
+      "expression": "ctx.sublocation.clientScopeURI==='Prf1PreferenceResults' && ctx.tcadmconsole.preferences.isUserSystemAdmin && ctx.search.tableLoaded"
+    },
+    "deleteProductAreaCommandVisible": {
+      "expression": "ctx.sublocation.clientScopeURI==='Prf1PreferenceResults' && ctx.tcadmconsole.preferences.isUserSystemAdmin && ctx.search.tableLoaded && ctx.deleteProductArea.isSupportedVersion"
+    },
+    "deletePreferenceDefinitionCommandVisible": {
+      "expression": "conditions.isPreferenceSelected === true && ctx.tcadmconsole.preferences.canDeleteDefinition"
+    },
+    "deletePreferenceInstanceCommandVisible": {
+      "expression": "conditions.isPreferenceSelected === true && ctx.tcadmconsole.preferences.canDeleteInstance"
+    },
+    "exportPreferencesCommandVisible": {
+      "expression": "ctx.sublocation.clientScopeURI==='Prf1PreferenceResults' && ctx.search.tableLoaded"
+    },
+    "importPreferencesCommandVisible": {
+      "expression": "ctx.sublocation.clientScopeURI==='Prf1PreferenceResults' && ctx.search.tableLoaded"
+    },
+    "isSelectedPreferenceModifiable": {
+      "expression": "conditions.isPreferenceSelected === true && ctx.visibleServerCommands.Awp0StartEdit && ctx.tcadmconsole.preferences.canUserEdit && !ctx.tcadmconsole.preferences.editInProgress"
+    }
+  },
+  "i18n": {
+    "preferenceFilterTitle": [
+      "preferenceMessages"
+    ],
+    "createPreferenceDefinitionCommandTitle": [
+      "preferenceMessages"
+    ],
+    "createPreferenceOverrideCommandTitle": [
+      "preferenceMessages"
+    ],
+    "createProductAreaCommandTitle": [
+      "preferenceMessages"
+    ],
+    "deleteProductAreaCommandTitle": [
+      "preferenceMessages"
+    ],
+    "deletePreferenceDefinitionCommandTitle": [
+      "preferenceMessages"
+    ],
+    "deletePreferenceInstanceCommandTitle": [
+      "preferenceMessages"
+    ],
+    "exportPreferencesCommandTitle": [
+      "preferenceMessages"
+    ],
+    "importPreferencesCommandTitle": [
+      "preferenceMessages"
+    ],
+    "createPreferenceDefinitionDesc": [
+      "preferenceMessages"
+    ],
+    "deletePreferenceDefinitionDesc": [
+      "preferenceMessages"
+    ],
+    "deletePreferenceInstanceDesc": [
+      "preferenceMessages"
+    ],
+    "createPreferenceOverrideDesc": [
+      "preferenceMessages"
+    ],
+    "createProductAreaDesc": [
+      "preferenceMessages"
+    ],
+    "deleteProductAreaDesc": [
+      "preferenceMessages"
+    ]
+  }
+}

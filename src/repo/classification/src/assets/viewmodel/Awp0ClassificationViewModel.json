@@ -1,0 +1,170 @@
+{
+    "schemaVersion" : "1.0.0",
+    "lifecycleHooks": {
+        "onMount": "initialize",
+        "onUnmount": "cleanUpSelectionData"
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ctx": {
+        "mselected": {
+            "type": "object"
+        }
+    },
+    "data":{
+        "activeView": "Awp0ClassificationSub",
+        "selectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "classifyState": {
+            "initialValues": {
+                "attrs": null,
+                "expandAllBlocks": true,
+                "isClassify": true,
+                "panelMode": -1,
+                "shouldSaveEdits": false,
+                "showTabTree": true,
+                "editProperties": false
+            },
+            "meta": {
+                "panelMode": {
+                    "type": "INTEGER",
+                    "field": "true"
+                },
+                "attrs": [ {
+                    "attr": {
+                        "field": "true"
+                    }
+                } ],
+                "numOfAttrs": {
+                    "type": "INTEGER",
+                    "field": "true"
+                },
+                "currentUnitSystem": {
+                    "type": "object",
+                    "field": "true"
+                },
+                "editClassUID": {
+                    "type":"STRING"
+                },
+                "expandAllBlocks": {
+                    "type": "BOOLEAN"
+                },
+                "shouldRerenderForExpandCollapse":{
+                    "type": "object"
+                },
+                "shouldSaveEdits": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                },
+                "shouldSave": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        },
+        "responseState": {
+            "initialValues": {},
+            "meta": {
+                "blockDefinitionMap": {
+                    "type": "object",
+                    "field": "true"
+                }
+            }
+        }
+    },
+
+    "actions":
+    {
+        "initialize": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "addWorkspaceObjectUidtoData"
+
+                }
+            ]
+        },
+        "addWorkspaceObjectUidtoData": {
+            "actionType": "JSFunction",
+            "method": "addWorkspaceObjectUidtoData",
+            "inputData": {
+                "subPanelContext": "{{props.subPanelContext}}",
+                "mselected": "{{ctx.mselected}}"
+            },
+            "outputData": {
+                "workspaceObjectUID": "result.uid",
+                "selectedItem": "result.selectedItem"
+            },
+            "deps": "js/Ics1ClassificationTabService"
+        },
+        "initializeClassifyPanel": {
+            "actionType": "JSFunction",
+            "method": "initializeClassifyPanel",
+            "inputData": {
+                "classifyState": "{{data.classifyState}}",
+                "classifyStateUpdater": "{{data.updateAtomicData}}"
+            },
+            "outputData": {
+                "classifyState": "classifyState"
+            },
+            "deps": "js/Ics1ClassificationTabService"
+        },
+        "closePanel":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        },
+        "cleanUpSelectionData": {
+            "actionType": "JSFunctionAsync",
+            "method": "cleanUpSelectionData",
+            "inputData": {
+                "parentSelectedData": "{{fields.selectionData}}"
+            },
+            "deps": "js/Ics1ClassificationTabService"
+        }
+    },
+
+    "conditions":{
+        "selectedClass": {
+            "expression": "classifyState.selectedClass !== null"
+        }
+    },
+    "messages": {},
+    "onEvent": [
+        {
+
+            "eventId": "primaryWorkArea.selectionChangeEvent",
+            "action": "closePanel"
+        },
+        {
+            "eventId": "classifyPanel.closePanel",
+            "action": "closePanel"
+        }
+    ],
+    "i18n":
+    {
+        "addClassification": [
+            "ClassificationPanelMessages"
+        ],
+        "Classify": [
+            "ClassificationPanelMessages"
+        ]
+    }
+}

@@ -1,0 +1,28 @@
+<aw-file-upload file-change-action="Ctm1SetGraphicUsagesFromMapping" type-filter="{{data.typeFilter}}" is-required="true"  multiple="true"></aw-file-upload>
+<aw-panel-section>
+    <aw-listbox  prop="data.graphicAttributeMapping" list="data.graphicAttributeMappingList" ></aw-listbox>
+    <aw-listbox  prop="data.graphicClassname" list="data.graphicClassnameList" ></aw-listbox>
+</aw-panel-section>
+<aw-panel-section caption="i18n.overwriteMode" >
+    <aw-radiobutton prop="data.overwriteMode" list="data.overwriteModeValues.dbValue" action="Ctm1CheckMode" ></aw-radiobutton>
+    <aw-panel-section>
+        <aw-radiobutton prop="data.overwriteOptions" list="data.overwriteOptionsValues.dbValue" visible-when="conditions.overwriteOptions" ></aw-radiobutton>
+    </aw-panel-section>
+</aw-panel-section>
+<aw-panel-section caption="i18n.graphicUsage" >
+    <aw-checkbox visible-when="conditions.hasGraphicUsagePref" prop="data.graphicUsageCheckbox" action="checkLanguageAndUsageArrays" ></aw-checkbox>
+    <div aw-repeat="item:data.graphicUsagesList">
+        <aw-checkbox prop="item" action="checkLanguageAndUsageArrays" ></aw-checkbox>
+    </div>
+</aw-panel-section>
+<aw-panel-section caption="i18n.language" >
+    <div aw-repeat="item:data.languagesList">
+        <aw-checkbox prop="item" action="checkLanguageAndUsageArrays" ></aw-checkbox>
+    </div>
+</aw-panel-section>
+<aw-panel-footer>
+    <aw-button action="Ctm1TransientFileTicketsForUpload" enable-when="conditions.importValid" >
+        <aw-i18n>i18n.import</aw-i18n>
+    </aw-button>
+</aw-panel-footer>
+

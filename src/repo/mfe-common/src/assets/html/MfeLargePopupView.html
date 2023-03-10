@@ -1,0 +1,15 @@
+<aw-flex-column>
+    <aw-panel-header height="6f" exist-when="subPanelContext.header">
+        <aw-flex-row>
+            <aw-flex-column height="fill" width="fill">
+                <mfe-large-header sub-panel-context="{...subPanelContext.header}"></mfe-large-header>
+            </aw-flex-column>
+            <aw-flex-column width="4f">
+                <aw-flex-row height="4f">
+                    <aw-icon-button class="aw-mfe-largePopupCloseCommand aw-commands-commandIconButton" size="large" command="data.closeCommand"></aw-icon-button>
+                </aw-flex-row>
+            </aw-flex-column>
+        </aw-flex-row>
+    </aw-panel-header>
+    <aw-include height="fill" name="{{subPanelContext.viewName}}" sub-panel-context="{...subPanelContext}"></aw-include>
+</aw-flex-column>

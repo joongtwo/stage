@@ -1,0 +1,30 @@
+<div class="sw-column w-12">
+    <aw-advanced-bar type="TOOLBAR">
+        <div class="sw-row aw-epPert-toolbarBelowTab align-center mx-small">
+            <div class="sw-column aw-epPert-scopeTitle">
+                <aw-i18n>i18n.scopeTitle</aw-i18n>
+            </div>
+            <strong><span>| {{subPanelContext.contextObject.props['bl_rev_object_name'].dbValues[0]}}</span></strong>
+        </div>
+    </aw-advanced-bar>
+    <mfe-message exist-when="conditions.noPertContent && conditions.isContextObjectProcessStation && conditions.isPPOrWIAPageSelected"
+        sub-panel-context="data.messages.missingOperationsUnderStation"></mfe-message>
+    <mfe-message exist-when="conditions.noPertContent && conditions.isContextObjectProcessLineAndNotStation"
+        sub-panel-context="data.messages.missingStationsUnderLine"></mfe-message>
+    <mfe-message exist-when="conditions.noPertContent && conditions.isContextObjectProcessAreaAndNotLineOrStation && !conditions.isContextObjectPlantBOP"
+        sub-panel-context="data.messages.missingLinesAndStationsUnderArea"></mfe-message>
+    <mfe-message exist-when="conditions.noPertContent && conditions.isContextObjectCompoundOperation && conditions.isPPOrWIAPageSelected"
+        sub-panel-context="data.messages.missingExecutionStepsUnderCompoundOperation"></mfe-message>
+    <mfe-message exist-when="conditions.noPertContent && conditions.isContextObjectProcess && !conditions.isContextObjectCompoundOperation && conditions.isPPOrWIAPageSelected"
+        sub-panel-context="data.messages.missingOperationsUnderProcess"></mfe-message>
+    <mfe-message exist-when="conditions.noPertContent && conditions.isContextObjectProcess && !conditions.isContextObjectCompoundOperation && !conditions.isPPOrWIAPageSelected"
+        sub-panel-context="data.messages.missingProcessesAndFoldersUnderProcess"></mfe-message>
+    <mfe-message exist-when="conditions.noPertContent && conditions.isContextObjectPlantBOP"
+        sub-panel-context="data.messages.missingProcessAreasLinesAndStationsUnderPlantBOP"></mfe-message>
+    <div class="sw-row h-12 afx-content-background" exist-when="conditions.processAreaAvailable && !conditions.noPertContent">
+        <div class="sw-column w-12 afx-content-background">
+            <aw-graphing-component graph-model="data.graphModel"></aw-graphing-component>
+        </div>
+    </div>
+    <aw-popup-wrapper popup="showMfePertToggleModePopup"></aw-popup-wrapper>
+</div>

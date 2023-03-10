@@ -1,0 +1,126 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2022.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+
+/*=========================================================================*/
+/*========================== EP Activities =========================*/
+/*=========================================================================*/
+
+.aw-mfe-contentPanel {
+    .aw-layout-headerProperties {
+        max-height: rem-calc(32);
+
+        .sw-property.sw-component:first-child {
+            width: 65%;
+        }
+
+        .aw-ep-activitiesLabel {
+            padding: $padding_normal;
+
+            .sw-property-val {
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+            }
+        }
+    }
+}
+
+/*=========================================================================*/
+/*========================== EP Activities - CATEGORY =====================*/
+/*=========================================================================*/
+
+.aw-epActivities-categoryWidgetNa {
+    width: rem-calc(12);
+    height: rem-calc(12);
+}
+
+.aw-epActivities-categoryWidgetVa {
+    border-radius: 50%;
+    width: rem-calc(13);
+    height: rem-calc(13);
+}
+
+.aw-epActivities-categoryWidgetNva {
+    border: rem-calc(2) solid;
+    border-radius: 50%;
+    width: rem-calc(13);
+    height: rem-calc(13);
+}
+
+.aw-epActivities-categoryWidgetNvabr {
+    display: flex;
+}
+
+.aw-epActivities-categoryWidgetNvabr::before {
+    content: ' ';
+    border: rem-calc(2) solid;
+    border-radius: 50%;
+    width: rem-calc(13);
+    height: rem-calc(13);
+    box-sizing: border-box;
+}
+
+.aw-epActivities-categoryWidgetNvabr::after {
+    content: ' ';
+    border-radius: 0 50% 50% 0;
+    width: rem-calc(6);
+    height: rem-calc(11);
+    margin-left: rem-calc(6);
+    margin-top: rem-calc(1);
+    position: absolute;
+}
+
+/*=========================================================================*/
+/*========================== EP Activities - CATEGORY =====================*/
+/*=========================================================================*/
+
+/*=========================================================================*/
+/*========================== EP Activities - data card ====================*/
+/*=========================================================================*/
+
+.aw-ep-dataCardPopupContainer {
+    .aw-jswidgets-loading {
+        width: rem-calc(32);
+        height: rem-calc(32);
+    }
+}
+
+.aw-ep-dataCardPanel {
+    height: rem-calc(72);
+}
+
+.aw-ep-dataCardPropertyPanel {
+    margin-left: $margin_normal;
+    border-left-width: rem-calc(1);
+    border-left-style: solid;
+
+    .aw-ep-dataCardPropertyLabel {
+        width: auto;
+        min-width: rem-calc(73);
+        padding-left: $padding_xlarge;
+        padding-right: $padding_normal;
+    }
+
+    .aw-ep-dataCardProperty.sw-component {
+        min-width: rem-calc(32);
+        width: rem-calc(32);
+        flex: initial;
+    }
+
+    .aw-ep-dataCardPropertyList.sw-component {
+        padding-top: $padding_normal;
+        min-width: rem-calc(32);
+        width: rem-calc(72);
+        flex: initial;
+
+    }
+}
+
+/*=========================================================================*/
+/*========================== EP Activities - data card ====================*/
+/*=========================================================================*/

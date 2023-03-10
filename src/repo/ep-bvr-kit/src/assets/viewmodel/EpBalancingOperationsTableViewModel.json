@@ -1,0 +1,74 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "EpBalancingOperationsTable_inputObject": {
+            "onChangeAction": "getOperationsTablePropName",
+            "syncObject": {}
+        }
+    },
+    "props": {
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "editContext": "{{ctx.mfgReadOnlyMode.readOnlyMode === true ? '': 'EP_DETAILS_TABLE_EDIT_CONTEXT'}}",
+        "preferenceName": "EP_LineBalancingOperationColumnConfiguration",
+        "relationName": [],
+        "loadInputObject": {
+            "loadTypes": [
+                "getProperties"
+            ],
+            "propertiesToLoad": [ ]
+        },
+        "messages": {
+            "noElementSelected": [ {
+                "text": "{{i18n.selectStationOrProcessResource}}"
+            } ],
+            "noAssigned": [ {
+                "text": "{{i18n.noOperations}}"
+            } ]
+        },
+        "customColumns": [ {
+            "clientColumn": true,
+            "name": "releaseStatusFlag",
+            "propertyDisplayName": "{{i18n.releaseStatusFlagColumnName}}"
+        } ]
+    },
+    "actions": {
+        "getOperationsTablePropName": {
+            "actionType": "JSFunction",
+            "method": "getOperationsTablePropName",
+            "inputData": {
+                "selection":"{{ports.EpBalancingOperationsTable_inputObject.syncObject}}"
+            },
+            "outputData": {
+                "relationName":"relationName",
+                "loadInputObject":"loadInputObject"
+            },
+            "deps": "js/epBalancingService"
+        },
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getValueInViewModel"
+    },
+    "i18n": {
+        "noOperations": [ "BalancingMessages" ],
+        "selectStationOrProcessResource": [ "BalancingMessages" ],
+        "releaseStatusFlagColumnName": [ "AssemblyMessages" ]
+    }
+}

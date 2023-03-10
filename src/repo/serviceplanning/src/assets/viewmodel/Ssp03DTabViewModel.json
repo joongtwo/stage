@@ -1,0 +1,27 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "visConfiguration": {
+            "id": "partsVisViewer",
+            "sceneType": "HIERARCHICAL",
+            "instanceCacheable": true
+        },
+        "visContext": {}
+    },
+    "actions": {
+        "threeDTabOnUnmount": {
+            "actionType": "JSFunction",
+            "method": "threeDTabOnUnmount",
+            "deps": "js/ssp0GraphicsUtilityService"
+        },
+        "threeDTabOnMount": {
+            "actionType": "JSFunction",
+            "method": "threeDTabOnMount",
+            "deps": "js/ssp0GraphicsUtilityService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "threeDTabOnMount",
+        "onUnmount": "threeDTabOnUnmount"
+    }
+}

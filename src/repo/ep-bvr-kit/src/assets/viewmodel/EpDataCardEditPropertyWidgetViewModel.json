@@ -1,0 +1,168 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "is-standard-frequency": {
+            "type": "object"
+        },
+        "shared-data-state": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "quantity": {
+            "displayName": "",
+            "type": "INTEGER",
+            "isEditable": "true",
+            "dbValue": "{{props.sharedDataState.quantity}}",
+            "dispValue": "",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "frequency": {
+            "displayName": "",
+            "type": "DOUBLE",
+            "isEditable": "true",
+            "dbValue": "{{props.sharedDataState.frequency}}",
+            "dispValue": "",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "frequencyNumerator": {
+            "displayName": "",
+            "type": "DOUBLE",
+            "isEditable": "true",
+            "dbValue": "{{props.sharedDataState.frequencyNumerator}}",
+            "dispValue": "",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "frequencyDenominator": {
+            "displayName": "",
+            "type": "DOUBLE",
+            "isEditable": "true",
+            "dbValue": "{{props.sharedDataState.frequencyDenominator}}",
+            "dispValue": "",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "category": {
+            "displayName": "{{i18n.category}}",
+            "type": "STRING",
+            "hasLov": true,
+            "dbValue": "{{props.sharedDataState.category}}",
+            "dispValue": "{{props.sharedDataState.category}}",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        }
+    },
+    "actions": {
+        "fetchLovForCategoryList": {
+            "actionType": "JSFunction",
+            "method": "getCategoryList",
+            "inputData": {
+                "uid": "{{props.sharedDataState.uid}}"
+            },
+            "outputData": {
+                "categoryList": ""
+            },
+            "deps": "js/epDataCardPropertyWidgetService"
+        },
+        "updateSharedData": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "target": "{{props.sharedDataState}}",
+                "updatedValue": "{{parameters.updatedValue}}"
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "onCategorySelection": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "target": "{{props.sharedDataState}}",
+                "updatedValue": {
+                    "category": "{{data.category.dbValue}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateSharedData",
+            "criteria": {
+                "condition": "conditions.quantityChangeCondition"
+            },
+            "inputArgs": {
+                "updatedValue": {
+                    "quantity": "{{eventData.newValue}}"
+                }
+            }
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateSharedData",
+            "criteria": {
+                "condition": "conditions.frequencyChangeCondition"
+            },
+            "inputArgs": {
+                "updatedValue": {
+                    "frequency": "{{eventData.newValue}}"
+                }
+            }
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateSharedData",
+            "criteria": {
+                "condition": "conditions.frequencyNumeratorChangeCondition"
+            },
+            "inputArgs": {
+                "updatedValue": {
+                    "frequencyNumerator": "{{eventData.newValue}}"
+                }
+            }
+        },
+        {
+            "eventId": "condition.expressionValueChanged",
+            "action": "updateSharedData",
+            "criteria": {
+                "condition": "conditions.frequencyDenominatorChangeCondition"
+            },
+            "inputArgs": {
+                "updatedValue": {
+                    "frequencyDenominator": "{{eventData.newValue}}"
+                }
+            }
+        }
+    ],
+    "conditions": {
+        "quantityChangeCondition": {
+            "expression": "data.quantity.dbValue",
+            "trackValues": true
+        },
+        "frequencyChangeCondition": {
+            "expression": "data.frequency.dbValue",
+            "trackValues": true
+        },
+        "frequencyNumeratorChangeCondition": {
+            "expression": "data.frequencyNumerator.dbValue",
+            "trackValues": true
+        },
+        "frequencyDenominatorChangeCondition": {
+            "expression": "data.frequencyDenominator.dbValue",
+            "trackValues": true
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "fetchLovForCategoryList"
+    },
+    "i18n": {
+        "quantity": [
+            "epDataCardMessages"
+        ],
+        "frequency": [
+            "epDataCardMessages"
+        ],
+        "category": [
+            "epDataCardMessages"
+        ]
+    }
+}

@@ -1,0 +1,102 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "EpCalculatePVTaskBar_changeIndicationMode": {
+            "onChangeAction": "getValueInViewModelAndUpdatePVValue",
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "showPV": {
+            "displayName": "",
+            "type": "BOOLEAN",
+            "dbValue": false
+        }
+    },
+    "actions": {
+        "calculatePVAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "calculateImpactedProductViews"
+                },
+                {
+                    "action": "setPVValue"
+
+                }
+            ]
+        },
+        "getValueInViewModelAndUpdatePVValue":{
+            "actionType":"batchJob",
+            "steps":[
+                {
+                    "action":"getValueInViewModel"
+                },
+                {
+                    "action":"resetPVValue",
+                    "condition":"!condition.isAssignmentIndicationOn"
+                }
+            ]
+            
+        },
+        "getValueInViewModel":{
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "assignmentIndicationValue": "{{ports.EpCalculatePVTaskBar_changeIndicationMode.syncObject.isIndicationToggleOn}}"
+            },
+            "outputData":{
+                "assignmentIndicationMode":""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setPVValue": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "showPV": true
+            },
+            "outputData": {
+                "showPV.dbValue": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "resetPVValue":{
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "showPV": false
+            },
+            "outputData": {
+                "showPV.dbValue": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "calculateImpactedProductViews": {
+            "actionType": "JSFunction",
+            "method": "loadProductViewChangeIndication",
+            "deps": "js/epChangeIndicationService"
+        }
+    },
+    "i18n":
+    {
+         "calculatePV": ["changeIndicationMessages"],
+         "refreshPV":["changeIndicationMessages"]
+
+    },
+    "conditions":
+    {
+        "isCalculatePV":
+        {
+            "expression": "data.showPV.dbValue === false && data.assignmentIndicationMode === true"
+        },
+        "isRefreshPV": {
+            "expression": "data.showPV.dbValue === true && data.assignmentIndicationMode === true"
+        },
+        "isAssignmentIndicationOn": {
+            "expression": "data.assignmentIndicationMode === true"
+        }
+    }
+
+
+}

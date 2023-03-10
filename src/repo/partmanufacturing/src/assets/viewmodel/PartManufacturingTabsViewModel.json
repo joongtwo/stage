@@ -1,0 +1,534 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "updateResourcesSelectionForPWA": {
+            "actionType": "JSFunction",
+            "method": "updatePWASelectionInfo",
+            "inputData": {
+                "actionName": "{{props.subPanelContext.searchState}}",
+                "tableLoaded": "{{props.subPanelContext.resourceTableSelectionData}}"
+            },
+            "deps": "js/partManufacturingService"
+        },
+        "updateAttachmentsSelectionForPWA": {
+            "actionType": "JSFunction",
+            "method": "updatePWASelectionInfo",
+            "inputData": {
+                "actionName": "{{props.subPanelContext.searchState}}",
+                "tableLoaded": "{{props.subPanelContext.attachmentTableSelectionData}}"
+            },
+            "deps": "js/partManufacturingService"
+        },
+        "updateActivitiesSelectionForPWA": {
+            "actionType": "JSFunction",
+            "method": "updatePWASelectionInfo",
+            "inputData": {
+                "actionName": "{{props.subPanelContext.searchState}}",
+                "tableLoaded": "{{props.subPanelContext.activitiesTableSelectionData}}"
+            },
+            "deps": "js/partManufacturingService"
+        },
+        "updateResourcesTable": {
+            "actionType": "JSFunction",
+            "method": "initSearch",
+            "inputData": {
+                "data": "{{data.actions}}",
+                "actionName": "doResourcesGridDataProvider"
+            },
+            "deps": "js/awSearchService"
+        },
+        "updateAttachmentsTable": {
+            "actionType": "JSFunction",
+            "method": "initSearch",
+            "inputData": {
+                "data": "{{data.actions}}",
+                "actionName": "doAttachmentsGridDataProvider"
+            },
+            "deps": "js/awSearchService"
+        },
+        "doArrangeEvent": {
+            "actionType": "JSFunctionAsync",
+            "method": "arrangeColumns",
+            "inputData": {
+                "declViewModel": "{{data}}",
+                "eventData": "{{data.eventData}}"
+            },
+            "deps": "js/columnArrangeService"
+        },
+        "doResourcesGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "resourcesDataProvider"
+        },
+        "doAttachmentsGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "attachmentsDataProvider"
+        },
+        "doActivitiesGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "gridDataProvider"
+        },
+        "loadResourcesData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadResourcesData",
+            "inputData": {
+                "declViewModel": "{{data}}",
+                "dataProvider": "{{data.dataProviders.resourcesDataProvider}}",
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": "Pm1Resources"
+                },
+                "saveColumnConfigData": null,
+                "inflateProp" : true,
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "outputData": {
+                "totalResourcesFound": "totalFound",
+                "searchResourcesResults": "searchResults",
+                "unpopulatedSearchFilterCategories": "searchFilterCategoriesUnpopulated",
+                "dataProviders.resourcesDataProvider.columnConfig": "columnConfig",
+                "output": "{{function:processOutput}}"
+            },
+            "deps": "js/partManufacturingService"
+        },
+        "loadAttachmentsData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadAttachmentsData",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.attachmentsDataProvider}}",
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": "Pm1Attachments"
+                },
+                "saveColumnConfigData": null,
+                "inflateProp" : true,
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "outputData": {
+                "totalAttachmentsFound": "totalFound",
+                "searchAttachmentsResults": "searchResults",
+                "unpopulatedSearchFilterCategories": "searchFilterCategoriesUnpopulated",
+                "dataProviders.attachmentsDataProvider.columnConfig": "columnConfig",
+                "output": "{{function:processOutputA}}"
+            },
+            "deps": "js/partManufacturingService"
+        },
+        "loadActivitiesData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadActivitiesData",
+            "inputData": {
+                "treeLoadInput": "request.treeLoadInput",
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": "{{ctx.PartMfg.activitiesClientScopeURI}}"
+                },
+                "inflateProp": true,
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "outputData": {
+                "ctx.search.totalFound": "result.treeLoadResult.totalChildCount",
+                "ctx.search.totalLoaded": "result.treeLoadResult.childNodes.length",
+                "searchActivitiesResults": "result.treeLoadResult.childNodes",
+                "dataProviders.gridDataProvider.columnConfig": "result.columnConfig"
+            },
+            "deps": "js/partManufacturingService"
+        },
+        "loadActivitiesProperties": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableProperties",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}",
+                "propertyLoadInput": "request.propertyLoadInput"
+            },
+            "outputData": {},
+            "deps": "js/partManufacturingService"
+        },
+        "handleTabSelectionChangeAction": {
+            "actionType": "JSFunction",
+            "method": "handleTabSelectionChange",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/partManufacturingService"
+        },
+        "resetActivitiesColumnConfig": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2022-06-UiConfig",
+            "method": "getOrResetUIColumnConfigs3",
+            "inputData": {
+                "getOrResetUiConfigsIn": [ {
+                    "scope": "LoginUser",
+                    "scopeName": "",
+                    "clientName": "AWClient",
+                    "resetColumnConfig": true,
+                    "columnConfigQueryInfos": [ {
+                        "clientScopeURI": "{{ctx.PartMfg.activitiesClientScopeURI}}",
+                        "operationType": "configured",
+                        "typeNames": [
+                            "WorkspaceObject"
+                        ],
+                        "columnsToExclude": []
+                    } ],
+                    "businessObjects": [ {} ]
+                } ]
+            },
+            "outputData": {
+                "dataProviders.gridDataProvider.columnConfig": "columnConfigurations[0].columnConfigurations[0]"
+            }
+        },
+        "resetResourcesColumnConfig": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2022-06-UiConfig",
+            "method": "getOrResetUIColumnConfigs3",
+            "inputData": {
+                "getOrResetUiConfigsIn": [ {
+                    "scope": "LoginUser",
+                    "scopeName": "",
+                    "clientName": "AWClient",
+                    "resetColumnConfig": true,
+                    "columnConfigQueryInfos": [ {
+                        "clientScopeURI": "Pm1Resources",
+                        "operationType": "configured",
+                        "typeNames": [
+                            "ItemRevision", "BOMLine"
+                        ],
+                        "columnsToExclude": []
+                    } ],
+                    "businessObjects": [ {} ]
+                } ]
+            },
+            "outputData": {
+                "dataProviders.resourcesDataProvider.columnConfig": "columnConfigurations[0].columnConfigurations[0]"
+            }
+        },
+        "loadResourcesColumns": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadResourcesColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.resourcesDataProvider}}"
+            },
+            "deps": "js/partManufacturingService"
+        },
+        "resetAttachmentsColumnConfig": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2022-06-UiConfig",
+            "method": "getOrResetUIColumnConfigs3",
+            "inputData": {
+                "getOrResetUiConfigsIn": [ {
+                    "scope": "LoginUser",
+                    "scopeName": "",
+                    "clientName": "AWClient",
+                    "resetColumnConfig": true,
+                    "columnConfigQueryInfos": [ {
+                        "clientScopeURI": "Pm1Attachments",
+                        "operationType": "configured",
+                        "typeNames": [
+                            "WorkspaceObject"
+                        ],
+                        "columnsToExclude": []
+                    } ],
+                    "businessObjects": [ {} ]
+                } ]
+            },
+            "outputData": {
+                "dataProviders.attachmentsDataProvider.columnConfig": "columnConfigurations[0].columnConfigurations[0]"
+            }
+        },
+        "saveAttachmentsColumnConfig": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-03-UiConfig",
+            "method": "saveUIColumnConfigs",
+            "inputData": {
+                "columnConfigurations": [ {
+                    "clientScopeURI": "Pm1Attachments",
+                    "columnConfigId": "attachmentsColConfig",
+                    "columns": "{{data.dataProviders.attachmentsDataProvider.newColumns}}",
+                    "scope": "LoginUser",
+                    "scopeName": ""
+                } ]
+            },
+            "outputData": {},
+            "events": {
+                "success": [ {
+                    "name": "attachmentsColumnConfig.saved"
+                } ]
+            }
+        },
+        "saveActivitiesColumnConfig": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-03-UiConfig",
+            "method": "saveUIColumnConfigs",
+            "inputData": {
+                "columnConfigurations": [ {
+                    "clientScopeURI": "{{ctx.PartMfg.activitiesClientScopeURI}}",
+                    "columnConfigId": "{{data.dataProviders.gridDataProvider.columnConfig.columnConfigId}}",
+                    "columns": "{{data.dataProviders.gridDataProvider.newColumns}}",
+                    "scope": "LoginUser",
+                    "scopeName": ""
+                } ]
+            },
+            "outputData": {},
+            "events": {
+                "success": [ {
+                    "name": "activitiesColumnConfig.saved"
+                } ]
+            }
+        },
+        "saveResourcesColumnConfig": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-03-UiConfig",
+            "method": "saveUIColumnConfigs",
+            "inputData": {
+                "columnConfigurations": [ {
+                    "clientScopeURI": "Pm1Resources",
+                    "columnConfigId": "resourcesColConfig",
+                    "columns": "{{data.dataProviders.resourcesDataProvider.newColumns}}",
+                    "scope": "LoginUser",
+                    "scopeName": ""
+                } ]
+            },
+            "outputData": {},
+            "events": {
+                "success": [ {
+                    "name": "resourcesColumnConfig.saved"
+                } ]
+            }
+        },
+        "loadDataForActivitiesSavedColumnConfig": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTableViewModelProperties",
+            "deps": "js/tcViewModelObjectService",
+            "inputData": {
+                "vmNodes": "{{data.eventData.vmos}}",
+                "context": {
+                    "clientScopeURI": "{{ctx.PartMfg.activitiesClientScopeURI}}",
+                    "clientName": "AWClient"
+                }
+            }
+        },
+        "loadDataForResourcesSavedColumnConfig": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTableViewModelProperties",
+            "deps": "js/tcViewModelObjectService",
+            "inputData": {
+                "vmNodes": "{{data.eventData.vmos}}",
+                "context": {
+                    "clientScopeURI": "Pm1Resources",
+                    "clientName": "AWClient"
+                }
+            }
+        },
+        "loadDataForAttachmentsSavedColumnConfig": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTableViewModelProperties",
+            "deps": "js/tcViewModelObjectService",
+            "inputData": {
+                "vmNodes": "{{data.dataProviders.attachmentsDataProvider.viewModelCollection.loadedVMObjects}}",
+                "context": {
+                    "clientScopeURI": "Pm1Attachments",
+                    "clientName": "AWClient"
+                }
+            }
+        }
+    },
+    "functions": {
+        "processOutput": {
+            "functionName": "processOutput",
+            "parameters": [
+                "{{data}}",
+                "{{subPanelContext.searchState}}"
+            ],
+            "deps": "js/awSearchService"
+        },
+        "processOutputA": {
+            "functionName": "processOutput",
+            "parameters": [
+                "{{data}}",
+                "{{subPanelContext.provider.attachmentsState}}"
+            ],
+            "deps": "js/awSearchService"
+        }
+    },
+    "columnProviders": {
+        "resourcesColumnProvider": {
+            "sortCriteria": [],
+            "loadColumnAction": "loadResourcesColumns",
+            "saveColumnAndLoadAction": "saveResourcesColumnConfig",
+            "resetColumnAction": "resetResourcesColumnConfig"
+        },
+        "attachmentsColumnProvider": {
+            "sortCriteria": [],
+            "saveColumnAndLoadAction": "saveAttachmentsColumnConfig",
+            "resetColumnAction": "resetAttachmentsColumnConfig"
+        },
+        "activitiesColumnProvider": {
+            "sortCriteria": [],
+            "saveColumnAndLoadAction": "saveActivitiesColumnConfig",
+            "resetColumnAction": "resetActivitiesColumnConfig"
+        }
+    },
+    "dataProviders": {
+        "resourcesDataProvider": {
+            "action": "loadResourcesData",
+            "editContext": "PART_MFG_TABLE_CONTEXT",
+            "response": "{{data.searchResourcesResults}}",
+            "totalFound": "{{data.totalResourcesFound}}",
+            "selectionModelMode": "single",
+            "inputData": {
+                "selectionData": "{{subPanelContext.resourceTableSelectionData}}"
+            },
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectObjectNavigationCellListActionCommands"
+        },
+        "attachmentsDataProvider": {
+            "action": "loadAttachmentsData",
+            "editContext": "TABLE_CONTEXT",
+            "response": "{{data.searchAttachmentsResults}}",
+            "totalFound": "{{data.totalAttachmentsFound}}",
+            "selectionModelMode": "single",
+            "inputData": {
+                "selectionData": "{{subPanelContext.attachmentTableSelectionData}}"
+            },
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectObjectNavigationCellListActionCommands"
+        },
+        "gridDataProvider": {
+            "initializeAction": "loadActivitiesData",
+            "nextAction": "loadActivitiesData",
+            "previousAction": "loadActivitiesData",
+            "focusAction": "loadActivitiesData",
+            "editContext": "TABLE_CONTEXT",
+            "treeLoadResult": "action.result.treeLoadResult",
+            "selectionModelMode": "multiple",
+            "inputData": {
+                "accessMode": "tree",
+                "selectionData": "{{subPanelContext.activitiesTableSelectionData}}"
+            },
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        },
+        "activitiesPropertyProvider": {
+            "action": "loadActivitiesProperties",
+            "propertyLoadResult": "action.result.propertyLoadResult"
+        }
+    },
+    "grids": {
+        "ResourcesTable": {
+            "dataProvider": "resourcesDataProvider",
+            "columnProvider": "resourcesColumnProvider",
+            "enableArrangeMenu": true,
+            "gridOptions": {
+                "enableGridMenu": true,
+                "enablePinning": true,
+                "useStaticFirstCol": true
+            }
+        },
+        "AttachmentsTable": {
+            "dataProvider": "attachmentsDataProvider",
+            "columnProvider": "attachmentsColumnProvider",
+            "enableArrangeMenu": true,
+            "gridOptions": {
+                "enableGridMenu": true,
+                "enablePinning": true,
+                "useStaticFirstCol": true
+            }
+        },
+        "activitiesTree": {
+            "dataProvider": "gridDataProvider",
+            "propertyProvider": "activitiesPropertyProvider",
+            "columnProvider": "activitiesColumnProvider",
+            "enableArrangeMenu": true,
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": true,
+                "enableSorting": false
+            }
+        }
+    },
+    "data": {
+        "tabDocAndRes": [ {
+                "name": "{{i18n.resourcesTitle}}",
+                "tabkey": "RES"
+            },
+            {
+                "name": "{{i18n.attachmentsTitle}}",
+                "tabkey": "DOC"
+            }
+        ],
+        "tabAct": [ {
+            "name": "{{i18n.activitiesTitle}}",
+            "tabkey": "ACT"
+        } ]
+    },
+    "onEvent": [
+        {
+            "eventId": "awTab.selected",
+            "action": "handleTabSelectionChangeAction"
+        },
+        {
+            "eventId": "columnArrange",
+            "cacheEventData": true,
+            "action": "doArrangeEvent"
+        },
+        {
+            "eventId": "activitiesColumnConfig.saved",
+            "action": "loadDataForActivitiesSavedColumnConfig"
+        },
+        {
+            "eventId": "attachmentsColumnConfig.saved",
+            "action": "loadDataForAttachmentsSavedColumnConfig"
+        },
+        {
+            "eventId": "resourcesColumnConfig.saved",
+            "action": "loadDataForResourcesSavedColumnConfig"
+        }
+    ],
+
+    "i18n": {
+        "attachmentsTitle": [ "partmanufacturingMessages" ],
+        "resourcesTitle": [ "partmanufacturingMessages" ],
+        "activitiesTitle": [ "partmanufacturingMessages" ]
+    },
+    "lifecycleHooks": {
+        "onUpdate": [ {
+            "action": "updateResourcesTable",
+            "observers": [
+                "props.subPanelContext.searchState.criteria.searchString",
+                "props.subPanelContext.searchState.filterString",
+                "props.subPanelContext.searchState.newlyAddedResourcesState"
+            ]
+        },
+        {
+            "action": "updateAttachmentsTable",
+            "observers": [
+                "props.subPanelContext.provider.attachmentsState.criteria.searchString",
+                "props.subPanelContext.provider.attachmentsState.filterString"
+            ]
+        },
+        {
+            "action": "updateResourcesSelectionForPWA",
+            "observers": [
+                "props.subPanelContext.resourceTableSelectionData.selected"
+            ]
+        },
+        {
+            "action": "updateAttachmentsSelectionForPWA",
+            "observers": [
+                "props.subPanelContext.attachmentTableSelectionData.selected"
+            ]
+        },
+        {
+            "action": "updateActivitiesSelectionForPWA",
+            "observers": [
+                "props.subPanelContext.activitiesTableSelectionData.selected"
+            ]
+        } ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ctx": {
+        "PartMfg": {
+            "type": "Object"
+        }
+    }
+}

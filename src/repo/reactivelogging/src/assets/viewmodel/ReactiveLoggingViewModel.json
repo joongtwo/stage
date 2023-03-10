@@ -1,0 +1,310 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+
+    ],
+    "actions": {
+        "startLogging":{
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-DebugMonitor-2019-06-DebugLogging",
+            "method": "startLogging",
+            "inputData":
+            {
+                "logFlags":
+                    {
+                        "Journal": "{{data.listBoxJournalTypes.dbValue}}",
+                        "JournalPerformanceOnly": "{{data.listBoxJournalPerformanceTypes.dbValue}}",
+                        "JournalModule": "{{function:getSelectedJournalModule}}",
+                        "Comments": "{{data.comments.dbValue}}"
+                    }
+            },
+            "outputData":
+            {
+                "prevJournal":"prevDebugLoggingFlags.Journal",
+                "prevJournalModule":"prevDebugLoggingFlags.JournalModule",
+                "prevJournalPerformanceOnly":"prevDebugLoggingFlags.JournalPerformanceOnly"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "awReactiveLogging.loggingStatus"
+                    }
+                ]
+            },
+            "deps": "js/Awp0ReactiveLoggingService"
+        },
+        "stopLogging":{
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-DebugMonitor-2019-06-DebugLogging",
+            "method": "stopLogging",
+            "inputData":
+            {
+
+            },
+            "outputData":
+            {
+                "fmsTicket": "{{function:fmsTicket}}",
+                "zipFolderName":"{{function:folderName}}",
+                "zipFolderLocation":"prevDebugLoggingFlags.reactiveLogs",
+                "machineName":"prevDebugLoggingFlags.machinename",
+                "emailPreference":"prevDebugLoggingFlags.email",
+                "prevJournal":"",
+                "empty":"{{function:emptyString}}"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "awReactiveLogging.loggingStatus"
+                    }
+                ]
+            },
+            "actionMessages":
+            {
+                "success": [
+                    {
+                        "condition": "data.fmsTicket == '' && data.emailPreference =='true'",
+                        "message": "withoutFmsTicketButEmailInfoSuccess"
+                    },
+                    {
+                        "condition": "data.fmsTicket != ''",
+                        "message": "withFmsTicketInfoSuccess"
+                    },
+                    {
+                        "condition": "data.zipFolderName != '' && data.fmsTicket == '' && data.emailPreference =='false'",
+                        "message": "withoutFmsTicketAndEmailInfoSuccess"
+                    } ]
+
+            },
+            "deps": "js/Awp0ReactiveLoggingService"
+        },
+        "loggingStatus":
+        {
+            "actionType": "JSFunction",
+            "method": "loggingStatus",
+            "deps": "js/Awp0ReactiveLoggingService"
+        },
+        "getModuleJournalStatusList":{
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-DebugMonitor-2011-06-DebugLogging",
+            "method": "getModuleJournalStatus",
+            "inputData":
+            {
+
+            },
+            "outputData":
+            {
+                "journalModuleList": "{{function:getModuleName}}",
+                "moreValuesExist": false
+            },
+            "deps": "js/Awp0ReactiveLoggingService"
+        },
+        "downloadLink":
+        {
+            "actionType": "JSFunction",
+            "method": "downloadLink",
+            "deps": "js/Awp0ReactiveLoggingService"
+        },
+        "getReactiveLoggingStatus": {
+            "actionType": "JSFunction",
+            "method": "setLoggingStatus",
+            "deps": "js/Awp0ReactiveLoggingService"
+        }
+    },
+
+    "functions":
+    {
+        "getSelectedJournalModule": {
+            "functionName": "getSelectedJournalModule",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+
+    "dataProviders": {
+        "listProviderLogTypes": {
+            "response": "{{data.listBoxLogTypesValues}}"
+        },
+        "listProviderJournalLogTypes": {
+            "response": "{{data.listBoxJournalTypeValues}}"
+        },
+        "listProviderJournalPerformanceTypes": {
+            "response": "{{data.listBoxJournalPerformanceTypeValues}}"
+        },
+        "journalModuleValueProvider": {
+            "initializeAction": "getModuleJournalStatusList",
+            "response": "{{data.journalModuleList}}",
+            "moreValuesExist": "{{data.moreValuesExist}}"
+        }
+    },
+    "data": {
+        "logging": {
+            "displayName": "{{i18n.logging}}",
+            "type": "STRING",
+            "uiValue": "{{i18n.logging}}"
+        },
+        "listBoxLogTypes": {
+            "displayName": "{{i18n.type}}",
+            "type": "STRING",
+            "isRequired": true,
+            "dataProvider": "listProviderLogTypes",
+            "uiValue": "{{i18n.performance}}"
+        },
+        "listBoxJournalTypes": {
+            "displayName": "{{i18n.journal}}",
+            "type": "STRING",
+            "isRequired": true,
+            "isEditable": true,
+            "dataProvider": "listProviderJournalLogTypes",
+            "uiValue": "{{i18n.full}}",
+            "dbValue": "FULL"
+        },
+        "listBoxJournalPerformanceTypes": {
+            "displayName": "{{i18n.journalPerformanceOnly}}",
+            "type": "STRING",
+            "isRequired": true,
+            "dataProvider": "listProviderJournalPerformanceTypes",
+            "uiValue": "{{i18n.pjl}}",
+            "dbValue": "1"
+        },
+        "listBoxJournalPerformanceTypeValues": [ {
+            "propDisplayValue": "{{i18n.jnl}}",
+            "propInternalValue": "0"
+        },
+        {
+            "propDisplayValue": "{{i18n.pjl}}",
+            "propInternalValue": "1"
+        }
+        ],
+        "listBoxJournalTypeValues": [ {
+            "propDisplayValue": "{{i18n.full}}",
+            "propInternalValue": "FULL"
+        },
+        {
+            "propDisplayValue": "{{i18n.summary}}",
+            "propInternalValue": "SUMMARY"
+        },
+
+        {
+            "propDisplayValue": "{{i18n.module}}",
+            "propInternalValue": "MODULE"
+        }
+        ],
+        "comments": {
+            "displayName": "{{i18n.comments}}",
+            "type": "STRING",
+            "dbValue":""
+        },
+        "listBoxJournalModules": {
+            "displayName": "{{i18n.journalModules}}",
+            "type": "STRINGARRAY",
+            "isArray": true,
+            "dataProvider": "journalModuleValueProvider"
+        },
+        "journalModuleList": {
+            "type": "STRING",
+            "dbValue": "FULL",
+            "dispValue": "{{i18n.full}}"
+        }
+    },
+    "onEvent":
+    [
+        {
+           "eventId": "awReactiveLogging.loggingStatus",
+           "action": "loggingStatus"
+        }
+    ],
+
+    "messages":
+    {
+        "withFmsTicketInfoSuccess":
+        {
+            "messageType": "INFO",
+            "messageText": "{{i18n.withFmsTicket}}",
+            "messageTextParams": [
+                "{{data.empty}}"
+            ],
+            "navigationOptions": [
+                {
+                    "option": "Cancel",
+                    "text": "{{i18n.cancel}}"
+                },
+                {
+                    "option": "Download",
+                    "text": "{{i18n.download}}",
+                    "action": "downloadLink"
+                }
+            ]
+        },
+        "withoutFmsTicketButEmailInfoSuccess":
+        {
+            "messageType": "INFO",
+            "messageText": "{{i18n.withoutFmsTicketButEmail}}",
+            "messageTextParams": [
+                "{{data.zipFolderLocation}}"
+               ]
+        },
+        "withoutFmsTicketAndEmailInfoSuccess":
+        {
+            "messageType": "INFO",
+            "messageText": "{{i18n.withoutFmsTicketAndEmail}}",
+            "messageTextParams": [
+                 "{{data.zipFolderLocation}}",
+                 "{{data.machineName}}"
+                ]
+        }
+    },
+    "conditions":
+    {
+        "isValidForStartButton":
+        {
+           "expression": "data.listBoxJournalTypes.dbValue!='' && data.listBoxJournalPerformanceTypes.dbValue!='' && ctx.loggingInProgress != true"
+        },
+        "isValidForStopButton":
+        {
+           "expression": "ctx.loggingInProgress === true"
+        },
+        "isValidForFields":
+        {
+           "expression": "ctx.loggingInProgress != true"
+        },
+        "hideAppearModulesFields":
+        {
+           "expression": "ctx.loggingInProgress != true && data.listBoxJournalTypes.dbValue!='FULL'"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getReactiveLoggingStatus"
+    },
+    "i18n": {
+        "logging": [ "ReactiveLoggingMessages" ],
+        "type": [ "ReactiveLoggingMessages" ],
+        "comments": [ "ReactiveLoggingMessages" ],
+        "options": [ "ReactiveLoggingMessages" ],
+        "performance": [ "ReactiveLoggingMessages" ],
+        "start": [ "ReactiveLoggingMessages" ],
+        "stop": [ "ReactiveLoggingMessages" ],
+        "journal": [ "ReactiveLoggingMessages" ],
+        "journalPerformanceOnly": [ "ReactiveLoggingMessages" ],
+        "journalModules": [ "ReactiveLoggingMessages" ],
+        "full": [ "ReactiveLoggingMessages" ],
+        "summary": [ "ReactiveLoggingMessages" ],
+        "module": [ "ReactiveLoggingMessages" ],
+        "jnl": [ "ReactiveLoggingMessages" ],
+        "pjl": [ "ReactiveLoggingMessages" ],
+        "withFmsTicket": [ "ReactiveLoggingMessages" ],
+        "withoutFmsTicketButEmail": [ "ReactiveLoggingMessages" ],
+        "withoutFmsTicketAndEmail": [ "ReactiveLoggingMessages" ],
+        "cancel": [ "ReactiveLoggingMessages" ],
+        "download": [ "ReactiveLoggingMessages" ]
+    },
+    "ctx": {
+        "loggingInProgress": {
+            "type": "boolean"
+        }
+    }
+}

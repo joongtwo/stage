@@ -1,0 +1,99 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "loadTreeTableData": {
+            "objectUid": "{{ctx.epPageContext.rootPlant.uid}}",
+            "preferenceName": "EP_BoeTreeTableColumnConfiguration",
+            "isTopNode": true,
+            "relatedObjectMapKey": "childAssembly",
+            "additionalLoadParamsForRootLoadInputData": [
+                {
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandWorkAreaProcessPlanningPage"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "TOP_WITH_CHILDREN"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "rootsProperty",
+                    "attributeValue": "RootObject"
+                }
+            ],
+            "additionalLoadParamsForChildLoadInputData": [
+                {
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandWorkAreaProcessPlanningPage"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "CHILDREN"
+                }
+            ],
+            "isLeafProperty": "hasChildren",
+            "treeNavigationColumnIndex": 0,
+            "initializeAction": "initializeLoadDataForTree",
+            "additionalPolicyObjects": {
+                "name": "EpAssignWorkareaPopup",
+                "types": [
+                    {
+                        "name": "Mfg0BvrWorkarea",
+                        "properties": [
+                            {
+                                "name": "bl_parent"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "sharedSelectionData": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "actions": {
+        "epAssignWorkarea": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "doAssignWorkarea"
+                },
+                {
+                    "action": "closePopupWindow"
+                }
+            ]
+        },
+        "doAssignWorkarea": {
+            "actionType": "JSFunction",
+            "method": "removeOrAddObjects",
+            "inputData": {
+                "actionType": "Add",
+                "inputObj": "{{subPanelContext.inputObject}}",
+                "selectedObjects": "{{data.sharedSelectionData.selected}}",
+                "entryName": "AssignedTools",
+                "relationType": "MEWorkArea"
+            },
+            "deps": "js/epTableService"
+        },
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "deps": "js/declpopupService"
+        }
+    },
+    "conditions": {
+        "hasSelection": {
+            "expression": "data.sharedSelectionData.selected.length > 0"
+        }
+    },
+    "i18n": {
+        "add": [ "EPMessages" ],
+        "cancel": [ "EPMessages" ]
+    }
+}

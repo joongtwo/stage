@@ -1,0 +1,1276 @@
+{
+    "schemaVersion": "1.0.0",
+    "lifecycleHooks": {
+        "onMount": "initialize"
+    },
+    "actions": {
+        "initialize": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getDefaultResourceTypes",
+                    "condition": "conditions.isImportVendorData"
+                }
+            ]
+        },
+        "getDefaultResourceTypes": {
+            "actionType": "JSFunction",
+            "method": "getCreateDefaultResourceTypes",
+            "outputData": {
+                "defaultResourceTypes": ""
+            },
+            "deps": "js/MrmUtils"
+        },
+        "itemTypeSelectionChange": {
+            "actionType": "JSFunction",
+            "method": "getSelectedItemType",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "selectedItemType": ""
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "startUploadAndUnzipFile": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setUploadAndUnzipFileInProgressAsTrue"
+                },
+                {
+                    "action": "mrlStartProgressBar"
+                },
+                {
+                    "action": "getTransientFileTicketsForUpload"
+                }
+            ]
+        },
+        "setUploadAndUnzipFileInProgressAsTrue": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "MrlImportVendor.setUploadAndUnzipFileInProgressInfo",
+                        "eventData": {
+                            "uploadAndUnZipFileInProgress": true
+                        }
+                    }
+                ]
+            }
+        },
+        "setUploadAndUnzipFileInProgressInfo": {
+            "actionType": "JSFunction",
+            "method": "setUploadAndUnzipFileInProgressInfo",
+            "inputData": {
+                "data": "{{data}}",
+                "isUploadAndUnZipFileInProgress": "{{data.isUploadAndUnZipFileInProgress}}",
+                "uploadAndUnZipFileInProgress": "{{data.eventMap['MrlImportVendor.setUploadAndUnzipFileInProgressInfo'].uploadAndUnZipFileInProgress}}"
+            },
+            "outputData": {
+                "isUploadAndUnZipFileInProgress": "isUploadAndUnZipFileInProgress",
+                "mrlProgressInfoText": "mrlProgressInfoText"
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "mrlStartProgressBar": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "progress.start"
+                    }
+                ]
+            }
+        },
+        "updateFileSelection": {
+            "actionType": "JSFunction",
+            "method": "updateFileSelection",
+            "inputData": {
+                "fileData": "{{parameters}}"
+            },
+            "outputData": {
+                "vendorFileData": ""
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "getTransientFileTicketsForUpload": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-01-FileManagement",
+            "method": "getTransientFileTicketsForUpload",
+            "inputData": {
+                "transientFileInfos": [
+                    {
+                        "fileName": "{{data.vendorFileData.vendorZipFileName}}",
+                        "isBinary": true,
+                        "deleteFlag": true
+                    }
+                ]
+            },
+            "outputData": {
+                "vendorPackageFileTicket": "transientFileTicketInfos[0].ticket"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "updateVendorFormData",
+                        "condition": "data.vendorPackageFileTicket !== ''"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "progress.end"
+                    },
+                    {
+                        "name": "MrlImportVendor.setUploadAndUnzipFileInProgressInfo",
+                        "eventData": {
+                            "uploadAndUnZipFileInProgress": false
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "mrlImportVendorFailed"
+                    }
+                ]
+            }
+        },
+        "updateVendorFormData": {
+            "actionType": "JSFunction",
+            "method": "updateVendorFormData",
+            "inputData": {
+                "formData": "{{data.vendorFileData.vendorZipFileFormData}}",
+                "key": "fmsTicket",
+                "value": "{{data.vendorPackageFileTicket}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "uploadVendorZipFile"
+                    }
+                ]
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "uploadVendorZipFile": {
+            "actionType": "RESTService",
+            "serviceName": "",
+            "method": "POST",
+            "inputData": {
+                "request": {
+                    "method": "POST",
+                    "url": "{{Constants.fmsUrl}}",
+                    "headers": {
+                        "Content-type": "undefined"
+                    },
+                    "data": "{{data.vendorFileData.vendorZipFileFormData}}"
+                }
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "unzipVendorZipFile"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "progress.end"
+                    },
+                    {
+                        "name": "MrlImportVendor.setUploadAndUnzipFileInProgressInfo",
+                        "eventData": {
+                            "uploadAndUnZipFileInProgress": false
+                        }
+                    }
+                ]
+            }
+        },
+        "unzipVendorZipFile": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Manufacturing-2015-03-ResourceManagement",
+            "method": "unzipGtcPackage",
+            "inputData": {
+                "transientFmsZipFileTicket": "{{data.vendorPackageFileTicket}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "mrlVendorsTableGrid.plTable.reload"
+                    },
+                    {
+                        "name": "progress.end"
+                    },
+                    {
+                        "name": "MrlImportVendor.setUploadAndUnzipFileInProgressInfo",
+                        "eventData": {
+                            "uploadAndUnZipFileInProgress": false
+                        }
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "progress.end"
+                    },
+                    {
+                        "name": "MrlImportVendor.setUploadAndUnzipFileInProgressInfo",
+                        "eventData": {
+                            "uploadAndUnZipFileInProgress": false
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "mrlImportVendorFailed"
+                    }
+                ]
+            }
+        },
+        "startImportVendorHierarchy": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "resetImportVendorProductsFlags"
+                },
+                {
+                    "action": "setImportVendorHierarchyInProgressAsTrue"
+                },
+                {
+                    "action": "mrlStartProgressBar"
+                },
+                {
+                    "action": "importVendorHierarchy"
+                }
+            ]
+        },
+        "startImportVendorProducts": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "resetImportVendorProductsFlags"
+                },
+                {
+                    "action": "setImportVendorProductsInProgressAsTrue"
+                },
+                {
+                    "action": "mrlStartProgressBar"
+                },
+                {
+                    "action": "importVendorProducts"
+                }
+            ]
+        },
+        "resetImportVendorHierarchyFlags": {
+            "actionType": "JSFunction",
+            "method": "resetImportVendorHierarchyFlags",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "isImportVendorHierarchyCompleted": "isImportVendorHierarchyCompleted"
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "resetImportVendorProductsFlags": {
+            "actionType": "JSFunction",
+            "method": "resetImportVendorProductsFlags",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "isImportVendorProductsCompleted": "isImportVendorProductsCompleted",
+                "isMapVendorProductsCompleted": "isMapVendorProductsCompleted",
+                "isImport3DModelsCompleted": "isImport3DModelsCompleted"
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "setImportVendorHierarchyInProgressAsTrue": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "MrlImportVendor.setImportVendorHierarchyInProgressInfo",
+                        "eventData": {
+                            "importVendorHierarchyInProgress": true
+                        }
+                    }
+                ]
+            }
+        },
+        "setImportVendorProductsInProgressAsTrue": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "MrlImportVendor.setImportVendorProductsInProgressInfo",
+                        "eventData": {
+                            "importVendorProductsInProgress": true
+                        }
+                    }
+                ]
+            }
+        },
+        "setImportVendorHierarchyInProgressInfo": {
+            "actionType": "JSFunction",
+            "method": "setImportVendorHierarchyInProgressInfo",
+            "inputData": {
+                "data": "{{data}}",
+                "isImportVendorHierarchyInProgress": "{{data.isImportVendorHierarchyInProgress}}",
+                "importVendorHierarchyInProgress": "{{data.eventMap['MrlImportVendor.setImportVendorHierarchyInProgressInfo'].importVendorHierarchyInProgress}}",
+                "selectedVendorName": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorName.uiValue}}"
+            },
+            "outputData": {
+                "isImportVendorHierarchyInProgress": "isImportVendorHierarchyInProgress",
+                "mrlProgressInfoText": "mrlProgressInfoText",
+                "mrlImportVendorSummary": "mrlImportVendorSummary"
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "setImportVendorProductsInProgressInfo": {
+            "actionType": "JSFunction",
+            "method": "setImportVendorProductsInProgressInfo",
+            "inputData": {
+                "data": "{{data}}",
+                "isImportVendorProductsInProgress": "{{data.isImportVendorProductsInProgress}}",
+                "importVendorProductsInProgress": "{{data.eventMap['MrlImportVendor.setImportVendorProductsInProgressInfo'].importVendorProductsInProgress}}",
+                "selectedVendorName": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorName.uiValue}}"
+            },
+            "outputData": {
+                "isImportVendorProductsInProgress": "isImportVendorProductsInProgress",
+                "mrlProgressInfoText": "mrlProgressInfoText",
+                "mrlImportVendorSummary": "mrlImportVendorSummary"
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "setMapVendorProductsInProgressInfo": {
+            "actionType": "JSFunction",
+            "method": "setMapVendorProductsInProgressInfo",
+            "inputData": {
+                "data": "{{data}}",
+                "isMapVendorProductsInProgress": "{{data.isMapVendorProductsInProgress}}",
+                "mapVendorProductsInProgress": "{{data.eventMap['MrlImportVendor.setMapVendorProductsInProgressInfo'].mapVendorProductsInProgress}}",
+                "selectedVendorName": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorName.uiValue}}"
+            },
+            "outputData": {
+                "isMapVendorProductsInProgress": "isMapVendorProductsInProgress",
+                "mrlProgressInfoText": "mrlProgressInfoText"
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "setImport3DModelsInProgressInfo": {
+            "actionType": "JSFunction",
+            "method": "setImport3DModelsInProgressInfo",
+            "inputData": {
+                "data": "{{data}}",
+                "isImport3DModelsInProgress": "{{data.isImport3DModelsInProgress}}",
+                "import3DModelsInProgress": "{{data.eventMap['MrlImportVendor.setImport3DModelsInProgressInfo'].import3DModelsInProgress}}",
+                "selectedVendorName": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorName.uiValue}}"
+            },
+            "outputData": {
+                "isImport3DModelsInProgress": "isImport3DModelsInProgress",
+                "mrlProgressInfoText": "mrlProgressInfoText"
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "importVendorProducts": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Manufacturing-2022-12-ResourceManagement",
+            "method": "importVendorData",
+            "inputData": {
+                "importVendorDataIn":  {
+                    "vendorPackageId":"{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorPackageId.uiValue}}",
+                    "vendorPackageDirectory": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorCatalogRootDir.uiValue}}",
+                    "doCheckVendorProducts":false,
+                    "doImportVendorProducts":true,
+                    "doMapVendorProducts":false,
+                    "doImport3DModels":false,
+                    "importVendorProductsInput":{
+                        "classId": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorCatalogRootClassId.uiValue}}",
+                        "productCount": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorProductCount.value}}",
+                        "importOption": 2
+                    },
+                    "mapVendorProductsInput": {
+                        "targetItemTypeName":"{{data.selectedItemType}}"
+                    }
+                }
+            },
+            "outputData": {
+                "importVendorProductsModelObjects": "ServiceData.modelObjects",
+                "importVendorProductsInfo":"importVendorProductsInfo",
+                "vendorProductsSuccessfullyImported":"importVendorProductsInfo.successCount",
+                "alreadyImportedProductCount":"importedProductCount",
+                "alreadyMappedProductCount":"mappedProductCount",
+                "logFileTicketOfImportVendorProducts": "importVendorProductsInfo.logFileInfo.ticket"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "MrlImportVendor.importVendorProductsCompleted",
+                        "eventData": {
+                            "isImportVendorProductsSucceed": true
+                        }
+                    },
+                    {
+                        "name": "MrlImportVendor.setImportVendorProductsInProgressInfo",
+                        "eventData": {
+                            "importVendorProductsInProgress": false
+                        }
+                    },
+                    {
+                        "name": "MrlImportVendor.setMapVendorProductsInProgressInfo",
+                        "eventData": {
+                            "mapVendorProductsInProgress": true
+                        },
+                        "condition": "conditions.continueForMappingOfImportedProducts"
+                    },
+                    {
+                        "name": "MrlImportVendor.setImport3DModelsInProgressInfo",
+                        "eventData": {
+                            "import3DModelsInProgress": true
+                        },
+                        "condition": "!conditions.continueForMappingOfImportedProducts && conditions.continueForImport3DModelForImportedProducts"
+                    },
+                    {
+                        "name": "progress.end",
+                        "condition": "!(conditions.continueForMappingOfImportedProducts || conditions.continueForImport3DModelForImportedProducts)"
+                    },
+                    {
+                        "name": "MrlImportVendor.mapVendorProducts",
+                        "condition": "conditions.continueForMappingOfImportedProducts"
+                    },
+                    {
+                        "name": "MrlImportVendor.import3DModelsForVendorProducts",
+                        "condition": "!conditions.continueForMappingOfImportedProducts && conditions.continueForImport3DModelForImportedProducts"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "MrlImportVendor.importVendorProductsCompleted",
+                        "eventData": {
+                            "isImportVendorProductsSucceed": false
+                        }
+                    },
+                    {
+                        "name": "MrlImportVendor.setImportVendorProductsInProgressInfo",
+                        "eventData": {
+                            "importVendorProductsInProgress": false
+                        }
+                    },
+                    {
+                        "name": "progress.end"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "mrlImportVendorFailed"
+                    }
+                ]
+            }
+        },
+        "mapVendorProducts": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Manufacturing-2022-12-ResourceManagement",
+            "method": "importVendorData",
+            "inputData": {
+                "importVendorDataIn":  {
+                    "vendorPackageId":"{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorPackageId.uiValue}}",
+                    "vendorPackageDirectory": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorCatalogRootDir.uiValue}}",
+                    "doCheckVendorProducts":false,
+                    "doImportVendorProducts":false,
+                    "doMapVendorProducts":true,
+                    "doImport3DModels":false,
+                    "importVendorProductsInput":{
+                        "classId": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorCatalogRootClassId.uiValue}}",
+                        "productCount": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorProductCount.value}}",
+                        "importOption": 2
+                    },
+                    "mapVendorProductsInput": {
+                        "targetItemTypeName":"{{data.selectedItemType}}"
+                    }
+                }
+            },
+            "outputData": {
+                "mapVendorProductsModelObjects": "ServiceData.modelObjects",
+                "mapVendorProductsInfo":"mapVendorProductsInfo",
+                "vendorProductsMappedSuccessfully":"mapVendorProductsInfo.successCount",
+                "logFileTicketOfMapVendorProducts": "mapVendorProductsInfo.logFileInfo.ticket"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "MrlImportVendor.mapVendorProductsCompleted",
+                        "eventData": {
+                            "isMapVendorProductsSucceed": true
+                        }
+                    },
+                    {
+                        "name": "MrlImportVendor.setMapVendorProductsInProgressInfo",
+                        "eventData": {
+                            "mapVendorProductsInProgress": false
+                        }
+                    },
+                    {
+                        "name": "MrlImportVendor.setImport3DModelsInProgressInfo",
+                        "eventData": {
+                            "import3DModelsInProgress": true
+                        },
+                        "condition": "conditions.continueForImport3DModelForImportedProducts"
+                    },
+                    {
+                        "name": "progress.end",
+                        "condition": "!conditions.continueForImport3DModelForImportedProducts"
+                    },
+                    {
+                        "name": "MrlImportVendor.import3DModelsForVendorProducts",
+                        "condition": "conditions.continueForImport3DModelForImportedProducts"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "MrlImportVendor.mapVendorProductsCompleted",
+                        "eventData": {
+                            "isMapVendorProductsSucceed": false
+                        }
+                    },
+                    {
+                        "name": "MrlImportVendor.setMapVendorProductsInProgressInfo",
+                        "eventData": {
+                            "mapVendorProductsInProgress": false
+                        }
+                    },
+                    {
+                        "name": "progress.end"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "mrlImportVendorFailed"
+                    }
+                ]
+            }
+        },
+        "import3DModelsForVendorProducts": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Manufacturing-2022-12-ResourceManagement",
+            "method": "importVendorData",
+            "inputData": {
+                "importVendorDataIn":  {
+                    "vendorPackageId":"{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorPackageId.uiValue}}",
+                    "vendorPackageDirectory": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorCatalogRootDir.uiValue}}",
+                    "doCheckVendorProducts":false,
+                    "doImportVendorProducts":false,
+                    "doMapVendorProducts":false,
+                    "doImport3DModels":true,
+                    "importVendorProductsInput":{
+                        "classId": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorCatalogRootClassId.uiValue}}",
+                        "productCount": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorProductCount.value}}",
+                        "importOption": 2
+                    },
+                    "mapVendorProductsInput": {
+                        "targetItemTypeName":"{{data.selectedItemType}}"
+                    }
+                }
+            },
+            "outputData": {
+                "import3DModelsInfo":"import3DModelsInfo",
+                "imported3DModelsSuccessfully":"import3DModelsInfo.successCount",
+                "logFileTicketOfImport3DModels": "import3DModelsInfo.logFileInfo.ticket"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "MrlImportVendor.import3DModelsCompleted",
+                        "eventData": {
+                            "isImport3DModelsSucceed": true
+                        }
+                    },
+                    {
+                        "name": "MrlImportVendor.setImport3DModelsInProgressInfo",
+                        "eventData": {
+                            "import3DModelsInProgress": false
+                        }
+                    },
+                    {
+                        "name": "progress.end"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "MrlImportVendor.import3DModelsCompleted",
+                        "eventData": {
+                            "isImport3DModelsSucceed": false
+                        }
+                    },
+                    {
+                        "name": "MrlImportVendor.setImport3DModelsInProgressInfo",
+                        "eventData": {
+                            "import3DModelsInProgress": false
+                        }
+                    },
+                    {
+                        "name": "progress.end"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "mrlImportVendorFailed"
+                    }
+                ]
+            }
+        },
+        "importVendorHierarchy": {
+            "actionType": "TcSoaService",
+            "serviceName": "Manufacturing-2013-12-ResourceManagement",
+            "method": "importVendorCatalogHierarchy",
+            "inputData": {
+                "vendorCatalogRootDir": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.vendorCatalogRootDir.uiValue}}",
+                "importOptions": 0
+            },
+            "outputData": {
+                "logFileTicketOfImportVendorHierarchy": "logFileTicket.ticket"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "MrlImportVendor.importVendorHierarchyCompleted",
+                        "eventData": {
+                            "isImportVendorHierarchySucceed": true
+                        }
+                    },
+                    {
+                        "name": "MrlImportVendor.setImportVendorHierarchyInProgressInfo",
+                        "eventData": {
+                            "importVendorHierarchyInProgress": false
+                        }
+                    },
+                    {
+                        "name": "progress.end"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "MrlImportVendor.importVendorHierarchyCompleted",
+                        "eventData": {
+                            "isImportVendorHierarchySucceed": false
+                        }
+                    },
+                    {
+                        "name": "MrlImportVendor.setImportVendorHierarchyInProgressInfo",
+                        "eventData": {
+                            "importVendorHierarchyInProgress": false
+                        }
+                    },
+                    {
+                        "name": "progress.end"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "mrlImportVendorFailed"
+                    }
+                ]
+            }
+        },
+        "importVendorHierarchyCompleted": {
+            "actionType": "JSFunction",
+            "method": "setImportVendorHierarchyCompletedInfo",
+            "inputData": {
+                "data": "{{data}}",
+                "isImportVendorHierarchyCompleted": "{{data.isImportVendorHierarchyCompleted}}",
+                "isImportVendorHierarchySucceed": "{{data.eventMap['MrlImportVendor.importVendorHierarchyCompleted'].isImportVendorHierarchySucceed}}",
+                "selectedVendor": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0]}}"
+            },
+            "outputData": {
+                "isImportVendorHierarchyCompleted": "isImportVendorHierarchyCompleted",
+                "mrlImportVendorFeedbackText": "mrlImportVendorFeedbackText",
+                "vendorName": "vendorName"
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "importVendorProductsCompleted": {
+            "actionType": "JSFunction",
+            "method": "setImportVendorProductsCompletedInfo",
+            "inputData": {
+                "data": "{{data}}",
+                "isImportVendorProductsCompleted": "{{data.isImportVendorProductsCompleted}}",
+                "isImportVendorProductsSucceed": "{{data.eventMap['MrlImportVendor.importVendorProductsCompleted'].isImportVendorProductsSucceed}}",
+                "selectedVendor": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0]}}"
+            },
+            "outputData": {
+                "isImportVendorProductsCompleted": "isImportVendorProductsCompleted",
+                "mrlImportVendorFeedbackText": "mrlImportVendorFeedbackText",
+                "vendorId": "vendorId",
+                "vendorName": "vendorName",
+                "numberOfProductsInVendor": "numberOfProductsInVendor",
+                "numberOfProductsImported": "numberOfProductsImported"
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "mapVendorProductsCompleted": {
+            "actionType": "JSFunction",
+            "method": "setMapVendorProductsCompletedInfo",
+            "inputData": {
+                "data": "{{data}}",
+                "isMapVendorProductsCompleted": "{{data.isMapVendorProductsCompleted}}",
+                "isMapVendorProductsSucceed": "{{data.eventMap['MrlImportVendor.mapVendorProductsCompleted'].isMapVendorProductsSucceed}}"
+            },
+            "outputData": {
+                "isMapVendorProductsCompleted": "isMapVendorProductsCompleted",
+                "numberOfMappedProducts":"numberOfMappedProducts"
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "import3DModelsCompleted": {
+            "actionType": "JSFunction",
+            "method": "setImport3DModelsCompletedInfo",
+            "inputData": {
+                "data": "{{data}}",
+                "isImport3DModelsCompleted": "{{data.isImport3DModelsCompleted}}",
+                "isImport3DModelsSucceed": "{{data.eventMap['MrlImportVendor.import3DModelsCompleted'].isImport3DModelsSucceed}}"
+            },
+            "outputData": {
+                "isImport3DModelsCompleted": "isImport3DModelsCompleted",
+                "numberOfProductsImported3DModels":"numberOfProductsImported3DModels"
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "loadVendorsFromServer": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Manufacturing-2016-09-ResourceManagement",
+            "method": "getVendorCatalogInfo3",
+            "inputData": {
+                "catalogTypeFilter": "{{ctx.panelContext.catalogTypeFilter}}"
+            },
+            "outputData": {
+                "catalogInfo": "{{function:getVendors}}",
+                "vendorCatalogInfoErrors": "ServiceData.partialErrors"
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "mrlImportVendorFailed",
+                        "condition": "!(data.vendorCatalogInfoErrors[0].errorValues[0].code === 300301 || data.vendorCatalogInfoErrors[0].errorValues[0].code === 300303)"
+                    }
+                ]
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "showDisclaimer": {
+            "actionType": "JSFunction",
+            "method": "showDisclaimer",
+            "inputData": {
+                "disclaimerOfselectedVendor": "{{data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.disclaimerText.uiValue}}"
+            },
+            "deps": "js/mrlImportVendorService"
+        },
+        "openImportVendorHierarchyLogFile": {
+            "actionType": "JSFunction",
+            "method": "openFile",
+            "inputData": {
+                "data": "{{data.logFileTicketOfImportVendorHierarchy}}"
+            },
+            "deps": "js/fmsUtils"
+        },
+        "openImportVendorProductsLogFile": {
+            "actionType": "JSFunction",
+            "method": "openFile",
+            "inputData": {
+                "data": "{{data.logFileTicketOfImportVendorProducts}}"
+            },
+            "deps": "js/fmsUtils"
+        },
+        "openMapVendorProductsLogFile": {
+            "actionType": "JSFunction",
+            "method": "openFile",
+            "inputData": {
+                "data": "{{data.logFileTicketOfMapVendorProducts}}"
+            },
+            "deps": "js/fmsUtils"
+        },
+        "openImport3DModelsLogFile": {
+            "actionType": "JSFunction",
+            "method": "openFile",
+            "inputData": {
+                "data": "{{data.logFileTicketOfImport3DModels}}"
+            },
+            "deps": "js/fmsUtils"
+        },
+        "executeImportVendorProductsSavedSearch": {
+            "actionType": "JSFunction",
+            "method": "mrlExecuteImportVendorFullTextSavedSearch",
+            "inputData": {
+                "importVendorDataModelObjects": "{{data.importVendorProductsModelObjects}}",
+                "importVendorDataInfo":"{{data.importVendorProductsInfo}}"
+            },
+            "deps": "js/mrlSaveSearchService"
+        },
+        "executeMappedVendorProductsSavedSearch": {
+            "actionType": "JSFunction",
+            "method": "mrlExecuteImportVendorFullTextSavedSearch",
+            "inputData": {
+                "importVendorDataModelObjects": "{{data.mapVendorProductsModelObjects}}",
+                "importVendorDataInfo":"{{data.mapVendorProductsInfo}}"
+            },
+            "deps": "js/mrlSaveSearchService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "updateVendorFormData",
+            "action": "updateVendorFormData"
+        },
+        {
+            "eventId": "uploadVendorZipFile",
+            "action": "uploadVendorZipFile"
+        },
+        {
+            "eventId": "unzipVendorZipFile",
+            "action": "unzipVendorZipFile"
+        },
+        {
+            "eventId": "mrlStopProgressBar",
+            "action": "mrlStopProgressBar"
+        },
+        {
+            "eventId": "MrlImportVendor.importVendorHierarchyCompleted",
+            "cacheEventData": true,
+            "action": "importVendorHierarchyCompleted"
+        },
+        {
+            "eventId": "MrlImportVendor.importVendorProductsCompleted",
+            "cacheEventData": true,
+            "action": "importVendorProductsCompleted"
+        },
+        {
+            "eventId": "MrlImportVendor.setUploadAndUnzipFileInProgressInfo",
+            "cacheEventData": true,
+            "action": "setUploadAndUnzipFileInProgressInfo"
+        },
+        {
+            "eventId": "MrlImportVendor.setImportVendorHierarchyInProgressInfo",
+            "cacheEventData": true,
+            "action": "setImportVendorHierarchyInProgressInfo"
+        },
+        {
+            "eventId": "MrlImportVendor.setImportVendorProductsInProgressInfo",
+            "cacheEventData": true,
+            "action": "setImportVendorProductsInProgressInfo"
+        },
+        {
+            "eventId": "awTypeSelector.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "itemTypeSelectionChange"
+        },
+        {
+            "eventId": "MrlImportVendor.mapVendorProducts",
+            "action": "mapVendorProducts"
+        },
+        {
+            "eventId": "MrlImportVendor.import3DModelsForVendorProducts",
+            "action": "import3DModelsForVendorProducts"
+        },
+        {
+            "eventId": "MrlImportVendor.setMapVendorProductsInProgressInfo",
+            "cacheEventData": true,
+            "action": "setMapVendorProductsInProgressInfo"
+        },
+        {
+            "eventId": "MrlImportVendor.setImport3DModelsInProgressInfo",
+            "cacheEventData": true,
+            "action": "setImport3DModelsInProgressInfo"
+        },
+        {
+            "eventId": "MrlImportVendor.mapVendorProductsCompleted",
+            "cacheEventData": true,
+            "action": "mapVendorProductsCompleted"
+        },
+        {
+            "eventId": "MrlImportVendor.import3DModelsCompleted",
+            "cacheEventData": true,
+            "action": "import3DModelsCompleted"
+        }
+    ],
+    "conditions": {
+        "validVendorZipFile": {
+            "expression": "data.vendorFileData.vendorValidZipFile == true"
+        },
+        "isImportVendorHierarchy": {
+            "expression": "ctx.panelContext.mrlImportVendor === 'mrlImportVendorHierarchy'"
+        },
+        "isImportVendorData": {
+            "expression": "ctx.panelContext.mrlImportVendor === 'mrlImportVendorData'"
+        },
+        "isOneVendorSelected": {
+            "expression": "data.dataProviders.mrlVendorsDataProvider.selectedObjects.length === 1"
+        },
+        "noVendorsFound": {
+            "expression": "data.totalFound === 0"
+        },
+        "hasSelectedVendorDisclaimer": {
+            "expression": "conditions.isOneVendorSelected && data.dataProviders.mrlVendorsDataProvider.selectedObjects[0].props.disclaimerText.uiValue !== ''"
+        },
+        "isImportVendorHierarchyInProgress": {
+            "expression": "data.isImportVendorHierarchyInProgress.dbValue === true"
+        },
+        "isImportVendorProductsInProgress": {
+            "expression": "data.isImportVendorProductsInProgress.dbValue === true"
+        },
+        "isMapVendorProductsInProgress": {
+            "expression": "data.isMapVendorProductsInProgress.dbValue === true"
+        },
+        "isImport3DModelsInProgress": {
+            "expression": "data.isImport3DModelsInProgress.dbValue === true"
+        },
+        "showImportVendorHierarchySummanry": {
+            "expression": "data.isImportVendorHierarchyCompleted.dbValue === true && !conditions.isImportVendorHierarchyInProgress"
+        },
+        "showImportVendorProductsSummanry": {
+            "expression": "data.isImportVendorProductsCompleted.dbValue === true && !conditions.isImportVendorProductsInProgress"
+        },
+        "showMapVendorProductsSummanry": {
+            "expression": "data.isMapVendorProductsCompleted.dbValue === true && !conditions.isMapVendorProductsInProgress"
+        },
+        "showImport3DModelsSummanry": {
+            "expression": "data.isImport3DModelsCompleted.dbValue === true && !conditions.isImport3DModelsInProgress"
+        },
+        "isUploadAndUnZipFileInProgress": {
+            "expression": "data.isUploadAndUnZipFileInProgress.dbValue === true"
+        },
+        "mrlShowProgessInfo": {
+            "expression": "conditions.isUploadAndUnZipFileInProgress || conditions.isImportVendorHierarchyInProgress || conditions.isImportVendorProductsInProgress || conditions.isMapVendorProductsInProgress || conditions.isImport3DModelsInProgress"
+        },
+        "isImportVendorHierarchyLogFileCreated": {
+            "expression": "data.logFileTicketOfImportVendorHierarchy !== ''"
+        },
+        "isImportVendorProductsLogFileCreated": {
+            "expression": "data.logFileTicketOfImportVendorProducts !== ''"
+        },
+        "isMapVendorProductsLogFileCreated": {
+            "expression": "data.logFileTicketOfMapVendorProducts !== ''"
+        },
+        "isImport3DModelsLogFileCreated": {
+            "expression": "data.logFileTicketOfImport3DModels !== ''"
+        },
+        "isMapVendorProductsSelected": {
+            "expression": "data.mapVendorData.dbValue === true"
+        },
+        "continueForMappingOfImportedProducts": {
+            "expression": "conditions.isMapVendorProductsSelected && data.vendorProductsSuccessfullyImported > 0"
+        },
+        "isImport3DModelSelected": {
+            "expression": "data.import3DModel.dbValue === true"
+        },
+        "continueForImport3DModelForImportedProducts": {
+            "expression": "conditions.isImport3DModelSelected && data.vendorProductsSuccessfullyImported > 0"
+        }
+    },
+    "messages": {
+        "mrlImportVendorFailed": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "data": {
+        "mapVendorData": {
+            "displayName": "{{i18n.mapVendorData}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "import3DModel": {
+            "displayName": "{{i18n.import3DModel}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "targetItemTypesList": {
+            "displayName": "{{i18n.targetItemType}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true"
+        },
+        "isUploadAndUnZipFileInProgress": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "isImportVendorHierarchyInProgress": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "isImportVendorProductsInProgress": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "isImportVendorHierarchyCompleted": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "isImportVendorProductsCompleted": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "isMapVendorProductsInProgress": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "isMapVendorProductsCompleted": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "isImport3DModelsInProgress": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "isImport3DModelsCompleted": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "vendorId": {
+            "displayName": "{{i18n.mrlVendorID}}",
+            "type": "STRING"
+        },
+        "vendorName": {
+            "displayName": "{{i18n.mrlVendorName}}",
+            "type": "STRING"
+        },
+        "numberOfProductsInVendor": {
+            "displayName": "{{i18n.mrlNumberOfProductsInVendor}}",
+            "type": "STRING"
+        },
+        "numberOfProductsImported": {
+            "displayName": "{{i18n.mrlNumberOfProductsImported}}",
+            "type": "STRING"
+        },
+        "numberOfMappedProducts": {
+            "displayName": "{{i18n.mrlNumberOfMappedProducts}}",
+            "type": "STRING"
+        },
+        "numberOfProductsImported3DModels": {
+            "displayName": "{{i18n.mrlNumberOfProductsImported3DModels}}",
+            "type": "STRING"
+        }
+    },
+    "i18n": {
+        "mapVendorData": [
+            "mrlMessages"
+        ],
+        "import3DModel": [
+            "mrlMessages"
+        ],
+        "targetItemType": [
+            "mrlMessages"
+        ],
+        "mrlImportVendorDataTitle": [
+            "mrlMessages"
+        ],
+        "Mrm0Cancel": [
+            "mrmMessages"
+        ],
+        "mrlUpload": [
+            "mrlMessages"
+        ],
+        "mrlSelectVendorForImportHierarchyText": [
+            "mrlMessages"
+        ],
+        "mrlSelectVendorForImportDataText": [
+            "mrlMessages"
+        ],
+        "mrlImportVendorHierarchySummary": [
+            "mrlMessages"
+        ],
+        "mrlImportVendorDataSummary": [
+            "mrlMessages"
+        ],
+        "mrlName": [
+            "mrlMessages"
+        ],
+        "mrlVersion": [
+            "mrlMessages"
+        ],
+        "mrlPackageType": [
+            "mrlMessages"
+        ],
+        "mrlDescription": [
+            "mrlMessages"
+        ],
+        "mrlCreationDate": [
+            "mrlMessages"
+        ],
+        "mrlProductCount": [
+            "mrlMessages"
+        ],
+        "mrlImportVendorHierarchy": [
+            "mrlMessages"
+        ],
+        "mrlImportVendorData": [
+            "mrlMessages"
+        ],
+        "mrlNoVendorsFoundText": [
+            "mrlMessages"
+        ],
+        "mrlShowDisclaimer": [
+            "mrlMessages"
+        ],
+        "mrlUnZipFileInProgress": [
+            "mrlMessages"
+        ],
+        "mrlImportVendorHierarchyInProgress": [
+            "mrlMessages"
+        ],
+        "mrlImportVendorDataInProgress": [
+            "mrlMessages"
+        ],
+        "mrlMapVendorProductsInProgress": [
+            "mrlMessages"
+        ],
+        "mrlImport3DModelsInProgress": [
+            "mrlMessages"
+        ],
+        "mrlImportVendorHierarchySuccessFul": [
+            "mrlMessages"
+        ],
+        "mrlImportVendorHierarchyFailed": [
+            "mrlMessages"
+        ],
+        "mrlOpenLogFile": [
+            "mrlMessages"
+        ],
+        "mrlImportVendorDataSuccessFul": [
+            "mrlMessages"
+        ],
+        "mrlImportVendorDataFailed": [
+            "mrlMessages"
+        ],
+        "mrlVendorID": [
+            "mrlMessages"
+        ],
+        "mrlVendorName": [
+            "mrlMessages"
+        ],
+        "mrlNumberOfProductsInVendor": [
+            "mrlMessages"
+        ],
+        "mrlNumberOfProductsImported": [
+            "mrlMessages"
+        ],
+        "mrlNumberOfMappedProducts": [
+            "mrlMessages"
+        ],
+        "mrlNumberOfProductsImported3DModels": [
+            "mrlMessages"
+        ],
+        "mrlShowImportedProducts": [
+            "mrlMessages"
+        ],
+        "mrlShowMappedProducts": [
+            "mrlMessages"
+        ],
+        "mrlMappedVendorProductsSummary": [
+            "mrlMessages"
+        ],
+        "mrlImport3DModelsSummary": [
+            "mrlMessages"
+        ]
+    },
+    "dataProviders": {
+        "mrlVendorsDataProvider": {
+            "action": "loadVendorsFromServer",
+            "response": "{{data.catalogInfo}}",
+            "totalFound": "{{data.catalogInfo.length}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "columnProviders": {
+        "vendorPackageColumnProvider": {
+            "frozenColumnIndex": -1,
+            "columns": [
+                {
+                    "name": "vendorName",
+                    "displayName": "{{i18n.mrlName}}",
+                    "maxWidth": 90,
+                    "minWidth": 90
+                },
+                {
+                    "name": "vendorCatalogDescription",
+                    "displayName": "{{i18n.mrlDescription}}",
+                    "maxWidth": 120,
+                    "minWidth": 120
+                },
+                {
+                    "name": "vendorCatalogVersion",
+                    "displayName": "{{i18n.mrlVersion}}",
+                    "maxWidth": 100,
+                    "minWidth": 100
+                },
+                {
+                    "name": "gtcPackageCreationDate",
+                    "displayName": "{{i18n.mrlCreationDate}}",
+                    "maxWidth": 110,
+                    "minWidth": 110
+                },
+                {
+                    "name": "vendorProductCount",
+                    "displayName": "{{i18n.mrlProductCount}}",
+                    "maxWidth": 110,
+                    "minWidth": 110
+                },
+                {
+                    "name": "vendorPackageType",
+                    "displayName": "{{i18n.mrlPackageType}}",
+                    "maxWidth": 110,
+                    "minWidth": 110
+                }
+            ],
+            "sortCriteria": [
+                {
+                    "fieldName": "gtcPackageCreationDate",
+                    "sortDirection": "DESC"
+                }
+            ]
+        }
+    },
+    "grids": {
+        "mrlVendorsTableGrid": {
+            "dataProvider": "mrlVendorsDataProvider",
+            "columnProvider": "vendorPackageColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enablePinning": false,
+                "enableSorting": true,
+                "enableGridMenu":true
+            },
+            "selectionOption": "single"
+        }
+    },
+    "functions": {
+        "getVendors": {
+            "functionName": "getVendors",
+            "parameters": [
+                "{{data.columnProviders.vendorPackageColumnProvider.sortCriteria}}",
+                "{{ctx.panelContext.catalogTypeFilter}}"
+            ]
+        },
+        "getVendorProductsCount": {
+            "functionName": "getVendorProductsCount"
+        }
+    }
+}

@@ -1,0 +1,26 @@
+<aw-file-upload file-change-action="updateSelectedFileInfo" type-filter="{{data.typeFilter}}" is-required="true" multiple="true"></aw-file-upload>
+<aw-panel-section>
+
+    <aw-panel-section>
+        <aw-listbox  prop="data.graphicAttributeMapping" list="data.graphicAttributeMappingList" ></aw-listbox>
+    </aw-panel-section>
+
+    <aw-panel-section caption="i18n.graphicMode" >
+        <aw-radiobutton prop="data.graphicMode" list="data.graphicModeValues.dbValue" ></aw-radiobutton>
+    </aw-panel-section>
+
+    <aw-panel-section caption="i18n.reuseExistingTopic" >
+        <aw-checkbox prop="data.findByXMLNumberCheckbox"  ></aw-checkbox>
+        <div class="aw-contentmgmt-overwriteExistingCheckbox" visible-when="conditions.overwriteExistingCheckbox">
+            <aw-checkbox prop="data.overwriteExistingCheckbox" ></aw-checkbox>
+        </div>
+        <aw-checkbox prop="data.findByContentCheckbox" ></aw-checkbox>
+    </aw-panel-section>
+
+</aw-panel-section>
+
+<aw-panel-footer>
+    <aw-button action="Ctm1TransientFileTicketsForUpload" enable-when="conditions.importValid">
+        <aw-i18n>i18n.import</aw-i18n>
+    </aw-button>
+</aw-panel-footer>

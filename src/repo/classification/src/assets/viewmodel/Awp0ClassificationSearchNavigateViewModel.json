@@ -1,0 +1,247 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "nodeData": {
+            "syncObject": {}
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "establishNavState",
+        "onUpdate": [ 
+            {
+                "action": "updateSearchLocationTree",
+                "observers": [
+                    "fields.selectionData"
+                ]
+            },
+            {
+                "action": "imagesSectionUpdateBreadcrumb",
+                "observers": [
+                    "fields.selectionData"
+                ]
+            }
+        ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "activeView": 1,
+        "classificationTreeCommands": "classify_searchCommand",
+        "aw_ZeroCompileCommandAnchor": "aw_ZeroCompileCommandAnchor",
+        "sortOption": {
+            "type": "INTEGER"
+        },
+        "selectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "navigateState": {
+            "initialValues": {
+                "showNavigateImage": false,
+                "searchString": ""
+            },
+            "meta": {
+                "showNavigateImage":{
+                    "type": "BOOLEAN",
+                    "field": "true"
+                },
+                "searchString": {
+                    "type": "STRING",
+                    "field": "true"
+                }
+            }
+        }
+    },
+    "i18n": {
+        "classNavigate": [ "ClassificationPanelMessages" ]
+    },
+    "actions": {
+        "establishNavState": {
+            "actionType": "JSFunction",
+            "method": "establishNavState",
+            "inputData": {
+                "navState": "{{data.navigateState}}",
+                "searchState": "{{props.subPanelContext.searchState}}",
+                "selectionData": "{{data.selectionData}}"
+            },
+            "outputData": {
+                "navigateState": ""
+            },
+            "deps": "js/Awp0ClassificationSearchNavigateService"
+        },
+        "clsLocationLaunched": {
+            "actionType": "JSFunction",
+            "method": "clsLocationLaunched",
+            "inputData": {
+                "ctx": "{{ctx.clsLocation}}"
+            },
+            "deps": "js/classifySearchService"
+        },
+        "setPanelIsClosedOnCtx": {
+            "actionType": "JSFunction",
+            "method": "setPanelIsClosedOnCtx",
+            "inputData": {},
+            "deps": "js/classifySearchService"
+        },
+        "activateClassificationSearchFilters": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateNodeDataSync"
+                },
+                {
+                    "action": "activateSearchFilters"
+                },
+                {
+                    "action": "deactivateSearchSimilarMode"
+                }
+            ]
+
+        },
+        "activateSearchFilters": {
+            "actionType": "JSFunction",
+            "method": "activateCommandPanel",
+            "deps": "js/commandPanel.service",
+            "inputData": {
+                "commandId": "Awp0SearchFilter",
+                "location": "aw_navigation"
+            }
+        },
+        "deactivateSearchSimilarMode": {
+            "actionType": "JSFunction",
+            "method": "deactivateSearchSimilarMode",
+            "inputData": {
+                "searchState": "{{props.subPanelContext.searchState}}"
+            },
+            "deps": "js/Awp0ClassificationSearchNavigateService"
+        },
+        "updateSearchLocationTree": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateSearchLocation",
+                    "condition": "!conditions.imgsLocActive"
+                }
+            ]
+        },
+        "updateSearchLocation": {
+            "actionType": "JSFunction",
+            "method": "updateSearchLocation",
+            "inputData": {
+                "selectionData": "{{fields.selectionData}}",
+                "searchState": "{{props.subPanelContext.searchState}}",
+                "navigateState": "{{fields.navigateState}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "classNavigator.classificationSearchFilters",
+                        "condition":"props.subPanelContext.searchState.activateSearchSimilarMode === true"
+                    }
+                ]
+            },
+            "deps": "js/Awp0ClassificationSearchNavigateService"
+        },
+        "imagesSectionUpdateBreadcrumb": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateSearchLocationImages",
+                    "condition": "conditions.imgsLocActive"
+                }
+            ]
+        },
+        "updateSearchLocationImages": {
+            "actionType": "JSFunction",
+            "method": "updateSearchLocationImages",
+            "inputData": {
+                "selectionData": "{{fields.selectionData}}",
+                "searchState": "{{props.subPanelContext.searchState}}",
+                "navigateState": "{{fields.navigateState}}"
+            },
+            "outputData": {
+                "navigateState": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "classNavigator.classificationSearchFilters",
+                        "condition":"props.subPanelContext.searchState.activateSearchSimilarMode === true"
+                    }
+                ]
+            },
+            "deps": "js/Awp0ClassificationSearchNavigateService"
+        },
+        "updateNodeDataSync": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "nodeData",
+                "syncObject": {
+                    "selectedNode": "{{props.subPanelContext.searchState.selectedClassNode}}"
+                }
+            }
+        }
+    },
+    "dataProviders": {},
+    "columnProviders": {},
+    "grids": {
+
+    },
+    "conditions": {
+        "navigationStateToEstablish": {
+            "expression": "props.subPanelContext.selectedClassNode"
+        },
+        "imgsLocActive": {
+            "expression": "data.navigateState.showNavigateImage"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "Awp0ClassificationSearchNavigate.contentLoaded",
+            "action": "clsLocationLaunched"
+        },
+        {
+            "eventId": "change.SummaryView",
+            "action": "changeViewMode"
+        },
+        {
+            "eventId": "classNavigator.classificationSearchFilters",
+            "action": "activateClassificationSearchFilters"
+        },
+        {
+            "eventId": "classifyLocation.getPreferences",
+            "condition": "!ctx.clsAdmin.eReleases",
+            "action": "getEReleases"
+        }
+    ],
+    "messages": {
+    },
+    "functions": {
+        "getBulkFilterMap": {
+            "functionName": "getBulkFilterMap",
+            "parameters": [
+                "{{data.bulkFiltersMap}}"
+            ]
+        },
+        "getFilterMap": {
+            "functionName": "getFilterMap",
+            "parameters": [
+                "{{ctx.search.activeFilterMap}}",
+                "{{ctx.search.valueCategory}}"
+            ]
+        },
+        "getStartIndexForFilterValueSearch": {
+            "functionName": "getStartIndexForFilterValueSearch",
+            "parameters": [
+                "{{ctx.search.valueCategory}}"
+            ]
+        },
+        "getClsSearchCriteria": {
+            "functionName": "getClsSearchCriteria",
+            "parameters": []
+        }
+    }
+}

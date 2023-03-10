@@ -1,0 +1,14 @@
+<aw-sublocation sub-location-preference="data.awSubLocationPref" sub-panel-context="{provider : data.provider}" class="aw-lineLayout-imageViewer afx-content-background">
+    <aw-include name="{{ctx.ep.lineLayoutViewerData.fileData.viewer}}" sub-panel-context="ctx.ep.lineLayoutViewerData" class="aw-workinstr-viewerStyle" show-when="ctx.ep.lineLayoutViewerData"></aw-include>
+
+    <div class="aw-lineLayout-loadingLabelPanel" show-when="data.loading === true">
+        <aw-i18n>i18n.headerTitle</aw-i18n>
+    </div>
+
+    <aw-button action="openPopup" class="aw-lineLayout-associatedElementCommandsPanel afx-content-background" title="{{i18n.addLayout}}" enable-when="!conditions.isReadOnlyMode" show-when="!ctx.ep.lineLayoutViewerData && data.loading === false">
+        <div class="aw-lineLayout-iconLabelContainer">
+            <aw-icon class="aw-commands-svg" icon-id="cmdAdd"></aw-icon>
+            <aw-i18n class="aw-lineLayout-commandsLabel">i18n.addLayout</aw-i18n>
+        </div>
+    </aw-button>
+</aw-sublocation>

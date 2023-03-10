@@ -1,0 +1,53 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-include.directive",
+        "js/aw-command-panel.directive",
+        "js/aw-i18n.directive"
+    ],
+    "actions": {
+        "closeSaveVariantPanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+        "initSaveOrSaveAsPanel": {
+            "actionType": "JSFunction",
+            "method": "initSaveOrSaveAsPanel",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "panelTitle": "title"
+            },
+            "deps": "js/fullScreenConfigurationService"
+        }
+    },
+    "functions": {},
+    "data": {
+        "variantContext": "fscContext",
+        "panelTitle": ""
+    },
+    "onEvent": [ {
+        "eventId": "Pca0SaveVariant.closePanel",
+        "action": "closeSaveVariantPanel"
+    } ],
+    "i18n": {
+        "saveCmd": [
+            "ConfiguratorMessages"
+        ],
+        "saveAsCmd": [
+            "ConfiguratorMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onInit": "initSaveOrSaveAsPanel"
+    }
+}

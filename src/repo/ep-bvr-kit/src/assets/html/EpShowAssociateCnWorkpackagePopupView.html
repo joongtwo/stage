@@ -1,0 +1,23 @@
+<aw-panel>
+    <div class="sw-column">
+        <div class="aw-mbm-showOpenWorkpackagePanel" exist-when="conditions.isDataPrepared">
+            <div class="aw-mbm-showOpenWorkpackagePanelHeader">{{data.mbmAssociateCnWorkpackageOpenDesc}}</div>
+            <div class="aw-mbm-showOpenWorkpackageOptionPanel">
+                <aw-radiobutton  class="sw-column" prop="data.mbmOpenWithCnOption" list="data.mbmOpenWithCnOptionValues" action="mbmOpenWithCnOptionSelection"></aw-radiobutton>
+                <div class="aw-mbm-showOpenWorkpackagePaneOption">
+                    <aw-widget prop="data.mbmCnListBox"  enable-when="conditions.isCnWithTrackOptionSelected"></aw-widget>
+                    <aw-guidance-message message="mbmReadOnlyMessage"  banner-style="true" show-icon="false" show-type="false" exist-when="conditions.isSelectedCnReadOnly"></aw-guidance-message>
+                </div>
+                <aw-radiobutton  class="sw-column" prop="data.mbmOpenWithoutCnOption" list="data.mbmOpenWithoutCnOptionValues" action="mbmOpenWithoutCnOptionSelection" ></aw-radiobutton>
+            </div>
+        </div>
+
+        <div class="sw-row w-12 justify-right">
+            <div class="sw-button-group aw-mbm-showOpenWorkpackageControlPanel" >
+                <aw-button class="small" size="auto" button-type="base" action="mbmCancelPopup">{{i18n.mbmCancel}}</aw-button>
+                <aw-button class="small" size="auto" default="true" action="mbmProcessNavigation" enable-when="conditions.isCnWithoutTrackOptionSelected || conditions.isCnSelected">{{i18n.mbmContinue}}</aw-button>
+            </div>
+        </div>
+
+    </div>
+</aw-panel>

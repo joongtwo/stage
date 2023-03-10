@@ -1,0 +1,131 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+
+    ],
+    "ports": {
+
+    },
+    "lifecycleHooks": {
+        "onUpdate": [{
+            "action": "initialize",
+            "observers": [
+                "props.unitLink"
+            ]
+        },
+        {
+            "action": "updateUnits",
+            "observers": [
+                "props.updatedUnit"
+            ]  
+        }]     
+    },
+    "props": {
+        "attr": {
+            "type":"object"
+        }
+    },
+    "actions": {
+        "loadUnits": {
+            "actionType": "JSFunction",
+            "method": "loadUnits",
+            "inputData": {
+                "attribute": "{{props.attr}}",
+                "unitLink": "{{props.unitLink}}"
+            },
+            "outputData": {
+                "unitList": ""
+            },
+            "deps": "js/AwClsListService"
+        },
+        "initialize": {
+            "actionType": "JSFunction",
+            "method": "initialize",
+            "inputData": {
+                "unitLink": "{{props.unitLink}}"
+            },
+            "outputData": {
+                "unitLink": ""
+            },
+            "deps": "js/AwClsListService"
+        },
+        "convertValues": {
+            "actionType": "JSFunction",
+            "method": "convertValues",
+            "inputData": {
+                "data": "{{data}}",
+                "attr": "{{props.attr}}",
+                "unitLink": "{{props.unitLink}}",
+                "parentAttribute": "{{props.parentAttribute}}",
+                "updateMode":"{{props.updateMode}}"
+            },
+            "deps": "js/AwClsListService"
+        },
+        "updateUnits": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateUnit",
+                    "condition": "props.updateMetric || props.updatedUnit !== props.unitLink.uiValue"
+                }
+            ]
+        },
+        "updateUnit": {
+            "actionType": "JSFunction",
+            "method": "updateUnit",
+            "inputData": {
+                "unitLink": "{{data.unitLink}}",
+                "value":"{{props.updatedUnit}}"
+            },
+            "outputData": {
+                "unitLink": ""
+            },
+            "deps": "js/AwClsListService"
+        },
+        "convertValuesBatch": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "convertValues",
+                    "condition": "conditions.shouldConvert"
+                }
+            ]
+        }
+    },
+    "functions": {
+
+    },
+    "dataProviders": {
+        "loadedUnits": {
+            "dataProviderType": "Action",
+            "action": "loadUnits",
+            "response": "{{data.unitList}}",
+            "totalFound": "{{data.unitList.length}}"
+        }
+    },
+    "columnProviders": {
+
+    },
+    "grids": {
+
+    },
+    "data": {
+        "unitLink": {
+            "propertyDisplayName": "{{fields.unitLink.fielddata.uiValue ? fields.unitLink.fielddata.uiValue : props.unitLink.value.propertyDisplayName}}",
+            "displayValues": []
+        }
+    },
+    "onEvent": [ {
+        "eventId": "awlinkPopup.selected",
+        "cacheEventData": true,
+        "action": "convertValuesBatch"
+    } ],
+    "conditions": {
+        "shouldConvert": {
+            "expression": "data.eventData.propScope.attrId === props.attr.name"
+        }
+    },
+    "i18n": {
+
+    }
+}

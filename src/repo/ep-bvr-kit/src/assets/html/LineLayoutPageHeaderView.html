@@ -1,0 +1,16 @@
+<aw-flex-row exist-when="conditions.isReadOnlyMode">
+    <aw-guidance-message message="{{ctx.mfgReadOnlyMode.readOnlyMessage}}" closable="false" banner-style="false" show-icon="false" show-type="false"></aw-guidance-message>
+</aw-flex-row>
+
+<div class="aw-lineLayout-headerContainer">
+    <aw-flex-column justify="center" show-when="data.loading === false">
+        <div class="aw-lineLayout-headerLineName">{{data.lineNameTitle}}</div>
+    </aw-flex-column>
+
+    <aw-flex-column offset-right="1f">
+        <aw-flex-row align-content="center" justify="right">
+            <div show-when="data.loading === false">{{data.workPackageNameTitle}}</div>
+            <aw-logo></aw-logo>
+        </aw-flex-row>
+    </aw-flex-column>
+</div>

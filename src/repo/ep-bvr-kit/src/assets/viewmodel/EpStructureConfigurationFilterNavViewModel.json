@@ -1,0 +1,591 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "epConfigurationClearInputSelectionPort": {
+            "syncObject": {}
+        },
+        "EpStructureConfigurationFilterNav_appliedConfigurationPort": {
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "configData": {
+            "initialValues": {
+                "isBaseViewVisible": true
+            },
+            "meta": {}
+        },
+        "epExcludedByEffectivityHint": {
+            "extendedTooltipContent": "{{i18n.showExcludedByEffectivityDesc}}"
+        },
+        "epShowExcludedByVariantHint": {
+            "extendedTooltipContent": "{{i18n.showExcludedByVariantsDesc}}"
+        },
+        "epShowExcludedAssignmentsHint": {
+            "extendedTooltipContent": "{{i18n.showExcludedAssignedOccurrencesDesc}}"
+        },
+        "saveConfigurationToWP": {
+            "displayName": "{{i18n.saveConfigurationLabel}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "epExcludedByEffectivityCheckBox": {
+            "displayName": "{{i18n.showExcludedByEffectivityCheckBoxLabel}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "epShowExcludedByVariantCheckBox": {
+            "displayName": "{{i18n.showExcludedByVariantCheckBoxLabel}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "epShowExcludedAssignmentsCheckBox": {
+            "displayName": "{{i18n.showExcludedAssignmentsCheckBoxLabel}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+    "actions": {
+        "initializeStructureConfigurationNavPanel": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateConfigurationFilterPanelData"
+                },
+                {
+                    "action": "initializeTitle"
+                },
+                {
+                    "action": "resetConfigData"
+                },
+                {
+                    "action": "initializedConfigPanel"
+                },
+                {
+                    "action": "checkSaveConfigurationCheckbox",
+                    "condition": "conditions.isManageWorkPackagePage"
+                },
+                {
+                    "action": "setExcludedFlagsDbValue"
+                }
+            ]
+        },
+        "updateConfigurationFilterPanelData": {
+            "actionType": "JSFunction",
+            "method": "updateConfigurationFilterPanelData",
+            "inputData": {
+                "activeContext": "{{ctx.aceActiveContext}}",
+                "panelContextData": "{{props.subPanelContext.occContext}}"
+            },
+            "deps": "js/epStructureConfigurationService"
+        },
+        "initializeTitle": {
+            "actionType": "JSFunction",
+            "method": "getConfigFilterPanelTitle",
+            "inputData": {},
+            "outputData": {
+                "panelTitle": ""
+            },
+            "deps": "js/epStructureConfigurationService"
+        },
+        "resetConfigContext": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "target": "{{props.subPanelContext.occContext}}",
+                "updtedValue": {
+                    "skipReloadOnConfigParamChange": "{{data.eventData.skipReloadOnConfigParamChange}}",
+                    "configContext": {}
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "initializedConfigPanel": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "configData": "{{fields.configData}}",
+                "updatedValue": {
+                    "initializedConfigPanel": true
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "resetConfigData": {
+            "actionType": "JSFunction",
+            "method": "clearConfigData",
+            "inputData": {
+                "target": "{{fields.configData}}"
+            },
+            "deps": "js/epStructureConfigurationService"
+        },
+        "revisionRuleChanged": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "configData": "{{fields.configData}}",
+                "updatedValue": {
+                    "revisionRule": "{{parameters.eventData.revisionRule}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "effectivityDateChanged": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "configData": "{{fields.configData}}",
+                "updatedValue": {
+                    "effectivityDate": "{{parameters.eventData.effectivityDate}}",
+                    "effectivityDateVmo": "{{parameters.eventData.currentEffectiveDate}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "unitEffectiveChanged": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "configData": "{{fields.configData}}",
+                "updatedValue": {
+                    "effectiveUnit": "{{parameters.eventData.effectiveUnit}}",
+                    "effectivityGroups": []
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "endItemUidChanged": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "configData": "{{fields.configData}}",
+                "updatedValue": {
+                    "endItemUid": "{{parameters.eventData.endItem.uid}}",
+                    "effectivityGroups": []
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "effectivityGroupsChanged": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "configData": "{{fields.configData}}",
+                "updatedValue": {
+                    "effectiveUnit": -1,
+                    "endItemUid": "AAAAAAAAAAAAAA",
+                    "effectivityGroups": "{{props.subPanelContext.occContext.configContext.eg_uids}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "effectivityGroupRemoved": {
+            "actionType": "JSFunction",
+            "method": "updateConfigData",
+            "inputData": {
+                "configData": "{{fields.configData}}",
+                "updatedValue": {
+                    "effectiveUnit": -1,
+                    "endItemUid": "AAAAAAAAAAAAAA",
+                    "effectivityGroups": "{{props.subPanelContext.occContext.configContext.eg_uids}}"
+                },
+                "modofied_param": "{{props.subPanelContext.occContext.configContext.modified_param}}"
+            },
+            "deps": "js/epStructureConfigurationService"
+        },
+        "variantRuleChanged": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "configData": "{{fields.configData}}",
+                "updatedValue": {
+                    "variantRule": "{{parameters.eventData.variantRules}}",
+                    "variantRuleVmo": "{{parameters.eventData.selectedObject}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "variantOwningItemChanged": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "configData": "{{fields.configData}}",
+                "updatedValue": {
+                    "variantRuleOwningRev": "{{parameters.eventData.svrOwningItem.uid}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "closureRuleChanged": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "configData": "{{fields.configData}}",
+                "updatedValue": {
+                    "closureRule": "{{parameters.eventData.closureRule}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "applyConfiguration": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "toggleOffAssignmentIndicationBeforeSubmit"
+                },
+                {
+                    "action": "clearSelectionPortAfterConfiguration"
+                },
+                {
+                    "action": "saveConfiguration"
+                },
+                {
+                    "action": "handleResponseAndReloadPageWithParam",
+                    "condition": "data.appliedConfig && ctx.sublocation.nameToken !== 'multiBOMManager:taskPageSubLocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] !== 'manageWorkPackageNewSubLocation' || (data.appliedConfigType!=='ebomPCI' && data.appliedConfigType!=='mbomPCI' &&  data.appliedConfigType!=='productPCI' && ctx.sublocation.nameToken === 'multiBOMManager:taskPageSubLocation')"
+                },
+                {
+                    "action": "handleResponseAndReloadPageWithoutParam",
+                    "condition": "data.appliedConfig && ctx.sublocation.nameToken !== 'multiBOMManager:taskPageSubLocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'manageWorkPackageNewSubLocation'"
+                },
+                {
+                    "action": "updateConfigurationPortOnConfigChange",
+                    "condition": "data.appliedConfig  && (data.appliedConfigType==='ebomPCI' || data.appliedConfigType==='mbomPCI' || data.appliedConfigType==='productPCI') && ctx.sublocation.nameToken === 'multiBOMManager:taskPageSubLocation'"
+                }
+            ]
+        },
+        "clearSelectionPortAfterConfiguration": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "epConfigurationClearInputSelectionPort",
+                "syncObject": {}
+            }
+        },
+        "toggleOffAssignmentIndicationBeforeSubmit": {
+            "actionType": "JSFunction",
+            "method": "toggleOffAssignmentIndication",
+            "deps": "js/epToggleService"
+        },
+        "saveConfiguration": {
+            "actionType": "JSFunction",
+            "method": "saveChanges",
+            "inputData": {
+                "configData": "{{fields.configData}}",
+                "occ": "{{props.subPanelContext.occContext}}"
+            },
+            "outputData": {
+                "appliedConfig": "appliedConfig",
+                "appliedConfigType":"appliedConfigType",
+                "updatedConfigFlag":"updatedConfigFlag"
+            },
+            "deps": "js/epStructureConfigurationService"
+        },
+        "excludedByEffectivityChanged": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "target": "{{fields.configData}}",
+                "updtedValue": {
+                    "showExcludedByEffectivity": "{{data.epExcludedByEffectivityCheckBox.dbValue}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "excludedByVariantChanged": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "target": "{{fields.configData}}",
+                "updtedValue": {
+                    "showExcludedByVariant": "{{data.epShowExcludedByVariantCheckBox.dbValue}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "excludedAssignmentChanged": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "target": "{{fields.configData}}",
+                "updtedValue": {
+                    "showExcludedAssignments": "{{data.epShowExcludedAssignmentsCheckBox.dbValue}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "saveConfigToWpChanged": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "target": "{{fields.configData}}",
+                "updtedValue": {
+                    "saveConfigurationToWP": "{{data.saveConfigurationToWP.dbValue}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "updateConfigurationPortOnConfigChange": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpStructureConfigurationFilterNav_appliedConfigurationPort",
+                "syncObject": {
+                    "contextKey": "{{ctx.aceActiveContext.key}}",
+                    "appliedConfig": "{{data.appliedConfig}}",
+                    "updatedConfigurationFlag": "{{data.updatedConfigFlag}}"
+                }
+            }
+        },
+        "cancelBatchAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "resetConfigContext"
+                },
+                {
+                    "action": "cancel"
+                }
+            ]
+        },
+        "cancel": {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "inputData": {
+                "path": "{{ctx.aceActiveContext.key + '.configContext'}}",
+                "value": {}
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "awsidenav.openClose",
+                        "eventData": {
+                            "id": "aw_navigation",
+                            "commandId": "{{ctx.sidenavCommandId}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/appCtxService"
+        },
+        "checkSaveConfigurationCheckbox": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setSaveConfigurationCheckboxDbValue"
+                },
+                {
+                    "action": "saveConfigToWpChanged"
+                }
+            ]
+        },
+        "setSaveConfigurationCheckboxDbValue": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": true
+            },
+            "outputData": {
+                "saveConfigurationToWP.dbValue": "",
+                "saveConfigurationToWP.value": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setExcludedFlagsDbValue": {
+            "actionType": "JSFunction",
+            "method": "setExcludedFlagsStatus",
+            "outputData": {
+                "epExcludedByEffectivityCheckBox.dbValue": "epExcludedByEffectivity",
+                "epExcludedByEffectivityCheckBox.value": "epExcludedByEffectivity",
+                "epShowExcludedAssignmentsCheckBox.dbValue": "epShowExcludedAssignments",
+                "epShowExcludedAssignmentsCheckBox.value": "epShowExcludedAssignments",
+                "epShowExcludedByVariantCheckBox.dbValue": "epShowExcludedByVariant",
+                "epShowExcludedByVariantCheckBox.value": "epShowExcludedByVariant"
+            },
+            "deps": "js/epStructureConfigurationService"
+        },
+        "handleResponseAndReloadPageWithParam": {
+            "actionType": "JSFunction",
+            "method": "handleResponse",
+            "inputData": {
+                "appliedConfig": "{{data.appliedConfig}}",
+                "shouldUpdatePciParam": true
+            },
+            "deps": "js/epStructureConfigurationService"
+        },
+        "handleResponseAndReloadPageWithoutParam": {
+            "actionType": "JSFunction",
+            "method": "handleResponse",
+            "inputData": {
+                "appliedConfig": "{{data.appliedConfig}}",
+                "shouldUpdatePciParam": false
+            },
+            "deps": "js/epStructureConfigurationService"
+        },
+        "isConfigurationChanged": {
+            "actionType": "JSFunction",
+            "method": "isDirty",
+            "inputData": {
+                "configData": "{{fields.configData}}"
+            },
+            "outputData": {
+                "isConfigurationChanged": ""
+            },
+            "deps": "js/epStructureConfigurationService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "occDataLoadedEvent",
+            "action": "initializeStructureConfigurationNavPanel"
+        },
+        {
+            "eventId": "epConfigPanel.resetConfigContext",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "resetConfigContext"
+        },
+        {
+            "eventId": "awConfigPanel.revisionRuleChanged",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "revisionRuleChanged"
+        },
+        {
+            "eventId": "awConfigPanel.effectivityDateChanged",
+            "condition": "!isReinitialize",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "effectivityDateChanged"
+        },
+        {
+            "eventId": "navigateToConfigPanel",
+            "action": "effectivityGroupsChanged"
+        },
+        {
+            "eventId": "awConfigPanel.unitEffectivityChanged",
+            "condition": "!isReinitialize",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "unitEffectiveChanged"
+        },
+        {
+            "eventId": "awConfigPanel.endItemUnitEffectivityChanged",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "endItemUidChanged"
+        },
+        {
+            "eventId": "navigateToGroupEffectivitiesView",
+            "action": "effectivityGroupsChanged"
+        },
+        {
+            "eventId": "authorGrp.applyGroupEffectivity",
+            "action": "effectivityGroupsChanged"
+        },
+        {
+            "eventId": "awConfigPanel.variantInfoChanged",
+            "condition": "!isReinitialize",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "variantRuleChanged"
+        },
+        {
+            "eventId": "awConfigPanel.variantInfoChanged",
+            "condition": "svrOwningItem && !variantRules && !isReinitialize",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "variantOwningItemChanged"
+        },
+        {
+            "eventId": "awClosureRule.ValueChanged",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "closureRuleChanged"
+        }
+    ],
+    "conditions": {
+        "isBopConfiguration": {
+            "expression": {
+                "$source": "ctx.sidenavCommandId",
+                "$query": {
+                    "$eq": "epProcessConfigurationCommand"
+                }
+            }
+        },
+        "isManageWorkPackagePage": {
+            "expression": "ctx.locationContext['ActiveWorkspace:SubLocation'] === 'manageWorkPackageNewSubLocation'"
+        }
+    },
+    "i18n": {
+        "occmgmtConfigurationFilterTitle": [
+            "OccurrenceManagementConstants"
+        ],
+        "cancel": [
+            "OccurrenceManagementConstants"
+        ],
+        "configure": [
+            "OccurrenceManagementConstants"
+        ],
+        "saveConfigurationLabel": [
+            "structureConfigurationMessages"
+        ],
+        "showExcludedByVariantCheckBoxLabel": [
+            "structureConfigurationMessages"
+        ],
+        "showExcludedByEffectivityCheckBoxLabel": [
+            "structureConfigurationMessages"
+        ],
+        "showExcludedAssignmentsCheckBoxLabel": [
+            "structureConfigurationMessages"
+        ],
+        "showExcludedByEffectivityDesc": [
+            "structureConfigurationMessages"
+        ],
+        "showExcludedAssignedOccurrencesDesc": [
+            "structureConfigurationMessages"
+        ],
+        "showExcludedByVariantsDesc": [
+            "structureConfigurationMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onMount": "initializeStructureConfigurationNavPanel",
+        "onUpdate": [
+            {
+                "action": "isConfigurationChanged",
+                "observers": [
+                    "fields.configData"
+                ]
+            },
+            {
+                "action": "effectivityGroupRemoved",
+                "observers": [
+                    "props.subPanelContext.occContext.configContext.eg_uids"
+                ]
+            }
+        ]
+    }
+}

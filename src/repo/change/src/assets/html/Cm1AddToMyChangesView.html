@@ -1,0 +1,28 @@
+<aw-command-panel caption="i18n.addToMyChangesTitle">
+    <aw-panel-header>
+    </aw-panel-header>
+    <aw-panel-body>
+        <aw-panel-section caption="i18n.globalChangeTitle" collapsed="false">
+            <aw-list dataprovider="data.dataProviders.activeChangeDataProvider">
+                <aw-default-cell vmo="item"></aw-default-cell>
+            </aw-list>
+        </aw-panel-section>
+        <aw-panel-section caption="i18n.myChangeSearchTitle" collapsed="false">
+            <aw-list-filter prop="data.filterMyChanges" dataprovider="data.dataProviders.myChangesDataProvider">
+                <aw-default-cell vmo="item"></aw-default-cell>
+            </aw-list-filter>
+        </aw-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-panel-section>
+            <aw-listbox prop="data.relationList" list="data.relationListValues.dbValue" action="selectionChange" visible-when="conditions.isRelationSelectedVisible"></aw-listbox>
+            <aw-label prop="data.selectedRelationLabel" visible-when="conditions.isRelationSelectedVisible"> </aw-label>
+            <aw-checkbox prop="data.isRunAsync" visible-when="conditions.isSolutionRelation"></aw-checkbox>
+        </aw-panel-section>
+        <aw-panel-section>
+            <aw-button action="generateStructureEditOrAddToSolution" visible-when="conditions.isRelationSelectedVisible">
+                <aw-i18n>i18n.addButtonTitle</aw-i18n>
+            </aw-button>
+        </aw-panel-section>
+    </aw-panel-footer>
+</aw-command-panel>

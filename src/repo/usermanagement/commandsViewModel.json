@@ -1,0 +1,807 @@
+{
+  "commands": {
+    "Um0AddInAnOrganization": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.AddTitle}}",
+      "description": "{{i18n.Um0CreateGroupDesc}}"
+    },
+    "Um0ChangePassword": {
+      "iconId": "cmdChangePassword",
+      "isGroup": false,
+      "title": "{{i18n.ChangePasswordTitle}}",
+      "description": "{{i18n.Um0ChangePasswordDesc}}"
+    },
+    "Um0CreateGroup": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.AddTitle}}",
+      "description": "{{i18n.Um0CreateGroupDesc}}"
+    },
+    "Um0CreateRole": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.AddTitle}}",
+      "description": "{{i18n.Um0CreateRoleDesc}}"
+    },
+    "Um0CreateUser": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.AddTitle}}",
+      "description": "{{i18n.Um0CreateUserDesc}}"
+    },
+    "Um0ShowAddObjects": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.AddTitle}}",
+      "description": "{{i18n.Um0ShowAddObjectsDesc}}"
+    },
+    "Um0ShowAddUserObjects": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.AddTitle}}",
+      "description": "{{i18n.Um0ShowAddUserObjectsDesc}}"
+    },
+    "Um0RemoveAdminObjects": {
+      "iconId": "cmdRemove",
+      "isGroup": false,
+      "title": "{{i18n.RemoveTitle}}",
+      "description": "{{i18n.Um0RemoveAdminObjectsDesc}}"
+    },
+    "Um0NavigateObjects": {
+      "iconId": "cmdShowChildren",
+      "isGroup": false,
+      "title": "{{i18n.NavigateTitle}}",
+      "description": "{{i18n.Um0NavigateObjectsDesc}}"
+    },
+    "AwCreateBaseCalendar": {
+      "iconId": "cmdAddCalendar16",
+      "isGroup": false,
+      "title": "{{i18n.AddTitle}}",
+      "description": "{{i18n.AwBaseCalenderDesc}}"
+    },
+    "AwDeleteCalendar": {
+      "iconId": "cmdDelete",
+      "title": "{{i18n.deleteCalenders}}",
+      "description": "{{i18n.AwDeleteCalendarDesc}}"
+    },
+    "AwDeleteUserCalendar": {
+      "iconId": "cmdDelete",
+      "title": "{{i18n.deleteCalenders}}",
+      "description": "{{i18n.AwDeleteUserCalendarDesc}}"
+    }
+  },
+  "commandHandlers": {
+    "AddAdminObjectsCommandHandler": {
+      "id": "Um0AddInAnOrganization",
+      "action": "addInAnOrganization",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.enableAddInAnOrganization"
+      }
+    },
+    "ChangeUserPasswordCommandHandler": {
+      "id": "Um0ChangePassword",
+      "action": "setOrChange",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.enableChangePassword"
+      }
+    },
+    "CreateGroupCommandHandler": {
+      "id": "Um0CreateGroup",
+      "action": "createGroup",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.enableCreateGroup"
+      }
+    },
+    "CreateRoleCommandHandler": {
+      "id": "Um0CreateRole",
+      "action": "createRole",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.enableCreateRole"
+      }
+    },
+    "CreateUserCommandHandler": {
+      "id": "Um0CreateUser",
+      "action": "createUser",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.enableCreateUser"
+      }
+    },
+    "showAddObjectsRoleCommandHandler": {
+      "id": "Um0ShowAddObjects",
+      "action": "showAddObjects",
+      "activeWhen": {
+        "condition": "conditions.enableShowAddObjectsRole"
+      },
+      "visibleWhen": {
+        "condition": "conditions.enableShowAddObjectsRole"
+      }
+    },
+    "showAddObjectsUserCommandHandler": {
+      "id": "Um0ShowAddUserObjects",
+      "action": "showAddObjects",
+      "activeWhen": {
+        "condition": "conditions.enableShowAddObjectsUser"
+      },
+      "visibleWhen": {
+        "condition": "conditions.enableShowAddObjectsUser"
+      }
+    },
+    "showAddObjectsRolesInGroupTabCommandHandler": {
+      "id": "Um0ShowAddObjects",
+      "action": "showAddObjects",
+      "activeWhen": {
+        "condition": "conditions.enableShowAddObjectsRolesInGroupTab"
+      },
+      "visibleWhen": {
+        "condition": "conditions.enableShowAddObjectsRolesInGroupTab"
+      }
+    },
+    "removeAdminObjectsRoleCommandHandler": {
+      "id": "Um0RemoveAdminObjects",
+      "action": "performRemoveOperation",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsRole"
+      },
+      "visibleWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsRole"
+      }
+    },
+    "removeAdminObjectsUserCommandHandler": {
+      "id": "Um0RemoveAdminObjects",
+      "action": "performRemoveOperationForUserObjects",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsUser"
+      },
+      "visibleWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsUser"
+      }
+    },
+    "removeAdminObjectsRolesInGroupTabCommandHandler": {
+      "id": "Um0RemoveAdminObjects",
+      "action": "performRemoveOperation",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsRolesInGroupTab"
+      },
+      "visibleWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsRolesInGroupTab"
+      }
+    },
+    "navigateObjectsCommandHandler": {
+      "id": "Um0NavigateObjects",
+      "action": "NavigateObjects",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.enableNavigateObjects"
+      }
+    },
+    "Awp0CutRoleObjectsHandler": {
+      "id": "Awp0Cut",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsRole"
+      },
+      "visibleWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsRole"
+      },
+      "enableWhen": false
+    },
+    "Awp0CutCtxMenuRoleObjectsHandler": {
+      "id": "Awp0CutContextMenu",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsRole"
+      },
+      "visibleWhen": false
+    },
+    "Awp0CutRoleObjectsInGroupHandler": {
+      "id": "Awp0Cut",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsRolesInGroupTab"
+      },
+      "visibleWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsRolesInGroupTab"
+      },
+      "enableWhen": false
+    },
+    "Awp0CutCtxMenuRoleObjectsInGroupHandler": {
+      "id": "Awp0CutContextMenu",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsRolesInGroupTab"
+      },
+      "visibleWhen": false
+    },
+    "Awp0CutUserObjectsHandler": {
+      "id": "Awp0Cut",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsUser"
+      },
+      "visibleWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsUser"
+      },
+      "enableWhen": false
+    },
+    "Awp0CutCtxMenuUserObjectsHandler": {
+      "id": "Awp0CutContextMenu",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsUser"
+      },
+      "visibleWhen": false
+    },
+    "Awp0CutGroupMemberObjectsHandler": {
+      "id": "Awp0Cut",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsGroupMember"
+      },
+      "visibleWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsGroupMember"
+      },
+      "enableWhen": false
+    },
+    "Awp0CutCtxMenuGroupMemberObjectsHandler": {
+      "id": "Awp0CutContextMenu",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsGroupMember"
+      },
+      "visibleWhen": false
+    },
+    "Awp0InContextReportsGroupMemberObjectsHandler": {
+      "id": "Awp0InContextReports",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsGroupMember"
+      },
+      "visibleWhen": {
+        "condition": false
+      }
+    },
+    "Awp0InContextReportsUserObjectsHandler": {
+      "id": "Awp0InContextReports",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsUser"
+      },
+      "visibleWhen": {
+        "condition": false
+      }
+    },
+    "Awp0InContextReportsRoleObjectsInGroupHandler": {
+      "id": "Awp0InContextReports",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsRolesInGroupTab"
+      },
+      "visibleWhen": {
+        "condition": false
+      }
+    },
+    "Awp0InContextReportsRoleObjectsHandler": {
+      "id": "Awp0InContextReports",
+      "activeWhen": {
+        "condition": "conditions.enableRemoveAdminObjectsRole"
+      },
+      "visibleWhen": {
+        "condition": false
+      }
+    },
+    "Awp0InContextReportsOrgObjectsHandler": {
+      "id": "Awp0InContextReports",
+      "activeWhen": {
+        "condition": "conditions.enableShowAddObjectsInOrg"
+      },
+      "visibleWhen": {
+        "condition": false
+      }
+    },
+    "Awp0InContextReportsGroupTabHandler": {
+      "id": "Awp0InContextReports",
+      "activeWhen": {
+        "condition": "conditions.enableShowAddObjectsRolesInGroupTab"
+      },
+      "visibleWhen": {
+        "condition": false
+      }
+    },
+    "CreateBaseCalendarCommandHandler": {
+      "id": "AwCreateBaseCalendar",
+      "action": "openCreateBaseCalendarPanel",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.isBaseCalendarSublocation"
+      },
+      "enableWhen": {
+        "condition": "conditions.isAwAddCalendarCmdEnabled"
+      }
+    },
+    "AwDeleteCalendarCommandHandler": {
+      "id": "AwDeleteCalendar",
+      "action": "getConfirmationForDeleteCalendar",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.isBaseCalendarSublocation"
+      },
+      "enableWhen": {
+        "condition": "conditions.isAwDeleteCalendarCmdEnabled"
+      }
+    },
+    "AwDeleteUserCalendarCommandHandler": {
+      "id": "AwDeleteUserCalendar",
+      "action": "getConfirmationForDeleteCalendar",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.deleteUserCalendarCommandVisibility"
+      }
+    }
+  },
+  "conditions": {
+    "enableAddInAnOrganization": {
+      "expression": " !(ctx.state.processed.d_uids && ctx.state.processed.d_uids.indexOf('^') > -1) && ctx.userSession!==null && ( !ctx.selected  || (ctx.selected && ctx.mselected[0].type === 'Group' && ctx.mselected.length === 1)) && ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' &&  ctx.locationContext['ActiveWorkspace:SubLocation'] === 'organization' "
+    },
+    "enableChangePassword": {
+      "expression": "ctx.userSession!==null && ctx.selected && ctx.selected.type === 'User' && ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation'"
+    },
+    "enableCreateGroup": {
+      "expression": "ctx.userSession!==null && ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'groups'"
+    },
+    "enableCreateRole": {
+      "expression": "ctx.userSession!==null && !ctx.selected && ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'roles'"
+    },
+    "enableCreateUser": {
+      "expression": "ctx.userSession!==null && !ctx.selected && ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'users'"
+    },
+    "enableShowAddObjectsRole": {
+      "expression": "ctx.userSession!==null && ctx.selected && ctx.selected.type === 'Group' && ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'organization'"
+    },
+    "enableShowAddObjectsUser": {
+      "expression": "ctx.userSession!==null && ctx.selected && ctx.selected.type === 'Role' && ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'organization'"
+    },
+    "enableShowAddObjectsRolesInGroupTab": {
+      "expression": "ctx.userSession!==null && ctx.selected && ctx.selected.type === 'Group' && ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'groups'"
+    },
+    "enableRemoveAdminObjectsRole": {
+      "expression": "ctx.userSession!==null && ctx.selected && ctx.selected.type === 'Role' && ctx.pselected.type === 'Group' && ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'organization'"
+    },
+    "enableRemoveAdminObjectsUser": {
+      "expression": "ctx.userSession!==null && ctx.selected && ctx.selected.type === 'User' && ctx.pselected.type === 'Role' && ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'organization'"
+    },
+    "enableRemoveAdminObjectsRolesInGroupTab": {
+      "expression": "ctx.userSession!==null && ctx.selected && ctx.selected.type === 'Role' && ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'groups'"
+    },
+    "enableRemoveAdminObjectsGroupMember": {
+      "expression": "ctx.userSession!==null && ctx.selected && ctx.pselected.type === 'User' && ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'organization'"
+    },
+    "enableShowAddObjectsInOrg": {
+      "expression": "ctx.userSession!==null && ctx.selected && (ctx.selected.type === 'Group' || ctx.selected.type === 'Role' || ctx.selected.type === 'User' ) && ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'organization'"
+    },
+    "enableNavigateObjects": {
+      "expression": "(commandContext.vmo.type === 'Group' || commandContext.vmo.type === 'Role')"
+    },
+    "isBaseCalendarSublocation": {
+      "expression": "ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'baseCalendars' && ctx.userSession.props.group.uiValues[ 0 ] === 'dba'"
+    },
+    "isAwDeleteCalendarCmdEnabled": {
+      "expression": "ctx.mselected[0].type === 'TCCalendar'"
+    },
+    "isAwAddCalendarCmdEnabled": {
+      "expression": "!ctx.selected"
+    },
+    "deleteUserCalendarCommandVisibility": {
+      "expression": "( ctx.locationContext['ActiveWorkspace:Location'] === 'com.siemens.splm.client.usermanagement.peoplelocation' && ctx.locationContext['ActiveWorkspace:SubLocation'] === 'users' && ctx.userCalendar && ( (ctx.userSession.props.group.uiValues[ 0 ] === 'dba') || ( ctx.mselected[0].uid === ctx.user.uid ) ) )"
+    }
+  },
+  "commandPlacements": {
+    "addInAnOrganizationToolsAndInfo": {
+      "id": "Um0AddInAnOrganization",
+      "uiAnchor": "aw_rightWall",
+      "priority": 130,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "changePasswardToolsAndInfo": {
+      "id": "Um0ChangePassword",
+      "uiAnchor": "aw_rightWall",
+      "priority": 650,
+      "parentGroupId": "Awp0ManageGroup"
+    },
+    "createGroupToolsAndInfo": {
+      "id": "Um0CreateGroup",
+      "uiAnchor": "aw_rightWall",
+      "priority": 140,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "createRoleToolsAndInfo": {
+      "id": "Um0CreateRole",
+      "uiAnchor": "aw_rightWall",
+      "priority": 150,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "createUserToolsAndInfo": {
+      "id": "Um0CreateUser",
+      "uiAnchor": "aw_rightWall",
+      "priority": 160,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "showAddObjectsToolsAndInfo-classic": {
+      "id": "Um0ShowAddObjects",
+      "uiAnchor": "aw_objectSet_right",
+      "priority": 0
+    },
+    "showAddObjectsToolsAndInfo": {
+      "id": "Um0ShowAddObjects",
+      "uiAnchor": "aw_rightWall",
+      "priority": 0
+    },
+    "showAddUserObjectsToolsAndInfo-classic": {
+      "id": "Um0ShowAddUserObjects",
+      "uiAnchor": "aw_objectSet_right",
+      "priority": 0
+    },
+    "showAdUserObjectsToolsAndInfo": {
+      "id": "Um0ShowAddUserObjects",
+      "uiAnchor": "aw_rightWall",
+      "priority": 0
+    },
+    "removeAdminObjectsOneStep": {
+      "id": "Um0RemoveAdminObjects",
+      "uiAnchor": "aw_rightWall",
+      "priority": 300,
+      "parentGroupId": "Awp0EditGroup"
+    },
+    "navigateObjectsOneStep": {
+      "id": "Um0NavigateObjects",
+      "uiAnchor": "navigate_objects",
+      "areas": [
+        "com.siemens.splm.clientfx.ui.modelObjectListActionCommands"
+      ],
+      "priority": 300,
+      "cellDisplay": {
+        "hover": true,
+        "position": "BOTTOM_RIGHT",
+        "selected": true
+      }
+    },
+    "AwCreateBaseCalendar": {
+      "id": "AwCreateBaseCalendar",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 14
+    },
+    "AwDeleteCalendar": {
+      "id": "AwDeleteCalendar",
+      "uiAnchor": "aw_primaryWorkArea",
+      "priority": 15
+    },
+    "AwDeleteUserCalendar": {
+      "id": "AwDeleteUserCalendar",
+      "uiAnchor": "aw_rightWall",
+      "priority": 550,
+      "parentGroupId": "Awp0EditGroup"
+    }
+  },
+  "actions": {
+    "addInAnOrganization": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Um0AddInAnOrganization",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "setOrChange": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Um0ChangePassword",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "createGroup": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Um0CreateGroup",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "createRole": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Um0CreateRole",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "createUser": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Um0CreateUser",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "showAddObjects": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Um0ShowAddObjects",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "NavigateObjects": {
+      "actionType": "JSFunction",
+      "method": "execute",
+      "deps": "js/adminObjectCommandHandler",
+      "inputData": {
+        "context": "{{commandContext.vmo}}"
+      }
+    },
+    "performRemoveOperation": {
+      "actionType": "TcSoaService",
+      "serviceName": "Administration-2017-05-RoleManagement",
+      "method": "removeRolesFromGroup",
+      "inputData": {
+        "roleGroupStructs": [
+          {
+            "roles": "{{ctx.mselected}}",
+            "grp": "{{ctx.pselected}}"
+          }
+        ]
+      },
+      "events": {
+        "success": [
+          {
+            "name": "cdm.relatedModified",
+            "eventData": {
+              "refreshLocationFlag": false,
+              "relations": "",
+              "relatedModified": [
+                "{{ctx.pselected}}"
+              ]
+            }
+          }
+        ],
+        "failure": [
+          {
+            "name": "cdm.relatedModified",
+            "eventData": {
+              "refreshLocationFlag": false,
+              "relations": "",
+              "relatedModified": [
+                "{{ctx.pselected}}"
+              ]
+            }
+          }
+        ]
+      },
+      "actionMessages": {
+        "failure": [
+          {
+            "message": "removeOperationFailure"
+          }
+        ]
+      }
+    },
+    "performRemoveOperationForUserObjects": {
+      "actionType": "TcSoaService",
+      "serviceName": "Administration-2017-05-UserManagement",
+      "method": "removeGroupMembers",
+      "inputData": {
+        "userRoleGroupStructs": [
+          {
+            "users": "{{ctx.mselected}}",
+            "grp": {
+              "uid": "{{commandContext.searchState.criteria.groupUID}}",
+              "type": "Group"
+            },
+            "role": "{{ctx.pselected}}"
+          }
+        ]
+      },
+      "events": {
+        "success": [
+          {
+            "name": "cdm.relatedModified",
+            "eventData": {
+              "refreshLocationFlag": false,
+              "relatedModified": [
+                "{{ctx.pselected}}"
+              ]
+            }
+          }
+        ],
+        "failure": [
+          {
+            "name": "cdm.relatedModified",
+            "eventData": {
+              "refreshLocationFlag": false,
+              "relations": "",
+              "relatedModified": [
+                "{{ctx.pselected}}"
+              ]
+            }
+          }
+        ]
+      },
+      "actionMessages": {
+        "failure": [
+          {
+            "message": "removeOperationFailure"
+          }
+        ]
+      }
+    },
+    "openCreateBaseCalendarPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "AwCreateCalendar",
+        "location": "aw_toolsAndInfo",
+        "context": {
+          "nameEdit": true,
+          "calendar": "baseCalendar"
+        }
+      }
+    },
+    "getConfirmationForDeleteCalendar": {
+      "actionType": "Event",
+      "method": "Event",
+      "inputData": {
+        "events": [
+          {
+            "name": "cal.deleteCalendar",
+            "condition": ""
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "ctx.mselected.length==1",
+            "message": "deleteCalendarSingle"
+          },
+          {
+            "condition": "ctx.mselected.length>1",
+            "message": "deleteCalendarMultiple"
+          }
+        ]
+      }
+    },
+    "deleteCalendar": {
+      "actionType": "TcSoaService",
+      "serviceName": "CalendarManagement-2007-01-CalendarManagement",
+      "method": "deleteTCCalendars",
+      "inputData": {
+        "tccalendarsToDelete": "{{function:getSelectedObjects}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "primaryWorkarea.reset",
+            "condition": "conditions.deleteUserCalendarCommandVisibility"
+          },
+          {
+            "name": "resetUserCalendarPage",
+            "condition": "ctx.userCalendar"
+          }
+        ]
+      },
+      "actionMessages": {
+        "failure": [
+          {
+            "message": "calDeleteSoaErrorFailureMsg"
+          }
+        ]
+      },
+      "deps": "js/AwUserCalendarUtils"
+    }
+  },
+  "messages": {
+    "removeOperationFailure": {
+      "messageType": "ERROR",
+      "messageText": "{{errorCode}}"
+    },
+    "calDeleteSoaErrorFailureMsg": {
+      "messageType": "ERROR",
+      "messageText": "{{errorCode}}"
+    },
+    "deleteCalendarSingle": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.deleteCalendarConfirmation}}",
+      "messageTextParams": [
+        "{{ctx.mselected[0].props.object_string.dbValues[0]}}"
+      ],
+      "navigationOptions": [
+        {
+          "option": "Cancel",
+          "text": "{{i18n.CancelText}}",
+          "action": ""
+        },
+        {
+          "option": "Remove",
+          "text": "{{i18n.delete}}",
+          "action": "deleteCalendar"
+        }
+      ]
+    },
+    "deleteCalendarMultiple": {
+      "messageType": "WARNING",
+      "messageText": "{{i18n.deleteCalendarConfirmationForMultiple}}",
+      "messageTextParams": [
+        "{{ctx.mselected.length}}"
+      ],
+      "navigationOptions": [
+        {
+          "option": "Cancel",
+          "text": "{{i18n.CancelText}}",
+          "action": ""
+        },
+        {
+          "option": "Remove",
+          "text": "{{i18n.delete}}",
+          "action": "deleteCalendar"
+        }
+      ]
+    }
+  },
+  "i18n": {
+    "ChangePasswordTitle": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "AddTitle": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "RemoveTitle": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "NavigateTitle": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "Um0ChangePasswordDesc": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "Um0CreateGroupDesc": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "Um0CreateRoleDesc": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "Um0CreateUserDesc": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "Um0ShowAddObjectsDesc": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "Um0ShowAddUserObjectsDesc": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "Um0RemoveAdminObjectsDesc": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "Um0NavigateObjectsDesc": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "AwBaseCalenderDesc": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "deleteCalendarConfirmationForMultiple": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "deleteCalendarConfirmation": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "deleteCalenders": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "AwDeleteCalendarDesc": [
+      "UsermanagementCommandPanelMessages"
+    ],
+    "AwDeleteUserCalendarDesc": [
+      "UsermanagementCommandPanelMessages"
+    ]
+  }
+}

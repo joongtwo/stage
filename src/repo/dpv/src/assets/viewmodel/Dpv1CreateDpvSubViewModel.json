@@ -1,0 +1,186 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports": [
+        "js/aw-panel-body.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-xrt.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive",
+        "js/aw-panel-header.directive",
+        "js/aw-back-button.directive"
+    ],
+    "actions": {
+        "createDpvObject": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2012-10-DataManagement",
+            "method": "createRelateAndSubmitObjects",
+            "inputData": {
+                "inputs": "{{function:getCreateInput}}"
+            },
+            "outputData": {
+                "createdMainObject": "output[0].objects[0]",
+                "createdObject": "{{function:getCreatedObject}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "addDpvObject.objectcreated",
+                        "condition": "ctx.selected"
+                    },
+                    {
+                       "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "condition": "!ctx.selected",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ],
+                "failure": [{
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                }]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "condition": "!ctx.selected",
+                        "message": "createObjectSuccess"
+                    }
+                ]
+            },
+            "deps": "js/addObjectUtils"
+        },
+
+    "addcreatedDpvObject": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2017-06-OccurrenceManagement",
+            "method": "addObject6",
+            "inputData": {
+                "input": {
+                    "siblingElement": "",
+                    "productContext": "{{ctx.occmgmtContext.productContextInfo}}",
+                    "parentElements": [
+                        "{{ctx.selected}}"
+                    ],
+                    "objectsToBeAdded": [
+                        "{{data.createdObject}}"
+                    ],
+                    "columnConfigInput": ""
+                }
+            },
+            "outputData": {
+            "addElementResponse": ""
+            },
+            "events": {
+                "failure": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ],
+                "success": [
+                    {
+                     "name": "addElement.ElementAddedEvent",
+                      "eventData": {
+                      "addElementResponse": "{{data.addElementResponse}}",
+                        "parentElement": "{{ctx.occmgmtContext.addElement.parent}}"
+                        }
+                  } ,  {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "createObjectSuccess"
+                    }
+                ]
+            }
+        }
+    },
+
+    "onEvent": [{
+        "eventId": "addDpvObject.objectcreated",
+        "action": "addcreatedDpvObject"
+    }],
+
+    "messages": {
+        "createObjectSuccess": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.pasteSuccessful}}",
+            "messageTextParams": [
+                "{{data.createdObject.props.object_name.dbValues[0]}}"
+            ]
+        }
+    },
+
+    "functions": {
+        "getCreateInput": {
+            "functionName": "getCreateInput",
+            "parameters": [
+                "{{data}}",
+                "",
+                "",
+                "{{editHandlers.addPanelEditHandler}}"
+            ]
+        },
+        "getCreatedObject": {
+            "functionName": "getCreatedObject",
+            "parameters": []
+        },
+        "getCreateRelationsInput": {
+            "functionName": "getCreateRelationsInput",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getSourceModelObjects": {
+            "functionName": "getSourceModelObjects",
+            "parameters": [
+                "{{data.sourceObject}}"
+            ]
+        }
+    },
+
+
+
+    "i18n": {
+        "create": ["DpvMessages"],
+        "pasteSuccessful": ["DpvMessages"]
+    },
+
+    "data": {
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "conditions": {
+
+    }
+}

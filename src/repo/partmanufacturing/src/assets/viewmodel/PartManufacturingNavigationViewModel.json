@@ -1,0 +1,126 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "updateResourcesURL": {
+            "actionType": "JSFunction",
+            "method": "updateStateInfoToUrl",
+            "inputData": {
+                "searchState": "{{data.resourcesState}}",
+                "searchStateUpdater": "{{data.updateAtomicData}}"
+            },
+            "deps": "js/partManufacturingService"
+        },
+        "updateAttachmentsURL": {
+            "actionType": "JSFunction",
+            "method": "updateStateInfoToUrl",
+            "inputData": {
+                "searchState": "{{data.attachmentsState}}",
+                "searchStateUpdater": "{{data.updateAtomicData}}"
+            },
+            "deps": "js/partManufacturingService"
+        },
+        "registerContext": {
+            "actionType": "JSFunction",
+            "method": "registerContext",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "deps": "js/partManufacturingService"
+        },
+        "unregisterContext": {
+            "actionType": "JSFunction",
+            "method": "unregisterContext",
+            "inputData": {},
+            "deps": "js/partManufacturingService"
+        }
+    },
+
+    "data":
+    {
+        "_sublocation":
+        {
+            "priority": 0,
+            "label": {
+                "source": "/i18n/partmanufacturingMessages",
+                "key": "partMfgTitle"
+            },
+            "clientScopeURI": "Pm1PartManufacturing",
+            "nameToken": "com.siemens.splm.clientfx.tcui.xrt.showObjectSubLocation",
+            "name": "PartManufacturing",
+            "defaultDisplayMode": "TableSummaryView",
+            "context": {
+                "search": {
+                    "hideInContentSearchBox": true
+                }
+            },
+            "viewBase": "PartManufacturing",
+            "viewModes": {
+                "TableView": {
+                    "primaryWorkArea": "table",
+                    "secondaryWorkArea": false
+                },
+                "TableSummaryView": {
+                    "primaryWorkArea": "table",
+                    "secondaryWorkArea": true
+                },
+                "TreeView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": false
+                },
+                "TreeSummaryView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": true
+                }
+            }
+        },
+        "resourcesState": {
+            "initialValues": {
+                "name": "resourcesState",
+                "autoApplyFilters": true,
+                "colorToggle": true
+            },
+            "meta": {
+                "categories": [ {
+                    "filterValues": [ {
+                        "selected": {
+                            "field": "true",
+                            "type": "BOOLEAN"
+                        }
+                    } ]
+                } ]
+            }
+        },
+        "attachmentsState": {
+            "initialValues": {
+                "name": "attachmentsState",
+                "autoApplyFilters": true,
+                "colorToggle": true
+            },
+            "meta": {
+                "categories": [ {
+                    "filterValues": [ {
+                        "selected": {
+                            "field": "true",
+                            "type": "BOOLEAN"
+                        }
+                    } ]
+                } ]
+            }
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "registerContext",
+        "onUpdate": [ {
+                "action": "updateResourcesURL",
+                "observers": [ "viewModel.resourcesState" ]
+            },
+            {
+                "action": "updateAttachmentsURL",
+                "observers": [ "viewModel.attachmentsState" ]
+            }
+        ],
+        "onUnmount": "unregisterContext"
+    }
+}

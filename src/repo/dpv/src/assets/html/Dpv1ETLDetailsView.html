@@ -1,0 +1,9 @@
+<div exist-when="conditions.showOverviewCond" enable-when="conditions.showOverviewCond">
+    <dpv-overview-report sub-panel-context="props.subPanelContext"></dpv-overview-report>
+</div>
+<div exist-when="conditions.showHealthReportCond" enable-when="conditions.showHealthReportCond">
+    <dpv-files-report sub-panel-context="props.subPanelContext"></dpv-files-report>
+</div>
+<div exist-when="conditions.showDeviceReportCond" enable-when="conditions.showDeviceReportCond">
+    <dpv-device-agent-report sub-panel-context="props.subPanelContext"></dpv-device-agent-report>
+</div>

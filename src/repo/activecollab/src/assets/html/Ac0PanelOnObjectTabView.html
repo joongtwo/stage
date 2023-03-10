@@ -1,0 +1,23 @@
+<aw-flex-row height="8f" exist-when="ctx.sublocation.clientScopeURI !== 'Awv0SnapshotSearchResults' && !props.ctx.Ac0ConvCtx.currentSelectedSnapshot">
+    <aw-flex-column>
+        <aw-flex-row align-content="top">
+            <aw-flex-column width="8" justify="center" align-content="stretch">
+                <aw-label visible-when="props.objectTabData && !conditions.isHostedComponent" prop="data.selectedObject"></aw-label>
+                <aw-label visible-when="props.objectTabData && conditions.isHostedComponent" prop="data.selectedHostedObject"></aw-label>
+            </aw-flex-column>
+            <aw-flex-column width="4" justify="top" align-content="end">
+                <aw-command-bar anchor="ac0_onObjectSubCmds" alignment="HORIZONTAL"></aw-command-bar>
+            </aw-flex-column>
+        </aw-flex-row>
+        <aw-flex-row height="3f">
+            <aw-flex-column width="4" justify="center" align-content="stretch">
+                <aw-command-bar context="{sharedData: props.objectTabData.objData.sharedData}" anchor="ac0_onObjectTabNewCmd" alignment="HORIZONTAL"></aw-command-bar>
+            </aw-flex-column>
+        </aw-flex-row>
+    </aw-flex-column>
+</aw-flex-row>
+<aw-panel-body>
+    <aw-list dataprovider="data.dataProviders.conversationDataProvider" class="aw-activecollab-shadow">
+        <ac0-discussion-tile conv-item="{discussionItem: item}" selected-obj='{selectionData: props.objectTabData.objData.selectionData}' shared-data-obj='{sharedData: props.objectTabData.objData.sharedData}' contents="{switch: { meta: { showMeta: true, clickableLinks: true }, showDetails: true, showList: true, showReply: true, showActions: true, showMoreCommands: true } }"></ac0-discussion-tile>
+    </aw-list>
+</aw-panel-body>

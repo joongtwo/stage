@@ -1,0 +1,222 @@
+{
+  "actions": {
+    "bomLineDragStartAction": {
+      "actionType": "syncFunction",
+      "method": "handleDragStart",
+      "inputData": {},
+      "deps": "js/epDragAndDropService"
+    },
+    "bomLineDragEndAction": {
+      "actionType": "syncFunction",
+      "method": "handleDragEnd",
+      "deps": "js/epDragAndDropService"
+    },
+    "wiDragOverPartsAction": {
+      "actionType": "syncFunction",
+      "method": "dragOverParts",
+      "inputData": {
+        "views": [
+          "EpAssemblyTree_EpTreeTable"
+        ]
+      },
+      "deps": "js/epDragAndDropService"
+    },
+    "wiDropPartsAction": {
+      "actionType": "syncFunction",
+      "method": "dropParts",
+      "deps": "js/epDragAndDropService"
+    },
+    "dragOverWorkareaAction": {
+      "actionType": "syncFunction",
+      "method": "dragOverWorkareas",
+      "deps": "js/epDragAndDropService"
+    },
+    "dropWorkareaAction": {
+      "actionType": "syncFunction",
+      "method": "dropWorkareas",
+      "deps": "js/epDragAndDropService"
+    },
+    "dragOverResourcesAction": {
+      "actionType": "syncFunction",
+      "method": "dragOverResources",
+      "deps": "js/epDragAndDropService"
+    },
+    "dropResourcesAction": {
+      "actionType": "syncFunction",
+      "method": "dropResources",
+      "deps": "js/epDragAndDropService"
+    },
+    "dragOverTargetAssembliesAction": {
+      "actionType": "syncFunction",
+      "method": "dragOverParts",
+      "deps": "js/epDragAndDropService",
+      "inputData": {
+        "views": [
+          "EpAssemblyTree_EpTreeTable",
+          "EpHighLevelPlanningMbomTree_EpTreeTable",
+          "AssemblyPlanningBoeTree_EpBoeTreeTable"
+        ]
+      }
+    },
+    "dropTargetAssembliesAction": {
+      "actionType": "syncFunction",
+      "method": "dropTargetAssemblies",
+      "deps": "js/epDragAndDropService"
+    },
+    "balancingDragOverTilesAction": {
+      "actionType": "syncFunction",
+      "method": "dragOverTiles",
+      "deps": "js/epBalancingDragAndDropService"
+    },
+    "balancingDropTileAction": {
+      "actionType": "syncFunction",
+      "method": "dropTiles",
+      "deps": "js/epBalancingDragAndDropService"
+    },
+    "wiPmiDragStartAction": {
+      "actionType": "syncFunction",
+      "method": "cacheDraggedData",
+      "inputData": {},
+      "deps": "js/wiPmiDragAndDropService"
+    },
+    "wiPmiDragEndAction": {
+      "actionType": "syncFunction",
+      "method": "clearCachedData",
+      "deps": "js/wiPmiDragAndDropService"
+    },
+    "dragOverAssignedPmisContent": {
+      "actionType": "syncFunction",
+      "method": "onDragOverAssignedPmisContent",
+      "deps": "js/wiPmiDragAndDropService"
+    },
+    "dropInAssignedPmisContent": {
+      "actionType": "syncFunction",
+      "method": "onDropInAssignedPmisContent",
+      "deps": "js/wiPmiDragAndDropService"
+    },
+    "onDropInReadOnlyMode": {
+      "actionType": "syncFunction",
+      "method": "displayNoEditingInReadOnlyModeError",
+      "deps": "js/mfgNotificationUtils"
+    }
+  },
+  "dragHandlers": {
+    "dragHandlerForBomLineAssignment": {
+      "activeWhen": true,
+      "views": [
+        "EpAssemblyTree_EpTreeTable",
+        "EpHighLevelPlanningMbomTree_EpTreeTable",
+        "AssemblyPlanningBoeTree_EpBoeTreeTable"
+      ],
+      "dragActions": {
+        "dragStart": "bomLineDragStartAction",
+        "dragEnd": "bomLineDragEndAction"
+      }
+    },
+    "wiAssemblyPmisDragHandler": {
+      "activeWhen": true,
+      "views": [
+        "WiAssemblyPmiTable"
+      ],
+      "dragActions": {
+        "dragStart": "wiPmiDragStartAction",
+        "dragEnd": "wiPmiDragEndAction"
+      }
+    }
+  },
+  "dropHandlers": {
+    "wiAssignPartDropHandler": {
+      "activeWhen": true,
+      "views": [
+        "WiPartsTable_EpDetailsTable"
+      ],
+      "dropActions": {
+        "dragOver": "wiDragOverPartsAction",
+        "drop": "wiDropPartsAction"
+      }
+    },
+    "assignWorkareaDropHandler": {
+      "activeWhen": true,
+      "views": [
+        "EpWorkareaTable_EpDetailsTable"
+      ],
+      "dropActions": {
+        "dragOver": "dragOverWorkareaAction",
+        "drop": "dropWorkareaAction"
+      }
+    },
+    "assignResourceDropHandler": {
+      "activeWhen": true,
+      "views": [
+        "WiResourcesTable_EpDetailsTable"
+      ],
+      "dropActions": {
+        "dragOver": "dragOverResourcesAction",
+        "drop": "dropResourcesAction"
+      }
+    },
+    "addTargetAssembliesDropHandler": {
+      "activeWhen": true,
+      "views": [
+        "EpScoping_EpDetailsTable"
+      ],
+      "dropActions": {
+        "dragOver": "dragOverTargetAssembliesAction",
+        "drop": "dropTargetAssembliesAction"
+      }
+    },
+    "dropHandlerForBalancingProcessResourceTile": {
+      "activeWhen": true,
+      "views": [
+        "EpBalancingProcessResourceTile",
+        "EpBalancingStationTile"
+      ],
+      "dropActions": {
+        "dragOver": "balancingDragOverTilesAction",
+        "drop": "balancingDropTileAction"
+      }
+    },
+    "wiAssignedPmisTableDropHandler": {
+      "views": [
+        "WiAssignedPmiTable"
+      ],
+      "dropActions": {
+        "dragOver": "dragOverAssignedPmisContent",
+        "drop": "dropInAssignedPmisContent"
+      },
+      "activeWhen": {
+        "condition": "conditions.isNotReadOnlyMode"
+      }
+    },
+    "wiAssignedPmisTableDropHandlerInReadOnlyMode": {
+      "views": [
+        "WiAssignedPmiTable"
+      ],
+      "dropActions": {
+        "dragOver": "dragOverAssignedPmisContent",
+        "drop": "onDropInReadOnlyMode"
+      },
+      "activeWhen": {
+        "condition": "conditions.isReadOnlyMode"
+      }
+    }
+  },
+  "conditions": {
+    "isReadOnlyMode": {
+      "expression": {
+        "$source": "ctx.mfgReadOnlyMode.readOnlyMode",
+        "$query": {
+          "$eq": true
+        }
+      }
+    },
+    "isNotReadOnlyMode": {
+      "expression": {
+        "$source": "ctx.mfgReadOnlyMode.readOnlyMode",
+        "$query": {
+          "$eq": false
+        }
+      }
+    }
+  }
+}

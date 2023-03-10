@@ -1,0 +1,81 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "activities-model": {
+            "type": "object"
+        },
+        "scope-label": {
+            "type": "string"
+        }
+    },
+    "data": {
+        "scopeData": {
+            "displayName": "{{props.scopeLabel}}",
+            "isEditable": "false"
+        },
+        "durationData": {
+            "displayName": "{{i18n.durationDataDisplayName}}",
+            "isEditable": "false"
+        }
+    },
+    "actions": {
+        "setData": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "epActivitiesCalculateProcessDuration"
+                },
+                {
+                    "action": "getDisplayName"
+                }
+            ]
+        },
+        "getDisplayName": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{props.activitiesModel.selectedModelObject.props.object_string.uiValues[0]}}"
+            },
+            "outputData": {
+                "scopeData.uiValue": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "epActivitiesCalculateProcessDuration": {
+            "actionType": "JSFunction",
+            "method": "calculateProcessDuration",
+            "inputData": {
+                "activitiesModel": "{{props.activitiesModel}}"
+            },
+            "outputData": {
+                "durationData.uiValue": ""
+            },
+            "deps": "js/epActivitiesService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "ep.saveEvents",
+            "action": "epActivitiesCalculateProcessDuration"
+        },
+        {
+            "eventId": "ep.activitiesTimeChanged",
+            "action": "epActivitiesCalculateProcessDuration"
+        }
+    ],
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "setData",
+                "observers": [
+                    "props.activitiesModel.selectedModelObject"
+                ]
+            }
+        ]
+    },
+    "i18n": {
+        "durationDataDisplayName": [
+            "ActivitiesMessages"
+        ]
+    }
+}

@@ -1,0 +1,244 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports": [
+                  "js/aw-list-filter.directive"
+               ],
+
+    "actions":
+    {
+        "changeOrganizationScheme" :
+        {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "deps": "js/appCtxService",
+            "inputData":
+            {
+                "path": "{{data.contextKey + '.configContext'}}",
+                "value":{
+                    "org_uid": "{{data.eventMap['getOrganizationSchemes.selectionChangeEvent'].selectedObjects['0'].uid}}"
+                }
+            }
+        },
+
+        "setOrganizationSchemeRequestPref" :
+        {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "deps": "js/appCtxService",
+            "inputData": {
+                "path": "{{data.contextKey + '.requestPref'}}",
+                "value": {
+                    "unsetPartitionScheme": "true"
+                }
+            }
+        },
+
+        "setRequestPrefAndApplyNoneScheme":
+        {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setOrganizationSchemeRequestPref"
+                },
+                {
+                    "action": "changeOrganizationScheme"
+                }
+            ]
+        },
+
+        "setRequestPrefAndApplyNoneSchemeEvent":{
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "awConfigPanel.organizationSchemeChangedToNone"
+                    }
+                ]
+            }
+
+        },
+
+        "closePopupPanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData":
+            {
+                "events":
+                [
+                    {
+                        "name": "awPopupWidget.close"
+                    }
+                ]
+            }
+        },
+        "initializeOrganizationSchemeSection":
+        {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "populateContextKey"
+                },
+                {
+                    "action": "getAllPartitionSchemesAction"
+                }
+            ]
+        },
+        "getAllPartitionSchemesAction": {
+            "actionType": "dataProvider",
+            "method": "getOrganizationSchemes"
+        },
+
+        "getOrganizationSchemes":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Query-2014-11-Finder",
+            "method": "performSearch",
+            "inputData":
+            {
+                "searchInput":
+                {
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "providerName": "Fgf0PartitionSchemeProvider",
+                    "searchCriteria":
+                    {
+                        "uid": "{{data.contextKeyObject.productContextInfo.props.awb0Product.dbValues[0]}}",
+                        "searchString": "{{data.organizationSchemefilterBox.dbValue}}"
+                    },
+                    "searchFilterFieldSortType": "Priority",
+                    "startIndex": 0
+                }
+            },
+            "outputData":
+            {
+                "searchResults": "{{function:processOrganizationSchemesResp}}",
+                "totalFound": "totalFound"
+            },
+            "deps": "js/partitionConfigurationService"
+        },
+
+        "applyScheme" :
+        {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "populateContextKey"
+                },
+                {
+                    "action": "activateCurrentView",
+                    "condition": "conditions.isActiveViewDifferent"
+                },
+                {
+                    "action": "changeOrganizationScheme",
+                    "condition": "conditions.isSchemeChanged"
+                },
+                {
+                    "action": "setRequestPrefAndApplyNoneSchemeEvent",
+                    "condition": "conditions.isSchemeSetAsNone"
+                },
+                {
+                    "action": "closePopupPanel"
+                }
+            ]
+        },
+        "populateContextKey": {
+            "actionType": "JSFunction",
+            "method": "populateContextKey",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData":{
+                "contextKeyObject":"contextKeyObject",
+                "contextKey":"contextKey",
+                "viewKey":"viewKey"
+            },
+            "deps": "js/aceStructureConfigurationService"
+        },
+
+        "activateCurrentView": {
+            "actionType": "JSFunction",
+            "method": "updateActiveContext",
+            "inputData": {
+                "data": "{{data.viewKey}}"
+            },
+            "deps": "js/contextStateMgmtService"
+        }
+    },
+
+    "dataProviders":
+    {
+        "getOrganizationSchemes":
+        {
+            "action": "getOrganizationSchemes",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "selectionModelMode": "single"
+        }
+    },
+
+    "onEvent": [
+        {
+            "eventId": "OrganizationSchemePopupContent.contentLoaded",
+            "action": "initializeOrganizationSchemeSection",
+            "eventSource": "current"
+        },
+        {
+            "eventId": "getOrganizationSchemes.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "applyScheme",
+            "eventSource": "current"
+        },
+        {
+            "eventId": "awConfigPanel.organizationSchemeChanged",
+            "action": "changeOrganizationScheme",
+            "cacheEventData": true,
+            "eventSource": "current"
+        },
+        {
+            "eventId": "awConfigPanel.organizationSchemeChangedToNone",
+            "action": "setRequestPrefAndApplyNoneScheme",
+            "cacheEventData": true,
+            "eventSource": "current"
+        }
+    ],
+
+    "messages":
+    {
+    },
+
+    "functions":
+    {
+        "processOrganizationSchemesResp":
+        {
+            "functionName": "processOrganizationSchemesResp",
+            "parameters":
+            [
+                "{{data}}"
+            ]
+        }
+    },
+
+    "data":
+    {
+        "organizationSchemefilterBox":
+        {
+            "displayName" :"filter",
+            "type": "STRING",
+            "dbValue" :""
+        }
+    },
+
+    "conditions":{
+        "isSchemeChanged": {
+            "expression": "data.viewKey === subPanelContext.occContext.viewKey && data.eventMap['getOrganizationSchemes.selectionChangeEvent'].selectedObjects.length > 0 && data.eventMap['getOrganizationSchemes.selectionChangeEvent'].selectedObjects[ 0 ].uid !== 'noneObject' && data.eventMap['getOrganizationSchemes.selectionChangeEvent'].selectedObjects[ 0 ].uid !== subPanelContext.occContext.productContextInfo.props.fgf0PartitionScheme.dbValues[ 0 ]"
+        },
+        "isSchemeSetAsNone": {
+            "expression": "data.viewKey === subPanelContext.occContext.viewKey && data.eventMap['getOrganizationSchemes.selectionChangeEvent'].selectedObjects.length > 0 && data.eventMap['getOrganizationSchemes.selectionChangeEvent'].selectedObjects[ 0 ].uid === 'noneObject' && subPanelContext.occContext.productContextInfo.props.fgf0PartitionScheme !== undefined && subPanelContext.occContext.productContextInfo.props.fgf0PartitionScheme.dbValues[ 0 ]"
+        },
+        "isActiveViewDifferent": {
+            "expression": "data.viewKey !== subPanelContext.occContext.viewKey"
+        }
+    }
+}

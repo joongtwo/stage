@@ -1,0 +1,15 @@
+<aw-popup-wrapper popup="schedulePopOnLinkAction" visible-when="props.subPanelContext.runningScheduleState.scheduleId">
+        <aw-link prop="data.schedulePopOnLink" id="ref1" action="schedulePopOnLinkAction"></aw-link>
+</aw-popup-wrapper>
+<aw-label prop="data.noAssignedScheduleMsg" visible-when="!props.subPanelContext.runningScheduleState.scheduleId"></aw-label>
+<aw-radiobutton class="sw-column" prop="data.scheduleTypeLabel" list="data.scheduleTypeList.dbValue" action="updateAssignScheduleInfo">
+</aw-radiobutton>
+<div class="sw-row h-10" exist-when="data.scheduleTypeLabel.dbValue === '0'" enable-when="data.scheduleTypeLabel.dbValue === '0'">
+        <dpv-shared-schedule-table sub-panel-context="props.subPanelContext"></dpv-shared-schedule-table>
+</div>
+<div class="sw-column w-6" exist-when="data.scheduleTypeLabel.dbValue === '1'" enable-when="data.scheduleTypeLabel.dbValue === '1'">
+        <dpv-schedule sub-panel-context="{...subPanelContext}"></dpv-schedule>
+</div>
+<div class="sw-column w-8" exist-when="data.scheduleTypeLabel.dbValue === '2'" enable-when="data.scheduleTypeLabel.dbValue === '2'">
+    <aw-guidance-message message="triggerScheduleInfoMsg" closable="false" banner-style="false" show-icon="true" show-type="true"></aw-guidance-message>
+</div>

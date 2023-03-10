@@ -1,0 +1,662 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-splm-table.directive"
+    ],
+    "data": {
+        "columns": [],
+        "supportedStatusToColumn": [ {
+            "columnName": "mismatchOrMissingIndication",
+            "statuses": [ 1, 2, 4, 5, 6, 55, 57, 58 ]
+        } ]
+    },
+    "actions": {
+        "doArrangeEvent": {
+            "actionType": "JSFunctionAsync",
+            "method": "arrangeColumns",
+            "inputData": {
+                "declViewModel": "{{data}}",
+                "eventData": "{{data.eventData}}"
+            },
+            "deps": "js/senColumnArrangeService"
+        },
+        "loadDataForSavedColumnConfig": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTableViewModelProperties",
+            "deps": "js/tcViewModelObjectService",
+            "inputData": {
+                "vmNodes": "{{data.dataProviders.sbomDataProvider.viewModelCollection.loadedVMObjects}}",
+                "context": {
+                    "clientScopeURI": "{{ctx.sublocation.clientScopeURI}}",
+                    "clientName": "AWClient",
+                    "columnsToExclude": "{{ctx.sbomContext.columnsToExclude}}",
+                    "operationType": "{{eventData.operationType}}"
+                }
+            },
+            "outputData": {
+                "newColumnConfig": "result.output.columnConfig"
+            }
+        },
+        "loadPLFProperties": {
+            "actionType": "JSFunction",
+            "method": "getPartList",
+            "inputData": {
+                "vmos": "{{data.dataProviders.sbomDataProvider.viewModelCollection.loadedVMObjects}}"
+            },
+            "deps": "js/senPLFTablePropertyRenderer"
+        },
+        "loadPLF": {
+            "actionType": "JSFunction",
+            "method": "getPLF",
+            "inputData": {
+                "data": "{{data.eventData}}"
+            },
+            "deps": "js/senPLFTablePropertyRenderer"
+        },
+        "loadSbomData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableData",
+            "inputData": {
+                "methodArgument": {
+                    "treeLoadInput": "request.treeLoadInput",
+                    "dataProviderActionType": "initializeAction",
+                    "loadIDs": "request.loadIDs",
+                    "grid": "{{data.grids.senSbomTreeTable}}",
+                    "uwDataProvider": "{{data.dataProviders.sbomDataProvider}}",
+                    "declViewModel": "{{data}}",
+                    "sortCriteria": "{{data.columnProviders.sbomColumnProvider.sortCriteria}}",
+                    "retainTreeExpansionStates": true,
+                    "subPanelContext": "{{props.subPanelContext.provider}}"
+                }
+            },
+            "outputData": {
+                "ctx.sbomContext.showTopNode": "result.treeLoadResult.showTopNode",
+                "ctx.sbomContext.modelObject": "result.treeLoadResult.baseModelObject",
+                "ctx.sbomContext.openedElement": "result.treeLoadResult.openedModelObject",
+                "ctx.sbomContext.sublocationAttributes": "result.treeLoadResult.sublocationAttributes",
+                "ctx.sbomContext.productContextInfo": "result.treeLoadResult.productContextInfo",
+                "ctx.sbomContext.configContext": "result.treeLoadResult.configContext",
+                "ctx.sbomContext.topElement": "result.treeLoadResult.topElement",
+                "ctx.sbomContext.requestPref": "result.treeLoadResult.requestPref",
+                "ctx.sbomContext.treeDataProvider": "result.treeLoadResult.treeDataProvider",
+                "ctx.sbomContext.startFreshNavigation": "result.treeLoadResult.startFreshNavigation",
+                "ctx.sbomContext.vmc": "result.treeLoadResult.vmc",
+                "dataProviders.sbomDataProvider.objectSetUri": "result.treeLoadResult.productContextInfo.props.awb0ClientScopeUri.dbValues[0]",
+                "dataProviders.sbomDataProvider.columnConfig": "result.treeLoadResult.columnConfig",
+                "ctx.sbomContext.elementToPCIMap": "result.treeLoadResult.elementToPCIMap",
+                "ctx.sbomContext.sublocation.clientScopeURI": "result.treeLoadResult.productContextInfo.props.awb0ClientScopeUri.dbValues[0]",
+                "ctx.sbomContext.context.productContextInfo": "result.treeLoadResult.productContextInfo"
+            },
+            "events": {
+                "success": [ {
+                    "name": "occDataLoadedEvent",
+                    "eventData": {
+
+                        "dataProviderActionType": "initializeAction",
+                        "contextKey": "{{props.subPanelContext.provider.contextKey}}",
+                        "occContext": "{{props.subPanelContext.provider.occContext}}"
+                    }
+                },{
+
+                    "name": "updateActiveContextEvent",
+                    "eventData": {
+                        "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+                    }
+                } ]
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadNextSbomData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadNextOccurrencesInTreeTable",
+            "inputData": {
+                "methodArgument": {
+                    "treeLoadInput": "request.treeLoadInput",
+                    "dataProviderActionType": "nextAction",
+                    "loadIDs": "request.loadIDs",
+                    "grid": "{{data.grids.sbomTreeTable}}",
+                    "uwDataProvider": "{{data.dataProviders.sbomDataProvider}}",
+                    "declViewModel": "{{data}}",
+                    "sortCriteria": "{{data.columnProviders.sbomColumnProvider.sortCriteria}}",
+                    "subPanelContext": "{{props.subPanelContext.provider}}"
+                }
+            },
+            "outputData": {
+                "ctx.sbomContext.modelObject": "result.treeLoadResult.topElement",
+                "ctx.sbomContext.productContextInfo": "result.treeLoadResult.productContextInfo",
+                "ctx.sbomContext.topElement": "result.treeLoadResult.topElement",
+                "ctx.sbomContext.elementToPCIMap": "result.treeLoadResult.elementToPCIMap",
+                "ctx.sbomContext.configContext": "result.treeLoadResult.configContext",
+                "ctx.sbomContext.requestPref": "result.treeLoadResult.requestPref"
+            },
+            "events": {
+                "success": [ {
+                    "name": "occDataLoadedEvent",
+                    "eventData": {
+                        "contextKey": "{{props.subPanelContext.provider.contextKey}}",
+                            "dataProviderActionType": "nextAction",
+                            "occContext": "{{props.subPanelContext.provider.occContext}}"
+                    }
+                    },{
+
+                        "name": "updateActiveContextEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadSbomDataPage": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableDataPage",
+            "inputData": {
+                "methodArgument": {
+                    "treeLoadInput": "request.treeLoadInput",
+                    "loadIDs": "request.loadIDs",
+                    "grid": "{{data.grids.senSbomTreeTable}}",
+                    "uwDataProvider": "{{data.dataProviders.sbomDataProvider}}",
+                    "declViewModel": "{{data}}",
+                    "sortCriteria": "{{data.columnProviders.sbomColumnProvider.sortCriteria}}",
+
+                    "subPanelContext": "{{props.subPanelContext.provider}}"
+                }
+            },
+            "outputData": {
+                "ctx.sbomContext.modelObject": "result.treeLoadResult.topElement",
+                "ctx.sbomContext.productContextInfo": "result.treeLoadResult.productContextInfo",
+                "ctx.sbomContext.elementToPCIMap": "result.treeLoadResult.elementToPCIMap",
+                "ctx.sbomContext.topElement": "result.treeLoadResult.topModelObject",
+                "ctx.sbomContext.configContext": "result.treeLoadResult.configContext",
+                "ctx.sbomContext.requestPref": "result.treeLoadResult.requestPref"
+            },
+            "events": {
+                "success": [ {
+                    "name": "occDataLoadedEvent",
+                    "eventData": {
+
+                        "contextKey": "{{props.subPanelContext.provider.viewKey}}",
+                        "dataProviderActionType": "nextAction",
+                        "occContext" :"{{props.subPanelContext.provider.occContext}}"
+                    }
+                } ,
+                {
+                    "name": "updateActiveContextEvent",
+                    "eventData": {
+                        "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+                    }
+                }]
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadPreviousSbomData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadPreviousOccurrencesInTreeTable",
+            "inputData": {
+                "methodArgument": {
+                    "treeLoadInput": "request.treeLoadInput",
+                    "dataProviderActionType": "previousAction",
+                    "loadIDs": "request.loadIDs",
+                    "grid": "{{data.grids.senSbomTreeTable}}",
+                    "uwDataProvider": "{{data.dataProviders.sbomDataProvider}}",
+                    "declViewModel": "{{data}}",
+                    "sortCriteria": "{{data.columnProviders.sbomColumnProvider.sortCriteria}}",
+                    "subPanelContext": "{{props.subPanelContext.provider}}"
+                }
+            },
+            "outputData": {
+                "ctx.sbomContext.modelObject": "result.treeLoadResult.topElement",
+                "ctx.sbomContext.productContextInfo": "result.treeLoadResult.productContextInfo",
+                "ctx.sbomContext.elementToPCIMap": "result.treeLoadResult.elementToPCIMap",
+                "ctx.sbomContext.topElement": "result.treeLoadResult.topElement",
+                "ctx.sbomContext.configContext": "result.treeLoadResult.configContext",
+                "ctx.sbomContext.requestPref": "result.treeLoadResult.requestPref"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "occDataLoadedEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}",
+                            "dataProviderActionType": "previousAction",
+                            "occContext" :"{{props.subPanelContext.provider.occContext}}"
+                        }
+                    },
+                    {
+                        "name": "updateActiveContextEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadSbomDataWithFocus": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadOccurrencesWithFocusInTreeTable",
+            "inputData": {
+                "methodArgument": {
+                    "treeLoadInput": "request.treeLoadInput",
+                    "dataProviderActionType": "focusAction",
+                    "loadIDs": "request.loadIDs",
+                    "grid": "{{data.grids.senSbomTreeTable}}",
+                    "uwDataProvider": "{{data.dataProviders.sbomDataProvider}}",
+                    "declViewModel": "{{data}}",
+                    "sortCriteria": "{{data.columnProviders.sbomColumnProvider.sortCriteria}}",
+                    "subPanelContext": "{{props.subPanelContext.provider}}"
+                }
+            },
+            "outputData": {
+                "ctx.sbomContext.modelObject": "result.treeLoadResult.topElement",
+                "ctx.sbomContext.productContextInfo": "result.treeLoadResult.productContextInfo",
+                "ctx.sbomContext.elementToPCIMap": "result.treeLoadResult.elementToPCIMap",
+                "ctx.sbomContext.topElement": "result.treeLoadResult.topElement",
+                "ctx.sbomContext.configContext": "result.treeLoadResult.configContext",
+                "ctx.sbomContext.requestPref": "result.treeLoadResult.requestPref"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "occDataLoadedEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}",
+                            "dataProviderActionType": "focusAction",
+                            "occContext" :"{{props.subPanelContext.provider.occContext}}"
+
+                        }
+                    },
+                    {
+                        "name": "updateActiveContextEvent",
+                        "eventData": {
+                            "contextKey": "{{props.subPanelContext.provider.contextKey}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadSbomProperties": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableProperties",
+            "inputData": {
+                "methodArgument": {
+                    "propertyLoadInput": "request.propertyLoadInput",
+                    "propertyLoadContext": {
+                        "clientName": "AWClient",
+                        "clientScopeURI": "{{props.subPanelContext.provider.clientScopeURI}}",
+                        "typesForArrange": "{{data.dataProviders.sbomDataProvider.columnConfig.typesForArrange}}"
+                    },
+                    "contextKey": "{{props.subPanelContext.provider.viewKey}}",
+                    "declViewModel": "{{data}}",
+                    "uwDataProvider": "{{data.dataProviders.sbomDataProvider}}",
+                    "subPanelContext": "{{props.subPanelContext.provider}}"
+                }
+            },
+            "outputData": {
+                "dataProviders.sbomDataProvider.columnConfig": "result.propertyLoadResult.columnConfig",
+                "ctx.searchResponseInfo.columnConfig": "result.propertyLoadResult.columnConfig"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "senSbom.loadPropertiesSuccess"
+                    },
+                    {
+                        "name": "occMgmt.visibilityStateChanged",
+                        "eventData": {
+                            "viewToReact": "sbomContext"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadSbomServerColumns": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.sbomDataProvider}}",
+                "columnProvider": "{{data.columnProviders.sbomColumnProvider}}",
+                "contextKey": "{{props.subPanelContext.provider.viewKey}}"
+            },
+            "outputData": {
+                "dataProviders.sbomDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "loadSbomClientColumns": {
+            "actionType": "JSFunction",
+            "method": "loadSbomClientColumns",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/senLoadSbomClientColumns"
+        },
+        "loadSbomColumns": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "loadSbomClientColumns"
+                },
+                {
+                    "action": "loadSbomServerColumns"
+                }
+            ]
+        },
+        "loadCompareInfo": {
+            "actionType": "JSFunction",
+            "method": "performCompare",
+            "inputData": {
+                "vmos": "{{data.dataProviders.sbomDataProvider.viewModelCollection.loadedVMObjects}}",
+                "contextKey": "sbomContext"
+            },
+            "deps": "js/senCompareService"
+        },
+        "loadPLFAndCampareInfo": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "loadPLFProperties"
+                },
+                {
+                    "action": "loadCompareInfo"
+                }
+            ]
+        },
+        "resetColumnConfig": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2022-06-UiConfig",
+            "method": "getOrResetUIColumnConfigs3",
+            "inputData": {
+                "getOrResetUiConfigsIn": [
+                    {
+                        "scope": "LoginUser",
+                        "scopeName": "",
+                        "clientName": "AWClient",
+                        "resetColumnConfig": true,
+                        "columnConfigQueryInfos": [
+                            {
+                                "clientScopeURI": "{{props.subPanelContext.provider.clientScopeURI}}",
+                                "operationType": "union",
+                                "typeNames": "{{data.dataProviders.sbomDataProvider.columnConfig.typesForArrange}}",
+                                "columnsToExclude": "{{ctx.sbomContext.columnsToExclude}}"
+                            }
+                        ],
+                        "businessObjects": [
+                            {}
+                        ]
+                    }
+                ]
+            },
+            "outputData": {
+                "dataProviders.sbomDataProvider.columnConfig": "{{function:postResetFunction}}"
+            },
+            "deps": "js/tcarrange.service"
+        },
+        "saveColumnConfigLoadData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-03-UiConfig",
+            "method": "saveUIColumnConfigs",
+            "inputData": {
+                "columnConfigurations": [
+                    {
+                        "clientScopeURI": "{{data.dataProviders.sbomDataProvider.objectSetUri}}",
+                        "columnConfigId": "{{data.dataProviders.sbomDataProvider.columnConfig.columnConfigId}}",
+                        "columns": "{{data.dataProviders.sbomDataProvider.newColumns}}",
+                        "scope": "LoginUser",
+                        "scopeName": ""
+                    }
+                ]
+            },
+            "outputData": {},
+            "events": {
+                "success": [ {
+                    "name": "sen.sbomColumnConfig.saved"
+                } ]
+            }
+        },
+        "updateDisplayNames": {
+            "actionType": "JSFunction",
+            "method": "updateDisplayNames",
+            "inputData": {
+                "eventData": "{{data.eventData}}"
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "processVMC": {
+            "actionType": "JSFunction",
+            "method": "processViewModelCollectionEvent",
+            "inputData": {
+                "vmc": "{{data.dataProviders.sbomDataProvider.viewModelCollection}}",
+                "eventInfo": "{{data}}"
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "toggleSbomTreeNodeHierarchy": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "toggleTreeNodeHierarchy",
+                        "eventData": {
+                            "data": "{{data}}",
+                            "row": "{{data.eventData}}"
+                        }
+                    }
+                ]
+            }
+        },
+        "updateSbomTableVisibility": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "senSbomTreeTable.plTable.visibilityStateChanged"
+                    }
+                ]
+            }
+        },
+        "setSbomVisibility": {
+            "actionType": "JSFunction",
+            "method": "setOccVisibility",
+            "inputData": {
+                "loadedVMObjects": "{{data.dataProviders.sbomDataProvider.viewModelCollection.loadedVMObjects}}",
+                "contextKey": "sbomContext"
+            },
+            "deps": "js/occmgmtTreeTableDataService"
+        },
+        "updateCompareStatus": {
+            "actionType": "JSFunction",
+            "method": "updateCompareStatus",
+            "inputData": {
+                "contextKey": "sbomContext",
+                "uids": "{{data.eventData.targetIdsToUpdate}}",
+                "supportedColumnTostatus": "{{data.supportedStatusToColumn}}"
+            },
+            "deps": "js/senCompareUtils"
+        },
+        "performCompareAfterUnAssigned": {
+            "actionType": "JSFunctionAsync",
+            "method": "performCompareAfterUnAssigned",
+            "inputData": {
+                "vmos": "{{data.dataProviders.sbomDataProvider.viewModelCollection.loadedVMObjects}}",
+                "contextKey": "sbomContext"
+            },
+            "deps": "js/senCompareService"
+        },
+        "updateCompareMode": {
+            "actionType": "JSFunction",
+            "method": "updateCompareMode",
+            "inputData": {
+                "freshCompare": true
+            },
+            "deps": "js/senCompareUtils"
+        },
+        "updateTreeNodeStates":{
+            "actionType": "JSFunction",
+            "method": "updateTreeNodeStates",
+            "inputData": {
+                "vmNodes": "{{data.dataProviders.sbomDataProvider.viewModelCollection.loadedVMObjects}}",
+                "data": "{{data}}",
+                "subPanelContext": "{{props.subPanelContext.provider}}"
+            },
+            "deps": "js/occmgmtTreeTableStateService"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "columnArrange",
+            "cacheEventData": true,
+            "action": "doArrangeEvent",
+            "condition": "name === 'senSbomTreeTable' || ( name === 'senSbomTreeTable' && ( ctx.sbomContext.sublocation.clientScopeURI === ctx.ebomContext.sublocation.clientScopeURI ) )"
+        },
+        {
+            "eventId": "sen.sbomColumnConfig.saved",
+            "cacheEventData": true,
+            "action": "loadDataForSavedColumnConfig",
+            "condition": "!ctx.editInProgress"
+        },
+        {
+            "eventId": "sbomDataProvider.modelObjectsUpdated",
+            "cacheEventData": true,
+            "action": "updateDisplayNames"
+        },
+        {
+            "eventId": "vmc.modified.sbomDataProvider",
+            "cacheEventData": true,
+            "action": "updateDisplayNames"
+        },
+        {
+            "eventId": "vmc.modified.sbomDataProvider",
+            "cacheEventData": true,
+            "action": "updateTreeNodeStates"
+        },
+        {
+            "eventId": "vmc.modified.sbomDataProvider",
+            "cacheEventData": true,
+            "action": "processVMC"
+        },
+        {
+            "eventId": "sbomDataProvider.toggleTreeNodeHierarchy",
+            "cacheEventData": true,
+            "action": "toggleSbomTreeNodeHierarchy"
+        },
+        {
+            "eventId": "sbomDataProvider.selectionChangeEvent",
+            "action": "updateSelectedObjectUids"
+        },
+        {
+            "eventId": "occMgmt.visibilityStateChanged",
+            "condition": "viewToReact ? viewToReact === 'sbomContext' : true",
+            "action": "updateSbomTableVisibility"
+        },
+        {
+            "eventId": "occMgmt.visibilityStateChanged",
+            "condition": "viewToReact ? viewToReact === 'sbomContext' : true",
+            "action": "setSbomVisibility"
+        },
+        {
+            "eventId": "senSbom.loadPropertiesSuccess",
+            "action": "loadPLFAndCampareInfo"
+        },
+        {
+            "eventId": "senSbom.loadPLF",
+            "cacheEventData": true,
+            "action": "loadPLF"
+        },
+        {
+            "eventId": "sen.compareComplete",
+            "cacheEventData": true,
+            "action": "updateCompareStatus"
+        },
+        {
+            "eventId": "ace.elementsRemoved",
+            "action": "performCompareAfterUnAssigned"
+        },
+        {
+            "eventId": "addElement.elementsAdded",
+            "action": "updateCompareMode"
+        },
+        {
+            "eventId": "editHandlerStateChange",
+            "condition": "state === 'saved'",
+            "action": "updateCompareMode"
+        },
+        {
+            "eventId": "editHandlerStateChange",
+            "condition": "state === 'saved'",
+            "action": "loadCompareInfo"
+        }
+    ],
+    "dataProviders": {
+        "sbomDataProvider": {
+            "initializeAction": "loadSbomData",
+            "nextAction": "loadNextSbomData",
+            "previousAction": "loadPreviousSbomData",
+            "focusAction": "loadSbomDataWithFocus",
+            "editContext": "{{subPanelContext.provider.editContext}}",
+            "treeLoadResult": "action.result.treeLoadResult",
+            "selectionModelMode": "multiple",
+            "cacheCollapse": true,
+            "treePageSize": 250,
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}",
+                "accessMode": "tree",
+                "topNodeUid": "{{ctx.aceActiveContext.context.currentState.uid}}"
+            }
+        },
+        "sbomPropertyProvider": {
+            "action": "loadSbomProperties",
+            "propertyLoadResult": "action.result.propertyLoadResult"
+        }
+    },
+    "columnProviders": {
+        "sbomColumnProvider": {
+            "loadColumnAction": "loadSbomColumns",
+            "clientColumns": "{{data.columns}}",
+            "saveColumnAndLoadAction": "saveColumnConfigLoadData",
+            "resetColumnAction": "resetColumnConfig",
+            "frozenColumnIndex": 1
+        }
+    },
+    "grids": {
+        "senSbomTreeTable": {
+            "dataProvider": "sbomDataProvider",
+            "propertyProvider": "sbomPropertyProvider",
+            "columnProvider": "sbomColumnProvider",
+            "enableArrangeMenu": true,
+            "addIconColumn": false,
+            "gridOptions": {
+                "useStaticFirstCol": false,
+                "enableSorting": false,
+                "enableExpansionStateCaching": true,
+                "enableDragAndDrop": false,
+                "enableExpandAndPaginationInEdit": true
+            }
+        }
+    },
+    "functions": {
+        "getContextKeyFromParentScope": {
+            "functionName": "getContextKeyFromParentScope",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "postResetFunction": {
+            "functionName": "postResetFunction",
+            "parameters": [
+                "{{data.dataProviders.sbomDataProvider.columnConfig}}"
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+        {
+            "action": "updateTreeNodeStates",
+            "observers": [ "viewModel.dataProviders.sbomDataProvider.viewModelCollection.loadedVMObjects" ]
+        } ]
+    }
+}

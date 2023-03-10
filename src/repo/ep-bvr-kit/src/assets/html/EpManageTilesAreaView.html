@@ -1,0 +1,8 @@
+<div class="sw-row aw-ep-manageWPHeaderTileAreaOffset mx-large">
+    <div class="sw-column w-6 justify-top flex-auto my-large">
+        <mfe-content-panel sub-panel-context="contentPanelData" aw-repeat="contentPanelData : data.tileAreaModel"></mfe-content-panel>
+    </div>
+    <div class="sw-column w-6 justify-top flex-auto my-large" exist-when="conditions.isConfigContextAvailable">
+        <mfe-content-panel sub-panel-context="contentPanelData" aw-repeat="contentPanelData : data.productVariants"></mfe-content-panel>
+    </div>
+</div>

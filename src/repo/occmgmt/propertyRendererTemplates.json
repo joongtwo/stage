@@ -1,0 +1,143 @@
+{
+  "release_status_template": {
+    "grids": [],
+    "columns": [
+      "awb0ArchetypeRevRelStatus",
+      "usg0UsageOccRevRelStatus"
+    ],
+    "tooltip": [],
+    "template": "",
+    "templateUrl": "/propRenderTemplates/releaseStatusRenderer.html",
+    "renderFunction": "",
+    "dependentServices": [
+      "soa/kernel/clientDataModel",
+      "soa/kernel/clientDataModel"
+    ]
+  },
+  "icon_property_template": {
+    "grids": [],
+    "columns": [
+      "awb0HasElementEffectivity",
+      "awb0HasInContextOverrides",
+      "awb0HasAlternates",
+      "awb0HasSubstitues",
+      "awb0HasVariant"
+    ],
+    "tooltip": [],
+    "template": "",
+    "templateUrl": "",
+    "renderFunction": "propertyIconRenderer",
+    "headerTemplateUrl": "/propRenderTemplates/propertyIconRendererForHeader.html",
+    "deps": "js/occmgmtPropertyIconRenderer",
+    "dependentServices": []
+  },
+  "icon_text_property_template": {
+    "grids": [],
+    "columns": [
+      "awb0EndItemState"
+    ],
+    "tooltip": [],
+    "template": "",
+    "templateUrl": "",
+    "renderFunction": "propertyIconRenderer",
+    "headerTemplateUrl": "",
+    "deps": "js/occmgmtPropertyIconRenderer",
+    "dependentServices": []
+  },
+  "discovery_indexed_template": {
+    "grids": [],
+    "columns": [
+      "awb0IsDiscoveryIndexed"
+    ],
+    "tooltip": [
+      "awb0DiscoveryIndexTime"
+    ],
+    "template": "",
+    "templateUrl": "/propRendererTemplates/indexedStructureRenderer.html",
+    "renderFunction": "",
+    "dependentServices": [
+      "soa/kernel/clientDataModel"
+    ]
+  },
+  "entCbaAlignmentColumn_template": {
+    "grids": [
+      "cbaSourceTree"
+    ],
+    "columns": [
+      "srcAlignmentIndication"
+    ],
+    "tooltip": [
+      "AlignmentTooltip"
+    ],
+    "renderFunction": "getSrcAlignmentIndicationRenderer",
+    "deps": "js/CadBomAlignmentCheckPropertyRenderer"
+  },
+  "entCbaAdvanceColumn_template": {
+    "grids": [
+      "cbaSourceTree"
+    ],
+    "columns": [
+      "srcAdvanceIndication"
+    ],
+    "tooltip": [
+      "AlignmentTooltip"
+    ],
+    "renderFunction": "getSrcAdvanceIndicationRenderer",
+    "deps": "js/CadBomAlignmentCheckPropertyRenderer"
+  },
+  "entCbaTrgAlignmentColumn_template": {
+    "grids": [
+      "cbaTargetTree"
+    ],
+    "columns": [
+      "trgAlignmentIndication"
+    ],
+    "tooltip": [
+      "AlignmentTooltip"
+    ],
+    "renderFunction": "getTrgAlignmentIndicationRenderer",
+    "deps": "js/CadBomAlignmentCheckPropertyRenderer"
+  },
+  "entCbaTrgAdvanceColumn_template": {
+    "grids": [
+      "cbaTargetTree"
+    ],
+    "columns": [
+      "trgAdvanceIndication"
+    ],
+    "tooltip": [
+      "AlignmentTooltip"
+    ],
+    "renderFunction": "getTrgAdvanceIndicationRenderer",
+    "deps": "js/CadBomAlignmentCheckPropertyRenderer"
+  },
+  "entCbaColumnHeader_template": {
+    "grids": [
+      "cbaSourceTree",
+      "cbaTargetTree"
+    ],
+    "columns": [
+      "srcAlignmentIndication",
+      "srcAdvanceIndication",
+      "trgAlignmentIndication",
+      "trgAdvanceIndication"
+    ],
+    "headerTemplateUrl": "/propRenderTemplates/entCbaAlignmentColumnHeaderRenderer.html"
+  },
+  "cbaXRTPrimaryColumn_template": {
+    "grids": [],
+    "columns": [
+      "fnd0IsPrimary",
+      "fnd0IsAlignmentCurrent"
+    ],
+    "tooltip": [
+      "AlignmentTooltip"
+    ],
+    "renderFunction": "getCbaXRTIndicationRenderer",
+    "deps": "js/cbaXRTCellRenderer",
+    "headerTemplateUrl": "/propRenderTemplates/cbaXrtHeaderRenderer.html",
+    "dependentServices": [
+      "js/localeService"
+    ]
+  }
+}

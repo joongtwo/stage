@@ -1,0 +1,37 @@
+<div class="aw-layout-flexColumn" show-when="data.activeState.value.activeView==='AddObjectPrimarySub'">
+    <aw-panel-header>
+        <aw-panel-section caption="i18n.toTitle">
+            <aw-default-cell vmo="ctx.aceActiveContext.context.addElementInput.parentElement"></aw-default-cell>
+        </aw-panel-section>
+    </aw-panel-header>
+    <aw-form name="createInputs">
+        <aw-add
+            include-types="{{data.allowedTypeInfo.objectTypeName}}"
+            type-filter="{{data.allowedTypeInfo.searchTypeName}}"
+            load-sub-types="false"
+            max-recent-count="5"
+            exist-when="data.allowedTypeInfo"
+            visible-tabs="{{data.allowedTypeInfo.allowedTabs}}"
+            selection-mode="{{data.selectionMode.value}}"
+            preferred-type="{{data.allowedTypeInfo.preferredType}}"
+            add-panel-state="fields.addPanelState"
+            active-state="data.activeState"
+            project-state="data.projectState"
+            sub-panel-context="{ triggerCreate: data.triggerCreate }"
+            xrt-state="data.xrtState"
+            edit-handler="editHandlers.addPanelEditHandler">
+        </aw-add>
+    </aw-form>
+    <aw-panel-footer>
+        <aw-button action="createAndReplaceElement" visible-when="formProp.attributes.valid && conditions.isNewTabReplaceButtonVisible">
+            <aw-i18n>i18n.replaceElementBtn</aw-i18n>
+        </aw-button>
+        <aw-button action="replaceElement" visible-when="!ctx.aceActiveContext.context.isDuplicateEnabled && (conditions.isPaletteTabReplaceButtonVisible || conditions.isSearchTabReplaceButtonVisible)">
+            <aw-i18n>i18n.replaceElementBtn</aw-i18n>
+        </aw-button>
+        <aw-button action="replaceElementForDuplicate" visible-when="ctx.aceActiveContext.context.isDuplicateEnabled && (conditions.isPaletteTabReplaceButtonVisible || conditions.isSearchTabReplaceButtonVisible)">
+            <aw-i18n>i18n.replaceElementBtn</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</div>
+<aw-add-navigate active-state="data.activeState" project-state="data.projectState" action="actions.setActiveView"></aw-add-navigate>

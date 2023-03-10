@@ -1,0 +1,131 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "datasets-list": {
+            "type": "object"
+        },
+        "gallery-model": {
+            "type": "object"
+        }
+    },
+
+    "actions":
+    {
+        "handleInputChange": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "handleDatasetsListChange",
+                    "condition": "conditions.isNewData"
+                }
+            ]
+        },
+        "handleDatasetsListChange": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateCurrentDatasetsList"
+                },
+                {
+                    "action": "loadDataProvider"
+                },
+                {
+                    "action": "selectFirstThumbnail"
+                }
+            ]
+        },
+
+        "updateCurrentDatasetsList": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{props.datasetsList}}"
+            },
+            "outputData": {
+                "currentDatasetsList": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+
+        "loadDataProvider":
+        {
+            "actionType": "dataProvider",
+            "method": "galleryListDataProvider"
+        },
+
+        "selectFirstThumbnail": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.galleryListDataProvider}}",
+                "objectsToSelect": "{{data.dataProviders.galleryListDataProvider.viewModelCollection.loadedVMObjects[0]}}"
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+
+        "handleSelectionChange": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "selectUnselectedThumbnail",
+                    "condition": "conditions.isNoneSelected"
+                },
+                {
+                    "action": "setGalleryContext"
+                }
+            ]
+        },
+
+        "setGalleryContext": {
+            "actionType": "JSFunction",
+            "method": "setGalleryContext",
+            "inputData": {
+                "galleryModel": "{{props.galleryModel}}",
+                "galleryContext": {
+                    "selectedItem": "{{data.dataProviders.galleryListDataProvider.selectedObjects[0]}}"
+                }
+            },
+            "deps": "js/workinstrGalleryService"
+        },
+
+        "selectUnselectedThumbnail": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.galleryListDataProvider}}",
+                "objectsToSelect": "{{props.galleryModel.selectedItem}}"
+            },
+            "deps": "js/mfeSyncUtils"
+        }
+    },
+
+    "dataProviders":
+    {
+        "galleryListDataProvider":
+        {
+            "response": "{{props.datasetsList}}",
+            "totalFound": "{{props.datasetsList.length}}",
+            "selectionModelMode": "single"
+        }
+    },
+
+    "conditions": {
+        "isNoneSelected": {
+            "expression": "data.dataProviders.galleryListDataProvider.selectedObjects.length === 0 && props.galleryModel.selectedItem"
+        },
+        "isNewData": {
+            "expression": "data.currentDatasetsList.length !== props.datasetsList.length || data.currentDatasetsList[0].uid !== props.datasetsList[0].uid || data.currentDatasetsList[data.currentDatasetsList.length-1].uid !== props.datasetsList[props.datasetsList.length-1].uid"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onUpdate": [{
+            "action":"handleInputChange",
+            "observers":["props.datasetsList"]
+        },
+        {
+            "action": "handleSelectionChange",
+            "observers": ["viewModel.dataProviders.galleryListDataProvider.selectedObjects"]
+        }]
+    }
+}

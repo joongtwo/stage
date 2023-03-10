@@ -1,0 +1,35 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "actions": {
+        "launchComparePanel": {
+            "actionType": "JSFunction",
+            "method": "activateCommandPanel",
+            "deps": "js/commandPanel.service",
+            "inputData": {
+                "commandId": "Awb0Compare",
+                "location": "aw_toolsAndInfo",
+                "context": null,
+                "push": true
+            }
+        }
+    },
+
+    "conditions": {
+        "isCompareValid": {
+            "expression": "ctx.splitView && ctx.splitView.mode && ctx.occmgmtContext.productContextInfo && ctx.occmgmtContext2.productContextInfo && ctx.occmgmtContext.productContextInfo.uid !== ctx.occmgmtContext2.productContextInfo.uid && !ctx.occmgmtContext2.supportedFeatures.Awb0UnassignedFeature === true && conditions.isCompareValidForDiscovery"
+        },
+        "isCompareValidForDiscovery": {
+            "expression": "!ctx.occmgmtContext.worksetTopNode && !ctx.occmgmtContext2.worksetTopNode && ctx.occmgmtContext.topElement.modelType.typeHierarchyArray.indexOf( 'Fnd0AppSession' ) < 0 && ctx.occmgmtContext2.topElement.modelType.typeHierarchyArray.indexOf( 'Fnd0AppSession' ) < 0"
+        }
+    },
+
+    "i18n": {
+        "compareTitle": [
+            "CompareSplitViewConstants"
+        ],
+        "compareOptionsTooltip": [
+            "CompareSplitViewConstants"
+        ]
+    }
+}

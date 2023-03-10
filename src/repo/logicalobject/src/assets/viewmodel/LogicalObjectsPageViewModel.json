@@ -1,0 +1,41 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "_provider": {
+            "breadcrumbConfig": {
+                "vm": "AwSearchBreadcrumb"
+            },
+            "priority": 1,
+            "label": {
+                "source": "/i18n/LogicalObjectMessages",
+                "key": "logicalObjects"
+            },
+            "context": {
+                "search": {
+                    "provider": "Fnd0TypeSearchProvider",
+                    "criteria": {
+                        "searchString": "",
+                        "category": "Logical"
+                    },
+                    "sortType": "Priority"
+                },
+                "logicalObject": {
+                    "toSelect": []
+                }
+            },
+            "viewModes": {
+                "SummaryView": {
+                    "primaryWorkArea": "list",
+                    "secondaryWorkArea": true
+                },
+                "ListView": {
+                    "primaryWorkArea": "list",
+                    "secondaryWorkArea": false
+                }
+            },
+            "clientScopeURI": "LO1Commands",
+            "nameToken": "com.siemens.splm.client.logicalobject:logicalObjectsSubLocation",
+            "viewBase": "logicalObject"
+        }
+    }
+}

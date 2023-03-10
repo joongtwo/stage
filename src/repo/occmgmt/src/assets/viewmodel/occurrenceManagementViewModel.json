@@ -1,0 +1,118 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-occmgmt-sublocation.directive",
+        "js/exist-when.directive"
+    ],
+    "data": {
+        "_sublocation": {
+            "name": "com.siemens.splm.client.occmgmt:OccurrenceManagementSubLocation",
+            "label": {
+                "source": "/i18n/OccurrenceManagementConstants",
+                "key": "occMgmtTitle"
+            },
+            "clientScopeURI": "Awb0OccurrenceManagement",
+            "nameToken": "com.siemens.splm.client.occmgmt:OccurrenceManagementSubLocation",
+            "policy": "/policies/occMgmtPropertyPolicy.json",
+            "viewBase": "occMgmt",
+            "editContext": "occDataProvider",
+            "contextKey": "occmgmtContext",
+            "tabSetId": "occmgmtContext",
+            "requestPref": {
+                "savedSessionMode": "restore"
+            },
+            "useAutoBookmark": true,
+            "dataProviderName": "occDataProvider",
+            "gridId": "occTreeTable",
+            "selectionQueryParamKey": "c_uid",
+            "editSupportParamKeys": [ "c_uid", "o_uid", "spageId", "pci_uid" ],
+            "breadcrumbConfig": {
+                "type": "navigate",
+                "vm": "occMgmtBreadcrumb",
+                "chevronDataProvider": "breadCrumbDataProvider",
+                "crumbDataProvider": "aceBreadCrumbDataProvider",
+                "noUpdate": true,
+                "popuplist": "/html/occMgmtBreadcrumblist.html",
+                "id": "occmgmtContext",
+                "displayProperty": "object_string"
+            },
+            "urlParams": {
+                "selectionQueryParamKey": "c_uid",
+                "openStructureQueryParamKey": "o_uid",
+                "rootQueryParamKey": "uid",
+                "productContextQueryParamKey": "pci_uid",
+                "csidQueryParamKey": "c_csid",
+                "secondaryPageIdQueryParamKey": "spageId",
+                "topElementQueryParamKey": "t_uid",
+                "pageIdQueryParamKey": "pageId",
+                "recipeParamKey": "recipe",
+                "subsetFilterParamKey": "filter"
+            },
+            "viewModes": {
+                "TreeSummaryView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": true
+                },
+                "TreeView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": false
+                }
+            },
+            "context": {
+                "commandContextParameters": [ "filter", "recipe" ],
+                "search": {
+                    "hideInContentSearchBox": true
+                }
+            }
+        },
+        "occContext": {
+            "initialValues": {
+                "configContext": {},
+                "displayToggleOptions": {},
+                "supportedFeatures": {},
+                "productContextInfo": {},
+                "readOnlyFeatures": {},
+                "currentState": {},
+                "previousState": {},
+                "transientRequestPref": {},
+                "persistentRequestPref":{"defaultClientScopeUri" : "Awb0OccurrenceManagement"},
+                "disabledFeatures": [],
+                "BackGroundSoaDebug": "true",
+                "LoadTreePropsTimerDebug" : "true",
+                "LoadTreePropsDebug": "false",
+                "ExpandBelowDebug": "false",
+                "ExpandOneDebug": "false",
+                "ReconfigureDebug": "false",
+                "viewKey": "occmgmtContext"
+            },
+            "meta": {}
+        }
+    },
+
+    "conditions": {
+        "isStructureFilterSupported": {
+            "expression": "ctx.aceActiveContext.context.supportedFeatures.Awb0StructureFilterFeature === true"
+        },
+        "isNavigationSupportedInWorkingContext": {
+            "expression": "ctx.aceActiveContext.context.isOpenedUnderAContext && (props.subPanelContext.occContext.supportedFeatures.Awb0FullTextSearchFeature === true || props.subPanelContext.occContext.supportedFeatures.Awb0FindInStructure === true)"
+        },
+        "isNavigationSupportedInProduct": {
+            "expression": "!ctx.aceActiveContext.context.isOpenedUnderAContext && (props.subPanelContext.occContext.supportedFeatures.Awb0FullTextSearchFeature === true || props.subPanelContext.occContext.supportedFeatures.Awb0FindInStructure === true)"
+        },
+        "isNavigationSupported": {
+            "expression": "conditions.isNavigationSupportedInWorkingContext || conditions.isNavigationSupportedInProduct"
+        },
+        "isColorFilterSuported": {
+            "expression": "ctx.aceActiveContext.context.supportedFeatures.Awb0EnableColorFilterFeature === true && (conditions.isNavigationSupported || conditions.isStructureFilterSupported) && !ctx.hiddenCommands.Awp0ShowColor"
+        }
+    },
+    "ctx": {
+        "splitView": {
+            "mode": "null"
+        }
+    },
+    "preferences": [
+        "AWC_BACKGROUND_PROPERTY_CALLS"
+    ]
+
+}

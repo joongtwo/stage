@@ -1,0 +1,110 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+    ],
+    "data": {
+    },
+    "selectionModels": {
+    },
+    "actions": {
+        "buildTitle": {
+            "actionType": "JSFunctionAsync",
+            "method": "buildTitle",
+            "inputData": {
+                "selectedNode": "{{props.searchState.selectedNode}}",
+                "searchObject": "{{props.searchState}}"
+            },
+            "outputData": {
+                "crumbTitle": ""
+            },
+            "deps": "js/AwClsBreadCrumbService"
+        },
+        "updateSearchStateAfterFilterAction": {
+            "actionType": "JSFunction",
+            "method": "updateSearchStateAfterFilterAction",
+            "inputData": {
+                "searchState": "{{props.searchState}}"
+            },
+            "deps": "js/searchCommonUtils"
+        },
+        "clearAll": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clearAllAction",
+                    "condition": "conditions.needToClear"
+                }
+            ]
+
+        },
+        "clearAllAction": {
+            "actionType": "JSFunction",
+            "method": "clearAll",
+            "inputData": {
+                "searchObject": "{{props.searchState}}"
+            },
+            "deps": "js/AwSearchBreadcrumbChipsUtils"
+        }
+    },
+    "dataProviders": {
+    },
+    "onEvent": [
+    ],
+    "functions": {
+    },
+    "conditions": {
+        "displayNavigation": {
+            "expression": "props.searchState.criteria"
+        },
+        "isMobileMode": {
+            "expression": "!props.sidenavMode || props.sidenavMode === 'mobile'"
+        },
+        "populatedSearchString": {
+            "expression": "props.searchState.criteria && props.searchState.criteria.searchString && props.searchState.criteria.searchString.length > 0"
+        },
+        "displayFilters": {
+            "expression": "props.activeSection.value.showNavigate === 'filters'"
+        },
+        "displayResults": {
+            "expression": "props.activeSection.value.showNavigate === 'results'"
+        },
+        "displayBreadcrumb": {
+            "expression": "conditions.isMobileMode && (conditions.displayFilters || conditions.displayResults && props.searchState.endIndex && props.searchState.endIndex !== -1)"
+        },
+        "needToClear": {
+            "expression": "props.searchState.criteria && props.searchState.criteria.searchString && props.searchState.categories"
+        }
+    },
+    "messages": {
+    },
+    "props": {
+        "search-state": {
+            "type": "object"
+        },
+        "active-section": {
+            "type": "string"
+        },
+        "sidenav-mode": {
+            "type": "string"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [ {
+            "action": "updateSearchStateAfterFilterAction",
+            "observers": [ "props.searchState" ]
+        },
+        {
+            "action": "buildTitle",
+            "observers": [ "props.searchState" ]
+        },
+        {
+            "action": "clearAll",
+            "observers": [ "props.searchState.criteria.searchString" ]
+        }
+        ]
+    },
+    "i18n": {
+        "resultsText": [ "SearchMessages" ],
+        "filters": [ "SearchMessages" ]
+    }
+}

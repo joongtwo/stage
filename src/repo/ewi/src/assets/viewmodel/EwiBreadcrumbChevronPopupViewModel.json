@@ -1,0 +1,71 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "onChevronClick": {
+            "actionType": "dataProvider",
+            "method": "ewiBreadcrumbChevronDataProvider"
+        },
+        "getChildren": {
+            "actionType": "JSFunction",
+            "method": "onChevronClick",
+            "inputData":
+            {
+                "parentUid":"{{props.selectedCrumb.scopedUid}}"
+            },
+            "outputData": {
+                "totalFound": "totalChildCount",
+                "childOccurrences": "childOccurrences"
+            },
+            "deps": "js/Ewi0BreadcrumbService"
+        },
+        "onChevronPopupObjSelected": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "navigateToSelectedObject"
+                },
+                {
+                    "action": "closePopup"
+                }
+            ]
+        },
+        "navigateToSelectedObject": {
+            "actionType": "JSFunction",
+            "method": "navigateToSelectedObject",
+            "inputData": {
+                "selectedUid": "{{data.dataProviders.ewiBreadcrumbChevronDataProvider.selectedObjects[0].uid}}"
+            },
+            "deps": "js/ewiService"
+        },
+        "closePopup": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": "AwInclude"
+            },
+            "deps": "js/popupService"
+        }
+    },
+    "dataProviders": {
+        "ewiBreadcrumbChevronDataProvider": {
+            "action": "getChildren",
+            "response": "{{data.childOccurrences}}",
+            "totalFound": "{{data.totalFound}}"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "ewiBreadcrumbChevronDataProvider.selectionChangeEvent",
+            "action": "onChevronPopupObjSelected",
+            "condition": "conditions.hasSelection"
+        }
+    ],
+    "conditions": {
+        "hasSelection": {
+            "expression": "selectedObjects.length > 0"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "onChevronClick"
+    }
+}

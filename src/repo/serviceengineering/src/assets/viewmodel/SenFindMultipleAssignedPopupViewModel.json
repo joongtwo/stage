@@ -1,0 +1,89 @@
+{
+
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "dataProviders": {
+        "objectsToFind": {
+            "action": "senGetObjectsToFind",
+            "response": "{{data.modelObjects}}",
+            "totalFound": "{{data.modelObjects.length}}"
+        }
+    },
+    "actions": {
+        "initializeDataProvider":{
+            "actionType": "dataProvider",
+            "method": "objectsToFind"
+        },
+        "senLoadObjectsToFind": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadObjects",
+            "inputData": {
+                "uids":"{{subPanelContext.objectsToShow}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "sen.loadObjectsSuccess"
+                } ]
+            },
+            "deps": "soa/dataManagementService"
+        },
+        "senGetObjectsToFind":{
+            "actionType": "JSFunction",
+            "method": "getObjects",
+            "deps": "soa/kernel/clientDataModel",
+            "inputData": {
+               "uids":"{{subPanelContext.objectsToShow}}"
+            },
+            "outputData": {
+                "modelObjects": ""
+            }
+        },
+        "senFindMultipleInTargetContext": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "aceElementsSelectedEvent",
+                    "eventData": {
+                        "elementsToSelect":"{{data.dataProviders.objectsToFind.selectedObjects}}",
+                        "viewToReact":"sbomContext"
+                    }
+
+                },
+                {
+                    "name": "sen.closePopup"
+                }
+
+            ]
+            }
+        },
+        "senClosePopup": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupEl": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "sen.loadObjectsSuccess",
+            "action": "initializeDataProvider"
+        },
+        {
+            "eventId": "objectsToFind.selectionChangeEvent",
+            "action": "senFindMultipleInTargetContext"
+        },
+        {
+            "eventId": "sen.closePopup",
+            "action": "senClosePopup"
+        },
+        {
+            "eventId": "awPanel.reveal",
+            "action": "senLoadObjectsToFind"
+        }
+
+    ]
+
+}

@@ -1,0 +1,91 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "backgroundPartsTreeContext.tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+
+    "data": {
+        "backgroundPartsTreeContext": {
+            "objectUid": "{{ctx.epPageContext.loadedObject.uid}}",
+            "isTopNode": false,
+            "preferenceName": "EP_BackgroundPartsTableColumnConfiguration",
+            "loadTypes": "CommonExpand",
+            "relatedObjectMapKey": ["childAssembly", "backgroundParts"],
+            "isLeafProperty": "bl_has_children",
+            "relationName": ["backgroundPart"],
+            "additionalPolicyObjects": {
+                "types": [{
+                    "name": "BOMLine",
+                    "properties": [{
+                        "name": "bl_has_children"
+                    }]
+                }]
+            },
+            "initializeAction": "loadTreeTableData",
+            "additionalLoadParamsForRootLoadInputData": [
+                {
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandBGPartsDetailedPlanning"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "TOP_WITH_CHILDREN"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "rootsProperty",
+                    "attributeValue": "backgroundParts"
+                }
+            ],
+            "additionalLoadParamsForChildLoadInputData": [
+                {
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandBGPartsDetailedPlanning"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "CHILDREN"
+                }
+            ],
+            "messages": {
+                "noAssemblyStructure": [{
+                    "text": "{{i18n.noBackgroundPartsAssigned}}"
+                }]
+            },
+            "clientColumns":
+            [
+                {
+                    "clientColumn": true,
+                    "name": "graphicVisibility",
+                    "propertyDisplayName": "{{i18n.GraphicVisibilityColumnName}}"
+                }
+            ],
+            "treeNavigationColumnIndex": 1
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "getValueInViewModel"
+    },
+
+    "i18n": {
+        "noBackgroundPartsAssigned": [
+            "BackgroundPartsMessages"
+        ],
+        "GraphicVisibilityColumnName":["BvrGraphicsMessages"]
+    }
+}

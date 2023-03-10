@@ -1,0 +1,6 @@
+<div class="aw-popup-command-bar">
+    <aw-list dataprovider="data.dataProviders.processResourceDataProvider">
+        <span exist-when="item.uid !== data.station.uid">{{item.props.bl_rev_object_name.displayValues[0]}}</span>
+        <aw-i18n exist-when="item.uid === data.station.uid">i18n.unassign</aw-i18n>
+    </aw-list>
+</div>

@@ -1,0 +1,51 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "render": {
+            "method": "mfeContentContainerRenderFunction",
+            "deps": "js/MfeContentContainerService",
+            "options": {
+                "elementRefList": [
+                    "area",
+                    "handler"
+                ]
+            }
+        },
+        "initialize": {
+            "actionType": "JSFunction",
+            "method": "initArea",
+            "inputData": {
+                "elementRefList": "{{parameters.elementRefList}}",
+                "prop": "{{props}}",
+                "flexDirection": "{{props.containerDirection}}"
+            },
+            "deps": "js/MfeContentContainerService"
+        },
+        "destroy": {
+            "actionType": "JSFunction",
+            "method": "destroyArea",
+            "inputData": {
+                "elementRefList": "{{parameters.elementRefList}}",
+                "prop": "{{props}}"
+            },
+            "deps": "js/MfeContentContainerService"
+        }
+    },
+    "data": {},
+    "conditions": {},
+    "onEvent": [],
+    "ctx": {},
+    "lifecycleHooks": {
+        "render": "render",
+        "onMount": "initialize",
+        "onUnmount": "destroy"
+    },
+    "props": {
+        "container-name": {
+            "type": "string"
+        },
+        "container-direction": {
+            "type":"string"
+        }
+    }
+}

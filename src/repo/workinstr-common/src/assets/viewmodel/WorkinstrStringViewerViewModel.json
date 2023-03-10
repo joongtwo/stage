@@ -1,0 +1,26 @@
+{
+    "schemaVersion" : "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions":{
+        "stringViewerRender":{
+            "method": "renderStringViewer",
+            "deps": "js/workinstrStringViewerService"
+        },
+        "initStringViewer":{
+            "actionType":"JSFunction",
+            "method": "initStringViewer",
+            "inputData":{
+                "subPanelContext":"{{props.subPanelContext}}"
+            },
+            "deps": "js/workinstrStringViewerService"
+        }
+    },
+    "lifecycleHooks": {
+        "render":"stringViewerRender",
+        "onMount":"initStringViewer"
+    }
+}

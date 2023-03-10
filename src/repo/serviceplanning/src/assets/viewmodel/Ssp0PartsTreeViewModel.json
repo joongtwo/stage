@@ -1,0 +1,259 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "askForVisID": {
+            "syncObject": {}
+        },
+        "getPartsTreeData": {
+            "onChangeAction": "reloadPartsTree",
+            "syncObject": {}
+        },
+        "partsVisibilityChangePort": {
+            "syncObject": {
+                "id": "unknown",
+                "show": false
+            }
+        },
+        "onPartsVisViewerVisibilityChanged": {
+            "syncObject": {},
+            "onChangeAction": "onPartsVisViewerVisibilityChanged"
+        }
+    },
+    "actions": {
+        "loadPartsTreeTableColumns": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadPartsTreeTableColumns",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "dataProviders.partsTreeDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/ssp0PartsService"
+        },
+        "setPropertiesInput": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2010-09-DataManagement",
+            "method": "setProperties",
+            "inputData": {
+                "info": [
+                    {
+                        "object": "{{data.dataProviders.partsTreeDataProvider.selectedObjects[0]}}",
+                        "vecNameVal": [
+                            {
+                                "name": "bl_occ_type",
+                                "values": [
+                                    "{{data.dataProviders.partsTreeDataProvider.selectedObjects[0].props.bl_occ_type.dbValue}}"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "soaOperationFailure"
+                    }
+                ]
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "reloadPartsTree"
+                    }
+                ]
+            }
+        },
+        "onPartsVisViewerVisibilityChanged": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "partsTree.plTable.clientRefresh",
+                        "condition": "ctx.is3DTabPresent"
+                    }
+                ]
+            }
+        },
+        "onPartsVisViewerVisibilityChanged1": {
+            "actionType": "JSFunction",
+            "method": "refreshPartsTree",
+            "deps": "js/ssp0PartsService"
+        },
+        "reloadPartsTree": {
+            "actionType": "JSFunction",
+            "method": "reloadPartsTree",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.partsTreeDataProvider}}"
+            },
+            "deps": "js/ssp0PartsService"
+        },
+        "setOccurrenceType": {
+            "actionType": "JSFunction",
+            "method": "createObjectOfSetOccType",
+            "inputData": {
+                "selectedVMO": "{{data.dataProviders.partsTreeDataProvider.selectedObjects[0]}}",
+                "occType": "{{data.dataProviders.partsTreeDataProvider.selectedObjects[0].props.bl_occ_type.dbValue}}"
+            },
+            "deps": "js/ssp0CreateObjectService"
+        },
+        "editPartsTreeTable": {
+            "actionType": "JSFunction",
+            "method": "startEdit",
+            "inputData": {},
+            "deps": "js/ssp0PartsService"
+        },
+        "partsTableSelectionChanged": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "Ssp0SbomTree.syncPart",
+                        "eventData": {
+                            "selectedPart": "{{data.dataProviders.partsTreeDataProvider.selectedObjects}}"
+                        }
+                    }
+                ]
+            }
+        },
+        "loadGraphics": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "callPropertyProviderFunction"
+                },
+                {
+                    "action": "getCurrentVisibilityState"
+                },
+                {
+                    "action": "loadParts"
+                }
+            ]
+        },
+        "callPropertyProviderFunction": {
+            "actionType": "JSFunction",
+            "method": "rendererLoadingGraphicVisibilityIndicationBasedOnViewer",
+            "inputData": {
+                "vmo": "{{data.eventMap['partsVisGraphicsVisibilityChanged'].vmo}}",
+                "containerElement": "{{data.eventMap['partsVisGraphicsVisibilityChanged'].vmo.graphicsVisibilityContainerElement}}"
+            },
+            "deps": "js/ssp0GraphicVisibilityTablePropertyRenderer"
+        },
+        "loadParts": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "partsVisibilityChangePort",
+                "syncObject": {
+                    "id": "{{data.eventMap['partsVisGraphicsVisibilityChanged'].modelId}}",
+                    "show": "{{data.currentVisibilityState}}"
+                }
+            }
+        },
+        "getCurrentVisibilityState": {
+            "actionType": "JSFunction",
+            "method": "getCurrentVisibilityState",
+            "inputData": {
+                "vmo": "{{data.eventMap['partsVisGraphicsVisibilityChanged'].vmo}}",
+                "viewerId": "PartsViewer"
+            },
+            "outputData": {
+                "currentVisibilityState": "currentVisibilityState"
+            },
+            "deps": "js/ssp0VisViewerUtilityService"
+        }
+    },
+    "data": {
+        "messages": {
+            "noPartsConsumed": [
+                {
+                    "text": "{{i18n.noPartsConsumed}}"
+                },
+                {
+                    "text": "{{i18n.dragAndDrop}}"
+                }
+            ]
+        }
+    },
+    "dataProviders": {
+        "partsTreeDataProvider": {
+            "response": "{{ports.getPartsTreeData.syncObject.response}}",
+            "totalFound": "{{ports.getPartsTreeData.syncObject.totalFound}}",
+            "editConfig": {
+                "startEditAction": "editPartsTreeTable",
+                "saveEditAction": "setOccurrenceType",
+                "identifier": "uid"
+            },
+            "selectionModelMode": "multiple"
+        }
+    },
+    "columnProviders": {
+        "partsTreeColumnProvider": {
+            "loadColumnAction": "loadPartsTreeTableColumns",
+            "columns": "{{data.columns}}",
+            "frozenColumnIndex": -1
+        }
+    },
+    "grids": {
+        "partsTree": {
+            "dataProvider": "partsTreeDataProvider",
+            "columnProvider": "partsTreeColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": false,
+                "enablePinning": true,
+                "enableSorting": false
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "partsVisGraphicsVisibilityChanged",
+            "action": "loadGraphics",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "reloadPartsTree",
+            "action": "reloadPartsTree"
+        },
+        {
+            "eventId": "partsTreeDataProvider.selectionChangeEvent",
+            "action": "partsTableSelectionChanged",
+            "cacheEventData": true,
+            "condition": "conditions.isPartSelected"
+        }
+    ],
+    "i18n": {
+        "noPartsConsumed": [
+            "ssp0Messages"
+        ],
+        "dragAndDrop": [
+            "ssp0Messages"
+        ],
+        "nameValueColumn": [
+            "ssp0Messages"
+        ],
+        "occTypeValueColumn": [
+            "ssp0Messages"
+        ],
+        "descriptionValueColumn": [
+            "ssp0Messages"
+        ]
+    },
+    "conditions": {
+        "isPartSelected": {
+            "expression": "data.dataProviders.partsTreeDataProvider.selectedObjects.length > 0 && ctx.selectionSyncToggleState"
+        },
+        "arePartsConsumed": {
+            "expression": "ports.getPartsTreeData.syncObject.totalFound > 0"
+        }
+    },
+    "messages": {
+        "soaOperationFailure": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    }
+}

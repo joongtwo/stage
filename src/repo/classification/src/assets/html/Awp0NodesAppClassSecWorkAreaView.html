@@ -1,0 +1,24 @@
+<aw-panel-body class="aw-clsadmin-nodes">
+    <div class="aw-clsadmin-appclassprop" exist-when="conditions.hasAppClass">
+        <aw-panel-section caption="i18n.classProperties" collapsed="false">
+            <aw-widget prop="item" aw-repeat="item : data.nodeClassProperties"></aw-widget>
+        </aw-panel-section>
+        <div class="sw-row">
+            <div class="sw-column w-12" exist-when="props.subPanelContext.context.searchState.appClassData.classifyHasPropGroups === true">
+                <div class="aw-clsadmin-appclasspropgroup">
+                    <aw-cls-property-group-tree classify-state="props.subPanelContext.context.searchState"></aw-cls-property-group-tree>
+                </div>
+            </div>
+            <div class="sw-column w-12">
+                <awp0-classification-properties-full classify-state="props.subPanelContext.context.searchState"></awp0-classification-properties-full>
+            </div>
+            <div class="sw-column  w-12" visible-when="data.attributesVisible === true">
+                <aw-panel-section caption="i18n.attrProp" collapsed="false">
+                    <aw-widget prop="item" aw-repeat="item : data.propAttr"></aw-widget>
+                </aw-panel-section>
+            </div>
+        </div>
+    </div>
+    <aw-i18n class="aw-clsadmin-appClassMsg" exist-when="conditions.notCSTNode">i18n.SMLRAC</aw-i18n>
+    <aw-i18n class="aw-clsadmin-appClassMsg" exist-when="conditions.isCSTNode">i18n.GRPNODE</aw-i18n>
+</aw-panel-body>

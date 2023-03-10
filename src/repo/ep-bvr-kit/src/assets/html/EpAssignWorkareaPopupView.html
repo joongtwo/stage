@@ -1,0 +1,13 @@
+<aw-panel>
+    <aw-panel-body>
+        <aw-panel>
+            <div class="sw-row mx-xlarge aw-ep-epAssignWorkAreaTree" height="30f" justify="bottom">
+                <ep-tree-table view-id="EpAssignWorkareaPopup_EpTreeTable" sub-panel-context="{...data.loadTreeTableData, sharedSelectionData: data.sharedSelectionData}"></ep-tree-table>
+            </div>
+        </aw-panel>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button button-type="base" action="closePopupWindow" size="auto">{{i18n.cancel}}</aw-button>
+        <aw-button enable-when="conditions.hasSelection" action="epAssignWorkarea" size="auto">{{i18n.add}}</aw-button>
+    </aw-panel-footer>
+</aw-panel>

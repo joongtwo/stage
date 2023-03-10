@@ -1,0 +1,85 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-date.directive",
+        "js/aw-break.directive",
+        "js/aw-widget.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive"
+    ],
+    "actions": {
+        "initializeSubViewContent": {
+            "actionType": "JSFunction",
+            "method": "initializeSubViewData",
+            "inputData": {
+                "data": "{{data.data}}"
+            },
+            "outputData":{
+                "contextKey": "contextKey",
+                "startDate": "startDate",
+                "endDate": "endDate",
+                "endDateOptions": "endDateOptions"
+            },
+            "deps": "js/Pca0DateEffectivityConfigurationService"
+        },
+        "applyDateRangeEffectivity": {
+            "actionType": "JSFunctionAsync",
+            "method": "applyDateRangeEffectivityFromSubPanel",
+            "inputData": {
+                "data": "{{data.data}}"
+            },
+            "outputData": {
+                "previousView": "Pca0SettingsTab"
+            },
+            "deps": "js/Pca0DateEffectivityConfigurationService"
+        }
+    },
+    "data": {
+        "contextKey": "",
+        "startDate": {
+            "type": "DATE",
+            "displayName": "{{i18n.startDate}}"
+        },
+        "endDate": {
+            "type": "DATE"
+        },
+        "endDateList": {
+            "type": "STRING",
+            "dbValue": [
+                { "propDisplayValue": "{{i18n.dateEffectivity}}", "propInternalValue": "Date" },
+                { "propDisplayValue": "{{i18n.upText}}", "propInternalValue": "UP" },
+                { "propDisplayValue": "{{i18n.soText}}", "propInternalValue": "SO" }
+            ]
+        },
+        "endDateOptions": {
+            "displayName": "{{i18n.endDate}}",
+            "name": "endDateOptions",
+            "type": "STRING",
+            "isRequired": "false",
+            "dataProvider": "endDateOptionsDataProvider",
+            "uiValue": "{{i18n.dateEffectivity}}",
+            "dbValue": "Date"
+        }
+    },
+    "dataProviders":{
+        "endDateOptionsDataProvider": {
+            "response": "{{data.endDateList.dbValue}}"
+        }
+    },
+    "onEvent": [],
+    "lifecycleHooks": {
+        "onMount": "initializeSubViewContent"
+    },
+    "i18n": {
+        "startDate": [ "ApsEffectivityMessages" ],
+        "endDate": [ "ApsEffectivityMessages" ],
+        "dateEffectivity": [ "ApsEffectivityMessages" ],
+        "upText": [ "ApsEffectivityMessages" ],
+        "soText": [ "ApsEffectivityMessages" ],
+        "set": [ "FullScreenConfigurationMessages" ],
+        "effectivityDateRange": [ "FullScreenConfigurationMessages" ]
+    }
+}

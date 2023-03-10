@@ -1,0 +1,43 @@
+<div class="sw-column" show-when="data.activeState.value.activeView==='AddObjectPrimarySub'">
+    <aw-panel-header>
+        <aw-panel-section exist-when="props.subPanelContext.targetObjectToAdd" caption="i18n.toTitle">
+            <aw-default-cell vmo="props.subPanelContext.targetObjectToAdd"></aw-default-cell>
+        </aw-panel-section>
+    </aw-panel-header>
+<aw-panel-body>
+    <div class="sw-row sw-component">
+        <aw-command-panel-section caption="i18n.part" anchor="data.addRevision" context="{dataProviders:data.dataProviders, activeState:data.activeState}" >
+            <aw-list exist-when="data.dataProviders.getChildRevisionDataProvider.viewModelCollection.loadedVMObjects.length>0" dataprovider="data.dataProviders.getChildRevisionDataProvider">
+                <aw-default-cell vmo="item"></aw-default-cell>
+            </aw-list>
+        </aw-command-panel-section>
+    </div>
+    <div class="sw-row sw-component">
+        <aw-form name="addOccurrenceCommandPanelForm" aw-form-validator="">
+            <aw-add include-types="{{data.allowedTypeInfo.objectTypeName}}"
+                type-filter="{{data.allowedTypeInfo.searchTypeName}}"
+                load-sub-types="true" max-recent-count="5"
+                exist-when="data.allowedTypeInfo"
+                visible-tabs="new"
+                preferred-type="{{data.allowedTypeInfo.preferredType}}"
+                is-include-sub-types="true"
+                add-panel-state="fields.addPanelState"
+                sub-panel-context="{ ...subPanelContext }"
+                active-state="data.activeState"
+                xrt-state="data.xrtState"
+                edit-handler="editHandlers.addPanelEditHandler">
+        </aw-add>
+    </aw-form>
+</div>
+</aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="createAndAddElementWithUsage" size="auto" enable-when="formProp.attributes.valid && conditions.isRevisionDataPopulated">
+            <aw-i18n>i18n.addElementBtn</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</div>
+<div class="sw-column" exist-when="data.activeState.value.activeView==='Awb0AddRevision'">
+    <aw-navigate-panel title='i18n.addRevisionTitle' pre-panel-id="AddObjectPrimarySub"
+             panel-id='Awb0AddRevision' sub-panel-context='{...props.subPanelContext, partUsageEditHandler:editHandlers.addPanelEditHandler,activeState:data.activeState, addUsagePanelState:data.addPanelState}' action='setActiveView'>
+    </aw-navigate-panel>
+</div>

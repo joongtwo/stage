@@ -1,0 +1,86 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel.directive",
+        "js/aw-widget.directive"
+    ],
+
+    "actions": {
+
+        "setSNSNodeType": {
+            "actionType": "batchJob",
+            "steps": [ 
+                {
+                    "action": "loadSNSNodeTypeLOV",
+                    "condition": "conditions.isAddChildOrSibling"
+                },
+                {
+                    "action": "setChildSNSType",
+                    "condition": "conditions.isAddChildOrSibling"
+                }
+            ]
+        },
+        "loadSNSNodeTypeLOV": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2013-05-LOV",
+            "method": "getInitialLOVValues",
+            "inputData": {
+                "initialData": {
+                    "propertyName": "ctm0Type",
+                    "lovInput": {
+                        "operationName": "Create",
+                        "boName": "Ctm0SNSNodeRevision"
+                    }
+                }
+            },
+            "outputData": {
+                "ctm1snsTypeLOV": "{{function:getLovFromQuery}}"
+            },
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "setChildSNSType": {
+            "actionType": "JSFunction",
+            "method": "setChildSNSType",
+            "inputData": {
+                "data": "{{data}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "setSNSNodeType"
+    },
+
+    "data": {
+        "revision__ctm0Type": {
+            "dbValue": "",
+            "uiValue": "",
+            "hasLov": true,
+            "displayName": "{{i18n.snsNodeType}}",
+            "type": "STRING",
+            "isRequired": "true"
+        }
+    },
+
+    
+    "onEvent": [
+
+    ],
+
+    "conditions": {
+        "isAddChildOrSibling": {
+            "expression": "ctx.activeToolsAndInfoCommand.commandId === 'Awb0AddChildElementDeclarative' || ctx.activeToolsAndInfoCommand.commandId === 'Awb0AddSiblingElementDeclarative'"
+        }
+    },
+
+    "messages": {
+
+    },
+
+    "i18n": {
+        "snsNodeType": [ "ContentMgmtMessages" ]
+    }
+}

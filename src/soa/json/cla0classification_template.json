@@ -1,0 +1,544 @@
+{
+    "Date": "Fri Jun 12 07:59:32 PM 2020",
+    "Library": [ {
+        "createRelease": "tc12000.3.0",
+        "description": "Common service library for all classification systems",
+        "isThirdParty": "false",
+        "name": "Cla0SoaClassificationCommon",
+        "namespace": "Cla0::Soa::ClassificationCommon",
+        "serviceLibrary": "true"
+    } ],
+    "Operation": [ {
+            "ParameterInfo": [ {
+                    "description": "The FMS file ticket for a ZIP file (compressing the BMEcat or JSON data folder) which will be used to read the file contents from the transient volume. In case a JSON data folder is being uploaded, the Classification data JSON file must follow one of the following JSON schema:<br />&bull; TC_DATA/classification/json/cst/1.0.0/schema/Classification_Save_PropertyRecords_Request.schema.json<br />&bull; TC_DATA/classification/json/cst/1.1.0/schema/Classification_Save_PropertyRecords_Request.schema.json",
+                    "parameterName": "fileTicket"
+                },
+                {
+                    "description": "The path to the BMEcat XML or the Classification data JSON, relative to the data folder (which contains the BMEcat XML or the Classification data JSON and other associated files). The input file ticket is that of the compressed ZIP file of this data folder.",
+                    "parameterName": "relativePathToClsDataFile"
+                }
+            ],
+            "canOverride": "false",
+            "component": "Cla0classification",
+            "createRelease": "tc13000.3.0",
+            "dependencies": "",
+            "description": "Imports the classification objects (and the associated files) from a BMEcat (an XML-based standard for transferring electronic product catalogs) package or JSON package (a zipped folder) asynchronously into Teamcenter. The user will be notified with the import results when the import has completed.",
+            "exceptionCondition": "",
+            "id": "importClassificationDataAsync#const,std::string,&$const,std::string,&",
+            "interface": "Cla0::Soa::ClassificationCommon::Classification",
+            "isPostActionAllowed": "false",
+            "isPreActionAllowed": "false",
+            "isPreConditionAllowed": "false",
+            "isPublished": "false",
+            "name": "importClassificationDataAsync",
+            "opTemplate": "void#Cla0::Soa::ClassificationCommon::Classification::importClassificationDataAsync#const,std::string,&$const,std::string,&",
+            "returnDescription": "void.",
+            "useCase": "This operation could be used when user wants to perform any of the following actions:<br />&bull; Import a BMEcat XML file (and the associated files).<br />&bull; Import a Classification data JSON file (and the associated files).<br />In either of the use cases, the user will be notified with the import results when the import has completed."
+        },
+        {
+            "ParameterInfo": [ {
+                "description": "The FMS file ticket for a ZIP file (compressing the BMEcat or JSON data folder) which will be used to read the file contents from the transient volume. In case a JSON data folder is being uploaded, the Classification data JSON file must follow one of the following JSON schema:<br />&bull; TC_DATA/classification/json/cst/1.0.0/schema/Classification_Save_PropertyRecords_Request.schema.json<br />&bull; TC_DATA/classification/json/cst/1.1.0/schema/Classification_Save_PropertyRecords_Request.schema.json",
+                "parameterName": "fileTicket"
+            } ],
+            "canOverride": "false",
+            "component": "Cla0classification",
+            "createRelease": "tc13000.3.0",
+            "dependencies": "",
+            "description": "Lists the classification data files from a BMEcat (an XML-based standard for transferring electronic product catalogs) package or JSON package (as a zipped folder).",
+            "exceptionCondition": "",
+            "id": "listClassificationDataFiles#const,std::string,&",
+            "interface": "Cla0::Soa::ClassificationCommon::Classification",
+            "isPostActionAllowed": "false",
+            "isPreActionAllowed": "false",
+            "isPreConditionAllowed": "false",
+            "isPublished": "false",
+            "name": "listClassificationDataFiles",
+            "opTemplate": "Cla0::Soa::Internal::ClassificationCommon::_2021_12::Classification::ClassificationDataFilesResponse#Cla0::Soa::ClassificationCommon::Classification::listClassificationDataFiles#const,std::string,&",
+            "returnDescription": "The following partial error may be returned:<br />&bull; 424030 - Input zipped package folder is wrong.<br />&bull; 424031 - Classification data files not found.",
+            "useCase": "This operation could be used when user wants to perform any of the following actions:<br />&bull; List the BMEcat XML files from a zipped folder, and,<br />&bull; List the Classification data JSON files from a zipped folder."
+        },
+        {
+            "ParameterInfo": [ {
+                    "description": "The FMS file ticket for a ZIP file (compressing the BMEcat or JSON data folder) which will be used to read the file contents from the transient volume. In case a JSON data folder is being uploaded, the Classification data JSON file must follow one of the following JSON schema:<br />&bull; TC_DATA/classification/json/cst/1.0.0/schema/Classification_Save_PropertyRecords_Request.schema.json<br />&bull; TC_DATA/classification/json/cst/1.1.0/schema/Classification_Save_PropertyRecords_Request.schema.json",
+                    "parameterName": "fileTicket"
+                },
+                {
+                    "description": "The path to the BMEcat XML or the Classification data JSON, relative to the data folder (which contains the BMEcat XML or the Classification data JSON and other associated files). The input file ticket is that of the compressed ZIP file of this data folder.",
+                    "parameterName": "relativePathToClsDataFile"
+                },
+                {
+                    "description": "If TRUE, processes the operation asynchronously and user will be notified; otherwise, synchronously and partial errors if any will be returned in the service data.",
+                    "parameterName": "processAsAsync"
+                }
+            ],
+            "canOverride": "false",
+            "component": "Cla0classification",
+            "createRelease": "tc13000.3.0",
+            "dependencies": "",
+            "description": "Imports the classification objects (and the associated files) from a BMEcat (an XML-based standard for transferring electronic product catalogs) package or JSON package (a zipped folder) asynchronously or synchronously into Teamcenter. The user will be notified with the import results when the import has completed.",
+            "exceptionCondition": "",
+            "id": "importClassificationData#const,std::string,&$const,std::string,&$bool",
+            "interface": "Cla0::Soa::ClassificationCommon::Classification",
+            "isPostActionAllowed": "false",
+            "isPreActionAllowed": "false",
+            "isPreConditionAllowed": "false",
+            "isPublished": "true",
+            "name": "importClassificationData",
+            "opTemplate": "Teamcenter::Soa::Server::ServiceData#Cla0::Soa::ClassificationCommon::Classification::importClassificationData#const,std::string,&$const,std::string,&$bool",
+            "returnDescription": "The following partial error may be returned:<br />&bull; 213003 - Unable to create instance of Dispatcher Request.",
+            "useCase": "This operation could be used when user wants to perform any of the following actions:<br />&bull; Import a BMEcat XML file (and the associated files).<br />&bull; Import a Classification data JSON file (and the associated files).<br />In either of the use cases, the user will be notified with the import results when the import has completed."
+        },
+        {
+            "ParameterInfo": [ {
+                "description": "The parameter is a JSON string containing information about classification objects to be deleted. The structure of the JSON string must follow the JSON schema specified in the file: TC_DATA\\classification\\json\\1.0.0\\schema\\GetClassificationObjects_Request.schema.json. A sample input for deleting classification objects is provided in the file: TC_DATA\\classification\\json\\1.0.0\\samples\\GetClassificationObjects_Request_sample.json.",
+                "parameterName": "jsonRequest"
+            } ],
+            "canOverride": "false",
+            "component": "Cla0classification",
+            "createRelease": "tc12000.3.0",
+            "dependencies": "",
+            "description": "Deletes one or more classification objects permanently. A classification object is also called ICO. The classified workspace object associated with the ICO will not be deleted.",
+            "exceptionCondition": "",
+            "id": "deleteClassificationObjects#const,std::string,&",
+            "interface": "Cla0::Soa::ClassificationCommon::Classification",
+            "isPostActionAllowed": "false",
+            "isPreActionAllowed": "false",
+            "isPreConditionAllowed": "false",
+            "isPublished": "true",
+            "name": "deleteClassificationObjects",
+            "opTemplate": "Cla0::Soa::ClassificationCommon::_2020_01::Classification::ClassificationObjectResponse#Cla0::Soa::ClassificationCommon::Classification::deleteClassificationObjects#const,std::string,&",
+            "returnDescription": "Returns a json string containing information on the deleted classification objects. Any failures occurred during the operation will be specified in the json response string.<br />Following errors may be returned by the operation:<br />&bull;    424002 - The schema validation has failed. The path to the violated rule in the schema file is &quot;#/properties/PropertyRecord/items&quot; and the violated schema keyword is &quot;additionalProperties&quot;.<br />&bull;    424009 - Classification objects from multiple classification systems are not currently supported in get or delete objects request.",
+            "useCase": "User needs to delete classification objects. It is typically called when after creating or searching the classification objects, user decides that the returned objects are not needed anymore."
+        },
+        {
+            "ParameterInfo": [ {
+                "description": "A JSON string containing information about the classification objects to be retrieved. The structure of the JSON string must follow the JSON schema specified in the file: TC_DATA\\classification\\json\\1.0.0\\schema\\GetClassificationObjects_Request.schema.json. A sample input for fetching classification objects is provided in the file: TC_DATA\\classification\\json\\1.0.0\\samples\\GetClassificationObjects_Request_sample.json.",
+                "parameterName": "jsonRequest"
+            } ],
+            "canOverride": "false",
+            "component": "Cla0classification",
+            "createRelease": "tc12000.3.0",
+            "dependencies": "",
+            "description": "Looks for specified classification objects. If they are found, then detailed information about those objects is provided.",
+            "exceptionCondition": "",
+            "id": "getClassificationObjects#const,std::string,&",
+            "interface": "Cla0::Soa::ClassificationCommon::Classification",
+            "isPostActionAllowed": "false",
+            "isPreActionAllowed": "false",
+            "isPreConditionAllowed": "false",
+            "isPublished": "true",
+            "name": "getClassificationObjects",
+            "opTemplate": "Cla0::Soa::ClassificationCommon::_2020_01::Classification::ClassificationObjectResponse#Cla0::Soa::ClassificationCommon::Classification::getClassificationObjects#const,std::string,&",
+            "returnDescription": "Returns a JSON string containing detailed information on the requested classification objects. Any failures occurred   during the operation will be specified in the JSON response string.<br />Following errors may be returned by the operation:  <br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;424002 - The schema validation has failed. The path to the violated rule in the schema file is &quot;#/properties/PropertyRecord/items&quot; and the violated schema keyword is &quot;additionalProperties&quot;.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;424009 - Classification objects from multiple classification systems are not currently supported in get or delete objects request.",
+            "useCase": "This operation can be utilized when user needs to find an existing classification object(s) to either view or update its details. It can be followed by operations like saveClassificationObjects() or deleteClassificationObjects() to update or delete the classification objects.<br />This operation, getClassificationObjects() is used to get detailed information about the specified classification objects."
+        },
+        {
+            "ParameterInfo": [ {
+                "description": "This parameter is a JSON string containing information about classification objects to be created or updated. The structure of the JSON string must follow the JSON schema specified in the file: TC_DATA\\classification\\json\\1.0.0\\schema\\SaveClassificationObjects_Request.schema.json. A sample input for saving classification objects is provided in the file: TC_DATA\\classification\\json\\1.0.0\\samples\\SaveClassificationObjects_Request_sample.json.",
+                "parameterName": "jsonRequest"
+            } ],
+            "canOverride": "false",
+            "component": "Cla0classification",
+            "createRelease": "tc12000.3.0",
+            "dependencies": "",
+            "description": "Creates one or more classification objects and (optionally) attaches them to a workspace object, thus classifying it. If the Classification objects are not associated with any workspace object, they would act as standalone Classification objects. A classification object is also called ICO.",
+            "exceptionCondition": "",
+            "id": "saveClassificationObjects#const,std::string,&",
+            "interface": "Cla0::Soa::ClassificationCommon::Classification",
+            "isPostActionAllowed": "false",
+            "isPreActionAllowed": "false",
+            "isPreConditionAllowed": "false",
+            "isPublished": "true",
+            "name": "saveClassificationObjects",
+            "opTemplate": "Cla0::Soa::ClassificationCommon::_2020_01::Classification::ClassificationObjectResponse#Cla0::Soa::ClassificationCommon::Classification::saveClassificationObjects#const,std::string,&",
+            "returnDescription": "Returns a JSON string containing information about the created or updated classification objects. Any failures occurred during the operation will be specified in the JSON response string.<br />Following errors may be returned by the operation:  <br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;424002 - The schema validation has failed. The path to the violated rule in the schema file is &quot;#/properties/PropertyRecord/items&quot; and the violated schema keyword is &quot;additionalProperties&quot;.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;424007 - &quot;ClsWso1&quot; cannot be used for classification. Please use a unique object ID or a name for classification.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;424008 - Classification nodes from multiple classification systems are not currently supported in save objects request.",
+            "useCase": "User wants to classify a workspace object or create a standalone classification object (ICO) in Teamcenter. This operation expects a json string and supports various options such as associating the classification object with a workspace object, populating values of any attributes associated with classification objects and so on. <br />Before creating classification objects, a classification class hierarchy should already be created by the classification admin user in Teamcenter. This hierarchy should include a storage class (a class that allows instances to be created and associated to it) for which the classification objects need to be created."
+        },
+        {
+            "ParameterInfo": [ {
+                    "description": "The file ticket which will be used to read the json file contents from the transient volume.",
+                    "parameterName": "fileTicket"
+                },
+                {
+                    "description": "Run the SOA in dry mode or not.<br />If true, this operation will validate the JSON request without creating classification definitions; otherwise, Classification definitions will be created.",
+                    "parameterName": "dryRun"
+                }
+            ],
+            "canOverride": "false",
+            "component": "Cla0classification",
+            "createRelease": "tc13000.1.0",
+            "dependencies": "",
+            "description": "Imports the json input containing classification definitions of type Cst0ClassDefinition, Cst0PropertyDefinition, Cst0KeyLOVDefinition or NodeDefinition and optionally validates them.<br />The SOA accepts file ticket which will be used to read the json file contents from the transient volume, which will further be used to create classification definitions.<br />The JSON file which is to be uploaded must follow one of the following JSON schema:-<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;TC_DATA\\classification\\json\\1.1.0\\schema\\ Classification_Save_ClassDefinitions_Request.schema.json<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;TC_DATA\\classification\\json\\1.1.0\\schema\\ Classification_Save_KeyLOVDefinitions_Request.schema.json<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;TC_DATA\\classification\\json\\1.1.0\\schema\\ Classification_Save_PropertyDefinitions_Request.schema.json<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;TC_DATA\\classification\\json\\1.0.0\\schema\\ Classification_Save_NodeDefinitions_Request.schema.json<br />The response will include the information such as Name and IRDI (International Registration Data Identifier) of classification definitions.",
+            "exceptionCondition": "",
+            "id": "importClassificationDefinitions#const,std::string,&$bool",
+            "interface": "Cla0::Soa::ClassificationCommon::Classification",
+            "isPostActionAllowed": "false",
+            "isPreActionAllowed": "false",
+            "isPreConditionAllowed": "false",
+            "isPublished": "true",
+            "name": "importClassificationDefinitions",
+            "opTemplate": "std::string#Cla0::Soa::ClassificationCommon::Classification::importClassificationDefinitions#const,std::string,&$bool",
+            "returnDescription": "A JSON string containing information about the classification definition. Any failures occurred during the operation will be specified in the JSON string under the 'ErrorDetails' container. <br />Refer the following sample response for the import of classification definitions:<br />TC_DATA\\classification\\json\\1.0.0\\samples\\Classification_Import_Definitions_Response_sample.json<br />The following errors may be in the JSON response:<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;377021 - Several objects cannot be saved/updated because they have the same namespace and ID.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;377022 - Some partial errors have occurred. Refer to the result information for each object.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;377027 - The attribute reference &quot;Attribute1&quot; is not unique in the class definition.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;14150 - Invalid Transient Ticket.",
+            "useCase": "This operation could be used when user wants to perform any of the following actions -<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;Validate json file without creating classification definitions.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;Import a json file creating classification definitions."
+        },
+        {
+            "ParameterInfo": [ {
+                "description": "The parameter is a JSON string containing search criteria to be used while performing the search.<br />The structure of the JSON string must follow the JSON schema specified in the file: <br />TC_DATA\\classification\\json\\1.0.0\\schema\\Classification_Search_Definitions_Request.schema.json.<br />A sample input is provided in the file: <br />TC_DATA\\classification\\json\\1.0.0\\samples\\Classification_Search_Definitions_Request_sample.json.",
+                "parameterName": "jsonRequest"
+            } ],
+            "canOverride": "false",
+            "component": "Cla0classification",
+            "createRelease": "tc13000.1.0",
+            "dependencies": "",
+            "description": "Searches classification definitions based on criteria provided in the input. Classification definitions include objects such as NodeDefinition, ClassDefinition, PropertyDefinition and KeyLOVDefinition. <br />The input criteria may include parameters that specify the property name, operator and the value to use while performing the search. <br />The response will include the number of objects found, the number of objects returned and object information such as Name and IRDI (International Registration Data Identifier).",
+            "exceptionCondition": "",
+            "id": "searchClassificationDefinitions#const,std::string,&",
+            "interface": "Cla0::Soa::ClassificationCommon::Classification",
+            "isPostActionAllowed": "false",
+            "isPreActionAllowed": "false",
+            "isPreConditionAllowed": "false",
+            "isPublished": "true",
+            "name": "searchClassificationDefinitions",
+            "opTemplate": "std::string#Cla0::Soa::ClassificationCommon::Classification::searchClassificationDefinitions#const,std::string,&",
+            "returnDescription": "A JSON string containing information about the search results. Any failures occurred during the operation will be specified in the JSON string under the 'ErrorDetails' container. <br />Refer the following sample response for search on classification definitions:<br />TC_DATA\\classification\\json\\1.0.0\\samples\\Classification_Search_Definitions_Response_sample.json<br />The following partial errors may be returned:  <br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;377062 - The value of property &quot;Name&quot; on the object &quot;ClassDefinition&quot; must be of type &quot;String&quot;.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;377063 - The property &quot;Parents&quot; does not exist on the object &quot;PropertyDefinition&quot;.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;377064 - Search on the property 'LOVItems' in KeyLOVDefinition is not supported.",
+            "useCase": "This operation could be used when user wants to perform any of the following actions -<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;Get detailed information for specified object IRDI<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;Get objects matching the specified Name, Namespace, ID, Revision or any other object property.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;Get objects sorted on specified property (eg. Last Modified Date)<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;Get top-level hierarchy of classes<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;Get paged search results"
+        }
+    ],
+    "OperationTemplate": [ {
+            "OperationParameter": [ {
+                    "OperationParameterDataTypeRef": [ {
+                        "dataType": "std::string",
+                        "qualifier": "&"
+                    } ],
+                    "const": "true",
+                    "defaultValue": "",
+                    "description": "The FMS file ticket for a ZIP file (compressing the BMEcat or JSON data folder) which will be used to read the file contents from the transient volume. In case a JSON data folder is being uploaded, the Classification data JSON file must follow one of the following JSON schema:<br />&bull; TC_DATA/classification/json/cst/1.0.0/schema/Classification_Save_PropertyRecords_Request.schema.json<br />&bull; TC_DATA/classification/json/cst/1.1.0/schema/Classification_Save_PropertyRecords_Request.schema.json",
+                    "freeOutputMemory": "false",
+                    "inputOutput": "Input",
+                    "name": "fileTicket"
+                },
+                {
+                    "OperationParameterDataTypeRef": [ {
+                        "dataType": "std::string",
+                        "qualifier": "&"
+                    } ],
+                    "const": "true",
+                    "defaultValue": "",
+                    "description": "The path to the BMEcat XML or the Classification data JSON, relative to the data folder (which contains the BMEcat XML or the Classification data JSON and other associated files). The input file ticket is that of the compressed ZIP file of this data folder.",
+                    "freeOutputMemory": "false",
+                    "inputOutput": "Input",
+                    "name": "relativePathToClsDataFile"
+                },
+                {
+                    "OperationParameterDataTypeRef": [ {
+                        "dataType": "bool",
+                        "qualifier": ""
+                    } ],
+                    "const": "false",
+                    "defaultValue": "",
+                    "description": "If TRUE, processes the operation asynchronously and user will be notified; otherwise, synchronously and partial errors if any will be returned in the service data.",
+                    "freeOutputMemory": "false",
+                    "inputOutput": "Input",
+                    "name": "processAsAsync"
+                }
+            ],
+            "OperationReturnDataTypeRef": [ {
+                "dataType": "Teamcenter::Soa::Server::ServiceData",
+                "qualifier": ""
+            } ],
+            "accessControl": "false",
+            "const": "false",
+            "createRelease": "tc13000.3.0",
+            "description": "Imports the classification objects (and the associated files) from a BMEcat (an XML-based standard for transferring electronic product catalogs) package or JSON package (a zipped folder) asynchronously or synchronously into Teamcenter. The user will be notified with the import results when the import has completed.",
+            "id": "Teamcenter::Soa::Server::ServiceData#Cla0::Soa::ClassificationCommon::Classification::importClassificationData#const,std::string,&$const,std::string,&$bool",
+            "name": "Cla0::Soa::ClassificationCommon::Classification::importClassificationData",
+            "returnConst": "false",
+            "returnDescription": "The following partial error may be returned:<br />&bull; 213003 - Unable to create instance of Dispatcher Request.",
+            "returnFreeMemory": "false",
+            "static": "false"
+        },
+        {
+            "OperationParameter": [ {
+                    "OperationParameterDataTypeRef": [ {
+                        "dataType": "std::string",
+                        "qualifier": "&"
+                    } ],
+                    "const": "true",
+                    "defaultValue": "",
+                    "description": "The FMS file ticket for a ZIP file (compressing the BMEcat or JSON data folder) which will be used to read the file contents from the transient volume. In case a JSON data folder is being uploaded, the Classification data JSON file must follow one of the following JSON schema:<br />&bull; TC_DATA/classification/json/cst/1.0.0/schema/Classification_Save_PropertyRecords_Request.schema.json<br />&bull; TC_DATA/classification/json/cst/1.1.0/schema/Classification_Save_PropertyRecords_Request.schema.json",
+                    "freeOutputMemory": "false",
+                    "inputOutput": "Input",
+                    "name": "fileTicket"
+                },
+                {
+                    "OperationParameterDataTypeRef": [ {
+                        "dataType": "std::string",
+                        "qualifier": "&"
+                    } ],
+                    "const": "true",
+                    "defaultValue": "",
+                    "description": "The path to the BMEcat XML or the Classification data JSON, relative to the data folder (which contains the BMEcat XML or the Classification data JSON and other associated files). The input file ticket is that of the compressed ZIP file of this data folder.",
+                    "freeOutputMemory": "false",
+                    "inputOutput": "Input",
+                    "name": "relativePathToClsDataFile"
+                }
+            ],
+            "OperationReturnDataTypeRef": [ {
+                "dataType": "void",
+                "qualifier": ""
+            } ],
+            "accessControl": "false",
+            "const": "false",
+            "createRelease": "tc13000.3.0",
+            "description": "Imports the classification objects (and the associated files) from a BMEcat (an XML-based standard for transferring electronic product catalogs) package or JSON package (a zipped folder) asynchronously into Teamcenter. The user will be notified with the import results when the import has completed.",
+            "id": "void#Cla0::Soa::ClassificationCommon::Classification::importClassificationDataAsync#const,std::string,&$const,std::string,&",
+            "name": "Cla0::Soa::ClassificationCommon::Classification::importClassificationDataAsync",
+            "returnConst": "false",
+            "returnDescription": "void.",
+            "returnFreeMemory": "false",
+            "static": "false"
+        },
+        {
+            "OperationParameter": [ {
+                "OperationParameterDataTypeRef": [ {
+                    "dataType": "std::string",
+                    "qualifier": "&"
+                } ],
+                "const": "true",
+                "defaultValue": "",
+                "description": "The FMS file ticket for a ZIP file (compressing the BMEcat or JSON data folder) which will be used to read the file contents from the transient volume. In case a JSON data folder is being uploaded, the Classification data JSON file must follow one of the following JSON schema:<br />&bull; TC_DATA/classification/json/cst/1.0.0/schema/Classification_Save_PropertyRecords_Request.schema.json<br />&bull; TC_DATA/classification/json/cst/1.1.0/schema/Classification_Save_PropertyRecords_Request.schema.json",
+                "freeOutputMemory": "false",
+                "inputOutput": "Input",
+                "name": "fileTicket"
+            } ],
+            "OperationReturnDataTypeRef": [ {
+                "dataType": "Cla0::Soa::Internal::ClassificationCommon::_2021_12::Classification::ClassificationDataFilesResponse",
+                "qualifier": ""
+            } ],
+            "accessControl": "false",
+            "const": "false",
+            "createRelease": "tc13000.3.0",
+            "description": "Lists the classification data files from a BMEcat (an XML-based standard for transferring electronic product catalogs) package or JSON package (as a zipped folder).",
+            "id": "Cla0::Soa::Internal::ClassificationCommon::_2021_12::Classification::ClassificationDataFilesResponse#Cla0::Soa::ClassificationCommon::Classification::listClassificationDataFiles#const,std::string,&",
+            "name": "Cla0::Soa::ClassificationCommon::Classification::listClassificationDataFiles",
+            "returnConst": "false",
+            "returnDescription": "The following partial error may be returned:<br />&bull; 424030 - Input zipped package folder is wrong.<br />&bull; 424031 - Classification data files not found.",
+            "returnFreeMemory": "false",
+            "static": "false"
+        },
+        {
+            "OperationParameter": [ {
+                "OperationParameterDataTypeRef": [ {
+                    "dataType": "std::string",
+                    "qualifier": "&"
+                } ],
+                "const": "true",
+                "defaultValue": "",
+                "description": "The parameter is a JSON string containing information about classification objects to be deleted. The structure of the JSON string must follow the JSON schema specified in the file: TC_DATA\\classification\\json\\1.0.0\\schema\\GetClassificationObjects_Request.schema.json. A sample input for deleting classification objects is provided in the file: TC_DATA\\classification\\json\\1.0.0\\samples\\GetClassificationObjects_Request_sample.json.",
+                "freeOutputMemory": "false",
+                "inputOutput": "Input",
+                "name": "jsonRequest"
+            } ],
+            "OperationReturnDataTypeRef": [ {
+                "dataType": "Cla0::Soa::ClassificationCommon::_2020_01::Classification::ClassificationObjectResponse",
+                "qualifier": ""
+            } ],
+            "accessControl": "false",
+            "const": "false",
+            "createRelease": "tc12000.3.0",
+            "description": "Deletes one or more classification objects permanently. A classification object is also called ICO. The classified workspace object associated with the ICO will not be deleted.",
+            "id": "Cla0::Soa::ClassificationCommon::_2020_01::Classification::ClassificationObjectResponse#Cla0::Soa::ClassificationCommon::Classification::deleteClassificationObjects#const,std::string,&",
+            "name": "Cla0::Soa::ClassificationCommon::Classification::deleteClassificationObjects",
+            "returnConst": "false",
+            "returnDescription": "Returns a json string containing information on the deleted classification objects. Any failures occurred during the operation will be specified in the json response string.<br />Following errors may be returned by the operation:<br />&bull;    424002 - The schema validation has failed. The path to the violated rule in the schema file is &quot;#/properties/PropertyRecord/items&quot; and the violated schema keyword is &quot;additionalProperties&quot;.<br />&bull;    424009 - Classification objects from multiple classification systems are not currently supported in get or delete objects request.",
+            "returnFreeMemory": "false",
+            "static": "false"
+        },
+        {
+            "OperationParameter": [ {
+                "OperationParameterDataTypeRef": [ {
+                    "dataType": "std::string",
+                    "qualifier": "&"
+                } ],
+                "const": "true",
+                "defaultValue": "",
+                "description": "A JSON string containing information about the classification objects to be retrieved. The structure of the JSON string must follow the JSON schema specified in the file: TC_DATA\\classification\\json\\1.0.0\\schema\\GetClassificationObjects_Request.schema.json. A sample input for fetching classification objects is provided in the file: TC_DATA\\classification\\json\\1.0.0\\samples\\GetClassificationObjects_Request_sample.json.",
+                "freeOutputMemory": "false",
+                "inputOutput": "Input",
+                "name": "jsonRequest"
+            } ],
+            "OperationReturnDataTypeRef": [ {
+                "dataType": "Cla0::Soa::ClassificationCommon::_2020_01::Classification::ClassificationObjectResponse",
+                "qualifier": ""
+            } ],
+            "accessControl": "false",
+            "const": "false",
+            "createRelease": "tc12000.3.0",
+            "description": "Looks for specified classification objects. If they are found, then detailed information about those objects is provided.",
+            "id": "Cla0::Soa::ClassificationCommon::_2020_01::Classification::ClassificationObjectResponse#Cla0::Soa::ClassificationCommon::Classification::getClassificationObjects#const,std::string,&",
+            "name": "Cla0::Soa::ClassificationCommon::Classification::getClassificationObjects",
+            "returnConst": "false",
+            "returnDescription": "Returns a JSON string containing detailed information on the requested classification objects. Any failures occurred   during the operation will be specified in the JSON response string.<br />Following errors may be returned by the operation:  <br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;424002 - The schema validation has failed. The path to the violated rule in the schema file is &quot;#/properties/PropertyRecord/items&quot; and the violated schema keyword is &quot;additionalProperties&quot;.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;424009 - Classification objects from multiple classification systems are not currently supported in get or delete objects request.",
+            "returnFreeMemory": "false",
+            "static": "false"
+        },
+        {
+            "OperationParameter": [ {
+                "OperationParameterDataTypeRef": [ {
+                    "dataType": "std::string",
+                    "qualifier": "&"
+                } ],
+                "const": "true",
+                "defaultValue": "",
+                "description": "This parameter is a JSON string containing information about classification objects to be created or updated. The structure of the JSON string must follow the JSON schema specified in the file: TC_DATA\\classification\\json\\1.0.0\\schema\\SaveClassificationObjects_Request.schema.json. A sample input for saving classification objects is provided in the file: TC_DATA\\classification\\json\\1.0.0\\samples\\SaveClassificationObjects_Request_sample.json.",
+                "freeOutputMemory": "false",
+                "inputOutput": "Input",
+                "name": "jsonRequest"
+            } ],
+            "OperationReturnDataTypeRef": [ {
+                "dataType": "Cla0::Soa::ClassificationCommon::_2020_01::Classification::ClassificationObjectResponse",
+                "qualifier": ""
+            } ],
+            "accessControl": "false",
+            "const": "false",
+            "createRelease": "tc12000.3.0",
+            "description": "Creates one or more classification objects and (optionally) attaches them to a workspace object, thus classifying it. If the Classification objects are not associated with any workspace object, they would act as standalone Classification objects. A classification object is also called ICO.",
+            "id": "Cla0::Soa::ClassificationCommon::_2020_01::Classification::ClassificationObjectResponse#Cla0::Soa::ClassificationCommon::Classification::saveClassificationObjects#const,std::string,&",
+            "name": "Cla0::Soa::ClassificationCommon::Classification::saveClassificationObjects",
+            "returnConst": "false",
+            "returnDescription": "Returns a JSON string containing information about the created or updated classification objects. Any failures occurred during the operation will be specified in the JSON response string.<br />Following errors may be returned by the operation:  <br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;424002 - The schema validation has failed. The path to the violated rule in the schema file is &quot;#/properties/PropertyRecord/items&quot; and the violated schema keyword is &quot;additionalProperties&quot;.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;424007 - &quot;ClsWso1&quot; cannot be used for classification. Please use a unique object ID or a name for classification.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;424008 - Classification nodes from multiple classification systems are not currently supported in save objects request.",
+            "returnFreeMemory": "false",
+            "static": "false"
+        },
+        {
+            "OperationParameter": [ {
+                    "OperationParameterDataTypeRef": [ {
+                        "dataType": "std::string",
+                        "qualifier": "&"
+                    } ],
+                    "const": "true",
+                    "defaultValue": "",
+                    "description": "The file ticket which will be used to read the json file contents from the transient volume.",
+                    "freeOutputMemory": "false",
+                    "inputOutput": "Input",
+                    "name": "fileTicket"
+                },
+                {
+                    "OperationParameterDataTypeRef": [ {
+                        "dataType": "bool",
+                        "qualifier": ""
+                    } ],
+                    "const": "false",
+                    "defaultValue": "",
+                    "description": "Run the SOA in dry mode or not.<br />If true, this operation will validate the JSON request without creating classification definitions; otherwise, Classification definitions will be created.",
+                    "freeOutputMemory": "false",
+                    "inputOutput": "Input",
+                    "name": "dryRun"
+                }
+            ],
+            "OperationReturnDataTypeRef": [ {
+                "dataType": "std::string",
+                "qualifier": ""
+            } ],
+            "accessControl": "false",
+            "const": "false",
+            "createRelease": "tc13000.1.0",
+            "description": "Imports the json input containing classification definitions of type Cst0ClassDefinition, Cst0PropertyDefinition, Cst0KeyLOVDefinition or NodeDefinition and optionally validates them.<br />The SOA accepts file ticket which will be used to read the json file contents from the transient volume, which will further be used to create classification definitions.<br />The JSON file which is to be uploaded must follow one of the following JSON schema:-<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;TC_DATA\\classification\\json\\1.1.0\\schema\\ Classification_Save_ClassDefinitions_Request.schema.json<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;TC_DATA\\classification\\json\\1.1.0\\schema\\ Classification_Save_KeyLOVDefinitions_Request.schema.json<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;TC_DATA\\classification\\json\\1.1.0\\schema\\ Classification_Save_PropertyDefinitions_Request.schema.json<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;TC_DATA\\classification\\json\\1.0.0\\schema\\ Classification_Save_NodeDefinitions_Request.schema.json<br />The response will include the information such as Name and IRDI (International Registration Data Identifier) of classification definitions.",
+            "id": "std::string#Cla0::Soa::ClassificationCommon::Classification::importClassificationDefinitions#const,std::string,&$bool",
+            "name": "Cla0::Soa::ClassificationCommon::Classification::importClassificationDefinitions",
+            "returnConst": "false",
+            "returnDescription": "A JSON string containing information about the classification definition. Any failures occurred during the operation will be specified in the JSON string under the 'ErrorDetails' container. <br />Refer the following sample response for the import of classification definitions:<br />TC_DATA\\classification\\json\\1.0.0\\samples\\Classification_Import_Definitions_Response_sample.json<br />The following errors may be in the JSON response:<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;377021 - Several objects cannot be saved/updated because they have the same namespace and ID.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;377022 - Some partial errors have occurred. Refer to the result information for each object.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;377027 - The attribute reference &quot;Attribute1&quot; is not unique in the class definition.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;14150 - Invalid Transient Ticket.",
+            "returnFreeMemory": "false",
+            "static": "false"
+        },
+        {
+            "OperationParameter": [ {
+                "OperationParameterDataTypeRef": [ {
+                    "dataType": "std::string",
+                    "qualifier": "&"
+                } ],
+                "const": "true",
+                "defaultValue": "",
+                "description": "The parameter is a JSON string containing search criteria to be used while performing the search.<br />The structure of the JSON string must follow the JSON schema specified in the file: <br />TC_DATA\\classification\\json\\1.0.0\\schema\\Classification_Search_Definitions_Request.schema.json.<br />A sample input is provided in the file: <br />TC_DATA\\classification\\json\\1.0.0\\samples\\Classification_Search_Definitions_Request_sample.json.",
+                "freeOutputMemory": "false",
+                "inputOutput": "Input",
+                "name": "jsonRequest"
+            } ],
+            "OperationReturnDataTypeRef": [ {
+                "dataType": "std::string",
+                "qualifier": ""
+            } ],
+            "accessControl": "false",
+            "const": "false",
+            "createRelease": "tc13000.1.0",
+            "description": "Searches classification definitions based on criteria provided in the input. Classification definitions include objects such as NodeDefinition, ClassDefinition, PropertyDefinition and KeyLOVDefinition. <br />The input criteria may include parameters that specify the property name, operator and the value to use while performing the search. <br />The response will include the number of objects found, the number of objects returned and object information such as Name and IRDI (International Registration Data Identifier).",
+            "id": "std::string#Cla0::Soa::ClassificationCommon::Classification::searchClassificationDefinitions#const,std::string,&",
+            "name": "Cla0::Soa::ClassificationCommon::Classification::searchClassificationDefinitions",
+            "returnConst": "false",
+            "returnDescription": "A JSON string containing information about the search results. Any failures occurred during the operation will be specified in the JSON string under the 'ErrorDetails' container. <br />Refer the following sample response for search on classification definitions:<br />TC_DATA\\classification\\json\\1.0.0\\samples\\Classification_Search_Definitions_Response_sample.json<br />The following partial errors may be returned:  <br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;377062 - The value of property &quot;Name&quot; on the object &quot;ClassDefinition&quot; must be of type &quot;String&quot;.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;377063 - The property &quot;Parents&quot; does not exist on the object &quot;PropertyDefinition&quot;.<br />&bull;&nbsp;&nbsp;&nbsp;&nbsp;377064 - Search on the property 'LOVItems' in KeyLOVDefinition is not supported.",
+            "returnFreeMemory": "false",
+            "static": "false"
+        }
+    ],
+    "ServiceInterface": [ {
+        "createRelease": "tc12000.3.0",
+        "dependencies": "",
+        "description": "The Classification service serves as a common entry point for interacting with all the underlying classification systems. The service allows users to create classification objects and associate them to workspace objects in order to classify the workspace objects. It can also be used to perform add, update, or delete operations on classification objects and retrieve information about them.<br /><br />The Classification service contains operations to achieve the following: <br />   &bull;&nbsp;&nbsp;&nbsp;&nbsp;Create classification objects and optionally attach them to workspace objects.<br />   &bull;&nbsp;&nbsp;&nbsp;&nbsp;Update existing classification objects.<br />   &bull;&nbsp;&nbsp;&nbsp;&nbsp;Delete existing classification objects.<br />   &bull;&nbsp;&nbsp;&nbsp;&nbsp;Get information on classification objects.",
+        "libraryName": "Cla0SoaClassificationCommon",
+        "name": "Classification",
+        "namespace": "Cla0::Soa::ClassificationCommon",
+        "serviceLibraryRef": ""
+    } ],
+    "Struct": [ {
+            "StructElement": [ {
+                    "DataTypeRefParam": [ {
+                        "DataTypeRefParam": [ {
+                            "dataType": "std::string"
+                        } ],
+                        "dataType": "std::vector"
+                    } ],
+                    "description": "A list of paths to the classification data files, relative to the data folder (which contains the BMEcat XML or the Classification data JSON).",
+                    "name": "classificationDataFiles"
+                },
+                {
+                    "DataTypeRefParam": [ {
+                        "dataType": "Teamcenter::Soa::Server::ServiceData"
+                    } ],
+                    "description": "Contains any errors, warnings or info encountered during the entire operation.",
+                    "name": "serviceData"
+                }
+            ],
+            "createRelease": "tc13000.3.0",
+            "description": "Holds the list of paths to the classification data files, relative to the data folder (which contains the BMEcat XML and the Classification data JSON).",
+            "isPublished": "false",
+            "name": "ClassificationDataFilesResponse",
+            "namespace": "Cla0::Soa::Internal::ClassificationCommon::_2021_12::Classification",
+            "scope": "Cla0::Soa::ClassificationCommon::Classification"
+        },
+        {
+            "StructElement": [ {
+                    "DataTypeRefParam": [ {
+                        "dataType": "std::string"
+                    } ],
+                    "description": "This is a JSON string containing information about the created, updated, retrieved or deleted classification objects.<br />Any failures occurred during the operation will be specified in the JSON string under the 'ErrorDetails' container. The response structure will follow the JSON schema defined in the file: TC_DATA\\classification\\json\\1.0.0\\schema\\Response.schema.json.<br />Refer the following sample responses for operations on classification objects:<br />Save and Retrieve:- TC_DATA\\classification\\json\\1.0.0\\samples\\GetClassificationObjects_Response_sample.json<br />Delete:- TC_DATA\\classification\\json\\1.0.0\\samples\\DeleteClassificationObjects_Response_sample.json<br />Error:- TC_DATA\\classification\\json\\1.0.0\\samples\\SaveClassificationObjects_Error_Response_sample.json",
+                    "name": "jsonResponse"
+                },
+                {
+                    "DataTypeRefParam": [ {
+                        "dataType": "Teamcenter::Soa::Server::ServiceData"
+                    } ],
+                    "description": "This is a placeholder for future use. All information about the created, updated and deleted classification objects and any errors, occurred during the operation, will be returned in the JSON response string.",
+                    "name": "serviceData"
+                }
+            ],
+            "createRelease": "tc12000.3.0",
+            "description": "Holds information on created, updated or deleted classification objects.",
+            "isPublished": "true",
+            "name": "ClassificationObjectResponse",
+            "namespace": "Cla0::Soa::ClassificationCommon::_2020_01::Classification",
+            "scope": "Cla0::Soa::ClassificationCommon::Classification"
+        }
+    ],
+    "TcVersion": "tc13000.1.0",
+    "xmlns": "http://teamcenter.com/BusinessModel/TcBusinessData"
+}

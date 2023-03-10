@@ -1,0 +1,232 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-listbox.directive",
+        "js/aw-break.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-i18n.directive",
+        "js/visible-when.directive",
+        "js/aw-button.directive",
+        "js/aw-label.directive",
+        "js/aw-file-upload.directive",
+        "js/aw-radiobutton.directive"
+    ],
+    "actions":
+    {
+        "fileChangeAction": {
+            "actionType": "JSFunction",
+            "method": "setFileParameters",
+            "inputData": {
+                "fileName": "{{parameters.fileName}}",
+                "validFile": "{{parameters.validFile}}",
+                "fileNameNoExt": "{{parameters.fileNameNoExt}}",
+                "fileExt": "{{parameters.fileExt}}",
+                "formData": "{{parameters.formData}}"
+            },
+            "outputData": {
+                "fileName": "fileName",
+                "validFile": "validFile",
+                "fileNameNoExt": "fileNameNoExt",
+                "fileExt": "fileExt",
+                "formData": "formData"
+            },
+            "deps": "js/fileUploadUtils"
+        },
+        "reveal": {
+            "actionType": "JSFunction",
+            "method": "populateImportPreferencesPanel",
+            "inputData":
+            {
+                "data":"{{data}}"
+            },
+            "deps": "js/importPreferencesService"
+        },
+        "getTransientFileTicketsForUpload":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-01-FileManagement",
+            "method": "getTransientFileTicketsForUpload",
+            "inputData":
+            {
+                "transientFileInfos":
+                [
+                    {
+                        "fileName": "{{data.fileName}}",
+                        "isBinary": false,
+                        "deleteFlag": false
+                    }
+                ]
+            },
+            "outputData":
+            {
+                "fmsTicket": "transientFileTicketInfos[0].ticket"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "fmsTicket.generated"
+                    }
+                ]
+            }
+        },
+        "updateFormData":
+        {
+            "actionType": "JSFunction",
+            "method": "updateFormData",
+            "deps": "js/fileUploadUtils",
+            "inputData":
+            {
+                "formData": "{{data.formData}}",
+                "key": "fmsTicket",
+                "value": "{{data.fmsTicket}}"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "preference.fileTicketCreated"
+                    }
+                ]
+            }
+        },
+        "uploadFile": {
+            "actionType": "RESTService",
+            "serviceName": "",
+            "method": "POST",
+            "inputData": {
+                "request": {
+                    "method": "POST",
+                    "url": "{{Constants.fmsUrl}}",
+                    "headers": {
+                        "Content-type": "undefined"
+                    },
+
+                    "data": "{{data.formData}}"
+                }
+            },
+
+            "events": {
+                "success": [ {
+                    "name": "preference.import"
+                } ]
+            }
+        },
+        "importPreferences": {
+            "actionType": "JSFunctionAsync",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "method": "importPreferences",
+            "deps": "js/importPreferencesService",
+            "events":
+            {
+                "success":
+                [
+                    {
+                       "name": "primaryWorkarea.reset"
+                    },
+                    {
+                        "name": "complete",
+                        "eventData":
+                        {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            }
+        }
+
+    },
+    "dataProviders": {
+        "locationDataProvider": {
+            "action": "reveal",
+            "response": "{{data.locationList}}"
+        }
+    },
+    "data":
+    {
+        "file": {
+            "displayName": "{{i18n.file}}"
+        },
+        "conflictResolution": {
+            "displayName": "{{i18n.conflictResolution}}"
+        },
+        "fnd0Location": {
+            "displayName": "{{i18n.location}}",
+            "type": "STRING",
+            "isEditable": "true",
+            "isRequired": "true",
+            "hasLov": true,
+            "dataProvider":"locationDataProvider"
+        },
+        "fnd0ImportAction":
+        {
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "OVERRIDE",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT",
+            "vertical": true
+        },
+        "importActions": {
+            "type": "STRING",
+            "dbValue": [
+                {
+                    "propDisplayValue": "{{i18n.override}}",
+                    "propInternalValue": "OVERRIDE"
+                },
+                {
+                    "propDisplayValue": "{{i18n.merge}}",
+                    "propInternalValue": "MERGE"
+                },
+                {
+                    "propDisplayValue": "{{i18n.skip}}",
+                    "propInternalValue": "SKIP"
+                }
+            ]
+        }
+
+    },
+    "i18n":
+    {
+        "importPreferencesPanelTitle": [ "preferenceMessages" ],
+        "importPreferencesBtn": [ "preferenceMessages" ],
+        "location": [ "preferenceMessages" ],
+        "file": [ "preferenceMessages" ],
+        "conflictResolution": [ "preferenceMessages" ],
+        "override": [ "preferenceMessages" ],
+        "merge": [ "preferenceMessages" ],
+        "skip": [ "preferenceMessages" ],
+        "cancel": [ "preferenceMessages" ],
+        "downloadReport": [ "preferenceMessages" ]
+    },
+    "conditions":
+    {
+        "showImportBtn":
+        {
+            "expression": "data.fnd0Location.dbValue !== null && data.fileName !== null && data.fileName != ''"
+        }
+    },
+    "onEvent":
+    [
+        {
+            "eventId" : "fmsTicket.generated",
+            "action" : "updateFormData"
+        },
+        {
+            "eventId" : "preference.import",
+            "action" : "importPreferences"
+        },
+        {
+            "eventId": "preference.fileTicketCreated",
+            "action": "uploadFile"
+        }
+    ]
+}

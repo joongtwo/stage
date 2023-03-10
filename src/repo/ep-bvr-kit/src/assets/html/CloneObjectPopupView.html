@@ -1,0 +1,9 @@
+<aw-panel>
+    <aw-panel-body>
+        <ep-search-object view-path="viewPath" sub-panel-context="data"></ep-search-object>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button  button-type="base" action="closePopupWindow" size="auto">{{i18n.cancel}}</aw-button>
+        <aw-button  action="EpCloneObject" enable-when="conditions.isObjectSelectedToAdd"  size="auto">{{i18n.clone}}</aw-button>
+    </aw-panel-footer>
+</aw-panel>

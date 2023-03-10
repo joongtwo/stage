@@ -1,0 +1,41 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "_provider": {
+            "priority": 1,
+            "label": {
+                "source": "/i18n/DpvMessages",
+                "key": "reportTemplates"
+            },
+            "isXrtApplicable": true,
+            "clientScopeURI": "Awp0SearchResults",
+            "nameToken": "com.siemens.splm.client.dpv:graRepTemplatesSubLocation",
+            "defaultDisplayMode": "TreeSummaryView",
+            "context": {
+                "search": {
+                    "hideInContentSearchBox": true,
+                    "provider": "Awp0ObjectSetRowProvider",
+                    "criteria": {
+                        "objectSet": "contents.Folder,contents.Dpv0MBQXml,contents.DPVRDL",
+                        "parentUid": "{{ctx.user.props.home_folder.dbValues[0]}}",
+                        "returnTargetObjs": "true"
+                    },
+                    "sortType": "Alphabetical",
+                    "maxToLoad": 50,
+                    "maxToReturn": 50
+                }
+            },
+            "viewBase": "Dpv1ReportTemplate",
+            "viewModes": {
+                "TreeView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": false
+                },
+                "TreeSummaryView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": true
+                }
+            }
+        }
+    }
+}

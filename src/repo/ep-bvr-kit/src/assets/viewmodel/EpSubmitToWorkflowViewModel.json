@@ -1,0 +1,212 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "submitToWorkflowAndClosePopup": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getContextObjectForReloadInput"
+                },
+                {
+                    "action": "unRegisterReload",
+                    "condition": "conditions.isNotTcmaStudyManager"
+                },
+                
+                {
+                    "action": "registerReloadWithContextObject",
+                    "condition": "conditions.isNotTcmaStudyManager"
+                },
+                {
+                    "action": "registerReloadWithLoadedObject",
+                    "condition": "conditions.isNotTcmaStudyManager"
+                },
+                {
+                    "action": "submitToWorkflow"
+                },
+                {
+                    "action": "closePopup"
+                }
+            ]
+        },
+        "unRegisterReload": {
+            "actionType": "JSFunction",
+            "method": "unregisterReloadInput",
+            "inputData": {
+                "name":"EpPert"
+            },
+            "deps": "js/epReloadService"
+        },
+        "getContextObjectForReloadInput": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "contextObject" : "{{subPanelContext.contextObject}}"
+            },
+            "outputData": {
+                "contextObject": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "registerReloadWithContextObject": {
+            "actionType": "JSFunction",
+            "method": "registerReloadInput",
+            "inputData": {
+                "name":"EpPert",
+                "type": "Pert",
+                "object": "{{subPanelContext.contextObject}}",
+                "propertiesToReload": [ "bl_rev_fnd0InProcess",
+                    "bl_rev_last_release_status",
+                    "bl_rev_fnd0AllWorkflows"
+                ]
+            },
+            "deps": "js/epReloadService"
+        },
+        "registerReloadWithLoadedObject": {
+            "actionType": "JSFunction",
+            "method": "registerReloadInput",
+            "inputData": {
+                "name":"EpPert",
+                "type": "Pert",
+                "object": "{{ctx.epPageContext.loadedObject}}",
+                "propertiesToReload": [ "bl_rev_fnd0InProcess",
+                    "bl_rev_last_release_status",
+                    "bl_rev_fnd0AllWorkflows"
+                ]
+            },
+            "deps": "js/epReloadService"
+        },
+        "submitToWorkflow": {
+            "actionType": "JSFunctionAsync",
+            "method": "submitToWorkflow",
+            "inputData": {
+                "selectedObjects": "{{subPanelContext.selection}}",
+                "workflowTemplate": "{{data.workflowsListBox.dbValue}}",
+                "workflowName": "{{data.workflowName.dbValue}}",
+                "workflowDescription": "{{data.workflowDescription.dbValue}}"
+            },
+            "deps": "js/epSubmitToWorkflowService"
+        },
+        "closePopup": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "inputData": {
+                "popupId": "submitToWorkflow"
+            },
+            "deps": "js/declpopupService"
+        },
+        "getValidTemplates": {
+            "actionType": "JSFunction",
+            "method": "getValidTemplates",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/epSubmitToWorkflowService"
+        },
+        "initWorkflowData": {
+            "actionType": "JSFunctionAsync",
+            "method": "getWorkflowTemplatesList",
+            "inputData": {
+                "selection": "{{subPanelContext.selection}}",
+                "data": "{{data}}"
+            },
+            "deps": "js/epSubmitToWorkflowService"
+        }
+    },
+    "data": {
+        "workflowName": {
+            "displayName": "{{i18n.workflowName}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "{{subPanelContext.selection[0].props.bl_rev_object_name.dbValues[0]}}",
+            "dispValue": "{{subPanelContext.selection[0].props.bl_rev_object_name.dbValues[0]}}"
+        },
+        "workflowsListBox": {
+            "displayName": "{{i18n.InWorkflowTooltip}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "workflowDescription": {
+            "displayName": "{{i18n.workflowDescription}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": "",
+            "numberOfLines": 6
+        },
+        "allowAlternateProcedures": {
+            "displayName": "",
+            "type": "BOOLEAN",
+            "propertyRadioTrueText": "{{i18n.all}}",
+            "propertyRadioFalseText": "{{i18n.assigned}}",
+            "dbValue": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "isAllowAlternateProcedures": {
+            "displayName": "",
+            "type": "BOOLEAN",
+            "dbValue": false
+        }
+    },
+    "conditions": {
+        "isAllowAlternateProcedures": {
+            "expression": "data.isAllowAlternateProcedures.dbValue"
+        },
+        "isNotTcmaStudyManager": {
+            "expression": {
+                "$and": [ 
+                {
+                    "$source": "ctx.locationContext['ActiveWorkspace:Location']",
+                    "$query": {
+                        "$ne": "tcmaRoot"
+                    }
+                }, 
+                {
+                    "$source": "data.contextObject",
+                    "$query": {
+                        "$notNull": true
+                    }
+                }
+            ]
+            }
+        }
+    },
+    "i18n": {
+        "workflowDescription": [
+            "WorkflowMessages"
+        ],
+        "submit": [
+            "WorkflowMessages"
+        ],
+        "submitToWorkflowTitle": [
+            "WorkflowMessages"
+        ],
+        "workflowName": [
+            "WorkflowMessages"
+        ],
+        "cancel": [
+            "WorkflowMessages"
+        ],
+        "all": [
+            "WorkflowMessages"
+        ],
+        "assigned": [
+            "WorkflowMessages"
+        ],
+        "InWorkflowTooltip": [
+            "WorkflowMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onMount": "initWorkflowData"
+    }
+}

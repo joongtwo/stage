@@ -1,0 +1,60 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "getOccurrenceType": {
+            "syncObject": {}
+        }
+    },
+    "actions": {
+        "render": {
+            "method": "awCustomLOVComponentRenderFunction",
+            "deps": "js/ssp0PartsService"
+        },
+        "validateOccTypeSelection": {
+            "actionType": "JSFunction",
+            "method": "validateSelection",
+            "inputData": {
+                "selected": "request.selected",
+                "suggestion": "{{ports.getOccurrenceType.syncObject}}"
+            },
+            "outputData": {
+                "valid": "valid"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "reloadPartsTree",
+                        "condition": "!data.valid"
+                    }
+                ]
+            },
+            "deps": "js/ssp0PartsService"
+        }
+    },
+    "dataProviders": {
+        "occTypesProvider": {
+            "response": "{{ports.getOccurrenceType.syncObject}}",
+            "validateAction": "validateOccTypeSelection",
+            "valid": "{{data.valid}}",
+            "moreValuesExist": false
+        }
+    },
+    "functions": {
+        "getOccTypeList": {
+            "functionName": "getOccTypeList",
+            "parameters": []
+        },
+        "getPreferencesNamesList": {
+            "functionName": "getPreferencesNamesList",
+            "parameters": []
+        }
+    },
+    "lifecycleHooks": {
+        "render": "render"
+    },
+    "props": {
+        "prop": {
+            "type": "field"
+        }
+    }
+}

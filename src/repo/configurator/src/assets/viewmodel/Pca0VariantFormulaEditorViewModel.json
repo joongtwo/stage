@@ -1,0 +1,267 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel-section.directive",
+        "js/aw-textarea.directive",
+        "js/aw-scrollpanel.directive"
+    ],
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "vca-edit-state": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "postProcessSetDisplayFormulaeInEditor": {
+            "actionType": "JSFunction",
+            "method": "postProcessSetDisplayFormulaeInEditor",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}",
+                "soaResponse": "{{data.eventData.soaResponse}}"
+            },
+            "outputData": {
+                "variantFormulaEditor.uiValue": ""
+            },
+            "deps": "js/pca0VariantFormulaEditorService"
+        },
+        "setDisplayFormulaInEditor": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ProductConfiguratorAw-2021-06-ConfiguratorManagement",
+            "method": "getVariantFormulae",
+            "inputData": {
+                "configPerspective": {
+                    "type": "Cfg0ConfiguratorPerspective",
+                    "uid": "{{subPanelContext.configPerspectiveUid}}"
+                },
+                "formulaType": "displayFormula",
+                "variantObjects": [ {
+                    "variantObjectId": "1",
+                    "affecteObjectUid": "{{function:getSelectedObjUid}}",
+                    "expression": {
+                        "formula": "",
+                        "exprID": "",
+                        "exprType": 23
+                    }
+                } ]
+            },
+            "policy": {},
+            "outputData": {
+                "getVariantFormulaeResponse": ""
+            },
+            "events": {
+                "success": [ {
+                    "name": "pca0VariantFormulaEditor.postProcessSetDisplayFormulaeInEditor",
+                    "eventData": {
+                        "soaResponse": "{{data.getVariantFormulaeResponse}}"
+                    }
+                } ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "displayErrorCode"
+                } ]
+            },
+            "deps": "js/pca0VariantFormulaEditorService"
+        },
+        "initializeEditorProps": {
+            "actionType": "JSFunction",
+            "method": "initializeEditorProps",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}",
+                "variantFormulaEditor": "{{data.variantFormulaEditor}}"
+            },
+            "outputData": {
+                "contextKey": "result.contextKey",
+                "initialFormula": "result.initialFormula",
+                "variantFormulaEditor": "result.variantFormulaEditor"
+            },
+            "deps": "js/pca0VariantFormulaEditorService"
+        },
+        "startEditFormula": {
+            "actionType": "JSFunction",
+            "method": "startEditVariantFormulaEditor",
+            "inputData": {
+                "contextKey": "{{subPanelContext.contextKey}}"
+            },
+            "outputData": {
+                "variantFormulaEditor.isEditable": ""
+            },
+            "deps": "js/pca0VariantFormulaEditorService"
+        },
+        "cancelEditFormula": {
+            "actionType": "JSFunction",
+            "method": "cancelEditVariantFormulaEditor",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}",
+                "variantFormulaEditor": "{{data.variantFormulaEditor}}"
+            },
+            "outputData": {
+                "variantFormulaEditor": ""
+            },
+            "deps": "js/pca0VariantFormulaEditorService"
+        },
+        "initialize": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "initializeEditorProps"
+                },
+                {
+                    "action": "initializeEditHandler"
+                }
+            ]
+        },
+        "handleLeaveConfirmation": {
+            "actionType": "JSFunction",
+            "method": "leaveConfirmation",
+            "inputData": {},
+            "deps": "js/editHandlerService"
+        },
+        "saveFormula": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ProductConfiguratorAw-2022-12-ConfiguratorManagement",
+            "method": "setVariantExpressionData3",
+            "inputData": {
+                "input": {
+                    "configPerspective": {
+                        "uid": "{{subPanelContext.configPerspectiveUid}}",
+                        "type": "Cfg0ConfiguratorPerspective"
+                    },
+                    "selectedExpressions": "{{function:convertGridFromFormulaToJsonString}}",
+                    "requestInfo": {
+                        "requestType": []
+                    }
+                }
+            },
+            "events": {
+                "success": [ {
+                        "name": "pca0VariabilityTree.editModeChanged",
+                        "eventData": {
+                            "gridID": "variantConditionAuthoringGrid",
+                            "editOperation": "saveComplete"
+                        }
+                    },
+                    {
+                        "name": "Pca0VariantConditionAuthoringGrid.postProcessSetVariantExpressionData"
+                    },
+                    {
+                        "name": "pca0VariantFormulaEditor.postProcessSaveVariantFormula"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "displayErrorCode"
+                } ]
+            },
+            "deps": "js/Pca0ExpressionGridService"
+        },
+        "postProcessSaveVariantFormula": {
+            "actionType": "JSFunction",
+            "method": "postProcessSaveVariantFormula",
+            "inputData": {
+                "contextKey": "{{subPanelContext.contextKey}}"
+            },
+            "outputData": {
+                "variantFormulaEditor": ""
+            },
+            "deps": "js/pca0VariantFormulaEditorService"
+        },
+        "initializeEditHandler": {
+            "actionType": "JSFunction",
+            "method": "initializeEditHandler",
+            "inputData": {
+                "declViewModel": "{{data}}"
+            },
+            "deps": "js/pca0VariantFormulaEditorService"
+        }
+    },
+    "data": {
+        "variantFormulaEditor": {
+            "type": "STRING",
+            "isRequired": false,
+            "isEditable": false,
+            "isEnabled": true,
+            "numberOfLines": "3",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "aw_FormulaEditorCommandBar": "aw_FormulaEditorCommandBar"
+    },
+    "i18n": {
+        "variantFormulaEditorTitle": [ "ConfiguratorMessages" ]
+    },
+    "onEvent": [ {
+            "eventId": "pca0VariantFormulaEditor.refresh",
+            "action": "initializeEditorProps"
+        },
+        {
+            "eventId": "pca0VariantFormulaEditor.setDisplayFormulaInEditor",
+            "cacheEventData": false,
+            "action": "setDisplayFormulaInEditor"
+        },
+        {
+            "eventId": "pca0VariantFormulaEditor.postProcessSetDisplayFormulaeInEditor",
+            "cacheEventData": true,
+            "action": "postProcessSetDisplayFormulaeInEditor"
+        },
+        {
+            "eventId": "pca0VariantFormulaEdit.editModeChanged",
+            "cacheEventData": true,
+            "action": "startEditFormula",
+            "criteria": {
+                "editOperation": "start"
+            }
+        },
+        {
+            "eventId": "pca0VariantFormulaEdit.editModeChanged",
+            "cacheEventData": true,
+            "action": "cancelEditFormula",
+            "criteria": {
+                "editOperation": "cancel"
+            }
+        },
+        {
+            "eventId": "pca0VariantFormulaEdit.editModeChanged",
+            "cacheEventData": true,
+            "action": "saveFormula",
+            "criteria": {
+                "editOperation": "save"
+            }
+        },
+        {
+            "eventId": "pca0VariantFormulaEditor.postProcessSaveVariantFormula",
+            "cacheEventData": false,
+            "action": "postProcessSaveVariantFormula"
+        }
+    ],
+    "functions": {
+        "convertGridFromFormulaToJsonString": {
+            "functionName": "convertGridFromFormulaToJsonString",
+            "parameters": [
+                "{{data.variantFormulaEditor.dbValue}}",
+                "{{subPanelContext.contextKey}}"
+            ]
+        },
+        "getSelectedObjUid": {
+            "functionName": "getSelectedObjUid",
+            "parameters": [
+                "{{subPanelContext.contextKey}}"
+            ]
+        }
+    },
+    "messages": {
+        "displayErrorCode": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "editHandlers": {
+        "pca0EditHandler": {
+            "context": "FORMULA_EDIT_CONTEXT"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initialize"
+    }
+}

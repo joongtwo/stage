@@ -1,0 +1,114 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-flex-row.directive",
+        "js/aw-panel.directive",
+        "js/aw-break.directive",
+        "js/aw-property-label.directive",
+        "js/aw-include.directive"
+    ],
+    "actions": {
+        "initViewDataSettings": {
+            "actionType": "JSFunction",
+            "method": "initViewDataSettings",
+            "inputData": {
+                "subPanelContextInfo": "{{subPanelContext}}"
+            },
+            "deps": "js/Pca0FilterCriteriaSettingsService"
+        },
+        "intentSelectionChange": {
+            "actionType": "JSFunction",
+            "method": "handleIntentSelectionChange",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Pca0FilterCriteriaSettingsService"
+        },
+        "displayIntentsLOV": {
+            "actionType": "JSFunction",
+            "method": "getIntentList",
+            "inputData": {
+                "data": "{{ctx.fscContext.settingsMO.pca0IntentsLOV}}"
+            },
+            "outputData": {
+                "intentVmList": ""
+            },
+            "deps": "js/Pca0FilterCriteriaSettingsService"
+        },
+        "modifyFilterCriteria": {
+            "actionType": "JSFunction",
+            "method": "filterCriteriaModified",
+            "deps": "js/Pca0FilterCriteriaSettingsService"
+        },
+        "toggleFilterCriteriaSettingsState": {
+            "actionType": "JSFunction",
+            "method": "toggleFilterCriteriaSettingsState",
+            "inputData": {
+                "subPanelContextInfo": "{{subPanelContext}}",
+                "eventMap": "{{data.eventMap}}"
+            },
+            "outputData": {
+                "subPanelContext": "updatedSubPanelContext"
+            },
+            "deps": "js/Pca0FilterCriteriaSettingsService"
+        }
+    },
+    "data": {
+        "revisionRule": {
+            "type": "STRING",
+            "hasLov": true,
+            "dbValue": "",
+            "displayName": "{{i18n.revisionRule}}"
+        },
+        "effectivity": {
+            "type": "STRING",
+            "hasLov": true,
+            "dbValue": "",
+            "displayName": "{{i18n.effectivity}}"
+        },
+        "ruleDate": {
+            "type": "STRING",
+            "hasLov": true,
+            "dbValue": "",
+            "displayName": "{{i18n.ruleDate}}"
+        },
+        "currentEffectivity": {
+            "uiValue": "{{data.currentEffectivity}}",
+            "type": "STRING"
+        }
+    },
+    "i18n": {
+        "revisionRule": [ "FullScreenConfigurationMessages" ],
+        "ruleDate": [ "FullScreenConfigurationMessages" ],
+        "effectivity": [ "FullScreenConfigurationMessages" ],
+        "intent": [ "FullScreenConfigurationMessages" ],
+        "errorInGettingPreferredConfigInfo": [ "FullScreenConfigurationMessages" ]
+    },
+    "messages": {
+        "errorInGettingPreferredConfigInfo": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.errorInGettingPreferredConfigInfo}}"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initViewDataSettings"
+    },
+    "onEvent": [ {
+            "eventId": "Pca0Settings.refreshLOVs",
+            "action": "displayIntentsLOV"
+        },
+        {
+            "eventId": "Pca0FilterCriteriaSettings.refreshRevisionRuleContent",
+            "action": "modifyFilterCriteria"
+        },
+        {
+            "eventId": "Pca0FilterCriteriaSettings.refreshRevisionRuleContentOnFsc",
+            "action": "modifyFilterCriteria"
+        },
+        {
+            "eventId": "Pca0Settings.toggleFilterCriteriaSettingsState",
+            "action": "toggleFilterCriteriaSettingsState",
+            "cacheEventData": true
+        }
+    ]
+}

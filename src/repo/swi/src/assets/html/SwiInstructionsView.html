@@ -1,0 +1,15 @@
+<div class="aw-swi-instrPanel">
+    <div class="sw-column h-12 w-12 justify-center" exist-when="!conditions.isStepsViewSelected">
+        <aw-splm-table gridid="serviceReqTreeTable" use-tree="true" show-decorators="true"></aw-splm-table>
+    </div>
+    <div exist-when="conditions.isStepsViewSelected">
+        <div class="aw-swi-step" exist-when=!data.isWarning>
+            {{data.stepInformation}}
+        </div>
+
+        <div class="aw-swi-text" exist-when="data.isWarning">
+            <aw-guidance-message message="warningInformation" closable="false" banner-style="true" show-icon="true" show-type="false">
+            </aw-guidance-message>
+        </div>
+    </div>
+</div>

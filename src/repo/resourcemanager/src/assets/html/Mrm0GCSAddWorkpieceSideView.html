@@ -1,0 +1,23 @@
+<aw-command-panel panel-id="Mrm0GCSAddWorkpieceSidePanel" caption="i18n.addElementBtn" context="subPanelContext">
+    <aw-panel-header>
+        <aw-panel-section caption="i18n.toTitle">
+            <aw-default-cell vmo="ctx.aceActiveContext.context.addElement.toComponent"></aw-default-cell>
+        </aw-panel-section>
+    </aw-panel-header>
+    <aw-panel-body>
+        <aw-panel-section caption="i18n.workpieceSideConnection">
+            <label>{{data.totalNumberOfComps.propertyDisplayName}}</label>
+        </aw-panel-section>
+        <aw-panel-section caption="i18n.addComponents">
+            <aw-default-cell vmo="ctx.relationContext.relationInfo[0].secondaryObject"></aw-default-cell>
+        </aw-panel-section>
+        <aw-form name="createInputs">
+            <aw-numeric prop="data.numberOfComponents"></aw-numeric>
+        </aw-form>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="gcsAddSingleWorkpieceSide" visible-when="conditions.isNumberOfComponentsValid">
+            <aw-i18n>i18n.addElementBtn</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

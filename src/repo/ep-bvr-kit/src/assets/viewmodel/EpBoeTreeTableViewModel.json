@@ -1,0 +1,278 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpBoeTreeTable_selectedObjects": {
+            "onChangeAction": "setSelection",
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "messages": "{{subPanelContext.messages}}",
+        "isLoading": true,
+        "isScopeOrTarget":"{{subPanelContext.isScopeOrTarget}}"
+
+    },
+    "actions": {
+        "doGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "epBoeTreeDataProvider"
+        },
+        "setSelectionInSelectionModel": {
+            "actionType": "JSFunction",
+            "method": "setSelectionInSelectionModel",
+            "inputData": {
+                "selectionModel": "{{data.selectionModels.epBoeTreeTableSelectionModel}}",
+                "objectsToSelect": "{{ports.EpBoeTreeTable_selectedObjects.syncObject}}"
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "setSelection": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.epBoeTreeDataProvider}}",
+                "objectsToSelect": "{{ports.EpBoeTreeTable_selectedObjects.syncObject}}",
+                "propertyToSort": "bl_sequence_no",
+                "unselectIfEmpty": true
+            },
+            "deps": "js/epTableService"
+        },
+        "updateSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpBoeTreeTable_selectedObjects",
+                "syncObject": "{{data.eventData.selectedObjects}}"
+            }
+        },
+        "createColumns": {
+            "actionType": "JSFunctionAsync",
+            "method": "createColumns",
+            "inputData": {
+                "preferenceValues": "{{subPanelContext.preferenceName}}",
+                "dataProvider": "{{data.dataProviders.epBoeTreeDataProvider}}",
+                "columnProvider": {
+                    "clientColumns": "{{subPanelContext.customColumns}}"
+                },
+                "additionalPolicyObjects": "{{subPanelContext.additionalPolicyObjects}}",
+                "tableCmdColumnPropName": "{{subPanelContext.tableCmdColumnPropName}}",
+                "tableTreeNavColumnPropName": "{{subPanelContext.tableTreeNavColumnPropName}}",
+                "treeNavigationColumnIndex": "{{subPanelContext.treeNavigationColumnIndex}}"
+            },
+            "outputData": {
+                "dataProviders.epBoeTreeDataProvider.columnConfig": "columnConfig",
+                "dataProviders.epBoeTreeDataProvider.policy": "policy"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "loadTreeTableData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTreeTableData",
+            "inputData": {
+                "treeLoadInput": "{{data.treeLoadInput}}",
+                "topNodeUid": "{{subPanelContext.objectUid}}",
+                "isTopNode": "{{subPanelContext.isTopNode}}",
+                "rootLoadInputData":{
+                    "loadTypes": [
+                        "{{subPanelContext.loadTypes ? subPanelContext.loadTypes:'getProperties'}}"
+                    ],
+                    "propertiesToLoad": "{{subPanelContext.propertiesToLoad}}",
+                    "targetUid": "",
+                    "additionalLoadParams": "{{subPanelContext.rootAdditionalLoadParams}}",
+                    "relatedObjectMapKey": "{{subPanelContext.relatedObjectMapKey}}"
+                },
+                "childLoadInputData": {
+                    "loadTypes": [
+                        "{{subPanelContext.loadTypes ? subPanelContext.loadTypes:'getProperties'}}"
+                    ],
+                    "propertiesToLoad": "{{subPanelContext.childPropertiesToLoad}}",
+                    "targetUid": "",
+                    "additionalLoadParams": "{{subPanelContext.childAdditionalLoadParams}}",
+                    "relatedObjectMapKey": "{{subPanelContext.relatedObjectMapKey}}"
+                },
+                "isLeafProperty": "bl_has_children"
+            },
+            "outputData": {
+                "treeLoadResult": "treeLoadResult",
+                "isLoading": false
+            },
+            "deps": "js/epTableService"
+        },
+        "saveResizedColumnsWidth": {
+            "actionType": "JSFunction",
+            "method": "saveResizedColumnsWidth",
+            "inputData": {
+                "preferenceName": "{{subPanelContext.preferenceName}}",
+                "columns": "{{data.eventData.columns}}"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "createColumnsAndRegisterPolicy": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "createColumns"
+                },
+                {
+                    "action": "registerPolicy"
+                }
+            ]
+        },
+        "registerPolicy": {
+            "actionType": "JSFunction",
+            "method": "register",
+            "inputData": {
+                "name": "EpBoeTreeTable",
+                "policyObj": "{{data.dataProviders.epBoeTreeDataProvider.policy}}"
+            },
+            "deps": "js/mfePolicyService"
+        },
+        "unregisterPolicy": {
+            "actionType": "JSFunction",
+            "method": "unregister",
+            "inputData": {
+                "name": "EpBoeTreeTable"
+            },
+            "deps": "js/mfePolicyService"
+        },
+        "updateSelectionPortAndUpdateCommandContext": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "updateSelectionPort"
+                },
+                {
+                    "action": "updateCommandContext"
+                }
+            ]
+        },
+        "updateCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext.tabContext}}",
+                "commandContext": {
+                    "selection": "{{data.eventMap['epBoeTreeDataProvider.selectionChangeEvent'].selectedObjects}}",
+                    "vmos": "{{data.dataProviders.epBoeTreeDataProvider.viewModelCollection.loadedVMObjects}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "handleSaveAndRefresh": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "handleAddRemoveSaveEvents"
+                },
+                {
+                    "action": "doGridDataProvider",
+                    "condition": "conditions.isEventRelevantToBoeRoot"
+                }
+            ]
+        },
+        "handleAddRemoveSaveEvents": {
+            "actionType": "JSFunction",
+            "method": "handleAddRemoveSaveEvents",
+            "inputData": {
+                "saveEvents": "{{data.eventData}}",
+                "relationName": "{{subPanelContext.relationName}}",
+                "dataProvider": "{{data.dataProviders.epBoeTreeDataProvider}}",
+                "inputObjectUid": "{{subPanelContext.objectUid}}",
+                "selectAddedObjects": false
+            },
+            "deps": "js/epTableService"
+        },
+        "clientTableRefresh": {
+            "actionType": "JSFunction",
+            "method": "refreshTable",
+            "inputData": {
+                "tableId": "EpBoeTreeTable"
+            },
+            "deps": "js/mfeTableService"
+        }
+    },
+    "functions": {
+
+    },
+    "onEvent": [{
+            "eventId": "epBoeTreeDataProvider.selectionChangeEvent",
+            "action": "updateSelectionPortAndUpdateCommandContext",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "epBoeTreeDataProvider.modelObjectsUpdated",
+            "action": "updateCommandContext",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "columnArrange",
+            "cacheEventData": true,
+            "action": "saveResizedColumnsWidth",
+            "criteria": {
+                "name": "EpBoeTreeTable"
+            }
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "handleSaveAndRefresh"
+        }
+    ],
+    "dataProviders": {
+        "epBoeTreeDataProvider": {
+            "initializeAction": "loadTreeTableData",
+            "nextAction": "loadTreeTableData",
+            "previousAction": "loadTreeTableData",
+            "focusAction": "loadTreeTableData",
+            "treeLoadResult": "{{data.treeLoadResult}}",
+            "selectionModelMode": "multiple",
+            "inputData": {
+                "accessMode": "tree",
+                "topNodeUid": "{{subPanelContext.objectUid}}",
+                "selectionModel": "{{data.selectionModel}}"
+            },
+            "commandsAnchor": "{{subPanelContext.boeTreeCommandAnchor ? subPanelContext.boeTreeCommandAnchor:''}}"
+        }
+    },
+    "columnProviders": {
+        "epBoeTreeColumnProvider": {
+            "loadColumnAction": "createColumnsAndRegisterPolicy",
+            "columns": "{{epBoeTreeDataProvider.columnConfig.columns}}",
+            "resetColumnAction": "saveResizedColumnsWidth",
+            "saveColumnAndLoadAction": "saveResizedColumnsWidth",
+            "frozenColumnIndex": -1
+        }
+    },
+    "grids": {
+        "EpBoeTreeTable": {
+            "dataProvider": "epBoeTreeDataProvider",
+            "columnProvider": "epBoeTreeColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {}
+        }
+    },
+    "selectionModels": {
+        "epBoeTreeTableSelectionModel": {
+            "selectionMode": "multiple"
+        }
+    },
+    "conditions": {
+        "isTreeDataLoaded": {
+            "expression": "!data.isLoading && data.dataProviders.epBoeTreeDataProvider.viewModelCollection.totalObjectsLoaded > 0"
+        },
+        "isBoeStructureMissing": {
+            "expression": "!data.isLoading && data.dataProviders.epBoeTreeDataProvider.viewModelCollection.totalObjectsLoaded === 0"
+        },
+        "isEventRelevantToBoeRoot": {
+            "expression": "data.eventData['Mfg0assigned_workarea'] && data.eventData['Mfg0assigned_workarea'].eventObjectUid && data.eventData['Mfg0assigned_workarea'].eventObjectUid === data.dataProviders.epBoeTreeDataProvider.topNodeUid"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "setSelectionInSelectionModel",
+        "onUnmount": "unregisterPolicy"
+    }
+}

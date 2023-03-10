@@ -1,0 +1,104 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "EpValidationResultTable_inputObject": {
+            "onChangeAction": "setInputObject",
+            "syncObject": {}
+        },
+        "EpValidationResultTable_selectedObjects": {
+            "onChangeAction": "setSelection",
+            "syncObject": {}
+        }
+    },
+    "actions": {
+        "setInputObject": {
+            "actionType": "JSFunction",
+            "method": "setInputObject",
+            "inputData": {
+                "objectsSelected": "{{ports.EpValidationResultTable_inputObject.syncObject}}"
+            },
+            "outputData": {
+                "inputObject": ""
+            },
+            "deps": "js/epValidationTableService"
+        },
+        "setSelection": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.epValidationResultDataProvider}}",
+                "objectsToSelect": "{{ports.EpValidationResultTable_selectedObjects.syncObject}}"
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "updateSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpValidationResultTable_selectedObjects",
+                "syncObject": "{{parameters.eventData.selectedObjects}}"
+            }
+        },
+        "loadDataForTree": {
+            "actionType": "JSFunction",
+            "method": "getColumnsData",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.epValidationResultDataProvider}}",
+                "columns": "{{data}}"
+            },
+            "outputData": {
+                "rowsObjects": "rowsObjects",
+                "totalRows": "totalRows"
+            },
+            "deps": "js/epValidationTableService"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "epValidationResultDataProvider.selectionChangeEvent",
+            "action": "updateSelectionPort",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        }
+    ],
+    "data": {
+        "columns": [ "{{i18n.validationResultBomlineColumn}}", "{{i18n.validationResultSummaryColumn}}" ],
+        "inputObject": "{{ports.EpValidationMessage_inputObject.syncObject[0]}}",
+        "name": {
+            "displayName": "{{i18n.resultTableTitle}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "Test_Value",
+            "dispValue": "string2"
+        }
+    },
+    "dataProviders": {
+        "epValidationResultDataProvider": {
+            "action": "loadDataForTree",
+            "response": "{{data.rowsObjects}}",
+            "totalFound": "{{data.totalRows}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "columnProviders": {
+        "epValidationResultColumnProvider": {}
+    },
+    "i18n": {
+        "validationResultBomlineColumn": [ "epValidationMessages" ],
+        "validationResultSummaryColumn": [ "epValidationMessages" ],
+        "resultTableTitle": [ "epValidationMessages" ]
+    },
+    "grids": {
+        "EpValidationResultTable": {
+            "dataProvider": "epValidationResultDataProvider",
+            "columnProvider": "epValidationResultColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enablePinning": true,
+                "enableSorting": false
+            }
+        }
+    }
+
+
+}

@@ -1,0 +1,168 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "createObject":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Core-2012-10-DataManagement",
+            "method": "createRelateAndSubmitObjects",
+            "inputData": {
+                "inputs": "{{function:getCreateInput}}"
+            },
+            "events":
+            {
+                "success":[
+                    {
+                        "condition": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'Prg0AbsCriteria' ) === -1",
+                        "name":"cdm.relatedModified",
+                        "eventData":{
+                           "relatedModified":[
+                              "{{ctx.selected}}"
+                           ]
+                        }
+                     },
+                     {
+                         "condition": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'Prg0AbsCriteria' ) > -1",
+                         "name":"cdm.relatedModified",
+                         "eventData":{
+                            "relatedModified":[
+                               "{{ctx.pselected}}"
+                            ]
+                         }
+                     },
+                     {
+                        "condition": "!subPanelContext.panelPinned",
+                        "name": "complete",
+                        "eventData": {
+                        "source": "toolAndInfoPanel"
+                        }
+                    },
+                    {
+                        "condition": "subPanelContext.panelPinned",
+                        "name": "awPanel.loadNextValues"
+                    }
+                 ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "SOAFailureMessage"
+                } ]
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "prepareExtensionVMOProps":{
+            "actionType": "JSFunction",
+            "method": "getCreateInput",
+            "inputData": {
+                "data":"{{data.xrtState.xrtTypeLoaded.type}}",
+                "eventUid": "{{ctx.panelContext.vmo.uid}}",
+                "editHandler": "{{editHandlers.addPanelEditHandler}}"
+            },
+            "outputData": {
+                "extensionVMProps": "extensionVMProps",
+                "objCreateInfo": "objCreateInfo"
+            },
+            "deps": "js/Pgp0AddCriteriaService"
+        },
+        "CreateEventJob": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "prepareExtensionVMOProps"
+                },
+                {
+                    "action": "createObject"
+                }
+            ]
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "data": {
+        "activeView": "AddObjectPrimarySub",
+        "addPanelState": {
+            "initialValues": {
+                "creationType": "",
+                "createdObject": "",
+                "sourceObjects": "",
+                "selectedTab": "",
+                "xrtTypeLoaded": ""
+            },
+            "meta": {}
+        },
+        "activeState": {
+            "initialValues": {
+                "activeView": "AddObjectPrimarySub",
+                "context": {}
+            },
+            "meta": {}
+        },
+        "projectState": {
+            "initialValues": {
+                "selectedProjects": [],
+                "triggerAssign": false
+            },
+            "meta": {
+                "selectedProjects": {
+                    "field": "true",
+                    "type": "OBJECT"
+                },
+                "triggerAssign": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        },
+        "triggerCreate": {
+            "dbValue": false,
+            "type": "BOOLEAN"
+        },
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "conditions": {
+        "isNewTabAddButtonVisible": {
+            "expression": "addPanelState.creationType"
+        },
+        "isNewTabAddButtonEnable": {
+            "expression": "addPanelState.creationType && addPanelState.selectedTab.view=='NewTabPageSub'"
+        }
+    },
+    "messages": {
+        "SOAFailureMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "lifecycleHooks": {
+        "onUnmount": "unRegisterActivePin"
+    },
+    "functions": {
+        "getCreateInput": {
+            "functionName": "getCreateInput",
+            "parameters":
+            [
+                "{{data}}",
+                "{{data.extensionVMProps}}",
+                "",
+                "{{editHandlers.addPanelEditHandler}}"
+            ]
+        }
+    },
+    "i18n": {
+        "addButtonCommandTitle": [ "ProgramPlanningCommandPanelsMessages" ],
+        "addCriteriaCommandTitle": [ "ProgramPlanningCommandPanelsMessages" ]
+    }
+}

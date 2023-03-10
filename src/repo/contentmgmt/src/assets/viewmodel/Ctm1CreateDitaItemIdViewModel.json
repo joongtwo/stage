@@ -1,0 +1,95 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+        "js/aw-panel.directive",
+        "js/aw-textbox.directive"
+    ],
+
+    "actions":
+    {
+        "updateDataSource": {
+            "actionType": "JSFunction",
+            "method": "addHtmlPanelInDataSource",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "{{data.subPanelContext.xrtType}}",
+                "panelID": "Ctm1CreateDitaItemId"
+            },
+            "deps": "js/addObjectUtils"
+        },
+
+        "reveal": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2008-06-DataManagement",
+            "method": "getNextIds",
+            "inputData": {
+                "vInfoForNextId": [ {
+                    "typeName": "DC_DitaItem",
+                    "propName": "item_id"
+                } ]
+            },
+            "outputData": {
+                "item_id.uiValue": "nextIds[0]",
+                "item_id.dbValue": "nextIds[0]",
+                "item_id.dbValues": "nextIds",
+                "item_id.displayValues": "nextIds"
+            }
+        }
+    },
+
+    "data":
+    {
+        "item_id": {
+            "displayName": "{{i18n.id}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": ""
+        }
+    },
+
+    "dataProviders":
+    {
+
+    },
+
+    "functions":
+    {
+    },
+
+    "lifecycleHooks": {
+        "onMount": "updateDataSource",
+        "onUpdate": {
+            "action": "updateDataSource",
+            "observers": [ "viewModel.data" ]
+        },
+        "onInit": "reveal"
+    },
+
+    "onEvent":
+    [
+
+    ],
+
+    "conditions":
+    {
+
+    },
+
+    "preferences":
+    [
+
+    ],
+
+    "messages":
+    {
+
+    },
+
+    "i18n":
+    {
+        "id": [ "ContentMgmtMessages" ]
+    }
+}

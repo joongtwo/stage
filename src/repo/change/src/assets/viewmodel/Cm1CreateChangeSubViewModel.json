@@ -1,0 +1,502 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "data": {
+        "filterBox": {
+            "type": "STRING",
+            "dbValue": ""
+        },
+        "activeView": "Cm1CreateChangeSub",
+        "selectedTypeObject": {
+            "initialValues": { },
+            "meta": { }
+        },
+        "tabsModel":
+        {
+            "isArray": "true",
+            "dbValue":
+            [
+                {
+                    "tabKey": "Cm1CreateChangeTab",
+                    "name": "{{i18n.create}}"
+                },
+                {
+                    "tabKey": "Cm1CreateParticipantsTab",
+                    "name": "{{i18n.participants}}",
+                    "visibleWhen": {
+                        "condition": "conditions.isParticipantTabVisible"
+                    }
+                }
+            ]
+        },
+        "participantInfo": {
+            "initialValues": { },
+            "meta": { }
+        },
+        "showParticipantsTab": {
+            "dbValue": true,
+            "type": "BOOLEAN"
+        }
+    },
+
+    "actions": {
+        "initPanel": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "loadAllParticipantsType",
+                    "condition": "conditions.isTCReleaseAtLeast142"
+                },
+                {
+                    "action": "getUsedOnObjectsForAllParticipantsType",
+                    "condition": "conditions.isTCReleaseAtLeast142"
+                },
+                {
+                    "action": "getCreatableChangeTypeEvent"
+                }
+            ]
+        },
+        "getCreatableChangeTypeEvent": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "getCMTypes.callSoa",
+                        "condition": "!ctx.CreateChangePanel.isDerive && !ctx.CreateIssueHostedMode && ctx.CreateChangePanel.exactTypeToCreate === '' "
+                    },
+                    {
+                        "name": "getCMTypes.useProvidedType",
+                        "condition": "!ctx.CreateChangePanel.isDerive && ( ctx.CreateIssueHostedMode || ( ctx.CreateChangePanel && ctx.CreateChangePanel.exactTypeToCreate && ctx.CreateChangePanel.exactTypeToCreate !== '' ) )"
+                    },
+                    {
+                        "name": "openCreateChangePanelForHostedComponent",
+                        "condition": "!ctx.CreateChangePanel.isDerive && !ctx.CreateIssueHostedMode && ctx.aw_hosting_state.currentHostedComponentId === 'com.siemens.splm.client.change.CreateChangeComponent' "
+                    },
+                    {
+                        "name": "getCMTypes.forDerive",
+                        "condition": "ctx.CreateChangePanel.isDerive"
+                    }
+                ]
+            }
+        },
+        "loadAllParticipantsType": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-03-Finder",
+            "method": "performSearch",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": "Awp0SearchResults",
+                    "columnsToExclude": [],
+                    "hostingClientName": "",
+                    "operationType": "intersection"
+                },
+                "saveColumnConfigData": {
+                    "columnConfigId": "",
+                    "clientScopeURI": "",
+                    "columns": [],
+                    "scope": "",
+                    "scopeName": ""
+                },
+                "searchInput": {
+                    "attributesToInflate": [ "parent_types", "type_name" ],
+                    "internalPropertyName": "",
+                    "maxToLoad": 2000,
+                    "maxToReturn": 2000,
+                    "providerName": "Awp0TypeSearchProvider",
+                    "searchCriteria": {
+                        "typeSelectorId": "Participant",
+                        "listOfIncludeObjectTypes": "Participant",
+                        "loadSubTypes": "true"
+                    },
+                    "searchFilterFieldSortType": "Alphabetical",
+                    "searchFilterMap": {},
+                    "searchSortCriteria": [],
+                    "startIndex": 0
+                }
+            },
+            "outputData": {
+                "typeListTotalFound": "totalFound",
+                "typeList": "{{function:convertTypesToLovEntries}}"
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "getUsedOnObjectsForAllParticipantsType": {
+            "actionType": "TcSoaService",
+            "serviceName": "BusinessModeler-2007-06-Constants",
+            "method": "getTypeConstantValues",
+            "inputData": {
+                "keys": "{{function:getInputForParticipantsConstant}}"
+            },
+            "outputData": {
+                "changeParticpantTypes": "{{function:processResponseForParticipantsConstant}}"
+            },
+            "deps": "js/Cm1CreateParticipantsService"
+        },
+        "getCreatableChangeTypeSoa": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ChangeManagement-2012-10-ChangeManagement",
+            "method": "getCreatableChangeTypes",
+            "inputData": {
+                "inputs": "{{function:getInputForCreatableChangeType}}"
+            },
+            "outputData": {
+                "changeTypeNames": "{{function:processResponseForTypeNames}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "getCMType.ensureTypesLoaded"
+                } ]
+            },
+            "deps": "js/Cm1CreateChangeService"
+        },
+        "enableDataProvider": {
+            "actionType": "dataProvider",
+            "method": "getCreatableChangeTypes"
+        },
+        "ensureChangeTypesLoaded": {
+            "actionType": "JSFunctionAsync",
+            "method": "ensureChangeTypesLoadedJs",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults"
+            },
+            "events": {
+                "success": [
+                    {
+                        "condition": "data.totalFound <= 0 && data.filterBox.dbValue === ''",
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    },
+                    {
+                        "name": "setDefaultSelectedTypeEvent",
+                        "condition": "data.totalFound === 1 && data.filterBox.dbValue === ''"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [ {
+                        "condition": "data.totalFound <= 0 && !ctx.CreateChangePanel.isDerive && data.filterBox.dbValue === ''",
+                        "message": "noSupportedTypesError"
+                    },
+                    {
+                        "condition": "data.totalFound <= 0 && ctx.CreateChangePanel.isDerive && data.filterBox.dbValue === ''",
+                        "message": "noSupportedTypesErrorDerive"
+                    }
+                ]
+            },
+            "policy": {
+                "types": [ {
+                    "name": "ImanType",
+                    "properties": [ {
+                            "name": "type_name"
+                        },
+                        {
+                            "name": "parent_types"
+                        }
+                    ]
+                } ]
+            },
+            "deps": "js/Cm1CreateChangeService"
+        },
+        "setDefaultSelectedType":{
+            "actionType": "JSFunction",
+            "method": "setDefaultSelectedType",
+            "inputData": {
+                "getCreatableChangeTypes": "{{data.dataProviders.getCreatableChangeTypes}}"
+            },
+            "deps": "js/Cm1CreateChangeService"
+        },
+        "getCreatableChangeTypesForDerive": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "attributes": [
+                    "object_name",
+                    "object_desc",
+                    "cm0DerivableTypes",
+                    "cm0RelationsToPropagate",
+                    "cm0AutoPropagateRelations"
+                ],
+                "objects": "{{ctx.mselected}}"
+            },
+            "outputData": {
+                "changeTypeNames": "{{function:getDeriveData}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "getCMType.ensureTypesLoaded"
+                } ]
+            },
+
+            "deps": "js/Cm1CreateChangeService"
+        },
+        "handleTypeSelection": {
+            "actionType": "JSFunction",
+            "method": "handleTypeSelectionJs",
+            "inputData": {
+                "data": "{{data}}",
+                "selectedTypeObject": "{{fields.selectedTypeObject}}"
+            },
+            "events": {
+                "success": [ {
+                    "condition": "conditions.isTCReleaseAtLeast142",
+                    "name": "getParticipantInfoEvent"
+                } ]
+            },
+            "deps": "js/Cm1CreateChangeService"
+        },
+        "getParticipantInfo": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getEnableParticipantBOConstantValue",
+                    "condition": "conditions.isTCReleaseAtLeast142"
+                },
+                {
+                    "action": "getFilteredParticipantTypes",
+                    "condition": "conditions.isTCReleaseAtLeast142 && data.showParticipantsTab.dbValue"
+                },
+                {
+                    "action": "getAllowableParticipantTypes",
+                    "condition": "conditions.isTCReleaseAtLeast142 && data.showParticipantsTab.dbValue"
+                },
+                {
+                    "action": "addCurrentUserAsRequestor",
+                    "condition": "conditions.isTCReleaseAtLeast142 && data.showParticipantsTab.dbValue"
+                },
+                {
+                    "action": "addCurrentUserAsAnalyst",
+                    "condition": "conditions.isTCReleaseAtLeast142 && data.showParticipantsTab.dbValue && selectedTypeObject.uid.includes('ChangeNotice') && ctx.preferences.CM_set_active_change_on_create && ctx.preferences.CM_set_active_change_on_create[0] === 'true'"
+                }
+            ]
+        },
+        "getEnableParticipantBOConstantValue": {
+            "actionType": "TcSoaService",
+            "serviceName": "BusinessModeler-2007-06-Constants",
+            "method": "getTypeConstantValues",
+            "inputData": {
+                "keys": "{{function:getEnableParticipantTypeConstInput}}"
+            },
+            "outputData": {
+                "showParticipantsTab": "{{function:outputForEnableParticipantTypeConst}}"
+            },
+            "deps": "js/Cm1CreateParticipantsService"
+        },
+        "getFilteredParticipantTypes": {
+            "actionType": "JSFunction",
+            "method": "getFilteredParticipantTypes",
+            "inputData": {
+                "selectedTypeObject": "{{data.selectedTypeObject}}",
+                "changeParticpantTypes": "{{data.changeParticpantTypes}}"
+            },
+            "outputData": {
+                "filteredParticipantTypes": "filteredParticipantTypes"
+            },
+            "deps": "js/Cm1CreateParticipantsService"
+        },
+        "getAllowableParticipantTypes": {
+            "actionType": "JSFunction",
+            "method": "getAllowableParticipantTypes",
+            "inputData": {
+                "selectedChangeTypes": "{{data.dataProviders.getCreatableChangeTypes.selectedObjects}}",
+                "changeParticpantTypes": "{{data.filteredParticipantTypes}}",
+                "participantInfo": "{{data.participantInfo}}"
+            },
+            "outputData": {
+                "participantInfo": "participantInfo"
+            },
+            "deps": "js/Cm1CreateParticipantsService"
+        },
+        "addCurrentUserAsRequestor": {
+            "actionType": "JSFunctionAsync",
+            "method": "addCurrentUserAsParticipant",
+            "inputData": {
+                "participantInfo": "{{fields.participantInfo}}",
+                "participantTypeName": "Requestor"
+            },
+            "deps": "js/Cm1CreateParticipantsService"
+        },
+        "addCurrentUserAsAnalyst": {
+            "actionType": "JSFunctionAsync",
+            "method": "addCurrentUserAsParticipant",
+            "inputData": {
+                "participantInfo": "{{fields.participantInfo}}",
+                "participantTypeName": "Analyst"
+            },
+            "deps": "js/Cm1CreateParticipantsService"
+        },
+        "clearCtxAppCreateChangePanel": {
+            "actionType": "JSFunction",
+            "method": "unRegisterCtx",
+            "inputData": {
+                    "name": "appCreateChangePanel"
+            },
+            "deps": "js/appCtxService"
+        },
+        "getCreatableChangeTypesProvided": {
+            "actionType": "JSFunction",
+            "method": "getCreatableChangeTypesProvided",
+            "outputData": {
+                "changeTypeNames": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "getCMType.ensureTypesLoaded"
+                    }
+                ]
+            },
+            "deps": "js/Cm1CreateChangeService"
+        },
+        "openCreateChangePanel": {
+            "actionType": "JSFunction",
+            "method": "openCreateChangePanel",
+            "deps": "js/Cm1ChangeCommandService",
+            "inputData": {
+                "commandId": "Cm1ShowCreateChange",
+                "location": "aw_toolsAndInfo",
+                "params": "{{ctx.state.params}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "getCMTypes.callSoa"
+                    }
+                ]
+            }
+        }
+    },
+
+    "dataProviders": {
+        "getCreatableChangeTypes": {
+            "action": "ensureChangeTypesLoaded",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "selectionModelMode": "single"
+        }
+    },
+
+    "functions": {
+        "getInputForCreatableChangeType": {
+            "functionName": "getInputForCreatableChangeType",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "processResponseForTypeNames": {
+            "functionName": "processResponseForTypeNames",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getDeriveData": {
+            "functionName": "getDeriveData"
+        },
+        "getInputForParticipantsConstant": {
+            "functionName": "getInputForParticipantsConstant",
+            "parameters": [
+                "{{data.typeList}}"
+            ]
+        },
+        "processResponseForParticipantsConstant": {
+            "functionName": "processResponseForParticipantsConstant",
+            "parameters": [
+                "{{data.typeList}}"
+            ]
+        },
+        "getEnableParticipantTypeConstInput": {
+            "functionName": "getEnableParticipantTypeConstInput",
+            "parameters": [
+                "{{data.selectedTypeObject}}"
+            ]
+        },
+        "outputForEnableParticipantTypeConst": {
+            "functionName": "outputForEnableParticipantTypeConst",
+            "parameters": [
+                "{{data.showParticipantsTab}}"
+            ]
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "initPanel",
+        "onUnmount": "clearCtxAppCreateChangePanel"
+    },
+
+    "onEvent": [
+        {
+            "eventId": "getCMTypes.callSoa",
+            "action": "getCreatableChangeTypeSoa"
+        },
+        {
+            "eventId": "getCMType.ensureTypesLoaded",
+            "action": "enableDataProvider"
+        },
+        {
+            "eventId": "getCMTypes.forDerive",
+            "action": "getCreatableChangeTypesForDerive"
+        },
+        {
+            "eventId": "getCreatableChangeTypes.selectionChangeEvent",
+            "action": "handleTypeSelection"
+        },
+        {
+            "eventId": "setDefaultSelectedTypeEvent",
+            "action": "setDefaultSelectedType"
+        },
+        {
+            "eventId": "getCMTypes.useProvidedType",
+            "action": "getCreatableChangeTypesProvided"
+        },
+        {
+            "eventId": "openCreateChangePanelForHostedComponent",
+            "action": "openCreateChangePanel"
+        },
+        {
+            "eventId": "getParticipantInfoEvent",
+            "action": "getParticipantInfo"
+        }
+    ],
+
+    "conditions": {
+        "isTypeSelected": {
+            "expression": "selectedTypeObject && selectedTypeObject.uid && selectedTypeObject.uid !== ''"
+        },
+        "isNotDeriveChange": {
+            "expression": "ctx.CreateChangePanel.isDerive != true"
+        },
+        "isTCReleaseAtLeast142": {
+            "expression": "( ctx.tcSessionData.tcMajorVersion === 14 && ctx.tcSessionData.tcMinorVersion >= 2 ) || ctx.tcSessionData.tcMajorVersion > 14 "
+        },
+        "isParticipantTabVisible": {
+            "expression": "conditions.isTCReleaseAtLeast142 && conditions.isNotDeriveChange && conditions.isTypeSelected && data.showParticipantsTab.dbValue"
+        }
+    },
+
+    "messages": {
+        "noSupportedTypesError": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.noSupportedTypesError}}"
+        },
+        "noSupportedTypesErrorDerive": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.noSupportedTypesErrorDerive}}"
+        }
+    },
+
+    "i18n": {
+        "objectType": [ "CreateChangeMessages" ],
+        "noSupportedTypesError": [ "CreateChangeMessages" ],
+        "noSupportedTypesErrorDerive": [ "CreateChangeMessages" ],
+        "create": [ "CreateChangeMessages" ],
+        "participants": [ "CreateChangeMessages" ]
+    }
+}

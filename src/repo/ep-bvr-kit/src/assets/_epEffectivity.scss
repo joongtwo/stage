@@ -1,0 +1,180 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2020.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+
+/*=========================================================================*/
+
+
+/*========================== EP Effectivity Popup =========================*/
+
+
+/*=========================================================================*/
+
+
+
+.aw-epInstructionsEffectivity-wiValidateEffectivityPopup {
+    /**======================End Item List=================================*/
+    .aw-epValidateEffectivity-endItemFilterBoxContainer {
+        margin-left: $margin_normal;
+        margin-top: auto;
+        width: auto;
+        .sw-lov-container {
+            flex-basis: content;
+            input, input:hover {
+                padding-right: rem-calc(32);
+                text-overflow: ellipsis;
+            }   
+        }
+    }
+    .aw-epValidateEffectivity-endItemFilterBoxContainer.sw-property.sw-row .sw-property-name {
+        align-self: auto;
+        font-size: $fontsize_large;
+        font-weight: $bold_font_weight;
+        min-width: 0;
+    }
+    .aw-epValidateEffectivity-endItemRow {
+        height: rem-calc(64);
+    }
+
+    /**======================End Item List ENDS=================================*/
+    .aw-epInstructionsEffectivity-summaryRowContainer {
+        box-shadow: 0 rem-calc(4) rem-calc(4) rem-calc(-2);
+        z-index: 2;
+    }
+    .aw-epInstructionsEffectivity-operationsContainer {
+        float: left;
+        padding: 0 0 rem-calc(20) 0;
+    }
+    .aw-epInstructionsEffectivity-operationPlot {
+        float: left;
+        max-width: calc(100vw - 450px);
+        overflow-y: hidden;
+        position: relative;
+        overflow-x: auto;
+        box-shadow: rem-calc(-10) 0 rem-calc(10) rem-calc(-10) inset;
+    }
+    .aw-epInstructionsEffectivity-hidePlotShadow{
+        box-shadow:none;
+    }
+    .aw-epInstructionsEffectivity-summaryPlot {
+        float: left;
+        position: relative;
+        max-width: calc(100vw - 450px);
+        overflow: hidden;
+    }
+    .aw-epInstructionsEffectivity-operationUpCheckbox {
+        float: left;
+        overflow-y: auto;
+        overflow-x: hidden;
+        width: rem-calc(100);
+    }
+    .aw-epInstructionsEffectivity-SummaryUpCheckbox {
+        float: left;
+        width: auto;
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
+    .aw-epInstructionsEffectivity-operationRowName {
+        padding-top: rem-calc(30);
+        width: rem-calc(170);
+        float: left;
+        overflow: hidden;
+    }
+    .aw-epInstructionsEffectivity-summaryName {
+        padding-top: rem-calc(30);
+        width: rem-calc(170);
+        float: left;
+        height: 0;
+    }
+    .aw-epInstructionsEffectivity-rowNameElement {
+        font-family: $font-family;
+        height: rem-calc(78);
+        font-size: $fontsize_x_large;
+        font-weight: bold;
+        padding: 0 rem-calc(24) 0 rem-calc(10);
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+    .aw-epInstructionsEffectivity-upCheckboxDefault,
+    .aw-epInstructionsEffectivity-upCheckboxSet {
+        height: rem-calc(20);
+        width: rem-calc(20);
+        border: rem-calc(2) solid;
+        font-family: Arial;
+        font-size: $fontsize_small;
+        text-align: center;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        cursor: default;
+    }
+    .aw-epValidateEffectivity-wiEffectivityRowContainer {
+        display: inline-block;
+    }
+    .aw-epValidateEffectivity-wiEffectivitySliderDiv {
+        position: relative;
+        bottom: rem-calc(53);
+    }
+    .aw-epValidateEffectivity-wiEffectivitySlider {
+        position: absolute;
+    }
+    .aw-epValidateEffectivity-wiEffectivityObjectRow {
+        overflow: visible;
+        padding: rem-calc(30) rem-calc(8) rem-calc(30) rem-calc(3.75);
+    }
+    .aw-epValidateEffectivity-toolTip {
+        padding: $padding_small $padding_normal;
+        position: absolute;
+        border-width: thin;
+        border-style: solid;
+        display: none;
+        font-size: $fontsize_normal; //12px
+        height: rem-calc(22);
+        z-index: 1;
+    }
+    .aw-epValidateEffectivity-toolTip::after {
+        content: " ";
+        position: absolute;
+        top: 100%;
+        left: rem-calc(10);
+        margin-left: rem-calc(-5);
+        border-width: rem-calc(5);
+        border-style: solid;
+    }
+    .aw-epValidateEffectivity-buttonRow{
+        overflow: unset;
+    }
+    .aw-epValidateEffectivity-message {
+        margin-left: rem-calc(20);
+    }
+}
+
+.aw-epMaturity-unitsLabel {
+    display: inline-flex;
+    align-items: flex-end;
+    width: 28px;
+}
+
+.aw-epMaturity-hintButton {
+    margin-bottom: 4px;
+    width: 28px;
+}
+
+.epSelect-EndItem-label {
+    padding: 0 4px 5px 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.aw-epSetEffectivity-Inline-Container{
+    display: inline-block;
+}
+
+.aw-epSetEffectivity-Form-Container{
+    max-width: 100%;
+}

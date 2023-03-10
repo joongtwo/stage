@@ -1,0 +1,57 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ctx":{
+        "graph":{
+            "type": "object"
+        }
+    },
+    "actions": {
+        "pertMoveModeAction": {
+            "actionType": "JSFunction",
+            "method": "setMoveMode",
+            "inputData": {
+                "graphModel": "{{ctx.graph.graphModel}}"
+            },
+            "deps": "js/pertUtils"
+        },
+        "pertEditModeAction": {
+            "actionType": "JSFunction",
+            "method": "setEditMode",
+            "inputData": {
+                "graphModel": "{{ctx.graph.graphModel}}"
+            },
+            "deps": "js/pertUtils"
+        }
+    },
+    "data": {
+        "editModeCommand": {
+            "action": "pertEditModeAction",
+            "iconName": "cmdConnect",
+            "tooltip": "{{i18n.editModeCommandTitle}}"
+        },
+        "moveModeCommand": {
+            "action": "pertMoveModeAction",
+            "iconName": "cmdMove",
+            "tooltip": "{{i18n.moveModeCommandTitle}}"
+        }
+    },
+    "i18n": {
+        "editModeCommandTitle": [
+            "mfePertMessages"
+        ],
+        "editModeCommandDescription": [
+            "mfePertMessages"
+        ],
+        "moveModeCommandTitle": [
+            "mfePertMessages"
+        ],
+        "moveModeCommandDescription": [
+            "mfePertMessages"
+        ]
+    }
+}

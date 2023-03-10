@@ -1,0 +1,170 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "ports": {
+        "occContextSrcTaskbar": {
+            "syncObject": {},
+            "onChangeAction": "updateSourceContext"
+        },
+        "occContextTrgTaskbar": {
+            "syncObject": {},
+            "onChangeAction": "updateTargetContext"
+        },
+        "updateCBAContextTaskbar": {
+            "syncObject": {},
+            "onChangeAction": "updateCBAContextInTaskBar"
+        }
+    },
+    "data": {
+        "cbaTaskBarContext": {
+            "initialValues": {
+               "CBASrcContext":{},
+               "CBATrgContext":{}
+            },
+            "meta": {}
+        },
+        "cbaContext": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "actions": {
+        "updateSourceContext": {
+            "actionType": "JSFunction",
+            "method": "updateTaskBarContext",
+            "inputData": {
+                "taskBarInfo": "{{fields.cbaTaskBarContext}}",
+                "srcContext": "{{ports.occContextSrcTaskbar.syncObject}}"
+            },
+            "outputData": {
+                "cbaTaskBarContext": ""
+            },
+            "deps": "js/cbaTaskbarCommandService"
+        },
+        "updateTargetContext": {
+            "actionType": "JSFunction",
+            "method": "updateTaskBarContext",
+            "inputData": {
+                "taskBarInfo": "{{fields.cbaTaskBarContext}}",
+                "trgContext": "{{ports.occContextTrgTaskbar.syncObject}}"
+            },
+            "outputData": {
+                "cbaTaskBarContext": ""
+            },
+            "deps": "js/cbaTaskbarCommandService"
+        },
+        "updateCBAContextInTaskBar": {
+            "actionType": "JSFunction",
+            "method": "updateTaskBarContext",
+            "inputData": {
+                "cbaContextTaskBar": "{{fields.cbaContext}}",
+                "cbaContext": "{{ports.updateCBAContextTaskbar.syncObject}}"
+            },
+            "outputData": {
+                "cbaContext": ""
+            },
+            "deps": "js/cbaTaskbarCommandService"
+        },
+        "clearFindAlignedIndicators": {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "inputData": {
+                "path": "cbaContext.findAlignedContext.findAlignedInfo",
+                "value": {}
+            },
+            "deps": "js/appCtxService"
+        },
+        "executeAlignmentCheckBatch": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clearFindAlignedIndicators"
+                },
+                {
+                    "action": "updateAlignmentCheckStatus",
+                    "condition": "conditions.isSummarizedMode"
+                },{
+                    "action": "explodeEBOMStructureEvent",
+                    "condition": "conditions.isSummarizedMode"
+                },{
+                    "action": "executeAlignmentCheck",
+                    "condition": "conditions.isExplodedMode"
+                }
+            ]
+        },
+        "explodeEBOMStructureEvent": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "cba.explodeEBOMStructure"
+                } ]
+            }
+        },
+        "executeAlignmentCheckPostPartCADUnAlign": {
+            "actionType": "JSFunction",
+            "method": "reExecuteAlignmentCheck",
+            "inputData": {
+                "objects":  "{{function:getAffectedObjectUIDPostPartCADAlignmentUpdate}}"
+            },
+            "deps": "js/CadBomOccAlignmentCheckService"
+        },
+       
+        "executeAlignmentCheck": {
+            "actionType": "JSFunction",
+            "method": "executeAlignmentCheck",
+            "deps": "js/CadBomOccAlignmentCheckService"
+        },
+        "updateAlignmentCheckStatus": {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "inputData": {
+                "path": "cbaContext.alignmentCheckContext",
+                "value": {
+                    "alignmentCheckClicked": true
+                }
+            },
+            "deps": "js/appCtxService"
+        }
+    },
+    "conditions": {
+        "isTaskbarFullScreen":{
+            "expression": "ctx.taskbarfullscreen && ctx.taskbarfullscreen === 'true'"
+        },
+        "isExplodedMode": {
+            "expression": "data.cbaTaskBarContext.CBATrgContext.productContextInfo.props.awb0ShowExplodedLines.dbValues[0]==='1'"
+        },
+        "isSummarizedMode": {
+            "expression": "!conditions.isExplodedMode"
+        },
+        "isEntCBASubLocation": {
+            "expression": "ctx.splitView && ctx.splitView.mode===true && ctx.sublocation.nameToken === 'com.siemens.splm.client.cba.CADBOMAlignment:CBASublocation' && (conditions.isSchemeApplied || !conditions.isSchemeApplied)"
+        },
+        "AlignmentCheckCommandCondition": {
+            "expression": "ctx.cadbomalignment.commands.isAlignmentCheckCmdVisible===true"
+        },
+        "isPlatformVersionAtleast132": {
+            "expression": "ctx.tcSessionData.tcMajorVersion > 13 || (ctx.tcSessionData.tcMajorVersion === 13 && ctx.tcSessionData.tcMinorVersion >= 2)"
+        },
+        "enableAlignmentCheck132Onwards": {
+            "expression": "conditions.isEntCBASubLocation && conditions.isPlatformVersionAtleast132 && !ctx.cadbomalignment.ImpactAnalysis.isImpactAnalysisMode"
+        },
+        "enableAlignmentCheckPriorTo132": {
+            "expression": "conditions.isEntCBASubLocation && !conditions.isPlatformVersionAtleast132 && !ctx.cadbomalignment.ImpactAnalysis.isImpactAnalysisMode"
+        },
+        "isImpactAnalysisMode": {
+            "expression":"ctx.cadbomalignment.ImpactAnalysis.isImpactAnalysisMode"
+        }
+    },
+    "i18n":
+    {
+        "Awb0EntCBAAlignTaskTitle":
+        [
+            "CadBomAlignmentConstants"
+        ],
+        "Awb0EntCBAAlignmentCheck":
+        [
+            "CadBomAlignmentConstants"
+        ]
+    }
+}

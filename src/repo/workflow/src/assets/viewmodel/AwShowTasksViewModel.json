@@ -1,0 +1,34 @@
+{
+    "schemaVersion" : "1.0.0",
+    "data":{
+        "_provider": {
+            "breadcrumbConfig": {
+                "vm" : "AwSearchBreadcrumb"
+            },
+            "label": {
+                "source": "/i18n/InboxMessages",
+                "key": "allTasks"
+            },
+            "clientScopeURI": "fnd0alltasks",
+            "nameToken": "com.siemens.splm.client.inbox:allTasksSubLocation",
+            "context": {
+                "search": {
+                    "provider": "Awp0InboxProvider",
+                    "criteria":
+                    {
+                        "searchInboxContentType": "showTasks"
+                    },
+                    "sortType": "Priority",
+                    "chartTitle": {
+                        "source": "/i18n/InboxMessages",
+                        "key": "inboxResultsChartTitle"
+                    },
+                    "forceNoChart": false,
+                    "hideRange": true,
+                    "dependentDateFilters":false
+                }
+            },
+            "viewBase": "inbox"
+        }
+    }
+}

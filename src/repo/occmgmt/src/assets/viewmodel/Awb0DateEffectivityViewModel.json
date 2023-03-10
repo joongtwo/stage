@@ -1,0 +1,114 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "initializeDateEffectivityInfo": {
+            "actionType": "JSFunction",
+            "method": "getInitialDateEffectivityConfigurationData",
+            "inputData": {
+                "data": "{{data}}",
+                "occContext":"{{props.subPanelContext.occContext}}"
+            },
+            "outputData": {
+                "currentEffectiveDate": "currentEffectiveDate",
+                "isTimeEnabled": "isTimeEnabled",
+                "dateTimeFormat": "dateTimeFormat",
+                "isEffectiveDateFeatureSupported":"isEffectiveDateFeatureSupported",
+                "isEffectiveDateFeatureReadOnly.dbValue":"isEffectiveDateFeatureReadOnly",
+                "viewKey":"props.subPanelContext.contextKey"
+            },
+            "deps": "js/dateEffectivityConfigurationService"
+        },
+        "updateCurrentDateEffectivity": {
+            "actionType": "JSFunction",
+            "method": "updateCurrentDateEffectivity",
+            "inputData": {
+                "data":"{{data}}",
+                "eventData": "{{data.eventData}}"
+            },
+            "outputData": {
+                "currentEffectiveDate": "currentEffectiveDate"
+            },
+            "deps": "js/dateEffectivityConfigurationService"
+        },
+        "reconfigureProductAfterActiveEcnChanged":{
+            "actionType": "JSFunction",
+            "method": "updateValueOnCtxOrState",
+            "inputData": {
+                "path": null,
+                "value": {
+                    "showECNHeaderWarning":"{{data.eventData.selectedEcn !== '' ? false : true}}",
+                    "transientRequestPref": {
+                        "useActiveECNEff": true
+                    },
+                    "configContext": {
+                        "r_uid": "{{props.subPanelContext.occContext.productContextInfo.props.awb0CurrentRevRule.dbValues[0]}}",
+                        "startFreshNavigation": true
+                    }
+                },
+                "target": "{{props.subPanelContext.occContext}}"
+            },
+            "deps": "js/occmgmtUtils"
+        }
+    },
+    "conditions": {
+        "isUpdateApplicable": {
+            "expression": "subPanelContext.contextKey === viewKey"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate":[
+        {
+            "action": "initializeDateEffectivityInfo",
+            "observers": [ "props.subPanelContext.occContext.productContextInfo" ]
+        },
+        {
+            "action": "initializeDateEffectivityInfo",
+            "observers": [ "props.subPanelContext.occContext.productContextInfo.props.awb0EffectivityGroups.uiValues" ]
+        }]
+    },
+    "onEvent": [
+        {
+            "eventId": "awConfigPanel.effectivityDateChanged",
+            "cacheEventData": true,
+            "condition": "conditions.isUpdateApplicable",
+            "action": "updateCurrentDateEffectivity"
+        },
+        {
+            "eventId":"aw.updateOccContextValueAfterActiveEcnChanged",
+            "cacheEventData": true,
+            "action":"reconfigureProductAfterActiveEcnChanged"
+        }
+    ],
+    "data": {
+        "currentEffectiveDate": {
+            "uiValue": "{{data.currentEffectiveDate}}",
+            "type": "DATE"
+        },
+        "occurrenceManagementTodayTitle": {
+            "dbValue": "{{i18n.occurrenceManagementTodayTitle}}",
+            "uiValue": "{{i18n.occurrenceManagementTodayTitle}}",
+            "displayName": "{{i18n.occurrenceManagementTodayTitle}}",
+            "type": "STRING"
+        },
+        "isEffectiveDateFeatureReadOnly": {
+            "dbValue": false,
+            "type": "BOOLEAN"
+        },
+        "multipleGroups": {
+            "uiValue": "{{i18n.multipleGroups}}",
+            "type": "STRING"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "location":{
+            "type": "string"
+        }
+    },
+    "i18n": {
+        "occurrenceManagementTodayTitle": [ "OccurrenceManagementConstants" ],
+        "multipleGroups": ["OccurrenceManagementConstants"]
+    }
+}

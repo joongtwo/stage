@@ -1,0 +1,71 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "preferenceName": "EP_AssignedWorkareaTabColumnConfiguration",
+        "relationName": "Mfg0assigned_workarea",
+        "loadInputObject": {
+            "loadTypes": [ "getProperties" ],
+            "propertiesToLoad": [ "Mfg0assigned_workarea" ]
+        },
+        "isTableEditable": false,
+        "messages": {
+            "noElementSelected": [{
+                "text": "{{i18n.selectProcessOrOperation}}",
+                "textParams": [
+                    "{{i18n.workareas}}"
+                ]
+            }],
+            "noAssigned": [
+                {
+                    "text": "{{i18n.noAssigned}}",
+                    "textParams": [
+                        "{{i18n.workareas}}"
+                    ]
+                }
+            ]
+        },
+        "customColumns": [{
+            "clientColumn": true,
+            "name": "graphicVisibility",
+            "propertyDisplayName": "{{i18n.graphicVisibilityColumnName}}"
+        }],
+        "excludeInputTypes":["Mfg0BvrProcessResource"]
+    },
+
+    "actions": {
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "getValueInViewModel"
+    },
+
+    "i18n": {
+        "workareas": ["DetailsMessages"],
+        "selectProcessOrOperation": [ "DetailsMessages" ],
+        "noAssigned": [ "DetailsMessages" ],
+        "assignWorkAreaUsingCommand": [ "DetailsMessages" ]
+    }
+}
+

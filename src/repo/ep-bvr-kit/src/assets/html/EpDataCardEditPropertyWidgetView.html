@@ -1,0 +1,19 @@
+<div class="aw-ep-dataCardPropertyPanel justify-justified">
+    <div class="sw-row ">
+        <aw-i18n class="sw-property-name aw-ep-dataCardPropertyLabel align-self-center">i18n.quantity</aw-i18n>
+        <aw-numeric prop="data.quantity" class="aw-ep-dataCardProperty"></aw-numeric>
+        <aw-i18n class="sw-property-name aw-ep-dataCardPropertyLabel align-self-center">i18n.frequency</aw-i18n>
+        <aw-numeric prop="data.frequency" exist-when="props.isStandardFrequency" class="aw-ep-dataCardProperty">
+        </aw-numeric>
+        <aw-numeric prop="data.frequencyNumerator" exist-when="!props.isStandardFrequency"
+            class="aw-ep-dataCardProperty"></aw-numeric>
+        <span exist-when="!props.isStandardFrequency" class="sw-row align-center">/</span>
+        <aw-numeric prop="data.frequencyDenominator" exist-when="!props.isStandardFrequency"
+            class="aw-ep-dataCardProperty"></aw-numeric>
+    </div>
+    <div class="sw-row">
+        <aw-i18n class="sw-property-name aw-ep-dataCardPropertyLabel align-self-center">i18n.category</aw-i18n>
+        <aw-listbox prop="data.category" list="data.categoryList" action="onCategorySelection"
+            class="aw-ep-dataCardPropertyList"></aw-listbox>
+    </div>
+</div>

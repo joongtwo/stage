@@ -1,0 +1,38 @@
+<div class="sw-row">
+    <div class="sw-column w-12">
+    <div class="aw-clspanel-fullViewVerticalFlexBox">
+    <div class="aw-clspanel-fullViewFlexContainer">
+        <aw-panel-body class="h-12" show-when="( conditions.showClassImagesSection && conditions.showImages ) || ( conditions.showPropGroup && conditions.showPropTree )">
+            <div exist-when="conditions.showClassImagesSection"  show-when="conditions.showImages">
+                <aw-command-panel-section caption="i18n.images">
+                    <aw-full-screen include-component-name='Ics1ClassificationTabUniViewerInternal' header-title='i18n.images' header-path='{{subPanelContext.activeTab.name ? subPanelContext.activeTab.name : subPanelContext.showObjectContext.activeTab.name}}' header-context-title='{{subPanelContext.selected.props.object_string.uiValues[0]}}' context='props.classifyState.selectedClass.classUid'>
+                    </aw-full-screen>
+                </aw-command-panel-section>
+            </div>
+            <div exist-when="conditions.showPropGroup" show-when="conditions.showPropTree">
+                <aw-cls-property-group-tree classify-state="props.classifyState"></aw-cls-property-group-tree>
+            </div>
+        </aw-panel-body>
+        <div class="sw-column w-12 aw-clspanel-fullViewPropSection" id="aw-clspanel-fullViewPropSection">
+            <aw-panel-body>
+                <div class="aw-xrt-columnContentPanel" width="fill">
+                    <div class="aw-clspanel-fullViewFlexBox aw-clspanel-fullViewPropertySection">
+                        <awp0-classification-properties-full classify-state="props.classifyState" response-state="props.responseState">
+                        </awp0-classification-properties-full>
+                    </div>
+                </div>
+            </aw-panel-body>
+            <div visible-when="props.classifyState.value.panelMode === 0 || props.classifyState.value.pasteClicked === true">
+                <aw-button class="aw-clspanel-standAloneClassifyButton" size="auto" visible-when="props.classifyState.value.pasteClicked === false"
+                    button-type="negative" action="cancelEditOperation" default="false">
+                    <aw-i18n>i18n.cancel</aw-i18n>
+                </aw-button>
+                <aw-button class="aw-clspanel-standAloneClassifyButton" size="auto" action="save">
+                    <aw-i18n>i18n.create</aw-i18n>
+                </aw-button>
+            </div>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>

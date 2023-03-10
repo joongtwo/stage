@@ -1,0 +1,11 @@
+<aw-command-panel caption="i18n.SearchSimilar">
+    <aw-panel-body class="aw-clspanel-searchSimilarNavigate">
+        <aw-command-panel-section caption="i18n.Classes" collapsed="false">
+            <span class="aw-widgets-propertyNonEditValue" exist-when="!conditions.isIcoSelected">{{i18n.noClasses}}</span>
+            <aw-splm-table exist-when="conditions.isIcoSelected" gridid="searchSimilarGrid" use-tree="true"></aw-splm-table>
+        </aw-command-panel-section>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="clickSearchSimilar"><aw-i18n>i18n.search</aw-i18n></aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

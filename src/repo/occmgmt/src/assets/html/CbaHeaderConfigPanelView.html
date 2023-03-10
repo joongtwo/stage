@@ -1,0 +1,18 @@
+<div class="sw-row" exist-when="subPanelContext.openedObject">
+    <div class="sw-column h-12">
+        <div class="sw-row aw-layout-breadCrumbContainer aw-cba-headerBreadcrumbContainer">
+            <div class="sw-row aw-cba-displayLabelContainer">
+                <label class="aw-cba-displayLabel"> {{subPanelContext.provider.displayLabel.text}} </label>
+                <span class="aw-cba-displayLabel"> {{subPanelContext.provider.displayLabel.separator}} </span>
+            </div>
+            <occmgmt-breadcrumb occ-context="subPanelContext.occContext ? subPanelContext.occContext : data.occContext">
+            </occmgmt-breadcrumb>
+        </div>
+        <div class='sw-row aw-cba-headerConfigContainer'>
+            <div class="aw-layout-flexRowContainer aw-layout-headerContribution align-center">
+                <ace-split-header sub-panel-context="subPanelContext"></ace-split-header>
+            </div>
+        </div>
+    </div>
+</div>
+

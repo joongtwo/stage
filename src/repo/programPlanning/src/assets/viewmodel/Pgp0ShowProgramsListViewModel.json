@@ -1,0 +1,96 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "initiateDataProvider": {
+            "actionType": "dataProvider",
+            "method": "programsListDataProvider"
+        },
+        "loadData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "searchInput": {
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "providerName": "Pgp0PlanObjsSearchProvider",
+                    "searchCriteria": {
+                        "searchContentType": "ActivePlansBasedOnOwnershipOrResponsibility"
+                    },
+                    "searchFilterFieldSortType": "Priority",
+                    "searchFilterMap": {},
+                    "searchSortCriteria": [
+                        {
+                            "fieldName": "creation_date",
+                            "sortDirection": "DESC"
+                        }
+                    ],
+                    "startIndex": "{{data.dataProviders.programsListDataProvider.startIndex}}"
+                },
+                "inflateProperties": false
+            },
+            "policy": {
+                "types": [ {
+                    "name": "BusinessObject",
+                    "properties": [ {
+                        "name": "awp0CellProperties"
+                    } ]
+                } ]
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "{{json:searchResultsJSON}}",
+                "output": "{{function:processOutput}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "myPrograms.updateSelection",
+                        "condition": "data.searchResults.objects.length > 0"
+                    }
+                ]
+            },
+            "deps": "js/awSearchService"
+        },
+        "updateSelectionInPWA": {
+            "actionType": "JSFunction",
+            "method": "processPWASelection",
+            "inputData": {
+                "modelobject":"{{data.searchResults.objects[0]}}",
+               "selectionModel": "{{data.dataProviders.programsListDataProvider.selectionModel}}"
+            },
+            "deps": "js/Pgp0ProgramUtil"
+        }
+    },
+    "functions": {
+        "processOutput": {
+            "functionName": "processOutput",
+            "parameters": [
+                "{{data}}",
+                "{{subPanelContext.searchState}}"
+            ]
+        }
+    },
+    "dataProviders": {
+        "programsListDataProvider": {
+            "action": "loadData",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "selectionModelMode": "single",
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initiateDataProvider"
+    },
+    "onEvent": [
+        {
+            "eventId": "myPrograms.updateSelection",
+            "action": "updateSelectionInPWA"
+        }
+    ]
+}

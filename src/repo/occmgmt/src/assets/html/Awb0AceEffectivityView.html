@@ -1,0 +1,19 @@
+ <aw-flex-row>
+    <aw-flex-column width="12">
+        </br>
+        <aw-radiobutton prop="data.dateOrUnitEffectivityTypeRadioButton" action="updateDateOrUnitEffectivity"></aw-radiobutton>
+        <aw-flex-row exist-when="props.subPanelContext.sharedData.dateOrUnitEffectivityTypeRadioButton.dbValue">
+            <aw-flex-column width="12">
+                <aw-include name="Awb0AceDateEffectivity" sub-panel-context='{...subPanelContext}'></aw-include>
+            </aw-flex-column>
+        </aw-flex-row>
+        <aw-flex-row exist-when="!props.subPanelContext.sharedData.dateOrUnitEffectivityTypeRadioButton.dbValue">
+            <aw-flex-column width="12">
+                <aw-include name="Awb0AceUnitEffectivity" sub-panel-context='{...subPanelContext}'></aw-include>
+            </aw-flex-column>
+        </aw-flex-row>
+    </aw-flex-column>
+</aw-flex-row>
+
+
+

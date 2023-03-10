@@ -1,0 +1,171 @@
+{
+    "schemaVersion": "1.0.0",
+    "lifecycleHooks": {
+        "onMount": "revealChangeContextLinkLOV"
+    },
+    "data":
+    {
+        "filterBox": {
+            "displayName": "{{i18n.activeChangeFilterDisplay}}",
+            "type": "STRING",
+            "dbValue": "",
+            "requiredText":"{{i18n.activeChangefilter}}"
+        }
+    },
+    "actions":
+    {
+        "revealChangeContextLinkLOV": {
+            "actionType": "dataProvider",
+            "method": "changeContextLinkLOV"
+        },
+        "updateLOVEntries":
+        {
+            "actionType": "JSFunctionAsync",
+            "method": "generateChangeContextList",
+            "inputData":
+            {
+                "data":"{{data}}"
+            },
+            "outputData": {
+                "listofEcns": ""
+            },
+            "deps": "js/changeMgmtUtils"
+        },
+        "changeContextLOVAction":{
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setChangeContext",
+                    "condition":"(data.eventData.selectedObjects[0].propInternalValue !== ctx.userSession.props.cm0GlobalChangeContext.value) && !(conditions.performSelectionChangeCondition)"
+                }]
+        },
+        "setChangeContext":{
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2010-09-DataManagement",
+            "method": "setProperties",
+            "inputData":
+            {
+                "info":
+                [
+                    {
+                        "object": "{{ctx.userSession}}",
+                        "timestamp": "",
+                        "vecNameVal":
+                        [
+                            {
+                                "name": "cm0GlobalChangeContext",
+                                "values":
+                                [
+                                    "{{data.eventData.selectedObjects[0].propInternalValue}}"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "cm.changeContextChangedInUserSession"
+                    },
+                    {
+                        "name":"aw.updateOccContextValueAfterActiveEcnChanged",
+                        "eventData": {
+                            "selectedEcn": "{{data.eventData.selectedObjects[0].propInternalValue}}"
+                            },
+                        "condition": "ctx.aceActiveContext.context.supportedFeatures['Awb0RevisibleOccurrenceFeature'] || ctx.CBATrgContext.supportedFeatures.Awb0RevisibleOccurrenceFeature"
+                    }
+                ]
+            }
+        },
+        "updateSelectionForChangeContextLOV": {
+            "actionType": "JSFunction",
+            "method": "updateActiveChangeSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.changeContextLinkLOV}}",
+                "activeObject": "{{data.ctx.userSession.props.cm0GlobalChangeContext}}"
+            },
+            "deps": "js/changeMgmtUtils"
+        },
+        "updateSessionProperties":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData":
+            {
+                "attributes":
+                [
+                    "awp0RevRule",
+                    "user",
+                    "project",
+                    "group",
+                    "role",
+                    "fnd0LocationCode",
+                    "cm0GlobalChangeContext"
+                ],
+                "objects":
+                [{
+                 "uid": "{{ctx.userSession.uid}}",
+                 "type": "UserSession"
+                }]
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "awsidenav.openClose"
+                    }
+                ]
+            }
+        }
+    },
+    "dataProviders":
+    {
+        "changeContextLinkLOV":
+        {
+            "dataProviderType": "TcLOV",
+            "action": "updateLOVEntries",
+            "response": "{{data.listofEcns}}",
+            "totalFound": "{{data.listofEcns.length}}"
+        }
+    },
+    "onEvent":
+    [
+        {
+            "eventId": "changeContextLinkLOV.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "changeContextLOVAction"
+        },
+        {
+            "eventId": "changeContextLinkLOV.modelObjectsUpdated",
+            "cacheEventData": true,
+            "action": "updateSelectionForChangeContextLOV"
+        },
+        {
+            "eventId": "cm.changeContextChangedInUserSession",
+            "action": "updateSessionProperties"
+        }
+    ],
+    "conditions":
+    {
+        "performSelectionChangeCondition":
+        {
+            "expression":"(data.eventData.selectedObjects[0].propInternalValue === '' && ctx.userSession.props.cm0GlobalChangeContext.value === null ) || (data.eventData.selectedObjects[0].propInternalValue === null && ctx.userSession.props.cm0GlobalChangeContext.value === '' )"
+        }
+    },
+    "i18n":
+    {
+        "activeChangeFilterDisplay":
+        [
+            "ChangeMessages"
+        ],
+        "activeChangefilter":
+        [
+            "ChangeMessages"
+        ]
+    }
+}

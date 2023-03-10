@@ -1,0 +1,375 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "ports": {
+        "EpDocuments_inputObject": {
+            "onChangeAction": "handleInput",
+            "syncObject": {}
+        },
+        "EpDocuments_selectedObjects": {
+            "syncObject": {}
+        },
+        "EpDocuments_updateTabContentCountPort": {
+            "syncObject": {}
+        }
+    },
+
+    "data": {
+        "subPanelContextForInformation": {
+            "xrtType": "{{subPanelContext.xrtType}}",
+            "noElementSelectedMessageForXRT": [{
+                "text": "{{i18n.noDocumentSelected}}"
+            }]
+        },
+        "messages": {
+            "noInput": [{
+                "text": "{{i18n.noElementsSelected}}",
+                "textParams": [
+                    "{{i18n.documents}}"
+                ]
+            }],
+            "noItems": [
+                {
+                    "text": "{{i18n.noAssigned}}",
+                    "textParams": [
+                        "{{i18n.documents}}"
+                    ]
+                }
+            ]
+        }
+    },
+
+    "actions": {
+        "handleInput": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "startLoadingIndicator"
+                },
+                {
+                    "action": "saveInputToData"
+                },
+                {
+                    "action": "getDocuments"
+                }
+            ]
+        },
+        "dataProviderLoaded": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initCommandContext"
+                },
+                {
+                    "action": "updateTabDisplayNameQuantity"
+                },
+                {
+                    "action": "stopLoadingIndicator"
+                },
+                {
+                    "action": "setSelectionOfFirstDocument",
+                    "condition": "conditions.showDocuments"
+                }
+            ]
+        },
+        "saveInputToData": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{ports.EpDocuments_inputObject.syncObject}}"
+            },
+            "outputData": {
+                "inputObject": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "getDocuments": {
+            "actionType": "dataProvider",
+            "method": "documentsList"
+        },
+        "getDocumentsList": {
+            "actionType": "JSFunction",
+            "method": "loadColumnsData",
+            "inputData": {
+                "objUid": "{{data.inputObject.uid}}",
+                "loadInputObject": {
+                    "loadTypes": [ "GetWeblinks", "getProperties" ],
+                    "propertiesToLoad": [ "mbc0AssignedDocuments" ],
+                    "loadedObjectMapKeys": [ "WebLink" ]
+                }
+            },
+            "outputData": {
+                "documentsRowsObjects": "rowsObjects",
+                "documentsTotalRows": "totalRows"
+            },
+            "events": {
+                "success": [ {
+                        "name": "epDocuments.dataProviderLoaded"
+                    }
+
+                ]
+            },
+            "deps": "js/epTableService"
+        },
+        "setSelectionOfFirstDocument": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.documentsList}}",
+                "objectsToSelect": "{{data.dataProviders.documentsList.viewModelCollection.loadedVMObjects[0]}}"
+            },
+            "outputData": {
+                "subPanelContextForInformation.scopeObject": ""
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+         "updateSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpDocuments_selectedObjects",
+                "syncObject": "{{data.eventData.selectedObjects[0]}}"
+            }
+        },
+        "updateSelectionPortForNoSelection": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpDocuments_selectedObjects",
+                "syncObject": {}
+            }
+        },
+        "initCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "inputObject": "{{data.inputObject}}",
+                    "selection": "{{[]}}",
+                    "contentCount": "{{data.dataProviders.documentsList.viewModelCollection.loadedVMObjects.length}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "updateTabDisplayNameQuantity": {
+            "actionType": "JSFunction",
+            "method": "setTabDisplayNameWithQuantity",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "tabData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "updateTabContentCount": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpDocuments_updateTabContentCountPort",
+                "syncObject": {
+                    "tabName":"{{data.tabData.name}}",
+                    "tabKey":"{{data.tabData.tabKey}}",
+                    "namePrefix":"{{data.tabData.namePrefix}}"
+                }
+            }
+        },
+        "updateCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "inputObject": "{{data.inputObject}}",
+                    "selection": "{{data.eventData.selectedObjects}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "handleDocumentSelectionChangeEvent": {
+            "actionType": "batchJob",
+             "steps": [
+                {
+                    "action": "updateSelectionPort",
+                    "condition": "data.eventData.selectedObjects[0]"
+                },
+                {
+                    "action": "updateSelectionPortForNoSelection",
+                    "condition": "!data.eventData.selectedObjects[0]"
+                },
+                {
+                    "action": "updateCommandContext"
+                }
+            ]
+        },
+        "handleAddRemoveEvents": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "handleAddRemoveSaveEvents"
+                },
+                {
+                    "action": "initCommandContext"
+                },
+                {
+                    "action": "getDocuments",
+                    "condition": "conditions.noDocumentsLoaded"
+                },
+                {
+                    "action": "updateTabDisplayNameQuantity"
+                },
+                {
+                    "action": "updateTabContentCount"
+                },
+                {
+                    "action": "setSelectionOfFirstDocument",
+                    "condition": "conditions.isFirstDocument"
+                },
+                {
+                    "action": "updateCommandContext"
+                }
+            ]
+        },
+        "handleWebLinkCreatedEvent": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "addNewWebLinkToDataProvider"
+                },
+                {
+                    "action": "initCommandContext"
+                },
+                {
+                    "action": "getDocuments",
+                    "condition": "conditions.noDocumentsLoaded"
+                },
+                {
+                    "action": "updateTabDisplayNameQuantity"
+                },
+                {
+                    "action": "updateTabContentCount"
+                },
+                {
+                    "action": "setSelectionOfFirstDocument",
+                    "condition": "conditions.isFirstDocument"
+                }
+            ]
+        },
+        "addNewWebLinkToDataProvider": {
+            "actionType": "JSFunction",
+            "method": "addNewObjectsToDataProvider",
+            "inputData": {
+                "objUidToAddList": ["{{data.eventData.uid}}"],
+                "dataProvider": "{{data.dataProviders.documentsList}}",
+                "selectAddedObjects": true
+            },
+            "deps": "js/epTableService"
+        },
+        "handleAddRemoveSaveEvents": {
+            "actionType": "JSFunction",
+            "method": "handleDocumentsAddRemoveSaveEvents",
+            "inputData": {
+                "saveEvents": "{{data.eventData}}",
+                "relationName": ["mbc0AssignedDocuments",
+                    "Mfg0sub_elements",
+                    "Mbc0EPDocument",
+                    "mbc0AttachedForm"],
+                "dataProvider": "{{data.dataProviders.documentsList}}",
+                "inputObjectUid": "{{data.inputObject.uid}}"
+            },
+            "outputData": {
+                "saveActionsDone": ""
+            },
+            "deps": "js/epDocumentsService"
+        },
+        "startLoadingIndicator": {
+            "actionType": "JSFunction",
+            "method": "setLoadingIndicator",
+            "inputData": {
+                "isLoading": true
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeMessagesService"
+        },
+        "stopLoadingIndicator": {
+            "actionType": "JSFunction",
+            "method": "setLoadingIndicator",
+            "inputData": {
+                "isLoading": false
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeMessagesService"
+        }
+    },
+    "dataProviders": {
+        "documentsList": {
+            "action": "getDocumentsList",
+            "response": "{{data.documentsRowsObjects}}",
+            "totalFound": "{{data.documentsTotalRows}}",
+            "selectionModelMode": "single",
+            "commandsAnchor": "epDocument_cellAnchor"
+        }
+    },
+    "conditions": {
+        "isLoading": {
+            "expression": "data.isLoading === true && conditions.hasInput"
+        },
+        "hasInput": {
+            "expression":"data.inputObject && data.inputObject.uid"
+        },
+        "noDocumentsLoaded": {
+            "expression": "data.dataProviders.documentsList.viewModelCollection.totalObjectsLoaded === 0"
+        },
+        "noDocuments": {
+            "expression": "data.isLoading === false && conditions.hasInput && conditions.noDocumentsLoaded"
+        },
+        "showDocuments": {
+            "expression": "data.isLoading === false && conditions.hasInput && !conditions.noDocumentsLoaded"
+        },
+        "isFirstDocument": {
+            "expression": "data.dataProviders.documentsList.viewModelCollection.loadedVMObjects.length === 1"
+        },
+        "isNewDocumentItem": {
+            "expression": "data.saveActionsDone.includes('add')"
+        },
+        "isDocumentSelected":{
+            "expression":"data.selectedDocument"
+        }
+    },
+
+    "onEvent": [
+        {
+            "eventId": "documentsList.selectionChangeEvent",
+            "action": "handleDocumentSelectionChangeEvent",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "handleAddRemoveEvents"
+        },
+        {
+            "eventId": "epWebLinkCreated",
+            "cacheEventData": true,
+            "action": "handleWebLinkCreatedEvent"
+        },
+        {
+            "eventId": "epDocuments.dataProviderLoaded",
+            "action": "dataProviderLoaded"
+        }
+    ],
+
+    "i18n": {
+        "noElementsSelected": [ "DetailsMessages" ],
+        "documents": ["DetailsMessages"],
+        "noAssigned": [ "DetailsMessages" ],
+        "noDocumentSelected": [ "DetailsMessages" ]
+    }
+}

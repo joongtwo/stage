@@ -1,0 +1,144 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "messages": [
+            {
+                "text": "{{i18n.setConfiguratorContextMessage}}"
+            }
+        ]
+    },
+    "actions": {
+        "updateStructureContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "addVMOAndRevRuleToStructureContext"
+                },
+                {
+                    "action": "initCommandContext"
+                }
+            ]
+        },
+        "addVMOAndRevRuleToStructureContext": {
+            "actionType": "JSFunction",
+            "method": "addVMOAndRevRuleToStructureContext",
+            "inputData": {
+                "contextPath": "epTaskPageContext.configuratorContext"
+            },
+            "deps": "js/manageWorkPackageService"
+        },
+        "clearTaskPageContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clearTaskPageContextForManagePage"
+                },
+                {
+                    "action": "clearCommandContext"
+                }
+            ]
+        },
+        "clearTaskPageContextForManagePage": {
+            "actionType": "JSFunction",
+            "method": "removeContextsFromCtx",
+            "inputData": {
+                "contextPaths": [
+                    "epTaskPageContext.configuratorContext"
+                ]
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": "{{ctx.epTaskPageContext.configuratorContext}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "clearCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": ""
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "initCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "objectBaseType": "Cfg0ProductItem",
+                    "addProductLabelCaption": "{{i18n.setConfiguratorContextCaption}}",
+                    "boTypeName": "",
+                    "exclusionBOTypeNames": [],
+                    "objectTypesToSearch": [
+                        "Cfg0ProductItem"
+                    ],
+                    "preferenceSuffixForTypesToSearch": "",
+                    "buttonName": "{{i18n.setConfiguratorContext}}",
+                    "placeHolderForSearch": "{{i18n.configContextSearchPlaceHolder}}",
+                    "selection": "{{ctx.epTaskPageContext.configuratorContext}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        }
+    },
+    "conditions": {
+        "isTileDataAvailable": {
+            "expression": "ctx.epTaskPageContext.configuratorContext"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "updateStructureContextAndCommandContext",
+        "onUpdate": {
+            "action": "setCommandContext",
+            "observers": [ "viewModel.ctx.epTaskPageContext.configuratorContext" ]
+        }
+    },
+    "ctx": {
+        "epTaskPageContext": {
+            "type": "object"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "ep.addRemoveEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "clearTaskPageContextAndCommandContext",
+            "condition": "removedSaveEvent.includes(ctx.epTaskPageContext.configuratorContext.uid)"
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "updateStructureContextAndCommandContext",
+            "condition": "addedSaveEvent !== undefined"
+        }
+    ],
+    "i18n": {
+        "setConfiguratorContextMessage": [
+            "AdminMessages"
+        ],
+        "setConfiguratorContext": [
+            "AdminMessages"
+        ],
+        "configContextSearchPlaceHolder": [
+            "AdminMessages"
+        ],
+        "setConfiguratorContextCaption": [
+            "AdminMessages"
+        ]
+    }
+}

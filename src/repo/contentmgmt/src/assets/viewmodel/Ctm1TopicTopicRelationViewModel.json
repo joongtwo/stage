@@ -1,0 +1,453 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+    [
+        "js/aw-panel.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-widget.directive",
+        "js/visible-when.directive"
+    ],
+
+    "actions":
+    {
+        "reveal": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initContext"
+                },
+                {
+                    "action": "getParentTopicType"
+                },
+                {
+                    "action": "expandParentTopicTypeRelations",
+                    "condition": "ctx.ctm1.parentTopicType != null"
+                }
+            ]
+        },
+        "validateSelectedObject": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "handlePaletteSelection"
+                },
+                {
+                    "action": "getValidTopicTypes",
+                    "condition": "ctx.ctm1.selectedTopic && ctx.preferences.Ctm0Allow_Multiple_Version_In_DITA_Structure[0] === 'true'"
+                },
+                {
+                    "action": "topicTypeSelectionChange",
+                    "condition": "ctx.ctm1.referenceTopicTypeRelationsMap.length > 0"
+                }
+            ]
+        },
+
+        "initContext": {
+            "actionType": "JSFunction",
+            "method": "initRelationContext",
+            "inputData": {
+                "ctx": "{{ctx}}",
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        },
+
+        "getValidTopicTypes":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": "{{function:getValidTopicTypesSearchInput}}"
+            },
+
+            "outputData":
+            {
+                "ctx.ctm1.validTopicTypes": "{{function:filterReferenceTopicTypes}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "expandParentTopicTypeRelations": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-09-DataManagement",
+            "method": "expandGRMRelationsForPrimary",
+            "inputData": {
+                "primaryObjects": [
+                    "{{ctx.ctm1.parentTopicType}}"
+                ],
+                "pref": {
+                    "expItemRev": false,
+                    "returnRelations": true,
+                    "info": [ {
+                        "relationTypeName": "DC_TopicTypeTopicTypeR",
+                        "otherSideObjectTypes": ""
+                    } ]
+                }
+            },
+            "outputData": {
+                "ctx.ctm1.parentTopicTypeRelations": "{{function:sortTopicTypeRelations}}"
+            },
+
+            "events": {
+                "success": [ {
+                        "name": "ctm1.expandReferenceTopicTypeRelationss",
+                        "condition": "ctx.ctm1.parentTopicTypeRelations.DC_RefTopicType.length > 0"
+                    }
+                ]
+            },
+
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "expandReferenceTopicTypeRelations": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-09-DataManagement",
+            "method": "expandGRMRelationsForPrimary",
+            "inputData": {
+                "primaryObjects": "{{ctx.ctm1.parentTopicTypeRelations.DC_RefTopicType}}",
+                "pref": {
+                    "expItemRev": false,
+                    "returnRelations": true,
+                    "info": [ {
+                        "relationTypeName": "DC_TopicTypeTopicTypeR",
+                        "otherSideObjectTypes": ""
+                    } ]
+                }
+            },
+            "outputData": {
+                "ctx.ctm1.referenceTopicTypeRelationsMap": "output",
+                "ctx.ctm1.referenceTopicTypeRelations": "{{function:sortTopicTypeRelations}}"
+            },
+
+            "events": {
+                "success": [ {
+                        "name": "ctm1.checkTopicTypeReferenced",
+                        "condition": "ctx.ctm1.referenceTopicTypeRelationsMap.length > 0"
+                    }
+                ]
+            },
+
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "loadCtmOccurrenceTypes":{
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2012-10-Finder",
+            "method": "findObjectsByClassAndAttributes2",
+            "inputData":
+            {
+                "input":
+                {
+                    "clientId": "GWT_THIN_CLIENT",
+                    "startIndex":0,
+                    "maxLoad": 5,
+                    "maxToReturn": 5,
+                    "searchCriteria": "{{function:getOccurrenceTypesSearchCriteria}}",
+
+                    "searchMode": "GeneralQuery",
+                    "uids":
+                    [
+
+                    ],
+
+                    "attributes":
+                    [
+
+                    ]
+                }
+            },
+            "policy": {
+                "types": [
+                    {
+                        "name": "PSOccurrenceType",
+                        "properties": [
+                            {
+                                "name": "name"
+                            }
+                        ]
+                    }
+                ]
+            },
+
+            "outputData":
+            {
+
+                "occurrenceTypes": "{{function:getOccurrenceTypes}}"
+            },
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        },
+
+        "validateList": {
+            "actionType": "JSFunction",
+            "method": "rejectSuggestions",
+            "inputData": {
+                "suggestion": "request.suggestion"
+            },
+            "outputData": {
+                "valid": "valid",
+                "message": "message"
+            },
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+        "relationSelectionChange": {
+            "actionType": "JSFunction",
+            "method": "relationSelectionChange",
+            "inputData": {
+                "ctx": "{{ctx}}",
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        },
+        "topicTypeSelectionChange": {
+            "actionType": "JSFunction",
+            "method": "topicTypeSelectionChange",
+            "inputData": {
+                "ctx": "{{ctx}}",
+                "topicType": "{{ctx.ctm1.selectedTopic.uid}}",
+                "allowMultiVersions": "{{ctx.preferences.Ctm0Allow_Multiple_Version_In_DITA_Structure[0]}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        },
+        "getReferenceList": {
+            "actionType": "JSFunction",
+            "method": "getReferenceList",
+            "inputData": {
+                "ctx": "{{ctx}}",
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "lovValues": ""
+            },
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        },
+        "getParentTopicType": {
+            "actionType": "JSFunction",
+            "method": "getParentBOMLineTopicType",
+            "inputData": 
+            {
+                "ctx": "{{ctx}}"
+            },
+            "outputData": {
+                "ctx.ctm1.parentTopicType": ""
+            },
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "handlePaletteSelection": {
+            "actionType": "JSFunction",
+            "method": "handlePaletteSelection",
+            "inputData": 
+            {
+                "ctx": "{{ctx}}",
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        },
+        "handleSelectionChange": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "ctm1.validateSelection",
+                    "excludeLocalDataCtx": true
+                } ]
+            }
+        },
+        "createRefTopicTypeRelation": {
+            "actionType": "JSFunction",
+            "method": "createRefTopicTypeRelation",
+            "inputData": {
+                "refTopicType": "{{ctx.ctm1.referenceTopicType.dbValue}}",
+                "keyName": "{{ctx.ctm1.ctm0KeyName.dbValue}}",
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtCreateDitaRelationService"
+        }
+    },
+
+    "data":
+    {
+        "relationSelection": {
+            "dbValue": "DC_ComposableReferenceR",
+            "uiValue": "{{i18n.composableReference}}",
+            "displayName": "{{i18n.relationSelection}}",
+            "type": "STRING",
+            "dataProvider": "relationListProvider",
+            "isRequired": "false",
+            "isEditable": "true",
+            "isEnabled": "{{ctx.ctm1.hasTopicTopicR === 'true'}}"
+        },
+        "referenceTopicType": {
+            "dbValue": "",
+            "displayName": "{{i18n.referenceTopicType}}",
+            "type": "STRING",
+            "dataProvider": "referenceListProvider",
+            "isRequired": "false",
+            "isEditable": "true"
+        },
+        "ctm0KeyName": {
+            "dbValue": "",
+            "displayName": "{{i18n.keyName}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true"
+        }
+    },
+
+    "dataProviders":
+    {
+        "relationListProvider":
+        {
+            "initializeAction": "loadCtmOccurrenceTypes",
+            "nextAction": "loadCtmOccurrenceTypes",
+            "response": "{{data.occurrenceTypes}}",
+            "totalFound": "{{data.occurrenceTypes.length}}",
+            "valid": "{{data.valid}}",
+            "message": "{{data.message}}",
+            "moreValuesExist": false
+        },
+        "referenceListProvider":
+        {
+            "initializeAction": "getReferenceList",
+            "nextAction": "getReferenceList",
+            "response": "{{data.lovValues}}",
+            "totalFound": "{{data.lovValues.length}}",
+            "valid": "{{data.valid}}",
+            "message": "{{data.message}}",
+            "moreValuesExist": false
+        }
+    },
+
+    "functions":
+    {
+        "getOccurrenceTypesSearchCriteria":
+        {
+            "functionName": "getOccurrenceSearchCriteria",
+            "parameters":
+            [
+                "{{ctx}}"
+            ]
+        },
+
+        "getOccurrenceTypes":
+        {
+            "functionName": "getOccurrenceTypes",
+            "parameters":
+            [
+            ]
+        },
+        "filterReferenceTopicTypes": {
+            "functionName": "filterReferenceTopicTypes",
+            "parameters": [
+                "{{response}}"
+            ]
+        },
+        "sortTopicTypeRelations": {
+            "functionName": "sortTopicTypeRelations",
+            "parameters": [
+                "{{response}}"
+            ]
+        },
+        "getValidTopicTypesSearchInput": {
+            "functionName": "getValidTopicTypesSearchInput",
+            "parameters": [
+                "{{ctx.ctm1.selectedTopic.props.applyClassName.dbValues[0]}}"
+            ]
+        },
+        "getParentTopicType": {
+            "functionName": "getParentBOMLineTopicType",
+            "parameters": [
+                "{{ctx}}"
+            ]
+        }
+    },
+
+    "onEvent":
+    [
+
+        {
+            "eventId": "ctm1.expandReferenceTopicTypeRelationss",
+            "action": "expandReferenceTopicTypeRelations"
+        },
+        {
+            "eventId": "getClipboardProvider.selectionChangeEvent",
+            "action": "handleSelectionChange"
+        },
+
+        {
+            "eventId": "getFavoriteProvider.selectionChangeEvent",
+            "action": "handleSelectionChange"
+        },
+
+        {
+            "eventId": "getRecentObjsProvider.selectionChangeEvent",
+            "action": "handleSelectionChange"
+        },
+        {
+            "eventId": "setCreateInputContextSuccess",
+            "action": "relationSelectionChange",
+            "condition": "conditions.doRelationSelectionSet"
+        },
+        {
+            "eventId": "ctm1.checkTopicTypeReferenced",
+            "action": "validateSelectedObject"
+        },
+        {
+            "eventId": "ctm1.validateSelection",
+            "action": "validateSelectedObject"
+        },
+        {
+            "eventId": "addElement.elementsAdded",
+            "action": "createRefTopicTypeRelation",
+            "cacheEventData": true,
+            "condition": "conditions.isComposableReferenceRelation"
+        }
+
+    ],
+
+    "conditions":
+    {
+        "isAddChildOrSiblingInPallette": {
+            "expression": "(ctx.activeToolsAndInfoCommand.commandId === 'Awb0AddChildElementDeclarative' || ctx.activeToolsAndInfoCommand.commandId === 'Awb0AddSiblingElementDeclarative') && ctx.aceActiveContext.context.openedElement.type==='Ctm1Topic' && (ctx.tcSessionData.tcMajorVersion > 13 || ( ctx.tcSessionData.tcMajorVersion === 13 && ctx.tcSessionData.tcMinorVersion >= 2 ))"
+        },
+        "isComposableReferenceRelation": {
+            "expression": "ctx.ctm1.referenceTopicType && ctx.ctm1.referenceTopicType.dbValue.length > 0"
+        },
+        "doRelationSelectionSet": {
+            "expression": "data.relationSelection"
+        },
+        "showRelationSelection": {
+            "expression": "ctx.ctm1.selectedTopic"
+        },
+        "showDitaRefTopicType": {
+            "expression": "ctx.ctm1.referenceTopicTypeList && ctx.ctm1.referenceTopicTypeList.length > 0"
+        }
+    },
+
+    "preferences": [
+        "Ctm0Allow_Multiple_Version_In_DITA_Structure"
+    ],
+
+    "messages":
+    {
+
+    },
+
+    "i18n":
+    {
+        "relationSelection": ["ContentMgmtMessages"],
+        "composableReference": ["ContentMgmtMessages"],
+        "topicToTopicReference": ["ContentMgmtMessages"],
+        "referenceTopicType": ["ContentMgmtMessages"],
+        "keyName": ["ContentMgmtMessages"]
+    }
+}

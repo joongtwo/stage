@@ -1,0 +1,111 @@
+/*
+   @<COPYRIGHT>@
+   ==================================================
+   Copyright 2015.
+   Siemens Product Lifecycle Management Software Inc.
+   All Rights Reserved.
+   ==================================================
+   @<COPYRIGHT>@
+*/
+
+.aw-programPlanning-eventSearchPanel {
+    width: 20px;
+    height: 20px;
+    padding-left: 15px;
+}
+
+.aw-programPlanning-ContentPanel {
+    height: 650px;
+    width: 97%;
+}
+
+.aw-programPlanning-eventContentPanel {
+    height: 650px;
+    width: 100%;
+}
+
+.aw-programPlanning-programBoard {
+    @include flexbox();
+    @include flex(1 1 auto);
+    overflow-x: auto;
+}
+
+.aw-programPlanning-timelineSplitContainer {
+    margin-bottom: 0;
+}
+
+.aw-programPlanning-timelineSplitContainer .aw-layout-panelSectionContent {
+    margin-bottom: 0;
+}
+
+.aw-programPlanning-programBoardCard.webix_kanban_list_item .webix_kanban_tag {
+    background: none;
+    font-size: $fontsize_normal;
+    display: block;
+
+}
+
+.aw-programPlanning-programBoardCard .webix_kanban_body {
+    font-size: $fontsize_normal;
+    flex: 0 0 rem-calc(40);
+
+}
+
+.aw-programPlanning-programBoardCard .webix_kanban_user_avatarLeft {
+    float: left;
+    position: initial;
+    width: 24px;
+    height: 24px;
+    margin-right: 5px;
+}
+
+.aw-programPlanning-programBoardCard .webix_kanban_user_avatarRight {
+    float: right;
+    position: initial;
+    border-radius: 0;
+    width: 24px;
+    height: 24px;
+}
+
+.aw-programPlanning-programBoardCard .webix_kanban_footer {
+    flex: 1;
+    width: rem-calc(50);
+}
+
+.aw-programPlanning-programBoardCard .avatar {
+    width: 24px;
+    height: 24px;
+}
+
+.aw-programPlanning-required {
+    font-size: $fontsize_large;
+    font-weight: normal;
+    font-style: italic;
+    clear: both;
+    float: left;
+    width: 100%;
+    opacity: 0.5;
+}
+
+.aw-programPlanning-timelineTreeContainer aw-splm-table .aw-splm-table {
+    height: 100%;
+}
+
+.aw-programPlanning-timelineTreeContainer .aw-splm-tableCanvas.aw-splm-tableViewport {
+    height: 100%;
+}
+
+.aw-programPlanning-planNavigationSubloction {
+    .sw-primary-workarea {
+        height: 100%;
+    }
+
+    .aw-layout-primaryWorkarea .aw-layout-workareaCommandbar {
+        min-height: unset;
+    }
+}
+
+.aw-programPlanning-breadCrumb,
+.aw-programPlanning-breadCrumbArea {
+    height: fit-content;
+}

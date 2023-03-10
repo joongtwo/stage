@@ -1,0 +1,20 @@
+<aw-panel-body class="aw-layout-flexColumnContainer">
+    <aw-flex-row height="5f" exist-when="subPanelContext.openedObject && subPanelContext.provider">
+        <aw-show-object-header sub-panel-context="{...subPanelContext,occContext:subPanelContext.occContext,  provider: subPanelContext.provider, contextKey: subPanelContext.provider.contextKey}"
+            headerVMO="subPanelContext.openedObject">
+            <aw-flex-column width="fill">
+                <aw-flex-row height="3f" class="aw-layout-breadCrumbContainer">
+                    <label class="aw-change-mergeDisplayLabel"> {{subPanelContext.provider.displayLabel.text}} </label>
+                    <span class="aw-change-mergeDisplayLabel"> {{subPanelContext.provider.displayLabel.separator}} </span>
+                    <occmgmt-breadcrumb occ-context="subPanelContext.occContext ? subPanelContext.occContext : data.occContext">
+                    </occmgmt-breadcrumb>
+
+                </aw-flex-row>
+            </aw-flex-column>
+            <aw-logo exist-when="!subPanelContext.provider.headerPreference.hideLogo"></aw-logo>
+        </aw-show-object-header>
+    </aw-flex-row>
+    <aw-data-navigator  sub-panel-context="{...subPanelContext, occContext: subPanelContext.occContext, selectionQueryParamKey : subPanelContext.provider.selectionQueryParamKey }"
+        provider="subPanelContext.provider" contextKey="subPanelContext.provider.contextKey" baseSelection="subPanelContext.baseSelection"></aw-data-navigator>
+
+</aw-panel-body>

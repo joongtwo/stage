@@ -1,0 +1,64 @@
+// @<COPYRIGHT>@
+// ==================================================
+// Copyright 2022.
+// Siemens Product Lifecycle Management Software Inc.
+// All Rights Reserved.
+// ==================================================
+// @<COPYRIGHT>@
+
+/*=========================================================================*/
+/*========================== EWI =========================*/
+/*=========================================================================*/
+
+.sw-ewi-taskbarButton {
+    margin: $popup_button_not_last_child_margin;
+}
+
+.ewi-showObjectHeader {
+    .aw-search-globalSearchWidgetContainer {
+        margin-left: rem-calc(32);
+    }
+
+    .aw-layout-headerContribution {
+        width: $listbox_cell_list_item_label_width;
+    }
+
+    .aw-ewi-headerWrapper::-webkit-scrollbar {
+        height: rem-calc(6);
+    }
+
+    .aw-ewi-headerWrapper::-webkit-scrollbar-thumb {
+        border-width: $input_border_width;
+    }
+
+    .aw-layout-headerProperty {
+        width: fit-content;
+        white-space: nowrap;
+    }
+
+    .aw-layout-headerContribution {
+        .sw-row {
+            overflow: unset;
+        }
+    }
+
+    .aw-ewi-headerWrapper {
+        overflow-x: auto;
+        display: flex;
+
+        .sw-row {
+            overflow: unset;
+
+            span br {
+                display: none;
+            }
+        }
+    }
+}
+
+.aw-ewi-subpageContent {
+    padding: $padding_normal;
+    .aw-sidenav-push.aw-sidenav-rightBackground {
+        box-shadow: none;
+    }
+}

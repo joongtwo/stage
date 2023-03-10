@@ -1,0 +1,89 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports":
+    [
+        "js/aw-panel-section.directive",
+        "js/aw-checkbox.directive",
+        "js/visible-when.directive"
+    ],
+
+    "actions":
+    {
+        "updateDataSource": {
+            "actionType": "JSFunction",
+            "method": "addHtmlPanelInDataSource",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "{{data.subPanelContext.xrtType}}",
+                "panelID": "Awb0SWCCustomPanel"
+            },
+            "deps": "js/addObjectUtils"
+        },
+
+        "keepShareAttrsInSync": {
+            "actionType": "JSFunction",
+            "method": "keepShareAttrsInSync",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/saveWorkingContextService"
+        }
+    },
+
+    "data":
+    {
+        "awb0AllowReadShare":
+        {
+            "type": "BOOLEAN",
+            "isEditable": "true",
+            "dbValue": "{{ctx.occmgmtContext.workingContextObj && ctx.occmgmtContext.workingContextObj.props.awb0AllowReadShare.dbValues[0] === '1'}}",
+            "displayName": "{{i18n.allowReadShare}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "awb0AllowWriteShare":
+        {
+            "type": "BOOLEAN",
+            "isEditable": "true",
+            "dbValue": "{{ctx.occmgmtContext.workingContextObj && ctx.occmgmtContext.workingContextObj.props.awb0AllowWriteShare.dbValues[0] === '1'}}",
+            "displayName": "{{i18n.allowWriteShare}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+
+    "conditions": {
+        "canShowReadCheckBox": {
+            "expression": "(ctx.occmgmtContext.workingCtxOpType === 'UPDATE' && ctx.user.uid == ctx.occmgmtContext.workingContextObj.props.owning_user.dbValues[0]) || (ctx.occmgmtContext.workingCtxOpType !== 'UPDATE')"
+        },
+        "canShowWriteCheckBox": {
+            "expression": "(ctx.occmgmtContext.workingCtxOpType === 'UPDATE' && ctx.user.uid == ctx.occmgmtContext.workingContextObj.props.owning_user.dbValues[0] && data.awb0AllowReadShare.dbValue) || (ctx.occmgmtContext.workingCtxOpType !== 'UPDATE' && data.awb0AllowReadShare.dbValue)"
+        },
+        "readShareAllowed": {
+            "expression": "ctx.occmgmtContext.workingContextObj.props.awb0AllowReadShare.dbValues[0] === '1'"
+        },
+        "writeShareAllowed": {
+            "expression": "ctx.occmgmtContext.workingContextObj.props.awb0AllowWriteShare.dbValues[0] === '1'"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "updateDataSource",
+        "onUpdate": {
+            "action": "updateDataSource",
+            "observers": [ "viewModel.data" ]
+        }
+    },
+
+    "ctx":{
+        "user" : { "type" : "object"},
+        "occmgmtContext":{
+                "workingContextObj" : { "type" : "object"},
+                "workingCtxOpType"  : { "type" : "string" }
+        }
+    },
+
+    "i18n":
+    {
+        "allowReadShare": [ "OccurrenceManagementConstants" ],
+        "allowWriteShare": [ "OccurrenceManagementConstants" ]
+    }
+}

@@ -1,0 +1,272 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+        [
+            "js/aw-panel-body.directive",
+            "js/aw-panel-section.directive",
+            "js/aw-panel-footer.directive",
+            "js/visible-when.directive",
+            "js/aw-button.directive",
+            "js/aw-i18n.directive"
+        ],
+
+    "actions":
+    {
+        "Ctm1TransientFileTicketsForUpload":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-01-FileManagement",
+            "method": "getTransientFileTicketsForUpload",
+            "inputData":
+            {
+                "transientFileInfos": "{{function:getTransientFileInfos}}"
+            },
+            "outputData":
+            {
+                "fmsTickets": "transientFileTicketInfos"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "ctm1.fmsTicketGenerated"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "SOAFailureMessage"
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "updateSelectedFileInfo":
+        {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                            "name": "ctm1.updateSelectedFileInfo",
+                            "eventData": {
+                                "fileName": "{{parameters.fileName}}",
+                                "fileNameNoExt": "{{parameters.fileNameNoExt}}",
+                                "fileExt": "{{parameters.fileExt}}",
+                                "formData": "{{parameters.formData}}"
+                            }
+                        } ]
+            }
+        },
+
+        "updateSelectedFileInfoAction":
+        {
+            "actionType": "JSFunction",
+            "method": "handleFileChangeResponse",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "files": "files",
+                "fileNames": "fileNames"
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1UpdateFormData": {
+            "actionType": "JSFunction",
+            "method": "updateFormData",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "formData": "formData"
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "ctm1.fileTicketCreated"
+                    }
+                ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1UploadFile":
+        {
+            "actionType": "RESTService",
+            "serviceName": "",
+            "method": "POST",
+            "inputData": {
+                "request": {
+                    "method": "POST",
+                    "url": "{{Constants.fmsUrl}}",
+                    "headers": {
+                        "Content-type": "undefined"
+                    },
+                    "data": "{{data.formData}}"
+                }
+            },
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "ctm1.fileUploaded"
+                    }
+                ]
+            }
+        },
+
+        "Ctm1CheckUploadsComplete": {
+            "actionType": "JSFunction",
+            "method": "checkUploadsComplete",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1ImportSNSOption": {
+            "actionType": "TcSoaService",
+            "serviceName": "ContMgmtS1000D40-2014-06-ContMgmtS1000D40",
+            "method": "bulkImport",
+            "inputData": {
+                "input": "{{function:getImportInputs}}"
+            },
+            "outputData": {
+                "importData": "",
+                "objectName": "{{function:getImportedName}}"
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "SOAFailureMessage"
+                } ]
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "ctm1.importComplete",
+                        "eventData": {
+                            "importData": "{{data.importData}}"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+        "pasteSNS": {
+            "actionType": "JSFunction",
+            "method": "pasteImportedObjects",
+            "inputData": {
+                "user": "{{ctx.user}}",
+                "data": "{{data}}",
+                "classname": "Civ0SNSRootNodeRevision"
+            },
+            "actionMessages": {
+                "success": [ {
+                    "message": "importSuccessSNS"
+                } ],
+                "failure": [ {
+                    "message": "SOAFailureMessage"
+                } ]
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    }
+                ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        }
+    },
+
+    "functions": {
+        "getTransientFileInfos": {
+            "functionName": "getTransientFileInfos",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getImportInputs": {
+            "functionName": "getImportInputs",
+            "parameters": [
+                "{{data}}",
+                "SNS"
+            ]
+        },
+        "getImportedName": {
+            "functionName": "getImportedName",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+
+    "onEvent": [
+        {
+            "eventId": "ctm1.updateSelectedFileInfo",
+            "action": "updateSelectedFileInfoAction",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.fmsTicketGenerated",
+            "action": "Ctm1UpdateFormData"
+        },
+        {
+            "eventId": "ctm1.fileTicketCreated",
+            "action": "Ctm1UploadFile"
+        },
+        {
+            "eventId": "ctm1.fileUploaded",
+            "action": "Ctm1CheckUploadsComplete"
+        },
+        {
+            "eventId": "ctm1.fileUploadedComplete",
+            "action": "Ctm1ImportSNSOption"
+        },
+        {
+            "eventId": "ctm1.importComplete",
+            "action": "pasteSNS",
+            "cacheEventData": true
+        }
+    ],
+
+    "data": {
+        "typeFilter": ".xml",
+        "className": "Civ0SNSRootNodeRevision"
+    },
+
+    "conditions":
+    {
+        "importValid": {
+            "expression": "data.files && data.files.length > 0 && !data.formData"
+        }
+    },
+
+    "messages": {
+        "importSuccessSNS": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.importSuccess}}",
+            "messageTextParams": [
+                "{{data.objectName}}"
+            ]
+        },
+        "SOAFailureMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+
+    "i18n": {
+        "importSNS": ["ContentMgmtMessages"],
+        "importSuccess": ["ContentMgmtMessages"],
+        "import": ["ContentMgmtMessages"]
+    }
+}

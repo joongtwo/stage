@@ -1,0 +1,88 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-widget.directive",
+        "js/aw-datetime.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive"
+    ],
+    "actions": {
+        "initializeSubViewContent": {
+            "actionType": "JSFunction",
+            "method": "initializeSubViewData",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData":{
+                "contextKey":"contextKey",
+                "ruleDateTimeDetails":"ruleDateTimeDetails",
+                "ruleDateOptions":"ruleDateOptions"
+            },
+            "deps": "js/Pca0RuleDateConfigurationService"
+        },
+        "ruleDateSelectionChangeFromList": {
+            "actionType": "JSFunction",
+            "method": "updateRuleDateFromList",
+            "inputData": {
+                "data": "{{data}}",
+                "currentValue": "{{data.ruleDateOptions.dbValue}}"
+            },
+            "outputData":{
+                "ruleDateTimeDetails":""
+            },
+            "deps": "js/Pca0RuleDateConfigurationService"
+        },
+        "applyRuleDate": {
+            "actionType": "JSFunctionAsync",
+            "method": "applyRuleDateFromSubPanel",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Pca0RuleDateConfigurationService"
+        }
+    },
+    "data": {
+        "contextKey": "",
+        "ruleDateList": {
+            "type": "STRING",
+            "dbValue": [
+                { "propDisplayValue": "{{i18n.date}}", "propInternalValue": "date" },
+                { "propDisplayValue": "{{i18n.latest}}", "propInternalValue": "latest" },
+                { "propDisplayValue": "{{i18n.systemDefault}}", "propInternalValue": "Default" },
+                { "propDisplayValue": "{{i18n.noRuleDate}}", "propInternalValue": "null" }
+            ]
+        },
+        "ruleDateOptions": {
+            "displayName": "{{i18n.ruleDateOptions}}",
+            "name": "ruleDateOptions",
+            "type": "STRING",
+            "isRequired": "false",
+            "dataProvider": "ruleDateOptionsDataProvider",
+            "uiValue": "{{i18n.date}}",
+            "dbValue": "date"
+        },
+        "ruleDateTimeDetails": {
+            "type": "DATETIME"
+        }
+    },
+    "dataProviders":{
+        "ruleDateOptionsDataProvider": {
+            "response": "{{data.ruleDateList.dbValue}}"
+        }
+    },
+    "onEvent": [],
+    "lifecycleHooks": {
+        "onMount": "initializeSubViewContent"
+    },
+    "i18n": {
+        "ruleDateOptions": [ "FullScreenConfigurationMessages" ],
+        "date": [ "FullScreenConfigurationMessages" ],
+        "latest": [ "FullScreenConfigurationMessages" ],
+        "systemDefault": [ "FullScreenConfigurationMessages" ],
+        "noRuleDate": [ "FullScreenConfigurationMessages" ],
+        "set": [ "FullScreenConfigurationMessages" ]
+    }
+}

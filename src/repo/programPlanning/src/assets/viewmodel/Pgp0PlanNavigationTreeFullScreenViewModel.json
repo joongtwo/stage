@@ -1,0 +1,106 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+        "treeSelectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "timelineSelectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "treeTableData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "timelineData": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "actions": {
+        "handleTreeSelectionChange": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "setTreeAsTheFocussedComponent",
+                    "condition": "data.treeSelectionData.selected.length > 0 || (data.focussedCompId === data.treeSelectionData.id && data.treeSelectionData.selected.length === 0)"
+                },
+                {
+                    "action": "handleExclusiveSelectionForTree",
+                    "condition": "data.treeSelectionData.selected.length > 0 || (data.focussedCompId === data.treeSelectionData.id && data.treeSelectionData.selected.length === 0)"
+                }
+            ]
+        },
+        "handleTimelineSelectionChange": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "setTimelineAsTheFocussedComponent",
+                    "condition": "data.timelineSelectionData.selected.length > 0 || (data.focussedCompId === data.timelineSelectionData.id && data.timelineSelectionData.selected.length === 0)"
+                },
+                {
+                    "action": "handleExclusiveSelectionForTimeline",
+                    "condition": "data.timelineSelectionData.selected.length > 0 || (data.focussedCompId === data.timelineSelectionData.id && data.timelineSelectionData.selected.length === 0)"
+                }
+            ]
+        },
+        "setTreeAsTheFocussedComponent": {
+            "actionType": "JSFunction",
+            "method": "updateTheFocussedComponent",
+            "inputData": {
+                "localSelectionData": "{{data.treeSelectionData}}"
+            },
+            "outputData": {
+                "focussedCompId": ""
+            },
+            "deps": "js/Pgp0PlanNavigationTreeService"
+        },
+        "handleExclusiveSelectionForTree": {
+            "actionType": "JSFunction",
+            "method": "handleExclusiveSelectionForTree",
+            "inputData": {
+                "treeSelectionData": "{{data.treeSelectionData}}",
+                "parentSelectionData": "{{props.subPanelContext.selectionData}}",
+                "atomicDataRef": "{{data.atomicDataRef}}"
+            },
+            "deps": "js/Pgp0PlanNavigationTreeService"
+        },
+        "setTimelineAsTheFocussedComponent": {
+            "actionType": "JSFunction",
+            "method": "updateTheFocussedComponent",
+            "inputData": {
+                "localSelectionData": "{{data.timelineSelectionData}}"
+            },
+            "outputData": {
+                "focussedCompId": ""
+            },
+            "deps": "js/Pgp0PlanNavigationTreeService"
+        },
+        "handleExclusiveSelectionForTimeline": {
+            "actionType": "JSFunction",
+            "method": "handleExclusiveSelectionForTimeline",
+            "inputData": {
+                "timelineSelectionData": "{{data.timelineSelectionData}}",
+                "parentSelectionData": "{{props.subPanelContext.selectionData}}",
+                "treeSelectionModel": "{{props.subPanelContext.selectionModel}}"
+            },
+            "deps": "js/Pgp0PlanNavigationTreeService"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [ {
+                "action": "handleTreeSelectionChange",
+                "observers": [ "viewModel.atomicData.treeSelectionData" ]
+            },
+            {
+                "action": "handleTimelineSelectionChange",
+                "observers": [ "viewModel.atomicData.timelineSelectionData" ]
+            }
+        ]
+    },
+    "conditions": {
+        "isTimelineChartEnabled": {
+            "expression": "!(ctx.preferences.AW_SubLocation_PlanNavigationSubLocation_ShowTimeline && ctx.preferences.AW_SubLocation_PlanNavigationSubLocation_ShowTimeline[0] === 'false')"
+        }
+    }
+}

@@ -1,0 +1,123 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "commandbarContext": {
+            "objectBaseType": "Item",
+            "addProductLabelCaption": "{{i18n.addProductToWprkpage}}",
+            "boTypeName": "",
+            "exclusionBOTypeNames": [],
+            "objectTypesToSearch": [],
+            "preferenceSuffixForTypesToSearch": "",
+            "buttonName": "{{i18n.addProduct}}",
+            "placeHolderForSearch": "{{i18n.typeProductName}}",
+            "commandTitles": {
+                "epAddStructureTitle": "{{i18n.addProduct}}"
+            }
+        }
+    },
+    "actions": {
+        "updateStructureContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "addVMOAndRevRuleToStructureContext"
+                },
+                {
+                    "action": "setCommandContext"
+                }
+            ]
+        },
+        "addVMOAndRevRuleToStructureContext": {
+            "actionType": "JSFunction",
+            "method": "addVMOAndRevRuleToStructureContext",
+            "inputData": {
+                "contextPath": "epTaskPageContext.productStructureContext"
+            },
+            "deps": "js/manageWorkPackageService"
+        },
+        "clearTaskPageContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "clearTaskPageContextForManagePage"
+                },
+                {
+                    "action": "clearCommandContext"
+                }
+            ]
+        },
+        "clearTaskPageContextForManagePage": {
+            "actionType": "JSFunction",
+            "method": "removeContextsFromCtx",
+            "inputData": {
+                "contextPaths": [
+                    "epTaskPageContext.EbomStructureContext",
+                    "epTaskPageContext.ebomStructure",
+                    "epTaskPageContext.ebomRootElement",
+                    "epTaskPageContext.ebomPCI",
+                    "epTaskPageContext.productStructureContext",
+                    "epTaskPageContext.productStructure",
+                    "epTaskPageContext.productPCI",
+                    "epTaskPageContext.productStructureConfigFlags",
+                    "epTaskPageContext.ebomStructureConfigFlags"
+                ]
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": "{{ctx.epTaskPageContext.productStructureContext}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "clearCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": ""
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        }
+    },
+    "conditions": {
+        "isTileDataAvailable": {
+            "expression": "ctx.epTaskPageContext.productStructureContext && ctx.epTaskPageContext.productStructureContext.vmo"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "updateStructureContextAndCommandContext"
+    },
+    "onEvent": [{
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "clearTaskPageContextAndCommandContext",
+            "condition": "removedSaveEvent.includes(ctx.epTaskPageContext.productStructureContext.uid)"
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "updateStructureContextAndCommandContext",
+            "condition": "addedSaveEvent !== undefined"
+        }
+    ],
+    "i18n": {
+        "add": [
+            "AdminMessages"
+        ],
+        "addProduct": [
+            "AdminMessages"
+        ],
+        "typeProductName": [
+            "AdminMessages"
+        ],
+        "addProductToWprkpage": [
+            "AdminMessages"
+        ]
+    }
+}

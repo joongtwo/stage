@@ -1,0 +1,163 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "EpBackgroundPartsSubPage_updateTabContentCountPort": {
+            "onChangeAction": "updateTabContentCountData",
+            "syncObject": {}
+        }
+    },
+    "data" : {
+        "provider":{
+            "label":"{{i18n.backgroundPartsTaskTitle}}",
+            "priority": 3,
+            "name": "backgroundParts",
+            "clientScopeURI": "backgroundParts",
+            "nameToken": "backgroundParts"
+        },
+        "awSubLocationPref": {
+            "hideRightWall": true
+        },
+        "occContext": {
+            "initialValues": {
+                "selectedModelObjects": [],
+                "viewKey": "",
+                "productContextInfo": null,
+                "elementToPCIMapCount": null,
+                "supportedFeatures": null,
+                "skipReloadOnConfigParamChange": true
+            },
+            "meta": {}
+        },
+        "backgroundPartsEbomTreeContext": {
+            "tabs": [{
+                "name": "{{i18n.backgroundPartsEbomTreeTitle}}",
+                "tabKey": "EpBackgroundPartsEbomTree"
+            }]
+        },
+        "backgroundPartsTableContext": {
+            "tabs": [{
+                "name": "{{i18n.backgroundPartsTableTitle}}",
+                "tabKey": "EpBackgroundPartsTable"
+            }]
+        },
+        "configurationChipsData":{
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "actions": {
+        "initializeEPPage": {
+            "actionType": "JSFunctionAsync",
+            "method": "initializeEPPage",
+            "inputData": {
+                "provider": "{{data.provider}}"
+            },
+            "outputData": {
+                "stateContext": "stateContext",
+                "propertyPolicyId": "propertyPolicyId"
+            },
+            "deps": "js/epInitializationService"
+        },
+        "updateTabContentCountData": {
+            "actionType": "JSFunction",
+            "method": "setLabelOnTab",
+            "inputData": {
+                "contentPanelData":"{{data.backgroundPartsTableContext}}",
+                "tabKey":"{{ports.EpBackgroundPartsSubPage_updateTabContentCountPort.syncObject.tabKey}}",
+                "name":"{{ports.EpBackgroundPartsSubPage_updateTabContentCountPort.syncObject.tabName}}"
+            },
+            "outputData": {
+                "backgroundPartsTableContext": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "initBatchAction": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "initializeEPPage"
+                },
+                {
+                    "action": "updatePartialCtxForBackgroundPartsPage"
+                },
+                {
+                    "action": "loadAssociatedAssembly"
+                },
+                {
+                    "action":"initialiseConfigurationChips"
+                },
+                {
+                    "action": "epPageInitializeComplete"
+                }
+            ]
+        },
+        
+        "epPageInitializeComplete":{
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+               "initialize":true
+            },
+            "outputData": {
+                "pageIntializeComplete": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },  
+
+        "updatePartialCtxForBackgroundPartsPage": {
+            "actionType": "JSFunction",
+            "method": "updatePartialCtx",
+            "inputData": {
+                "name": "backgroundPartsPageCtx",
+                "value": {
+                    "isBackgroundPartsPageEnabled" :true,
+                    "showMBOMInViewer" :true
+                }
+            },
+            "deps": "js/appCtxService"
+        },
+        "loadAssociatedAssembly": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadAssociatedAssembly",
+            "inputData": {
+                "objectUid": "{{ctx.state.params.uid}}"
+            },
+            "deps": "js/epBackgroundPartService"
+        },
+        "initialiseConfigurationChips":{
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetContext":"{{fields.configurationChipsData}}",
+                "updatedValues":{
+                    "ebomStructure":"{{ctx.epPageContext.ebomStructure}}",
+                    "ebomPCI":"{{ctx.epTaskPageContext.ebomPCI}}",
+                    "ebomStructureConfigFlags":"{{ctx.epTaskPageContext.ebomStructureConfigFlags}}",
+                    "mbomStructure":"{{ctx.epPageContext.mbomStructure}}",
+                    "mbomPCI":"{{ctx.epTaskPageContext.mbomPCI}}",
+                    "mbomStructureConfigFlags":"{{ctx.epTaskPageContext.mbomStructureConfigFlags}}",
+                    "processStructure":"{{ctx.epPageContext.processStructure}}",
+                    "processPCI":"{{ctx.epTaskPageContext.processPCI}}",
+                    "processStructureConfigFlags":"{{ctx.epTaskPageContext.processStructureConfigFlags}}",
+                    "rootPlant":"{{ctx.epPageContext.rootPlant}}",
+                    "plantPCI":"{{ctx.epTaskPageContext.plantPCI}}",
+                    "rootPlantConfigFlags":"{{ctx.epTaskPageContext.rootPlantConfigFlags}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initBatchAction"
+    },
+    "onEvent":[
+        {
+            "eventId": "ep.pageContext.changed",
+            "action": "initialiseConfigurationChips"
+        }
+    ],
+    "i18n": {
+        "backgroundPartsTaskTitle":["BackgroundPartsMessages"],
+        "backgroundPartsEbomTreeTitle": ["BackgroundPartsMessages"],
+        "backgroundPartsTableTitle": ["BackgroundPartsMessages"]
+    }
+}

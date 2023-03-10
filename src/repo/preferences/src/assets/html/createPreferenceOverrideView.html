@@ -1,0 +1,13 @@
+<aw-command-panel caption="i18n.createPreferenceOverrideTitle">
+    <aw-panel-body>
+        <aw-listbox prop="data.fnd0Location" list="data.overrideLocationList.dbValues" visible-when="!conditions.showLocationLOV"> </aw-listbox>
+        <aw-listbox prop="data.fnd0LocationLOV" list="data.overrideLocationList.dbValues" visible-when="conditions.showLocationLOV"> </aw-listbox>
+        <aw-widget prop="data.fnd0PreferenceValues"></aw-widget>
+        <aw-break></aw-break>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button action="createUserOverride" visible-when="conditions.showCreateButton">
+            <aw-i18n>i18n.addPreferenceButtonText</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</aw-command-panel>

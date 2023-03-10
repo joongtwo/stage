@@ -1,0 +1,6 @@
+<aw-command-panel caption="i18n.import" class="aw-clsadmin-importPanel">
+    <aw-radiobutton prop="data.fileType" action="changeFileType"></aw-radiobutton>
+    <aw-command-sub-panel panel-id="Awp0ClsAdminImportSub"  visible-when="fields.fileType.value===true"></aw-command-sub-panel>
+    <aw-command-sub-panel panel-id="ImportPLMXMLSubPanel" 
+        visible-when="fields.fileType.value===false"></aw-command-sub-panel>
+</aw-command-panel>

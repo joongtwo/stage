@@ -1,0 +1,73 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-sublocation.directive",
+        "js/aw-data-navigator.directive"
+    ],
+    "actions": {
+        "initializeOccmgmtSublocation": {
+            "actionType": "JSFunction",
+            "method": "initializeOccmgmtSublocation",
+            "inputData": {
+                "data": "{{data}}",
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "contextKey": "contextKey"
+            },
+            "deps": "js/occmgmtSublocationService"
+        },
+        "updateUrlFromCurrentState": {
+            "actionType": "JSFunction",
+            "method": "updateUrlFromCurrentState",
+            "inputData": {
+                "data": "{{data}}",
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "deps": "js/occmgmtSublocationService"
+        },
+        "destroyOccmgmtSublocation": {
+            "actionType": "JSFunction",
+            "method": "destroyOccmgmtSublocation",
+            "inputData": {
+                "data": "{{data}}",
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "deps": "js/occmgmtSublocationService"
+        },
+        "updateState": {
+            "actionType": "JSFunction",
+            "method": "updateState",
+            "inputData": {
+                "contextKey": "{{data.contextKey}}",
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "deps": "js/occmgmtSublocationService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initializeOccmgmtSublocation",
+        "onUnmount": "destroyOccmgmtSublocation"
+    },
+    "onEvent": [ {
+            "eventId": "splitViewLocationUpdated",
+            "action": "updateState"
+        },
+        {
+            "eventId": "locationChangeSuccess",
+            "action": "updateState",
+            "condition": "conditions.isNotSplitView"
+        }
+    ],
+    "i18n": {},
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "conditions": {
+        "isNotSplitView": {
+            "expression": "!ctx.splitView"
+        }
+    }
+}

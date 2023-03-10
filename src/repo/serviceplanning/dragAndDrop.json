@@ -1,0 +1,51 @@
+{
+  "actions": {
+    "listDragStart": {
+      "actionType": "syncFunction",
+      "method": "listDragStart",
+      "inputData": {
+        "eventType": "listDragStart"
+      },
+      "deps": "js/ssp0DragAndDropOnCells"
+    },
+    "dragOverTreeTable": {
+      "actionType": "syncFunction",
+      "method": "dragOverTreeTable",
+      "deps": "js/ssp0DragAndDropOnCells"
+    },
+    "dropOnTreeTable": {
+      "actionType": "syncFunction",
+      "method": "dropOnTreeTable",
+      "deps": "js/ssp0DragAndDropOnCells"
+    }
+  },
+  "dragHandlers": {
+    "dragHandlerForSBOM": {
+      "views": [
+        "Ssp0SbomTree"
+      ],
+      "dragActions": {
+        "dragStart": "listDragStart"
+      }
+    },
+    "dragHandlerForParts": {
+      "views": [
+        "Ssp0PartsTree"
+      ],
+      "dragActions": {
+        "dragStart": "listDragStart"
+      }
+    }
+  },
+  "dropHandlers": {
+    "dropHandlerForSPTreeTable": {
+      "views": [
+        "Ssp0ServicePlanTree"
+      ],
+      "dropActions": {
+        "dragOver": "dragOverTreeTable",
+        "drop": "dropOnTreeTable"
+      }
+    }
+  }
+}

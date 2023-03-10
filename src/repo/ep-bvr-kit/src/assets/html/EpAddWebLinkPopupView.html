@@ -1,0 +1,11 @@
+<aw-panel>
+    <aw-panel-body>
+        <aw-textbox prop="data.name"></aw-textbox>
+        <aw-textbox prop="data.description"></aw-textbox>
+        <aw-textbox prop="data.url"></aw-textbox>
+    </aw-panel-body>
+    <aw-panel-footer>
+        <aw-button button-type="base" action="closePopupWindow" size="auto">{{i18n.cancel}}</aw-button>
+        <aw-button action="epAddWebLink" enable-when="awPanelBody.$valid" size="auto">{{i18n.create}}</aw-button>
+    </aw-panel-footer>
+</aw-panel>

@@ -1,0 +1,520 @@
+{
+    "schemaVersion": "1.0.0",
+    "dataProviders": {
+        "editorsData": {
+            "action": "initWIData",
+            "response": "{{data.editorsData}}",
+            "totalFound": "{{data.totalFound}}",
+            "commandsAnchor": "WI_StepHeader"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "WiEditor_selectedObjects": {
+            "onChangeAction": "selectionSync",
+            "syncObject": {}
+        },
+        "WiEditor_clearSelection": {
+            "onChangeAction": "clearSelection",
+            "syncObject": {}
+        }
+    },
+    "actions": {
+
+        "clearSelection":{
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.editorsData}}",
+                "objectsToSelect": ""
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "updateOccContextToVMO": {
+            "actionType": "JSFunction",
+            "method": "updateOccContextToVMO",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.editorsData}}",
+                "occContext":"{{subPanelContext.occContext}}"
+            },
+            "deps": "js/wiEditorViewerService"
+        },
+        "initWIData": {
+            "actionType": "JSFunctionAsync",
+            "method": "onInit",
+            "inputData": {
+                "assignmentIndicationValue": "{{props.subPanelContext.sharedSelectionData.isIndicationToggleOn}}",
+                "occContext":"{{subPanelContext.occContext}}"
+            },
+            "outputData": {
+                "editorsData": "editorsData"
+            },
+            "deps": "js/wiEditorViewerService"
+        },
+
+        "updateSelectionBatchAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateSelectionPort"
+                },
+                {
+                    "action": "setWiEditorSelectedObjectData"
+                }
+            ]
+        },
+
+
+        "updateSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "WiEditor_selectedObjects",
+                "syncObject": "{{data.eventMap['editorsData.selectionChangeEvent'].selectedObjects}}"
+            }
+        },
+        "clearSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "WiEditor_selectedObjects",
+                "syncObject": {}
+            }
+        },
+        "selectionSync": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "setSelectionFromPort"
+                },
+                {
+                    "action": "setAutoScrollEditor"
+                }
+            ]
+        },
+        "setWiEditorSelectedObjectData": {
+            "actionType": "JSFunction",
+            "method": "setWiEditorSelectedObjectData",
+            "inputData": {
+                "selectedObject": "{{data.eventMap['editorsData.selectionChangeEvent'].selectedObjects}}"
+            },
+            "deps": "js/wiEditor.service"
+        },
+        "setAutoScrollEditor" : {
+            "actionType": "JSFunction",
+            "method": "verticalListScrollToSelected",
+            "inputData": {
+                "listElementClassName": ".aw-widgets-cellListItemSelected"
+            },
+            "deps": "js/utils/mfeListUtils"
+        },
+        "initialize": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "loadDataProvider",
+                    "condition": "conditions.isEpScopeObjectNotNull"
+                },
+                {
+                    "action": "setLoadingIndicator",
+                    "condition": "conditions.isEpScopeObjectNotNull"
+                },
+                {
+                    "action": "selectionSync",
+                    "condition": "conditions.isEpScopeObjectNotNull"
+                }
+            ]
+        },
+        "setSelectionFromPort": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.editorsData}}",
+                "objectsToSelect": "{{ports.WiEditor_selectedObjects.syncObject}}"
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "loadDataProvider": {
+            "actionType": "dataProvider",
+            "method": "editorsData"
+        },
+        "closeAutoPredictListPopup": {
+            "actionType": "JSFunction",
+            "method": "closeAutoPredictListPopup",
+            "deps": "js/wiEditorViewerService"
+        },
+        "attachScrollPanelListener": {
+            "actionType": "JSFunction",
+            "method": "attachScrollPanelListener",
+            "deps": "js/wiEditorViewerService"
+        },
+        "openAutoPredictPopup": {
+            "actionType": "JSFunction",
+            "method": "openAutoPredictPopup",
+            "inputData": {
+                "eventData": "{{parameters.eventData}}"
+            },
+            "deps": "js/wiEditorViewerService"
+        },
+        "setLoadingIndicator": {
+            "actionType": "JSFunction",
+            "method": "setLoadingIndicator",
+            "inputData": {
+                "isLoading": false
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeMessagesService"
+        },
+        "destroy": {
+            "actionType": "JSFunction",
+            "method": "destroy",
+            "deps": "js/wiEditorViewerService"
+        },
+        "clearCache": {
+            "actionType": "JSFunction",
+            "method": "clearPropertyKeyCache",
+            "inputData": {
+                "name": "{{ctx.epTaskPageContext.loadedObject.uid}}",
+                "propertyName": "ChangeLoadedProcessIndication"
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "destroyLoadedEditorCache": {
+            "actionType": "JSFunction",
+            "method": "destroy",
+            "inputData": {
+                "toggleValue": false,
+                "vmos": "{{data.dataProviders.editorsData.viewModelCollection.loadedVMObjects}}"
+            },
+            "deps": "js/epChangeIndicationService"
+        },
+        "destroyCache": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "destroy"
+                },
+                {
+                    "action": "clearCache"
+                },
+                {
+                    "action": "destroyLoadedEditorCache"
+                }
+            ]
+        },
+        "handleSaveEvents": {
+            "actionType": "JSFunction",
+            "method": "handleSaveEvents",
+            "inputData": {
+                "saveEvents": "{{parameters.eventData}}",
+                "dataProvider": "{{data.dataProviders.editorsData}}"
+            },
+            "deps": "js/wiEditorViewerService"
+        },
+        "handleDeleteEventForDataProvider": {
+            "actionType": "JSFunction",
+            "method": "handleDeleteEvents",
+            "inputData": {
+                "saveEvents": "{{data.eventMap['ep.deleteEvents'].deleteSaveEvents}}",
+                "dataProvider": "{{data.dataProviders.editorsData}}"
+            },
+            "deps": "js/wiEditorViewerService"
+        },
+        "handleToggleChangeIndication": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clearCache"
+                },
+                {
+                    "action": "updateChangeIndicationPropertyOnVmos"
+                },
+                {
+                    "action": "updateChangeIndicationPropertyOnInputObject",
+                    "condition": "data.isInputObjectImpacted===true"
+                }
+            ]
+        },
+
+        "updateChangeIndicationPropertyOnInputObject": {
+            "actionType": "JSFunction",
+            "method": "updateProperty",
+            "inputData": {
+                "name": "{{ctx.epTaskPageContext.loadedObject.uid}}",
+                "propertyName": "ChangeLoadedProcessIndication",
+                "value": true
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "updateChangeIndicationPropertyOnVmos": {
+            "actionType": "JSFunction",
+            "method": "updateChangeIndicationPropertyOnVmos",
+            "inputData": {
+                "vmos": "{{data.dataProviders.editorsData.viewModelCollection.loadedVMObjects}}",
+                "assignmentIndicationValue": "{{props.subPanelContext.sharedSelectionData.isIndicationToggleOn}}",
+                "propertyValue": "ChangeIndication"
+            },
+            "outputData": {
+                "isInputObjectImpacted": ""
+            },
+            "deps": "js/epChangeIndicationService"
+        },
+        "handleDeleteEvents": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "handleDeleteEventForDataProvider"
+                },
+                {
+                    "action": "clearSelectionPort",
+                    "condition": "conditions.isSelectedObjectDeleted"
+                }
+            ]
+        },
+        "getDatasetInfo": {
+            "actionType": "JSFunction",
+            "method": "getDatasetInfo",
+            "inputData": {
+                "eventdata": "{{data.eventData}}"
+            },
+            "outputData": {
+                "form": "form",
+                "datasetInfo" : "datasetInfo"
+            },
+            "deps": "js/wiAddSymbolsService"
+        },
+        "addSymbolInInstructions": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getDatasetInfo"
+                },
+                {
+                    "action": "createDataSet"
+                },
+                {
+                    "action": "updateFormData"
+                },
+                {
+                    "action": "uploadFile"
+                },
+                {
+                    "action": "commitDataset"
+                },
+                {
+                    "action": "insertSymbol"
+                }
+            ]
+        },
+        "createDataSet": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2010-04-DataManagement",
+            "method": "createDatasets",
+            "inputData": {
+                "input": [
+                    {
+                        "clientId": "{{data.datasetInfo.clientId}}",
+                        "container": {
+                            "uid": "AAAAAAAAAAAAAA",
+                            "type": "unknownType"
+                        },
+                        "datasetFileInfos": [
+                            {
+                                "fileName": "{{data.datasetInfo.fileName}}",
+                                "namedReferenceName": "{{data.datasetInfo.namedReferenceName}}",
+                                "isText": false
+                            }
+                        ],
+                        "relationType": "Epw0WIImageRelation",
+                        "description": "",
+                        "name": "{{data.datasetInfo.name}}",
+                        "type": "{{data.datasetInfo.type}}"
+                    }
+                ]
+            },
+            "outputData": {
+                "fmsTicket": "datasetOutput[0].commitInfo[0].datasetFileTicketInfos[0].ticket",
+                "commitInfos": "datasetOutput[0].commitInfo[0]",
+                "relatedModified": "datasetOutput[0].dataset",
+                "createdObject": "datasetOutput[0].dataset"
+            }
+        },
+        "updateFormData": {
+            "actionType": "JSFunction",
+            "method": "updateFormData",
+            "inputData": {
+                "fileData": {
+                    "key": "fmsTicket",
+                    "value": "{{data.fmsTicket}}"
+                },
+                "form": "{{data.form}}"
+            },
+            "outputData": {
+                "formData": ""
+            },
+            "deps": "js/wiAddSymbolsService"
+        },
+        "uploadFile": {
+            "actionType": "RESTService",
+            "serviceName": "",
+            "method": "POST",
+            "inputData": {
+                "request": {
+                    "method": "POST",
+                    "url": "{{Constants.fmsUrl}}",
+                    "headers": {
+                        "Content-type": "undefined"
+                    },
+                    "data": "{{data.formData}}"
+                }
+            }
+        },
+        "commitDataset": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-FileManagement",
+            "method": "commitDatasetFiles",
+            "inputData": {
+                "commitInput": [
+                    {
+                        "dataset": "{{data.commitInfos.dataset}}",
+                        "createNewVersion": true,
+                        "datasetFileTicketInfos": [
+                            {
+                                "datasetFileInfo": {
+                                    "clientId": "{{data.commitInfos.datasetFileTicketInfos[0].datasetFileInfo.clientId}}",
+                                    "fileName": "{{data.commitInfos.datasetFileTicketInfos[0].datasetFileInfo.fileName}}",
+                                    "namedReferencedName": "{{data.commitInfos.datasetFileTicketInfos[0].datasetFileInfo.namedReferenceName}}",
+                                    "isText": "{{data.commitInfos.datasetFileTicketInfos[0].datasetFileInfo.isText}}",
+                                    "allowReplace": "{{data.commitInfos.datasetFileTicketInfos[0].datasetFileInfo.allowReplace}}"
+                                },
+                                "ticket": "{{data.fmsTicket}}"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "insertSymbol": {
+            "actionType": "JSFunction",
+            "method": "insertSymbol",
+            "inputData": {
+                "symbolDataset": "{{data.createdObject}}",
+                "fmsTicket": "{{data.fmsTicket}}"
+            },
+            "deps": "js/wiAddSymbolsService"
+        },
+        "setSelectionFromStepEditorClickEvent": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.editorsData}}",
+                "objectsToSelect": "{{parameters.eventData.selectedObjects}}"
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "handleEditorRefresh":{
+            "actionType": "JSFunction",
+            "method": "handleEditorRefresh",
+            "inputData": {
+                "wiEditorData": "{{parameters.eventData}}",
+                "dataProvider": "{{data.dataProviders.editorsData}}"
+            },
+            "deps": "js/wiEditorViewerService"
+           }
+    },
+    "data": {
+        "isLoading": true
+    },
+    "onEvent": [
+        {
+            "eventId": "editorsData.modelObjectsUpdated",
+            "action": "updateOccContextToVMO"
+        },
+        {
+            "eventId": "wiStepEditor.contentLoaded",
+            "action": "attachScrollPanelListener"
+        },
+        {
+            "eventId": "editorsData.selectionChangeEvent",
+            "action": "updateSelectionBatchAction",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "wi.closeAutoPredictListPopup",
+            "action": "closeAutoPredictListPopup"
+        },
+        {
+            "eventId": "wi.openAutoPredictPopup",
+            "action": "openAutoPredictPopup",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "ep.saveEvents",
+            "action": "handleSaveEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "ep.deleteEvents",
+            "cacheEventData": true,
+            "action": "handleDeleteEvents"
+        },
+        {
+            "eventId": "awTab.selected",
+            "condition": "conditions.isEditorTabSwitched",
+            "action": "handleUnsavedData"
+        },
+        {
+            "eventId": "epObjectPropertyCache.ChangeImpactedPVIndicationUpdated",
+            "action": "handleToggleChangeIndication"
+        },
+        {
+            "eventId": "wi.AddSymbolInInstructions",
+            "action": "addSymbolInInstructions",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "stepEditor.clicked",
+            "action": "setSelectionFromStepEditorClickEvent",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+         },
+         {
+            "eventId": "ep.regenerateFindNumberRefreshEvent",
+            "action": "handleEditorRefresh",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        }
+    ],
+    "conditions": {
+        "isEpScopeObjectNotNull": {
+            "expression": "ctx.ep.scopeObject"
+        },
+        "isSelectedObjectDeleted": {
+            "expression": "data.dataProviders.editorsData.selectedObjects.length > 0 && data.eventMap['ep.deleteEvents'].deleteSaveEvents[0] === data.dataProviders.editorsData.selectedObjects[0].uid"
+        },
+        "isEditorTabSwitched": {
+            "expression": "data.selectedTab.tabKey !== 'WiEditor'"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initialize",
+        "onUnmount": "destroyCache",
+        "onUpdate":
+            {
+                "action": "handleToggleChangeIndication",
+                "observers": [
+                    "props.subPanelContext.sharedSelectionData.isIndicationToggleOn"
+                ]
+            }
+    }
+}

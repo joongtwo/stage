@@ -1,0 +1,109 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "selectHour": {
+            "actionType": "JSFunction",
+            "method": "selectHour",
+            "inputData": {
+                "hourVal": "{{data.everyXHours.dbValue}}",
+                "cronModelState": "{{props.subPanelContext.cronModelState}}"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "updateEveryXHoursVal": {
+            "actionType": "JSFunction",
+            "method": "updateEveryXHoursVal",
+            "inputData": {
+                "cronModelState": "{{props.subPanelContext.cronModelState}}",
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "everyXHours": ""
+            },
+            "deps": "js/Dpv1ScheduleService"
+        }
+    },
+    "data": {
+        "descrHourScheduleLabel": {
+            "displayName": "{{i18n.runScheduleEvery}}",
+            "dbValue": "runSchEvery",
+            "type": "STRING",
+            "dispValue": "{{i18n.runScheduleEvery}}",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "everyXHours": {
+            "displayName": "{{i18n.runScheduleEvery}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": "2",
+            "uiValue": "2",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "everyXHoursList": {
+            "type": "STRING",
+            "dbValue": [
+                {
+                    "propDisplayValue": "2",
+                    "propInternalValue": "2"
+                },
+                {
+                    "propDisplayValue": "4",
+                    "propInternalValue": "4"
+                },
+                {
+                    "propDisplayValue": "6",
+                    "propInternalValue": "6"
+                },
+                {
+                    "propDisplayValue": "8",
+                    "propInternalValue": "8"
+                },
+                {
+                    "propDisplayValue": "10",
+                    "propInternalValue": "10"
+                },
+                {
+                    "propDisplayValue": "12",
+                    "propInternalValue": "12"
+                }
+            ]
+        },
+        "hoursLbl": {
+            "displayName": "{{i18n.hours}}",
+            "dbValue": "hours",
+            "type": "STRING",
+            "dispValue": "{{i18n.hours}}",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        }
+    },
+    "onEvent": [],
+    "lifecycleHooks": {
+        "onUpdate": [ {
+            "action": "updateEveryXHoursVal",
+            "observers": [
+                "props.subPanelContext.cronModelState.hourly_everyXHoursVal"
+            ]
+        } ]
+    },
+    "functions": {},
+    "messages": {},
+    "i18n": {
+        "hourlySchedule": [
+            "DpvMessages"
+        ],
+        "runScheduleEvery": [
+            "DpvMessages"
+        ],
+        "hours": [
+            "DpvMessages"
+        ]
+    },
+    "conditions": {},
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

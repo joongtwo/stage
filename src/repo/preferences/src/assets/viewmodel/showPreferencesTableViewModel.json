@@ -1,0 +1,416 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-splm-table.directive"
+    ],
+    "actions": {
+        "initSearch": {
+            "actionType": "JSFunction",
+            "method": "initSearch",
+            "inputData": {
+                "data": "{{data.actions}}",
+                "actionName": "doGridDataProvider",
+                "tableLoaded": "{{data.tableLoaded}}"
+            },
+            "deps": "js/awSearchService"
+        },
+        "doGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "prefTableDataProvider"
+        },
+        "updateSearchStateAfterFilterAction": {
+            "actionType": "JSFunction",
+            "method": "updateSearchStateAfterFilterAction",
+            "inputData": {
+                "searchState": "{{subPanelContext.searchState}}"
+            },
+            "deps": "js/searchCommonUtils"
+        },
+        "buildUrl": {
+            "actionType": "JSFunction",
+            "method": "buildUrl",
+            "inputData": {
+                "searchState": "{{subPanelContext.searchState}}"
+            },
+            "deps": "js/adminPreferencesService"
+        },
+        "selectNewPrefRow": {
+            "actionType": "JSFunction",
+            "method": "selectNewPrefRow",
+            "inputData": {
+                "newPref": "{{ctx.ctx.tcadmconsole.searchCriteria.newPref}}",
+                "newPrefLoc": "{{ctx.ctx.tcadmconsole.searchCriteria.newPrefLoc}}",
+                "vmData": "{{data}}",
+                "selectedPreference": "{{ctx.selected}}"
+            },
+            "deps": "js/adminPreferencesService"
+        },
+        "loadData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "searchInput":{
+                "providerName": "Prf1PreferencesProvider",
+                "startIndex": "{{data.dataProviders.prefTableDataProvider.startIndex}}",
+                "maxToLoad": 50,
+                "searchFilterMap6": "{{subPanelContext.searchState.activeFilterMap}}",
+                "searchSortCriteria": "{{data.columnProviders.prefTableColumnProvider.sortCriteria}}",
+                "searchCriteria": {
+                    "searchString": "{{subPanelContext.searchState.criteria.searchString}}",
+                    "newPref":"{{ctx.ctx.tcadmconsole.searchCriteria.newPref}}",
+                    "User": "{{ctx.userUID}}",
+                    "Role": "{{ctx.roleUID}}",
+                    "Group": "{{ctx.groupUID}}"
+                }
+            },
+                "inflateProperties": true
+            },
+            "outputData": {
+                "searchResults": "{{json:searchResultsJSON}}",
+                "totalFound": "totalFound",
+                "ctx.search.totalFound": "totalFound",
+                "ctx.search.totalLoaded": "totalLoaded",
+                "ctx.search.tableLoaded": true,
+                "tableLoaded": true,
+                "ctx.tcadmconsole.preferences.filteredPreferenceInstances": "additionalSearchInfoMap.additionalInfoMessages",
+                "output": "{{function:processOutput}}"
+               },
+                "deps": "js/awSearchService",
+                "policy":{
+                    "types":[
+                       {
+                          "name":"Prf1PreferenceObject",
+                          "properties":[
+                             {
+                                "name":"prf1Description"
+                             },
+                             {
+                                "name":"prf1Name"
+                             },
+                             {
+                                "name":"prf1Array"
+                             },
+                             {
+                                "name":"prf1Environment"
+                             },
+                             {
+                                "name":"prf1Type"
+                             }
+                          ]
+                       }
+                    ]
+                 },
+            "events": {
+                "success": [ {
+                        "name": "showPreferencesTable.selectNewPrefRow"
+                    },
+                    {
+                        "name": "showPreferencesTable.closeFilterPanel"
+                    }
+                ]
+            }
+        },
+        "loadColumnConfig": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadTableColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.prefTableDataProvider}}",
+                "columnInfo": "{{data.columnInfo}}"
+            },
+            "deps": "js/adminPreferencesService"
+        },
+        "updateUserOverrideCriteriaCtx": {
+            "actionType": "JSFunction",
+            "method": "updateUserOverrideCtx",
+            "deps": "js/createPreferencesService",
+            "inputData": {
+                "selectedPreference": "{{subPanelContext.selectionModel.selectionData.value.selected[0]}}",
+                "data": "{{data.searchResults.objects}}"
+            },
+            "outputData": {
+                "ctx.tcadmconsole.preferences.isUserOverrideValid": "isUserOverrideValid",
+                "ctx.overrideLOVList": "overrideLOVList"
+            }
+        },
+        "isUserSystemAdmin": {
+            "actionType": "JSFunction",
+            "method": "isSystemAdmin",
+            "deps": "js/adminPreferenceUserUtil",
+            "inputData": {},
+            "outputData": {
+                "ctx.tcadmconsole.preferences.isUserSystemAdmin": ""
+            }
+        },
+        "isUserGroupAdmin": {
+            "actionType": "JSFunction",
+            "method": "isGroupAdmin",
+            "deps": "js/adminPreferenceUserUtil",
+            "inputData": {},
+            "outputData": {
+                "ctx.tcadmconsole.preferences.isUserGroupAdmin": ""
+            }
+        },
+        "setDeleteCtxAction": {
+            "actionType": "JSFunction",
+            "method": "setDeleteCtx",
+            "deps": "js/deletePreferencesService",
+            "inputData": {
+                "selectedPreference": "{{subPanelContext.selectionModel.selectionData.value.selected[0]}}"
+            }
+        },
+        "closeFilterPanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "navigationPanel"
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "prefTableDataProvider.selectionChangeEvent",
+            "condition": "conditions.isTablePopulated",
+            "action": "updateUserOverrideCriteriaCtx"
+        },
+        {
+            "eventId": "isUserSystemAdmin",
+            "action": "isUserSystemAdmin"
+        },
+        {
+            "eventId": "isUserGroupAdmin",
+            "action": "isUserGroupAdmin"
+        },
+        {
+            "eventId": "prefTableDataProvider.selectionChangeEvent",
+            "condition": "conditions.isTablePopulated",
+            "action": "setDeleteCtxAction"
+        },
+        {
+            "eventId": "showPreferencesTable.selectNewPrefRow",
+            "action": "selectNewPrefRow",
+            "condition": "conditions.isselectNewPrefRowValid"
+        },
+        {
+            "eventId": "showPreferencesTable.closeFilterPanel",
+            "action": "closeFilterPanel",
+            "condition": "conditions.isCloseFilterPanelValid"
+        }
+    ],
+    "data": {
+        "tableLoaded": false,
+        "columnInfo": [
+            {
+                "displayName": "{{i18n.Name}}",
+                "enableColumnMoving": true,
+                "enableColumnResizing": true,
+                "enableHiding": true,
+                "headerTooltip": true,
+                "isTableCommand": false,
+                "isTreeNavigation": false,
+                "minWidth": 20,
+                "name": "prf1Name",
+                "pixelWidth": 250,
+                "typeName": "STRING",
+                "pinnedLeft": true,
+                "width": 150
+            },
+            {
+                "displayName": "{{i18n.location}}",
+                "enableColumnMoving": true,
+                "enableColumnResizing": true,
+                "enableHiding": true,
+                "enableSorting": false,
+                "headerTooltip": true,
+                "isTableCommand": false,
+                "isTreeNavigation": false,
+                "minWidth": 20,
+                "name": "prf1Location",
+                "pixelWidth": 150,
+                "typeName": "STRING",
+                "width": 150
+            },
+            {
+                "displayName": "{{i18n.ProtectionScopeColumnTitle}}",
+                "enableColumnMoving": true,
+                "enableColumnResizing": true,
+                "enableHiding": true,
+                "headerTooltip": true,
+                "isTableCommand": false,
+                "isTreeNavigation": false,
+                "minWidth": 20,
+                "name": "prf1Scope",
+                "pixelWidth": 85,
+                "typeName": "STRING",
+                "width": 150
+            },
+            {
+                "displayName": "{{i18n.Values}}",
+                "enableColumnMoving": true,
+                "enableColumnResizing": true,
+                "enableHiding": true,
+                "headerTooltip": true,
+                "enableSorting": false,
+                "isTableCommand": false,
+                "isTreeNavigation": false,
+                "minWidth": 20,
+                "name": "prf1ValuesList",
+                "pixelWidth": 500,
+                "typeName": "STRING",
+                "width": 150
+            },
+            {
+                "displayName": "{{i18n.ProductArea}}",
+                "enableColumnMoving": true,
+                "enableColumnResizing": true,
+                "enableHiding": true,
+                "headerTooltip": true,
+                "isTableCommand": false,
+                "isTreeNavigation": false,
+                "minWidth": 20,
+                "name": "prf1ProductArea",
+                "pixelWidth": 200,
+                "typeName": "STRING",
+                "width": 150
+            }
+        ]
+    },
+    "i18n": {
+        "Name": [
+            "preferenceMessages"
+        ],
+        "Values": [
+            "preferenceMessages"
+        ],
+        "location": [
+            "preferenceMessages"
+        ],
+        "ProductArea": [
+            "preferenceMessages"
+        ],
+        "ProtectionScopeColumnTitle": [
+            "preferenceMessages"
+        ]
+    },
+    "dataProviders": {
+        "prefTableDataProvider": {
+            "action": "loadData",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "searchIndex": "{{data.searchIndex}}",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}",
+                "selectionData": "{{subPanelContext.selectionData}}"
+            }
+        }
+    },
+    "columnProviders": {
+        "prefTableColumnProvider": {
+            "loadColumnAction": "loadColumnConfig",
+            "columns": "{{data.columns}}",
+            "soaEnabled": false,
+            "sortCriteria": [
+                {
+                    "fieldName": "prf1Name",
+                    "sortDirection": "ASC"
+                }
+            ]
+        }
+    },
+    "grids": {
+        "gridView": {
+            "dataProvider": "prefTableDataProvider",
+            "columnProvider": "prefTableColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": false,
+                "enablePinning": true
+            }
+        }
+    },
+    "functions": {
+        "getDisplayValues": {
+            "functionName": "getDisplayValues",
+            "parameters": [
+                "{{response.locationInfo.values}}",
+                "{{response.definition.isArray}}"
+            ]
+        },
+        "getProtectionScopeDisplayValue": {
+            "functionName": "getDisplayValueForProtectionScope",
+            "parameters": [
+                "{{response.definition.protectionScope}}"
+            ]
+        },
+        "processOutput": {
+            "functionName": "processOutput",
+            "parameters": [
+                "{{data}}",
+                "{{subPanelContext.searchState}}"
+            ]
+        },
+        "getGroupUID": {
+            "functionName": "getGroupUID",
+            "parameters": [
+                "{{ctx.parents}}"            ]
+        }
+    },
+    "conditions": {
+        "isselectNewPrefRowValid": {
+            "expression": "ctx.tcadmconsole.searchCriteria.newPref !== null"
+        },
+        "isSelectionValid": {
+            "expression": "ctx.selected !== null"
+        },
+        "isCloseFilterPanelValid": {
+            "expression": "ctx.search.totalFound === 0"
+        },
+        "isTablePopulated": {
+            "expression": "ctx.search.tableLoaded === true"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "initSearch",
+                "observers": [
+                    "props.subPanelContext.searchState.criteria.searchString",
+                    "props.subPanelContext.searchState.filterString"
+                ]
+            },
+            {
+                "action": "buildUrl",
+                "observers": [
+                    "props.subPanelContext.searchState.filterString"
+                ]
+            },
+            {
+                "action": "updateSearchStateAfterFilterAction",
+                "observers": [ "props.subPanelContext.searchState" ]
+            },
+            {
+                "action": "selectNewPrefRow",
+                "observers": [ "ctx.tcadmconsole.searchCriteria.newPref" ]
+            },
+            {
+                "action": "updateUserOverrideCriteriaCtx",
+                "observers": [
+                    "props.subPanelContext.selection"
+                ]
+            },
+            {
+                "action": "setDeleteCtxAction",
+                "observers": [
+                    "props.subPanelContext.selection"
+                ]
+            }
+        ]
+    }
+}

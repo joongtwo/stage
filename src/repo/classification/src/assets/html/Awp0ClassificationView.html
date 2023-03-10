@@ -1,0 +1,12 @@
+<aw-command-panel caption="i18n.Classify" >
+    <!-- View mode-->
+    <aw-command-sub-panel panel-id="Awp0ClassificationSub"
+        sub-panel-context="{...props.subPanelContext, selectionData: data.selectionData, classifyState: fields.classifyState, responseState: fields.responseState, workspaceObjectUID:data.workspaceObjectUID }"
+        visible-when="fields.classifyState.value.panelMode === -1 || fields.classifyState.value.editProperties">
+    </aw-command-sub-panel>
+    <!-- Create/Edit mode-->
+    <aw-navigate-panel title="i18n.addClassification" panel-id='Awp0CreateClassificationSub'
+        sub-panel-context="{...props.subPanelContext, selectionData: data.selectionData, classifyState: fields.classifyState, responseState: fields.responseState, workspaceObjectUID:data.workspaceObjectUID, selected: data.selectedItem }"
+         visible-when="fields.classifyState.value.panelMode !== -1 && fields.classifyState.value.panelMode !== 1" action="initializeClassifyPanel">
+    </aw-navigate-panel>
+ </aw-command-panel>

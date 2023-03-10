@@ -1,0 +1,251 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-splm-table.directive"
+    ],
+    "data": {
+        "columns": [],
+        "searchResults": [],
+        "totalFound": 0,
+        "isVCVOpenedFromConfigurator": true,
+        "columnsToDisableSort": [ "cfg0VariantRuleText" ],
+        "columnsToDisableFilter": [ "cfg0VariantRuleText" ],
+        "searchState": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "actions": {
+        "initComponentAndUpdateXrtContext": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "initComponent"
+                },
+                {
+                    "action": "updateXrtContext"
+                }
+            ]
+        },
+        "initComponent": {
+            "actionType": "JSFunction",
+            "method": "initComponent",
+            "deps": "js/pca0VariantRuleService"
+        },
+        "updateXrtContext": {
+            "actionType": "JSFunction",
+            "method": "updateXrtContext",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}"
+            },
+            "deps": "js/pca0ConfiguratorExplorerCommonUtils"
+        },
+        "updateDataForSelectionChange": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "updateXrtContext"
+                },
+                {
+                    "action": "populateSyncObject"
+                }
+            ]
+        },
+        "populateSyncObject": {
+            "actionType": "JSFunction",
+            "method": "populateSyncObject",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}",
+                "isVCVOpenedFromConfigurator": "{{data.isVCVOpenedFromConfigurator}}"
+            },
+            "deps": "js/pca0VariantRuleService"
+        },
+        "cleanupData": {
+            "actionType": "JSFunction",
+            "method": "cleanupData",
+            "deps": "js/pca0VariantRuleService"
+        },
+        "loadVariantRuleDataFromServer": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": "Pca0VariantRule"
+                },
+                "searchInput": {
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "providerName": "Pca0SavedVariantsProvider",
+                    "searchCriteria": "{{function:getSearchCriteria}}",
+                    "columnFilters": "{{data.columnProviders.pca0VariantRuleColumnProvider.columnFilters}}",
+                    "searchFilterFieldSortType": "Priority",
+                    "searchSortCriteria": "{{data.columnProviders.pca0VariantRuleColumnProvider.sortCriteria}}",
+                    "cursor": {
+                        "startIndex": "{{data.dataProviders.pca0VariantRuleDataProvider.startIndex}}"
+                    }
+                },
+                "inflateProperties": true
+            },
+            "outputData": {
+                "searchResults": "{{json:searchResultsJSON}}",
+                "totalFound": "totalFound",
+                "dataProviders.pca0VariantRuleDataProvider.columnConfig": "{{function:getColumnConfig}}"
+            },
+            "deps": "js/pca0VariantRuleService"
+        },
+        "saveColumnConfigAndLoadVariantRuleData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": "Pca0VariantRule"
+                },
+                "saveColumnConfigData": {
+                    "clientScopeURI": "Pca0VariantRule",
+                    "columnConfigId": "{{data.dataProviders.pca0VariantRuleDataProvider.columnConfig.columnConfigId}}",
+                    "columns": "{{data.dataProviders.pca0VariantRuleDataProvider.newColumns}}",
+                    "scope": "LoginUser",
+                    "scopeName": ""
+                },
+                "searchInput": {
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "providerName": "Pca0SavedVariantsProvider",
+                    "searchCriteria": "{{function:getSearchCriteria}}",
+                    "columnFilters": "{{data.columnProviders.pca0VariantRuleColumnProvider.columnFilters}}",
+                    "searchFilterFieldSortType": "Priority",
+                    "searchSortCriteria": "{{data.columnProviders.pca0VariantRuleColumnProvider.sortCriteria}}",
+                    "cursor": {
+                        "startIndex": "{{data.dataProviders.pca0VariantRuleDataProvider.startIndex}}"
+                    }
+                },
+                "inflateProperties": true
+            },
+            "outputData": {
+                "searchResults": "{{json:searchResultsJSON}}",
+                "totalFound": "totalFound",
+                "dataProviders.pca0VariantRuleDataProvider.columnConfig": "{{function:getColumnConfig}}"
+            },
+            "deps": "js/pca0VariantRuleService"
+        },
+        "resetColumnConfig": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2022-06-UiConfig",
+            "method": "getOrResetUIColumnConfigs3",
+            "inputData": {
+                "getOrResetUiConfigsIn": [ {
+                    "scope": "LoginUser",
+                    "scopeName": "",
+                    "clientName": "AWClient",
+                    "resetColumnConfig": true,
+                    "columnConfigQueryInfos": [ {
+                        "clientScopeURI": "Pca0VariantRule",
+                        "operationType": "union",
+                        "typeNames": "{{data.dataProviders.pca0VariantRuleDataProvider.columnConfig.typesForArrange}}",
+                        "columnsToExclude": []
+                    } ],
+                    "businessObjects": [ {} ]
+                } ]
+            },
+            "outputData": {
+                "dataProviders.pca0VariantRuleDataProvider.columnConfig": "{{function:postResetFunction}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "pca0VariantRuleGrid.plTable.reload"
+                } ]
+            },
+            "deps": "js/tcarrange.service"
+        },
+        "doArrangeEvent": {
+            "actionType": "JSFunctionAsync",
+            "method": "arrangeColumns",
+            "inputData": {
+                "declViewModel": "{{data}}",
+                "eventData": "{{data.eventData}}"
+            },
+            "deps": "js/columnArrangeService"
+        },
+        "plTableClientRefresh": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "pca0VariantRuleGrid.plTable.clientRefresh"
+                } ]
+            }
+        }
+    },
+    "dataProviders": {
+        "pca0VariantRuleDataProvider": {
+            "action": "loadVariantRuleDataFromServer",
+            "nextAction": "loadVariantRuleDataFromServer",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "selectionModelMode": "multiple",
+            "inputData": {
+                "accessMode": "table",
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            },
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        }
+    },
+    "columnProviders": {
+        "pca0VariantRuleColumnProvider": {
+            "saveColumnAndLoadAction": "saveColumnConfigAndLoadVariantRuleData",
+            "resetColumnAction": "resetColumnConfig"
+        }
+    },
+    "grids": {
+        "pca0VariantRuleGrid": {
+            "dataProvider": "pca0VariantRuleDataProvider",
+            "columnProvider": "pca0VariantRuleColumnProvider",
+            "enableArrangeMenu": true,
+            "gridOptions": {
+                "enableSorting": true,
+                "enableGridMenu": true,
+                "isFilteringEnabled": true,
+                "enableExpandAndPaginationInEdit": true
+            }
+        }
+    },
+    "onEvent": [ {
+            "eventId": "columnArrange",
+            "cacheEventData": true,
+            "action": "doArrangeEvent"
+        },
+        {
+            "eventId": "primaryWorkarea.multiSelectAction",
+            "action": "plTableClientRefresh"
+        }
+    ],
+    "functions": {
+        "getSearchCriteria": {
+            "functionName": "getSearchCriteria",
+            "parameters": [ "{{data}}" ]
+        },
+        "getColumnConfig": {
+            "functionName": "getColumnConfig",
+            "parameters": [
+                "{{data.columnsToDisableSort}}",
+                "{{data.columnsToDisableFilter}}"
+            ]
+        },
+        "postResetFunction": {
+            "functionName": "postResetFunction",
+            "parameters": [
+                "{{data.dataProviders.pca0VariantRuleDataProvider.columnConfig}}"
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initComponentAndUpdateXrtContext",
+        "onUnmount": "cleanupData",
+        "onUpdate": [ {
+            "action": "updateDataForSelectionChange",
+            "observers": [ "props.subPanelContext.selectionData" ]
+        } ]
+    }
+}

@@ -1,0 +1,217 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+        "provider": {
+            "crumbs": [
+                {
+                    "clicked": false,
+                    "displayName": "",
+                    "selectedCrumb": false,
+                    "showArrow": false,
+                    "class_Id": ""
+                }
+            ]
+        },
+        "breadCrumbConfig": {
+            "classBreadcrumbConfig": {
+                "type": "navigate",
+                "id": "clsHierarchyBreadCrumb",
+                "noUpdate": false,
+                "popuplist": "/html/defaultbreadcrumblist.html"
+            }
+        },
+        "noResultsFound": {
+            "type": "OBJECT",
+            "displayName": "",
+            "dbValue": "",
+            "uiValue": "{{i18n.noSearchResultsFound}}"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "loadListView",
+                "observers": [
+                    "props.subPanelContext.searchState.criteria.searchString",
+                    "props.subPanelContext.searchState.filterString"
+                ]
+            },
+            {
+                "action": "loadMRUData",
+                "observers": [
+                    "props.subPanelContext.searchState.mruActive"
+                ]
+            },
+            {
+                "action": "resetSearchState",
+                "observers":[
+                    "props.subPanelContext.searchState.reset"
+                ]
+            }
+        ]
+    },
+    "actions": {
+        "loadListView": {
+            "actionType": "dataProvider",
+            "method": "listDataProvider"
+        },
+        "loadData": {
+            "actionType": "JSFunctionAsync",
+            "deps": "js/classifySearchService",
+            "method": "loadListData",
+            "inputData": {
+                "searchInput": {
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "providerName": "{{subPanelContext.searchState.provider}}",
+                    "searchCriteria": "{{function:getClsSearchCriteria}}",
+                    "searchFilterFieldSortType": "Priority",
+                    "searchFilterMap6": "{{subPanelContext.searchState.activeFilterMap}}",
+                    "searchSortCriteria": [],
+                    "cursor": {
+                        "startIndex": "{{data.dataProviders.listDataProvider.startIndex}}"
+                    }
+                },
+                "context":"{{subPanelContext}}"
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "{{json:searchResultsJSON}}",
+                "highlighter": "{{function:getHighlightKeywords}}",
+                "output": "{{function:processOutput}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "showClassificationList.selectFocusItem",
+                    "condition": "ctx.clsLocation.focusItemSelected === true"
+                },
+                {
+                    "name": "showClassificationList.updateRecentsAfterObjectSync"
+                },
+                {
+                    "name": "showClassificationList.selectFirstItem"
+                }
+             ]
+            },
+            "actionMessages":
+            {
+                "failure":
+                [
+                    {
+                        "message": "searchClassificationFailure"
+                    }
+                ]
+            }
+        },
+        "updateRecentsAfterObjectSync": {
+            "actionType": "JSFunction",
+            "method": "updateRecentsAfterObjectSync",
+            "inputData": {
+                "searchResults": "{{data.searchResults}}",
+                "context": "{{subPanelContext}}"
+            },
+            "deps": "js/classifyFullViewService"
+        },
+        "loadMRUData": {
+            "actionType": "JSFunction",
+            "method": "loadMRUData",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.listDataProvider}}",
+                "context":"{{subPanelContext}}"
+            },
+            "outputData": {
+            },
+            "deps": "js/Ics1ClassificationStandAloneService"
+        },
+        "resetSearchState": {
+            "actionType": "JSFunction",
+            "method": "resetSearchState",
+            "inputData": {
+                "searchState":"{{subPanelContext.searchState}}",
+                "selectionModel":"{{subPanelContext.selectionModel}}"
+            },
+            "deps": "js/searchCommonUtils"
+        },
+        "selectFirstItem": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "selectionModel": "{{data.dataProviders.listDataProvider.selectionModel}}",
+                "newSelection": "{{data.searchResults.objects[0].uid}}"
+            },
+            "deps": "js/selectionModelFactory"
+        }
+    },
+    "dataProviders": {
+        "listDataProvider": {
+            "action": "loadData",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}",
+                "selectionData": "{{subPanelContext.selectionData}}"
+            },
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        }
+    },
+    "messages": {
+        "searchClassificationFailure": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "functions": {
+        "getClsSearchCriteria": {
+            "functionName": "getClsSearchCriteria",
+            "parameters": [
+                "{{subPanelContext.searchState}}"
+            ]
+        },
+        "getHighlightKeywords": {
+            "functionName": "getHighlightKeywords",
+            "parameters": [
+                "{{data}}",
+                "{{ctx.clsLocation}}"
+            ]
+        },
+        "processOutput": {
+            "functionName": "processOutput",
+            "parameters": [
+                "{{data}}",
+                "{{subPanelContext.searchState}}"
+            ]
+        }
+    },
+    "i18n": {
+        "noSearchResultsFound": [ "ClassificationPanelMessages" ],
+        "noFiltersFound": [ "SearchMessages" ]
+    },
+    "conditions": {
+        "showResultsFound": {
+            "expression": "subPanelContext.searchState.criteria && subPanelContext.searchState.criteria.searchString && subPanelContext.searchState.criteria.searchString.length > 0"
+        },
+        "noResultsFound": {
+            "expression": "subPanelContext.searchState.endIndex === -1 && subPanelContext.searchState.totalFound===0 && !(subPanelContext.searchState.thresholdExceeded === 'true')"
+        },
+        "showVNCsInPWA": {
+            "expression": "subPanelContext.searchState && !subPanelContext.searchState.totalFound"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "showClassificationList.updateRecentsAfterObjectSync",
+            "action": "updateRecentsAfterObjectSync"
+        },
+        {
+            "eventId": "showClassificationList.selectFirstItem",
+            "action": "selectFirstItem"
+        }
+    ]
+
+}

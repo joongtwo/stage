@@ -1,0 +1,52 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "lifecycleHooks": {
+        "onMount": "buildTitle",
+        "onUpdate": {
+            "action": "buildTitle",
+            "observers": [ "props.subPanelContext.searchState" ]
+        }
+    },
+    "ports": {
+        "nodeData": {
+            "onChangeAction": "getNodeData",
+            "syncObject": {}
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "buildTitle": {
+            "actionType": "JSFunctionAsync",
+            "method": "buildTitle",
+            "inputData": {
+                "selectedNode": "{{data.selectedNode}}",
+                "searchObject": "{{props.subPanelContext.searchState}}"
+            },
+            "outputData": {
+                "crumbTitle": ""
+            },
+            "deps": "js/AwClsBreadCrumbService"
+        },
+        "getNodeData": {
+            "actionType": "JSFunction",
+            "method":"getNodeData",
+            "inputData": {
+                "selectedNode": "{{ports.nodeData.syncObject}}"
+            },
+            "outputData": {
+                "selectedNode": ""
+            },
+            "deps": "js/AwClsBreadCrumbService"
+        }
+    },
+    "data": {
+        "crumbTitle": null
+    },
+    "conditions": {},
+    "onEvent": []
+}

@@ -1,0 +1,10 @@
+<aw-command-panel caption="i18n.Organization" context="subPanelContext">
+        <aw-organization-tree
+        selection-model="selectionModels.orgTreeSelectionModel"
+        selection-data="data.selectionData">
+    </aw-organization-tree>
+    </aw-panel-body>
+        <aw-panel-footer>
+            <aw-button action="addSelectedTeamMembers" visible-when="awPanelBody.$valid && conditions.isValidToShowAddTeamMembersButton"><aw-i18n>i18n.addTeamMembers</aw-i18n></aw-button>
+        </aw-panel-footer>
+</aw-command-panel>

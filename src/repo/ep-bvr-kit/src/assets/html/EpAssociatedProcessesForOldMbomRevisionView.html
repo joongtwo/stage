@@ -1,0 +1,28 @@
+<div class="sw-row aw-mbomRevisiontable-parent">
+    <div class="sw-column vw-100">
+        <span class="aw-epProcess-title">Associated Processes</span>
+        <div class="sw-row">
+                <div class="aw-navigation-selectionMessage">
+                    <aw-message-params class="aw-navigation-messageWithEllipsis" context="props.currentProcesses.contextObject" params='["props.object_string.dbValues[0]"]' message="{{subPanelContext.navigatePageToSelectedProcess === 'assemblyPlanning' ? i18n.selectProcessToOpenInAssemblyPlanningMessage : i18n.selectProcessToOpenInWIAuthorMessage}}"></aw-message-params>
+                    <span>:<span>
+                </div>
+        </div>
+        <div class="sw-row aw-epProcess-errorMessage" exist-when="props.currentProcesses.currentRevisionProcesses.length === 0 && !conditions.hasCurrentRevisionData">
+            <span class="aw-epNavigation-aligntext">
+                {{i18n.errorMessageForCurrentProcess}}
+            </span>
+        </div>
+        <div class="sw-row aw-epAssociatedProcessTable-height"  show-when="props.currentProcesses.currentRevisionProcesses.length > 0 || conditions.hasCurrentRevisionData" justify="bottom">
+            <aw-splm-table class="h-12" gridid="oldRevisionassociatedProcessesTable"></aw-splm-table>
+        </div>
+        <div class="sw-row justify-right mx-large justify-bottom aw-epfooter-btn">
+            <aw-button size="auto" button-type="base" action="closePopup">
+                <aw-i18n>i18n.cancelButtonLabel</aw-i18n>
+            </aw-button>
+            <aw-button default="true" action="openProcessInAssemblyPlanningOrWIAuthoring" size="auto"
+            enable-when="conditions.hasProcessSelection">
+            <aw-i18n>i18n.openButtonLabel</aw-i18n>
+            </aw-button>
+        </div>
+    </div>
+</div>

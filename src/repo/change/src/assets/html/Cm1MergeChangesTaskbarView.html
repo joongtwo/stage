@@ -1,0 +1,14 @@
+<aw-advanced-bar type="TASKBAR">
+        <aw-flex-row height="4f">
+                <aw-flex-row class="aw-layout-fill">
+                    <taskbar-header exist-when="ctx.taskbarfullscreen && ctx.taskbarfullscreen === 'true'" task-name="ctx.taskUI.taskTitle" subtask-name="" context-Object=""></taskbar-header>
+                </aw-flex-row>
+                <aw-flex-column width="auto" justify="right" class="aw-layout-fill">
+                    <aw-command-bar anchor="mergeChangeTaskBarSlot" alignment="HORIZONTAL"></aw-command-bar>
+                </aw-flex-column>
+                <aw-separator is-vertical="true"></aw-separator>
+                <aw-flex-column width="auto" justify="right" class="aw-layout-fill">
+                    <aw-command-bar anchor="toolbarRightSlot" alignment="HORIZONTAL"></aw-command-bar>
+                </aw-flex-column>
+        </aw-flex-row>
+</aw-advanced-bar>

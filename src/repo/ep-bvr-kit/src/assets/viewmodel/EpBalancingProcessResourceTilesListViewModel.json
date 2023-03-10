@@ -1,0 +1,56 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "vmo": {
+            "type": "viewModelObject"
+        },
+        "max": {
+            "type": "string"
+        },
+        "selection-data": {
+            "type": "object"
+        },
+        "prs": {
+            "type": "boolean"
+        }
+
+    },
+    "data": {
+        "processResources": [],
+        "selectionData": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": [ {
+                "action": "prepareListOfProcessResourcesAndUnassigned",
+                "observers": [ "props.vmo" ]
+            }
+        ],
+        "render": "render"
+    },
+    "actions": {
+        "render":{
+            "method": "epBalancingProcessResourceTilesListRender",
+            "deps": "js/epBalancingProcessResourceTilesListService"
+        },
+        "prepareListOfProcessResourcesAndUnassigned": {
+            "actionType": "JSFunction",
+            "method": "prepareListOfProcessResourcesAndUnassigned",
+            "inputData": {
+                "station": "{{props.vmo}}",
+                "prs": "{{props.prs}}"
+            },
+            "outputData": {
+                "processResources": ""
+            },
+            "deps": "js/epBalancingService"
+        }
+    },
+    "onEvent": [ {
+        "eventId": "ep.addRemoveEvents",
+        "cacheEventData": true,
+        "action": "prepareListOfProcessResourcesAndUnassigned"
+    } ]
+}

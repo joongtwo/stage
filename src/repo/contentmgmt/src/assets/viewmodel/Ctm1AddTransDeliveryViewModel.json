@@ -1,0 +1,166 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+        [
+            "js/aw-command-panel.directive",
+            "js/aw-panel-body.directive",
+            "js/aw-panel-footer.directive",
+            "js/aw-button.directive",
+            "js/aw-checkbox.directive",
+            "js/aw-panel-section.directive",
+            "js/aw-list.directive",
+            "js/visible-when.directive",
+            "js/aw-i18n.directive"
+        ],
+    "dataProviders": {
+        "languageListProvider":
+        {
+            "dataProviderType": "Action",
+            "action": "getLanguageList",
+            "response": "{{data.language}}",
+            "totalFound": "{{data.language.length}}",
+            "selectionModelMode": "none"
+        }
+    },
+    "actions":
+    {
+        "updateCreateButton": {
+            "actionType": "JSFunction",
+            "method": "updateCreateButton",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData":{
+                "createDeliveryVisible": "createDeliveryVisible"
+            },
+            "deps": "js/Ctm1ContentMgmtTranslationService"
+        },
+        "updateDeliverDecomposed": {
+            "actionType": "JSFunction",
+            "method": "updateDeliverDecomposed",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtTranslationService"
+        },
+        "getLanguageList": {
+            "actionType": "JSFunction",
+            "method": "getTranslationLanguageList",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "language": "languageList"
+            },
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+        "reveal": {
+            "actionType": "dataProvider",
+            "method": "languageListProvider"
+        },
+
+        "Ctm1CreateTranslationDeliveryAction": {
+            "actionType": "JSFunction",
+            "method": "createTranslationDelivery",
+            "deps": "js/Ctm1ContentMgmtTranslationService",
+            "inputData": {
+                "data": "{{data}}"
+            }
+        }
+    },
+    "functions": {
+        "getLovFromQuery": {
+            "functionName": "getLovFromQuery",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+
+    "data": {
+        "createDeliveryVisible": "false",
+        "includeGraphics": {
+            "displayName": "{{i18n.includeGraphics}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "includeSupportingData": {
+            "displayName": "{{i18n.includeSupportingData}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "includePublishedContent": {
+            "displayName": "{{i18n.includePublishedContent}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "deliverComposed": {
+            "displayName": "{{i18n.deliverComposed}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "deliverDecomposed": {
+            "displayName": "{{i18n.deliverDecomposed}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "deliverOutOfSync": {
+            "displayName": "{{i18n.deliverOutOfSync}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "deliverTopicsOutForTransl": {
+            "displayName": "{{i18n.deliverTopicsOutForTransl}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+    "conditions":
+    {
+        "createDeliveryVisible": {
+            "expression": "data.createDeliveryVisible === 'true'"
+        },
+        "decomposedTopicDelivery": {
+            "expression": "data.deliverOutOfSync.isEditable === true"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "reveal"
+    },
+    "i18n": {
+        "create": ["ContentMgmtMessages"],
+        "includeGraphics": ["ContentMgmtMessages"],
+        "includeSupportingData": ["ContentMgmtMessages"],
+        "includePublishedContent": ["ContentMgmtMessages"],
+        "createTranslationDelivery": ["ContentMgmtMessages"],
+        "deliverComposed": ["ContentMgmtMessages"],
+        "deliverDecomposed": ["ContentMgmtMessages"],
+        "deliverOutOfSync": ["ContentMgmtMessages"],
+        "deliverTopicsOutForTransl": ["ContentMgmtMessages"],
+        "include": ["ContentMgmtMessages"],
+        "deliveryModes": ["ContentMgmtMessages"],
+        "languages": ["ContentMgmtMessages"],
+        "decomposedTopicDelivery": ["ContentMgmtMessages"]
+    }
+}

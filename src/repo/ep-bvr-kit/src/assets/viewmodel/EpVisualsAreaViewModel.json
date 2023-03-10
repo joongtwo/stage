@@ -1,0 +1,166 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+            "EpVisualsArea_inputObject": {
+                "onChangeAction": "cacheChangeInput",
+                "syncObject": {}
+            }
+        },
+        "props": {
+            "occ-context": {
+                "type": "object"
+            },
+            "sub-panel-context": {
+                "type": "object"
+            }
+        },
+        "actions": {
+            "cacheInput": {
+                "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{ports.EpVisualsArea_inputObject.syncObject}}"
+            },
+            "outputData": {
+                "inputObject": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "cacheChangeInput": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "cacheInput"
+                },
+                {
+                    "action": "resetChangeIndicationIconVisibility"
+                },
+                {
+                    "action": "getChangeIndicationData"
+                },
+                {
+                    "action": "setChangeIndicationIconVisibility",
+                    "condition": "data.affectedUIds !== '' && data.affectedUIds.length > 0  && props.subPanelContext.sharedSelectionData.isIndicationToggleOn ===true"
+                },
+                {
+                    "action": "resetChangeIndicationIconVisibility",
+                    "condition": "data.affectedUIds !== '' && subPanelContext.sharedSelectionData.isIndicationToggleOn ===false"
+                }
+            ]
+        },
+        "publishIsIconVisible": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getChangeIndicationData"
+                },
+                {
+                    "action": "setChangeIndicationIconVisibility",
+                    "condition": "data.affectedUIds !== '' && subPanelContext.sharedSelectionData.isIndicationToggleOn ===true"
+                },
+                {
+                    "action": "resetChangeIndicationIconVisibility",
+                    "condition": "data.affectedUIds !== '' && subPanelContext.sharedSelectionData.isIndicationToggleOn ===false"
+                }
+            ]
+        },
+        "removeImpactedProperties": {
+            "actionType": "JSFunction",
+            "method": "clearPropertyKeyCache",
+            "inputData": {
+                "name": "{{data.inputObject.uid}}",
+                "propertyName": "changePVImpacted"
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "updateIndication": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                   "action":"removeImpactedProperties",
+                   "condition": "subPanelContext.sharedSelectionData.isIndicationToggleOn !== true"
+                },
+                {
+                    "action": "getChangeIndicationData"
+                },
+                {
+                    "action": "setChangeIndicationIconVisibility",
+                    "condition": "data.affectedUIds !== '' && subPanelContext.sharedSelectionData.isIndicationToggleOn ===true"
+                },
+                {
+                    "action": "resetChangeIndicationIconVisibility",
+                    "condition": "subPanelContext.sharedSelectionData.isIndicationToggleOn ===false"
+                }
+            ]
+        },
+        "resetChangeIndicationIconVisibility": {
+            "actionType": "JSFunction",
+            "method": "setIconOnTab",
+            "inputData": {
+                "contentPanelData": "{{data.contentPanelData}}",
+                "tabKey": "EpVisualsGallery",
+                "shouldBeVisible": false
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        },
+        "getChangeIndicationData": {
+            "actionType": "JSFunction",
+            "method": "getProperty",
+            "inputData": {
+                "name": "{{data.inputObject.uid}}",
+                "propertyName": "changePVImpacted"
+            },
+            "outputData": {
+                "affectedUIds": ""
+            },
+            "deps": "js/epObjectPropertyCacheService"
+        },
+        "setChangeIndicationIconVisibility": {
+            "actionType": "JSFunction",
+            "method": "setIconOnTab",
+            "inputData": {
+                "contentPanelData": "{{data.contentPanelData}}",
+                "tabKey": "EpVisualsGallery",
+                "shouldBeVisible": "{{data.affectedUIds}}",
+                "iconName": "indicatorImpacted"
+            },
+            "outputData": {
+                "contentPanelData": ""
+            },
+            "deps": "js/epTabsService"
+        }
+    },
+    "data": {
+        "contentPanelData": {
+            "tabs": [
+                {
+                    "name": "{{i18n.visualsTitle}}",
+                    "tabKey": "EpVisualsGallery"
+                }
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "epObjectPropertyCache.changePVImpactedUpdated",
+            "action": "publishIsIconVisible"
+        }
+    ],
+    "i18n": {
+        "visualsTitle": [
+            "BvrGraphicsMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onUpdate":
+            {
+                "action": "updateIndication",
+                "observers": [
+                    "props.subPanelContext.sharedSelectionData.isIndicationToggleOn"
+                ]
+            }
+    }
+}

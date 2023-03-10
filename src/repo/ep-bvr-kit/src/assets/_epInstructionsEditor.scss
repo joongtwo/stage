@@ -1,0 +1,117 @@
+// Copyright 2020 Siemens Product Lifecycle Management Software Inc.
+
+.aw-epInstructionsEditor-wiEditorContainer {
+    .aw-epInstructionsEditor-standardTextPlaceholder{
+        border: rem-calc(0.5) solid;
+        padding: 0 rem-calc(10);
+        display: block;
+        border-left: rem-calc(3) solid;
+    }
+    .aw-widgets-cellListItem.sw-aria-border {
+        border-width: 0;
+        padding: 0;
+    }
+    .aw-ep-wiStepEditorHeaderContainer{
+        height: 3.4rem;
+    }
+    .aw-widgets-emptyCell {
+        height: 0;
+    }
+    .ck-editor__editable_inline {
+        overflow: hidden;
+        min-height: rem-calc(100);
+    }
+    .aw-widgets-cellListItem {
+        padding: 0;
+        width: 100%;
+
+        .wi-step-editor {
+            width: 100%;
+            border-width: 0 0 rem-calc(1) 0;
+            border-style: solid;
+
+            .wi-editor-textarea {
+                padding: 0 rem-calc(5) rem-calc(5) rem-calc(5);
+            }
+
+            &:hover {
+                .wi-editor-textarea {
+                    border-width: 0 rem-calc(5) rem-calc(5) rem-calc(5);
+                    border-style: solid;
+                    padding: 0;
+                }
+            }
+
+            ul, ol{
+                padding-inline-start: rem-calc(30);
+            }
+
+            i {
+                font-style: italic;
+            }
+        }
+        .aw-widgets-cellListCellCommands {
+            width: 0;
+            position: relative;
+            top: rem-calc(10);
+            left: rem-calc(-35);
+            .aw-commands-commandIconButton{
+                height: rem-calc(30);
+            }
+
+        }
+    }
+
+    .aw-widgets-cellListItemSelected {
+        border: 0;
+    }
+
+    .wi-stepHeader-changeContent {
+        width: rem-calc(5);
+    }
+
+    .wi-stepHeader-content {
+        padding-left: rem-calc(16);
+        padding-top: rem-calc(14);
+    }
+}
+.WIEditorHeaderContent {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+button[button-id="stepGroupCommands"] .aw-widgets-groupCommandStack aw-icon {
+    display: none;
+}
+
+.aw-epInstructionsEditor-autoPredictPopupContainer {
+    width: rem-calc(350);
+    .sw-popup-contentContainer .sw-listAfterFilter{
+        max-height: rem-calc(200);
+        width: rem-calc(350);
+    }
+    .aw-widgets-emptyCell {
+        height: 0;
+    }
+    .aw-epInstructionsEditor-autoPredictFilterListItem {
+        width: rem-calc(315);
+        text-overflow: ellipsis;
+        overflow-x: hidden;
+        overflow-y: hidden;
+        height: rem-calc(16);
+    }
+    .aw-epInstructionsEditor-autoPredictFilterList .aw-base-scrollPanel {
+        overflow-y: auto;
+        width: 100%;
+        flex: auto;
+    }
+}
+
+.aw-epInstructionsEditor-wiEditorToolbarContainer{
+    --ck-icon-size: 16px;
+    overflow: unset;
+    .ck.ck-toolbar{
+        border: none;
+    }
+}

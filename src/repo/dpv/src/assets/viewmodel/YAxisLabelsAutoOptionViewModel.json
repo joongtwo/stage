@@ -1,0 +1,38 @@
+{
+    "schemaVersion" : "1.0.0",
+    "actions": 
+    {
+        "updateIncludeZero": {
+            "actionType": "JSFunction",
+            "method": "updateIncludeZero",
+            "inputData": {
+                "state": "{{props.subPanelContext.chartSettingsState}}",
+                "includeZeroVal":"{{data.includeZeroCheckbox.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        }
+    },
+    "data": 
+    {
+        "includeZeroCheckbox": {
+            "displayName": "{{i18n.IncludeZero}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.chartSettingsState.autoIncludeZero}}",
+            "dispValue": "{{i18n.IncludeZero}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },    
+    "functions": {},
+    "props": {
+        "sub-panel-context":{
+            "type":"object"
+        }
+    },
+    "messages": {},    
+    "i18n": 
+    {   
+        "IncludeZero": [ "DpvMessages"]
+    }
+}

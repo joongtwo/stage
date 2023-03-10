@@ -1,0 +1,17 @@
+<aw-sublocation sub-location-preference="data._awSublocationPref">
+    <div class="sw-row flex-grow w-3">
+        <cm1-merge-candidates name="Cm1MergeCandidates" sub-panel-context="{...subPanelContext}"></cm1-merge-candidates>    
+   </div>
+    <div class="sw-row h-12 afx-content-background aw-occmgmt-split">
+        <div class="aw-layout-flexRow aw-base-scrollPanel">
+            <aw-panel-body class="aw-layout-flexColumnContainer aw-taskbasedpage-leftPanel">
+                <cm1-merge-changes-ace name="Cm1MergeChangesAce" sub-panel-context="{openedObject : data.objectsToOpen[0], provider : data.mergeSrcSublocation, occContext : data.occContext, contextKey: data.mergeSrcSublocation.contextKey}"></cm1-merge-changes-ace>
+            </aw-panel-body>
+            <aw-splitter min-size-1="0" min-size-2="200" direction="vertical">
+            </aw-splitter>
+            <aw-panel-body class="aw-layout-flexColumnContainer aw-taskbasedpage-rightPanel">
+                <cm1-merge-changes-ace name="Cm1MergeChangesAce" sub-panel-context="{openedObject : data.objectsToOpen[1], provider : data.mergeTrgSublocation, occContext : data.occContext2, contextKey: data.mergeTrgSublocation.contextKey}"></cm1-merge-changes-ace>
+            </aw-panel-body>
+        </div>
+    </div>
+</aw-sublocation>

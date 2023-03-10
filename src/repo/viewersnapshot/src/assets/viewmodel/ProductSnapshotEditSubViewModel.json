@@ -1,0 +1,36 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports": [],
+    "actions" :{
+        "updateProductSnapshotAction":{
+            "actionType": "JSFunction",
+            "method": "renameProductSnapshotAndNotify",
+            "inputData":
+            {
+                "snapshotName": "{{data.snapshotName.dbValue}}",
+                "data":"{{data}}",
+                "snapshotPanelData":"{{subPanelContext.snapshotPanelData}}"
+            },
+            "deps": "js/viewerProductSnapshotService"
+        }
+    },
+    "data":{
+        "snapshotName":
+        {
+            "displayName": "{{i18n.newProductSnapshotNameLabel}}",
+            "type": "STRING",
+            "maxLength": 90,
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue":"{{subPanelContext.snapshotPanelData.snapshotBeingEdit.cellHeader1}}"
+        }
+    },
+    "i18n":
+    {
+        "updateButtonText": [ "ViewerSnapshotMessages" ],
+        "newProductSnapshotNameLabel": [ "ViewerSnapshotMessages" ],
+        "updatedProductSnapshotSuccessfully": [ "ViewerSnapshotMessages" ],
+        "failedToUpdate": [ "ViewerSnapshotMessages" ]
+    }
+}
+

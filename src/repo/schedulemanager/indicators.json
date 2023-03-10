@@ -1,0 +1,19 @@
+{
+  "SubscriptionDeActivated": {
+    "iconName": "Deactivated",
+    "tooltip": {
+      "showPropDisplayName": false,
+      "propNames": [
+        "expiration_date"
+      ]
+    },
+    "modelTypes": [
+      "ImanSubscription"
+    ],
+    "conditions": {
+      "expiration_date": {
+        "$notNull": true
+      }
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+    "schemaVersion": "1.0.0",
+    "data":{
+        "title":"{{i18n.partiallyAssignedTitle}}",
+        "clickDescription":"{{i18n.assignedClickDesc}}"
+    },
+
+    "actions":{
+        "initializeTooltipData":{
+            "actionType": "JSFunction",
+            "method": "getTooltipData",
+            "inputData": {
+                "resource":"senMessages",
+                "key": "partiallyAssignedDesc",
+                "params":["{{subPanelContext.quantityInfo.assignedQuantity}}", "{{subPanelContext.quantityInfo.totalQuantity}}"]
+            },
+            "outputData":{
+                "desc":""
+            },
+            "deps": "js/senAlignmentTablePropertyRenderer"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "initializeTooltipData"
+    },
+
+    "i18n": {
+        "partiallyAssignedDesc": ["senMessages"],
+        "assignedClickDesc": ["senMessages"],
+        "partiallyAssignedTitle": ["senMessages"]
+    }
+}

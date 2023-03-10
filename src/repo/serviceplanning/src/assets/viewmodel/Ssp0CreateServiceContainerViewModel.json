@@ -1,0 +1,150 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "reveal": {
+            "actionType": "dataProvider",
+            "method": "customServiceContainer"
+        },
+        "loadServiceContainerTypes": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-03-Finder",
+            "method": "performSearch",
+            "inputData": {
+                "searchInput": {
+                    "maxToLoad": 25,
+                    "maxToReturn": 25,
+                    "providerName": "Awp0TypeSearchProvider",
+                    "searchCriteria": {
+                        "searchString": "",
+                        "typeSelectorId": "",
+                        "listOfIncludeObjectTypes": "SSP0SvcContainer",
+                        "loadSubTypes": "true"
+                    },
+                    "searchFilterFieldSortType": "Alphabetical",
+                    "startIndex": "{{data.dataProviders.performSearch.startIndex}}",
+                    "attributesToInflate": [
+                        "parent_types",
+                        "type_name"
+                    ]
+                }
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "serviceContainerList": "{{function:serviceContainerList}}"
+            },
+            "deps": "js/ssp0CreateServiceContainer"
+        },
+        "createServiceContainer": {
+            "actionType": "JSFunction",
+            "method": "getCreateInput",
+            "inputData": {
+                "data": "{{data}}",
+                "createType": "{{data.selectedType.dbValues}}"
+            },
+            "deps": "js/ssp0CreateObjectService"
+        },
+        "createServiceContainerBatchJob": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "createServiceContainer"
+                },
+                {
+                    "action": "closePopupWindow"
+                }
+            ]
+        },
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        },
+        "setSelectedType": {
+            "actionType": "JSFunction",
+            "method": "changeAction",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "selectedType": "selectedType"
+            },
+            "deps": "js/ssp0CreateServiceContainer"
+        }
+    },
+    "lifecycleHooks": {
+        "onInit": "reveal"
+    },
+    "onEvent": [
+        {
+            "eventId": "awlinkPopup.selected",
+            "action": "setSelectedType"
+        }
+    ],
+    "conditions": {
+        "requiredFieldsEntered": {
+            "expression": "(data.object_name.dbValue)"
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "functions": {
+        "serviceContainerList": {
+            "functionName": "serviceContainerList",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "data": {
+        "currentServiceContainer": {
+            "type": "STRING",
+            "displayName": "{{i18n.currentServiceContainer}}",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "selectedType": {
+            "type": "STRING",
+            "dbValue": "SSP0SvcContainer"
+        },
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "dataProviders": {
+        "customServiceContainer": {
+            "dataProviderType": "TcLOV",
+            "action": "loadServiceContainerTypes",
+            "response": "{{data.serviceContainerList}}",
+            "totalFound": "{{data.totalFound}}"
+        }
+    },
+    "i18n": {
+        "AddServiceContainer": [
+            "ServicePlannerConstants"
+        ],
+        "Add": [
+            "ssp0Messages"
+        ],
+        "Cancel": [
+            "ssp0Messages"
+        ],
+        "currentServiceContainer": [
+            "ServicePlannerConstants"
+        ]
+    }
+}

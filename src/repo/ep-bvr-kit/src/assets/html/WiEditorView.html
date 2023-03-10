@@ -1,0 +1,9 @@
+<mfe-loading-message exist-when="data.isLoading"></mfe-loading-message>
+<div class="sw-column w-12" exist-when="!data.isLoading">
+    <div class ="sw-row w-12 aw-epInstructionsEditor-wiEditorToolbarContainer" id="wiEditorToolbarContainer"></div>
+    <aw-scrollpanel class="sw-row w-12 aw-epInstructionsEditor-wiEditorContainer">
+        <aw-list dataprovider="data.dataProviders.editorsData">
+            <wi-step-editor sub-panel-context="{...item}"></wi-step-editor>
+        </aw-list>
+    </aw-scrollpanel>
+</div>

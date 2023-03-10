@@ -1,0 +1,118 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "getMostAccessedRepChartData": {
+            "actionType": "JSFunction",
+            "method": "createChart",
+            "inputData": {
+                "type": "mostAccessed"
+            },
+            "outputData": {
+                "chartProviders.mostAccessedRepChartProvider.chartPoints": ""
+            },
+            "deps": "js/Dpv1GraphicalReportService"
+        },
+        "getLeastAccessedRepChartData": {
+            "actionType": "JSFunction",
+            "method": "createChart",
+            "inputData": {
+                "type": "leastAccessed"
+            },
+            "outputData": {
+                "chartProviders.leastAccessedRepChartProvider.chartPoints": ""
+            },
+            "deps": "js/Dpv1GraphicalReportService"
+        },
+        "setDateRange": {
+            "actionType": "JSFunction",
+            "method": "setDateRange",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "startDate": "startDate",
+                "endDate": "endDate"
+            },
+            "deps": "js/Dpv1GraphicalReportService"
+        },
+        "updateGraphs": {
+            "actionType": "batchJob",
+            "steps":[
+                {
+                    "action":"getMostAccessedRepChartData"
+                },
+                {
+                    "action":"getLeastAccessedRepChartData"
+                }
+            ]
+        }
+    },
+    "data": {
+        "startDate": {
+            "displayName": "{{i18n.startDate}}",
+            "type": "DATE",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dispValue": "",
+            "dbValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "endDate": {
+            "displayName": "{{i18n.endDate}}",
+            "type": "DATE",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dispValue": "",
+            "dbValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "setDateRange",
+        "onUpdate": [ {
+            "action": "updateGraphs",
+            "observers": [ "viewModel.data.startDate",
+                "viewModel.data.endDate" ]
+        }
+    ]
+    },
+    "chartProviders": {
+        "mostAccessedRepChartProvider": {
+            "title": "{{i18n.mostAccessedRepChartTitle}}",
+            "chartType": "column",
+            "loadDataAction": "getMostAccessedRepChartData",
+            "chartConfig": {
+                "isChartZoomable": true,
+                "xAxisLabel": "",
+                "yAxisLabel": "",
+                "isDataLabelOnChartEnabled": true
+            }
+        },
+        "leastAccessedRepChartProvider": {
+            "title": "{{i18n.leastAcessedRepChartTitle}}",
+            "chartType": "column",
+            "loadDataAction": "getLeastAccessedRepChartData",
+            "chartConfig": {
+                "isChartZoomable": true,
+                "xAxisLabel": "",
+                "yAxisLabel": "",
+                "isDataLabelOnChartEnabled": true
+            }
+        }
+    },
+    "i18n": {
+        "mostAccessedRepChartTitle": [
+            "DpvMessages"
+        ],
+        "leastAcessedRepChartTitle": [
+            "DpvMessages"
+        ],
+        "startDate": [
+            "DpvMessages"
+        ],
+        "endDate": [
+            "DpvMessages"
+        ]
+    }
+}

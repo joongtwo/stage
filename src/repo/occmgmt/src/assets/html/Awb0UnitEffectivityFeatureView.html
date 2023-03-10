@@ -1,0 +1,12 @@
+<aw-panel-section caption="i18n.units" visible-when="subPanelContext.occContext.supportedFeatures.Awb0UnitEffectivityConfigFeature">
+    <aw-property-non-edit-val prop="data.endItem" class="aw-occmgmt-effectivityUnitLabel">
+    </aw-property-non-edit-val>
+    <aw-list dataprovider="data.dataProviders.getConfiguredEndItems">
+        <aw-default-cell vmo="item"></aw-default-cell>
+    </aw-list>
+    <div class="sw-row aw-occmgmt-unitLabel">
+        <aw-property-non-edit-val prop="data.effectivityUnitSectionAllUnitsTitle" class="aw-occmgmt-effectivityUnitLabel">
+        </aw-property-non-edit-val>
+        <awb0-unit-effectivity backpanel="{{props.backpanel}}" location="{{props.location}}" sub-panel-context="props.subPanelContext"></awb0-unit-effectivity>
+    </div>
+</aw-panel-section>

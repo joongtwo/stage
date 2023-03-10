@@ -1,0 +1,26 @@
+<aw-panel-section>
+    <aw-listbox prop="data.scheduleBasis" list="data.scheduleBasisList.dbValue" action="updateBasis"></aw-listbox>
+    <div exist-when="data.scheduleBasis.dbValue === '1'" enable-when="data.scheduleBasis.dbValue === '1'">
+        <dpv-report-hourly-schedule sub-panel-context="props.subPanelContext"></dpv-report-hourly-schedule>
+    </div>
+    <div exist-when="data.scheduleBasis.dbValue === '2'" enable-when="data.scheduleBasis.dbValue === '2'">
+        <dpv-report-daily-schedule sub-panel-context="props.subPanelContext"></dpv-report-daily-schedule>
+    </div>
+    <div exist-when="data.scheduleBasis.dbValue === '3'" enable-when="data.scheduleBasis.dbValue === '3'">
+        <dpv-report-monthly-schedule sub-panel-context="props.subPanelContext"></dpv-report-monthly-schedule>
+    </div>
+    <div exist-when="data.scheduleBasis.dbValue === '0'" enable-when="data.scheduleBasis.dbValue === '0'">
+        <dpv-report-one-time-schedule sub-panel-context="props.subPanelContext"></dpv-report-one-time-schedule>
+    </div>
+    <aw-break></aw-break>
+    <aw-panel-section caption="i18n.scheduleStartInfo">
+        <div class="sw-row">
+            <div class="sw-column w-4">
+                <aw-date prop="data.startDate"></aw-date>
+            </div>
+            <div class="sw-column w-4">
+                <aw-time prop="data.startTime"></aw-time>
+            </div>
+        </div>
+    </aw-panel-section>
+</aw-panel-section>

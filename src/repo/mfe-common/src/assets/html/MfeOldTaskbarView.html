@@ -1,0 +1,16 @@
+<aw-flex-row height="3.6f" class="afx-content-background">
+    <aw-advanced-bar type="TOOLBAR" negative="true">
+        <aw-flex-row height="3.4f" align-content="center">
+            <aw-flex-column width="fill">
+                <aw-flex-row justify="left" visible-when="data.subLocationTabs.length > 0">
+                    <aw-tab-set class="aw-mfe-tabs" action="switchSubLocation" tabs="data.subLocationTabs" class="aw-layout-subLocationTitles"></aw-tab-set>
+                </aw-flex-row>
+            </aw-flex-column>
+            <aw-flex-column width="6">
+                <aw-flex-row justify="right">
+                    <aw-layout-slot name="mfe_toolbar" context="data" class="aw-layout-fit"></aw-layout-slot>
+                </aw-flex-row>
+            </aw-flex-column>
+        </aw-flex-row>
+    </aw-advanced-bar>
+</aw-flex-row>

@@ -1,0 +1,25 @@
+<aw-command-panel caption="i18n.addCriteriaCommandTitle" context="subPanelContext">
+    <div class="aw-layout-flexColumn" show-when="data.activeState.value.activeView ==='AddObjectPrimarySub'">
+        <aw-add target-object="{{ctx.panelContext.targetObject}}"
+            relations="{{ctx.panelContext.relationType}}"
+            include-types="Prg0AbsCriteria"
+            auto-select-on-unique-type=true
+            visible-tabs="new"
+            type-filter="Prg0AbsCriteria"
+            type-override-id="PP"
+            add-panel-state="fields.addPanelState"
+            active-state="data.activeState"
+            project-state="data.projectState"
+            sub-panel-context="{ triggerCreate: data.triggerCreate, ...subPanelContext }"
+            xrt-state="data.xrtState"
+            edit-handler="editHandlers.addPanelEditHandler">
+        </aw-add>
+            <!-- Panel footer-->
+        <aw-panel-footer visible-when="data.activeView!='AssignProjectSub'&&data.activeView!='addReferenceSub' && data.activeState.value.activeView==='AddObjectPrimarySub'">
+            <aw-button default="true" action="CreateEventJob" enable-when="conditions.isNewTabAddButtonEnable && formProp.attributes.valid" visible-when="conditions.isNewTabAddButtonVisible">
+                <aw-i18n>i18n.addButtonCommandTitle</aw-i18n>
+            </aw-button>
+        </aw-panel-footer>
+    </div>
+    <aw-add-navigate active-state="data.activeState" project-state="data.projectState" action="actions.setActiveView"></aw-add-navigate>
+</aw-command-panel>

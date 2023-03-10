@@ -1,0 +1,19 @@
+<div class="sw-column">
+    <div class="sw-row">
+        <div exist-when="props.column.isTreeNavigation === true" class="aw-cfg-variantgridFilterHeader">
+            {props.column.displayName}
+        </div>
+        <div exist-when="props.column.isTreeNavigation !== true && !props.column.isSplitColumn" class="aw-cfg-variantgridHeader">
+            {props.column.displayName}
+        </div>
+    </div>
+    <div class="sw-row aw-cfg-variantgridHeaderRow">
+        <div class="sw-column">
+            <img src="{{data.headerIconUrl}}"  exist-when="data.headerIconUrl" class="aw-cfg-variantgridHeaderIcon" alt="{{props.column.displayName}}"></img>
+        </div>
+        <div class="sw-column" exist-when="data.violationsInColumn">
+            <img class="aw-cfg-variantgridHeaderIcon aw-cfg-variantgridHeaderViolationIcon" alt="i18n.error" src="{{data.errorIconUrl}}"
+            extended-tooltip-context="data.tooltipDetails" extended-tooltip= "Pca0VariantColumnExtTooltip"></img>
+        </div>
+    </div>
+</div>

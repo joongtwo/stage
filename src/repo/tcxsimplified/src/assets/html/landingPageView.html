@@ -1,0 +1,75 @@
+<aw-base-sublocation provider="data._sublocation">
+    <aw-scrollPanel class="aw-tcxsimplified-bg"> <!-- custom background added to fix scroll visibility-->
+        <div class="sw-row sw-primary-workarea aw-layout-primaryWorkareaFill">
+            <div class="sw-column aw-tcxsimplified-firstColumn">
+                <!-- Row for Tiles -->
+                <div class="sw-row">
+                    <aw-tile-canvas tile-groups="data.tileGroups"></aw-tile-canvas>
+                </div>
+                <div class="sw-row">
+                    <div class="sw-column afx-content-background aw-tcxsimplified-myTaskColumn">
+                        <!-- MyTasks -->
+                        <div class="sw-row aw-tcxsimplified-card aw-tcxsimplified-myTasksCardHeight" id="tcxSimplifiedMyTasksCardId">
+                            <aw-link class="aw-tcxsimplified-title" prop="data.myTasksTitle" action="goToMyTasksLocation">
+                            </aw-link>
+                            <aw-list class="aw-tcxsimplified-cellborder" dataprovider="data.dataProviders.myTasksDataProvider"
+                                visible-when="data.dataProviders.myTasksDataProvider.viewModelCollection.totalFound > 0">
+                                <aw-default-cell vmo="item"></aw-default-cell>
+                            </aw-list>
+                            <div class="sw-row align-center justify-center aw-tcxsimplified-data" visible-when="data.dataProviders.myTasksDataProvider.viewModelCollection.totalFound === 0
+                                ||  data.dataProviders.myTasksDataProvider === undefined">
+                                <div class="sw-column align-center justify-center aw-tcxsimplified-text">
+                                    <aw-i18n>i18n.noDataToDisplay</aw-i18n>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sw-column aw-tcxsimplified-recentFavColumn">
+                        <!-- Recents -->
+                        <div class="sw-column afx-content-background">
+                            <div class="sw-row aw-tcxsimplified-card aw-tcxsimplified-cardHeight" id="tcxSimplifiedRecentCardId">
+                                <aw-link class="aw-tcxsimplified-title" prop="data.recentsTitle" action="goToRecentLocation">
+                                </aw-link>
+                                <aw-list class="aw-tcxsimplified-cellborder" dataprovider="data.dataProviders.recentObjDataProvider"
+                                    visible-when="data.dataProviders.recentObjDataProvider.viewModelCollection.totalFound > 0">
+                                    <aw-default-cell vmo="item"></aw-default-cell>
+                                </aw-list>
+                                <div class="sw-row align-center justify-center aw-tcxsimplified-data" visible-when="data.dataProviders.recentObjDataProvider.viewModelCollection.totalFound === 0
+                                    ||  data.dataProviders.recentObjDataProvider === undefined">
+                                    <div class="sw-column align-center justify-center aw-tcxsimplified-text">
+                                        <aw-i18n>i18n.noDataToDisplay</aw-i18n>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Favorites -->
+                        <div class="sw-column afx-content-background aw-tcxsimplified-margin" >
+                            <div class="sw-row aw-tcxsimplified-card aw-tcxsimplified-cardHeight" id="tcxSimplifiedFavoritesCardId">
+                                <aw-link class="aw-tcxsimplified-title" prop="data.favoritesTitle" action="goToFavoritesLocation">
+                                </aw-link>
+                                <aw-list class="aw-tcxsimplified-cellborder" dataprovider="data.dataProviders.favoritesDataProvider" visible-when="data.dataProviders.favoritesDataProvider.viewModelCollection.totalFound > 0">
+                                    <aw-default-cell vmo="item"></aw-default-cell>
+                                </aw-list>
+                                <div class="sw-row align-center justify-center aw-tcxsimplified-data" visible-when="data.dataProviders.favoritesDataProvider.viewModelCollection.totalFound === 0
+                                    ||  data.dataProviders.favoritesDataProvider === undefined">
+                                    <div class="sw-column align-center justify-center aw-tcxsimplified-text">
+                                        <aw-i18n>i18n.noDataToDisplay</aw-i18n>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Discussions-->
+            <div class="sw-column afx-content-background aw-tcxsimplified-discussionColumn">
+                <div class="sw-row aw-tcxsimplified-card aw-tcxsimplified-discussionHeight aw-tcxsimplified-discussionCell" id="tcxSimplifiedDiscussionsCardId">
+                    <aw-link class="aw-tcxsimplified-title" prop="data.discussionTitle"
+                        action="goToDiscussionLocation">
+                    </aw-link>
+                    <aw-include name="landingPageFeedList" sub-panel-context="subPanelContext"></aw-include>
+                </div>
+            </div>
+        </div>
+    </aw-scrollPanel>
+</aw-base-sublocation>

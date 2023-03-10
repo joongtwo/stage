@@ -1,0 +1,336 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context":{
+            "type":"object"
+        }
+    },
+    "data": {
+        "hideCreateAndAddMoreButton": "{{subPanelContext.hideCreateAndAddMoreButton}}",
+        "preferredType": "{{data.splitedTypeString}}",
+        "resetXRT": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        },
+        "addPanelState": {
+            "initialValues": {
+                "creationType": "",
+                "createdObject": "",
+                "sourceObjects": "",
+                "selectedTab": ""
+            },
+            "meta": {}
+        },
+        "baseType": {
+            "type": "STRING",
+            "dbValue": "{{subPanelContext.objectBaseType}}"
+        },
+        "showCreateButton": {
+            "dbValue": false,
+            "type": "BOOLEAN"
+        },
+        "policyId": {
+            "type": "STRING",
+            "dbValue": ""
+        },
+        "xrtState": {
+            "initialValues": {
+                "xrtTypeLoaded": ""
+            },
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        },
+        "activeView": "AddObjectPrimarySub",
+        "activeState": {
+            "initialValues": {
+                "activeView": "AddObjectPrimarySub",
+                "context": {}
+            },
+            "meta": {}
+        },
+        "projectState": {
+            "initialValues": {
+                "selectedProjects": [],
+                "triggerAssign": false
+            },
+            "meta": {
+                "selectedProjects": {
+                    "field": "true",
+                    "type": "OBJECT"
+                },
+                "triggerAssign": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "actions": {
+        "setActiveView":{
+            "actionType": "JSFunction",
+            "method": "resetActiveView",
+            "inputData": {
+                "stateName": "activeState",
+                "destPanelId": "AddObjectPrimarySub"
+            },
+            "outputData": {
+                "activeState": "activeState"
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "ensureCreateObjectTypesLoaded": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "ensureTypesLoaded"
+                },
+                {
+                    "action": "convertToString"
+                },
+                {
+                    "action": "splitTypeString"
+                }
+            ]
+        },
+        "splitTypeString": {
+            "actionType": "JSFunction",
+            "method": "splitTypeString",
+            "inputData": {
+                "results": "{{data.searchResults}}"
+            },
+            "outputData":{
+                "splitedTypeString": ""
+            },
+            "deps": "js/epCreateObjectService"
+        },
+        "ensureTypesLoaded": {
+            "actionType": "JSFunctionAsync",
+            "method": "ensureCreateObjectTypesLoadedJs",
+            "inputData": {
+                "objectBaseType": "{{subPanelContext.objectBaseType}}",
+                "subTypeExclusionList": "{{subPanelContext.subTypeExclusionList}}",
+                "preferenceName": "{{subPanelContext.preferenceName}}"
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults"
+            },
+            "deps": "js/epCreateObjectService"
+        },
+        "convertToString": {
+            "actionType": "JSFunction",
+            "method": "convertToString",
+            "inputData": {
+                "results": "{{data.searchResults}}"
+            },
+            "outputData":{
+                "convertedTypeString": ""
+            },
+            "deps": "js/epCreateObjectService"
+        },
+        "createObject": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "generateObjectID"
+                },
+                {
+                    "action": "registerReloadForNewId"
+                },
+                {
+                    "action": "createObj"
+                },
+                {
+                    "action": "assignProjectsToCreatedObject",
+                    "condition": "data.dataProviders.getAssignedProjectsProvider.viewModelCollection.loadedVMObjects.length > 0"
+                },
+                {
+                    "action": "unregisterReloadForNewId"
+                },
+                {
+                    "action": "closePopupWindow"
+                }
+            ]
+        },
+        "createAndAddMoreObject": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "generateObjectID"
+                },
+                {
+                    "action": "registerReloadForNewId"
+                },
+                {
+                    "action": "createObj"
+                },
+                {
+                    "action": "generateObjectToAssign"
+                },
+                {
+                    "action": "assignProjectsToCreatedObject",
+                    "condition": "data.dataProviders.getAssignedProjectsProvider.viewModelCollection.loadedVMObjects.length > 0"
+                },
+                {
+                    "action": "unregisterReloadForNewId"
+                },
+                {
+                    "action": "generateNextValues"
+                }
+            ]
+        },
+        "assignProjectsToCreatedObject": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-09-ProjectLevelSecurity",
+            "method": "assignOrRemoveObjects",
+            "inputData": {
+                "assignedOrRemovedobjects": [{
+                    "projects": "{{data.dataProviders.getAssignedProjectsProvider.viewModelCollection.loadedVMObjects}}",
+                    "objectToAssign": [
+                        "{{data.createdMainObjectId}}"
+                    ],
+                    "objectToRemove": []
+                }]
+            }
+        },
+        "closePopupWindow": {
+            "actionType": "JSFunctionAsync",
+            "method": "close",
+            "inputData": {
+                "popupId": "{{data.popupId}}"
+            },
+            "events": {
+                "success": [{
+                    "name": "EpCreateObjectPopupCancel"
+                }]
+            },
+            "deps": "js/declpopupService"
+        },
+        "generateNextValues": {
+            "actionType": "JSFunctionAsync",
+            "method": "autoAssignAllProperties",
+            "inputData": {
+                "data": "{{data}}",
+                "operationType": "CREATE",
+                "createType": "{{addPanelState.creationType.props.type_name.dbValues[0]}}",
+                "editHandler": "{{editHandlers.addPanelEditHandler}}"
+            },
+            "outputData": {},
+            "events": {
+                "success": [ {
+                    "name": "addObject.enableAddBtnForPinnedPanel"
+                } ]
+            },
+            "deps": "js/autoAssignService"
+        },
+        "createObj": {
+            "actionType": "JSFunctionAsync",
+            "method": "createObject",
+            "inputData": {
+                "data": "{{data}}",
+                "connectedTo": "{{subPanelContext.scopeObject}}",
+                "policyId": "{{data.policyId}}",
+                "workPackage": "{{subPanelContext.workPackage}}",
+                "newObjectId": "{{data.newObjectID}}",
+                "selectedObject": "{{subPanelContext.selectedObject}}",
+                "isResequenceNeeded": "{{subPanelContext.isResequenceNeeded}}",
+                "targetAssembly": "{{subPanelContext.targetAssembly}}",
+                "creationType": "{{addPanelState.creationType}}"
+            },
+            "outputData": {
+                "createdMainObjectId": "{{function:generateObjectToAssign}}"
+            },
+            "deps": "js/epCreateObjectService"
+        },
+        "generateObjectToAssign": {
+            "actionType": "JSFunctionAsync",
+            "method": "generateObjectToAssign",
+            "inputData": {
+                "input": "{{data}}"
+            },
+            "outputData": {
+                "createdMainObjectId": ""
+            },
+            "deps": "js/epCreateObjectService"
+        },
+        "registerReloadForNewId": {
+            "actionType": "JSFunction",
+            "method": "registerForReloadSection",
+            "inputData": {
+                "name": "epCreate",
+                "type": "{{subPanelContext.reloadType}}",
+                "object": "{{data.newObjectID}}"
+            },
+            "deps": "js/epCreateObjectService"
+        },
+        "generateObjectID": {
+            "actionType": "JSFunction",
+            "method": "generateUniqueId",
+            "inputData": {
+                "id": "new_object_id"
+            },
+            "outputData": {
+                "newObjectID": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "unregisterReloadForNewId": {
+            "actionType": "JSFunction",
+            "method": "unregisterReloadInput",
+            "inputData": {
+                "name": "epCreate"
+            },
+            "deps": "js/epReloadService"
+        }
+    },
+    "dataProviders": {
+        "getCreatableObjectTypes": {
+            "action": "ensureCreateObjectTypesLoaded",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.searchResults.length}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "ctx":{
+        "panelContext":{
+            "type" :"object"
+        },
+        "selected":{
+            "type" :"object"
+        }
+    },
+    "functions": {
+        "generateObjectToAssign": {
+            "functionName": "generateObjectToAssign",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "ensureCreateObjectTypesLoaded"
+    },
+    "i18n": {
+        "CreateButtonTitle": [
+            "CreateObjectMessages"
+        ],
+        "CreateAndAddMoreObjectButtonTitle": [
+            "CreateObjectMessages"
+        ],
+        "CancelButtonTitle": [
+            "CreateObjectMessages"
+        ]
+    }
+}

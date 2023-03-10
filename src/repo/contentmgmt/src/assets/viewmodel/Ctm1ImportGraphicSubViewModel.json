@@ -1,0 +1,709 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+        [
+            "js/aw-panel-body.directive",
+            "js/aw-panel-footer.directive",
+            "js/aw-panel-section.directive",
+            "js/visible-when.directive",
+            "js/aw-listbox.directive",
+            "js/aw-list.directive",
+            "js/aw-radiobutton.directive",
+            "js/aw-checkbox.directive",
+            "js/aw-button.directive",
+            "js/aw-i18n.directive"
+        ],
+    "actions":
+    {
+        "reveal": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "ctm1.typeFilter"
+                    },
+                    {
+                        "name": "ctm1.dataprovider"
+                    },
+                    {
+                        "name": "ctm1.getGraphicClassname"
+                    },
+                    {
+                        "name": "ctm1.resetLocal"
+                    }
+                ]
+            }
+        },
+
+        "Ctm1LanguagesDataProvider": {
+            "actionType": "dataProvider",
+            "method": "languageProvider"
+        },
+
+        "Ctm1GraphicUsagesDataProvider": {
+            "actionType": "dataProvider",
+            "method": "graphicUsagesProvider"
+        },
+
+        "Ctm1GetLanguages":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "__ctm0_Language_Query",
+                        "searchID": "LANGUAGE_QUERY",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0",
+                        "lastEndIndex": "0",
+                        "languageName": "*",
+                        "startIndex": "0"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "languageName",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "policy": {
+                "types": [ {
+                    "name": "DCt_Language",
+                    "properties": [ {
+                        "name": "languageName"
+                    } ]
+                } ]
+            },
+
+            "outputData":
+            {
+                "languagesList": "{{function:getLovFromQueryAndGetCheckBoxData}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1GetGraphicUsages": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2013-05-LOV",
+            "method": "getInitialLOVValues",
+            "inputData": {
+                "initialData": {
+                    "propertyName": "graphicUsages",
+                    "lovInput": {
+                        "operationName": "Create",
+                        "boName": "GraphicOptionRevision"
+                    }
+                }
+            },
+            "outputData": {
+                "graphicUsagesList": "{{function:getLovFromQueryAndGetCheckBoxData}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1GetGraphicAttributeMapping":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "__ctm0_Graphic_Attr_Map_Query",
+                        "searchID": "GRAPHIC_ATTRIBUTE_MAP_QUERY",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0",
+                        "lastEndIndex": "0",
+                        "object_name": "*",
+                        "startIndex": "0"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "object_name",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "ctm1.restoreLocal"
+                    }
+                ],
+                "failure":
+                [
+                    {
+                        "name": "ctm1.restoreLocal"
+                    }
+                ]
+            },
+
+            "outputData":
+            {
+                "graphicAttributeMappingList": "{{function:getLovFromQuery}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1GetGraphicClassname": {
+            "actionType": "JSFunction",
+            "method": "getLovFromPref",
+            "inputData": {
+                "data": "{{ctx.preferences.ctm0GraphicClassPref}}"
+            },
+            "outputData":
+            {
+                "graphicClassnameList": ""
+            },
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "updateSelectedFileInfoAction":
+        {
+            "actionType": "JSFunction",
+            "method": "handleFileChangeResponse",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "files": "files",
+                "fileNames": "fileNames"
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1TransientFileTicketsForUpload":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-01-FileManagement",
+            "method": "getTransientFileTicketsForUpload",
+            "inputData":
+            {
+                "transientFileInfos": "{{function:getTransientFileInfos}}"
+            },
+            "outputData": {
+                "fmsTickets": "transientFileTicketInfos"
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "SOAErrorMessage"
+                } ]
+            },
+            "events": {
+                "success": [ {
+                    "name": "ctm1.fmsTicketGenerated"
+                } ],
+                "failure": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1UpdateFormData": {
+            "actionType": "JSFunction",
+            "method": "updateFormData",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "formData": "formData"
+            },
+            "events": {
+                "success": [ {
+                    "name": "ctm1.fileTicketCreated"
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1UploadFile":
+        {
+            "actionType": "RESTService",
+            "serviceName": "",
+            "method": "POST",
+            "inputData": {
+                "request": {
+                    "method": "POST",
+                    "url": "{{Constants.fmsUrl}}",
+                    "headers": {
+                        "Content-type": "undefined"
+                    },
+                    "data": "{{data.formData}}"
+                }
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "UploadFailedMessage"
+                } ]
+            },
+            "events": {
+                "success": [ {
+                    "name": "ctm1.fileUploaded"
+                } ],
+                "failure": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+
+        "Ctm1CheckUploadsComplete": {
+            "actionType": "JSFunction",
+            "method": "checkUploadsComplete",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1ImportGraphicOption": {
+            "actionType": "TcSoaService",
+            "serviceName": "ContMgmtBase-2011-06-ContentManagement",
+            "method": "importGraphicOption",
+            "inputData": {
+                "inputs": "{{function:getImportGraphicOptionInputs}}"
+            },
+            "outputData": {
+                "importData": "",
+                "objectName": "{{function:getImportedName}}"
+            },
+            "actionMessages": {
+                "success": [ {
+                    "message": "importSuccess"
+                } ],
+                "failure": [ {
+                    "message": "SOAErrorMessage"
+                } ]
+            },
+            "events": {
+                "success": [ {
+                    "name": "ctm1.importComplete",
+                    "eventData": {
+                        "importData": "{{data.importData}}"
+                    }
+                } ],
+                "failure": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1UpdateTypeFilter": {
+            "actionType": "JSFunction",
+            "method": "getTypeFilters",
+            "inputData": {
+                "array": "{{ctx.preferences.ctm0GraphicExtPref}}"
+            },
+            "outputData": {
+                "typeFilter": ""
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1SetGraphicUsagesFromMapping":{
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "ctm1.setGraphicUsagesFromMapping",
+                    "eventData": {
+                        "fileName": "{{parameters.fileName}}",
+                        "fileNameNoExt": "{{parameters.fileNameNoExt}}",
+                        "fileExt": "{{parameters.fileExt}}",
+                        "formData": "{{parameters.formData}}"
+                    }
+                } ]
+            }
+        },
+
+        "setGraphicUsagesFromMapping":{
+            "actionType": "JSFunction",
+            "method": "setGraphicUsagesFromMapping",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "files": "files",
+                "fileNames": "fileNames",
+                "lanArray": "lanArray",
+                "useArray": "useArray"
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "checkLanguageAndUsageArrays":{
+            "actionType": "JSFunction",
+            "method": "checkLanguageAndUsageArrays",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "lanArray": "lanArray",
+                "useArray": "useArray"
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1CheckMode":{
+            "actionType": "JSFunction",
+            "method": "checkImportGraphicOverwriteMode",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "overwriteOptions.isEnabled": "overwriteOptions.isEnabled"
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "pasteGraphics": {
+            "actionType": "JSFunction",
+            "method": "pasteGraphics",
+            "inputData": {
+                "user": "{{ctx.user}}",
+                "data": "{{data}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "resetLocal": {
+            "actionType": "JSFunction",
+            "method": "resetLocal",
+            "events": {
+                "success": [ {
+                    "name": "ctm1.getGraphicAttributeMapping"
+                } ],
+                "failure": [ {
+                    "name": "ctm1.getGraphicAttributeMapping"
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "restoreLocal": {
+            "actionType": "JSFunction",
+            "method": "restoreLocal",
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        }
+
+    },
+    "functions": {
+        "getLovFromQuery": {
+            "functionName": "getLovFromQuery",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getLovFromQueryAndGetCheckBoxData": {
+            "functionName": "getLovFromQueryAndGetCheckBoxData",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getImportGraphicOptionInputs": {
+            "functionName": "getImportGraphicOptionInputs",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getTransientFileInfos": {
+            "functionName": "getTransientFileInfos",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getImportedName": {
+            "functionName": "getImportedName",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "reveal"
+    },
+    "onEvent": [
+        {
+            "eventId": "ctm1.typeFilter",
+            "action": "Ctm1UpdateTypeFilter"
+        },
+        {
+            "eventId": "ctm1.dataprovider",
+            "action": "Ctm1LanguagesDataProvider",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.dataprovider",
+            "action": "Ctm1GraphicUsagesDataProvider",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.getGraphicAttributeMapping",
+            "action": "Ctm1GetGraphicAttributeMapping",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.setGraphicUsagesFromMapping",
+            "action": "setGraphicUsagesFromMapping",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.getGraphicClassname",
+            "action": "Ctm1GetGraphicClassname",
+            "cacheEventData": true
+        },
+        {
+            "eventId" : "ctm1.fmsTicketGenerated",
+            "action" : "Ctm1UpdateFormData"
+        },
+        {
+            "eventId": "ctm1.fileTicketCreated",
+            "action": "Ctm1UploadFile"
+        },
+        {
+            "eventId": "ctm1.fileUploaded",
+            "action": "Ctm1CheckUploadsComplete"
+        },
+        {
+            "eventId": "ctm1.fileUploadedComplete",
+            "action": "Ctm1ImportGraphicOption"
+        },
+        {
+            "eventId": "ctm1.importComplete",
+            "action": "pasteGraphics",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awPanel.reveal",
+            "criteria": {
+                "panelId": "Ctm1ImportGraphicSub"
+            },
+            "action": "reveal"
+        },
+        {
+            "eventId": "ctm1.resetLocal",
+            "action": "resetLocal"
+        },
+        {
+            "eventId": "ctm1.restoreLocal",
+            "action": "restoreLocal"
+        }
+    ],
+    "dataProviders":
+    {
+        "languageProvider": {
+            "dataProviderType": "Action",
+            "action": "Ctm1GetLanguages",
+            "response": "{{data.languagesList}}",
+            "totalFound": "{{data.languagesList.length}}",
+            "selectionModelMode": "none"
+        },
+        "graphicUsagesProvider": {
+            "dataProviderType": "Action",
+            "action": "Ctm1GetGraphicUsages",
+            "response": "{{data.graphicUsagesList}}",
+            "totalFound": "{{data.graphicUsagesList.length}}",
+            "selectionModelMode": "none"
+        }
+    },
+    "data": {
+        "Ctm1ImportValid": false,
+        "className": "GraphicOptionRevision",
+        "typeFilter": ".png, .gif, .jpg, .jpeg",
+        "graphicUsageCheckbox": {
+            "displayName": "{{i18n.graphicUsages}}",
+            "type": "BOOLEAN",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "languages": {
+            "displayName": "{{i18n.language}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "languagesList": [ ],
+        "graphicUsages": {
+            "displayName": "{{i18n.graphicUsages}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "graphicUsagesList": [ ],
+        "graphicAttributeMapping": {
+            "displayName": "{{i18n.graphicAttributeMapping}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "graphicAttributeMappingList": {
+            "type": "STRING",
+            "dbValue": [ ]
+        },
+        "graphicClassname": {
+            "displayName": "{{i18n.graphicClassname}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "graphicClassnameList": {
+            "type": "STRING",
+            "dbValue": []
+        },
+        "overwriteMode": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "Skip",
+            "vertical": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "overwriteModeValues": {
+            "type": "STRING",
+            "dbValue": [
+                {
+                    "propDisplayValue": "{{i18n.skipExisting}}",
+                    "propInternalValue": "Skip"
+                },
+                {
+                    "propDisplayValue": "{{i18n.overwriteExisting}}",
+                    "propInternalValue": "overwrite"
+                }
+            ]
+        },
+        "overwriteOptions": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "isEnabled": "false",
+            "dbValue": "overwrite",
+            "vertical": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "overwriteOptionsValues": {
+            "type": "STRING",
+            "dbValue": [
+                {
+                    "propDisplayValue": "{{i18n.keep}}",
+                    "propInternalValue": "keep"
+                },
+                {
+                    "propDisplayValue": "{{i18n.merge}}",
+                    "propInternalValue": "merge"
+                },
+                {
+                    "propDisplayValue": "{{i18n.overwrite}}",
+                    "propInternalValue": "overwrite"
+                }
+            ]
+        }
+    },
+
+    "conditions":
+    {
+        "hasGraphicUsagePref": {
+            "expression": "ctx.preferences.ctm0GraphicUsagePref.length > 0"
+        },
+        "importValid": {
+            "expression": "data.files && data.files.length > 0 && data.lanArray.length > 0 && ( data.useArray.length > 0 || data.graphicUsageCheckbox.dbValue === true ) && !data.formData"
+        },
+        "showUsageList": {
+            "expression": "data.graphicUsageCheckbox.dbValue !== true"
+        },
+        "overwriteOptions": {
+            "expression": "data.overwriteOptions.isEnabled === true"
+        }
+    },
+    "messages": {
+        "importSuccess": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.importSuccess}}",
+            "messageTextParams": [
+                "{{data.objectName}}"
+            ]
+        },
+        "SOAErrorMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        },
+        "UploadFailedMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.uploadFailure}}"
+        }
+    },
+    "i18n": {
+        "importGraphic": ["ContentMgmtMessages"],
+        "graphicUsage": ["ContentMgmtMessages"],
+        "graphicUsages": ["ContentMgmtMessages"],
+        "language": ["ContentMgmtMessages"],
+        "graphicAttributeMapping": ["ContentMgmtMessages"],
+        "graphicClassname": ["ContentMgmtMessages"],
+        "overwriteMode": ["ContentMgmtMessages"],
+        "skipExisting": ["ContentMgmtMessages"],
+        "overwriteExisting": ["ContentMgmtMessages"],
+        "keep": ["ContentMgmtMessages"],
+        "merge": ["ContentMgmtMessages"],
+        "overwrite": ["ContentMgmtMessages"],
+        "importSuccess": ["ContentMgmtMessages"],
+        "files": ["ContentMgmtMessages"],
+        "ditaMapFilename": ["ContentMgmtMessages"],
+        "uploadFailure": ["ContentMgmtMessages"],
+        "import": ["ContentMgmtMessages"]
+    }
+}

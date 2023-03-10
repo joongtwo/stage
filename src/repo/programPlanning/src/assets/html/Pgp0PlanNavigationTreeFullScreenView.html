@@ -1,0 +1,17 @@
+<div class="sw-column flex-auto">
+    <pwa-command-bar sub-panel-context="{...props.subPanelContext}"></pwa-command-bar>
+    <div class="sw-row flex-auto">
+        <div class="sw-column w-5 flex-grow aw-programPlanning-timelineTreeContainer">
+            <pgp0-plan-tree sub-panel-context="{...props.subPanelContext, contextPlanObject:props.subPanelContext.openedObject, selectionData:data.treeSelectionData, treeTableData: data.treeTableData, timelineData: data.timelineData}"></pgp0-plan-tree>
+        </div>
+        <aw-splitter min-size-1="200" min-size-2="300" exist-when="conditions.isTimelineChartEnabled"></aw-splitter>
+        <div class="sw-column w-7" exist-when="conditions.isTimelineChartEnabled">
+            <!-- <pgp0-plan-timeline sub-panel-context="{...props.subPanelContext, selectionData:data.timelineSelectionData}"></pgp0-plan-timeline> -->
+            <pgp0-plan-timeline-chart plan="props.subPanelContext.openedObject" sub-panel-context="{...props.subPanelContext, timelineData: data.timelineData, treeTableData: data.treeTableData}" selection-data='data.timelineSelectionData'></pgp0-plan-timeline-chart>
+        </div>
+    </div>
+    <aw-splitter min-size-1="300" min-size-2="200" direction="HORIZONTAL" exist-when="props.subPanelContext.setupPrgBoardState.isPrgBoardActive"></aw-splitter>
+    <div class="sw-row h-4 aw-programPlanning-programBoardWrapper" exist-when="props.subPanelContext.setupPrgBoardState.isPrgBoardActive">
+        <psi0-program-board sub-panel-context="{...props.subPanelContext, selectionData:data.timelineSelectionData}"></psi0-program-board>
+    </div>
+</div>

@@ -1,0 +1,327 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "occContextSrc": {
+            "syncObject": {}
+        },
+        "occContextTrg": {
+            "syncObject": {}
+        }
+       
+    },
+    "data": {
+        "_cbaSrcSublocation": {
+            "viewKey": "CBASrcContext",
+            "tabSetId": "CBASrcContext",
+            "name": "com.siemens.splm.client.cba.CADBOMAlignment:CBASublocation",
+            "label": {
+                "source": "/i18n/CadBomAlignmentConstants",
+                "key": "CadBomAlignment"
+            },
+            "clientScopeURI": "Awb0OccurrenceManagement",
+            "nameToken": "com.siemens.splm.client.cba.CADBOMAlignment:CBASublocation",
+            "policy": "/policies/EntCBAPropertyPolicy.json",
+            "viewBase": "CbaSplitSrc",
+            "selectionQueryParamKey": "c_uid",
+            "contextKey": "CBASrcContext",
+            "splitterLayout": "HORIZONTAL",
+            "useAutoBookmark": false,
+            "dataProviderName": "srcOccDataProvider",
+            "gridId": "cbaSourceTree",
+            "breadcrumbConfig": {
+                "type": "navigate",
+                "vm": "CbaSrcBreadcrum",
+                "chevronDataProvider": "breadCrumbDataProvider",
+                "crumbDataProvider": "aceBreadCrumbDataProvider",
+                "noUpdate": true,
+                "popuplist": "/html/occMgmtBreadcrumblist.html",
+                "id": "CBASrcContext",
+                "displayProperty": "object_string"
+            },
+            "viewModes": {
+                "TreeView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": false
+                },
+                "TreeSummaryView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": true
+                }
+            },
+            "defaultDisplayMode": "TreeView",
+            "context": {
+                "commandContextParameters": [ "filter", "recipe", "uid", "uid2", "src_uid", "trg_uid" ],
+                "search":{
+                    "hideInContentSearchBox":true
+                }
+            },
+            "urlParams": {
+                "selectionQueryParamKey": "c_uid",
+                "openStructureQueryParamKey": "o_uid",
+                "rootQueryParamKey": "uid",
+                "productContextQueryParamKey": "pci_uid",
+                "csidQueryParamKey": "c_csid",
+                "secondaryPageIdQueryParamKey": "spageId",
+                "topElementQueryParamKey": "t_uid",
+                "pageIdQueryParamKey": "pageId",
+                "recipeParamKey": "recipe",
+                "subsetFilterParamKey": "filter"
+            },
+            "data": {
+                "searchBox": {
+                    "displayName": "",
+                    "type": "STRING",
+                    "isRequired": "true",
+                    "dbValue": "",
+                    "isEnabled": "true"
+                }
+            },
+            "columnsToExclude": [ "Awb0ConditionalElement.awb0PendingAction", "Awb0PositionedElement.pma1UpdateAction", "Awb0DesignElement.pma1LastAlignedPart", "Awb0DesignElement.REF(pma1LastAlignedPart,ItemRevision).release_status_list",
+                "Awb0PartElement.pma1LastAlignedDesign", "Awb0PartElement.REF(pma1LastAlignedDesign,ItemRevision).release_status_list", "Awb0ConditionalElement.awb0MarkupType" ],
+            "displayLabel": {
+                "text":"{{i18n.DBOM}}",
+                "separator": "|"
+            },
+            "awSubLocationPref": {
+                "hideRightWall": true,
+                "hideFooter": true,
+                "orientation": "HORIZONTAL"
+            },
+            "baseSelection":"{{subPanelContext.cbaContext.srcStructure}}"
+
+        },
+        "_cbaTrgSublocation": {
+            "viewKey": "CBATrgContext",
+            "tabSetId": "CBATrgContext",
+            "name": "com.siemens.splm.client.cba.CADBOMAlignment:CBASublocation",
+            "label": {
+                "source": "/i18n/CadBomAlignmentConstants",
+                "key": "CadBomAlignment"
+            },
+            "clientScopeURI": "Awb0OccurrenceManagement",
+            "nameToken": "com.siemens.splm.client.cba.CADBOMAlignment:CBASublocation",
+            "policy": "/policies/EntCBAPropertyPolicy.json",
+            "viewBase": "CbaSplitTrg",
+            "selectionQueryParamKey": "c_uid",
+            "contextKey": "CBATrgContext",
+            "splitterLayout": "HORIZONTAL",
+            "useAutoBookmark": false,
+            "dataProviderName": "trgOccDataProvider",
+            "gridId": "cbaTargetTree",
+            "breadcrumbConfig": {
+                "type": "navigate",
+                "vm": "CbaTrgBreadcrum",
+                "chevronDataProvider": "breadCrumbDataProvider2",
+                "crumbDataProvider": "aceBreadCrumbDataProvider2",
+                "noUpdate": true,
+                "popuplist": "/html/occMgmtBreadcrumblist.html",
+                "id": "CBATrgContext",
+                "displayProperty": "object_string"
+            },
+            "viewModes": {
+                "TreeView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": false
+                },
+                "TreeSummaryView": {
+                    "primaryWorkArea": "tree",
+                    "secondaryWorkArea": true
+                }
+            },
+            "defaultDisplayMode": "TreeView",
+            "context": {
+                "commandContextParameters": [ "filter", "recipe", "uid", "uid2", "src_uid", "trg_uid" ],
+                "search":{
+                    "hideInContentSearchBox":true
+                }
+            },
+            "urlParams": {
+                "selectionQueryParamKey": "c_uid2",
+                "openStructureQueryParamKey": "o_uid2",
+                "rootQueryParamKey": "uid2",
+                "productContextQueryParamKey": "pci_uid2",
+                "csidQueryParamKey": "c_csid2",
+                "secondaryPageIdQueryParamKey": "spageId2",
+                "topElementQueryParamKey": "t_uid2",
+                "pageIdQueryParamKey": "pageId2",
+                "recipeParamKey": "recipe2",
+                "subsetFilterParamKey": "filter2"
+            },
+            "data": {
+                "searchBox": {
+                    "displayName": "",
+                    "type": "STRING",
+                    "isRequired": "true",
+                    "dbValue": "",
+                    "isEnabled": "true"
+                }
+            },
+            "columnsToExclude": [ "Awb0ConditionalElement.awb0PendingAction", "Awb0PositionedElement.pma1UpdateAction", "Awb0DesignElement.pma1LastAlignedPart", "Awb0DesignElement.REF(pma1LastAlignedPart,ItemRevision).release_status_list",
+                "Awb0PartElement.pma1LastAlignedDesign", "Awb0PartElement.REF(pma1LastAlignedDesign,ItemRevision).release_status_list", "Awb0ConditionalElement.awb0MarkupType" ],
+            "displayLabel": {
+                "text":"{{i18n.EBOM}}",
+                "separator": "|"
+            },
+            "awSubLocationPref": {
+                "hideRightWall": true,
+                "hideFooter": true,
+                "orientation": "HORIZONTAL"
+            },
+            "baseSelection":"{{subPanelContext.cbaContext.trgStructure}}"
+        },
+        "awSubLocationPref": {
+            "hideRightWall": true,
+            "hideFooter": true,
+            "orientation": "HORIZONTAL"
+        },
+        "view": {
+            "keys": [
+                "CBASrcContext",
+                "CBATrgContext"
+            ]
+        },
+        "occContext": {
+            "initialValues": {
+                "configContext": {},
+                "displayToggleOptions":{},
+                "supportedFeatures": {},
+                "productContextInfo":{},
+                "readOnlyFeatures":{},
+                "currentState": {},
+                "previousState": {},
+                "transientRequestPref":{},
+                "persistentRequestPref": { "defaultClientScopeUri": "Awb0OccurrenceManagement", "splitMode":"true" },
+                "viewKey": "CBASrcContext",
+                "disabledFeatures":[],
+                "isRowSelected": false
+            },
+            "meta": {}
+        },
+        "occContext2": {
+            "initialValues": {
+                "configContext": {},
+                "displayToggleOptions":{},
+                "supportedFeatures": {},
+                "productContextInfo":{},
+                "readOnlyFeatures":{},
+                "currentState": {},
+                "previousState": {},
+                "transientRequestPref":{},
+                "persistentRequestPref": { "defaultClientScopeUri": "Awb0OccurrenceManagement", "splitMode":"true" },
+                "viewKey": "CBATrgContext",
+                "disabledFeatures":[],
+                "isRowSelected": false
+            },
+            "meta": {}
+        }
+    },
+    "actions": {
+        "activateLeftView": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "ace.activateWindow",
+                    "eventData": {
+                        "key": "{{data._cbaSrcSublocation.contextKey}}"
+                    }
+                } ]
+            }
+        },
+        "activateRightView": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "ace.activateWindow",
+                    "eventData": {
+                        "key": "{{data._cbaTrgSublocation.contextKey}}"
+                    }
+                } ]
+            }
+        },
+        "update": {
+            "actionType": "JSFunction",
+            "method": "updateContextForTaskbarCmds",
+            "deps": "js/cbaTaskbarCommandService",
+            "inputData": {
+                "srcContext": "{{occContext}}",
+                "trgContext": "{{occContext2}}"
+            }
+        },
+        "updateSrcContextInTaskBar": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "occContextSrc",
+                "syncObject": 
+                {
+                    "CBASrcContext": "{{occContext}}"
+                }
+            }
+        },
+        "updateTrgContextInTaskBar": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "occContextTrg",
+                "syncObject": 
+                {
+                    "CBATrgContext": "{{occContext2}}"
+                }
+            }
+        },
+
+        "updateCbaContext": {
+            "actionType": "JSFunction",
+            "method": "updateCadbomalignmentOnCtx",
+            "deps": "js/cbaTaskbarCommandService",
+            "inputData": {
+                "key":"ImpactAnalysis",
+                "valueToUpdate": {
+                    "sourceTopItem":"{{subPanelContext.cbaContext.ImpactAnalysis.sourceTopItem}}",
+                    "ECNForImpactAnalysis":"{{subPanelContext.cbaContext.ImpactAnalysis.ECNForImpactAnalysis}}",
+                    "isImpactAnalysisMode":"{{subPanelContext.cbaContext.isImpactAnalysisMode}}",
+                    "alignedTargetProviderInECN":"{{subPanelContext.cbaContext.ImpactAnalysis.alignedTargetProviderInECN}}"
+                }
+            }
+        }
+    },
+    "ctx":{
+        "cbaContext":null,
+        "modelObjectsToOpen":null,
+        "splitView":{
+            "mode":"null"
+        },
+        "aceActiveContext": {
+            "key": "CBASrcContext"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "i18n": {
+        "DBOM": [ "CadBomAlignmentConstants" ],
+        "EBOM": [ "CadBomAlignmentConstants" ]
+    },
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "update",
+                "observers": [ "viewModel.atomicData.occContext", "viewModel.atomicData.occContext2" ]
+            },
+            {
+                "action": "updateSrcContextInTaskBar",
+                "observers": [ "viewModel.atomicData.occContext" ]
+            },
+            {
+                "action": "updateTrgContextInTaskBar",
+                "observers": [ "viewModel.atomicData.occContext2" ]
+            },
+            {
+                "action": "updateCbaContext",
+                "observers": [ "viewModel.subPanelContext.cbaContext" ]
+            }
+        ]
+    }
+}

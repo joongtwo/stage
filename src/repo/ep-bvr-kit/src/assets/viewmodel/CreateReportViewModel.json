@@ -1,0 +1,72 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "reportTypesList": {
+            "type": "STRING",
+            "dbValue": "{{ctx.reportTypesList}}"
+        },
+        "reportTypes": {
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "",
+            "vertical": true,
+            "displayName": "{{i18n.selectReportTypeLabel}}"
+        }
+    },
+    "actions": {
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "inputData": {
+                "popupId": null,
+                "targetEvent": "{{$event}}"
+            },
+            "deps": "js/declpopupService"
+        },
+        "createReportAction": {
+            "actionType": "JSFunction",
+            "method": "generateReport",
+            "inputData": {
+                "reportType": "{{data.reportTypes.dbValue}}"
+            },
+            "deps": "js/epBvrReportsService"
+        },
+        "clearCtxReportList": {
+            "actionType": "JSFunction",
+            "method": "unRegisterCtx",
+            "inputData": {
+                "name": "reportTypesList"
+            },
+            "deps": "js/appCtxService"
+        }
+    },
+    "conditions": {
+        "isEnabledCreateBtn": {
+            "expression": "data.reportTypes.dbValue"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "reports.closePopup",
+            "action": "closePopupWindow"
+        }
+    ],
+    "i18n": {
+        "cancelReportBtn": [
+            "ReportsMessages"
+        ],
+        "createReportBtn": [
+            "ReportsMessages"
+        ],
+        "selectReportTypeLabel": [
+            "ReportsMessages"
+        ],
+        "createReportPopupTitle": [
+            "ReportsMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onUnmount": "clearCtxReportList"
+    }
+}

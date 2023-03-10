@@ -1,0 +1,198 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "getChartDataForFilesInFolders": {
+            "actionType": "JSFunction",
+            "method": "createFilesPieChart",
+            "inputData": {
+                "searchState": "{{props.subPanelContext.searchState}}"
+            },
+            "outputData": {
+                "filesPieChartProvider_chartPoints": ""
+            },
+            "deps": "js/Dpv1ETLHealthService"
+        },
+        "updateFileType": {
+            "actionType": "JSFunction",
+            "method": "updateFileType",
+            "inputData": {
+                "searchState": "{{props.subPanelContext.searchState}}",
+                "pieSelection": "{{data.eventMap['filesPieChartProvider.selected']}}"
+            },
+            "deps": "js/Dpv1ETLHealthService"
+        },
+        "openDataFile": {
+            "actionType": "JSFunction",
+            "method": "openFile",
+            "deps": "js/Dpv1ETLHealthService",
+            "inputData": {
+                "selectedFileReport": "{{props.subPanelContext.searchState.healthInfo.selectedFileReports[0]}}",
+                "fileType": "data"
+            }
+        },
+        "openDMLFile": {
+            "actionType": "JSFunction",
+            "method": "openFile",
+            "deps": "js/Dpv1ETLHealthService",
+            "inputData": {
+                "selectedFileReport": "{{props.subPanelContext.searchState.healthInfo.selectedFileReports[0]}}",
+                "fileType": "dml"
+            }
+        },
+        "openErrorFile": {
+            "actionType": "JSFunction",
+            "method": "openFile",
+            "deps": "js/Dpv1ETLHealthService",
+            "inputData": {
+                "selectedFileReport": "{{props.subPanelContext.searchState.healthInfo.selectedFileReports[0]}}",
+                "fileType": "error"
+            }
+        },
+        "openWarnFile": {
+            "actionType": "JSFunction",
+            "method": "openFile",
+            "deps": "js/Dpv1ETLHealthService",
+            "inputData": {
+                "selectedFileReport": "{{props.subPanelContext.searchState.healthInfo.selectedFileReports[0]}}",
+                "fileType": "warn"
+            }
+        },
+        "updateFileReportInfo": {
+            "actionType": "JSFunction",
+            "method": "updateFileReportInfo",
+            "deps": "js/Dpv1ETLHealthService",
+            "inputData": {
+                "data": "{{data}}",
+                "searchState": "{{props.subPanelContext.searchState}}"
+            },
+            "outputData":{
+                "dataFileLink" : "dataFileLink",
+                "dmlFileLink" : "dmlFileLink",
+                "errorFileLink" : "errorFileLink",
+                "warnFileLink" : "warnFileLink"
+            }
+        }
+    },
+    "dataProviders": {},
+    "chartProviders": {
+        "filesPieChartProvider": {
+            "title": "{{i18n.filesInFolders}}",
+            "chartType": "pie",
+            "chartColorOverrideClass":"aw-dpv-chartEtlHealthReportColor",
+            "loadDataAction": "getChartDataForFilesInFolders",
+            "chartConfig": {
+                "isChartZoomable": true,
+                "isYAxisLinearOrLogarithmic": "logarithmic",
+                "xAxisLabel": "",
+                "yAxisLabel": "",
+                "isDataLabelOnChartEnabled": true
+            }
+        }
+    },
+    "data":{
+        "dataFile": {
+            "displayName": "{{i18n.dataFile}}",
+            "type": "STRING",
+            "dbValue": "dataFile",
+            "dispValue": "{{i18n.dataFile}}",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "dmlFile": {
+            "displayName": "{{i18n.dmlFile}}",
+            "type": "STRING",
+            "dbValue": "dmlFile",
+            "dispValue": "{{i18n.dmlFile}}",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "errorFile": {
+            "displayName": "{{i18n.errorFile}}",
+            "type": "STRING",
+            "dbValue": "errorFile",
+            "dispValue": "{{i18n.errorFile}}",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "warnFile": {
+            "displayName": "{{i18n.warningFile}}",
+            "type": "STRING",
+            "dbValue": "warnFile",
+            "dispValue": "{{i18n.warningFile}}",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "dataFileLink": {
+            "displayName": "",
+            "type": "STRING",
+            "isEditable": "true"
+        },
+        "dmlFileLink": {
+            "displayName": "",
+            "type": "STRING",
+            "isEditable": "true"
+        },
+        "errorFileLink": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false"
+        },
+        "warnFileLink": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false"
+        }
+    },
+    "i18n": {
+        "filesInFolders": ["DpvMessages"],
+        "etlFailedFilesReportTitle": ["DpvMessages"],
+        "etlSuccessFilesReportTitle": ["DpvMessages"],
+        "etlPartialSuccessFilesReportTitle": ["DpvMessages"],
+        "dataFile": [ "DpvMessages" ],
+        "dmlFile": [ "DpvMessages" ],
+        "errorFile": [ "DpvMessages" ],
+        "warningFile": [ "DpvMessages" ],
+        "properties": [ "DpvMessages" ]
+    },
+    "onEvent": [
+        {
+            "eventId": "filesPieChartProvider.selected",
+            "action": "updateFileType",
+            "cacheEventData": true
+        }
+    ],
+    "lifecycleHooks": {
+        "onUpdate": [
+            {
+                "action": "updateFileReportInfo",
+                "observers": [
+                    "props.subPanelContext.searchState.healthInfo.selectedFileReports"
+                ]
+            },
+            {
+                "action": "getChartDataForFilesInFolders",
+                "observers": [
+                    "props.subPanelContext.searchState.healthInfo.deviceId"
+                ]
+            }
+        ]
+    },
+    "conditions": {
+        "dpv1IsFileSelectedCond": {
+            "expression": "props.subPanelContext.searchState.healthInfo.fileType > -1"
+        },
+        "dpv1FailedFilesCond": {
+            "expression": "props.subPanelContext.searchState.healthInfo.fileType===0"
+        },
+        "dpv1SuccessFilesCond": {
+            "expression": "props.subPanelContext.searchState.healthInfo.fileType===1"
+        },
+        "dpv1PartialSuccessFilesCond": {
+            "expression": "props.subPanelContext.searchState.healthInfo.fileType===2"
+        },
+        "showPieChart" : {
+            "expression": "data.filesPieChartProvider_chartPoints && data.filesPieChartProvider_chartPoints[0] && data.filesPieChartProvider_chartPoints[0].keyValueDataForChart[0].value != -1"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

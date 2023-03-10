@@ -1,0 +1,23 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {},
+    "actions": {
+        "initialize": {
+            "actionType": "JSFunction",
+            "method": "onInit",
+            "inputData": {
+                "editorData": "{{subPanelContext.wiStepData}}",
+                "editorObject": "{{subPanelContext.wiStepObject}}"
+            },
+            "deps": "js/wiStepEditorService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initialize"
+    }
+}

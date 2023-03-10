@@ -1,0 +1,56 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-command-sub-panel.directive",
+        "js/visible-when.directive",
+        "js/aw-init.directive"
+    ],
+    "data": {
+        "activeView": "Awp0ClsAdminImportSub",
+        "fileType": {
+            "displayName": "{{i18n.chooseFileType}}",
+            "type": "BOOLEAN",
+            "isEditable": "true",
+            "dbValue": true,
+            "propertyRadioTrueText": "JSON",
+            "propertyRadioFalseText": "PLMXML"
+        }
+    },
+    "actions": {
+        "changeFileType": {
+            "actionType": "JSFunction",
+            "method": "changeFileType",
+            "inputData":
+            {
+                "fileType": "{{fields.fileType}}"
+            },
+            "outputData":
+            {
+                "activeView": ""
+            },
+            "deps": "js/classifyAdminService"
+        }
+    },
+    "conditions": {},
+    "messages": {},
+    "onEvent": [],
+    "i18n": {
+        "cancel": [
+            "ClassificationAdminMessages"
+        ],
+        "chooseFileType": [
+             "ClassificationAdminMessages" 
+        ],
+        "import": [
+            "ClassificationAdminMessages"
+        ],
+        "validate": [
+            "ClassificationAdminMessages"
+        ],
+        "images": [
+            "ClassificationAdminMessages"
+        ]
+    }
+
+}

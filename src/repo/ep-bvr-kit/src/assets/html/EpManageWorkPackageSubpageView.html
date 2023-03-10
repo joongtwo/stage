@@ -1,0 +1,28 @@
+<ep-configuration-chip-area exist-when="ctx.epTaskPageContext.loadedObject.uid && ctx.ep.scopeObject.uid" configuration-chips-data = "data.configurationChipsData"></ep-configuration-chip-area>
+<aw-sublocation sub-location-preference="data.awSubLocationPref" sub-panel-context="{provider :data.provider, occContext:data.occContext}">
+    <div class="sw-row w-12">
+        <div class="sw-column aw-mfe-manageWpXrtContainer"
+            aw-class="[ ctx.preferences['EP_ProductVariantsTiles'].includes('ConfiguratorContext') ? 'w-3' : 'w-4' ]">
+            <span class="aw-ep-managePageColumnTitle aw-ep-managePageOverviewColumnTitle">
+                {{i18n.overviewColumnTitle}}
+            </span>
+            <div class="sw-column">
+                <ep-information view-path="viewPath" exist-when="ctx.ep && ctx.ep.scopeObject"
+                    sub-panel-context="{scopeObject:ctx.ep.scopeObject,xrtType:'INFO'}"></ep-information>
+            </div>
+        </div>
+        <div class="sw-column afx-content-background aw-ep-managePageColumn aw-ep-managePageTilesColumn"
+            aw-class="[ ctx.preferences['EP_ProductVariantsTiles'].includes('ConfiguratorContext') ? 'w-6' : 'w-4' ]"
+            exist-when="conditions.isEpTaskPageContext">
+            <span
+                class="aw-ep-managePageColumnTitle aw-ep-managePageTilesColumnTitle">{{i18n.contentColumnTitle}}</span>
+            <ep-manage-tiles-area></ep-manage-tiles-area>
+        </div>
+        <div class="sw-column aw-ep-managePageColumn aw-ep-managePageColumnContainer"
+            aw-class="[ ctx.preferences['EP_ProductVariantsTiles'].includes('ConfiguratorContext') ? 'w-3' : 'w-4' ]">
+            <span class="aw-ep-managePageColumnTitle aw-ep-managePageTasksColumnTitle">{{i18n.tasksColumnTitle}}</span>
+            <ep-tasks-navigation-panel></ep-tasks-navigation-panel>
+        </div>
+    </div>
+</aw-sublocation>
+

@@ -1,0 +1,150 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "reveal": {
+            "actionType": "dataProvider",
+            "method": "customServiceReq"
+        },
+        "loadServiceReqTypes": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2016-03-Finder",
+            "method": "performSearch",
+            "inputData": {
+                "searchInput": {
+                    "maxToLoad": 25,
+                    "maxToReturn": 25,
+                    "providerName": "Awp0TypeSearchProvider",
+                    "searchCriteria": {
+                        "searchString": "",
+                        "typeSelectorId": "",
+                        "listOfIncludeObjectTypes": "SSP0ServiceReq",
+                        "loadSubTypes": "true"
+                    },
+                    "searchFilterFieldSortType": "Alphabetical",
+                    "startIndex": "{{data.dataProviders.performSearch.startIndex}}",
+                    "attributesToInflate": [
+                        "parent_types",
+                        "type_name"
+                    ]
+                }
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "serviceReqList": "{{function:serviceReqList}}"
+            },
+            "deps": "js/ssp0CreateServiceReq"
+        },
+        "createServiceReq": {
+            "actionType": "JSFunction",
+            "method": "getCreateInput",
+            "inputData": {
+                "data": "{{data}}",
+                "createType": "{{data.selectedType.dbValues}}"
+            },
+            "deps": "js/ssp0CreateObjectService"
+        },
+        "createServiceReqBatchJob": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "createServiceReq"
+                },
+                {
+                    "action": "closePopup"
+                }
+            ]
+        },
+        "closePopup": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        },
+        "setSelectedType": {
+            "actionType": "JSFunction",
+            "method": "changeAction",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "selectedType": "selectedType"
+            },
+            "deps": "js/ssp0CreateServiceReq"
+        }
+    },
+    "lifecycleHooks": {
+        "onInit": "reveal"
+    },
+    "onEvent": [
+        {
+            "eventId": "awlinkPopup.selected",
+            "action": "setSelectedType"
+        }
+    ],
+    "conditions": {
+        "requiredFieldsEntered": {
+            "expression": "(data.object_name.dbValue)&&(data.ssp0RequirementType)&&(data.ssp0RequirementType.dbValue != '') && (data.ssp0RequirementType.dbValue != undefined)"
+        }
+    },
+    "functions": {
+        "serviceReqList": {
+            "functionName": "serviceReqList",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "data": {
+        "currentServiceReq": {
+            "type": "STRING",
+            "displayName": "{{i18n.currentServiceReq}}",
+            "isRequired": "false",
+            "dbValue": ""
+        },
+        "selectedType": {
+            "type": "STRING",
+            "dbValue": "SSP0ServiceReq"
+        },
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "dataProviders": {
+        "customServiceReq": {
+            "dataProviderType": "TcLOV",
+            "action": "loadServiceReqTypes",
+            "response": "{{data.serviceReqList}}",
+            "totalFound": "{{data.totalFound}}"
+        }
+    },
+    "i18n": {
+        "ServiceRequirement": [
+            "ServicePlannerConstants"
+        ],
+        "Add": [
+            "ssp0Messages"
+        ],
+        "Cancel": [
+            "ssp0Messages"
+        ],
+        "currentServiceReq": [
+            "ServicePlannerConstants"
+        ]
+    }
+}

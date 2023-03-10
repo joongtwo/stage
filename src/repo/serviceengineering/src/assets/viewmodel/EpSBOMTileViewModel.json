@@ -1,0 +1,143 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "messages": [
+            {
+                "text": "{{i18n.noEbomSelectedMessage}}"
+            }
+        ],
+        "commandbarContext": {
+            "objectBaseType": "Part",
+            "createProductLabelCaption": "{{i18n.createProductHeaderTitle}}",
+            "addProductLabelCaption": "{{i18n.addProduct}}",
+            "boTypeName": "",
+            "exclusionBOTypeNames": [],
+            "objectTypesToSearch": [],
+            "preferenceSuffixForTypesToSearch": "Sbom",
+            "buttonName": "{{i18n.addProduct}}",
+            "placeHolderForSearch": "{{i18n.productSearchPlaceHolder}}",
+            "commandTitles": {
+                "epAddStructureTitle": "{{i18n.useExistingSbom}}",
+                "epCreateStructureTitle": "{{i18n.createNewSbom}}"
+            }
+        }
+    },
+    "actions": {
+        "updateStructureContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "addVMOAndRevRuleToStructureContext"
+                },
+                {
+                    "action": "setCommandContext"
+                }
+            ]
+        },
+        "addVMOAndRevRuleToStructureContext": {
+            "actionType": "JSFunction",
+            "method": "addVMOAndRevRuleToStructureContext",
+            "inputData": {
+                "contextPath": "epTaskPageContext.MbomStructureContext"
+            },
+            "deps": "js/manageWorkPackageService"
+        },
+        "clearTaskPageContextAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "clearTaskPageContextForManagePage"
+                },
+                {
+                    "action": "clearCommandContext"
+                }
+            ]
+        },
+        "clearTaskPageContextForManagePage": {
+            "actionType": "JSFunction",
+            "method": "removeContextsFromCtx",
+            "inputData": {
+                "contextPaths": [
+                    "epTaskPageContext.MbomStructureContext",
+                    "epTaskPageContext.mbomStructure",
+                    "epTaskPageContext.mbomRootElement",
+                    "epTaskPageContext.mbomPCI",
+                    "epTaskPageContext.productStructureContext",
+                    "epTaskPageContext.productStructure",
+                    "epTaskPageContext.productPCI"
+                ]
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "setCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": "{{ctx.epTaskPageContext.MbomStructureContext}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "clearCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": ""
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        }
+    },
+    "conditions": {
+        "isTileDataAvailable": {
+            "expression": "ctx.epTaskPageContext.MbomStructureContext && ctx.epTaskPageContext.MbomStructureContext.vmo"
+        },
+        "isEbomStructureAvailable": {
+            "expression": "ctx.epTaskPageContext.EbomStructureContext"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "updateStructureContextAndCommandContext"
+    },
+    "onEvent": [
+        {
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "clearTaskPageContextAndCommandContext",
+            "condition": "removedSaveEvent.includes(ctx.epTaskPageContext.MbomStructureContext.uid)"
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "updateStructureContextAndCommandContext",
+            "condition": "addedSaveEvent !== undefined"
+        }
+    ],
+    "i18n": {
+        "noEbomSelectedMessage": [
+            "SBOMTileMessages"
+        ],
+        "createProductHeaderTitle": [
+            "SBOMTileMessages"
+        ],
+        "addProduct": [
+            "SBOMTileMessages"
+        ],
+        "productSearchPlaceHolder": [
+            "SBOMTileMessages"
+        ],
+        "add": [
+            "SBOMTileMessages"
+        ],
+        "createNewSbom": [
+            "SBOMTileMessages"
+        ],
+        "useExistingSbom": [
+            "SBOMTileMessages"
+        ]
+    }
+}

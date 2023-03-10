@@ -1,0 +1,148 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-default-cell.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-radiobutton.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive"
+    ],
+    "actions": {
+        "brexValidate": {
+            "actionType": "TcSoaService",
+            "serviceName": "ContMgmtS1000D40-2014-06-ContMgmtS1000D40",
+            "method": "brexValidation",
+            "inputData": {
+                "input": "{{function:getValidationInputs}}",
+                "isAsync": "{{function:getAsyncInput}}"
+            },
+            "outputData": {
+                "brexReadTicket": "logTransientFileReadTicket",
+                "brexSvcData": "ServiceData"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    },
+                    {
+                        "name": "ctm1.brexComplete"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "complete",
+                        "eventData": {
+                            "source": "toolAndInfoPanel"
+                        }
+                    },
+                    {
+                        "name": "ctm1.brexComplete"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "condition": "data.brexIsSync.dbValue === true",
+                        "message": "brexValidationInProgress"
+                    }
+                ],
+                "failure": [
+                    {
+                        "message": "brexValidationError"
+                    }
+                ]
+            },
+            "deps": "js/Ctm1BrexValidationService"
+        },
+        "downloadBrexLog": {
+            "actionType": "JSFunction",
+            "method": "downloadBrexLog",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1BrexValidationService"
+        }
+    },
+
+    "onEvent": [
+        {
+            "eventId": "ctm1.brexComplete",
+            "action": "downloadBrexLog"
+        }
+    ],
+
+    "functions": {
+        "getValidationInputs":
+        {
+            "functionName": "getValidationInputs",
+            "parameters":
+            [
+                "{{ctx}}"
+            ]
+        },
+        "getAsyncInput":
+        {
+            "functionName": "getAsyncInput",
+            "parameters":
+            [
+                "{{data}}"
+            ]
+        }
+    },
+
+    "messages": {
+        "brexValidationInProgress": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.brexValidationInProgress}}"
+        },
+        "brexValidationError": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+
+    "data": {
+        "brexIsSync": {
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "displayName": "{{i18n.brexRunInBackground}}",
+            "vertical": true,
+            "labelPosition": "PROPERTY_LABEL_AT_LEFT",
+            "propertyRadioFalseText": "{{i18n.brexWaitForResults}}"
+        }
+    },
+
+    "conditions": {
+        "ctm1VersionCondition13_2": {
+            "expression": "(ctx.tcSessionData.tcMajorVersion === 13 && ctx.tcSessionData.tcMinorVersion >= 2) || (ctx.tcSessionData.tcMajorVersion > 13)"
+        }
+    },
+
+    "ctx": {
+        "xrtSummaryContextObject": {
+            "type": "object"
+        }
+    },
+
+    "i18n": {
+        "brexValidation": ["ContentMgmtMessages"],
+        "brexTargetHeader": ["ContentMgmtMessages"],
+        "brexRunInBackground": ["ContentMgmtMessages"],
+        "brexWaitForResults": ["ContentMgmtMessages"],
+        "brexValidationBtn": ["ContentMgmtMessages"],
+        "brexValidationInProgress": ["ContentMgmtMessages"],
+        "brexLogDownloadSuccess": ["ContentMgmtMessages"],
+        "brexLogDownloadFailure": ["ContentMgmtMessages"],
+        "closeBrexLog": ["ContentMgmtMessages"]
+    }
+}

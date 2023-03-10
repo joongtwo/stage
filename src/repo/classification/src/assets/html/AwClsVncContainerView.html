@@ -1,0 +1,10 @@
+<div class="sw-component sw-vnc-container" tabindex="0">
+    <div class="sw-column w-12 align-center aw-clspanel-vncInterior" exist-when="props.vmo">
+        <div class="sw-row w-12" exist-when="props.vmo && props.vmo.props.typeIconFileUrl">
+            <aw-cls-vnc-class-info imagelink="{{props.vmo.props.typeIconFileUrl}}" classdescription='{{props.vmo.props.classDescription}}' probability='{{props.vmo.props.classProbability}}'></aw-cls-vnc-class-info>
+        </div>
+        <div class="sw-row w-12">
+            <aw-cls-vnc-header name="{{props.vmo.cellHeader1}}"></aw-cls-vnc-header>
+        </div>
+    </div>
+</div>

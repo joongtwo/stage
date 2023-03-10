@@ -1,0 +1,61 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "chip-data": {
+            "type": "object"
+        }
+    },
+
+    "data":{
+        "configurationChipTooltipView": {
+            "view": "ChipConfigurationToolTip"
+        },
+        "revisionTooltip":{
+            "title": "{{i18n.revisionRuleTitle}}",
+            "message":"{{props.chipData.revision.dispValue}}"
+        },
+        "dateEffectivityTooltip":{
+            "title": "{{i18n.dateEffectivity}}",
+            "message":"{{props.chipData.date.dispValue}}"
+        },
+        "unitEffectivityTooltip":{
+            "title": "{{i18n.unitEffectivity}}",
+            "message":"{{props.chipData.units.unit}}",
+            "message1":"{{props.chipData.units.endItem}}"
+        },
+        "variantRuleTooltip":{
+            "title": "{{i18n.variantRule}}",
+            "message":"{{props.chipData.variant.variant}}",
+            "message1":"{{props.chipData.variant.endItem}}"
+        },
+        "excludedEffectivityTooltip":{
+            "title":"{{i18n.excludedByEffectivityTitle}}",
+            "message":"{{i18n.excludedByEffectivityDescription}}"
+        },
+        "excludedVariantTooltip":{
+            "title":"{{i18n.excludedByVariant}}",
+            "message":"{{i18n.excludedByVariantDescription}}"
+        },
+        "excludedAssignmentTooltip":{
+            "title":"{{i18n.excludedByAssignment}}",
+            "message":"{{i18n.excludedByAssignmentDescription}}"
+        }
+    },
+
+
+
+    "actions": {},
+    "lifecycleHooks": {},
+    "i18n": {
+        "revisionRuleTitle": [ "structureConfigurationMessages" ],
+        "dateEffectivity": [ "structureConfigurationMessages" ],
+        "unitEffectivity": [ "structureConfigurationMessages" ],
+        "variantRule": [ "structureConfigurationMessages" ],
+        "excludedByEffectivityTitle": [ "structureConfigurationMessages" ],
+        "excludedByVariant": [ "structureConfigurationMessages" ],
+        "excludedByAssignment": [ "structureConfigurationMessages" ],
+        "excludedByEffectivityDescription":["structureConfigurationMessages"],
+        "excludedByVariantDescription": [ "structureConfigurationMessages" ],
+        "excludedByAssignmentDescription":["structureConfigurationMessages"]
+    }
+}

@@ -1,0 +1,67 @@
+{
+    "schemaVersion" : "1.0.0",
+    "lifecycleHooks": {
+        "onMount": "activateSearchNavigateAction"
+    },
+    "data":{
+        "_provider": {
+            "priority": 1,
+            "label": {
+                "source": "/i18n/ClassificationPanelMessages",
+                "key": "Classification"
+            },
+            "clientScopeURI": "Awp0SearchResults",
+            "nameToken": "com_siemens_splm_classificationLocation:showClassificationSubLocation",
+            "context": {
+                "search": {
+                    "provider": "Awp0FullTextSearchProvider",
+                    "maxToLoad": 50,
+                    "maxToReturn": 50,
+                    "criteria": {
+                        "searchFromLocation": "global"
+                    },
+                    "showNoCriteriaMessage": true,
+                    "noCriteriaMessage": "No criteria given."
+                }
+            },
+            "breadcrumbConfig": {
+                "type" : "search",
+                "vm" : "AwClsBreadCrumb",
+                "noUpdate": true,
+                "popuplist": "/html/defaultbreadcrumblist.html" ,
+                "overflowIndex": 0
+            },
+            "viewModes": {
+                "SummaryView": {
+                    "primaryWorkArea": "list",
+                    "secondaryWorkArea": true
+                },
+                "TableSummaryView":{
+                    "primaryWorkArea": "table",
+                    "secondaryWorkArea": true
+                },
+                "ListView":{
+                    "primaryWorkArea": "list",
+                    "secondaryWorkArea": false
+                },
+                "TableView":{
+                    "primaryWorkArea": "table",
+                    "secondaryWorkArea": false
+                }
+            },
+            "defaultDisplayMode" : "SummaryView",
+            "viewBase": "showClassification",
+            "isXrtApplicable": true
+        }
+    },
+    "actions":
+    {
+        "activateSearchNavigateAction": {
+            "actionType": "activateCommandPanel",
+            "inputData": {
+                "commandId": "Awp0ClassificationSearchNavigate",
+                "location": "aw_navigation"
+            }
+        }
+    }
+}

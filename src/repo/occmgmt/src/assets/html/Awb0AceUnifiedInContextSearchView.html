@@ -1,0 +1,9 @@
+<aw-command-panel caption="{{conditions.hasUnifiedInContextSearchTitle ? subPanelContext.provider.unifiedInContextSearchTitle : i18n.find}}">
+    <div visible-when="conditions.isFindInFeatureSupported" aw-class="{'disabled': conditions.isSearchScopeDisable ||  conditions.isWorksetSelected}">
+        <aw-checkbox enable-when="data.showFindIn" prop="data.searchScope" action="updateSearchScope"></aw-checkbox>
+    </div>
+    <div class="sw-column aw-create-fillAvailable"  aw-class="{'disabled': conditions.isWorksetSelected}">
+    <aw-search-objects  sub-panel-context="{preFilterContext: props.subPanelContext, disableEmptySearch: 'true'}" search-state-for-advanced="data.searchStateForAdvanced"
+    search-state-for-keyword="data.searchStateForKeyword" selection-model="selectionModels.findSelectionModel" selection-data="data.selectionData"></aw-search-objects>
+    </div>
+</aw-command-panel>

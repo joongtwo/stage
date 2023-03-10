@@ -1,0 +1,65 @@
+[
+  {
+    "name": {
+      "source": "/i18n/ConfiguratorMessages",
+      "key": "variantConditions"
+    },
+    "priority": 200,
+    "view": "Pca0VariantConditionAuthoringGrid",
+    "visibleWhen": "ctx.configuratorViewsDisplayContext.showVariantConditionsView"
+  },
+  {
+    "name": {
+      "source": "/i18n/FullScreenConfigurationMessages",
+      "key": "configuration"
+    },
+    "priority": 100,
+    "view": "Pca0FullScreenConfiguration",
+    "visibleWhen": "ctx.configuratorViewsDisplayContext.showVariantConfigurationView"
+  },
+  {
+    "name": {
+      "source": "/i18n/ConfiguratorExplorerMessages",
+      "key": "Pca0GridEditor"
+    },
+    "priority": 200,
+    "view": "Pca0ConstraintsGridFullScreen",
+    "visibleWhen": {
+      "$and": [
+        {
+          "$source": "ctx.locationContext['ActiveWorkspace:SubLocation']",
+          "$query": {
+            "$eq": "Pca0ConstraintsSubLocation"
+          }
+        },
+        {
+          "$source": "selection.length",
+          "$query": {
+            "$gt": 0
+          }
+        },
+        {
+          "$source": {
+            "$adapt": "selection"
+          },
+          "$query": {
+            "$all": {
+              "$source": "modelType.typeHierarchyArray",
+              "$query": {
+                "$in": [
+                  "Cfg0AbsAvailabilityRule",
+                  "Cfg0AbsExceptionRule",
+                  "Cfg0AbsDefaultRule",
+                  "Cfg0AbsExcludeRule",
+                  "Cfg0AbsIncludeRule",
+                  "Cfg0ProductItem",
+                  "Cfg0Dictionary"
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+]

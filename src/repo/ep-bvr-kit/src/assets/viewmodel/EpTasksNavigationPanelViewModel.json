@@ -1,0 +1,30 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "loadCCStructuresForTaskNavigationPanel": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "loadCCStructures",
+                    "condition": "conditions.isCCUidAvailableAndIsNotManagePage"
+                }
+            ]
+        },
+        "loadCCStructures": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadCCStructures",
+            "inputData": {
+                "ccObject": "{{ctx.selected}}"
+            },
+            "deps": "js/epInitializationService"
+        }
+    },
+    "conditions": {
+        "isCCUidAvailableAndIsNotManagePage": {
+            "expression": "ctx.locationContext['ActiveWorkspace:SubLocation'] !== 'manageWorkpackageNew' && ctx.selected.uid "
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "loadCCStructuresForTaskNavigationPanel"
+    }
+}

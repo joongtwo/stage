@@ -1,0 +1,355 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel-header.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-default-cell.directive",
+        "js/aw-form.directive",
+        "js/aw-add.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive",
+        "js/visible-when.directive",
+        "js/exist-when.directive"
+    ],
+    "data": {
+        "visibleTabs": "new,palette,search",
+        "selectionMode": {
+            "value": "single"
+        },
+        "triggerCreate": {
+            "dbValue": false,
+            "type": "BOOLEAN"
+        },
+        "addPanelState": {
+            "initialValues": {
+                "creationType": "",
+                "createdObject": "",
+                "sourceObjects": "",
+                "selectedTab": ""
+            },
+            "meta": {}
+        },
+        "xrtState": {
+            "initialValues": {},
+            "meta": {
+                "xrtVMO": {
+                    "field": "true",
+                    "type": "viewModelObject"
+                }
+            }
+        },
+        "activeState": {
+            "initialValues": {
+                "activeView": "AddObjectPrimarySub",
+                "context": {}
+            },
+            "meta": {}
+        },
+        "projectState": {
+            "initialValues": {
+                "selectedProjects": [],
+                "triggerAssign": false
+            },
+            "meta": {
+                "selectedProjects": {
+                    "field": "true",
+                    "type": "OBJECT"
+                },
+                "triggerAssign": {
+                    "field": "true",
+                    "type": "BOOLEAN"
+                }
+            }
+        }
+    },
+    "editHandlers": {
+        "addPanelEditHandler": {
+            "context": "CREATE_PANEL_CONTEXT",
+            "dataSource": {
+                "xrtVMO": "{{data.xrtState}}"
+            }
+        }
+    },
+    "actions": {
+        "setCtxAddElementInputParentElementToSelectedElement": {
+            "actionType": "JSFunction",
+            "method": "setCtxAddElementInputParentElementToSelectedElement",
+            "inputData": {
+                "parent": "{{ctx.selected}}"
+            },
+            "outputData": {},
+
+            "deps": "js/addElementService"
+        },
+        "getInfoForReplaceElementAction": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2019-12-OccurrenceManagement",
+            "method": "getInfoForAddElement3",
+            "inputData": {
+                "getInfoForElementIn":{
+                    "fetchAllowedOccRevTypes": false,
+                    "parentElement":{"uid" : "{{ctx.selected.props.awb0BreadcrumbAncestor.dbValues[0]}}"}
+                }
+            },
+            "outputData": {
+                "allowedTypeInfo": "{{function:extractAllowedTypesInfoFromResponse}}"
+            },
+            "deps": "js/addElementService"
+        },
+        "createAndReplaceElement": {
+            "actionType": "JSFunction",
+            "method": "updateCreateTrigger",
+            "inputData": {
+                "triggerCreate": "{{data.triggerCreate}}",
+                "value": true
+            },
+            "outputData": {
+                "triggerCreate": "triggerCreate"
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "newElementCreatedPostProcessing": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "replaceElement.replaceSelectedElement"
+                } ]
+            }
+        },
+        "replaceElementForDuplicate": {
+            "actionType": "JSFunction",
+            "method": "setDuplicateActionOnLine",
+            "inputData": {
+                "operationType": 3,
+                "occContext": "{{subPanelContext.occContext}}",
+                "createdObject": "{{addPanelState.createdObject}}",
+                "sourceObjects": "{{addPanelState.sourceObjects}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "replaceElement.closePanel",
+                    "condition": "!conditions.isPanelPinned"
+                } ]
+            },
+            "deps": "js/occMgmtDuplicateActionService"
+        },
+        "replaceElement": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ResourceManager-2020-05-ResourceOccurrencesManagement",
+            "method": "replaceResourceElement",
+            "inputData": {
+                "input": {
+                    "replacement": "{{function:getElementsToReplace}}",
+                    "resourceElements": [
+                        "{{ctx.occmgmtContext.selectedModelObjects[0]}}"
+                    ],
+                    "productContextInfo": "{{ctx.aceActiveContext.context.productContextInfo}}"
+                }
+            },
+            "outputData": {
+                "replaceElementResponse": ""
+            },
+            "events": {
+                "success": [{
+                        "name": "aceSecondaryWorkArea.refreshTabs"
+                    },
+                    {
+                        "name": "replaceElement.elementReplacedSuccessfully",
+                        "eventData": {
+                            "viewToReact": "{{ctx.aceActiveContext.key}}",
+                            "replacedElementUID": "{{ctx.occmgmtContext.selectedModelObjects[0].uid}}"
+                        }
+                    },
+                    {
+                        "name": "replaceElement.closePanel",
+                        "condition": "!conditions.isPanelPinned"
+                    },
+                    {
+                        "name": "acePwa.reset",
+                        "eventData": {
+                            "viewToReset": "occmgmtContext"
+                        }
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "condition": "data.replaceElementResponse.partialErrors[0].errorValues.length > 0",
+                        "message": "mrmReplaceElementFailMessage"
+                    }
+                ]
+            },
+            "deps": "js/addElementService"
+        },
+
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "condition": "!data._internal.isDestroyed",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+        "performPostProcessingAfterCreate": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "replaceElementForDuplicate",
+                    "condition": "ctx.aceActiveContext.context.isDuplicateEnabled && addPanelState.createdObject"
+                },
+                {
+                    "action": "newElementCreatedPostProcessing",
+                    "condition": "conditions.isObjectCreated"
+                },
+                {
+                    "action": "replaceElementForDuplicate",
+                    "condition": "ctx.aceActiveContext.context.isDuplicateEnabled"
+                }
+            ]
+        },
+        "setActiveView":{
+            "actionType": "JSFunction",
+            "method": "resetActiveView",
+            "inputData": {
+                "stateName": "activeState",
+                "destPanelId": "AddObjectPrimarySub"
+            },
+            "outputData": {
+                "activeState": "activeState"
+            },
+            "deps": "js/addObjectUtils"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": {
+            "action": "performPostProcessingAfterCreate",
+            "observers": [ "viewModel.atomicData.addPanelState.createdObject" ]
+        }
+    },
+    "messages": {
+        "mrmReplaceElementFailMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{data.replaceElementResponse.partialErrors[0].errorValues[0].message}}"
+        }
+    },
+    "onEvent": [ {
+            "eventId": "replaceElement.replaceSelectedElement",
+            "action": "replaceElement",
+            "condition": "!ctx.aceActiveContext.context.isDuplicateEnabled"
+        },
+        {
+            "eventId": "addObject.addOprfailed",
+            "action": "closePanel"
+        },
+        {
+            "eventId": "awPanel.reveal",
+            "criteria": {
+                "panelId": "Mrm0ReplaceElementPanel"
+            },
+            "action": "setCtxAddElementInputParentElementToSelectedElement"
+        },
+        {
+            "eventId": "awPanel.reveal",
+            "criteria": {
+                "panelId": "Mrm0ReplaceElementPanel"
+            },
+            "action": "getInfoForReplaceElementAction"
+        },
+        {
+            "eventId": "primaryWorkArea.selectionChangeEvent",
+            "action": "closePanel",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "replaceElement.closePanel",
+            "action": "closePanel"
+        }
+    ],
+    "conditions": {
+        "isNewTabReplaceButtonVisible": {
+            "expression": "addPanelState.selectedTab.view==='NewTabPageSub' && addPanelState.creationType"
+        },
+        "isPaletteTabReplaceButtonVisible": {
+            "expression": "addPanelState.selectedTab.view==='PaletteTabPageSub' && addPanelState.sourceObjects.length > 0"
+        },
+        "isSearchTabReplaceButtonVisible": {
+            "expression": "addPanelState.selectedTab.tabKey==='search' && addPanelState.sourceObjects.length > 0"
+        },
+        "isReplacementAndTargetAreNotOfSameType": {
+            "expression": "(addPanelState.createdObject && (ctx.selected.type != addPanelState.createdObject.type)) || (addPanelState.sourceObjects && (ctx.selected.type != addPanelState.sourceObjects[0].type))"
+        },
+        "isPanelPinned": {
+            "expression": "subPanelContext.panelPinned"
+        },
+        "isObjectCreated": {
+            "expression": "addPanelState.createdObject"
+        }
+    },
+    "functions": {
+        "getCreateInput": {
+            "functionName": "getCreateInput",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "populateRequestPref": {
+            "functionName": "populateRequestPref",
+            "parameters": [
+
+            ]
+        },
+        "getElementsToReplace": {
+            "functionName": "getElementsToReplace",
+            "parameters": [
+                "{{data}}",
+                "{{addPanelState.createdObject}}",
+                "{{addPanelState.sourceObjects}}"
+            ]
+        },
+        "getElementsToAdd": {
+            "functionName": "getElementsToAdd",
+            "parameters": [
+                "{{data}}",
+                "{{addPanelState.createdObject}}",
+                "{{addPanelState.sourceObjects}}"
+            ]
+        },
+        "extractAllowedTypesInfoFromResponse": {
+            "functionName": "extractAllowedTypesInfoFromResponse",
+            "parameters": [
+
+            ]
+        },
+        "shouldFetchColumnConfig": {
+            "functionName": "shouldFetchColumnConfig",
+            "parameters": []
+        }
+    },
+    "i18n": {
+        "replaceElementBtn": [
+            "OccurrenceManagementConstants"
+        ],
+        "createAndReplaceElementBtn": [
+            "OccurrenceManagementConstants"
+        ],
+        "toTitle": [
+            "OccurrenceManagementConstants"
+        ],
+        "BACK_BUTTON_TITLE": [
+            "BaseMessages"
+        ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

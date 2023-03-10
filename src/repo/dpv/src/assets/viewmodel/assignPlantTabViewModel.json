@@ -1,0 +1,98 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "databaseKeyList":{
+            "displayName": "{{i18n.databaseKey}}",
+            "type": "STRING",
+            "isRequired": false,
+            "dataProvider": "dataProviderDatabaseKeys",
+            "hasLov": "true",
+            "dbValue": "",
+            "emptyLOVEntry": false
+        },        
+        "plantId": {
+            "displayName": "{{i18n.plantInfo}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "{{ctx.mselected[0].props.item_id.dbValues}}",
+            "dispValue": "{{ctx.mselected[0].props.object_string.uiValues}}"
+        }     
+    },
+    "actions": {
+        "loadDatabaseKeys": {
+            "actionType": "JSFunction",
+            "method": "loadDatabaseKeys",
+            "inputData": {
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "databaseKeysList": "databaseKeysList"
+            },
+            "deps": "js/Dpv1CreateDpvService"
+        },
+        "assignPlant":{
+            "actionType": "JSFunction",
+            "method": "assignPlant",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "events": {
+                "success": [                   
+                    {
+                        "name": "assignPlant.closePanel"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "assignPlant.closePanel"
+                    }
+                ]
+            },
+            "deps": "js/Dpv1CreateDpvService"
+        },
+        "doDatabaseKeysListDataProvider": {
+            "actionType": "dataProvider",
+            "method": "dataProviderDatabaseKeys"
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        }        
+    },
+    "dataProviders": {
+        "dataProviderDatabaseKeys": {
+            "action": "loadDatabaseKeys",
+            "response": "{{data.databaseKeysList}}",
+            "totalFound": "{{data.totalFound}}"
+        }
+    },
+    "functions":{
+    },    
+    "conditions":{
+        "isValidToShowAssignButton": {
+            "expression": "data.databaseKeyList.dbValue!=''"
+        }
+    },
+    "i18n":{
+        "assignReportBtn":["DpvMessages"],
+        "databaseKey":["DpvMessages"],
+        "plantInfo":["DpvMessages"]
+    },    
+    "onEvent": [
+        {
+            "eventId": "assignPlant.closePanel",
+            "action": "closePanel"
+        }
+    ],
+    "lifecycleHooks": {
+    }
+}

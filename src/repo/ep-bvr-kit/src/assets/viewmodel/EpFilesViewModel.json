@@ -1,0 +1,402 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpFiles_inputObjects": {
+            "onChangeAction": "handleInput",
+            "syncObject": {}
+        },
+        "EpFiles_selectedObjects": {
+            "syncObject": {}
+        },
+        "EpFiles_updateTabContentCountPort": {
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "subPanelContextForInformation": {
+            "xrtType": "{{subPanelContext.xrtType}}",
+            "noElementSelectedMessageForXRT": [{
+                "text": "{{i18n.noFileSelected}}"
+            }]
+        },
+        "messages": {
+            "selectElementForAttachments": [{
+                "text": "{{i18n.selectElementForAttachments}}"
+            }],
+            "noFilesAttached": [{
+                "text": "{{i18n.noFilesAttached}}"
+            }]
+        }
+    },
+    "dataProviders": {
+        "attachedFilesList": {
+            "action": "getAttachedFilesList",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "actions": {
+        "handleInput": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "startLoadingIndicator"
+                },
+                {
+                    "action": "unregisterReloadInput"
+                },
+                {
+                    "action": "saveInputToData"
+                },
+                {
+                    "action": "updateScopeObject"
+                },
+                {
+                    "action": "registerReload"
+                },
+                {
+                    "action": "getAttachments"
+                }
+            ]
+        },
+        "dataProviderLoaded": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateCommandContextForAttachCommand"
+                },
+                {
+                    "action": "updateTabDisplayNameQuantity"
+                },
+                {
+                    "action":"updateTabContentCount"
+                },
+                {
+                    "action": "stopLoadingIndicator"
+                },
+                {
+                    "action": "setSelection",
+                    "condition": "conditions.isFileAttached"
+                }
+            ]
+        },
+        "saveInputToData": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{ports.EpFiles_inputObjects.syncObject}}"
+            },
+            "outputData": {
+                "inputObject": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "updateScopeObject": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetAtomicData": "{{subPanelContext.occContext}}",
+                "updatedValues": {
+                    "scopeObject": "{{ports.EpFiles_inputObjects.syncObject}}"
+
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "getAttachments": {
+            "actionType": "dataProvider",
+            "method": "attachedFilesList"
+        },
+        "getAttachedFilesList": {
+            "actionType": "JSFunctionAsync",
+            "method": "getAttachedFilesList",
+            "inputData": {
+                "objectToLoadProperties": "{{data.inputObject.uid}}"
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults"
+            },
+            "events": {
+                "success": [ {
+                        "name": "epFiles.dataProviderLoaded"
+                    }
+
+                ]
+            },
+            "deps": "js/epFileAttachmentService"
+        },
+        "setSelection": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.attachedFilesList}}",
+                "objectsToSelect": "{{data.searchResults[0]}}"
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "updateSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpFiles_selectedObjects",
+                "syncObject": "{{data.eventData.selectedObjects[0]}}"
+            }
+        },
+        "updateSelectionPortForNoSelection": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpFiles_selectedObjects",
+                "syncObject": {}
+            }
+        },
+        "updateCommandContextForDownloadAndRemove": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selectedAttachment": "{{data.eventData.selectedObjects}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "updateCommandContextForAttachCommand": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selection": "{{data.inputObject}}",
+                    "selectedAttachment": [],
+                    "contentCount": "{{data.dataProviders.attachedFilesList.viewModelCollection.loadedVMObjects.length}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "updateTabCount": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "contentCount": "{{data.dataProviders.attachedFilesList.viewModelCollection.loadedVMObjects.length}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "updateSelectionPortAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "updateSelectionPort",
+                    "condition": "data.eventData.selectedObjects[0]"
+                },
+                {
+                    "action": "updateSelectionPortForNoSelection",
+                    "condition": "!data.eventData.selectedObjects[0]"
+                },
+                {
+                    "action": "updateCommandContextForDownloadAndRemove"
+                }
+            ]
+        },
+        "updateFileList": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "handleAddRemoveSaveEvents"
+                },
+                {
+                    "action": "updateVMODatasetRelation",
+                    "condition": "conditions.isRelevantEvent"
+                },
+                {
+                    "action": "updateTabCount"
+                },
+                {
+                    "action": "updateTabDisplayNameQuantity"
+                },
+                {
+                    "action": "updateTabContentCount"
+                }
+
+            ]
+        },
+        "handleAddRemoveSaveEvents": {
+            "actionType": "JSFunction",
+            "method": "handleAddRemoveSaveEvents",
+            "inputData": {
+                "saveEvents": "{{data.eventData}}",
+                "relationName": ["mbc0AttachedFiles", "mbc0AttachedDataset"],
+                "dataProvider": "{{data.dataProviders.attachedFilesList}}",
+                "inputObjectUid": "{{subPanelContext.selection.uid}}",
+                "selectAddedObjects": false
+            },
+            "deps": "js/epTableService"
+        },
+        "updateVMODatasetRelation": {
+            "actionType": "JSFunction",
+            "method": "updateVMODatasetRelation",
+            "inputData": {
+                "relevantEvents": "{{data.eventData.mbc0AttachedFiles}}",
+                "dataProvider": "{{data.dataProviders.attachedFilesList}}",
+                "inputObjectUid": "{{subPanelContext.selection.uid}}"
+            },
+            "deps": "js/epFileAttachmentService"
+        },
+        "selectNewlyAddedFile": {
+            "actionType": "JSFunction",
+            "method": "setSelection",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.attachedFilesList}}",
+                "objectsToSelect": "{{data.eventData.dataset}}"
+            },
+            "deps": "js/mfeSyncUtils"
+        },
+        "updateTabDisplayNameQuantity": {
+            "actionType": "JSFunction",
+            "method": "setTabDisplayNameWithQuantity",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData":{
+                "tabData":""
+            },
+            "deps": "js/epTabsService"
+        },
+        "updateTabContentCount": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpFiles_updateTabContentCountPort",
+                "syncObject": {
+                    "tabName":"{{data.tabData.name}}",
+                    "tabKey":"{{data.tabData.tabKey}}",
+                    "namePrefix":"{{data.tabData.namePrefix}}"
+                }
+            }
+        },
+        "registerReload": {
+            "actionType": "JSFunction",
+            "method": "registerReloadInput",
+            "inputData": {
+                "name": "epFile",
+                "type": "getProperties",
+                "object": "{{data.inputObject}}",
+                "propertiesToReload": [
+                    "mbc0AttachedFiles"
+                ]
+            },
+            "deps": "js/epReloadService"
+        },
+        "unregisterReloadInput": {
+            "actionType": "JSFunction",
+            "method": "unregisterReloadInput",
+            "inputData": {
+                "name": "epFile"
+            },
+            "deps": "js/epReloadService"
+        },
+        "updateSelectionContext": {
+            "actionType": "JSFunction",
+            "method": "getFileExtension",
+            "deps": "js/awFileNameUtils",
+            "inputData": {
+                "fileName": "{{subPanelContext.selectedAttachment[0].props.ref_list.uiValue}}"
+            },
+            "outputData": {
+                "ctx.selectedDataset.fileNameExt": ""
+            }
+        },
+        "startLoadingIndicator": {
+            "actionType": "JSFunction",
+            "method": "setLoadingIndicator",
+            "inputData": {
+                "isLoading": true
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeMessagesService"
+        },
+        "stopLoadingIndicator": {
+            "actionType": "JSFunction",
+            "method": "setLoadingIndicator",
+            "inputData": {
+                "isLoading": false
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeMessagesService"
+        }
+    },
+    "i18n": {
+        "noElementsSelected": [
+            "DetailsMessages"
+        ],
+        "noFileSelected": [
+            "DetailsMessages"
+        ],
+        "selectElementForAttachments": [
+            "DetailsMessages"
+        ],
+        "noFilesAttached": [
+            "DetailsMessages"
+        ]
+    },
+    "conditions": {
+        "isLoading": {
+            "expression": "data.isLoading === true && conditions.hasInput"
+        },
+        "hasInput": {
+            "expression": "data.inputObject && data.inputObject.uid"
+        },
+        "isFileAttached": {
+            "expression": "data.dataProviders.attachedFilesList && !data.dataProviders.attachedFilesList.noResults"
+        },
+        "isRelevantEvent": {
+            "expression": "data.eventMap['ep.addRemoveEvents'].mbc0AttachedFiles !== undefined"
+        },
+        "noFiles": {
+            "expression": "data.isLoading === false && conditions.hasInput && !conditions.isFileAttached"
+        },
+        "showFiles": {
+            "expression": "data.isLoading === false && conditions.hasInput && conditions.isFileAttached"
+        }
+    },
+    "onEvent": [{
+            "eventId": "attachedFilesList.selectionChangeEvent",
+            "action": "updateSelectionPortAndCommandContext",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "attachedFilesList.selectionChangeEvent",
+            "action": "updateSelectionContext",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "cacheEventData": true,
+            "action": "updateFileList"
+        },
+        {
+            "eventId": "ep.replaceFileEvents",
+            "cacheEventData": true,
+            "action": "getAttachedFilesList"
+        },
+        {
+            "eventId": "epAttachFile.datasetAttached",
+            "action": "selectNewlyAddedFile",
+            "cacheEventData": true,
+            "condition": "data.eventData.connectedToObject.uid === subPanelContext.selection.uid"
+        },
+        {
+            "eventId": "epFiles.dataProviderLoaded",
+            "action": "dataProviderLoaded"
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+<aw-panel-body scrollable="false">
+    <aw-break></aw-break>
+    <aw-textbox prop="fields.nameBox"></aw-textbox>
+    <aw-break></aw-break>
+    <aw-row justify="top">
+        <aw-splm-table gridid="groupeffTable"></aw-splm-table>
+    </aw-row>
+</aw-panel-body>
+<aw-panel-footer exist-when="data.nameBox.dbValue !== ''">
+    <aw-button size="auto" action="AuthorGroupEffectivityBatchJob">
+        <aw-i18n>i18n.addElementBtn</aw-i18n>
+    </aw-button>
+</aw-panel-footer>

@@ -1,0 +1,80 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context":{
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpAddObject_selectedRevRule": {
+            "syncObject": {}
+        },
+        "EpAddObject_selectedObject": {
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "boTypeName": "{{subPanelContext.boTypeName}}",
+        "exclusionBOTypeNames": "{{subPanelContext.exclusionBOTypeNames}}",
+        "objectTypesToSearch": "{{subPanelContext.objectTypesToSearch}}",
+        "buttonName": "{{subPanelContext.buttonName}}",
+        "placeHolderForSearch": "{{subPanelContext.placeHolderForSearch}}",
+        "SourceTileContext": "{{subPanelContext.tileInfo}}",
+        "additionalCellWidget": "EpRevisionRuleListWidget",
+        "preferenceSuffixForTypesToSearch": "{{subPanelContext.preferenceSuffixForTypesToSearch}}"
+    },
+    "onEvent": [],
+    "actions": {
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "inputData": {
+                "popupId": "{{data.popupId}}"
+            },
+            "deps": "js/declpopupService"
+        },
+        "addObjectToWP": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "addObject",
+                    "condition": "ports.EpAddObject_selectedObject.syncObject.type !== 'Cfg0ProductItem'"
+                },
+                {
+                    "action": "addConfiguratorContext",
+                    "condition": "ports.EpAddObject_selectedObject.syncObject.type === 'Cfg0ProductItem'"
+                }
+            ]
+        },
+        "addObject": {
+            "actionType": "JSFunctionAsync",
+            "method": "addObject",
+            "inputData": {
+                "data": "{{data}}",
+                "selectedObject":"{{ports.EpAddObject_selectedObject.syncObject}}",
+                "revisionRule":"{{ports.EpAddObject_selectedRevRule.syncObject}}"
+            },
+            "deps": "js/epAddObjectService"
+        },
+        "addConfiguratorContext": {
+            "actionType": "JSFunctionAsync",
+            "method": "addConfiguratorContext",
+            "inputData": {
+                "data": "{{data}}",
+                "selectedObject":"{{ports.EpAddObject_selectedObject.syncObject}}"
+            },
+            "deps": "js/epAddObjectService"
+        }
+    },
+    "conditions": {
+        "isObjectSelectedToAdd": {
+            "expression": "ports.EpAddObject_selectedObject.syncObject && ports.EpAddObject_selectedObject.syncObject.uid"
+        }
+    },
+    "lifecycleHooks": {},
+    "i18n": {
+        "cancel": [
+            "EPMessages"
+        ]
+    }
+}

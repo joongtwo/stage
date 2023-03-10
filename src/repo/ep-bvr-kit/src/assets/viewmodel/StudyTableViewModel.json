@@ -1,0 +1,469 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "inputObject": null,
+        "scopes": []
+    },
+    "actions": {
+        "handleInput": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "setInputObject"
+                },
+                {
+                    "action": "doGridDataProvider",
+                    "condition": "conditions.isInputObjectUpdated"
+                },
+                {
+                    "action": "clearSelectedStudy",
+                    "condition": "conditions.isInputObjectUpdated"
+                }
+            ]
+        },
+        "setInputObject": {
+            "actionType": "JSFunction",
+            "method": "handleNewInput",
+            "inputData": {
+                "data": "{{data}}",
+                "value": "{{props.subPanelContext.studyManagerContext}}"
+            },
+            "outputData": {
+                "inputObject" : "inputObject",
+                "scopes" : "scopes",
+                "isInputObjectUpdated" : "isInputObjectUpdated"
+            },
+            "deps": "js/studyTableService"
+        },
+        "init": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "initializeInputObject"
+                },
+                {
+                    "action": "initializeScopes",
+                    "condition": "props.subPanelContext.studyManagerContext.scopes !== null"
+                },
+                {
+                    "action": "registerReleaseStatusPolicy"
+                }
+            ]
+        },
+        "initializeInputObject": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "deps": "js/mfeViewModelUtils",
+            "inputData": {
+                "value": "{{props.subPanelContext.studyManagerContext.selectedCC}}"
+            },
+            "outputData": {
+                "inputObject": {}
+            }
+        },
+        "initializeScopes": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "deps": "js/mfeViewModelUtils",
+            "inputData": {
+                "value": "{{props.subPanelContext.studyManagerContext.scopes}}"
+            },
+            "outputData": {
+                "scopes": {}
+            }
+        },
+        "createColumnsAndRegisterPolicy": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "loadColumns"
+                },
+                {
+                    "action": "registerPolicy"
+                },
+                {
+                    "action": "addIconColumn"
+                }
+            ]
+        },
+        "registerReleaseStatusPolicy": {
+            "actionType": "JSFunction",
+            "method": "register",
+            "inputData": {
+                "name": "studyTableReleaseStatusPolicy",
+                "policyObj": {
+                    "types": [{
+                            "name": "Mfg0MESimStudyRevision",
+                            "properties": [{
+                                "name": "release_status_list",
+                                "modifiers": [{
+                                    "name": "withProperties",
+                                    "Value": "true"
+                                }]
+                            }]
+                        },
+                        {
+                            "name": "Mfg0MEShdStudyRevision",
+                            "properties": [{
+                                "name": "release_status_list",
+                                "modifiers": [{
+                                    "name": "withProperties",
+                                    "Value": "true"
+                                }]
+                            }]
+                        },
+                        {
+                            "name": "ReleaseStatus",
+                            "properties": [{
+                                "name": "object_name"
+                            }]
+                        }
+                    ]
+                }
+            },
+            "deps": "js/mfePolicyService"
+        },
+        "loadColumns": {
+            "actionType": "JSFunction",
+            "method": "createColumns",
+            "inputData": {
+                "preferenceName": "TCMA_StudyMgrStudyGrid_Column",
+                "dataProvider": "{{data.dataProviders.studyTableDataProvider}}",
+                "columnProvider": "{{data.grids.studyGridTable.gridOptions}}"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "addIconColumn": {
+            "actionType": "JSFunction",
+            "method": "addIconColumn",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.studyTableDataProvider.columnConfig.columns}}"
+            },
+            "deps": "js/studyTableService"
+        },
+        "doGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "studyTableDataProvider"
+        },
+        "getStudiesInCC": {
+            "actionType": "TcSoaService",
+            "serviceName": "TcmAccess-2016-12-StudyManagement",
+            "method": "findStudiesInCC1",
+            "inputData": {
+                "input": [{
+                    "ccObject": {
+                        "uid": "{{data.inputObject.uid}}",
+                        "type": "{{data.inputObject.type}}"
+                    },
+                    "scopes": "{{data.scopes}}",
+                    "searchType": "",
+                    "searchParameters": {
+                        "sortAttribute": "{{function:getSortField}}",
+                        "isAscending": "{{function:isAscending}}",
+                        "startFrom": "{{function:getStartFrom}}",
+                        "startFromIndex": "{{data.dataProviders.studyTableDataProvider.startIndex}}",
+                        "pageSize": 50,
+                        "searchTerm": "",
+                        "propertyNames": [],
+                        "searchFilterMap": "{{function:getFilterMap}}"
+                    }
+                }]
+            },
+            "outputData": {
+                "searchResults": "{{function:processResponse}}",
+                "totalFound": "{{function:getTotalFound}}"
+            },
+            "events": {
+                "success": [{
+                    "name": "tcma.updateStudyCount",
+                    "eventData": {
+                        "totalFound": "{{data.totalFound}}"
+                    }
+                }]
+            },
+            "deps": "js/studyTableService"
+        },
+        "clearSelectedStudy": {
+            "actionType": "JSFunction",
+            "method": "updateSelectedStudy",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}",
+                "tableSelectedObjects": null
+            },
+            "deps": "js/studyTableService"
+        },
+        "updateSelectedStudy": {
+            "actionType": "JSFunction",
+            "method": "updateSelectedStudy",
+            "inputData": {
+                "subPanelContext": "{{subPanelContext}}",
+                "tableSelectedObjects": "{{parameters.eventData.selectedObjects}}"
+            },
+            "deps": "js/studyTableService"
+        },
+        "updateStudyTable": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "handleAddRemoveSaveEvents"
+                },
+                {
+                    "action": "updateStudySCAndSelection",
+                    "condition": "conditions.isRelevantStudyEvent"
+                },
+                {
+                    "action": "openEditStudy",
+                    "condition": "conditions.isAddEvent"
+                }
+            ]
+        },
+        "handleAddRemoveSaveEvents": {
+            "actionType": "JSFunction",
+            "method": "handleAddRemoveSaveEvents",
+            "inputData": {
+                "saveEvents": "{{parameters.eventData}}",
+                "relationName": "Mfg0CCStudyRel",
+                "dataProvider": "{{data.dataProviders.studyTableDataProvider}}",
+                "inputObjectUid": "{{data.inputObject.uid}}",
+                "selectAddedObjects": true
+            },
+            "deps": "js/epTableService"
+        },
+        "updateStudySCAndSelection": {
+            "actionType": "JSFunction",
+            "method": "updateStudySCAndSelection",
+            "inputData": {
+                "eventData": "{{parameters.eventData.Mfg0CCStudyRel}}",
+                "subPanelContext": "{{subPanelContext}}",
+                "dataProvider": "{{data}}"
+            },
+            "outputData": {
+                "totalFound":""
+            },
+            "events": {
+                "success": [{
+                    "name": "tcma.updateStudyCount"
+                }]
+            },
+            "deps": "js/studyTableService"
+        },
+        "openEditStudy": {
+            "actionType": "JSFunction",
+            "deps": "js/command.service",
+            "method": "executeCommandIfVisibleAndEnabled",
+            "inputData": {
+                "commandId": "tcmaEditStudyCommand",
+                "commandContext": "{{props.subPanelContext.studyManagerContext}}",
+                "runActionWithViewModel": "{{props.subPanelContext.runActionWithViewModel}}"
+            }
+        },
+        "registerPolicy": {
+            "actionType": "JSFunction",
+            "method": "register",
+            "inputData": {
+                "name": "studyGridTable",
+                "policyObj": "{{data.dataProviders.studyTableDataProvider.policy}}"
+            },
+            "deps": "js/mfePolicyService"
+        },
+        "unregisterPolicy": {
+            "actionType": "batchJob",
+            "steps": [{
+                    "action": "unregisterStudyTablePolicy"
+                },
+                {
+                    "action": "unregisterReleaseStatusPolicy"
+                }
+            ]
+        },
+        "unregisterStudyTablePolicy": {
+            "actionType": "JSFunction",
+            "method": "unregister",
+            "inputData": {
+                "name": "studyGridTable"
+            },
+            "deps": "js/mfePolicyService"
+        },
+        "unregisterReleaseStatusPolicy": {
+            "actionType": "JSFunction",
+            "method": "unregister",
+            "inputData": {
+                "name": "studyTableReleaseStatusPolicy"
+            },
+            "deps": "js/mfePolicyService"
+        },
+        "saveResizedColumnsWidth": {
+            "actionType": "JSFunction",
+            "method": "saveResizedColumnsWidth",
+            "inputData": {
+                "preferenceName": "TCMA_StudyMgrStudyGrid_Column",
+                "columns": "{{parameters.eventData.columns}}"
+            },
+            "deps": "js/mfeTableService"
+        },
+        "updateStudyCount": {
+            "actionType": "JSFunction",
+            "method": "updateStudyCount",
+            "inputData": {
+                "searchResults":"{{data.searchResults}}",
+                "totalFound":"{{data.totalFound}}",
+                "startIndex":"{{data.dataProviders.studyTableDataProvider.startIndex}}",
+                "columnFilters":"{{data.columnProviders.studyColumnProvider.columnFilters}}"
+            },
+            "outputData":{
+                "resultMessage.uiValue":""
+            },
+            "events": {
+                "success": [{
+                    "name": "tcma.updateStudyCountResultMessage",
+                    "eventData": {
+                        "totalFoundStr": "{{data.resultMessage}}"
+                    }
+                }]
+            },
+            "deps": "js/studyTableService"
+        }
+    },
+    "functions": {
+        "getTotalFound": {
+            "functionName": "getTotalFound",
+            "parameters": [
+                "response"
+            ]
+        },
+        "processResponse": {
+            "functionName": "processResponse",
+            "parameters": [
+                "response"
+            ]
+        },
+        "getStartFrom": {
+            "functionName": "getStartFrom",
+            "parameters": [
+                "{{data.dataProviders.studyTableDataProvider.viewModelCollection}}",
+                "{{data.dataProviders.studyTableDataProvider.startIndex}}"
+            ]
+        },
+        "getSortField": {
+            "functionName": "getSortField",
+            "parameters": [
+                "{{data.columnProviders.studyColumnProvider.sortCriteria}}"
+            ]
+        },
+        "isAscending": {
+            "functionName": "isAscending",
+            "parameters": [
+                "{{data.columnProviders.studyColumnProvider.sortCriteria}}"
+            ]
+        },
+        "getFilterMap": {
+            "functionName": "getFilterMap",
+            "parameters": [
+                "{{data.columnProviders.studyColumnProvider.columnFilters}}"
+            ]
+        }
+    },
+    "dataProviders": {
+        "studyTableDataProvider": {
+            "action": "getStudiesInCC",
+            "editContext": "ATTRIBUTE_TABLE_CONTEXT",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "selectionModelMode": "multiple"
+        }
+    },
+    "columnProviders": {
+        "studyColumnProvider": {
+            "frozenColumnIndex": -1,
+            "loadColumnAction": "createColumnsAndRegisterPolicy",
+            "columns": "{{data.columns}}"
+        }
+    },
+    "grids": {
+        "studyGridTable": {
+            "dataProvider": "studyTableDataProvider",
+            "columnProvider": "studyColumnProvider",
+            "enableArrangeMenu": false,
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": false,
+                "enableExpandAndPaginationInEdit": false,
+                "enableSorting": true,
+                "isFilteringEnabled": true,
+                "clientColumns": [
+                    {
+                   "clientColumn": true,
+                   "name": "briefcaseExport",
+                   "propertyDisplayName": "{{i18n.BriefcaseExportColumnName}}"
+                   }
+               ]
+            }
+        }
+    },
+    "onEvent": [{
+            "eventId": "studyGridTable.gridSelection",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "updateSelectedStudy"
+        },
+        {
+            "eventId": "ep.addRemoveEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "updateStudyTable"
+        },
+        {
+            "eventId": "columnArrange",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "saveResizedColumnsWidth",
+            "criteria": {
+                "name": "studyGridTable"
+            }
+        },
+        {
+            "eventId": "tcma.updateStudyCount",
+            "action": "updateStudyCount"
+        }
+    ],
+    "conditions": {
+        "isRelevantStudyEvent": {
+            "expression": "parameters.eventData.Mfg0CCStudyRel !== undefined"
+        },
+        "isAddEvent": {
+            "expression": "parameters.eventData.Mfg0CCStudyRel !== undefined && parameters.eventData.Mfg0CCStudyRel.relatedEvent !==null && parameters.eventData.Mfg0CCStudyRel.relatedEvent.addedToRelated !==null"
+        },
+        "isInputObjectUpdated": {
+            "expression": {
+                "$source": "data.isInputObjectUpdated",
+                "$query": {
+                    "$eq": true
+                }
+            }
+        }
+    },
+    "i18n": {
+        "BriefcaseExportColumnName": [
+            "StudyMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onMount": "init",
+        "onUpdate": {
+            "action": "handleInput",
+            "observers": [ "props.subPanelContext.studyManagerContext.selectedCC",
+                "props.subPanelContext.studyManagerContext.scopes" ]
+        },
+        "onUnmount": "unregisterPolicy"
+    }
+}

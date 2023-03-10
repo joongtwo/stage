@@ -1,0 +1,125 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "doGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "partsTableDataProvider"
+        },
+        "setPartsData": {
+            "actionType": "JSFunction",
+            "method": "setPartsData",
+            "inputData": {
+                "swiAtomicData": "{{props.subPanelContext.swiAtomicData}}"
+            },
+            "outputData": {
+                "response": "response",
+                "totalFound": "totalFound"
+            },
+            "deps": "js/swiPartsService"
+        },
+        "setPartsColumn": {
+            "actionType": "JSFunction",
+            "method": "setPartsColumn",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "dataProviders.partsTableDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/swiPartsService"
+        },
+        "updateSelectedInCtxAndAtmData": {
+            "actionType": "JSFunction",
+            "method": "registerCtx",
+            "inputData": {
+                "name": "partsSelected",
+                "value": "{{data.dataProviders.partsTableDataProvider.selectedObjects}}"
+            },
+            "deps": "js/appCtxService"
+        }
+    },
+    "data": {
+        "messages": {
+            "partNotPresent": [
+                {
+                    "text": "{{i18n.noPartsPresent}}"
+                }
+            ]
+        }
+    },
+    "dataProviders": {
+        "partsTableDataProvider": {
+            "action": "setPartsData",
+            "response": "{{data.response}}",
+            "totalFound": "{{data.totalFound}}",
+            "selectionModelMode": "multiple"
+        }
+    },
+    "columnProviders": {
+        "partsTableColumnProvider": {
+            "loadColumnAction": "setPartsColumn",
+            "columns": "{{data.columns}}",
+            "frozenColumnIndex": -1
+        }
+    },
+    "grids": {
+        "partsTableGrid": {
+            "dataProvider": "partsTableDataProvider",
+            "columnProvider": "partsTableColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": false,
+                "enablePinning": true,
+                "enableSorting": false
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "partsTableDataProvider.selectionChangeEvent",
+            "action": "updateSelectedInCtxAndAtmData",
+            "cacheEventData": true
+        }
+    ],
+    "i18n": {
+        "itemIdValueColumn": [
+            "swiMessages"
+        ],
+        "quantityValueColumn": [
+            "swiMessages"
+        ],
+        "nameValueColumn": [
+            "swiMessages"
+        ],
+        "occTypeValueColumn": [
+            "swiMessages"
+        ],
+        "descriptionValueColumn": [
+            "swiMessages"
+        ],
+        "occNameValueColumn": [
+            "swiMessages"
+        ],
+        "noPartsPresent": [
+            "swiMessages"
+        ]
+    },
+    "conditions": {
+        "hasParts": {
+            "expression": "props.subPanelContext.swiAtomicData.selected.props.swi1Parts.dbValue.length > 0"
+        }
+    },
+    "lifecycleHooks": {
+        "onUpdate": {
+            "action": "doGridDataProvider",
+            "observers": [
+                "props.subPanelContext.swiAtomicData.selected"
+            ]
+        }
+    }
+}

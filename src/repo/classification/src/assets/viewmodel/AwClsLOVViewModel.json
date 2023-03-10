@@ -1,0 +1,137 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+    ],
+    "ports": {
+
+    },
+    "lifecycleHooks": {
+        "render": "render",
+        "onMount": "initSimpleLOVDataProvider",
+        "onUpdate": [
+            {
+                "action": "updateLovValue",
+                "observers": [ "props.attr.value"]
+            },
+            {
+                "action": "initSimpleLOVDataProvider",
+                "observers": [ "props.instIndex",
+                              "props.attr.name",
+                               "props.attr.fielddata.lovApi"
+                            ]
+            }
+        ]
+    },
+    "ctx": {
+        "clsTab": {
+            "type": "object"
+        }
+    },
+    "props": {
+        "attr": {
+            "type": "object"
+        },
+        "classify-state": {
+            "type": "object"
+        },
+        "inst-index": {
+            "type": "integer"
+        },
+        "prop-details": {
+            "type": "object"
+        },
+        "response-state": {
+            "type": "object"
+        }
+    },
+    "actions": {
+        "render": {
+            "method": "awClsLovServiceRenderFunction",
+            "deps": "js/AwClsLovService"
+        },
+        "initSimpleLOVDataProvider": {
+            "actionType": "JSFunction",
+            "method": "initSimpleLOVDataProvider",
+            "inputData": {
+                "data": "{{data}}",
+                "attr": "{{props.attr}}",
+                "instIndex": "{{props.instIndex}}"
+            },
+            "outputData": {
+                "attrLOVList": "result.attrLOVList",
+                "lovInitialized": "result.lovInitialized"
+            },
+            "deps": "js/AwClsLovService"
+        },
+        "updateLovValue": {
+            "actionType": "JSFunction",
+            "method": "updateLovValue",
+            "inputData": {
+                "data": "{{data}}",
+                "attr": "{{props.attr}}"
+            },
+            "outputData": {
+                "data": ""
+            },
+            "deps": "js/classifyLOVService"
+        },
+        "updateAttrValue": {
+            "actionType": "JSFunction",
+            "method": "updateAttrValue",
+            "inputData": {
+                "data": "{{data}}",
+                "attr": "{{props.attr}}",
+                "instIndex": "{{props.instIndex ? props.instIndex : -1}}",
+                "propDetails": "{{props.propDetails}}",
+                "classifyState": "{{props.classifyState}}",
+                "responseState": "{{props.responseState}}",
+                "entry": "{{data.eventData}}"
+            },
+            "deps": "js/AwClsLovService"
+        }
+    },
+    "functions": {
+
+    },
+    "dataProviders": {
+        "attrLOV": {
+            "response": "{{data.attrLOVList}}",
+            "totalFound": "{{data.attrLOVList.length}}"
+        }
+    },
+    "columnProviders": {
+
+    },
+    "grids": {
+
+    },
+    "data": {
+        "lovInitialized": false,
+        "attrLOVList": [],
+        "attrLovLink": {
+            "propertyDisplayName": "{{props.attr.fielddata.propertyDisplayName}}",
+            "displayValues": "{{props.attr.fielddata.displayValues ? props.attr.fielddata.displayValues : []}}" ,
+            "displayValsModel": "{{props.attr.fielddata.displayValsModel ? props.attr.fielddata.displayValsModel : []}}" ,
+            "name": "attrLovName",
+            "type": "STRING",
+            "dataProvider": "attrLOV",
+            "isArray": "{{props.attr.fielddata.isArray}}",
+            "uiValue": "{{props.attr.fielddata ? props.attr.fielddata.uiValue : []}}"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "attrLOV.validSelectionEvent",
+            "action": "updateAttrValue",
+            "cacheEventData": true,
+            "condition": "data.eventData.viewModelProp.propertyDisplayName === props.attr.label"
+        }
+    ],
+    "conditions": {
+
+    },
+    "i18n": {
+        "createInstances": [ "ClassificationPanelMessages" ],
+        "select":          [ "ClassificationPanelMessages" ]
+    }
+}

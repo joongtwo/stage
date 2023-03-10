@@ -1,0 +1,488 @@
+{
+    "schemaVersion" : "1.0.0",
+    "actions":
+    {
+        "getFilters":
+        {
+            "actionType": "JSFunction",
+            "method": "updateSearchStateOnPanelLoad",
+            "inputData": {
+                "searchState": "{{data.searchState}}",
+                "recipeState":"{{data.recipeState}}",
+                "sharedData": "{{props.subPanelContext.sharedData}}",
+                "occContext": "{{props.subPanelContext.occContext}}"
+            },
+            "outputData": {
+                "searchState": "searchState",
+                "recipeState": "recipeState"
+            },
+            "deps": "js/discoveryFilterService"
+        },
+        "getFiltersFromSoa": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ActiveWorkspaceBom-2019-12-OccurrenceManagement",
+            "method": "getSubsetInfo3",
+            "inputData": {
+                "subsetInputs": "{{function:getSubsetInfoSoaInput}}"
+            },
+            "outputData": {
+                "searchState": "{{function:processGetSubsetInfoSoaResponse}}",
+                "recipeState": "{{function:getRecipeStateFromSoa}}"
+            },
+            "deps": "js/discoveryFilterService"
+        },
+        "updateSearchStateAfterFilterAction": {
+            "actionType": "JSFunction",
+            "method": "updateSearchStateAfterFilterAction",
+            "inputData": {
+                "filter": "{{data.filter}}",
+                "category": "{{data.category}}",
+                "updateAtomicData": "{{data.updateAtomicData}}",
+                "searchState": "{{data.searchState}}",
+                "recipeState":"{{data.recipeState}}",
+                "sharedData": "{{props.subPanelContext.sharedData}}",
+                "occContext": "{{props.subPanelContext.occContext}}"
+            },
+            "deps": "js/discoveryFilterService"
+        },
+        "initialize":
+        {
+            "actionType": "JSFunction",
+            "method": "initialize",
+            "inputData": {
+               "sharedData": "{{props.subPanelContext.sharedData}}"
+            },
+            "deps": "js/discoveryFilterService"
+        },
+        "initializeAndReveal": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "initialize"
+                },
+                {
+                    "action": "getFilters"
+                }
+            ]
+        },
+        "processRecipeOnUpdate":{
+            "actionType": "JSFunction",
+            "method": "processRecipeOnUpdate",
+            "inputData": {
+                "updatedRecipes": "{{parameters.eventData.updatedRecipe.updatedRecipes}}",
+                "deletedRecipe": "{{parameters.eventData.updatedRecipe.deletedRecipe}}",
+                "updateAtomicData": "{{data.updateAtomicData}}",
+                "searchState": "{{data.searchState}}",
+                "recipeState":"{{data.recipeState}}",
+                "sharedData": "{{props.subPanelContext.sharedData}}",
+                "occContext": "{{props.subPanelContext.occContext}}"
+            },
+            "deps": "js/discoveryFilterService"
+       },
+       "toggleCategoryLogic":{
+        "actionType": "JSFunction",
+        "method": "toggleCategoryLogic",
+        "inputData": {
+            "toggleCategory": "{{data.excludeCategory}}",
+            "excludeCategoryToggleValue": "{{data.excludeCategoryToggleValue}}",
+            "updateAtomicData": "{{data.updateAtomicData}}",
+            "searchState": "{{data.searchState}}",
+            "recipeState":"{{data.recipeState}}",
+            "sharedData": "{{props.subPanelContext.sharedData}}",
+            "occContext": "{{props.subPanelContext.occContext}}"
+        },
+        "deps": "js/discoveryFilterService"
+       },
+        "updatePartitionSchemeFacet": {
+            "actionType": "JSFunction",
+            "method": "updatePartitionSchemeFacet",
+            "inputData": {
+                "searchState":"{{data.searchState}}",
+                "searchStateUpdater":"{{data.updateAtomicData}}",
+                "categoryForFacetSearchInput":"{{data.facetCategorySearchInput}}",
+                "category":"{{data.facetCategory}}"
+            },
+            "deps": "js/discoveryFilterService"
+        },
+        "performFacetSearch": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2018-05-Finder",
+            "method": "performFacetSearch",
+            "inputData": {
+                "facetSearchInput": {
+                    "maxToReturn": 100,
+                    "providerName": "Awb0FullTextSearchProvider",
+                    "searchCriteria": {
+                        "categoryForFacetSearch": "{{data.facetCategorySearchInput.name}}",
+                        "facetSearchString": "{{data.facetCategorySearchInput.facetSearchString}}",
+                        "forceThreshhold": false,
+                        "searchString": "$DefaultSearchProvider_STD$*",
+                        "productContextUids": "{{props.subPanelContext.occContext.productContextInfo.uid}}"
+                    },
+                    "searchFilterMap": {},
+                    "startIndex": "{{data.facetCategorySearchInput.startIndex}}"
+                }
+            },
+            "outputData": {
+                "categories": "{{function:updateCategoriesAfterFacetSearch}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "updateFilterPanel"
+                }]
+            },
+            "deps": "js/discoveryFilterService"
+        },
+        "applyFilter": {
+            "actionType": "JSFunction",
+            "method": "applyFilterInBulkMode",
+            "inputData": {
+                "updateAtomicData": "{{data.updateAtomicData}}",
+                "occContext": "{{props.subPanelContext.occContext}}"
+            },
+            "deps": "js/discoveryFilterService"
+        },
+        "preInitializationAction": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "addIncludeExcludeTerm",
+                    "condition": "(ctx.panelContext.operation === 'Include' || ctx.panelContext.operation === 'Exclude' || ctx.panelContext.operation === 'IncludeWithoutChildren')"
+                },
+                {
+                    "action": "getDelayedApplyPreference",
+                    "condition": "!props.subPanelContext.sharedData.autoApplyPrefSet"
+                },
+                {
+                    "action":  "initializeAndReveal"
+                },
+                {
+                    "action": "createFiltersDisabledMessage"
+                }
+            ]
+        },
+        "getDelayedApplyPreference":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Administration-2012-09-PreferenceManagement",
+            "method": "getPreferences",
+            "inputData":
+            {
+                "preferenceNames": [ "AWC_Discovery_Delayed_Filter_Apply", "AWS_Enable_Partition_Hierarchy_On_Filter_Panel" ],
+                "includePreferenceDescriptions": false
+            },
+            "outputData":
+            {
+                "preference":"{{function:processInitialDelayedApplyPreference}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "filterPanel.initializeAndReveal"
+                } ]
+            },
+            "deps":"js/discoveryFilterService"
+        },
+        "createFiltersDisabledMessage":{
+            "actionType": "JSFunction",
+            "method": "createFiltersDisabledMessage",
+            "inputData": {
+                "occContext":"{{props.subPanelContext.occContext}}",
+                "message": "{{i18n.filtersDisabledMessage}}",
+                "showFiltersDisabledMessage" : "{{data.showFiltersDisabledMessage}}"
+            },
+            "outputData":
+            {
+                "showFiltersDisabledMessage": ""
+            },
+            "deps": "js/discoveryFilterService"
+        },
+        "clearRecipeAll": {
+            "actionType": "JSFunction",
+            "method": "clearRecipe",
+            "inputData": {
+                "searchState": "{{data.searchState}}",
+                "recipeState": "{{data.recipeState}}",
+                "searchStateUpdater" : "{{data.updateAtomicData}}",
+                "occContext":"{{props.subPanelContext.occContext}}",
+                "sharedData": "{{props.subPanelContext.sharedData}}"
+            },
+            "deps": "js/discoveryFilterService"
+        },
+        "addIncludeExcludeTerm": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "includeExcludeSelected"
+                },
+                {
+                    "action": "updateSharedDataWithSelectedTerm"
+
+                }
+            ]
+        },
+        "performIncludeExcludeOperationWhenPanelIsOpen": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "addIncludeExcludeTerm"
+                },
+                {
+                    "action": "performIncludeExcludeOperation"
+
+                }
+
+            ]
+        },
+        "includeExcludeSelected":{
+            "actionType": "JSFunction",
+            "method": "applySelectedElementFilterInRecipe",
+            "outputData":{
+                "selectedTermToAdd":""
+            },
+            "deps":"js/includeExcludeFilterService"
+        },
+        "updateSharedDataWithSelectedTerm": {
+            "actionType": "JSFunction",
+            "method": "updateSharedDataWithRecipeBeforeNavigate",
+            "inputData": {
+                "activeViewSharedData": "{{props.subPanelContext.activeViewSharedData}}",
+                "sharedData": "{{props.subPanelContext.sharedData}}",
+                "recipeTerm": "{{data.selectedTermToAdd}}"
+            },
+            "deps": "js/occmgmtSubsetUtils"
+        },
+        "performIncludeExcludeOperation":{
+            "actionType": "JSFunction",
+            "method": "updateSearchStateOnPanelLoad",
+            "inputData": {
+                "searchState": "{{data.searchState}}",
+                "recipeState":"{{data.recipeState}}",
+                "sharedData": "{{props.subPanelContext.sharedData}}",
+                "occContext": "{{props.subPanelContext.occContext}}"
+            },
+            "outputData": {
+                "searchState": "searchState",
+                "recipeState": "recipeState"
+            },
+            "deps":"js/discoveryFilterService"
+        },
+        "modifySearchStateWithUpdatedFilters": {
+            "actionType": "JSFunction",
+            "method": "modifySearchStateWithUpdatedFilters",
+            "inputData": {
+                "eventData": "{{parameters.eventData}}",
+                "searchState" : "{{data.searchState}}",
+                "recipeState" : "{{data.recipeState}}",
+                "subPanelContext": "{{props.subPanelContext}}",
+                "updateAtomicData": "{{data.updateAtomicData}}"
+            },
+            "deps": "js/discoveryFilterService"
+        },
+        "restoreOnFailedConcurrentSave": {
+            "actionType": "JSFunction",
+            "method": "restoreCategoriesAfterFailedConcurrentSave",
+            "inputData": {
+                "searchState" : "{{data.searchState}}",
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "outputData": {
+                "searchState": ""
+            },
+            "deps": "js/discoveryFilterService"
+        },
+        "updateDiscoverySharedDataForPanelNavigation": {
+            "actionType": "JSFunction",
+            "method": "updateSharedDataWithRecipeBeforeNavigate",
+            "inputData": {
+                "activeViewSharedData": "{{props.subPanelContext.activeViewSharedData}}",
+                "sharedData": "{{props.subPanelContext.sharedData}}",
+                "recipeTerm": "{{parameters.eventData.recipeTerm}}",
+                "spatialRecipeIndexToUpdate": "{{parameters.eventData.spatialRecipeIndexToUpdate}}",
+                "nextActiveView": "{{parameters.eventData.nextActiveView}}",
+                "recipeOperator": "{{parameters.eventData.recipeOperator}}",
+                "selectedObj" : "{{parameters.eventData.selectedObj}}"
+            },
+            "deps": "js/occmgmtSubsetUtils"
+        },
+        "performPostProcessingOnLoad":{
+            "actionType": "JSFunction",
+            "method": "performPostProcessingOnLoad",
+            "inputData": {
+                "occContext": "{{props.subPanelContext.occContext}}"
+            },
+            "deps": "js/discoveryFilterService"
+        },
+        "render":{
+            "method": "awDiscoveryFilterPanelRenderFunction",
+            "deps": "js/AwDiscoveryFilterPanelService"
+        }
+    },
+    "functions": {
+        "getSubsetInfoSoaInput": {
+            "functionName": "getSubsetInfoSoaInput",
+            "parameters": [
+                "{{props.subPanelContext.occContext}}"
+            ]
+        },
+        "processGetSubsetInfoSoaResponse": {
+            "functionName": "processGetSubsetInfoSoaResponse",
+            "parameters": [
+                "{{data.searchState}}", "{{props.subPanelContext}}", "{{response}}"]
+        },
+        "getRecipeStateFromSoa":{
+            "functionName": "getRecipeStateFromSoa",
+            "parameters": [
+               "{{data.searchState}}",  "{{data.recipeState}}", "{{props.subPanelContext.sharedData}}", "{{props.subPanelContext.occContext}}", "{{response}}"]
+        },
+        "updateCategoriesAfterFacetSearch": {
+            "functionName": "updateCategoriesAfterFacetSearch",
+            "parameters": [
+                "{{data.searchState}}",
+                "{{data.updateAtomicData}}",
+                "{{data.facetCategorySearchInput}}",
+                "{{data.facetCategory}}"
+            ]
+        },
+        "processInitialDelayedApplyPreference": {
+            "functionName": "processInitialDelayedApplyPreference",
+            "parameters": [
+                "{{data}}", "{{props.subPanelContext.activeViewSharedData}}", "{{props.subPanelContext.sharedData}}", "{{response}}"]
+        }
+    },
+    "onEvent":
+    [
+        {
+            "eventId": "occmgmt.recipeUpdated",
+            "action": "processRecipeOnUpdate",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "awDiscovery.performIncludeExclude",
+            "action": "performIncludeExcludeOperationWhenPanelIsOpen"
+        },
+        {
+            "eventId": "awDiscovery.recipeUpdateFailOnConcurrentSave",
+            "action":  "restoreOnFailedConcurrentSave"
+        },
+        {
+            "eventId": "appCtx.update",
+            "criteria": {
+                "target": "searchFilterMap"
+            },
+            "action": "modifySearchStateWithUpdatedFilters",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        },
+        {
+            "eventId": "filterPanel.getFilters",
+            "action": "getFiltersFromSoa"
+        },
+        {
+            "eventId": "productContextChangedEvent",
+            "action": "getFilters" ,
+            "condition": "dataProviderActionType === 'productChangedOnSelectionChange'"
+        },
+        {
+            "eventId": "awb0.updateDiscoverySharedDataForPanelNavigation",
+            "action": "updateDiscoverySharedDataForPanelNavigation",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        }
+    ],
+    "conditions": {
+        "isSmartDiscovery": {
+            "expression": "(props.subPanelContext.occContext.supportedFeatures.Awb0EnableSmartDiscoveryFeature === true)"
+        },
+        "isTCVersion132OrLater": {
+            "expression": "( ctx.tcSessionData.tcMajorVersion >= 13 && ctx.tcSessionData.tcMinorVersion >= 2 )|| ctx.tcSessionData.tcMajorVersion > 13"
+        },
+        "shouldShowFilterCategories":{
+            "expression": "!props.subPanelContext.occContext.readOnlyFeatures.Awb0StructureFilterFeature"
+        }
+    },
+    "data":
+    {
+        "searchState": {
+            "initialValues": {
+            },
+            "meta": {
+                "categories": [ {
+                    "filterValues": [ {
+                        "selected": {
+                            "field": "true",
+                            "type": "BOOLEAN"
+                        }
+                    } ]
+                } ]
+            }
+        },
+        "excludeByFilteringTooltip": {
+            "view": "extendedTooltipDefault"
+        },
+        "excludeByFilteringTooltipContext": {
+            "title": "{{i18n.exclude}}",
+            "description": "{{i18n.excludeByFilteringDesc}}"
+        },
+        "recipeState" :
+        {
+            "meta": {
+                "recipe": {
+                    "type": "OBJECTARRAY"
+                },
+                "isClearAll":{
+                    "type" :"BOOLEAN"
+                }
+            },
+            "initialValues": {
+                "recipe": []
+            }
+        },
+        "showFiltersDisabledMessage":{
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": false,
+            "isEditable": true,
+            "propertyDisplayName": "",
+            "dbValue": "",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ctx":{
+        "panelContext":{
+            "type":"object"
+        },
+        "sidenavCommandId":{
+            "type":"string"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "preInitializationAction",
+        "render": "render",
+        "onUpdate": [
+            {
+                "action": "clearRecipeAll",
+                "observers": [ "viewModel.atomicData.recipeState.isClearAll"]
+            },
+            {
+                "action": "performPostProcessingOnLoad",
+                "observers": [ "props.subPanelContext.occContext.onPwaLoadComplete" ]
+            }
+        ]
+    },
+    "i18n":
+    {
+          "subset" :        ["OccurrenceManagementConstants"],
+          "MORE_LINK_TEXT": [ "BaseMessages" ],
+          "LESS_LINK_TEXT": [ "BaseMessages" ],
+          "filterButtonTitle": ["OccurrenceManagementSubsetConstants"],
+          "exclude":["OccurrenceManagementSubsetConstants"],
+          "excludeByFilteringDesc":["OccurrenceManagementSubsetConstants"],
+          "filtersDisabledMessage":["OccurrenceManagementSubsetConstants"]
+    }
+}

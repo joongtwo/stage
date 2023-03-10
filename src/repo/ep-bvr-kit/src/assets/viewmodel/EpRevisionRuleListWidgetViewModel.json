@@ -1,0 +1,77 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-listbox.directive",
+        "js/aw-flex-column.directive"
+    ],
+    "ports": {
+        "EpRevisionRuleListWidget_selectedRevRule": {
+            "syncObject": {}
+        }
+    },
+    "dataProviders": {},
+    "actions": {
+        "fetchLovForRevisonList": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2013-05-LOV",
+            "method": "getInitialLOVValues",
+            "inputData": {
+                "initialData": {
+                    "propertyName": "awp0RevRule",
+                    "filterData": {
+                        "filterString": "",
+                        "maxResults": 2000,
+                        "numberToReturn": 10000,
+                        "order": 1,
+                        "sortPropertyName": ""
+                    },
+                    "lov": {
+                        "uid": "AAAAAAAAAAAAAA",
+                        "type": "unknownType"
+                    },
+                    "lovInput": {
+                        "owningObject": {
+                            "uid": "{{ctx.userSession.uid}}",
+                            "type": "UserSession"
+                        },
+                        "operationName": "FakeOperation",
+                        "boName": "UserSession",
+                        "propertyValues": {}
+                    }
+                }
+            },
+            "outputData": {
+                "revisionRuleList": "{{function:getRevisonListFromRes}}"
+            },
+            "deps": "js/epRevisionRuleListWidgetService"
+        },
+        "revisionRuleListSelectionChange": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpRevisionRuleListWidget_selectedRevRule",
+                "syncObject": "{{data.revisionRuleListBox}}"
+            }
+        }
+    },
+    "data": {
+        "revisionRuleListBox": {
+            "displayName": "{{i18n.revisionRuleLabel}}",
+            "type": "STRING",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        }
+    },
+    "messages": {},
+    "conditions": {},
+    "grids": {},
+    "dataParseDefinitions": {},
+    "functions": {},
+    "columnProviders": {},
+    "i18n": {
+        "revisionRuleLabel": [ "epBvrMaturityMessages" ]
+    },
+    "lifecycleHooks": {
+        "onMount": "fetchLovForRevisonList"
+    }
+}

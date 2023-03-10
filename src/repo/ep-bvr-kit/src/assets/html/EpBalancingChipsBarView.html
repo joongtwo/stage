@@ -1,0 +1,11 @@
+<div class="sw-row w-12 h-12 aw-epBalancing-dashboardChipsPanel">
+    <ep-balancing-chip icon="indicatorDashboardOverallTime" label="i18n.taktTimeChip" value="{{conditions.taktTimeDefined ? props.information.scopeTaktTime : 'N/A'}}" 
+        aw-class="['aw-epBalancing-dashboardChip', {'aw-epBalancing-dashboardOverridingTaktTime': props.information.lineHasOverridingTaktTime}]"
+        tooltip="{{props.information.lineHasOverridingTaktTime ? i18n.overridingTaktTimeTooltip : ''}}"></ep-balancing-chip>
+    <ep-balancing-chip icon="indicatorDashboardOverallTime" label="i18n.cycleTimeChip" value="{{props.information.maxStationsCycleTime}}" 
+        aw-class="['aw-epBalancing-dashboardChip',
+        {'aw-epBalancing-dashboardChipOk': conditions.cycleTimeOk}, {'aw-epBalancing-dashboardChipExceeding': conditions.cycleTimeExceeded}]"></ep-balancing-chip>
+    <ep-balancing-chip icon="indicatorDashboardWarning" label="i18n.totalWaitTimeChip" value="{{props.information.totalWaitTime}}" aw-class="['aw-epBalancing-dashboardChip']"></ep-balancing-chip>
+    <ep-balancing-chip exist-when="conditions.processResourcesExist" icon="indicatorDashboardWarning" label="i18n.unassignedTimeChip" value="{{props.information.unassignedTime}}" aw-class="['aw-epBalancing-dashboardChip']"></ep-balancing-chip>
+    <ep-balancing-chip icon="indicatorDashboardResources" label="i18n.numberOfResourcedChip" value="{{props.information.numberOfUniqueProcessResources}}" aw-class="['aw-epBalancing-dashboardChip', 'aw-epBalancing-chipReversed']"></ep-balancing-chip>
+</div>

@@ -1,0 +1,51 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "updateGridPropertiesTooltipFromInfoPanel": {
+            "actionType": "JSFunction",
+            "method": "updateGridPropertiesTooltipFromInfoPanel",
+            "inputData": {
+                "propertiesInfo": "{{parameters.eventData}}",
+                "columns": "{{props.column}}"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        },
+        "populateHeader": {
+            "actionType": "JSFunction",
+            "method": "populateTopGridHeader",
+            "inputData": {
+                "data": "{{props.column}}"
+            },
+            "outputData": {
+                "constraintType": "constraintType",
+                "constraintColorStyle":"constraintColorStyle",
+                "showPropsInfoInGrid": "showPropsInfoInGrid",
+                "headerIconUrl": "headerIconUrl",
+                "tooltipDetails": "tooltipDetails"
+            },
+            "deps": "js/pca0ConstraintsGridService"
+        }
+    },
+    "data": {
+        "showPropsInfoInGrid": true
+    },
+    "messages": {},
+    "onEvent": [ {
+        "eventId": "Pca0ConstraintsGrid.RefreshTopHeader",
+        "action": "populateHeader"
+    },
+    {
+        "eventId": "editHandlerStateChange",
+        "action": "updateGridPropertiesTooltipFromInfoPanel",
+        "criteria": {
+            "state": "saved",
+            "dataSource.context": "INFO_PANEL_CONTEXT"
+        },
+        "inputArgs": {
+            "eventData": "{{eventData.dataSource.atomicData}}"
+        }
+    } ],
+    "lifecycleHooks": {
+        "onMount": "populateHeader"
+    }
+}

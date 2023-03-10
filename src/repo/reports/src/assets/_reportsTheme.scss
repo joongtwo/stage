@@ -1,0 +1,30 @@
+// Copyright 2020 Siemens Product Lifecycle Management Software Inc.
+/* reports theme */
+
+.aw-reports-widgets-cellListItemSelected {
+    background-color: $brand_primary_content_background;
+    fill: $Natural_Blue_8;
+}
+
+.aw-reports-dashboardTileContent .aw-widgets-cellListWidget .aw-widgets-cellListItem {
+    -moz-box-shadow: $drop_shadow_small;
+    -webkit-box-shadow: $drop_shadow_small;
+    box-shadow: $drop_shadow_small;
+    background-color: $brand_primary_content_background;
+    &:hover {
+        background-color: $brand_primary_content_background;
+        -moz-box-shadow: $drop_shadow_2x_large;
+        -webkit-box-shadow: $drop_shadow_2x_large;
+        box-shadow: $drop_shadow_2x_large;
+    }
+    &.aw-widgets-cellListItemSelected {
+        background-color: $cell_list_item_selected;
+        fill: $aw_secondary_text;
+        color: $brand_selection_text_selected;
+
+        &:hover {
+            background-color: $cell_list_item_selected_hover;
+            color: $brand_selection_text_selected_hover;
+        }
+    }
+}

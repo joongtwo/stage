@@ -1,0 +1,402 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-button.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-i18n.directive",
+        "js/aw-checkbox.directive",
+        "js/enable-when.directive"
+    ],
+    "actions": {
+        "updateSimplifyHolderGeometryCheckbox": {
+            "actionType": "JSFunction",
+            "method": "updateSimplifyHolderGeometryCheckbox",
+            "inputData": {
+                "simplifyHolderGeometryCheckbox": "{{data.simplifyHolderGeometryCheckboxProp}}",
+                "extractHolderDataSelected": "{{data.extractHolderDataCheckboxProp.dbValue}}"
+            },
+            "outputData": {
+                "simplifyHolderGeometryCheckboxProp": ""
+            },
+            "deps": "js/MrmCreateNXAssemblyService"
+        },
+        "updateNXToolAssemblies": {
+            "actionType": "JSFunction",
+            "method": "setFlagsForCreateNXAssyInProcess",
+            "inputData": {
+                "createNXAssyInProcess": "{{data.createNXAssyInProcess}}"
+            },
+            "outputData": {
+                "createNXAssyInProcess": ""
+            },
+            "deps": "js/MrmCreateNXAssemblyService",
+            "events": {
+                "success": [ {
+                    "name": "executeupdateNXToolAssemblies"
+                } ]
+            }
+        },
+        "executeupdateNXToolAssemblies": {
+            "actionType": "TcSoaService",
+            "serviceName": "Manufacturing-2013-12-ResourceManagement",
+            "method": "updateNXToolAssemblies",
+            "inputData": {
+                "icoIDs": ["{{function:getUidOfObject}}"],
+                "identifyCutAndNoCut": "{{data.identifyCuttingNonCuttingGeometryCheckboxProp.dbValue}}",
+                "generateSpinning": "{{data.generateSpinningGeometryCheckboxProp.dbValue}}",
+                "setToolJunctions": "{{data.setToolJunctionsCheckboxProp.dbValue}}",
+                "writePartAttributes": "{{data.writeNXPartAttributesCheckboxProp.dbValue}}"
+            },
+            "outputData": {
+                "updateNXToolAssembliesResponse": ""
+            },
+            "events": {
+                "success": [ {
+                        "condition": "data.extractHolderDataCheckboxProp.dbValue",
+                        "name": "setPrefForExtractHolderData"
+                    },
+                    {
+                        "condition": "!data.extractHolderDataCheckboxProp.dbValue && data.createSetupSheetCheckboxProp.dbValue",
+                        "name": "createSetupSheetAction"
+                    },
+                    {
+                        "condition": "!data.extractHolderDataCheckboxProp.dbValue && !data.createSetupSheetCheckboxProp.dbValue",
+                        "name": "createNXAsm.closePanel"
+                    },
+                    {
+                        "condition": "!data.extractHolderDataCheckboxProp.dbValue && !data.createSetupSheetCheckboxProp.dbValue && (ctx.ViewModeContext.ViewModeContext === 'ResourceSummaryView' && (ctx.occmgmtContext.activeTab.id === 'attachments' || ctx.occmgmtContext.activeTab.id === 'tc_xrt_Overview' || ctx.occmgmtContext.activeTab.id === 'tc_xrt_ClassificationInformation'))",
+                        "name": "aceSecondaryWorkArea.refreshTabs"
+                    }
+                ],
+                "failure": [ {
+                    "name": "createNXAsm.closePanel"
+                } ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "condition": "data.updateNXToolAssembliesResponse.partialErrors.length>0",
+                    "message": "mrmFailureErrorMessage"
+                } ],
+                "success": [ {
+                    "condition": "!data.extractHolderDataCheckboxProp.dbValue && !data.createSetupSheetCheckboxProp.dbValue",
+                    "message": "updateNXToolAssembliesSuccessfulMessage"
+                } ]
+            },
+            "deps": "js/MrmUtils"
+        },
+        "setPrefForExtractHolderData": {
+            "actionType": "JSFunction",
+            "method": "getAccuracyPrefAndSetSimplified",
+            "inputData": {
+                "setSimplified":"{{data.simplifyHolderGeometryCheckboxProp.dbValue}}"
+            },
+            "outputData": {
+                "orgAccuracyPref": ""
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "extractHolderDataAction"
+                    }
+                ]
+            },
+            "deps": "js/MrmGraphicBuilderUtils"
+        },
+        "extractHolderDataAction": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Manufacturing-2016-09-ResourceManagement",
+            "method": "extractHolderData",
+            "inputData": {
+                "icoIds": ["{{function:getUidOfObject}}"]
+            },
+            "outputData": {
+                "extractHolderDataResponse": ""
+            },
+            "events": {
+                "success": [ {
+                        "condition": "data.createSetupSheetCheckboxProp.dbValue",
+                        "name": "createSetupSheetAction"
+                    },
+                    {
+                        "condition": "!data.createSetupSheetCheckboxProp.dbValue",
+                        "name": "createNXAsm.closePanel"
+                    },
+                    {
+                        "condition": "!data.createSetupSheetCheckboxProp.dbValue && (ctx.ViewModeContext.ViewModeContext === 'ResourceSummaryView' && (ctx.occmgmtContext.activeTab.id === 'tc_xrt_Overview' || ctx.occmgmtContext.activeTab.id === 'attachments' || ctx.occmgmtContext.activeTab.id === 'tc_xrt_ClassificationInformation'))",
+                        "name": "aceSecondaryWorkArea.refreshTabs"
+                    },
+                    {
+                        "name": "setOriginalHolderDataAccuracyPref"
+                    }
+                ],
+                "failure": [
+                    {
+                        "name": "setOriginalHolderDataAccuracyPref"
+                    },
+                    {
+                        "name": "createNXAsm.closePanel"
+                    }
+                ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "condition": "data.extractHolderDataResponse.partialErrors.length>0",
+                    "message": "mrmFailureErrorMessage"
+                } ],
+                "success": [ {
+                    "condition": "!data.createSetupSheetCheckboxProp.dbValue",
+                    "message": "updateNXToolAssembliesSuccessfulMessage"
+                } ]
+            },
+            "deps": "js/MrmUtils"
+        },
+        "setOriginalHolderDataAccuracyPref": {
+            "actionType": "JSFunction",
+            "method": "setAccuracyPref",
+            "inputData": {
+                "prefValue": "{{data.orgAccuracyPref}}"
+            },
+            "deps": "js/MrmGraphicBuilderUtils"
+        },
+        "createSetupSheetAction": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-Manufacturing-2016-03-ResourceManagement",
+            "method": "createSetupSheets",
+            "inputData": {
+                "icoIds": ["{{function:getUidOfObject}}"]
+            },
+            "outputData": {
+                "createSetupSheetResponse": ""
+            },
+            "deps": "js/MrmUtils",
+            "events": {
+                "success": [ {
+                        "name": "createNXAsm.closePanel"
+                    },
+                    {
+                        "condition": "ctx.ViewModeContext.ViewModeContext === 'ResourceSummaryView' && (ctx.occmgmtContext.activeTab.id === 'tc_xrt_Overview' || ctx.occmgmtContext.activeTab.id === 'attachments' || ctx.occmgmtContext.activeTab.id === 'tc_xrt_ClassificationInformation')",
+                        "name": "aceSecondaryWorkArea.refreshTabs"
+                    }
+                ],
+                "failure": [ {
+                    "name": "createNXAsm.closePanel"
+                } ]
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "condition": "data.createSetupSheetResponse.partialErrors.length>0",
+                    "message": "mrmFailureErrorMessage"
+                } ],
+                "success": [ {
+                    "message": "updateNXToolAssembliesSuccessfulMessage"
+                } ]
+            }
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        }
+    },
+    "onEvent": [ {
+            "eventId": "createSetupSheetAction",
+            "action": "createSetupSheetAction"
+        },
+        {
+            "eventId": "extractHolderDataAction",
+            "action": "extractHolderDataAction"
+        },
+        {
+            "eventId": "createNXAsm.closePanel",
+            "action": "closePanel"
+        },
+        {
+            "eventId": "executeupdateNXToolAssemblies",
+            "action": "executeupdateNXToolAssemblies"
+        },
+        {
+            "eventId": "setOriginalHolderDataAccuracyPref",
+            "action": "setOriginalHolderDataAccuracyPref"
+        },
+        {
+            "eventId": "setPrefForExtractHolderData",
+            "action": "setPrefForExtractHolderData"
+        }
+    ],
+    "conditions": {
+        "isRootTurningAssy": {
+            "expression": "ctx.panelContext && ctx.panelContext.isRootTurningAssy === false"
+        }
+    },
+    "data": {
+        "buildToolAsmCheckboxProp": {
+            "displayName": "{{i18n.Mrm0buildToolAsmAndAddComponents}}",
+            "type": "BOOLEAN",
+            "dbValue": true,
+            "isEditable": false,
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "identifyCuttingNonCuttingGeometryCheckboxProp": {
+            "displayName": "{{i18n.identifyCuttingNonCuttingGeometry}}",
+            "type": "BOOLEAN",
+            "dbValue": true,
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "generateSpinningGeometryCheckboxProp": {
+            "displayName": "{{i18n.generateSpinningGeometry}}",
+            "type": "BOOLEAN",
+            "dbValue": true,
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "setToolJunctionsCheckboxProp": {
+            "displayName": "{{i18n.setToolJunctions}}",
+            "type": "BOOLEAN",
+            "dbValue": true,
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "writeNXPartAttributesCheckboxProp": {
+            "displayName": "{{i18n.writeNXPartAttributes}}",
+            "type": "BOOLEAN",
+            "dbValue": true,
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "extractHolderDataCheckboxProp": {
+            "displayName": "{{i18n.extractHolderData}}",
+            "type": "BOOLEAN",
+            "dbValue": false,
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "simplifyHolderGeometryCheckboxProp": {
+            "displayName": "{{i18n.simplifyHolderGeometry}}",
+            "type": "BOOLEAN",
+            "isEditable": false,
+            "dbValue": false,
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "createSetupSheetCheckboxProp": {
+            "displayName": "{{i18n.createSetupSheet}}",
+            "type": "BOOLEAN",
+            "dbValue": false,
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "tooltipbuildToolAsm": {
+            "extendedTooltipContent": "{{i18n.buildNXToolAssemblyToolTip}}"
+        },
+        "tooltipidentifyCuttingNonCuttingGeometry": {
+            "extendedTooltipContent": "{{i18n.identifyCuttingNonCuttingGeometryToolTip}}"
+        },
+        "tooltipgenerateSpinningGeometry": {
+            "extendedTooltipContent": "{{i18n.generateSpinningGeometryToolTip}}"
+        },
+        "tooltipsetToolJunctions": {
+            "extendedTooltipContent": "{{i18n.setToolJunctionsToolTip}}"
+        },
+        "tooltipwriteNXPartAttributes": {
+            "extendedTooltipContent": "{{i18n.writeNXPartAttributesToolTip}}"
+        },
+        "tooltipsimplifyHolderGeometry": {
+            "extendedTooltipContent": "{{i18n.simplifyHolderGeometryToolTip}}"
+        },
+        "tooltipextractHolderData": {
+            "extendedTooltipContent": "{{i18n.extractHolderDataToolTip}}"
+        },
+        "tooltipcreateSetupSheet": {
+            "extendedTooltipContent": "{{i18n.createSetupSheetToolTip}}"
+        },
+        "createNXAssyInProcess": {
+            "type": "BOOLEAN",
+            "dbValue": false
+        }
+    },
+    "i18n": {
+        "Mrm0buildToolAsmAndAddComponents": [
+            "mrmMessages"
+        ],
+        "identifyCuttingNonCuttingGeometry": [
+            "mrmMessages"
+        ],
+        "generateSpinningGeometry": [
+            "mrmMessages"
+        ],
+        "setToolJunctions": [
+            "mrmMessages"
+        ],
+        "writeNXPartAttributes": [
+            "mrmMessages"
+        ],
+        "extractHolderData": [
+            "mrmMessages"
+        ],
+        "simplifyHolderGeometry": [
+            "mrmMessages"
+        ],
+        "createSetupSheet": [
+            "mrmMessages"
+        ],
+        "MRM0CreateNXToolAssemblyTitle": [
+            "mrmMessages"
+        ],
+        "Mrm0Execute": [
+            "mrmMessages"
+        ],
+        "buildNXToolAssemblyToolTip": [
+            "mrmMessages"
+        ],
+        "identifyCuttingNonCuttingGeometryToolTip": [
+            "mrmMessages"
+        ],
+        "generateSpinningGeometryToolTip": [
+            "mrmMessages"
+        ],
+        "setToolJunctionsToolTip": [
+            "mrmMessages"
+        ],
+        "writeNXPartAttributesToolTip": [
+            "mrmMessages"
+        ],
+        "simplifyHolderGeometryToolTip": [
+            "mrmMessages"
+        ],
+        "extractHolderDataToolTip": [
+            "mrmMessages"
+        ],
+        "createSetupSheetToolTip": [
+            "mrmMessages"
+        ],
+        "nxToolSuccessMessage": [
+            "mrmMessages"
+        ]
+    },
+    "functions": {
+        "getUidOfObject": {
+            "functionName": "getUidOfObject"
+        }
+    },
+    "messages": {
+        "mrmFailureErrorMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        },
+        "updateNXToolAssembliesSuccessfulMessage": {
+                "messageType": "INFO",
+                "messageText": "{{i18n.nxToolSuccessMessage}}"
+            }
+        }
+    }

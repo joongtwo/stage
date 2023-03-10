@@ -1,0 +1,23 @@
+<aw-sublocation
+    sub-panel-context="{provider : {...ctx.aceActiveContext.key === 'occmgmtContext' ? data.view1 : data.view2},
+                        occContext: ctx.aceActiveContext.key === 'occmgmtContext' ? data.occContext : data.occContext2,
+                        inactiveContext : ctx.aceActiveContext.key === 'occmgmtContext' ? data.occContext2 : data.occContext,
+                        contextKey: ctx.aceActiveContext.key === 'occmgmtContext' ? data.view1.contextKey : data.view2.contextKey,
+                        compareContext: data.compareContext}"
+    sub-location-preference="{}">
+    <div class="sw-row h-12 afx-content-background aw-occmgmt-split">
+        <div class="sw-column w-6 aw-occmgmt-split-left" aw-click="actions.activateLeftView">
+            <aw-include name="occurrenceManagement"
+                sub-panel-context="{...subPanelContext, openedObject : data.objectsToOpen[0], provider : data.view1, occContext : data.occContext, contextKey: data.view1.contextKey, selectionData: fields.selectionData}"
+                exist-when="data.objectsToOpen[0].uid">
+            </aw-include>
+        </div>
+        <aw-splitter min-size-1="0" min-size-2="200" exist-when="data.objectsToOpen.length > 1"></aw-splitter>
+        <div class="sw-column w-6 aw-occmgmt-split-right" aw-click="actions.activateRightView">
+            <aw-include name="occurrenceManagement"
+                sub-panel-context="{...subPanelContext, openedObject : data.objectsToOpen[1], provider : data.view2, occContext : data.occContext2, contextKey: data.view2.contextKey , selectionData: fields.selectionData2}"
+                exist-when="data.objectsToOpen.length > 1 && data.objectsToOpen[1].uid">
+            </aw-include>
+        </div>
+    </div>
+</aw-sublocation>

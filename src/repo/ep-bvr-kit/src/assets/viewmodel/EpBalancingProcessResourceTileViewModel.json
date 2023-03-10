@@ -1,0 +1,25 @@
+{
+    "schemaVersion": "1.0.0",
+    "props":{
+        "vmo":{
+            "type":"viewModelObject"
+        },
+        "max": {
+            "type": "string"
+        },
+        "prs": {
+            "type": "boolean"
+        }
+    },
+    "data":{
+    },
+    "actions":{
+        "render":{
+            "method": "epBalancingProcessResourceTileRender",
+            "deps": "js/epBalancingProcessResourceTileService"
+        }
+    },
+    "lifecycleHooks": {
+        "render": "render"
+    }
+}

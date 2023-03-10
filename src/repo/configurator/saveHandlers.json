@@ -1,0 +1,52 @@
+[
+  {
+    "conditions": {
+      "$or": [
+        {
+          "VARIANT_TREE_CONTEXT._editing": {
+            "$eq": "true"
+          }
+        },
+        {
+          "FORMULA_EDIT_CONTEXT._editing": {
+            "$eq": "true"
+          }
+        }
+      ]
+    },
+    "target": {
+      "method": "getSaveHandler",
+      "deps": "js/Pca0VariabilityTreeEditService"
+    }
+  },
+  {
+    "conditions": {
+      "$or": [
+        {
+          "VARIANT_FSC_CONTEXT._editing": {
+            "$eq": "true"
+          }
+        }
+      ]
+    },
+    "target": {
+      "method": "getSaveHandler",
+      "deps": "js/fullScreenConfigurationService"
+    }
+  },
+  {
+    "conditions": {
+      "$or": [
+        {
+          "CONSTRAINTS_EDITOR_TREE_CONTEXT._editing": {
+            "$eq": "true"
+          }
+        }
+      ]
+    },
+    "target": {
+      "method": "getSaveHandler",
+      "deps": "js/Pca0VariabilityTreeEditService"
+    }
+  }
+]

@@ -1,0 +1,29 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data": {
+        "closeCommand": {
+            "action": "publishClosePopupWindow",
+            "iconName": "ClosePanel",
+            "tooltip": "{{i18n.close}}"
+        }
+    },
+    "actions": {
+        "publishClosePopupWindow": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "mfeLargePopup.closeRequest"
+                } ]
+            }
+        }
+    },
+    "i18n":{
+        "close":["mfeMessages"]
+    }
+}

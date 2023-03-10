@@ -1,0 +1,10 @@
+<mfe-loading-message exist-when="data.isLoading"></mfe-loading-message>
+<div class="sw-column w-12 aw-epBalancing-stationTileList" exist-when="!data.isLoading">
+    <aw-scrollpanel class="sw-row w-12">
+        <aw-list dataprovider="data.dataProviders.overviewStationTilesProvider" has-floating-cell-commands="false"
+            show-context-menu="false">
+            <ep-balancing-overview-station-tile vmo="item" max="{{data.max}}">
+            </ep-balancing-station-tile>
+        </aw-list>
+    </aw-scrollpanel>
+</div>

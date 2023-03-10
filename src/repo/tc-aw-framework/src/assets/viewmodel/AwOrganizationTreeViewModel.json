@@ -1,0 +1,219 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "orgTreeDoSearch": {
+            "actionType": "JSFunctionAsync",
+            "method": "doSearch",
+            "inputData": {
+                "searchString": "{{data.orgTreeSearchBox.dbValue}}",
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "ctx.searchCriteria.treeFilterData": "response",
+                "filteringOrgTree": ""
+            },
+            "deps": "js/awOrganizationTreeUtils"
+        },
+        "scrollToSelected": {
+            "actionType": "JSFunction",
+            "method": "scrollToSelected",
+            "inputData": {
+                "data": "{{data}}",
+                "selectedNodeHierarchy": "{{data.selectedTreeNode.hierarchy}}"
+            },
+            "deps": "js/awOrganizationTreeUtils"
+        },
+        "treeNodeSelected": {
+            "actionType": "JSFunction",
+            "method": "treeNodeSelected",
+            "inputData": {
+                "data": "{{data}}",
+                "currentNode": "{{data.eventData.selectedObjects}}",
+                "selectionModelMode": "{{props.selectionModel.mode}}",
+                "selectionData": "{{props.selectionData}}"
+            },
+            "outputData": {
+                "selectedTreeNode": "currentNode",
+                "parents": "parents"
+            },
+            "events": {
+                "success": [ {
+                    "name": "OrgTree.ExpandNode",
+                    "condition": "data.initialExpand == false"
+                } ]
+            },
+            "deps": "js/awOrganizationTreeUtils"
+        },
+        "loadOrgTreeData": {
+            "actionType": "JSFunctionAsync",
+            "method": "getTreeStructure",
+            "inputData": {
+                "treeLoadInput": "request.treeLoadInput",
+                "data": "{{data}}"
+            },
+            "dataParsers": [ {
+                "id": "orgTree",
+                "responseObjs": ""
+            } ],
+            "outputData": {
+                "orgTreeInput": ""
+            },
+            "events": {
+                "success": [ {
+                    "name": "OrgTree.preserveSelection"
+                } ]
+            },
+            "deps": "js/awOrganizationTreeUtils"
+        },
+        "preserveSelection": {
+            "actionType": "JSFunction",
+            "method": "preserveSelection",
+            "inputData": {
+                "data": "{{data}}",
+                "selectionData": "{{props.selectionData}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "OrgTree.ScrollToSelected",
+                    "condition": "data.orgTreeInput.treeLoadResult.parentNode.id !== 'top'"
+                } ]
+            },
+            "deps": "js/awOrganizationTreeUtils"
+        },
+        "loadPropertiesActionJS": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadPropertiesJS",
+            "inputData": {
+                "dataProvider": "{{data}}",
+                "propertyLoadInput": "request.propertyLoadInput"
+            },
+            "outputData": {},
+            "deps": "js/awOrganizationTreeUtils"
+        },
+        "expandTreeNode": {
+            "actionType": "JSFunction",
+            "method": "expandNode",
+            "inputData": {
+                "node": "",
+                "isExpanded": true,
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "initialExpand": ""
+            },
+            "deps": "js/awOrganizationTreeUtils"
+        }
+    },
+    "conditions": {},
+    "onEvent": [
+        {
+            "eventId": "orgTreeTableDataProvider.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "treeNodeSelected"
+        },
+        {
+            "eventId": "OrgTree.preserveSelection",
+            "action": "preserveSelection"
+        },
+        {
+            "eventId": "OrgTree.ExpandNode",
+            "action": "expandTreeNode"
+        },
+        {
+            "eventId": "OrgTree.ScrollToSelected",
+            "action": "scrollToSelected"
+        }
+    ],
+    "data": {
+        "orgTreeName": "prefOrgTree",
+        "selectedTreeNode": null,
+        "filteringOrgTree": false,
+        "initialExpand": false,
+        "parents": null,
+        "orgTreeSearchBox": {
+            "displayName": "{{i18n.orgTreeFilterText}}",
+            "type": "STRING",
+            "requiredText": "{{i18n.orgTreeFilterText}}"
+        }
+    },
+
+    "dataProviders": {
+        "orgTreeTableDataProvider": {
+            "initializeAction": "loadOrgTreeData",
+            "nextAction": "loadOrgTreeData",
+            "previousAction": "loadOrgTreeData",
+            "treeLoadResult": "action.result.treeLoadResult",
+            "selectionModelMode": "multiple",
+            "inputData": {
+                "accessMode": "tree",
+                "selectionModel": "{{props.selectionMode}}"
+            },
+            "response": "data.response"
+        },
+        "orgTreeTablePropertyProvider": {
+            "action": "loadPropertiesActionJS",
+            "propertyLoadResult": "action.result.propertyLoadResult"
+        }
+    },
+
+    "columnProviders": {
+        "orgTreeTableColumnProvider": {
+            "columns": [ {
+                "name": "Test",
+                "isTreeNavigation": true,
+                "isTableCommand": false,
+                "enableSorting": false,
+                "width": 450,
+                "minWidth": 450,
+                "enableColumnMoving": false
+            } ],
+            "soaEnabled": false,
+            "sortCriteria": [],
+            "frozenColumnIndex": -1
+        }
+    },
+
+    "grids": {
+        "orgTreeTable12": {
+            "dataProvider": "orgTreeTableDataProvider",
+            "propertyProvider": "orgTreeTablePropertyProvider",
+            "columnProvider": "orgTreeTableColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "useStaticFirstCol": true
+            }
+        }
+    },
+
+    "dataParseDefinitions": {
+        "orgTree": {
+            "identifier": "AAAAAAAAAAAAAA",
+            "props": {
+                "object_name": {
+                    "name": "object_name",
+                    "displayName": "",
+                    "value": "{{response.label}}",
+                    "displayValue": "{{response.label}}",
+                    "type": "STRING"
+                }
+            }
+        }
+    },
+    "functions": {},
+    "messages": {},
+    "i18n": {
+        "orgTreeFilterText": [ "OrganizationMessages" ],
+        "Organization":["OrganizationMessages"]
+    },
+    "lifecycleHooks": {
+    },
+    "props": {
+        "selection-model": {
+            "type": "object"
+        },
+        "selection-data": {
+            "type": "object"
+        }
+    }
+}

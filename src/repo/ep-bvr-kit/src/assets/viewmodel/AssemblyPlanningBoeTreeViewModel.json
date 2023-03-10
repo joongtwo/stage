@@ -1,0 +1,99 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions": {
+
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "boeTreeContext.tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+
+    "data": {
+        "isLoading": true,
+        "boeTreeContext": {
+            "objectUid": "{{ctx.epPageContext.loadedObject.uid}}",
+            "isTopNode": false,
+            "preferenceName": "EP_BoeTreeTableColumnConfiguration",
+            "loadTypes": "CommonExpand",
+            "rootAdditionalLoadParams": [
+                {
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandResourcesDetailedPlanning"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "TOP_WITH_CHILDREN"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "rootsProperty",
+                    "attributeValue": "associatedResources"
+                }
+            ],
+            "childLoadTypes": "CommonExpand",
+            "childAdditionalLoadParams": [{
+                    "tagName": "expandType",
+                    "attributeName": "type",
+                    "attributeValue": "ExpandResourcesDetailedPlanning"
+                },
+                {
+                    "tagName": "expandInfo",
+                    "attributeName": "level",
+                    "attributeValue": "CHILDREN"
+                }
+            ],
+            "additionalPolicyObjects": {
+                "types": [{
+                    "name": "BOMLine",
+                    "properties": [
+                        {
+                            "name": "bl_has_children"
+                        }
+                    ]
+                }]
+            },
+            "relatedObjectMapKey": ["childAssembly", "associatedResources"],
+            "relationName": ["Mfg0assigned_workarea"],
+            "isScopeOrTarget": "Target",
+            "treeNavigationColumnIndex": 1,
+            "messages": {
+                "noBoeStructure": [{
+                    "text": "{{i18n.noBoeStructure}}"
+                }]
+            },
+            "customColumns":
+            [
+                {
+                    "clientColumn": true,
+                    "name": "graphicVisibility",
+                    "propertyDisplayName": "{{i18n.GraphicVisibilityColumnName}}"
+                }
+            ]
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "getValueInViewModel"
+    },
+
+    "i18n": {
+        "noBoeStructure": [ "AssemblyMessages" ]
+    }
+}

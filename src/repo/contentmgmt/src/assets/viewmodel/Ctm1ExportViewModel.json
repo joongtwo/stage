@@ -1,0 +1,360 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-command-panel.directive",
+        "js/aw-panel-body.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-panel-section.directive",
+        "js/aw-listbox.directive",
+        "js/aw-radiobutton.directive",
+        "js/aw-checkbox.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive"
+    ],
+    "actions": {
+        "reveal": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                        "name": "ctm1.getLanguages"
+                    },
+                    {
+                        "name": "ctm1.getGraphicPriorities"
+                    }
+                ]
+            }
+        },
+
+        "Ctm1GetLanguages": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "__ctm0_Language_Query",
+                        "searchID": "LANGUAGE_QUERY",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0",
+                        "lastEndIndex": "0",
+                        "languageName": "*",
+                        "startIndex": "0"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "languageName",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "policy": {
+                "types": [ {
+                    "name": "DCt_Language",
+                    "properties": [ {
+                        "name": "languageName"
+                    } ]
+                } ]
+            },
+
+            "outputData": {
+                "languageList": "{{function:getLanguageList}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1GetGraphicPriority": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "__ctm0_Graphic_Priority_Query",
+                        "searchID": "GRAPHIC_PRIORITY_QUERY",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0",
+                        "lastEndIndex": "0",
+                        "grphPrioName": "*",
+                        "startIndex": "0"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "object_name",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "outputData": {
+                "graphicPriorityList": "{{function:getLovFromQuery}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1ExportAction": {
+            "actionType": "TcSoaService",
+            "serviceName": "ContMgmtBase-2011-06-ContentManagement",
+            "method": "composeContent",
+            "inputData": {
+                "input": [ {
+                    "clientId": "export",
+                    "composableBO": "{{function:ctm1GetUnderlyingObject}}",
+                    "revisionRule": null,
+                    "keyValueArgs": {
+                        "actionType": "export",
+                        "translationVersion": "matchTopic",
+                        "grphPrioName": "{{data.graphicPriority.dbValue}}",
+                        "languageName": "{{data.language.uiValue}}",
+                        "graphicMode": "{{data.graphicMode.dbValue}}",
+                        "includeMainContent": "{{data.includeMainContent.uiValue}}",
+                        "includeSchemas": "{{data.includeSupportingData.uiValue}}",
+                        "includeGraphics": "{{data.includeGraphicData.uiValue}}",
+                        "includeContentRefs": "{{data.includeContentReferences.uiValue}}",
+                        "includeComposeRefs": "{{data.includeComposeReferences.uiValue}}"
+                    },
+                    "processingDataVars": {
+                        "{root-dir}": "C:\\Temp\\"
+                    }
+                } ]
+            },
+            "outputData": {
+                "composedData": "composedData"
+            },
+            "events": {
+                "success": [ {
+                    "name": "ctm1.exportReady",
+                    "eventData": {
+                        "composedData": [
+                            "{{data.composedData}}"
+                        ]
+                    }
+                } ],
+                "failure": [{
+                    "name": "ctm1.exportWithError",
+                    "condition": "errorCode.code === 239506"
+                }]
+            },
+            "actionMessages": {
+                "failure": [
+                    {
+                        "message": "exportFailure"
+                    }
+                ]
+            },
+            "deps": "soa/kernel/clientDataModel"
+        },
+
+        "Ctm1DownloadFile": {
+            "actionType": "JSFunction",
+            "method": "downloadFile",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtService"
+        }
+    },
+    "functions": {
+        "ctm1GetUnderlyingObject": {
+            "functionName": "getObject",
+            "parameters": [
+                "{{ctx.selected.props.awb0UnderlyingObject.dbValues[0]}}"
+            ]
+        },
+        "getLanguageList": {
+            "functionName": "getLanguageResponseList",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getLovFromQuery": {
+            "functionName": "getLovFromQuery",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "onEvent": [ {
+            "eventId": "ctm1.getLanguages",
+            "action": "Ctm1GetLanguages",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.getGraphicPriorities",
+            "action": "Ctm1GetGraphicPriority",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.exportReady",
+            "action": "Ctm1DownloadFile",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.exportWithError",
+            "action": "Ctm1DownloadFile",
+            "cacheEventData": true
+        }
+    ],
+    "data": {
+        "language": {
+            "displayName": "{{i18n.language}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "languageList": {
+            "type": "STRING",
+            "dbValue": []
+        },
+        "graphicMode": {
+            "displayName": "{{i18n.graphicMode}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "publicId",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE",
+            "vertical": "true"
+        },
+        "graphicModeValues": {
+            "type": "STRING",
+            "dbValue": [ {
+                    "propDisplayValue": "{{i18n.publicId}}",
+                    "propInternalValue": "publicId"
+                },
+                {
+                    "propDisplayValue": "{{i18n.originalName}}",
+                    "propInternalValue": "originalName"
+                },
+                {
+                    "propDisplayValue": "{{i18n.xmlNumber}}",
+                    "propInternalValue": "xmlNumber"
+                },
+                {
+                    "propDisplayValue": "{{i18n.graphicName}}",
+                    "propInternalValue": "graphicName"
+                }
+            ]
+        },
+        "graphicPriority": {
+            "displayName": "{{i18n.graphicPriority}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "graphicPriorityList": {
+            "type": "STRING",
+            "dbValue": []
+        },
+        "transformPolicy": {
+            "displayName": "{{i18n.transformPolicy}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "hasLov": "true",
+            "dbValue": ""
+        },
+        "transformPolicyList": {
+            "type": "STRING",
+            "dbValue": []
+        },
+        "includeMainContent": {
+            "displayName": "{{i18n.includeMainContent}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "includeSupportingData": {
+            "displayName": "{{i18n.includeSupportingData}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "includeGraphicData": {
+            "displayName": "{{i18n.includeGraphicData}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "includeContentReferences": {
+            "displayName": "{{i18n.includeContentReferences}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "includeComposeReferences": {
+            "displayName": "{{i18n.includeComposeReferences}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+    "lifecycleHooks": {
+        "onInit": "reveal"
+    },
+    "messages": {
+        "exportFailure": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        }
+    },
+    "i18n": {
+        "export": [ "ContentMgmtMessages" ],
+        "exportTopic": [ "ContentMgmtMessages" ],
+        "content": [ "ContentMgmtMessages" ],
+        "references": [ "ContentMgmtMessages" ],
+        "language": [ "ContentMgmtMessages" ],
+        "graphicMode": [ "ContentMgmtMessages" ],
+        "graphicPriority": [ "ContentMgmtMessages" ],
+        "transformPolicy": [ "ContentMgmtMessages" ],
+        "includeMainContent": [ "ContentMgmtMessages" ],
+        "includeSupportingData": [ "ContentMgmtMessages" ],
+        "includeGraphicData": [ "ContentMgmtMessages" ],
+        "includeContentReferences": [ "ContentMgmtMessages" ],
+        "includeComposeReferences": [ "ContentMgmtMessages" ],
+        "publicId": [ "ContentMgmtMessages" ],
+        "originalName": [ "ContentMgmtMessages" ],
+        "xmlNumber": [ "ContentMgmtMessages" ],
+        "graphicName": [ "ContentMgmtMessages" ],
+        "graphics": [ "ContentMgmtMessages" ]
+    }
+}

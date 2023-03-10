@@ -1,0 +1,16 @@
+<aw-popup2>
+    <aw-panel-body>
+        <aw-link-with-popup-menu prop="data.currentActivity" dataprovider="data.dataProviders.customActivity" visible-when="data.dataProviders.customActivity.viewModelCollection.loadedVMObjects.length > 1"></aw-link-with-popup-menu>
+        <aw-xrt type="CREATE" object-type="{{data.selectedType.dbValue}}" xrt-state="data.xrtState"></aw-xrt>
+    </aw-panel-body>
+
+    <aw-panel-footer>
+        <aw-button button-type="base" action="ClosePopUpAction" size="auto">
+            <aw-i18n>i18n.Cancel</aw-i18n>
+        </aw-button>
+        <aw-button size="auto" action="AddActivityBatchJob" visible-when="formProp.attributes.valid">
+            <aw-i18n>i18n.Add</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+
+</aw-popup2>

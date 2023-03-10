@@ -1,0 +1,805 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "EpAssignmentIndicationToggle_assignmentIndicationMode": {
+            "syncObject": {}
+        },
+        "EpAssignmentIndicationToggle_selectedProcessOrOperation": {
+            "onChangeAction": "handleProcessOrOperationSelection",
+            "syncObject": {}
+        },
+        "EpAssignmentIndicationToggle_selectedParts": {
+            "onChangeAction": "handlePartsSelection",
+            "syncObject": {}
+        },
+        "EpAssignmentIndicationToggle_selectedPmis": {
+            "syncObject": {}
+        },
+        "EpAssignmentIndicationToggle_updateSharedSelectionData": {
+            "onChangeAction": "setSharedSelectionData",
+            "syncObject": {}
+        },
+        "EpAssignmentIndicationToggle_toBeSelectedAssignedPmis": {
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "turnOnToggleOnLoad": false,
+        "assignmentIndicationToggleCommand": {
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "dbValue": false
+        },
+        "assignmentIndicationToggleLbl": {
+            "displayName": "",
+            "type": "STRING",
+            "dispValue": "{{i18n.assignmentIndicationLabel}}"
+        },
+        "overConsumedInfoChips": {
+            "dbValues": [
+                {
+                    "chipType": "STATIC",
+                    "iconId": "indicatorMultipleAssignmentsError",
+                    "labelDisplayName": "0",
+                    "labelInternalName": "0",
+                    "countOf": "OverConsumedIndication",
+                    "tooltipText": "{{i18n.overConsumedIndicationTooltipText}}"
+                },
+                {
+                    "chipType": "STATIC",
+                    "iconId": "indicatorMissingInSource",
+                    "labelDisplayName": "0",
+                    "labelInternalName": "0",
+                    "countOf": "missingInSrc",
+                    "tooltipText": "{{i18n.missingInSrcTooltipText}}"
+                }
+            ]
+        }
+    },
+    "actions": {
+        "updateChangeIndication": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "destroyChangeIndicationKeys"
+                },
+                {
+                    "action": "getChangeIndication"
+                },
+                {
+                    "action": "publishAssignmentIndicationChange"
+                }
+            ]
+        },
+        "destroyChangeIndicationKeys": {
+            "actionType": "JSFunction",
+            "method": "destroy",
+            "inputData": {
+                "indicationMode": false,
+                "reloadInputName": "{{data.affectedUIds.response}}"
+            },
+            "deps": "js/epChangeIndicationService"
+        },
+        "resetAssignmentIndicationValue": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": false
+            },
+            "outputData": {
+                "assignmentIndicationToggleCommand.dbValue": "",
+                "assignmentIndicationToggleCommand.value": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "explicitToggleOffAssignmentIndication": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "resetAssignmentIndicationValue"
+                },
+                {
+                    "action": "loadAssignmentIndication",
+                    "condition": "conditions.isAssignmentIndicationModeOn"
+                },
+                {
+                    "action": "getChangeIndication",
+                    "condition": "conditions.isBOPhasImpactedChanges"
+                },
+                {
+                    "action": "registerReloadForCurrentScope",
+                    "condition": "conditions.isAssignmentIndicationModeOn"
+                },
+                {
+                    "action": "calculateAssignmentIndicationCount",
+                    "condition": "conditions.isAssignmentIndicationModeOn"
+                },
+                {
+                    "action": "resetAssignmentIndicationCache"
+                },
+                {
+                    "action": "resetChangeIndicationCache"
+                },
+                {
+                    "action": "publishAssignmentIndicationChange"
+                }
+            ]
+        },
+        "handleToggleStateChange": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "saveAssignmentIndicationMode"
+                },
+                {
+                    "action": "loadAssignmentIndication",
+                    "condition": "conditions.isAssignmentIndicationModeOn"
+                },
+                {
+                    "action": "getChangeIndication",
+                    "condition": "conditions.isBOPhasImpactedChanges"
+                },
+                {
+                    "action": "registerReloadForCurrentScope",
+                    "condition": "conditions.isAssignmentIndicationModeOn"
+                },
+                {
+                    "action": "calculateAssignmentIndicationCount",
+                    "condition": "conditions.isAssignmentIndicationModeOn"
+                },
+                {
+                    "action": "resetAssignmentIndicationCache"
+                },
+                {
+                    "action": "resetChangeIndicationCache"
+                },
+                {
+                    "action": "publishAssignmentIndicationChange"
+                },
+                {
+                    "action": "updateSharedSelectionData"
+                }
+            ]
+        },
+        "getChangeIndication": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadChangeIndication",
+            "inputData": {
+                "inputObject": "{{commandContext}}"
+            },
+            "outputData": {
+                "affectedUIds": ""
+            },
+            "deps": "js/epChangeIndicationService"
+        },
+        "resetChangeIndicationCache": {
+            "actionType": "JSFunction",
+            "method": "destroy",
+            "inputData": {
+                "indicationMode": "{{data.assignmentIndicationToggleCommand.dbValue}}",
+                "reloadInputName": "{{data.affectedUIds.response}}"
+            },
+            "deps": "js/epChangeIndicationService"
+        },
+        "saveAssignmentIndicationMode": {
+            "actionType": "JSFunction",
+            "method": "setGlobalAssignmentIndicationToggleValue",
+            "inputData": {
+                "value": "{{data.assignmentIndicationToggleCommand.dbValue}}"
+            },
+            "deps": "js/epToggleService"
+        },
+        "loadAssignmentIndication": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadAssignmentIndication",
+            "inputData": {
+                "accountabilityInputObject": {
+                    "checkType": "{{function:getCheckType}}",
+                    "currentScope": "{{ctx.epPageContext.loadedObject}}",
+                    "sourceObject": "{{ctx.ep.loadedProductObject}}",
+                    "targetObject": "{{ctx.epPageContext.processStructure}}"
+                }
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "resetAssignmentIndicationCache": {
+            "actionType": "JSFunction",
+            "method": "destroy",
+            "inputData": {
+                "indicationMode": "{{data.assignmentIndicationToggleCommand.dbValue}}",
+                "reloadInputName": "epAssignmentIndication"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "registerReloadForCurrentScope": {
+            "actionType": "JSFunction",
+            "method": "registerReloadForCurrentScopeInput",
+            "inputData": {
+                "isMciTemplateDeployed": "{{ctx.ep.deployedTemplates.mci0mfgcharacteristics}}",
+                "currentScope": "{{ctx.epPageContext.loadedObject.uid}}",
+                "sourceObject": "{{ctx.ep.loadedProductObject.uid}}",
+                "targetObject": "{{ctx.epPageContext.processStructure.uid}}"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "publishAssignmentIndicationChange": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpAssignmentIndicationToggle_assignmentIndicationMode",
+                "syncObject": {
+                    "isIndicationToggleOn": "{{data.assignmentIndicationToggleCommand.dbValue}}"
+                }
+            }
+        },
+        "calculateAssignmentIndicationCount": {
+            "actionType": "JSFunction",
+            "method": "getAssignmentIndicationCount",
+            "inputData": {
+                "assignmentIndicationMode": "{{data.assignmentIndicationToggleCommand.dbValue}}",
+                "data": "{{data.overConsumedInfoChips}}"
+            },
+            "outputData": {
+                "overConsumedInfoChips": ""
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "handlePartsSelection": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "handleNewInputForSingleObject"
+                },
+                {
+                    "action": "getParentOfSelectedObject",
+                    "condition": "conditions.isDataAvailableInProcessAndPartsPort"
+                },
+                {
+                    "action": "createVmoFromModelObject",
+                    "condition": "conditions.isDataAvailableInProcessAndPartsPort"
+                },
+                {
+                    "action": "publishSelectionToSelectedProcessSyncManager",
+                    "condition": "conditions.isDataAvailableInProcessAndPartsPort"
+                },
+                {
+                    "action": "saveSelectedPartInData",
+                    "condition": "conditions.isDataAvailableInProcessAndPartsPort"
+                },
+                {
+                    "action": "publishSelectionToPartsTable",
+                    "condition": "data.isInputObjectUpdated === true && data.selectedPart.modelType.typeHierarchyArray.indexOf( 'Mfg0BvrPart' ) > -1"
+                },
+                {
+                    "action": "publishSelectionToAssignedPmisTable",
+                    "condition": "data.isInputObjectUpdated === true && data.selectedPart.modelType.typeHierarchyArray.indexOf( 'Mci0InspectionRevision' ) > -1"
+                }
+            ]
+        },
+        "saveSelectedPartInData": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{ports.EpAssignmentIndicationToggle_selectedParts.syncObject[0]}}"
+            },
+            "outputData": {
+                "selectedPart": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "handleNewInputForSingleObject": {
+            "actionType": "JSFunction",
+            "method": "handleNewInputForSingleObject",
+            "inputData": {
+                "data": "{{data.inputObject}}",
+                "selectedObjects": "{{ports.EpAssignmentIndicationToggle_selectedParts.syncObject}}"
+            },
+            "outputData": {
+                "inputObject": "inputObject",
+                "isInputObjectUpdated": "isInputObjectUpdated"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "createVmoFromModelObject": {
+            "actionType": "JSFunction",
+            "method": "createViewModelObjectFromModelObject",
+            "inputData": {
+                "selectedObjects": "{{data.selectedObjectParent}}"
+            },
+            "outputData": {
+                "processOrOperationTobeSelected": ""
+            },
+            "deps": "js/services/mfeViewModelObjectLifeCycleService"
+        },
+        "getParentOfSelectedObject": {
+            "actionType": "JSFunction",
+            "method": "getSelectedObjectParent",
+            "inputData": {
+                "selectedObjects": "{{ports.EpAssignmentIndicationToggle_selectedParts.syncObject}}"
+            },
+            "outputData": {
+                "selectedObjectParent": "selectedObjectParent"
+            },
+            "deps": "js/epTableService"
+        },
+        "publishSelectionToSelectedProcessSyncManager": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpAssignmentIndicationToggle_selectedProcessOrOperation",
+                "syncObject": "{{data.processOrOperationTobeSelected}}"
+            }
+        },
+        "publishSelectionToPartsTable": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpAssignmentIndicationToggle_selectedParts",
+                "syncObject": "{{ports.EpAssignmentIndicationToggle_selectedParts.syncObject}}"
+            }
+        },
+        "publishSelectionToAssignedPmisTable": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpAssignmentIndicationToggle_selectedPmis",
+                "syncObject": "{{ports.EpAssignmentIndicationToggle_selectedParts.syncObject}}"
+            }
+        },
+        "handleProcessOrOperationSelection": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateDataAndGetProcessOrOperationTobeSelected"
+                },
+                {
+                    "action": "publishSelectionToSelectedProcessSyncManager",
+                    "condition": "conditions.isSelectedProcessOrOperationDataAvailableInPort"
+                },
+                {
+                    "action": "publishPartTobeSelectedToPartsTable",
+                    "condition": "conditions.isSelectedPartDataAvailableInPort"
+                },
+                {
+                    "action": "publishToBeSelectedPmiToAssingedPmiTable",
+                    "condition": "conditions.isSelectedPmiDataAvailableInPort"
+                },
+                {
+                    "action": "closeAssignedInListPopup"
+                }
+            ]
+        },
+        "updateDataAndGetProcessOrOperationTobeSelected": {
+            "actionType": "JSFunction",
+            "method": "updateDataAndGetProcessOrOperationTobeSelected",
+            "inputData": {
+                "inputObject": "{{ports.EpAssignmentIndicationToggle_selectedProcessOrOperation.syncObject}}"
+            },
+            "outputData": {
+                "processOrOperationTobeSelected": "processOrOperationTobeSelected",
+                "partTobeSelected": "partTobeSelected",
+                "pmiTobeSelected": "pmiTobeSelected",
+                "hasProcessOrOperationTobeSelected": "hasProcessOrOperationTobeSelected",
+                "hasPartTobeSelected": "hasPartTobeSelected",
+                "hasPmiTobeSelected": "hasPmiTobeSelected"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "publishPartTobeSelectedToPartsTable": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpAssignmentIndicationToggle_selectedParts",
+                "syncObject": "{{data.partTobeSelected}}"
+            }
+        },
+        "publishToBeSelectedPmiToAssingedPmiTable": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpAssignmentIndicationToggle_toBeSelectedAssignedPmis",
+                "syncObject": "{{data.pmiTobeSelected}}"
+            }
+        },
+        "initializeAndCheckForSelection": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "getToggleStateBasedOnLocalStorage"
+                },
+                {
+                    "action": "turnOnAssignmentIndicationOnNewTab",
+                    "condition": "conditions.turnOnToggleOnLoad"
+                },
+                {
+                    "action": "saveAssignmentIndicationMode",
+                    "condition": "conditions.turnOnToggleOnLoad"
+                },
+                {
+                    "action": "loadAssignmentIndication",
+                    "condition": "conditions.turnOnToggleOnLoad"
+                },
+                {
+                    "action": "getChangeIndication",
+                    "condition": "conditions.isBOPhasImpactedChanges"
+                },
+                {
+                    "action": "registerReloadForCurrentScope",
+                    "condition": "conditions.turnOnToggleOnLoad"
+                },
+                {
+                    "action": "calculateAssignmentIndicationCount",
+                    "condition": "conditions.turnOnToggleOnLoad"
+                },
+                {
+                    "action": "publishAssignmentIndicationChange",
+                    "condition": "conditions.turnOnToggleOnLoad"
+                },
+                {
+                    "action": "updateSharedSelectionData",
+                    "condition": "conditions.turnOnToggleOnLoad"
+                },
+                {
+                    "action": "getNodeToBeSelectedFromLocalStorage",
+                    "outputArg": [
+                        "nodesTobSelected"
+                    ]
+                },
+                {
+                    "action": "publishProcessSelection",
+                    "inputArg": {
+                        "processOrOperationTobeSelected": "{{actionData.nodesTobSelected.processOrOperationTobeSelected}}"
+                    },
+                    "condition": "response.actionData.nodesTobSelected.processOrOperationTobeSelected.uid"
+                },
+                {
+                    "action": "getNodeToBeSelectedFromLocalStorage",
+                    "outputArg": [
+                        "nodesTobSelected"
+                    ]
+                },
+                {
+                    "action": "publishPartSelection",
+                    "inputArg": {
+                        "partsTobeSelected": "{{actionData.nodesTobSelected.partsTobeSelected}}"
+                    }
+                },
+                {
+                    "action": "removeSelectionInfoFromLocalStorage"
+                }
+            ]
+        },
+        "turnOnAssignmentIndicationOnNewTab": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": true
+            },
+            "outputData": {
+                "assignmentIndicationToggleCommand.dbValue": "",
+                "assignmentIndicationToggleCommand.value": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "getToggleStateBasedOnLocalStorage": {
+            "actionType": "JSFunction",
+            "method": "getToggleStateBasedOnLocalStorage",
+            "inputData": {
+                "key": "epAssignmentIndicationFindInAnotherScope",
+                "scopedObject": "{{ctx.epPageContext.processStructure.uid}}",
+                "data": "{{data}}"
+            },
+            "deps": "js/epToggleService"
+        },
+        "getNodeToBeSelectedFromLocalStorage": {
+            "actionType": "JSFunction",
+            "method": "getNodeToBeSelectedFromLocalStorage",
+            "inputData": {
+                "key": "epAssignmentIndicationFindInAnotherScope",
+                "scopedObject": "{{ctx.epPageContext.processStructure.uid}}"
+            },
+            "outputData": {
+                "nodesTobSelected": ""
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "publishProcessSelection": {
+            "actionType": "Sync",
+            "parameters": {
+                "processOrOperationTobeSelected": "{{actionData.nodesTobSelected.processOrOperationTobeSelected}}"
+            },
+            "inputData": {
+                "port": "EpAssignmentIndicationToggle_selectedProcessOrOperation",
+                "syncObject": "{{parameters.processOrOperationTobeSelected}}"
+            }
+        },
+        "publishPartSelection": {
+            "actionType": "Sync",
+            "parameters": {
+                "partsTobeSelected": "{{actionData.nodesTobSelected.partsTobeSelected}}"
+            },
+            "inputData": {
+                "port": "EpAssignmentIndicationToggle_selectedParts",
+                "syncObject": "{{parameters.partsTobeSelected}}"
+            }
+        },
+        "removeSelectionInfoFromLocalStorage": {
+            "actionType": "JSFunction",
+            "method": "removeItem",
+            "inputData": {
+                "name": "epAssignmentIndicationFindInAnotherScope"
+            },
+            "deps": "js/localStorage"
+        },
+        "destroyOnUnmountAct": {
+            "actionType": "JSFunction",
+            "method": "destroy",
+            "inputData": {
+                "indicationMode": false,
+                "reloadInputName": "epAssignmentIndication"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "cleanCache": {
+            "actionType": "JSFunction",
+            "method": "destroy",
+            "inputData": {
+                "indicationMode": false,
+                "reloadInputName": "{{data.affectedUIds.response}}"
+            },
+            "deps": "js/epChangeIndicationService"
+        },
+        "destroyOnUnmount": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "destroyOnUnmountAct"
+                },
+                {
+                    "action": "cleanCache"
+                }
+            ]
+        },
+        "handleAccountabilitySaveEvent": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateAccountabilityCache"
+                },
+                {
+                    "action": "calculateAssignmentIndicationCount"
+                },
+                {
+                    "action": "publishAssignmentIndicationChange"
+                }
+            ]
+        },
+        "updateAccountabilityCache": {
+            "actionType": "JSFunction",
+            "method": "updateAccountabilityResponseCache",
+            "inputData": {
+                "assignmentIndicationMode": "{{data.assignmentIndicationToggleCommand.dbValue}}",
+                "saveEvents": "{{parameters.eventData}}"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "handleSaveEvents": {
+            "actionType": "JSFunction",
+            "method": "handleSaveEvents",
+            "inputData": {
+                "saveEventData": "{{parameters.eventData}}"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "handleAssignmentIndicationClickEvent": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "cleanUpAssignmentIndicationAssignedInDataFromCache"
+                },
+                {
+                    "action": "loadAssignmentIndicationAssignedInData",
+                    "condition": "conditions.loadAllInOutScope"
+                },
+                {
+                    "action": "loadAssignmentIndicationAssignedInDataOnlyInScope",
+                    "condition": "conditions.loadOnlyInScope"
+                },
+                {
+                    "action": "showAssignedInPopup"
+                }
+            ]
+        },
+        "cleanUpAssignmentIndicationAssignedInDataFromCache": {
+            "actionType": "JSFunction",
+            "method": "cleanUpAssignmentIndicationAssignedInDataFromCache",
+            "inputData": {
+                "inputObjectUid": "{{data.eventMap['ep.assignmentIndicationIconClickEvent'].contextObject.nodeToFindId}}"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "loadAssignmentIndicationAssignedInData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadAssignmentIndicationAssignedInData",
+            "inputData": {
+                "findNodeInContextInputObject": {
+                    "searchType": "FindProductInProcessBop",
+                    "currentScope": "{{ctx.epPageContext.loadedObject}}",
+                    "nodeToFind": "{{data.eventMap['ep.assignmentIndicationIconClickEvent'].contextObject.nodeToFindId}}",
+                    "contextObject": "{{ctx.epPageContext.processStructure}}"
+                }
+            },
+            "outputData": {
+                "inScope": "inScopeNodes",
+                "outOfScope": "outOfScopeNodes"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "loadAssignmentIndicationAssignedInDataOnlyInScope": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadAssignmentIndicationAssignedInData",
+            "inputData": {
+                "findNodeInContextInputObject": {
+                    "searchType": "FindProductInProcessBop",
+                    "currentScope": "{{ctx.epPageContext.loadedObject}}",
+                    "nodeToFind": "{{data.eventMap['ep.assignmentIndicationIconClickEvent'].contextObject.nodeToFindId}}",
+                    "contextObject": "{{ctx.epPageContext.loadedObject}}"
+                }
+            },
+            "outputData": {
+                "inScope": "inScopeNodes",
+                "outOfScope": "outOfScopeNodes"
+            },
+            "deps": "js/epAssignmentIndicationService"
+        },
+        "showAssignedInPopup": {
+            "actionType": "JSFunction",
+            "method": "show",
+            "inputData": {
+                "options": {
+                    "view": "EpAssignmentIndicationAssignedInListPopup",
+                    "placement": "bottom-start",
+                    "whenParentScrolls": "close",
+                    "reference": "{{data.eventMap['ep.assignmentIndicationIconClickEvent'].contextObject.popupReferenceElement}}",
+                    "subPanelContext": {
+                        "contextObject": "{{data.eventMap['ep.assignmentIndicationIconClickEvent'].contextObject}}",
+                        "inScope": "{{data.inScope}}",
+                        "outOfScope": "{{data.outOfScope}}"
+                    }
+                }
+            },
+            "outputData": {
+                "popupId": "id"
+            },
+            "deps": "js/popupService"
+        },
+        "closeAssignedInListPopup": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "inputData": {
+                "popupEl": "{{data.popupId}}"
+            },
+            "deps": "js/popupService"
+        },
+        "setSharedSelectionData": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": "{{ports.EpAssignmentIndicationToggle_updateSharedSelectionData.syncObject}}"
+            },
+            "outputData": {
+                "sharedSelectionData": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "updateSharedSelectionData": {
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetAtomicData": "{{data.sharedSelectionData}}",
+                "updatedValues": {
+                    "isIndicationToggleOn": "{{data.assignmentIndicationToggleCommand.dbValue}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "functions": {
+        "getCheckType": {
+            "functionName": "getCheckType",
+            "parameters": [
+                "{{ctx.ep.deployedTemplates.mci0mfgcharacteristics}}"
+            ],
+            "deps": "js/epAssignmentIndicationService"
+        }
+    },
+    "conditions": {
+        "turnOnToggleOnLoad": {
+            "expression": "data.turnOnToggleOnLoad && ctx.ep.loadedProductObject && ctx.ep.loadedProductObject !== null && ctx.ep.loadedProductObject.uid"
+        },
+        "isAssignmentIndicationModeOn": {
+            "expression": "data.assignmentIndicationToggleCommand.dbValue === true"
+        },
+        "isDataAvailableInProcessAndPartsPort": {
+            "expression": "data.isInputObjectUpdated === true"
+        },
+        "isSelectedProcessOrOperationDataAvailableInPort": {
+            "expression": "data.hasProcessOrOperationTobeSelected === true"
+        },
+        "isSelectedPartDataAvailableInPort": {
+            "expression": "data.hasPartTobeSelected === true"
+        },
+        "isSelectedPmiDataAvailableInPort": {
+            "expression": "data.hasPmiTobeSelected === true"
+        },
+        "isToggleButtonEnabled": {
+            "expression": "ctx.ep.loadedProductObject && ctx.ep.loadedProductObject !== null && ctx.ep.loadedProductObject.uid"
+        },
+        "isBOPhasImpactedChanges": {
+            "expression": "ctx.state.params.impacting_cn && data.assignmentIndicationToggleCommand.dbValue"
+        },
+        "loadOnlyInScope": {
+            "expression": "ctx.preferences.EP_USE_SCOPE_ONLY && ctx.preferences.EP_USE_SCOPE_ONLY[0] === 'true'"
+        },
+        "loadAllInOutScope": {
+            "expression": "!ctx.preferences.EP_USE_SCOPE_ONLY || ctx.preferences.EP_USE_SCOPE_ONLY[0] === 'false'"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "ep.accountabilityEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "action": "handleAccountabilitySaveEvent"
+        },
+        {
+            "eventId": "wiAssignedPmi.pmiUpdate",
+            "action": "updateChangeIndication",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "condition": "conditions.isBOPhasImpactedChanges"
+        },
+        {
+            "eventId": "ep.explicitToggleOffAssignmentIndicationEvent",
+            "action": "explicitToggleOffAssignmentIndication"
+        },
+        {
+            "eventId": "appCtx.update",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "criteria": {
+                "name": "ep",
+                "target": "loadedProductObject"
+            },
+            "action": "initializeAndCheckForSelection"
+        },
+        {
+            "eventId": "ep.saveEvents",
+            "action": "handleSaveEvents",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            },
+            "condition": "conditions.isAssignmentIndicationModeOn"
+        },
+        {
+            "eventId": "ep.assignmentIndicationIconClickEvent",
+            "action": "handleAssignmentIndicationClickEvent",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "LOCATION_CHANGE_COMPLETE",
+            "action": "explicitToggleOffAssignmentIndication"
+        }
+    ],
+    "i18n": {
+        "assignmentIndicationLabel": [
+            "assignmentIndicationMessages"
+        ],
+        "overConsumedIndicationTooltipText": [
+            "assignmentIndicationMessages"
+        ],
+        "missingInSrcTooltipText": [
+            "assignmentIndicationMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onUnmount": "destroyOnUnmount"
+    }
+}

@@ -1,0 +1,38 @@
+// Copyright 2020 Siemens Product Lifecycle Management Software Inc.
+.aw-ep-activeMCN {
+    color: $AW_SiemensAccentBlueDark;
+}
+
+// ========= To be used by Task commands shown on Manage Workpackage Page =========
+.aw-ep-ManagePageTask {
+    background-color: $PL_Black_26;
+    .aw-command-bar:not(.aw-layout-userSessionCommands).aw-commands-commandBarVertical {
+        .aw-commands-wrapper {
+            .aw-commands-commandIconButton {
+                background-color: $Siemens_Snow;
+                box-shadow: $drop_shadow_small;
+                border-color: $PL_Black_22;
+                &.disabled {
+                    box-shadow: $drop_shadow_small_light;
+                    background-color: $PL_Black_25;
+                    border-color: $PL_Black_24;
+                }
+            }
+        }
+        .aw-command {
+            .aw-commands-commandIconButtonText {
+                color: $PL_Black_4;
+            }
+        }
+    }
+}
+
+.aw-ep-taskHeaderTitle,
+.aw-epHeader-workpackageLink a,
+.aw-ep-headerLoading .aw-mfe-messageLine {
+    color: $Siemens_Snow;
+}
+
+.aw-epHeader-readOnlyMessage {
+    color: $PL_Black_8;
+}

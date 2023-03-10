@@ -1,0 +1,225 @@
+{
+  "easyplan": {
+    "data": {
+      "browserSubTitle": {
+        "source": "/i18n/EPMessages",
+        "key": "browserSubTitle"
+      },
+      "headerTitle": {
+        "source": "/i18n/EPMessages",
+        "key": "headerTitle"
+      },
+      "loading": {
+        "source": "/i18n/EPMessages",
+        "key": "headerTitle"
+      }
+    },
+    "abstract": true,
+    "view": "MfeCommonLocation",
+    "parent": "root",
+    "url": "/com.siemens.splm.client.mfg.easyplan",
+    "params": {
+      "uid": null,
+      "mcn": null,
+      "selectedProc": null,
+      "processPCI": null,
+      "productionProgramPCI": null,
+      "plantPCI": null,
+      "functionalPlanPCI": null
+    }
+  },
+  "easyplanWithoutGlobalNav": {
+    "data": {
+      "browserSubTitle": {
+        "source": "/i18n/EPMessages",
+        "key": "browserSubTitle"
+      },
+      "headerTitle": {
+        "source": "/i18n/EPMessages",
+        "key": "headerTitle"
+      },
+      "loading": {
+        "source": "/i18n/EPMessages",
+        "key": "headerTitle"
+      }
+    },
+    "abstract": true,
+    "view": "MfeCommonLocation",
+    "parent": "mfeRoot",
+    "url": "/com.siemens.splm.client.mfg.easyplan",
+    "params": {
+      "uid": null,
+      "mcn": null,
+      "selectedProc": null,
+      "ebomPCI": null,
+      "mbomPCI": null,
+      "processPCI": null,
+      "productPCI": null,
+      "productionProgramPCI": null,
+      "plantPCI": null,
+      "functionalPlanPCI": null
+    }
+  },
+  "com_siemens_splm_clientfx_tcui_xrt_showObject": {
+    "params": {
+      "cc_uid": null
+    },
+    "type": "parameter"
+  },
+  "manageWorkPackageNew": {
+    "url": "/manageWorkPackageNew",
+    "type": "subLocation",
+    "abstract": false,
+    "view": "EpManageWorkPackageSubpage",
+    "parent": "easyplan"
+  },
+  "functionalPlan": {
+    "view": "EpProductBopSubpage",
+    "type": "subLocation",
+    "url": "/functionalPlan",
+    "parent": "easyplan",
+    "abstract": false,
+    "params": {
+      "tracking_cn": null,
+      "impacting_cn": null
+    }
+  },
+  "assemblyPlanning": {
+    "type": "subLocation",
+    "url": "/assemblyPlanning",
+    "parent": "easyplan",
+    "view": "AssemblyPlanningSubpage",
+    "data": {
+      "featureKeyLicenses": [
+        "xc_teamcenter"
+      ]
+    },
+    "params": {
+      "tracking_cn": null,
+      "impacting_cn": null,
+      "ebomPCI": null,
+      "mbomPCI": null,
+      "processPCI": null,
+      "productPCI": null,
+      "productionProgramPCI": null,
+      "plantPCI": null,
+      "functionalPlanPCI": null
+    },
+    "abstract": false,
+    "visibleWhen": {
+      "expression": {
+        "$source": "epObjectToNavigate.modelType.typeHierarchyArray",
+        "$query": {
+          "$in": [
+            "Mfg0BvrProcess"
+          ]
+        }
+      }
+    }
+  },
+  "workInstructions": {
+    "type": "subLocation",
+    "url": "/workInstructions",
+    "parent": "easyplan",
+    "view": "WorkInstructionsClassicSubpage",
+    "data": {
+      "featureKeyLicenses": [
+        "tcmfg_pmi_ep",
+        "xc_teamcenter"
+      ],
+      "deployedTemplateState": [
+        "mci0mfgcharacteristics"
+      ]
+    },
+    "params": {
+      "tracking_cn": null,
+      "impacting_cn": null,
+      "ebomPCI": null,
+      "mbomPCI": null,
+      "processPCI": null,
+      "productPCI": null,
+      "productionProgramPCI": null,
+      "plantPCI": null,
+      "functionalPlanPCI": null
+    },
+    "abstract": false,
+    "visibleWhen": {
+      "expression": {
+        "$source": "epObjectToNavigate.modelType.typeHierarchyArray",
+        "$query": {
+          "$in": [
+            "Mfg0BvrProcess"
+          ]
+        }
+      }
+    }
+  },
+  "lineBalancing": {
+    "type": "subLocation",
+    "url": "/lineBalancing",
+    "parent": "easyplan",
+    "view": "EpBalancingSubPage",
+    "data": {
+      "label": {
+        "source": "/i18n/BalancingMessages",
+        "key": "BalancingTitle"
+      },
+      "priority": 2,
+      "clientScopeURI": "lineBalancing",
+      "nameToken": "lineBalancing"
+    },
+    "params": {
+      "tracking_cn": null,
+      "impacting_cn": null
+    },
+    "abstract": false
+  },
+  "lineLayoutPage": {
+    "type": "subLocation",
+    "url": "/lineLayoutPage",
+    "parent": "easyplanWithoutGlobalNav",
+    "view": "LineLayoutPage",
+    "abstract": false
+  },
+  "highLevelPlanning": {
+    "type": "subLocation",
+    "url": "/highLevelPlanning",
+    "parent": "easyplan",
+    "view": "EpHighLevelPlanningSubPage",
+    "data": {
+      "featureKeyLicenses": [
+        "xc_teamcenter"
+      ]
+    },
+    "params": {
+      "tracking_cn": null,
+      "impacting_cn": null,
+      "ebomPCI": null,
+      "mbomPCI": null,
+      "processPCI": null,
+      "productPCI": null,
+      "productionProgramPCI": null,
+      "plantPCI": null,
+      "functionalPlanPCI": null
+    },
+    "abstract": false
+  },
+  "backgroundParts": {
+    "type": "subLocation",
+    "url": "/backgroundParts",
+    "parent": "easyplan",
+    "view": "EpBackgroundPartsSubPage",
+    "params": {
+      "tracking_cn": null,
+      "impacting_cn": null,
+      "ebomPCI": null,
+      "mbomPCI": null,
+      "processPCI": null,
+      "productPCI": null,
+      "productionProgramPCI": null,
+      "plantPCI": null,
+      "functionalPlanPCI": null
+    },
+    "abstract": false
+  }
+}

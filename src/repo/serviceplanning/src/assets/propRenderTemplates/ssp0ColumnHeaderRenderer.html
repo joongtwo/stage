@@ -1,0 +1,9 @@
+<%
+    let imagePath =  basePath + '/image/';
+    let columnName = _.get( column, 'field' );
+    let displayName = _.get( column, 'propertyDisplayName' );
+
+    let cellImg = imagePath + 'indicatorShown16.svg';
+%>
+
+<img src="<%=cellImg%>" alt="<%=displayName%>" title="<%=displayName%>">

@@ -1,0 +1,105 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "provider":{
+            "label":"{{i18n.manageTitleDecl}}",
+            "priority": 1,
+            "name": "manageWorkPackageNewSubLocation",
+            "clientScopeURI": "manageWorkPackageNewSubLocation",
+            "nameToken": "manageWorkPackageNewSubLocation"
+        },
+        "awSubLocationPref": {
+            "hideRightWall": true
+        },
+        "occContext": {
+            "initialValues": {
+                "viewKey": "",
+                "productContextInfo": null,
+                "elementToPCIMapCount": null,
+                "supportedFeatures": null,
+                "skipReloadOnConfigParamChange": true
+            },
+            "meta": {}
+        },
+        "configurationChipsData":{
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "actions":{
+        "initializeEPPage": {
+            "actionType": "JSFunctionAsync",
+            "method": "initializeEPPage",
+            "inputData": {
+                "provider": "{{data.provider}}"
+            },
+            "outputData": {
+                "stateContext": "stateContext",
+                "propertyPolicyId": "propertyPolicyId"
+            },
+            "deps": "js/epInitializationService"
+        },
+        "initialiseConfigurationChips":{
+            "actionType": "JSFunction",
+            "method": "mergeValueInAtomicData",
+            "inputData": {
+                "targetContext":"{{fields.configurationChipsData}}",
+                "updatedValues":{
+                    "ebomStructure":"{{ctx.epPageContext.ebomStructure}}",
+                    "ebomPCI":"{{ctx.epTaskPageContext.ebomPCI}}",
+                    "ebomStructureConfigFlags":"{{ctx.epTaskPageContext.ebomStructureConfigFlags}}",
+                    "mbomStructure":"{{ctx.epPageContext.mbomStructure}}",
+                    "mbomPCI":"{{ctx.epTaskPageContext.mbomPCI}}",
+                    "mbomStructureConfigFlags":"{{ctx.epTaskPageContext.mbomStructureConfigFlags}}",
+                    "processStructure":"{{ctx.epPageContext.processStructure}}",
+                    "processPCI":"{{ctx.epTaskPageContext.processPCI}}",
+                    "processStructureConfigFlags":"{{ctx.epTaskPageContext.processStructureConfigFlags}}",
+                    "rootPlant":"{{ctx.epPageContext.rootPlant}}",
+                    "plantPCI":"{{ctx.epTaskPageContext.plantPCI}}",
+                    "rootPlantConfigFlags":"{{ctx.epTaskPageContext.rootPlantConfigFlags}}"
+                }
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "init": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "initializeEPPage"
+                },
+                {
+                    "action": "initialiseConfigurationChips"
+                }
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "init"
+    },
+
+    "conditions": {
+        "isEpTaskPageContext": {
+            "expression": "ctx.epTaskPageContext && ctx.epTaskPageContext.collaborationContext"
+        }
+    },
+    "onEvent":[
+        {
+            "eventId": "ep.pageContext.changed",
+            "action": "initialiseConfigurationChips"
+        }
+    ],
+    "i18n": {
+        "manageTitleDecl": [
+            "AdminMessages"
+        ],
+        "overviewColumnTitle": [
+            "AdminMessages"
+        ],
+        "contentColumnTitle": [
+            "AdminMessages"
+        ],
+        "tasksColumnTitle": [
+            "AdminMessages"
+        ]
+    }
+}

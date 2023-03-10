@@ -1,0 +1,163 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {   
+        "loadSuccessFiles": {
+            "actionType": "JSFunction",
+            "method": "loadSuccessFiles",
+            "inputData": {
+                "searchInput": {
+                    "maxToLoad": "{{subPanelContext.searchState.maxToLoad}}",
+                    "maxToReturn": "{{subPanelContext.searchState.maxToReturn}}",
+                    "searchCriteria": {
+                        "plant": "{{subPanelContext.searchState.healthInfo.plantName}}",
+                        "deviceId": "{{subPanelContext.searchState.healthInfo.deviceId}}",
+                        "deviceName": "{{subPanelContext.searchState.healthInfo.deviceName}}",
+                        "fileType": "{{subPanelContext.searchState.healthInfo.fileType}}"
+                    },
+                    "cursor": {
+                        "startIndex": "{{data.dataProviders.successFileReportGridDataProvider.startIndex}}"
+                    },
+                    "searchFilterFieldSortType": "{{subPanelContext.searchState.sortType}}",
+                    "searchFilterMap6": "{{subPanelContext.searchState.activeFilterMap}}"
+                }
+            },
+            "dataParsers": [
+                {
+                    "id": "successFileReportDataParser",
+                    "responseObjs": "searchResults"
+                }
+            ],
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults",
+                "searchResultsWithIcon": "{{function:updateSearchResults}}",
+                "dataProviders.successFileReportGridDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/Dpv1ETLHealthService"
+        },
+        "updateFileReport":{
+            "actionType": "JSFunction",
+            "method": "updateFileReport",
+            "inputData": {
+                "selection": "{{parameters.eventData.selectedObjects}}",
+                "searchState": "{{props.subPanelContext.searchState}}"
+            },
+            "deps": "js/Dpv1ETLHealthService"
+        },
+        "enableAutomaticMultiSelection": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "successFileReportGridDataProvider.multiSelectModeAction",
+                        "eventData": {
+                            "multiSelect": true
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "functions":{
+        "updateSearchResults":{
+            "functionName": "updateSearchResultsWithIcon"
+        }        
+    },
+    "onEvent": [
+        {
+            "eventId": "successFileReportGridDataProvider.selectionChangeEvent",
+            "action": "updateFileReport",
+            "inputArgs": {
+                "eventData": "{{eventData}}"
+            }
+        }
+    ],
+    "dataProviders":{
+        "successFileReportGridDataProvider": {
+            "action": "loadSuccessFiles",
+            "selectionModelMode": "single",
+            "selectionModel": {
+                "multiSelectEnabled": false
+            },
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            }
+        }    
+    },
+    "dataParseDefinitions":{
+        "successFileReportDataParser":{
+            "type": "etlsuccessFileReport",
+            "props":{
+                "FileName": {
+                    "name": "FileName",
+                    "value": "{{response.DataFileName}}",
+                    "displayValue": "{{response.DataFileName}}",
+                    "type": "String"
+                },
+                "DataFile": {
+                    "name": "DataFile",
+                    "value": "{{response.DataFile}}",
+                    "displayValue": "{{response.DataFile}}",
+                    "type": "String"
+                },
+                "ProcessTime":{
+                    "name": "ProcessTime",
+                    "value": "{{response.ProcessedTime}}",
+                    "displayValue": "{{response.ProcessedTime}}",
+                    "type": "String"
+                }
+            }
+        }
+    },
+    "columnProviders": {
+        "successFileReportGridColumnProvider": {
+            "frozenColumnIndex": -1,
+            "headerHeight": "LARGE",
+            "columns": [
+             {
+                 "name": "FileName",
+                 "typeName": "String", 
+                 "minWidth": 450,
+                 "width": 450,
+                 "enableColumnMenu": false,
+                 "isTableCommand": true
+             },
+             {
+                 "name": "DataFile",
+                 "typeName": "String", 
+                 "minWidth": 450,
+                 "width": 450,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "ProcessTime",
+                 "typeName": "String", 
+                 "minWidth": 450,
+                 "width": 450,
+                 "enableColumnMenu": false
+             }
+             ]
+         } 
+    },    
+    "grids": {
+        "successFileReportGrid":{
+            "dataProvider": "successFileReportGridDataProvider",
+            "columnProvider": "successFileReportGridColumnProvider",
+            "enableArrangeMenu": true,
+            "gridOptions": {
+                "enableGridMenu": true
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "enableAutomaticMultiSelection"
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

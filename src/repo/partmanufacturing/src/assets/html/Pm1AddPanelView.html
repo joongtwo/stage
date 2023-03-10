@@ -1,0 +1,39 @@
+<div class="aw-layout-flexColumn" show-when="conditions.isActiveStateAddPanel">
+    <aw-panel-header>
+        <aw-panel-section caption="i18n.Pm1ToTitle">
+            <aw-default-cell vmo="ctx.PartMfg.parentElement"></aw-default-cell>
+        </aw-panel-section>
+    </aw-panel-header>
+
+    <aw-form name="createInputs">
+        <aw-add  include-types="{{data.allowedTypeInfo.objectTypeName}}"
+          type-filter="{{data.allowedTypeInfo.searchTypeName}}"
+          load-sub-types="true" max-recent-count="5" exist-when="data.allowedTypeInfo"
+          visible-tabs="{{data.allowedTypeInfo.allowedTabs}}"
+          preferred-type="{{data.allowedTypeInfo.preferredType}}"
+          is-include-sub-types="data.isIncludeSubTypes"
+          add-panel-state="fields.addPanelState"
+          sub-panel-context="{ triggerCreate: data.triggerCreate }"
+          xrt-state="data.xrtState"
+          edit-handler="editHandlers.addPanelEditHandler"
+          active-state="data.activeState"
+          project-state="data.projectState">
+        </aw-add>
+        <aw-break></aw-break>
+        <aw-numeric prop="data.numberOfElements" visible-when="ctx.PartMfg.supportedFeatures.Awb0BulkAddFeature && conditions.isSingleElementSelected"></aw-numeric>
+    </aw-form>
+
+    <aw-panel-footer>
+        <aw-button action="createAndAddResource" visible-when="formProp.attributes.valid && conditions.isNewTabAddButtonVisible" >
+            <aw-i18n>i18n.Pm1AddElementBtn</aw-i18n>
+        </aw-button>
+        <aw-button action="addResources" visible-when="conditions.areNumberOfElementsValid && !conditions.isNewTabAddButtonVisible && conditions.hasAnySelection">
+            <aw-i18n>i18n.Pm1AddElementBtn</aw-i18n>
+        </aw-button>
+        <aw-button default="false" action="geResourcePropertiesToCopy" visible-when="conditions.areNumberOfElementsValid && !conditions.isNewTabAddButtonVisible && conditions.hasAnySelection && ctx.PartMfg.addElement.isCopyButtonEnabled">
+            <aw-i18n>i18n.Pm1AddElementCopyButtonText</aw-i18n>
+        </aw-button>
+    </aw-panel-footer>
+</div>
+
+<aw-add-navigate active-state="data.activeState" project-state="data.projectState" action="actions.setActiveView"></aw-add-navigate>

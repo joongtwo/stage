@@ -1,0 +1,51 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-flex-row.directive",
+        "js/exist-when.directive",
+        "js/aw-separator.directive",
+        "js/aw-link.directive",
+        "js/aw-command-bar.directive",
+        "js/aw-model-icon.directive"
+    ],
+    "onEvent": [
+        {
+            "eventId": "LOCATION_CHANGE_COMPLETE",
+            "action": "getWorkPackageForLink"
+        }
+    ],
+    "ctx": {
+        "ep.scopeObject":"null",
+        "ep.loadedCCObject":"null"
+    },
+    "actions": {
+        "getWorkPackageForLink": {
+            "actionType": "JSFunction",
+            "method": "getCtx",
+            "inputData": {
+                "path": "epPageContext.collaborationContext.props.object_string.dbValues[0]"
+            },
+            "outputData": {
+                "workPackageLink.propertyDisplayName": ""
+            },
+            "deps": "js/appCtxService"
+        },
+        "navigateToManagePage": {
+            "actionType": "JSFunction",
+            "method": "navigateToManagePage",
+            "inputData": {
+                "objectToNavigate": "{{ctx.epPageContext.collaborationContext}}"
+            },
+            "deps": "js/epNavigationService"
+        }
+    },
+    "data": {
+        "workPackageLink": {
+            "displayName": "{{ctx.epPageContext.collaborationContext.props.object_string.dbValues[0]}}",
+            "type": "STRING"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "getWorkPackageForLink"
+    }
+}

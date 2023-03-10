@@ -1,0 +1,127 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "ports": {
+        "EpBalancingOverviewStationTilesList_selectedObjects": {
+            "syncObject": {}
+        },
+        "EpBalancingOverviewStationTilesList_setBalancingInformation": {
+            "syncObject": {},
+            "onChangeAction": "initializeStationTilesList"
+        }
+    },
+    "data": {
+        "isLoading": true,
+        "messages": {
+            "noStationsInTheLine": [
+                {
+                    "text": "{{i18n.noStationsInTheLine}}"
+                }
+            ]
+        }
+    },
+    "dataProviders": {
+        "overviewStationTilesProvider": {
+            "dataProviderType": "Static",
+            "response": "{{ports.EpBalancingOverviewStationTilesList_setBalancingInformation.syncObject.balancingStations}}",
+            "totalFound": "{{ports.EpBalancingOverviewStationTilesList_setBalancingInformation.syncObject.numberOfStations}}",
+            "selectionModelMode": "single"
+        }
+    },
+    "actions": {
+        "initializeStationTilesList": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "saveMaxStationsCycleTime"
+                },
+                {
+                    "action": "loadStationTilesDataProvider"
+                },
+                {
+                    "action": "hideLoadingMessage"
+                }
+            ]
+        },
+        "loadStationTilesDataProvider": {
+            "actionType": "dataProvider",
+            "method": "overviewStationTilesProvider"
+        },
+        "saveMaxStationsCycleTime": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "object": "{{ports.EpBalancingOverviewStationTilesList_setBalancingInformation.syncObject.maxStationsCycleTime}}"
+            },
+            "outputData": {
+                "max": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        },
+        "updateSelectionPort": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpBalancingOverviewStationTilesList_selectedObjects",
+                "syncObject": "{{data.eventData.selectedObjects[0]}}"
+            }
+        },
+        "updateCommandContext": {
+            "actionType": "JSFunction",
+            "method": "setCommandContext",
+            "inputData": {
+                "tabModel": "{{subPanelContext}}",
+                "commandContext": {
+                    "selectedAttachment": "{{data.eventData.selectedObjects}}"
+                }
+            },
+            "deps": "js/mfeContentPanelUtil"
+        },
+        "updateSelectionPortAndCommandContext": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateSelectionPort",
+                    "condition": "data.eventData.selectedObjects[0]"
+                },
+                {
+                    "action": "updateCommandContext"
+                }
+            ]
+        },
+        "hideLoadingMessage": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "value": false
+            },
+            "outputData": {
+                "isLoading": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+    "i18n": {
+        "noStationsInTheLine": [
+            "BalancingMessages"
+        ]
+    },
+    "conditions": {
+        "hasStations": {
+            "expression": "ports.EpBalancingOverviewStationTilesList_setBalancingInformation.syncObject.numberOfStations > 0"
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "overviewStationTilesProvider.selectionChangeEvent",
+            "action": "updateSelectionPortAndCommandContext",
+            "cacheEventData": true
+        }
+    ]
+}

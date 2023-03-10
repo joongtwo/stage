@@ -1,0 +1,181 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel.directive",
+        "js/aw-widget.directive"
+    ],
+
+    "actions": {
+        "updateDataSource": {
+            "actionType": "JSFunction",
+            "method": "addHtmlPanelInDataSource",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "{{data.subPanelContext.xrtType}}",
+                "panelID": "Ctm1CreateBrexDMRef"
+            },
+            "deps": "js/addObjectUtils"
+        },
+        "getRelatedValidTopicTypes": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-ContMgmtBase-2021-06-ContentManagement",
+            "method": "getTopicTypesAndRelatedTopics",
+            "inputData": {
+                "topicType": "{{function:getBrexDMInput}}",
+                "topicTypeNameFilter": "Brex",
+                "includeReferencedTopics": true
+            },
+            "outputData":
+            {
+                "brexDMList": "{{function:getBrexDMLovFromResponse}}"
+            },
+            "policy": {
+                "types": [ {
+                    "name": "DC_TopicRevision",
+                    "properties": [ {
+                            "name": "object_name"
+                        },
+                        {
+                            "name": "item_id"
+                        }
+                    ]
+                },
+                {
+                    "name": "DC_TopicType",
+                    "properties": [ {
+                            "name": "object_name"
+                        }
+                    ]
+                }
+            ]
+            },
+
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "addBrexDM": {
+            "actionType": "TcSoaService",
+            "serviceName": "ContMgmtBase-2011-06-ContentManagement",
+            "method": "composeContent",
+            "inputData": {
+                "input": [ {
+                    "clientId": "addBrexDM",
+                    "composableBO": "{{function:getParentElement}}",
+                    "revisionRule": null,
+                    "keyValueArgs": {
+                        "actionType": "add_brex_content_refs",
+                        "brex_ItemRev_uid": "{{data.rrr__brex.dbValue}}"
+                    }
+                } ]
+            },
+            "outputData": {
+                "composedData": "composedData"
+            },
+
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "getTopicTypeRef": {
+            "actionType": "JSFunction",
+            "method": "getTopicTypeRef",
+            "inputData": {
+                "eventData": "{{data.eventData}}"
+            },
+            "outputData":
+            {
+                "topicTypeRef": ""
+            },
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        }
+
+
+    },
+
+    "data": {
+        "rrr__brex": {
+            "dbValue": "",
+            "displayName": "{{i18n.brexDM}}",
+            "type": "STRING",
+            "dataProvider": "brexList",
+            "isRequired": "false",
+            "isEditable": "true"
+        }
+    },
+
+    "dataProviders": {
+        "brexList": {
+            "action": "getRelatedValidTopicTypes",
+            "response": "{{data.brexDMList}}",
+            "totalFound": "{{data.brexDMList.length}}",
+            "moreValuesExist": false
+        }
+    },
+
+    "functions": {
+        "getBrexDMInput": {
+            "functionName": "getSOAInputForBrexDM",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getBrexDMLovFromResponse":
+        {
+            "functionName": "getTopicRevisionsFromResponse",
+            "parameters":
+            [
+                "{{response}}",
+                "{{data}}"
+            ]
+        },
+        "getParentElement": {
+            "functionName": "getParentElement",
+            "parameters": [
+                "{{data.eventData}}"
+            ]
+        },
+        "getSelectedBrexDM": {
+            "functionName": "getBrexDM",
+            "parameters": [
+                "{{ctx}}"
+            ]
+        }
+    },
+
+    "onEvent": [
+        {
+            "eventId": "addObject.objectcreated",
+            "condition": "conditions.hasBrexDMSelected",
+            "cacheEventData": true,
+            "action": "addBrexDM"
+        },
+        {
+            "eventId": "topicType.selectionChange",
+            "cacheEventData": true,
+            "action": "getTopicTypeRef"
+        }
+    ],
+
+    "conditions":
+    {
+        "expressionValueChanged": {
+            "expression": "data.rrr__brex.dbValue",
+            "trackValues": true
+        },
+        "hasBrexDMSelected": {
+            "expression": "data.rrr__brex.dbValue && data.rrr__brex.dbValue.length > 0"
+        }
+    },
+
+    "lifecycleHooks": {
+
+    },
+
+    "messages": {
+
+    },
+
+    "i18n": {
+        "brexDM": ["ContentMgmtMessages"]
+    }
+
+}

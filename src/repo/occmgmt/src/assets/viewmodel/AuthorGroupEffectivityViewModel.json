@@ -1,0 +1,371 @@
+{
+    "schemaVersion" : "1.0.0",
+
+    "data" :
+    {
+        "nameBox":{
+            "displayName": "{{i18n.name}}",
+            "type": "STRING",
+            "dbValue": "{{props.subPanelContext.nestedNavigationState.nameBox}}",
+            "uiValue": "{{props.subPanelContext.nestedNavigationState.nameBox}}",
+            "isRequired": "true",
+            "maxLength":128
+        },
+        "activeState": {
+            "initialValues": {
+                "activeView": "AuthorGroupEffectivity",
+                "context": {}                
+            },
+            "meta": { }
+        }
+    },
+
+    "actions": {
+        "navigateToPanel": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "navigateToSelectEndItem",
+                    "condition": "conditions.shouldNavigateToEndItem"
+                }
+            ]
+        },
+        "navigateToSelectEndItem":{
+            "actionType": "JSFunction",
+            "method": "navigateToView",
+            "inputData": {
+                "nestedNavigationState": "{{props.subPanelContext.nestedNavigationState}}",
+                "view": {
+                    "panelId": "AddReferenceSub",
+                    "title": "{{i18n.addEndItem}}",                    
+                    "additionalSubPanelContext": {
+                        "activeState": "{{fields.activeState}}",
+                        "selectionMode": "single",
+                        "filterTypes": "ItemRevision"
+                    }
+                }
+            },
+            "deps": "js/nestedNavigationPanelService"
+        },
+        "UpdateNameValueOnStateAction": {
+            "actionType": "JSFunction",
+            "method": "updateValueOnCtxOrState",
+            "inputData": {
+                "path": "",
+                "value": {
+                    "nameBox": "{{data.nameBox.dbValue}}"
+                },
+                "target": "{{props.subPanelContext.nestedNavigationState}}"
+            },
+            "deps": "js/occmgmtUtils"
+        },
+        "updateVmRowsWithNewActiveState": {
+            "actionType": "JSFunction",
+            "method": "updateVmRowsWithNewActiveState",
+            "inputData": {
+                "vmRows": "{{props.subPanelContext.nestedNavigationState.vmRows}}",
+                "activeState": "{{fields.activeState}}"
+            },
+            "deps": "js/effectivityGroupTableService"
+        },
+        "AuthorGroupEffectivityBatchJob": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "AuthorGroupEffectivity"
+                }
+            ]
+        },
+        "updateJitterFreePropLoadOnCurrentContext": {
+            "actionType": "JSFunction",
+            "method": "updateValueOnCtxOrState",
+            "inputData": {
+                "path": "",
+                "value": {
+                    "transientRequestPref": {
+                        "jitterFreePropLoad": true
+                    }
+                },
+                "target": "{{props.subPanelContext.occContext}}"
+            },
+            "deps": "js/occmgmtUtils"
+        },
+        "doGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "effGroupDataProvider"
+        },
+        "loadData": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadEffectivityGroupTableData",
+            "inputData": {
+                "effGroupDataProvider": "{{data.dataProviders.effGroupDataProvider}}",
+                "activeState" : "{{fields.activeState}}",
+                "nestedNavigationState": "{{props.subPanelContext.nestedNavigationState}}",
+                "message": "{{data.i18n.errorMessageEndItemGroupEff}}"
+            },
+            "outputData": {
+                "totalFound": "totalFound",
+                "searchResults": "searchResults",
+                "searchIndex": "searchIndex"
+            },
+            "deps": "js/effectivityGroupTableService"
+        },
+        "loadColumns": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadEffectivityTableColumns",
+            "inputData": {
+                "dataProvider": "{{data.dataProviders.effGroupDataProvider}}",
+                "data": "{{data}}"
+            },
+            "deps": "js/effectivityGroupTableService"
+        },
+        "populateInitialData": {
+            "actionType": "JSFunction",
+            "method": "populateInitialData",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/effectivityGroupTableService"
+        },
+        "setTableEditable": {
+            "actionType": "JSFunction",
+            "method": "setTableEditable",
+            "inputData": {
+                "data": "{{data}}",
+                "dataProvider": "{{data.dataProviders.effGroupDataProvider}}"
+            },
+            "deps": "js/effectivityGroupTableService"
+        },
+        "AuthorGroupEffectivity": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2016-09-DataManagement",
+            "method": "createAttachAndSubmitObjects",
+            "inputData":
+            {
+                "inputs": [
+                    {
+                    "clientId": "CreateObject",
+                    "createData": {
+                        "boName": "Fnd0EffectvtyGrp",
+                        "propertyNameValues": {
+                            "object_name": ["{{data.nameBox.dbValue}}"]
+                        }
+                    },
+                    "dataToBeRelated": {},
+                    "pasteProp": ""
+                   }
+                ]
+            },
+            "policy":
+            {
+                "types":
+                [
+                    {
+                        "name": "Item",
+                        "properties":
+                        [
+                            {
+                                "name": "revision_list"
+                            }
+                        ]
+                    }
+                ]
+            },
+
+            "outputData":
+            {
+                "groupRevision": "{{function:getEffectivityGroupRevision}}"
+            },
+
+            "events":
+            {
+                "success":
+                [
+                    {
+                        "name": "authorGrp.groupCreated"
+                    }
+                ]
+            },
+            "deps": "js/effectivityGroupTableService"
+        },
+        "addEffectivitiesToGroup": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-StructureManagement-2009-10-EffectivitiesManagement",
+            "method": "createOrUpdateEffectivites",
+            "inputData":
+            {
+                "effectivitiesInfo": "{{function:getEffectivitiesInfo}}",
+                "effectivityGroupRevision": {
+                    "uid": "{{data.groupRevision.uid}}",
+                    "type": "ItemRevision"
+                }
+           },
+           "events":
+           {
+               "success":
+               [
+                   {
+                       "name": "authorGrp.applyGroupEffectivity"
+                   }
+               ]
+           },
+           "deps": "js/effectivityGroupTableService"
+        },
+        "applyAuthoredGroupEffectivity":
+        {
+            "actionType": "JSFunction",
+            "method": "applyConfiguration",
+            "inputData":{
+                "value": {
+                    "configContext": {
+                        "r_uid": "{{props.subPanelContext.occContext.productContextInfo.props.awb0CurrentRevRule.dbValues[0]}}",
+                        "eg_uids": "{{function:appendAndGetExistingGroupEffectivities}}",
+                        "de": "{{props.subPanelContext.occContext.productContextInfo.props.awb0EffDate.dbValues[0]}}",
+                        "var_uids": "{{props.subPanelContext.occContext.productContextInfo.props.awb0VariantRules.dbValues}}",
+                        "iro_uid": "{{props.subPanelContext.occContext.productContextInfo.props.awb0VariantRuleOwningRev.dbValues[0]}}",
+                        "startDate": "{{props.subPanelContext.occContext.productContextInfo.props.awb0StartEffDates.dbValues[0]}}",
+                        "endDate": "{{props.subPanelContext.occContext.productContextInfo.props.awb0EndEffDates.dbValues[0]}}",
+                        "startFreshNavigation": true
+                    },
+                    "transientRequestPref": {
+                        "jitterFreePropLoad" : true,
+                        "userGesture": "EFFECTIVITY_CHANGE"
+                    }
+                },
+                "occContext":"{{props.subPanelContext.occContext}}"
+            },
+            "events": {
+                "success": [{
+                    "name": "navigateToGroupEffectivitiesView"
+                }]
+            },
+            "deps": "js/effectivityGroupTableService"
+        },
+        "navigateToGroupEffectivitiesView":{
+            "actionType": "JSFunction",
+            "method": "goToPrevPanel",
+            "inputData": {
+                "nestedNavigationState": "{{props.subPanelContext.nestedNavigationState}}"
+            },
+            "deps": "js/nestedNavigationPanelService"
+        }
+    },
+
+    "dataProviders": {
+        "effGroupDataProvider": {
+            "action": "loadData",
+            "response": "{{data.searchResults}}",
+            "totalFound": "{{data.totalFound}}",
+            "editContext": "TABLE_CONTEXT",
+            "inputData": {
+                "selectionModelMode": "single"
+            }
+        }
+    },
+
+    "columnProviders": {
+        "effGroupColumnProvider": {
+            "loadColumnAction": "loadColumns",
+            "frozenColumnIndex": -1,
+            "columns": "{{data.columns}}",
+            "soaEnabled": false,
+            "sortCriteria": []
+        }
+    },
+    "grids": {
+        "groupeffTable": {
+            "dataProvider": "effGroupDataProvider",
+            "columnProvider": "effGroupColumnProvider",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enablePinning": false,
+                "enableSorting": false,
+                "enableGridMenu": false
+            }
+        }
+    },
+
+    "onEvent": [
+        {
+            "eventId": "groupeffTable.plTable.loadMorePages",
+            "action": "setTableEditable"
+        },
+        {
+            "eventId": "groupeffTable.initialized",
+            "action": "doGridDataProvider"
+        },
+        {
+            "eventId": "effGroupDataProvider.resetScroll",
+            "action": "populateInitialData"
+        },
+        {
+            "eventId": "authorGrp.groupCreated",
+            "cacheEventData": true,
+            "action": "addEffectivitiesToGroup"
+        },
+        {
+            "eventId": "authorGrp.applyGroupEffectivity",
+            "action": "applyAuthoredGroupEffectivity"
+        },
+        {
+            "eventId": "navigateToGroupEffectivitiesView",
+            "action": "navigateToGroupEffectivitiesView"
+        }
+    ],
+
+    "conditions":
+    {
+        "isNewAuthorPanelSelected":{
+            "expression":"ctx.elementEffectivity.selectedPanel == 'NEW'"
+        },
+        "shouldNavigateToEndItem":{
+            "expression":"fields.activeState.activeView === 'AddReferenceSub'"
+        },
+        "shouldNavigateToAddGroupEffectivity" : {
+            "expression":"props.subPanelContext.nestedNavigationState.vmRows"
+        }
+    },
+
+    "i18n":
+    {
+        "name":[ "OccurrenceManagementConstants" ],
+        "addElementBtn":[ "OccurrenceManagementConstants" ],
+        "errorMessageEndItemGroupEff":["OccurrenceManagementMessages"],        
+        "addEndItem": [ "OccurrenceManagementConstants" ]
+    },
+    "lifecycleHooks": {
+        "onMount":"updateVmRowsWithNewActiveState",
+        "onUpdate": [
+            {
+                "action": "UpdateNameValueOnStateAction",
+                "observers": [ "viewModel.data.nameBox.dbValue" ]
+            },            
+            {
+                "action": "navigateToPanel",
+                "observers": [ "viewModel.atomicData.activeState.activeView" ]                
+            }
+        ]},
+    "functions": {
+        "getEffectivityGroupRevision": {
+            "functionName": "getEffectivityGroupRevision",
+            "parameters":
+            [
+            ]
+        },
+        "getEffectivitiesInfo": {
+            "functionName": "getEffectivitiesInfo",
+            "parameters":
+            [ ]
+        },
+        "appendAndGetExistingGroupEffectivities":{
+            "functionName":"appendAndGetExistingGroupEffectivities",
+            "parameters":[
+                "{{data.groupRevision}}","{{props.subPanelContext.occContext}}"
+            ]
+        }
+
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

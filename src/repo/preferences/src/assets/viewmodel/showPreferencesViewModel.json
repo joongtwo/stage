@@ -1,0 +1,111 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+        "_provider": {
+            "viewBase": "showPreferences",
+            "clientScopeURI": "Prf1PreferenceResults",
+            "nameToken": "showPreferences:PrefSubLocation",
+            "breadcrumbConfig": {
+                "type": "search",
+                "vm": "AwSearchBreadcrumb",
+                "noUpdate": true,
+                "popuplist": "/html/defaultbreadcrumblist.html" ,
+                "overflowIndex": 0
+            },
+            "viewModes": {
+                "TableSummaryView": {
+                    "primaryWorkArea": "Table",
+                    "secondaryWorkArea": true
+                }
+            },
+            "isXrtApplicable": false,
+            "context": {
+                "search": {
+                }
+            }
+        },
+        "sublocationState": {
+            "initialValues": {
+                "secondaryActiveTabId": ""
+            },
+            "meta": {}
+        },
+        "searchState": {
+            "initialValues": {
+                "autoApplyFilters": true,
+                "filterString":"",
+                "criteria": {
+                    "searchString": "",
+                    "searchFromLocation": "global"
+                },
+                "sortType": "Priority",
+                "label" : {
+                    "source" : "/i18n/SearchMessages",
+                    "key": "resultsText"
+                },
+                "searchFilterMap": "",
+                "activeFilterMap": "",
+                "pwaSelection":""
+            },
+            "meta": {
+                "categories": [
+                    {
+                        "filterValues": [
+                            {
+                                "selected": {
+                                    "field": "true",
+                                    "type": "BOOLEAN"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "isAdministrator" : false
+    },
+    "actions": {
+        "initialize": {
+            "actionType": "JSFunction",
+            "method": "initializeshowPreferences",
+            "inputData": {
+                "searchState": "{{data.searchState}}",
+                "searchStateUpdater": "{{data.updateAtomicData}}"
+            },
+            "deps": "js/showPreferencesService"
+        }
+    },
+    "ctx": {
+        "selected": {
+            "type": "object"
+        },
+        "isAdmin":
+        {
+            "type":"BOOLEAN"
+        }
+    },
+    "props": {
+        "view-base": {
+            "type": "object"
+        },
+        "view": {
+            "type": "object"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        },
+        "search-state": {
+            "type": "object"
+        },
+        "selection-model": {
+            "type": "object"
+        },
+        "selection-data": {
+            "type": "field"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initialize"
+    }
+}

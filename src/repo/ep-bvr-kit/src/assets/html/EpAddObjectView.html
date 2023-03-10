@@ -1,0 +1,9 @@
+<aw-panel>
+    <ep-search-object sub-panel-context="data"></ep-search-object>
+    <aw-panel-footer>
+        <aw-button button-type="base" action="closePopupWindow" size="auto">{{i18n.cancel}}</aw-button>
+            <aw-button enable-when="conditions.isObjectSelectedToAdd" action="addObjectToWP" size="auto">
+            {{subPanelContext.buttonName}}
+        </aw-button>
+    </aw-panel-footer>
+</aw-panel>

@@ -1,0 +1,89 @@
+{
+    "schemaVersion" : "1.0.0",
+    "data" : {
+        "addElementState":{
+            "initialValues":{
+                "AddOccurrencePropertiesOnCreate" : false,
+                "parentElement" : null,
+                "parentToLoadAllowedTypes" : null,
+                "siblingElement" : null,
+                "elementCreateInput" : null,
+                "fetchPagedOccurrences" : null,
+                "isCopyButtonEnabled" : false,
+                "previousSelectionUid" : "",
+                "Awb0ElementCreateSubView" : false,
+                "numberOfElements" : 1
+            },
+            "meta": {              
+            }
+        }
+    },
+    "actions" : {
+        "initialize": 
+        {
+            "actionType": "JSFunction",
+            "method": "setStateAddElementInputParentElementToSelectedElement",
+            "inputData":
+            {
+                "parentUid" : "{{subPanelContext.occContext.currentState.c_uid}}",
+                "data" : "{{data}}",
+                "parentToLoadAllowedTypes" :"{{subPanelContext.occContext.currentState.c_uid}}"
+            },
+            "outputData": {
+                "addElementState" : ""
+            },
+            "events": {
+                "success": [ {
+                    "name": "addRevOcc.inputParentElementSetOnState"
+                } ]
+            },
+            "deps": "js/addElementService"
+        },
+        "loadArchetypeObject": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadObjects",
+            "inputData": {
+                "data": ["{{addElementState.parentElement.props.awb0Archetype.dbValues[0]}}"]
+            },
+            "events": {
+                "success": [ {
+                    "name": "loadObjects.archetypeObjectLoaded"
+                } ]
+            },
+            "deps": "soa/dataManagementService"
+        },
+        "setTargetObjectVmo":
+        {
+            "actionType": "JSFunction",
+            "method": "createViewModelObject",
+            "inputData":
+            {
+                "uid": "{{addElementState.parentElement.props.awb0Archetype.dbValues[0]}}"
+            },
+            "outputData":
+            {
+                "targetObjectToAdd" : ""
+            },
+            "deps": "js/viewModelObjectService"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initialize"
+    },
+    "conditions" :{
+        "isParentValid" : {
+            "expression" : "addElementState.parentElement"
+        }
+    },
+    "onEvent": 
+    [
+        {
+            "eventId": "addRevOcc.inputParentElementSetOnState",
+            "action": "loadArchetypeObject"
+        },
+        {
+            "eventId": "loadObjects.archetypeObjectLoaded",
+            "action": "setTargetObjectVmo"
+        }
+    ]
+}

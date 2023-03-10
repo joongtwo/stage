@@ -1,0 +1,35 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "data": {
+        "overviewConfig": {
+            "tabs": [ {
+                "name": "{{i18n.overviewColumnTitle}}",
+                "tabKey": "EpInformation",
+                "xrtType": "SUMMARY",
+                "viewId": "Ep_PPOverview",
+                "scopeObject": "{{ctx.epTaskPageContext.productionProgramCollection}}"
+            } ]
+        },
+        "productVariantsTabConfig": {
+            "tabs": [ {
+                "name": "{{i18n.productVariantsContainerTitle}}",
+                "tabKey": "EpProductVariants",
+                "createPVSIfEmptyMessage": "{{data.localizedCreatePVSIfEmptyMessage}}"
+            } ]
+        }
+    },
+    "actions": {
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "close",
+            "deps": "js/declpopupService"
+        }
+
+    },
+    "i18n": {
+        "close": [ "AdminMessages" ],
+        "overviewColumnTitle": [ "AdminMessages" ],
+        "productVariantsContainerTitle": [ "AdminMessages" ]
+    }
+}

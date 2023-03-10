@@ -1,0 +1,64 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "data": {
+        "scheduleId": {
+            "displayName": "{{i18n.schId}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "{{subPanelContext.runningScheduleState.scheduleId}}",
+            "dispValue": "{{subPanelContext.runningScheduleState.scheduleId}}"
+        },
+        "scheduleName": {
+            "displayName": "{{i18n.schName}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "{{subPanelContext.runningScheduleState.scheduleName}}",
+            "dispValue": "{{subPanelContext.runningScheduleState.scheduleName}}"
+        },
+        "scheduleType": {
+            "displayName": "{{i18n.scheduleType}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "{{subPanelContext.runningScheduleState.scheduleTypeName}}",
+            "dispValue": "{{subPanelContext.runningScheduleState.scheduleTypeName}}"
+        },
+        "nextOccurrence": {
+            "displayName": "{{i18n.schNextOccurrence}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "{{subPanelContext.runningScheduleState.nextOccurrence}}",
+            "dispValue": "{{subPanelContext.runningScheduleState.nextOccurrence]}}"
+        }
+    },
+    "actions": {},
+    "dataProviders": {},
+    "conditions": {
+        "isSharedOrSpecificSchedule":{
+            "expression": "data.nextOccurrence.dbValue && subPanelContext.runningScheduleState.scheduleType !== '2'"
+        }
+    },
+    "lifecycleHooks": {},
+    "props": {},
+    "i18n": {
+        "schId": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "schName": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "schFrequency": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "schNextOccurrence": [
+            "DpvColumnConfigurationMessages"
+        ],
+        "scheduleType": [
+            "DpvMessages"
+        ]
+    }
+}

@@ -1,0 +1,6 @@
+<aw-command-bar exist-when="ctx.ep.scopeObject" context="ctx.ep.scopeObject" anchor="epTasks_uiAnchor" show-command-labels="true" alignment="HORIZONTAL" class="aw-ep-taskHeaderTitle"></aw-command-bar>
+<div class="sw-row align-center">
+    <aw-separator is-vertical="true" class="aw-epHeader-separator"></aw-separator>
+    <aw-model-icon class="aw-epHeader-icon" exist-when="ctx.ep.loadedCCObject.props" vmo="ctx.ep.loadedCCObject"></aw-model-icon>
+    <aw-link prop="data.workPackageLink" action="navigateToManagePage" class="aw-epHeader-workpackageLink"></aw-link>
+</div>

@@ -1,0 +1,27 @@
+<div class="sw-row aw-taskbar-container afx-accent-background">
+    <div class="sw-column flex-auto justify-flex-end">
+        <div class="sw-row flex-auto aw-cadbomalignmentjs-taskbarLocationTitle">
+            <cba-header-title exist-when="ctx.taskbarfullscreen && ctx.taskbarfullscreen === 'true'"></cba-header-title>
+            <pma-ecn-indicator-in-cba exist-When="conditions.isImpactAnalysisMode"
+                sub-panel-context="ctx.cadbomalignment.ImpactAnalysis"></pma-ecn-indicator-in-cba>
+        </div>
+    </div>
+    <aw-separator exist-When="!conditions.isImpactAnalysisMode" is-vertical="true"></aw-separator>
+    <div class="sw-column aw-cba-buttonMargin justify-center afx-static-size">
+        <aw-command-bar anchor="alignmentSlot" alignment="HORIZONTAL"></aw-command-bar>
+    </div>
+    <div class="sw-column aw-cba-buttonMargin justify-center afx-static-size">
+        <aw-button button-type='base' size='auto' exist-when="conditions.enableAlignmentCheck132Onwards" enable-when="conditions.AlignmentCheckCommandCondition" 
+            visible-when="conditions.isEntCBASubLocation" action="executeAlignmentCheckBatch"><aw-i18n>i18n.Awb0EntCBAAlignmentCheck</aw-i18n></aw-button>
+        <aw-button button-type='base' size='auto' exist-when="conditions.enableAlignmentCheckPriorTo132" enable-when="conditions.AlignmentCheckCommandCondition" 
+            visible-when="conditions.isEntCBASubLocation" action="executeAlignmentCheck"><aw-i18n>i18n.Awb0EntCBAAlignmentCheck</aw-i18n></aw-button>
+    </div>
+    <aw-separator exist-When="!conditions.isImpactAnalysisMode" is-vertical="true"></aw-separator>
+    <div class="sw-column aw-cba-buttonMargin justify-center afx-static-size">
+        <aw-command-bar anchor="cbaToolbarRightSlot" alignment="HORIZONTAL"></aw-command-bar>
+    </div>
+    <aw-separator is-vertical="true"></aw-separator>
+    <div class="sw-column aw-cba-buttonMargin justify-center afx-static-size">
+        <aw-command-bar anchor="toolbarRightSlot" alignment="HORIZONTAL"></aw-command-bar>
+    </div>
+</div>

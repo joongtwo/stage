@@ -1,0 +1,27 @@
+{
+  "name": "tc-aw-framework",
+  "description": "",
+  "pathOffset": ".",
+  "skipAudit": true,
+  "version": "6.2.0",
+  "author": "Siemens Product Lifecycle Management Software Inc.",
+  "themeExtensions": [
+    "jtViewerTheme",
+    "tcuijsTheme",
+    "viewerjsTheme"
+  ],
+  "copyAssets": [
+    {
+      "baseDir": "node_modules/@swf/pdfjs/out",
+      "fileRegex": "**/*",
+      "destPath": "assets/pdfjs",
+      "copyDirectory": true
+    },
+    {
+      "baseDir": "node_modules/@swf/pdfjs/resources",
+      "fileRegex": "**/*",
+      "destPath": "assets/pdfjs",
+      "copyDirectory": true
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+    "schemaVersion": "1.0.0",
+
+    "data":{
+        "messages": {
+                "SkillsNotAssigned": [
+                    {
+                        "text": "{{i18n.noSkillsAssigned}}"
+                    }
+                ]
+        }
+    },
+    "ctx" : {
+        "selected":{
+            "type":"object"
+        }
+   },
+    "conditions": {
+        "hasSkills": {
+            "expression": "ctx.selected.props.swi1Skills.dbValue.length > 0"
+        }
+    },
+
+    "i18n": {
+        "noSkillsAssigned": [
+            "swiMessages"
+        ]
+    }
+}

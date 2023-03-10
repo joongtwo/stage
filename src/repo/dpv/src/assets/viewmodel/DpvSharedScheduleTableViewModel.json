@@ -1,0 +1,281 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "initSearch": {
+            "actionType": "JSFunction",
+            "method": "initSearch",
+            "inputData": {
+                "data": "{{data.actions}}",
+                "actionName": "doGridDataProvider",
+                "tableLoaded": "{{data.tableLoaded}}"
+            },
+            "deps": "js/awSearchService"
+        },
+        "doArrangeEvent": {
+            "actionType": "JSFunctionAsync",
+            "method": "arrangeColumns",
+            "inputData": {
+                "declViewModel": "{{data}}",
+                "eventData": "{{data.eventData}}"
+            },
+            "deps": "js/columnArrangeService"
+        },
+        "doGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "gridDataProvider"
+        },
+        "loadSharedScheduleData": {
+            "actionType": "JSFunction",
+            "method": "loadSharedScheduleData",
+            "inputData": {
+                "searchInput": {
+                    "maxToLoad": "{{subPanelContext.searchState.maxToLoad}}",
+                    "maxToReturn": "{{subPanelContext.searchState.maxToReturn}}",
+                    "searchCriteria": "{{subPanelContext.searchState.criteria}}",
+                    "cursor": {
+                        "startIndex": "{{data.dataProviders.gridDataProvider.startIndex}}"
+                    },
+                    "searchFilterFieldSortType": "{{subPanelContext.searchState.sortType}}",
+                    "searchFilterMap6": "{{subPanelContext.searchState.activeFilterMap}}"
+                },
+                "data":"{{data}}",
+                "searchState":"{{subPanelContext.searchState}}"
+            },
+            "dataParsers": [
+                {
+                    "id": "scheduleDataParser",
+                    "responseObjs": "searchResults"
+                }
+            ],
+            "outputData": {
+                "totalFound": "totalFound",
+                "tableLoaded": true,
+                "searchResults": "searchResults",
+                "searchResultsWithIcon": "{{function:updateSearchResults}}",
+                "output": "output",
+                "dataProviders.gridDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "plTableClientRefresh": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "gridView.plTable.clientRefresh"
+                } ]
+            }
+        },
+        "selectSharedSchedule": {
+            "actionType": "JSFunction",
+            "method": "selectSharedSchedule",
+            "inputData": {
+                "selection": "{{data.eventMap['gridDataProvider.selectionChangeEvent'].selectedObjects}}",
+                "assignScheduleState": "{{props.subPanelContext.assignScheduleState}}"
+            },
+            "outputData": {},
+            "deps": "js/Dpv1ScheduleService"
+        }
+    },
+    "dataProviders": {
+        "gridDataProvider": {
+            "action": "loadSharedScheduleData",
+            "selectionModelMode":"single",
+            "editContext": "",
+            "enablePropEdit": "false",
+            "response": "{{data.searchResultsWithIcon}}",
+            "totalFound": "{{data.totalFound}}",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            },
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        }
+    },
+    "dataParseDefinitions": {
+        "scheduleDataParser": {
+            "type": "",
+            "props": {
+                "Id": {
+                    "name": "scheduleId",
+                    "value": "{{response.Id}}",
+                    "displayValue": "{{response.Id}}",
+                    "type": "STRING"
+                },
+                "Name": {
+                    "name": "scheduleName",
+                    "value": "{{response.Name}}",
+                    "displayValue": "{{response.Name}}",
+                    "type": "STRING"
+                },
+                "Frequency": {
+                    "name": "Frequency",
+                    "value": "{{response.Frequency}}",
+                    "displayValue": "{{response.Frequency}}",
+                    "type": "STRING"
+                },
+                "ScheduleType": {
+                    "name": "ScheduleType",
+                    "value": "{{response.ScheduleType}}",
+                    "displayValue": "{{response.ScheduleType}}",
+                    "type": "INTEGER"
+                },
+                "StartTime": {
+                    "name": "startTime",
+                    "value": "{{response.StartTime}}",
+                    "displayValue": "{{response.StartTime}}",
+                    "type": "STRING"
+                },
+                "NextOccurrence": {
+                    "name": "nextOccurrence",
+                    "value": "{{response.NextOccurrence}}",
+                    "displayValue": "{{response.NextOccurrence}}",
+                    "type": "STRING"
+                },
+                "Description": {
+                    "name": "Description",
+                    "value": "{{response.Description}}",
+                    "displayValue": "{{response.Description}}",
+                    "type": "STRING"
+                },
+                "Option": {
+                    "name": "Option",
+                    "value": "{{response.Option}}",
+                    "displayValue": "{{response.Option}}",
+                    "type": "INTEGER"
+                },
+                "EveryXHoursValue": {
+                    "name": "EveryXHoursValue",
+                    "value": "{{response.EveryXHoursValue}}",
+                    "displayValue": "{{response.EveryXHoursValue}}",
+                    "type": "INTEGER"
+                },
+                "DaysOfWeek": {
+                    "name": "EveryXHoursValue",
+                    "value": "{{response.DaysOfWeek}}",
+                    "displayValue": "{{response.DaysOfWeek}}",
+                    "type": "OBJECT"
+                },
+                "EveryXDayOfYMonth_Day": {
+                    "name": "EveryXDayOfYMonth_Day",
+                    "value": "{{response.EveryXDayOfYMonth_Day}}",
+                    "displayValue": "{{response.EveryXDayOfYMonth_Day}}",
+                    "type": "INTEGER"
+                },
+                "RankedDayOfEveryXMonths_Month": {
+                    "name": "RankedDayOfEveryXMonths_Month",
+                    "value": "{{response.RankedDayOfEveryXMonths_Month}}",
+                    "displayValue": "{{response.RankedDayOfEveryXMonths_Month}}",
+                    "type": "INTEGER"
+                }
+            }
+        }
+    },
+    "columnProviders": {
+        "scheduleColumnProvider": {
+           "frozenColumnIndex": -1,
+           "headerHeight": "LARGE",
+           "columns": [
+            {
+                "name": "Id",
+                "typeName": "String",
+                "minWidth": 70,
+                "width": 70,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "Name",
+                "typeName": "String",
+                "minWidth": 70,
+                "width": 70,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "Frequency",
+                "typeName": "String",
+                "minWidth": 80,
+                "width": 80,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "NextOccurrence",
+                "typeName": "String",
+                "maxWidth": 300,
+                "minWidth": 80,
+                "width": 80,
+                "enableColumnMenu": false
+            },
+            {
+                "name": "Description",
+                "typeName": "String",
+                "minWidth": 200,
+                "width": 200,
+                "enableColumnMenu": false
+            }
+            ]
+        }
+    },
+    "grids": {
+        "gridView": {
+            "dataProvider": "gridDataProvider",
+            "columnProvider": "scheduleColumnProvider",
+            "enableArrangeMenu": true,
+            "gridOptions": {
+                "enableGridMenu": true,
+                "isFilteringEnabled": "{{subPanelContext.searchState.isFilteringEnabled}}"
+            }
+        }
+    },
+    "functions": {
+        "processOutput": {
+            "functionName": "processOutput",
+            "parameters": [
+                "{{data}}",
+                "{{subPanelContext.searchState}}"
+            ],
+            "deps": "js/awSearchService"
+        },
+        "updateSearchResults":
+        {
+            "functionName": "updateSearchResultsWithIcon"
+        }
+    },
+    "data": {
+        "tableLoaded": false
+    },
+    "lifecycleHooks": {
+        "onUpdate": {
+            "action": "initSearch",
+            "observers": [
+                "props.subPanelContext.searchState.criteria.searchString",
+                "props.subPanelContext.searchState.filterString",
+                "props.subPanelContext.searchState.schedule"
+            ]
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "gridDataProvider.selectionChangeEvent",
+            "cacheEventData": true,
+            "action": "selectSharedSchedule"
+        },
+        {
+            "eventId": "columnArrange",
+            "cacheEventData": true,
+            "action": "doArrangeEvent"
+        },
+        {
+            "eventId": "primaryWorkarea.multiSelectAction",
+            "action": "plTableClientRefresh"
+        }
+    ],
+    "conditions": {
+        "isAssignScheduleOperation": {
+            "expression": "props.subPanelContext.assignScheduleState"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

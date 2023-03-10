@@ -1,0 +1,91 @@
+
+{
+    "schemaVersion" : "1.0.0",
+    
+    "lifecycleHooks": {
+        "onMount": "createListForPropertyAndAtrributeSection"
+    },
+
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "actions":{
+        "loadDataForAttributes": {
+            "actionType": "JSFunctionAsync",
+            "method": "loadDataForAttributes",
+            "inputData": {
+                "data": "{{data}}",
+                "type":"AttributesPanel",
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "outputData": {
+                "attributes":"objects",
+                "totalFound":"totalFound"
+            },
+            "deps": "js/classifyAdminService"
+        },
+        "createListForPropertyAndAtrributeSection":{
+            "actionType" : "JSFunction",
+            "method": "createListForPropertyAndAtrributeSection",
+            "inputData":{
+                  "data": "{{data}}",
+                  "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "outputData":{
+                "currentSecDataPanel": "currentSecDataPanel",
+                "keyLOVTreeDataMetric": "keyLOVTreeDataMetric",
+                "classAttributesResponseForPanel": "classAttributesResponseForPanel"
+            },
+            "deps": "js/classifyAdminService"
+  
+  
+        }
+    },
+    "dataProviders": {
+        "attributesPanel":
+        {
+            "action": "loadDataForAttributes",
+            "commands": {},
+            "response":"{{data.attributes}}",
+            "totalFound":"{{data.totalFound}}",
+            "selectionModelMode": "none"
+        }
+    },
+    "columnProviders": {
+        "structureColumnProvider1": {
+            "columns": [
+                {
+                    "name": "Name",
+                    "displayName": "Name",
+                    "minWidth": 200,
+                    "width": 300,
+                    "isTableCommand": true
+                }
+            ],
+            "frozenColumnIndex" : -1
+        }
+    },
+    "grids": {
+        "entryGridForPanel": {
+            "dataProvider": "attributesPanel",
+            "columnProvider": "structureColumnProvider1",
+            "addIconColumn": false,
+            "gridOptions": {
+                "enableGridMenu": false,
+                "enablePinning": false,
+                "enableSorting": false,
+                "useStaticFirstCol": true
+                }
+            }
+    },
+    "i18n":
+    {
+        "propertiesTitle":        [ "ClassificationAdminMessages" ],
+        "attributes":             [ "ClassificationAdminMessages" ],
+        "keylovTitle":            [ "ClassificationAdminMessages" ]
+    }
+}
+    
+    

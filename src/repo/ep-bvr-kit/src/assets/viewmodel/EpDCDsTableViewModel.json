@@ -1,0 +1,67 @@
+{
+    "schemaVersion": "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "data": {
+        "editContext": "{{ctx.mfgReadOnlyMode.readOnlyMode === true ? '': 'EP_DETAILS_TABLE_EDIT_CONTEXT'}}",
+        "preferenceName": "EP_DataCollectionTableColumnShown",
+        "relationName": "mes0DCDNodes",
+        "loadInputObject": {
+            "loadTypes": [ "getProperties" ],
+            "propertiesToLoad": [ "mes0DCDNodes" ]
+        },
+        "isTableEditable": true,
+        "messages": {
+            "noElementSelected": [{
+                "text": "{{i18n.selectProcessOrOperation}}",
+                "textParams": [
+                    "{{i18n.dcds}}"
+                ]
+            }],
+            "noAssigned": [
+                {
+                    "text": "{{i18n.noAssigned}}",
+                    "textParams": [
+                        "{{i18n.dcds}}"
+                    ]
+                }
+            ]
+        },
+        "excludeInputTypes":["Mfg0BvrProcessResource"]
+    },
+
+    "actions": {
+        "getValueInViewModel": {
+            "actionType": "JSFunction",
+            "method": "getValueInViewModel",
+            "inputData": {
+                "tabData": "{{subPanelContext}}"
+            },
+            "outputData": {
+                "tabContext": ""
+            },
+            "deps": "js/mfeViewModelUtils"
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "getValueInViewModel"
+    },
+
+    "i18n": {
+        "dcds": ["DetailsMessages"],
+        "selectProcessOrOperation": [ "DetailsMessages" ],
+        "noAssigned": [ "DetailsMessages" ]
+    }
+}
+

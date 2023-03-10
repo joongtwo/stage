@@ -1,0 +1,67 @@
+{
+    "schemaVersion": "1.0.0",
+    "ports": {
+        "skillDetailsPort": {
+            "onChangeAction": "getSkillDetails",
+            "syncObject": {}
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+    "data":{
+        "skillID": {
+            "displayName": "{{i18n.skillID}}",
+            "type": "STRING"
+        },
+
+        "skillRevision": {
+            "displayName": "{{i18n.skillRevision}}",
+            "type": "STRING"
+        },
+
+        "skillName": {
+            "displayName": "{{i18n.skillName}}",
+            "type": "STRING"
+        },
+
+        "skillDesc": {
+            "displayName": "{{i18n.skillDescription}}",
+            "type": "STRING"
+        }
+    },
+
+   "actions": {
+        "getSkillDetails": {
+            "actionType": "JSFunction",
+            "method": "getSkillDetails",
+            "inputData": {
+                "selectedSkillObject": "{{ports.skillDetailsPort.syncObject}}"
+            },
+            "outputData":{
+                "skillName.uiValue":"skillName",
+                "skillID.uiValue":"skillID",
+                "skillRevision.uiValue":"skillRevision",
+                "skillDesc.uiValue":"skillDesc"
+            },
+            "deps": "js/swiSkillsService"
+        }
+    },
+   "i18n": {
+        "skillID": [
+            "swiMessages"
+        ],
+        "skillRevision": [
+            "swiMessages"
+        ],
+        "skillName": [
+            "swiMessages"
+        ],
+        "skillDescription": [
+            "swiMessages"
+        ]
+    }
+
+}

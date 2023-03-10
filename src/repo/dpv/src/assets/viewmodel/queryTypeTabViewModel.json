@@ -1,0 +1,65 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "updateUseOrigTemplateSettings": {
+            "actionType": "JSFunction",
+            "method": "updateQueryTypeOrigSettings",
+            "inputData": {
+                "subPanelContext": "{{props.subPanelContext}}",
+                "origSettingsVal":"{{data.useOrigFilterQueryType.dbValue}}"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "updateQryTypeOrigSettingsCheckbox": {
+            "actionType": "JSFunction",
+            "method": "updateQryTypeOrigSettingsCheckbox",
+            "inputData": {
+                "data": "{{data}}",
+                "qryTypeState": "{{props.subPanelContext.qryTypeState}}"
+            },
+            "outputData":{
+                "useOrigFilterQueryType":"useOrigFilterQueryType"
+            },
+            "deps": "js/Dpv1QueryParamService"
+        },
+        "resetQueryTypeData": {
+            "actionType": "JSFunction",
+            "method": "updateQueryTypeOrigSettings",
+            "inputData": {
+                "subPanelContext": "{{props.subPanelContext}}",
+                "origSettingsVal": true
+            },
+            "deps": "js/Dpv1QueryParamService"
+        }
+    },
+    "dataProviders": {},
+    "data": {
+        "useOrigFilterQueryType": {
+            "displayName": "{{i18n.OriginalTemplateSettings}}",
+            "type": "BOOLEAN",
+            "isEditable": "true",
+            "dbValue": "{{props.subPanelContext.qryTypeState.useOrigTempSettings}}",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+    },
+    "onEvent": [],
+    "functions": {},
+    "conditions":{},
+    "lifecycleHooks": {
+        "onUpdate": [ {
+            "action": "updateQryTypeOrigSettingsCheckbox",
+            "observers": [
+                "props.subPanelContext.qryTypeState.qryType"
+            ]
+        } ],
+        "onUnmount": "resetQueryTypeData"
+    },
+    "i18n": {
+        "OriginalTemplateSettings": [ "DpvMessages" ]
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    }
+}

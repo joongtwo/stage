@@ -1,0 +1,11 @@
+<mfe-loading-message exist-when="conditions.isLoading"></mfe-loading-message>
+<div class="sw-flex-column w-12" exist-when="conditions.areProductVariantsAvailable && !conditions.isLoading">
+    <aw-splm-table gridid="productVariantsResultsTable"></aw-splm-table>
+    <div class="aw-productVariants-totalRow">
+        <aw-i18n>i18n.totalProductionRate</aw-i18n>
+        <div class="aw-productVariants-totalRowValue">{{data.totalProductionRate}}</div>
+    </div>
+</div>
+<div class="sw-row justify-center align-center w-12" exist-when="!conditions.areProductVariantsAvailable && !conditions.isLoading">
+    <aw-link class="aw-productVariants-generateLink" prop="data.createPVSIfEmptyMessage"action="generateProductVariantsFromSVRs"></aw-link>
+</div>

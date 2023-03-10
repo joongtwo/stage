@@ -1,0 +1,144 @@
+{
+    "schemaVersion": "1.0.0",
+    "props":{
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context":{
+            "type": "object"
+        },
+        "in-scope-object-list":{
+            "type": "object"
+        },
+        "out-of-scope-object-list":{
+            "type": "object"
+        },
+        "in-scope-title": {
+            "type":"string"
+        },
+        "out-of-scope-title": {
+            "type":"string"
+        },
+        "close-popup": {
+            "type":"string"
+        }
+    },
+    "ports": {
+        "EpAssignmentIndicationAssignedInList_inScopeSingleSelectionPort": {
+            "syncObject": {}
+        },
+        "EpAssignmentIndicationAssignedInList_outScopeSingleSelectionPort": {
+            "syncObject": {}
+        }
+    },
+    "dataProviders": {
+        "inScopeDataProvider": {
+            "dataProviderType": "Static",
+            "response": "{{props.inScopeObjectList}}",
+            "totalFound": "{{props.inScopeObjectList.length}}"
+        },
+        "outScopeDataProvider": {
+            "dataProviderType": "Static",
+            "response": "{{props.outOfScopeObjectList}}",
+            "totalFound": "{{props.outOfScopeObjectList.length}}"
+        }
+    },
+    "actions": {
+        "initializeDataProvider":{
+            "actionType":"batchJob",
+            "steps":[
+                {
+                    "action":"initializeInScopeDataProvider"
+                },
+                {
+                    "action":"initializeOutScopeDataProvider"
+                }
+            ]
+        },
+        "initializeInScopeDataProvider": {
+            "actionType": "dataProvider",
+            "method": "inScopeDataProvider"
+        },
+        "initializeOutScopeDataProvider": {
+            "actionType": "dataProvider",
+            "method": "outScopeDataProvider"
+        },
+        "performInScopeSelectionSync": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "publishInScopeListSelection"
+                },
+                {
+                    "action": "closePopupWindow",
+                    "condition":"props.closePopup === 'undefined' || props.closePopup"
+                }
+            ]
+        },
+        "publishInScopeListSelection": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpAssignmentIndicationAssignedInList_inScopeSingleSelectionPort",
+                "syncObject": "{{data.dataProviders.inScopeDataProvider.selectedObjects[0]}}"
+            }
+        },
+        "closePopupWindow": {
+            "actionType": "JSFunction",
+            "method": "hide",
+            "inputData": {
+                "popupId": "{{subPanelContext.popupId}}"
+            },
+            "deps": "js/popupService"
+        },
+        "performOutScopeSelectionSync": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "publishOutScopeListSelection"
+                },
+                {
+                    "action": "closePopupWindow",
+                    "condition":"props.closePopup === 'undefined' || props.closePopup"
+                }
+            ]
+        },
+        "publishOutScopeListSelection": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "EpAssignmentIndicationAssignedInList_outScopeSingleSelectionPort",
+                "syncObject": "{{data.dataProviders.outScopeDataProvider.selectedObjects[0]}}"
+            }
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "initializeDataProvider"
+    },
+    "onEvent": [ {
+        "eventId": "inScopeDataProvider.selectionChangeEvent",
+        "inputArgs": {
+            "eventData": "{{eventData}}"
+        },
+        "action": "performInScopeSelectionSync"
+    },
+    {
+        "eventId": "outScopeDataProvider.selectionChangeEvent",
+        "inputArgs": {
+            "eventData": "{{eventData}}"
+        },
+        "action": "performOutScopeSelectionSync"
+    } ],
+    "conditions": {
+        "showInScopeList": {
+            "expression":"data.dataProviders.inScopeDataProvider.viewModelCollection.loadedVMObjects.length >0"
+        },
+        "showOutOfScopeList": {
+            "expression": "data.dataProviders.outScopeDataProvider.viewModelCollection.loadedVMObjects.length > 0"
+        },
+        "showLoading": {
+            "expression":"!conditions.showInScopeList && !conditions.showOutOfScopeList"
+        },
+        "showSeparator": {
+            "expression":"conditions.showInScopeList && conditions.showOutOfScopeList"
+        }
+    }
+}

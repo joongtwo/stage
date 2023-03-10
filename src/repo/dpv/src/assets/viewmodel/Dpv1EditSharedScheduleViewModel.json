@@ -1,0 +1,143 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "updateSharedSchedule": {
+            "actionType": "JSFunction",
+            "method": "createorUpdateSharedSchedule",
+            "inputData": {
+                "data": "{{data}}",
+                "commandId": "{{ctx.sidenavCommandId}}"
+            },
+            "outputData": {},
+            "events": {
+                "success": [
+                    {
+                        "name": "Dpv1.updateSearchState"
+                    },
+                    {
+                        "name": "editSharedSchedule.closePanel"
+                    }
+                ],
+                "failure": [ {
+                    "name": "editSharedSchedule.closePanel"
+                } ]
+            },
+            "actionMessages": {
+                "success": [
+                    {
+                        "message": "editSharedScheduleSuccessfulMessage"
+                    }
+                ],
+                "failure": [
+                    {
+                        "message": "editSharedScheduleFailedMessage"
+                    }
+                ]
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "loadSingleSchedule": {
+            "actionType": "JSFunction",
+            "method": "loadSingleSchedule",
+            "inputData": {
+                "selected":"{{ctx.selected}}",
+                "cronModelState":"{{data.cronModelState}}"
+            },
+            "outputData": {
+                "cronModelState":"cronModelState"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "closePanel": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "complete",
+                    "condition": "!data._internal.isDestroyed",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+        "updateSearchState": {
+            "actionType": "JSFunction",
+            "method": "updateStateWithSchedule",
+            "inputData": {
+                "scheduleName": "{{data.scheduleName.dbValue}}",
+                "searchState": "{{props.subPanelContext.searchState}}"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        }
+    },
+    "data": {
+        "scheduleName": {
+            "displayName": "{{i18n.scheduleName}}",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "false",
+            "dbValue": "{{ctx.selected.props.Name.displayValues[0]}}",
+            "dispValue": "{{ctx.selected.props.Name.displayValues[0]}}"
+        },
+        "cronModelState": {
+            "initialValues": {
+                "basis": 2,
+                "startTime": "02:30",
+                "daily_selectedDaysOfWeek": [0,1,2,3,4,5,6],
+                "hourly_everyXHoursVal": 2,
+                "monthly_dayVal": 1,
+                "monthly_everyXMonthsVal": 1
+            },
+            "meta": {}
+        }
+    },
+    "functions": {},
+    "messages": {
+        "editSharedScheduleSuccessfulMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Dpv1EditSharedScheduleSuccessful}}",
+            "messageTextParams": [
+                "{{data.scheduleName.dbValue}}"
+            ]
+        },
+        "editSharedScheduleFailedMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.Dpv1EditSharedScheduleFailed}}",
+            "messageTextParams": [
+                "{{data.scheduleName.dbValue}}"
+            ]
+        }},
+    "i18n": {
+        "update": [
+            "DpvMessages"
+        ],
+        "editSharedScheduleTitle": [
+            "DpvMessages"
+        ],
+        "scheduleName": [
+            "DpvMessages"
+        ],
+        "Dpv1EditSharedScheduleSuccessful": [
+            "DpvMessages"
+        ],
+        "Dpv1EditSharedScheduleFailed": [
+            "DpvMessages"
+        ]
+    },
+    "onEvent": [ 
+        {
+            "eventId": "editSharedSchedule.closePanel",
+            "action": "closePanel"
+        },
+        {
+            "eventId": "Dpv1.updateSearchState",
+            "action": "updateSearchState"
+        }
+    ],
+    "conditions": {},
+    "lifecycleHooks": {
+        "onMount": "loadSingleSchedule"
+    }
+}

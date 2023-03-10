@@ -1,0 +1,281 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "searchScope": {
+            "displayName": "{{i18n.searchScopeText}}",
+            "dbValue": false,
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "navigateContext":{
+            "type": "STRING",
+            "dbValue": "{{props.subPanelContext.occContext.viewKey}}"
+        },
+        "scopeLabel": {
+            "displayName": "{{i18n.scopeLabel}}",
+            "type": "STRING",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "searchStateForKeyword": {
+            "initialValues": {
+                "provider": "Awb0FullTextSearchProvider",
+                "isKeywordSearch": true,
+                "sortType": "Priority",
+                "additionalCriteria": {},
+                "selectFirstObjectPreference": "AWC_select_firstobject_inSearchLocation",
+                "autoApplyFilters": true,
+                "calculateResultCountUsingCursorObject": true,
+                "showIntermediateResultCount": true,
+                "label": {
+                    "source": "/i18n/SearchMessages",
+                    "key": "resultsText"
+                }
+            },
+            "meta": {
+                "categories": [ {
+                    "filterValues": [ {
+                        "selected": {
+                            "field": "true",
+                            "type": "BOOLEAN"
+                        }
+                    } ]
+                } ]
+            }
+        },
+        "searchStateForAdvanced": {
+            "initialValues": {
+                "provider" : "Awb0FullTextSearchProvider",
+                "isKeywordSearch": false,
+                "sortType": "Priority",
+                "selectFirstObjectPreference": "AWC_select_firstobject_inSearchLocation",
+                "lovPropertyName": "awb0InContextSavedQueryName",
+                "additionalCriteria": {},
+                "calculateResultCountUsingCursorObject": true,
+                "showIntermediateResultCount": true
+            },
+            "meta": {}
+        },
+        "selectionData": {
+            "initialValues": {},
+            "meta": {}
+        }
+    },
+    "selectionModels": {
+        "findSelectionModel": {
+            "selectionMode": "multiple"
+        }
+    },
+    "actions": {
+        "inContextSearchExecuted": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateCommandVisibilityOnSearchExecution"
+                }
+            ]
+        },
+        "selectionHasChanged": {
+            "actionType": "batchJob",
+            "steps": [ {
+                    "action": "updateAdditionalSearchCriteria"
+                },
+                {
+                    "action": "synchronizePWASelectionWithSearchResults"
+                }
+            ]
+        },
+        "synchronizePWASelectionWithSearchResults":{
+            "actionType": "JSFunction",
+            "method": "synchronizePWASelectionWithSearchResults",
+            "inputData": {
+                "data": "{{data}}" ,
+                "subPanelContext": "{{props.subPanelContext}}",
+                "selectionModel": "{{selectionModels.findSelectionModel}}"
+            },
+            "deps": "js/navigateSearchService"
+        },
+        "synchronizeFindSelectionWithPWA":{
+            "actionType": "JSFunction",
+            "method": "synchronizeFindSelectionWithPWA",
+            "inputData": {
+                "data": "{{data}}" ,
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "deps": "js/navigateSearchService"
+        },
+        "subscribeToProductContextChangeEvent": {
+            "actionType": "JSFunction",
+            "method": "subscribeToProductContextChangeEvent",
+            "inputData": {
+                "data": "{{data}}" ,
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "deps": "js/navigateSearchService"
+        },
+        "resetPanel": {
+            "actionType": "JSFunction",
+            "method": "resetPanel",
+            "inputData": {
+                "data": "{{data}}",
+                "subPanelContext": "{{props.subPanelContext}}"
+            },
+            "deps": "js/navigateSearchService"
+        },
+        "updateCommandVisibilityOnSearchExecution": {
+            "actionType": "JSFunction",
+            "method": "updateCommandVisibilityOnSearchExecution",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/navigateSearchService"
+        },
+        "updateSearchScope":{
+            "actionType": "JSFunction",
+            "method": "updateSearchScopeOnSearchState",
+            "inputData": {
+                "searchStateForAdvanced": "{{data.searchStateForAdvanced}}",
+                "searchStateForKeyword": "{{data.searchStateForKeyword}}",
+                "searchStateUpdater": "{{data.updateAtomicData}}",
+                "subPanelContext" : "{{props.subPanelContext}}",
+                "searchScopeValue": "{{data.searchScope}}"
+            },
+            "deps": "js/navigateSearchService"
+        },
+        "updateAdditionalSearchCriteria":{
+            "actionType": "JSFunction",
+            "method": "updateAdditionalSearchCriteria",
+            "inputData": {
+                "data": "{{data}}",
+                "subPanelCOntext" : "{{props.subPanelContext}}",
+                "searchScopeValue": "{{data.searchScope}}"
+            },
+            "deps": "js/navigateSearchService"
+        },
+        "updatePropertyPolicyOnSearchState":{
+            "actionType": "JSFunction",
+            "method": "updatePropertyPolicyOnSearchState",
+            "inputData": {
+                "data": "{{data}}",
+                "subPanelCOntext" : "{{props.subPanelContext}}"
+            },
+            "deps": "js/navigateSearchService"
+        },
+        "closeFindPanel" : {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "navigationPanel"
+                    }
+                } ]
+            }
+        }
+
+    },
+    "conditions": {
+        "isFindInFeatureSupported": {
+            "expression": "props.subPanelContext.occContext.supportedFeatures.Awb0ScopedFindInStructure"
+        },
+        "isValidSelection": {
+            "expression": "props.subPanelContext.occContext.currentState.c_uid !== props.subPanelContext.occContext.currentState.t_uid"
+        },
+        "isLeafNode": {
+            "expression":"props.subPanelContext.occContext.selectedModelObjects[0].props.awb0NumberOfChildren && props.subPanelContext.occContext.selectedModelObjects[0].props.awb0NumberOfChildren.dbValues[0] === '0' && conditions.isSearchScopeToShowOnLeafNode"
+        },
+        "isSearchScopeToShowOnLeafNode": {
+            "expression":"!props.subPanelContext.occContext.unifiedInContextSearchConfig || (props.subPanelContext.occContext.unifiedInContextSearchConfig && props.subPanelContext.occContext.unifiedInContextSearchConfig.showSearchScopeOnleafNode)"
+        },
+        "hasUnifiedInContextSearchTitle": {
+            "expression": "props.subPanelContext.provider.unifiedInContextSearchTitle"
+        },
+        "isSearchScopeDisable": {
+            "expression": "props.subPanelContext.occContext.unifiedInContextSearchConfig && props.subPanelContext.occContext.unifiedInContextSearchConfig.disableSearchScope === true"
+        },
+        "isWorksetSelected": {
+            "expression": "ctx.mselected.length === 1 && ctx.aceActiveContext.context.worksetTopNode !== undefined && ctx.mselected[0].props.awb0UnderlyingObject.dbValues[0]=== ctx.aceActiveContext.context.worksetTopNode.uid"
+        },
+        "isNavigationSupportedForAppSessionWorkset": {
+            "expression": "ctx.aceActiveContext.context.appSessionWorksetNode && (props.subPanelContext.occContext.supportedFeatures.Awb0FindInStructure === true || props.subPanelContext.occContext.supportedFeatures.Awb0FullTextSearchFeature === true)"
+        },
+        "isNavigationSupportedForObject": {
+            "expression": "((props.subPanelContext.occContext.isOpenedUnderAContext && (!ctx.aceActiveContext.context.appSessionWorksetNode || conditions.isNavigationSupportedForAppSessionWorkset)) || ( !props.subPanelContext.occContext.isOpenedUnderAContext && (props.subPanelContext.occContext.supportedFeatures.Awb0FindInStructure === true || props.subPanelContext.occContext.supportedFeatures.Awb0FullTextSearchFeature === true)))"
+        }
+    },
+    "functions": {
+
+
+    },
+    "onEvent": [
+        {
+            "eventId": "ace.ResetContentEvent",
+            "action": "subscribeToProductContextChangeEvent",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "navigate.resetStructure",
+            "action": "resetPanel"
+        },
+        {
+            "eventId": "appCtx.update",
+            "criteria": {
+                "target": "context.configContext"
+            },
+            "cacheEventData": true,
+            "action": "subscribeToProductContextChangeEvent"
+        },
+        {
+            "eventId": "productContextChangedEvent",
+            "action": "closeFindPanel",
+            "condition": "(dataProviderActionType === 'productChangedOnSelectionChange' || dataProviderActionType === 'initializeAction' ) && !conditions.isNavigationSupportedForObject"
+        }
+    ],
+    "i18n": {
+        "results": [ "OccurrenceManagementConstants" ],
+        "criteria": [ "OccurrenceManagementConstants" ],
+        "input": [ "OccurrenceManagementConstants" ],
+        "filters": [ "OccurrenceManagementConstants" ],
+        "searchScopeText": [ "OccurrenceManagementConstants" ],
+        "find": [ "OccurrenceManagementConstants" ],
+        "by": [ "OccurrenceManagementConstants" ],
+        "keyword": [ "OccurrenceManagementConstants" ],
+        "keywords": [ "OccurrenceManagementConstants" ],
+        "scopeLabel": [ "OccurrenceManagementConstants" ]
+    },
+    "lifecycleHooks": {
+        "onMount": "updateAdditionalSearchCriteria",
+        "onUpdate": [{
+            "action": "selectionHasChanged",
+            "observers": [ "props.subPanelContext.occContext.selectedModelObjects" ]
+        },
+        {
+            "action": "synchronizeFindSelectionWithPWA",
+            "observers": [ "viewModel.atomicData.selectionData.selected" ]
+        },
+        {
+            "action": "inContextSearchExecuted",
+            "observers": [
+                "viewModel.atomicData.searchStateForKeyword.criteria",
+                "viewModel.atomicData.searchStateForAdvanced.advancedSearchCriteria"
+            ]
+        },
+        {
+            "action": "subscribeToProductContextChangeEvent",
+            "observers": [ "props.subPanelContext.occContext.productContextInfo.props", "props.subPanelContext.occContext.transientRequestPref.replayRecipe" ]
+        },
+        {
+            "action": "updatePropertyPolicyOnSearchState",
+            "observers": [ "props.subPanelContext.pageContext.sublocationState.secondaryActiveTabId" ]
+        }
+    ]
+    },
+    "props": {
+        "sub-panel-context":{
+            "type":"object"
+        }
+    }
+}

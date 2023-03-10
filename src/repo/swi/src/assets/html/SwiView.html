@@ -1,0 +1,29 @@
+<aw-sublocation sub-location-preference="data._awSubLocationPref" sub-panel-context="">
+    <aw-scrollpanel>
+        <swi-button-container sub-panel-context="{swiAtomicData:data.swiAtomicData}">
+        </swi-button-container>
+        <div class="sw-column w-12 h-12">
+            <swi-related-objects sub-panel-context="data.instructionsContext" exist-when="data.instructionsContext.swiItemsList"></swi-related-objects>
+            <mfe-content-container class="sw-row h-12 w-12 aw-mfe-subpageContent" container-direction="HORIZONTAL" container-name="mainPanelTabs">
+                <mfe-content-container container-direction="VERTICAL" container-name="leftPanelTabs" class="w-6">
+                    <!-- Top left panel -->
+                    <mfe-content-container container-direction="HORIZONTAL" container-name="topLeftPanelTabs" class="h-7" exist-when="data.instructionsContext.swiItemsList">
+                        <mfe-content-panel sub-panel-context="{...data.instructionsContext,swiAtomicData:data.swiAtomicData}">
+                        </mfe-content-panel>
+                    </mfe-content-container>
+                    <!-- Bottom left panel -->
+                    <mfe-content-container container-direction="HORIZONTAL" container-name="bottomLeftPanelTabs" class="h-5" exist-when="data.swiAtomicData.selected">
+                        <mfe-content-panel sub-panel-context="{...data.partsToolsSkillsContext,swiAtomicData:data.swiAtomicData}">
+                        </mfe-content-panel>
+                    </mfe-content-container>
+                </mfe-content-container>
+
+                <!-- Right panel -->
+                <mfe-content-container container-direction="HORIZONTAL" container-name="rightPanelTabs" class="w-6">
+                    <mfe-content-panel sub-panel-context="data.swiViewerContext">
+                    </mfe-content-panel>
+                </mfe-content-container>
+            </mfe-content-container>
+        </div>
+    </aw-scrollpanel>
+</aw-sublocation>

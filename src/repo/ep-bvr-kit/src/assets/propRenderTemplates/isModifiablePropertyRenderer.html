@@ -1,0 +1,7 @@
+<% var is_modifiable = vmo.props.is_modifiable.dbValue;
+if( !is_modifiable ) {
+    var imagePath = basePath +'/image/indicatorLocked16.svg';
+    var toolTip = "";
+ %>
+<img src ="<%=imagePath%>" title="<%=toolTip%>" class="aw-visual-indicator">
+<%}%>

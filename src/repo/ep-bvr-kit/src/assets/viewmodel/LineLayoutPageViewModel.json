@@ -1,0 +1,73 @@
+{
+    "schemaVersion": "1.0.0",
+    "data": {
+        "provider": {
+            "label": "{{i18n.lineLayoutPageTitle}}",
+            "priority": 3,
+            "name": "lineLayoutPage",
+            "clientScopeURI": "lineLayoutPage",
+            "nameToken": "lineLayoutPage"
+        },
+        "awSubLocationPref": {
+            "hideNavigationArea": true,
+            "hideRightWall": true,
+            "hideToolsAndInfoArea": true
+        },
+        "loading": true
+    },
+    "actions": {
+        "initializeEPPage": {
+            "actionType": "JSFunctionAsync",
+            "method": "initializeEPPage",
+            "inputData": {
+                "provider": "{{data.provider}}"
+            },
+            "outputData": {
+                "stateContext": "stateContext",
+                "propertyPolicyId": "propertyPolicyId"
+            },
+            "deps": "js/epInitializationService"
+        },
+        "setLoading": {
+            "actionType": "JSFunction",
+            "method": "setLoading",
+            "inputData": {},
+            "outputData": {
+                "loading": ""
+            },
+            "deps": "js/lineLayoutService"
+        },
+        "openPopup": {
+            "actionType": "popup",
+            "inputData": {
+                "options": {
+                    "view": "AttachLineLayoutPopup",
+                    "draggable": true,
+                    "width": "400",
+                    "caption": "{{i18n.attachFile}}",
+                    "preset": "modal"
+                }
+            }
+        }
+    },
+    "onEvent": [
+        {
+            "eventId": "lineLayoutPage.setLoading",
+            "action": "setLoading"
+        }
+    ],
+    "i18n": {
+        "headerTitle": [
+            "EPMessages"
+        ],
+        "lineLayout": [
+            "LayoutMessages"
+        ],
+        "addLayout": [
+            "LayoutMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onMount": "initializeEPPage"
+    }
+}

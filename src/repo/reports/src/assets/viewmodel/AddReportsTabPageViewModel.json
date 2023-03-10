@@ -1,0 +1,208 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel-body.directive",
+        "js/aw-button.directive",
+        "js/aw-i18n.directive",
+        "js/aw-panel-footer.directive",
+        "js/aw-widget.directive",
+        "js/aw-listbox.directive"
+    ],
+    "actions": {
+        "getreportdefinitionList": {
+            "actionType": "TcSoaService",
+            "serviceName": "Reports-2008-06-CrfReports",
+            "method": "getReportDefinitions",
+            "inputData": {
+                "inputCriteria": [
+                    {
+                        "category": "",
+                        "source": "Active Workspace"
+                    }
+                ]
+            },
+            "policy": {
+                "types": [ {
+                    "name": "ReportDefinition",
+                    "properties": [ {
+                            "name": "rd_style_sheets",
+                            "modifiers": [ {
+                                "name": "withProperties",
+                                "Value": "true"
+                            } ]
+                        },
+                        {
+                            "name": "rd_source"
+                        },
+                        {
+                            "name": "rd_name"
+                        },
+                        {
+                            "name": "rd_type"
+                        },
+                        {
+                            "name": "rd_id"
+                        },
+                        {
+                            "name": "rd_parameters"
+                        },
+                        {
+                            "name": "rd_param_values"
+                        },
+                        {
+                            "name": "fnd0IsAsync"
+                        },
+                        {
+                            "name": "owning_user"
+                        },
+                        {
+                            "name": "creation_date"
+                        }
+                    ]
+                } ]
+            },
+            "outputData": {
+                "ctx.chartProvider": null,
+                "searchResults": "{{function:processSearchResults}}"
+            },
+            "deps": "js/showMyDashboardService"
+        },
+        "getselectedItemSource": {
+            "actionType": "JSFunction",
+            "deps": "js/showMyDashboardService",
+            "method": "getselectedItemSource",
+            "inputData": {
+                "reportsContext": "{{props.subPanelContext.reportsContext}}"
+            },
+            "outputData": {
+                "itemSource": ""
+            }
+        },
+        "revealDataProvider": {
+            "actionType": "dataProvider",
+            "method": "itemProvider"
+        },
+        "updateDataProvider": {
+            "actionType": "JSFunction",
+            "method": "updateDataProvider",
+            "inputData": {
+                "data": "{{data.dataProviders.reportsDataProvider}}",
+                "newSelection": "{{props.subPanelContext.reportsContext.selectedReport}}",
+                "reportList": "{{data.reportsList}}"
+            },
+            "outputData": {
+                "reportsList": ""
+            },
+            "deps": "js/showMyDashboardService"
+        },
+        "addSelectedReportToDashboard": {
+            "actionType": "JSFunction",
+            "method": "addSelectedReportToDashboard",
+            "deps": "js/showMyDashboardService",
+            "inputData": {
+                "selectedReportDef": "{{function:appendRdSourceAndReturnSelectedReportDef}}",
+                "preferenceName": null,
+                "SourceUid": "{{props.subPanelContext.reportsContext.itemSource[0].uid}}",
+                "state": "{{props.subPanelContext.MydashboardState}}"
+            },
+            "actionMessages":
+            {
+                "success":
+                [{
+                    "message": "addToDashboardSucessMessage"
+                }]
+            },
+            "events": {
+                "success": 
+                [{
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    },
+                    "condition": "!subPanelContext.panelPinned"
+                },{
+                    "name": "primaryWorkarea.reset"
+                }]
+            }
+        }
+    },
+    "data": {
+        "itemCommands": "rb0_itemCommands",
+        "reportsList": {
+            "name": "reportsList",
+            "type": "STRING",
+            "dataProvider": "reportsDataProvider",
+            "isSelectOnly": true
+        }
+    },
+    "dataProviders": {
+        "reportsDataProvider": {
+            "action": "getreportdefinitionList",
+            "response": "{{data.searchResults}}",
+            "selectionModelMode": "single",
+            "inputData": {
+                "selectionData": "{{props.subPanelContext.selectionData}}"
+            },
+            "totalFound": "{{data.searchResults.length}}"
+        },
+        "itemProvider":
+        {
+            "action": "getselectedItemSource",
+            "response": "{{data.itemSource}}",
+            "totalFound": "{{data.itemSource.length}}"
+        }
+    },
+    "onEvent": [ ],
+    "functions": {
+        "processSearchResults": {
+            "functionName": "processSearchResults",
+            "parameters": [
+                "{{data.reportsList.filterString}}"
+            ]
+        },
+        "appendRdSourceAndReturnSelectedReportDef": {
+            "functionName": "appendRdSourceAndReturnSelectedReportDef",
+            "parameters": [
+                "{{dataProviders.reportsDataProvider.selectedObjects[0].reportdefinition}}",
+                "{{props.subPanelContext.reportsContext.itemSource[0].uid}}"
+            ]
+        }
+    },
+    "messages": {
+        "addToDashboardSucessMessage": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.addToDashboardSuccessMsg}}",
+            "messageTextParams": [
+                "{{ctx.selected.propDisplayValue}}"
+            ]
+        }
+    },
+    "i18n": {
+        "reportTemplates": ["ReportChartMessages"],
+        "addDashboardReportWithPanel": ["ReportChartMessages"],
+        "reportType": ["ReportChartMessages"],
+        "advSummReport": ["ReportChartMessages"],
+        "advItemReport": ["ReportChartMessages"],
+        "advSummReportDesc": ["ReportChartMessages"],
+        "advItemReportDesc": ["ReportChartMessages"],
+        "item": ["ReportChartMessages"],
+        "addToDashboardSuccessMsg": ["ReportChartMessages"]
+    },
+    "lifecycleHooks": {
+        "onUpdate": [ {
+            "action": "revealDataProvider",
+            "observers": [ "props.subPanelContext.reportsContext.itemSource" ]
+        }, {
+            "action": "updateDataProvider",
+            "observers": [ "props.subPanelContext.reportsContext.selectedReport" ]
+        } ]
+    },
+    "conditions": {
+        "sourceItemAdd": {
+            "expression": "dataProviders.reportsDataProvider.selectedObjects.length > 0 && dataProviders.reportsDataProvider.selectedObjects[0].reportType==='1'"
+        },
+        "isAddEnabled": {
+            "expression": "dataProviders.reportsDataProvider.selectedObjects.length > 0 && ( ( dataProviders.reportsDataProvider.selectedObjects[0].reportType==='1' && props.subPanelContext.reportsContext.itemSource.length > 0 ) || dataProviders.reportsDataProvider.selectedObjects[0].reportType==='4' )"
+        }
+    }
+}

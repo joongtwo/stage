@@ -1,0 +1,15 @@
+<aw-sublocation class="aw-layout-panelBody"  sub-location-preference="data.awSubLocationPref" sub-panel-context="{provider :data._sbomSublocation , occContext: ctx.aceActiveContext.key === 'ebomContext' ? fields.occContext : fields.occContext2, inactiveContext : ctx.aceActiveContext.key === 'ebomContext' ? fields.occContext : fields.occContext}">
+    <div class="aw-layout-flexRow aw-base-scrollPanel">
+        <aw-panel-body class="aw-layout-flexColumnContainer aw-taskbasedpage-leftPanel" aw-click="actions.activateLeftView">
+            <sen-bom-panel exist-when="data._sbomSublocation.baseSelection" sub-panel-context="{...subPanelContext,provider:data._ebomSublocation,occContext : data.occContext,contextKey: data._ebomSublocation.contextKey}"></sen-bom-panel>
+            <aw-splitter min-size-1="0" min-size-2="0" direction="HORIZONTAL"></aw-splitter>
+        </aw-panel-body>
+        <aw-splitter min-size-1="0" min-size-2="200" direction="vertical">
+        </aw-splitter>
+        <aw-panel-body class="aw-layout-flexColumnContainer aw-taskbasedpage-rightPanel" aw-click="actions.activateRightView">
+          <sen-bom-panel exist-when="data._ebomSublocation.baseSelection" sub-panel-context="{...subPanelContext,provider:data._sbomSublocation,occContext : data.occContext2,contextKey: data._sbomSublocation.contextKey}"></sen-bom-panel>
+            <aw-splitter min-size-1="0" min-size-2="0" direction="HORIZONTAL"></aw-splitter>
+        </aw-panel-body>
+    </div>
+</aw-sublocation>
+

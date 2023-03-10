@@ -1,0 +1,133 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "updateAssignScheduleInfo": {
+            "actionType": "JSFunction",
+            "method": "updateAssignScheduleInfo",
+            "inputData": {
+                "selectedSchType": "{{data.scheduleTypeLabel.dbValue}}",
+                "assignScheduleState": "{{props.subPanelContext.assignScheduleState}}"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "schedulePopOnLinkAction": {
+            "actionType": "popup",
+            "inputData": {
+                "options": {
+                    "whenParentScrolls": "close",
+                    "resizeToClose": true,
+                    "autoFocus": true,
+                    "forceCloseOthers": false,
+                    "hasArrow": true,
+                    "placement": "top-start",
+                    "view": "scheduleInfoBalloonPopup",
+                    "subPanelContext": {
+                        "runningScheduleState": "{{props.subPanelContext.runningScheduleState}}"
+                    }
+                }
+            }
+        },
+        "initializeScheduleInfoPage": {
+            "actionType": "JSFunctionAsync",
+            "method": "initializeScheduleInfoPage",
+            "inputData": {
+                "assignScheduleState": "{{props.subPanelContext.assignScheduleState}}",
+                "runningScheduleState": "{{props.subPanelContext.runningScheduleState}}",
+                "noAssignedScheduleMsg": "{{data.noAssignedScheduleMsg}}",
+                "schedulePopOnLink": "{{data.schedulePopOnLink}}"
+            },
+            "outputData": {
+                "runningScheduleState": "runningScheduleState",
+                "noAssignedScheduleMsg": "noAssignedScheduleMsg",
+                "schedulePopOnLink": "schedulePopOnLink"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        },
+        "updateScheduleInfoTab": {
+            "actionType": "JSFunction",
+            "method": "updateScheduleInfoTab",
+            "inputData": {
+                "cronModelState": "{{props.subPanelContext.cronModelState}}",
+                "runningScheduleState": "{{props.subPanelContext.runningScheduleState}}",
+                "assignScheduleState": "{{props.subPanelContext.assignScheduleState}}",
+                "scheduleTypeLabel": "{{data.scheduleTypeLabel}}"
+            },
+            "outputData": {
+                "scheduleTypeLabel": "scheduleTypeLabel"
+            },
+            "deps": "js/Dpv1ScheduleService"
+        }
+    },
+    "dataProviders": {},
+    "data": {
+        "scheduleTypeLabel": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "0",
+            "vertical": false,
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "scheduleTypeList": {
+            "type": "STRING",
+            "dbValue": [ 
+            {
+                "propDisplayValue": "{{i18n.sharedScheduleLbl}}",
+                "propInternalValue": "0"
+            },
+            {
+                "propDisplayValue": "{{i18n.reportSpecificScheduleLbl}}",
+                "propInternalValue": "1"
+            },
+            {
+                "propDisplayValue": "{{i18n.triggerScheduleLbl}}",
+                "propInternalValue": "2"
+            }
+        ]
+        },
+        "noAssignedScheduleMsg": {
+            "displayName": "",
+            "dbValue": "noAssignedScheduleMsg",
+            "type": "STRING",
+            "dispValue": "",
+            "labelPosition": "NO_PROPERTY_LABEL"
+        },
+        "schedulePopOnLink": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": "schInfo"
+        }
+    },
+    "onEvent": [],
+    "functions": {},
+    "conditions":{},
+    "lifecycleHooks": {
+        "onMount": "initializeScheduleInfoPage",
+        "onUpdate": [ {
+            "action": "updateScheduleInfoTab",
+            "observers": [
+                "props.subPanelContext.runningScheduleState.scheduleType"
+            ]
+        } ]
+    },
+    "i18n": {
+        "sharedScheduleLbl": ["DpvMessages"],
+        "reportSpecificScheduleLbl": ["DpvMessages"],
+        "triggerScheduleLbl": ["DpvMessages"],
+        "triggerScheduleInfoMsg":["DpvMessages"]
+    },
+    "messages": {
+        "triggerScheduleInfoMsg": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.triggerScheduleInfoMsg}}"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+    } 
+}

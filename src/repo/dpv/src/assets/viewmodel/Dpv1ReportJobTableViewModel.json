@@ -1,0 +1,273 @@
+{
+    "schemaVersion": "1.0.0",
+    "actions": {
+        "initSearch": {
+            "actionType": "JSFunction",
+            "method": "initSearch",
+            "inputData": {
+                "data": "{{data.actions}}",
+                "actionName": "doGridDataProvider",
+                "tableLoaded": "{{data.tableLoaded}}"
+            },
+            "deps": "js/awSearchService"
+        },
+        "doArrangeEvent": {
+            "actionType": "JSFunctionAsync",
+            "method": "arrangeColumns",
+            "inputData": {
+                "declViewModel": "{{data}}",
+                "eventData": "{{data.eventData}}"
+            },
+            "deps": "js/columnArrangeService"
+        },
+        "doGridDataProvider": {
+            "actionType": "dataProvider",
+            "method": "gridDataProvider"
+        },
+        "loadDashboardData": {
+            "actionType": "JSFunction",
+            "method": "loadDashboardData",
+            "inputData": {
+                "searchInput": {
+                    "maxToLoad": "{{subPanelContext.searchState.maxToLoad}}",
+                    "maxToReturn": "{{subPanelContext.searchState.maxToReturn}}",
+                    "searchCriteria": "{{subPanelContext.searchState.criteria}}",
+                    "cursor": {
+                        "startIndex": "{{data.dataProviders.gridDataProvider.startIndex}}"
+                    },
+                    "searchFilterFieldSortType": "{{subPanelContext.searchState.sortType}}",
+                    "searchFilterMap6": "{{subPanelContext.searchState.activeFilterMap}}"
+                }
+            },
+            "dataParsers": [
+                {
+                    "id": "repExecDashboardDataParser",
+                    "responseObjs": "searchResults"
+                }
+            ],
+            "outputData": {
+                "totalFound": "totalFound",
+                "tableLoaded": true,
+                "searchResults": "searchResults",
+                "searchResultsWithIcon": "{{function:updateSearchResults}}",
+                "output": "{{function:processOutput}}",
+                "dataProviders.gridDataProvider.columnConfig": "columnConfig"
+            },
+            "deps": "js/Dpv1GraphicalReportService"
+        },
+        "plTableClientRefresh": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "gridView.plTable.clientRefresh"
+                } ]
+            }
+        },
+        "enableAutomaticMultiSelection": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [
+                    {
+                        "name": "gridDataProvider.multiSelectModeAction",
+                        "eventData": {
+                            "multiSelect": true
+                        }
+                    }
+                ]
+            }
+        }
+    },
+    "dataProviders": {
+        "gridDataProvider": {
+            "action": "loadDashboardData",
+            "selectionModelMode":"single",
+            "selectionModel": {
+                "multiSelectEnabled": false
+            },
+            "editContext": "",
+            "enablePropEdit": "false",
+            "response": "{{data.searchResultsWithIcon}}",
+            "totalFound": "{{data.totalFound}}",
+            "inputData": {
+                "selectionModel": "{{subPanelContext.selectionModel}}"
+            },
+            "commandsAnchor": "com.siemens.splm.clientfx.tcui.commands.modelObjectCellListActionCommands"
+        }
+    },
+    "dataParseDefinitions": {
+        "repExecDashboardDataParser": {
+            "type": "",
+            "props": {
+                "ReportId": {
+                    "name": "ReportId",
+                    "value": "{{response.ReportId}}",
+                    "displayValue": "{{response.ReportId}}",
+                    "type": "String"
+                },
+                "ReportName": {
+                    "name": "ReportName",
+                    "value": "{{response.ReportName}}",
+                    "displayValue": "{{response.ReportName}}",
+                    "type": "String"
+                },
+                "Status": {
+                    "name": "Status",
+                    "value": "{{response.Status}}",
+                    "displayValue": "{{response.Status}}",
+                    "type": "String"
+                },
+                "StartedAt": {
+                    "name": "StartedAt",
+                    "value": "{{response.StartedAt}}",
+                    "displayValue": "{{response.StartedAt}}",
+                    "type": "String"
+                },
+                "CompletedAt": {
+                    "name": "CompletedAt",
+                    "value": "{{response.CompletedAt}}",
+                    "displayValue": "{{response.CompletedAt}}",
+                    "type": "String"
+                },
+                "Duration": {
+                    "name": "Duration",
+                    "value": "{{response.Duration}}",
+                    "displayValue": "{{response.Duration}}",
+                    "type": "String"
+                },
+                "AvgDuration": {
+                    "name": "AvgDuration",
+                    "value": "{{response.AvgDuration}}",
+                    "displayValue": "{{response.AvgDuration}}",
+                    "type": "String"
+                },
+                "NumPagesGenerated": {
+                    "name": "NumPagesGenerated",
+                    "value": "{{response.NumPagesGenerated}}",
+                    "displayValue": "{{response.NumPagesGenerated}}",
+                    "type": "String"
+                },
+                "ScheduleName": {
+                    "name": "ScheduleName",
+                    "value": "{{response.ScheduleName}}",
+                    "displayValue": "{{response.ScheduleName}}",
+                    "type": "String"
+                }
+            }
+        }
+    },
+    "columnProviders": {
+        "graDashboardColumnProvider": {
+            "frozenColumnIndex": -1,
+            "headerHeight": "LARGE",
+            "columns": [
+             {
+                 "name": "ReportName",
+                 "typeName": "String",
+                 "minWidth": 80,
+                 "width": 80,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "Status",
+                 "typeName": "String",
+                 "maxWidth": 300,
+                 "minWidth": 80,
+                 "width": 80,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "StartedAt",
+                 "typeName": "String",
+                 "minWidth": 100,
+                 "width": 125,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "CompletedAt",
+                 "typeName": "String",
+                 "minWidth": 100,
+                 "width": 100,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "Duration",
+                 "typeName": "Integer",
+                 "minWidth": 100,
+                 "width": 100,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "AvgDuration",
+                 "typeName": "Integer",
+                 "minWidth": 100,
+                 "width": 100,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "NumPagesGenerated",
+                 "typeName": "Integer",
+                 "minWidth": 100,
+                 "width": 100,
+                 "enableColumnMenu": false
+             },
+             {
+                 "name": "ScheduleName",
+                 "typeName": "String",
+                 "minWidth": 70,
+                 "width": 70,
+                 "enableColumnMenu": false
+             }
+             ]
+         }
+    },
+    "grids": {
+        "gridView": {
+            "dataProvider": "gridDataProvider",
+            "columnProvider": "graDashboardColumnProvider",
+            "enableArrangeMenu": true,
+            "gridOptions": {
+                "enableGridMenu": true,
+                "isFilteringEnabled": "{{subPanelContext.searchState.isFilteringEnabled}}"
+            }
+        }
+    },
+    "functions": {
+        "processOutput": {
+            "functionName": "processOutput",
+            "parameters": [
+                "{{data}}",
+                "{{subPanelContext.searchState}}"
+            ],
+            "deps": "js/awSearchService"
+        },
+        "updateSearchResults":
+        {
+            "functionName": "updateSearchResultsWithIcon"
+        }
+    },
+    "data": {
+        "tableLoaded": false
+    },
+    "lifecycleHooks": {
+        "onMount": "enableAutomaticMultiSelection",
+        "onUpdate": {
+            "action": "initSearch",
+            "observers": [
+                "props.subPanelContext.searchState.criteria.searchString",
+                "props.subPanelContext.searchState.filterString"
+            ]
+        }
+    },
+    "onEvent": [ {
+            "eventId": "columnArrange",
+            "cacheEventData": true,
+            "action": "doArrangeEvent"
+        },
+        {
+            "eventId": "primaryWorkarea.multiSelectAction",
+            "action": "plTableClientRefresh"
+        }
+    ]
+}

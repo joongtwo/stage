@@ -1,0 +1,107 @@
+{
+    "schemaVersion" : "1.0.0",
+    "props": {
+        "view-path": {
+            "type": "object"
+        },
+        "view-id": {
+            "type": "string"
+        },
+        "sub-panel-context": {
+            "type": "object"
+        }
+    },
+
+    "actions":
+    {
+        "generatePackage":
+        {
+            "actionType": "JSFunction",
+            "method": "generatePackage",
+            "inputData":
+            {
+                "data": "{{data}}"
+            },
+            "deps": "js/Ewi0Offline"
+        },
+        "setIncludeVis":
+        {
+            "actionType": "JSFunction",
+            "method": "setIncludeVis",
+            "inputData":
+            {
+                "includeVis": "{{data.includeVis.dbValue}}",
+                "visHost": "{{data.visHost}}"
+            },
+            "deps": "js/Ewi0Offline"
+        }
+    },
+
+    "data":
+    {
+        "packageName":
+        {
+            "displayName": "{{i18n.packageName}}",
+            "type": "STRING",
+            "isEditable": "true",
+            "isRequired": "true",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "password":
+        {
+            "displayName": "{{i18n.password}}",
+            "type": "STRING",
+            "isEditable": "true",
+            "isRequired": "true",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        },
+        "offlineOptionsLabel":
+        {
+            "displayName": "{{i18n.offlineOptionsLabel}}",
+            "type": "STRING"
+        },
+        "recordingMode":
+        {
+            "displayName": "",
+            "type": "BOOLEAN",
+            "isRequired": "true",
+            "propertyRadioTrueText": "{{i18n.offlineCurrentStep}}",
+            "propertyRadioFalseText": "{{i18n.offlineCurrentAndSubSteps}}",
+            "vertical": true,
+            "dbValue": false
+        },
+        "includeVis": {
+            "displayName": "{{i18n.includeVisualization}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "visHost":
+        {
+            "displayName": "{{i18n.visServer}}",
+            "type": "STRING",
+            "isEditable": "true",
+            "isRequired": "false",
+            "labelPosition": "PROPERTY_LABEL_AT_TOP"
+        }
+    },
+
+    "preferences": [
+        "EWI_OfflineServletAddress"
+    ],
+
+    "i18n":
+    {
+        "offlineTitle": ["EWIMessages"],
+        "password": ["EWIMessages"],
+        "packageName": ["EWIMessages"],
+        "generate": ["EWIMessages"],
+        "offlineOptionsLabel": ["EWIMessages"],
+        "offlineCurrentStep": ["EWIMessages"],
+        "offlineCurrentAndSubSteps": ["EWIMessages"],
+        "includeVisualization": ["EWIMessages"],
+        "visServer": ["EWIMessages"]
+    }
+}

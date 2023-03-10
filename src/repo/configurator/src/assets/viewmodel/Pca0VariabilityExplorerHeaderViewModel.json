@@ -1,0 +1,144 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-header-contribution.directive",
+        "js/aw-property-label.directive",
+        "js/aw-property-non-edit-val.directive",
+        "js/aw-include.directive"
+    ],
+    "data": {
+        "headerData": {
+            "revisionRule": {
+                "dbValues": [ "" ],
+                "uiValues": [ "" ]
+            },
+            "ruleEffectivity": {}
+        },
+        "revisionRuleLabel": {
+            "type": "STRING",
+            "hasLov": true,
+            "dbValue": "",
+            "displayName": "{{i18n.Pca0RevisionRule}}"
+        },
+        "subPanelContextInfo": {
+            "contextKey": "ConfiguratorCtx",
+            "effectivityFeature": "{{ctx.preferences.PCA_effectivity_shown_columns[0]}}",
+            "isRevRuleActionDefaultBehavior": {
+                "dbValue": true,
+                "type": "BOOLEAN"
+            },
+            "isConfigurationReadOnly": {
+                "dbValue": false,
+                "type": "BOOLEAN"
+            }
+        },
+        "effectivityLabel": {
+            "type": "STRING",
+            "hasLov": true,
+            "dbValue": "",
+            "displayName": "{{i18n.Pca0Effectivity}}"
+        }
+    },
+    "actions": {
+        "registerConfiguratorCtx": {
+            "actionType": "JSFunction",
+            "method": "registerConfiguratorCtx",
+            "deps": "js/pca0ContextManagementService"
+        },
+        "unregisterConfiguratorCtx": {
+            "actionType": "JSFunction",
+            "method": "unregisterConfiguratorCtx",
+            "deps": "js/pca0ContextManagementService"
+        },
+        "loadConfigurationHeaderData": {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2006-03-DataManagement",
+            "method": "getProperties",
+            "inputData": {
+                "objects": [
+                    { "uid": "{{ctx.state.processed.uid}}" }
+                ],
+                "attributes": [
+                    "cfg0ConfigPerspective"
+                ]
+            },
+            "policy": {
+                "types": [ {
+                    "name": "Cfg0ConfiguratorPerspective",
+                    "properties": [ {
+                            "name": "cfg0ProductItems"
+                        }, {
+                            "name": "cfg0RuleSetEffectivity"
+                        },
+                        {
+                            "name": "cfg0RevisionRule",
+                            "modifiers": [
+                                {
+                                    "name": "withProperties",
+                                    "Value": "true"
+                                }
+                            ]
+                        }
+                    ]
+                } ]
+            },
+            "outputData": {
+                "headerData": "{{function:initializeHeaderFromSOA}}"
+            },
+            "deps": "js/pca0VariabilityExplorerHeaderService"
+        },
+        "initializeHeaderInfoForContext": {
+            "actionType": "JSFunction",
+            "method": "initializeHeaderInfoForContext",
+            "deps": "js/pca0VariabilityExplorerHeaderService",
+            "events": {
+                "success": [ {
+                    "name": "Pca0FilterCriteriaSettings.refreshContent"
+                } ]
+            }
+        }
+    },
+    "onEvent": [ {
+            "eventId": "pca0VariabilityExplorerHeaderService.getRequiredProperties",
+            "action": "loadConfigurationHeaderData"
+        },
+        {
+            "eventId": "pca0VariabilityExplorerHeaderService.initializeHeader",
+            "action": "initializeHeaderInfoForContext"
+        }
+    ],
+    "functions": {
+        "initializeHeaderFromSOA": {
+            "functionName": "initializeHeaderFromSOA"
+        }
+    },
+    "conditions": {
+        "isEffectivityInitialized": {
+            "expression": "ctx.ConfiguratorCtx.settingsCache && ctx.ConfiguratorCtx.settingsCache.effectivityInfo"
+        },
+        "isVariantExplorer": {
+            "expression": "ctx.state.params.pageId === 'tc_xrt_Models' || ctx.state.params.pageId === 'tc_xrt_Features'  || ctx.state.params.pageId === 'tc_xrt_Constraints'"
+        },
+        "isVariantRule": {
+            "expression": "ctx.state.params.pageId === 'tc_xrt_Variants'"
+        },
+        "isVariantCriteriaPreferenceEnable": {
+            "expression": "ctx.preferences.Cfg0CreateVariantRuleType[ 0 ] === 'Cfg0VariantCriteria'"
+        },
+        "isRevisionRuleRequired": {
+            "expression": "conditions.isVariantExplorer || ( conditions.isVariantRule && conditions.isVariantCriteriaPreferenceEnable )"
+        }
+    },
+    "i18n": {
+        "Pca0RevisionRule": [
+            "ConfiguratorExplorerMessages"
+        ],
+        "Pca0Effectivity": [
+            "ConfiguratorExplorerMessages"
+        ]
+    },
+    "lifecycleHooks": {
+        "onMount": "registerConfiguratorCtx",
+        "onUnmount": "unregisterConfiguratorCtx"
+    }
+}

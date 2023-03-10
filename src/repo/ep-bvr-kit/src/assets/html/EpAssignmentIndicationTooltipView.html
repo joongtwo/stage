@@ -1,0 +1,13 @@
+<aw-panel class="aw-ep-assignemntIndicationTooltipPopup">
+    <aw-panel-body class="sw-row">
+            <div class="sw-column">
+                <div class="sw-row" class="aw-ep-consumptionDetailsText">
+                    {{data[subPanelContext.indicationMatchType].title}}
+                </div>
+                <aw-separator class="aw-ep-assignmentIndicationSeparator" exist-when="data[subPanelContext.indicationMatchType].clickDescription"></aw-separator>
+                <div class="sw-row" exist-when="data[subPanelContext.indicationMatchType].clickDescription" class="aw-ep-italicAssignmentText">
+                    {{data[subPanelContext.indicationMatchType].clickDescription}}
+                </div>
+            </div>
+    </aw-panel-body>
+</aw-panel>

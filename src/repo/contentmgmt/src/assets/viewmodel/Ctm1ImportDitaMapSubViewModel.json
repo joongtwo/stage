@@ -1,0 +1,487 @@
+{
+    "schemaVersion" : "1.0.0",
+    "imports":
+        [
+            "js/aw-panel-body.directive",
+            "js/aw-panel-footer.directive",
+            "js/aw-panel-section.directive",
+            "js/visible-when.directive",
+            "js/aw-listbox.directive",
+            "js/aw-list.directive",
+            "js/aw-radiobutton.directive",
+            "js/aw-checkbox.directive",
+            "js/aw-file-upload.directive",
+            "js/aw-button.directive",
+            "js/aw-textbox.directive",
+            "js/aw-i18n.directive"
+        ],
+    "actions":
+    {
+        "reveal": {
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "ctm1.resetLocal"
+                } ]
+            }
+        },
+
+        "updateSelectedFileInfoAction":
+        {
+            "actionType": "JSFunction",
+            "method": "handleFileChangeResponse",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "files": "files",
+                "fileNames": "fileNames"
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1GetGraphicAttributeMapping":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "__ctm0_Graphic_Attr_Map_Query",
+                        "searchID": "GRAPHIC_ATTRIBUTE_MAP_QUERY",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0",
+                        "lastEndIndex": "0",
+                        "object_name": "*",
+                        "startIndex": "0"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "object_name",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+            "events": {
+                "success": [ {
+                    "name": "ctm1.restoreLocal"
+                } ],
+                "failure": [ {
+                    "name": "ctm1.restoreLocal"
+                } ]
+            },
+            "outputData": {
+                "graphicAttributeMappingList": "{{function:getLovFromQuery}}"
+            },
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+
+        "Ctm1TransientFileTicketsForUpload":
+        {
+            "actionType": "TcSoaService",
+            "serviceName": "Core-2007-01-FileManagement",
+            "method": "getTransientFileTicketsForUpload",
+            "inputData": {
+                "transientFileInfos": "{{function:getTransientFileInfos}}"
+            },
+            "outputData": {
+                "fmsTickets": "transientFileTicketInfos"
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "SOAErrorMessage"
+                } ]
+            },
+            "events": {
+                "success": [ {
+                    "name": "ctm1.fmsTicketGenerated"
+                } ],
+                "failure": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1UpdateFormData": {
+            "actionType": "JSFunction",
+            "method": "updateFormData",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "formData": "formData"
+            },
+            "events": {
+                "success": [ {
+                    "name": "ctm1.fileTicketCreated"
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1UploadFile":
+        {
+            "actionType": "RESTService",
+            "serviceName": "",
+            "method": "POST",
+            "inputData": {
+                "request": {
+                    "method": "POST",
+                    "url": "{{Constants.fmsUrl}}",
+                    "headers": {
+                        "Content-type": "undefined"
+                    },
+                    "data": "{{data.formData}}"
+                }
+            },
+            "actionMessages": {
+                "failure": [ {
+                    "message": "UploadFailedMessage"
+                } ]
+            },
+            "events": {
+                "success": [ {
+                    "name": "ctm1.fileUploaded"
+                } ],
+                "failure": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            }
+        },
+
+        "Ctm1CheckUploadsComplete": {
+            "actionType": "JSFunction",
+            "method": "checkUploadsComplete",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1ImportTopic": {
+            "actionType": "TcSoaService",
+            "serviceName": "ContMgmtBase-2011-06-ContentManagement",
+            "method": "decomposeContent",
+            "inputData": {
+                "inputs": "{{function:getImportDitaMapInputs}}"
+            },
+            "outputData": {
+                "importData": "",
+                "objectName": "{{function:getImportedName}}"
+            },
+            "actionMessages": {
+                "success": [ {
+                    "message": "importDitaMapSuccess"
+                } ],
+                "failure": [ {
+                    "message": "SOAErrorMessage"
+                } ]
+            },
+            "events": {
+                "success": [ {
+                    "name": "ctm1.importComplete",
+                    "eventData": {
+                        "importData": "{{data.importData}}"
+                    }
+                } ],
+                "failure": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "Ctm1UpdateDitaMapFilename":{
+            "actionType": "Event",
+            "method": "Event",
+            "inputData": {
+                "events": [ {
+                    "name": "ctm1.updateDitaMapFilename",
+                    "eventData": {
+                        "fileName": "{{parameters.fileName}}",
+                        "fileNameNoExt": "{{parameters.fileNameNoExt}}",
+                        "fileExt": "{{parameters.fileExt}}",
+                        "formData": "{{parameters.formData}}"
+                    }
+                } ]
+            }
+        },
+
+        "updateDitaMapFilename":{
+            "actionType": "JSFunction",
+            "method": "updateDitaMapFilename",
+            "inputData": {
+                "data": "{{data}}"
+            },
+            "outputData": {
+                "files": "files",
+                "fileNames": "fileNames",
+                "filenameBox": "filenameBox"
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "pasteTopic": {
+            "actionType": "JSFunction",
+            "method": "pasteTopic",
+            "inputData": {
+                "user": "{{ctx.user}}",
+                "data": "{{data.importData}}"
+            },
+            "events": {
+                "success": [ {
+                    "name": "complete",
+                    "eventData": {
+                        "source": "toolAndInfoPanel"
+                    }
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtImportService"
+        },
+
+        "resetLocal": {
+            "actionType": "JSFunction",
+            "method": "resetLocal",
+            "events": {
+                "success": [ {
+                    "name": "ctm1.getGraphicAttributeMapping"
+                } ],
+                "failure": [ {
+                    "name": "ctm1.getGraphicAttributeMapping"
+                } ]
+            },
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        },
+
+        "restoreLocal": {
+            "actionType": "JSFunction",
+            "method": "restoreLocal",
+            "deps": "js/Ctm1ContentMgmtCreateTopicTypeService"
+        }
+    },
+    "functions": {
+        "getLovFromQuery": {
+            "functionName": "getLovFromQuery",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getImportDitaMapInputs": {
+            "functionName": "getImportDitaMapInputs",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getTransientFileInfos": {
+            "functionName": "getTransientFileInfos",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getImportedName": {
+            "functionName": "getImportedName",
+            "parameters": [
+                "{{data}}"
+            ]
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "reveal"
+    },
+    "onEvent": [
+        {
+            "eventId": "ctm1.updateDitaMapFilename",
+            "action": "updateDitaMapFilename",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "ctm1.getGraphicAttributeMapping",
+            "action": "Ctm1GetGraphicAttributeMapping",
+            "cacheEventData": true
+        },
+        {
+            "eventId" : "ctm1.fmsTicketGenerated",
+            "action" : "Ctm1UpdateFormData"
+        },
+        {
+            "eventId": "ctm1.fileTicketCreated",
+            "action": "Ctm1UploadFile"
+        },
+        {
+            "eventId": "ctm1.fileUploaded",
+            "action": "Ctm1CheckUploadsComplete"
+        },
+        {
+            "eventId": "ctm1.fileUploadedComplete",
+            "action": "Ctm1ImportTopic"
+        },
+        {
+            "eventId": "ctm1.importComplete",
+            "action": "pasteTopic",
+            "cacheEventData": true
+        },
+        {
+            "eventId": "awPanel.reveal",
+            "criteria": {
+                "panelId": "Ctm1ImportDitaMapSub"
+            },
+            "action": "reveal"
+        },
+        {
+            "eventId": "ctm1.resetLocal",
+            "action": "resetLocal"
+        },
+        {
+            "eventId": "ctm1.restoreLocal",
+            "action": "restoreLocal"
+        }
+    ],
+    "data": {
+        "Ctm1ImportValid": false,
+        "typeFilter": ".zip",
+        "className": "DC_DitaDynMapRevision",
+        "filenameBox": {
+            "displayName": "{{i18n.ditaMapFilename}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "",
+            "dispValue": "",
+            "labelPosition": "PROPERTY_LABEL_AT_SIDE"
+        },
+        "graphicAttributeMapping": {
+            "displayName": "{{i18n.graphicAttributeMapping}}",
+            "type": "STRING",
+            "isRequired": "true",
+            "hasLov": "true",
+            "dbValue": "",
+            "dispValue": ""
+        },
+        "graphicAttributeMappingList": {
+            "type": "STRING",
+            "dbValue": [ ]
+        },
+        "graphicMode": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "true",
+            "isEditable": "true",
+            "dbValue": "Public_id",
+            "vertical": true,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "graphicModeValues": {
+            "type": "STRING",
+            "dbValue": [
+                {
+                    "propDisplayValue": "{{i18n.publicId}}",
+                    "propInternalValue": "Public_id"
+                },
+                {
+                    "propDisplayValue": "{{i18n.originalName}}",
+                    "propInternalValue": "Import_org_name"
+                },
+                {
+                    "propDisplayValue": "{{i18n.xmlNumber}}",
+                    "propInternalValue": "XML_number"
+                },
+                {
+                    "propDisplayValue": "{{i18n.graphicName}}",
+                    "propInternalValue": "Graphic_name"
+                }
+            ]
+        },
+        "findByXMLNumberCheckbox": {
+            "displayName": "{{i18n.findByXMLNumber}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "overwriteExistingCheckbox": {
+            "displayName": "{{i18n.overwriteExisting}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        },
+        "findByContentCheckbox": {
+            "displayName": "{{i18n.findByContent}}",
+            "type": "BOOLEAN",
+            "isRequired": "false",
+            "isEditable": "true",
+            "dbValue": false,
+            "labelPosition": "PROPERTY_LABEL_AT_RIGHT"
+        }
+
+    },
+    "preferences":
+    [
+        "ctm0FileNameSeparator"
+    ],
+    "conditions":
+    {
+        "importValid": {
+            "expression": "data.files && data.files.length > 0 && data.filenameBox.uiValue.length > 0 && !data.formData"
+        },
+        "overwriteExistingCheckbox": {
+            "expression": "data.findByXMLNumberCheckbox.dbValue === true"
+        }
+    },
+    "messages": {
+        "importDitaMapSuccess": {
+            "messageType": "INFO",
+            "messageText": "{{i18n.importSuccess}}",
+            "messageTextParams": [
+                "{{data.objectName}}"
+            ]
+        },
+        "SOAErrorMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{errorCode}}"
+        },
+        "UploadFailedMessage": {
+            "messageType": "ERROR",
+            "messageText": "{{i18n.uploadFailure}}"
+        }
+    },
+    "i18n": {
+        "importDitaMap": ["ContentMgmtMessages"],
+        "graphicAttributeMapping": ["ContentMgmtMessages"],
+        "graphicMode": ["ContentMgmtMessages"],
+        "publicId": ["ContentMgmtMessages"],
+        "originalName": ["ContentMgmtMessages"],
+        "xmlNumber": ["ContentMgmtMessages"],
+        "graphicName": ["ContentMgmtMessages"],
+        "reuseExistingTopic": ["ContentMgmtMessages"],
+        "findByXMLNumber": ["ContentMgmtMessages"],
+        "overwriteExisting": ["ContentMgmtMessages"],
+        "findByContent": ["ContentMgmtMessages"],
+        "ditaMapFilename": ["ContentMgmtMessages"],
+        "uploadFailure": ["ContentMgmtMessages"],
+        "importSuccess": ["ContentMgmtMessages"],
+        "import": ["ContentMgmtMessages"]
+    }
+}

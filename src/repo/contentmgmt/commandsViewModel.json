@@ -1,0 +1,1171 @@
+{
+  "commands": {
+    "Ctm1CopyGraphicReference": {
+      "iconId": "cmdPaste",
+      "isGroup": false,
+      "title": "{{i18n.copyGraphicReference}}"
+    },
+    "Ctm1ImportTranslation": {
+      "iconId": "cmdGeneratePdf",
+      "isGroup": false,
+      "title": "{{i18n.importTranslation}}"
+    },
+    "Ctm1ExportTranslation": {
+      "iconId": "cmdGeneratePdf",
+      "isGroup": false,
+      "title": "{{i18n.exportTranslation}}",
+      "description": "{{i18n.Ctm1ExportTranslationDesc}}"
+    },
+    "Ctm1AddTransOrder": {
+      "iconId": "cmdGeneratePdf",
+      "isGroup": false,
+      "title": "{{i18n.createTranslationOrder}}",
+      "description": "{{i18n.Ctm1AddTransOrderDesc}}"
+    },
+    "Ctm1AddTransDelivery": {
+      "iconId": "cmdGeneratePdf",
+      "isGroup": false,
+      "title": "{{i18n.createTranslationDelivery}}",
+      "description": "{{i18n.Ctm1AddTransDeliveryDesc}}"
+    },
+    "Ctm1Export": {
+      "iconId": "cmdExport",
+      "isGroup": false,
+      "title": "{{i18n.exportTopic}}",
+      "description": "{{i18n.Ctm1ExportDesc}}"
+    },
+    "Ctm1Publish": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.publishTopic}}",
+      "description": "{{i18n.Ctm1PublishDesc}}"
+    },
+    "Ctm1ImportGraphic": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.importGraphic}}",
+      "description": "{{i18n.Ctm1ImportGraphicDesc}}"
+    },
+    "Ctm1ImportDMRL": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.importDMRL}}",
+      "description": "{{i18n.Ctm1ImportDMRLDesc}}"
+    },
+    "Ctm1ImportSNS": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.importSNS}}",
+      "description": "{{i18n.Ctm1ImportSNSDesc}}"
+    },
+    "Ctm1ImportTopic": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.importTopic}}",
+      "description": "{{i18n.Ctm1ImportTopicDesc}}"
+    },
+    "Ctm1ImportDitaMap": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.importDitaMap}}",
+      "description": "{{i18n.Ctm1ImportDitaMapDesc}}"
+    },
+    "Ctm1BrexValidation": {
+      "iconId": "cmdCheckmark",
+      "isGroup": false,
+      "title": "{{i18n.brexValidation}}",
+      "description": "{{i18n.Ctm1BrexValidationDesc}}"
+    },
+    "Ctm1OpenInXMetaL": {
+      "iconId": "cmdOpen",
+      "isGroup": false,
+      "title": "{{i18n.openInXMetaL}}",
+      "description": "{{i18n.Ctm1OpenInXMetaLDesc}}"
+    },
+    "Ctm1OpenInXMetaLFromContent": {
+      "iconId": "cmdOpen",
+      "isGroup": false,
+      "title": "{{i18n.openInXMetaL}}",
+      "description": "{{i18n.Ctm1OpenInXMetaLDesc}}"
+    },
+    "Ctm1OpenInOxygen": {
+      "iconId": "cmdOpen",
+      "isGroup": false,
+      "title": "{{i18n.openInOxygen}}",
+      "description": "{{i18n.Ctm1OpenInOxygenDesc}}"
+    },
+    "Ctm1OpenInOxygenFromContent": {
+      "iconId": "cmdOpen",
+      "isGroup": false,
+      "title": "{{i18n.openInOxygen}}",
+      "description": "{{i18n.Ctm1OpenInOxygenDesc}}"
+    },
+    "Ctm1ProjectSectionAddCmd": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.addProjectButtonTitle}}",
+      "description": "{{i18n.uiwidgetAddcmdDesc}}"
+    },
+    "Ctm1CreateContent": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.addContentTitle}}",
+      "description": "{{i18n.Ctm1AddContentDesc}}"
+    },
+    "Ctm1ImportContent": {
+      "iconId": "cmdAdd",
+      "isGroup": false,
+      "title": "{{i18n.Ctm1ImportContentTitle}}",
+      "description": "{{i18n.Ctm1ImportContentDesc}}"
+    }
+  },
+  "commandHandlers": {
+    "Ctm1CopyGraphicReferenceHandler": {
+      "id": "Ctm1CopyGraphicReference",
+      "action": "Ctm1GetGraphicReferenceToCopyAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "condition.objectIsGraphicOptionRevision"
+      }
+    },
+    "Ctm1ImportTranslationCommandHandler": {
+      "id": "Ctm1ImportTranslation",
+      "action": "Ctm1ShowImportTranslationAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.importTranslationVisible"
+      }
+    },
+    "Ctm1ExportTranslationCommandHandler": {
+      "id": "Ctm1ExportTranslation",
+      "action": "Ctm1ExportTranslationAction",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.objectIsTranslationDelivery"
+      }
+    },
+    "Ctm1AddTransOrderCommandHandler": {
+      "id": "Ctm1AddTransOrder",
+      "action": "Ctm1ShowNewTransOrder",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      }
+    },
+    "Ctm1AddTransDeliveryCommandHandler": {
+      "id": "Ctm1AddTransDelivery",
+      "action": "Ctm1OrderIsDelivered",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.objectIsTranslationOrder"
+      }
+    },
+    "Ctm1ExportHandler": {
+      "id": "Ctm1Export",
+      "action": "Ctm1ShowExportPanel",
+      "activeWhen": {
+        "condition": "conditions.objectIsCtm1Topic"
+      },
+      "visibleWhen": true
+    },
+    "Ctm1PublishHandler": {
+      "id": "Ctm1Publish",
+      "action": "Ctm1ShowPublishPanel",
+      "activeWhen": {
+        "condition": "conditions.objectIsCtm1Topic"
+      },
+      "visibleWhen": true
+    },
+    "Ctm1ImportGraphicHandler": {
+      "id": "Ctm1ImportGraphic",
+      "action": "Ctm1ShowImportGraphicPanel",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": true
+    },
+    "Ctm1ImportDMRLHandler": {
+      "id": "Ctm1ImportDMRL",
+      "action": "Ctm1ShowImportDMRLPanel",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": true
+    },
+    "Ctm1ImportSNSHandler": {
+      "id": "Ctm1ImportSNS",
+      "action": "Ctm1ShowImportSNSPanel",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": true
+    },
+    "Ctm1ImportTopicHandler": {
+      "id": "Ctm1ImportTopic",
+      "action": "Ctm1ShowImportTopicPanel",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": true
+    },
+    "Ctm1ImportDitaMapHandler": {
+      "id": "Ctm1ImportDitaMap",
+      "action": "Ctm1ShowImportDitaMapPanel",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": true
+    },
+    "Ctm1BrexValidationHandler": {
+      "id": "Ctm1BrexValidation",
+      "action": "Ctm1ShowBrexValidationPanel",
+      "activeWhen": {
+        "condition": "conditions.isStructureObjectDMOrPM"
+      },
+      "visibleWhen": true
+    },
+    "Ctm1OpenInXMetaLCommandHandler": {
+      "id": "Ctm1OpenInXMetaL",
+      "action": "Ctm1OpenInXMetaLAction",
+      "activeWhen": {
+        "condition": "conditions.canOpenInXMetaL"
+      },
+      "visibleWhen": true
+    },
+    "Ctm1OpenInXMetaLFromContentCommandHandler": {
+      "id": "Ctm1OpenInXMetaLFromContent",
+      "action": "Ctm1OpenInXMetaLFromContentAction",
+      "activeWhen": {
+        "condition": "conditions.canOpenInXMetaLFromContent"
+      },
+      "visibleWhen": true
+    },
+    "Ctm1OpenInOxygenCommandHandler": {
+      "id": "Ctm1OpenInOxygen",
+      "action": "Ctm1OpenInOxygenAction",
+      "activeWhen": {
+        "condition": "conditions.canOpenInOxygen"
+      },
+      "visibleWhen": true
+    },
+    "Ctm1OpenInOxygenFromContentCommandHandler": {
+      "id": "Ctm1OpenInOxygenFromContent",
+      "action": "Ctm1OpenInOxygenFromContentAction",
+      "activeWhen": {
+        "condition": "conditions.canOpenInOxygenFromContent"
+      },
+      "visibleWhen": true
+    },
+    "Ctm1OverrideCrt1CreateValidationContract": {
+      "id": "Crt1CreateValidationContract",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OverrideCm1ShowCreateChangeInContext": {
+      "id": "Cm1ShowCreateChangeInContext",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OverrideSc1CreateExchange": {
+      "id": "Sc1CreateExchange",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OverrideSc1CreateLineItem": {
+      "id": "Sc1CreateLineItem",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OverrideAwp0InContextReports": {
+      "id": "Awp0InContextReports",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OverrideEvm1CreateRecipe": {
+      "id": "Evm1CreateRecipe",
+      "activeWhen": {
+        "condition": "conditions.ctm1IsShowingEvm1CreateRecipe"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OverrideArm0CreateTraceLink": {
+      "id": "Arm0CreateTraceLink",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OverrideArm0GenerateTraceabilityMatrix": {
+      "id": "Arm0GenerateTraceabilityMatrix",
+      "activeWhen": {
+        "condition": "conditions.ctm1IsShowingArm0GenerateTraceabilityMatrix"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OverrideArm0ImportFromOffice": {
+      "id": "Arm0ImportFromOffice",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OpenNotification": {
+      "id": "Awp0OpenLineItem",
+      "action": "openContMgmtNotification",
+      "activeWhen": {
+        "condition": "conditions.enableOpenContMgmtNotificationCmd"
+      },
+      "visibleWhen": {
+        "condition": "conditions.enableOpenContMgmtNotificationCmd"
+      }
+    },
+    "Ctm1OverrideAwp0ShowImageView": {
+      "id": "Awp0ShowImageView",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OverrideAwb0ViewGroup": {
+      "id": "Awb0ViewGroup",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OverrideAwb0ConfigurationGroup": {
+      "id": "Awb0ConfigurationGroup",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OverrideAqc0AddCharRepresentation": {
+      "id": "Aqc0AddCharRepresentation",
+      "activeWhen": {
+        "condition": "conditions.ctm1IsShowingAqc0AddCharRepresentation"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OverrideAtt1SetFreezePoint": {
+      "id": "Att1SetFreezePoint",
+      "activeWhen": {
+        "condition": "conditions.ctm1IsShowingAtt1SetFreezePoint"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1OverrideFsh1AssignFinish": {
+      "id": "Fsh1AssignFinish",
+      "activeWhen": {
+        "condition": "conditions.objectIsAnyTopic"
+      },
+      "visibleWhen": false
+    },
+    "Ctm1ProjectSectionAddCmdHandler": {
+      "id": "Ctm1ProjectSectionAddCmd",
+      "action": "Ctm1ProjectSectionAddCmdAction",
+      "activeWhen": true,
+      "visibleWhen": true
+    },
+    "Ctm1AddContentHandler": {
+      "id": "Ctm1CreateContent",
+      "action": "ctm1ActivateAddContentPanel",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ctm1FolderSelected"
+      }
+    },
+    "Ctm1ImportContentHandler": {
+      "id": "Ctm1ImportContent",
+      "action": "ctm1ActivateImportContentPanel",
+      "activeWhen": true,
+      "visibleWhen": {
+        "condition": "conditions.ctm1FolderSelected"
+      }
+    },
+    "hideAceStructureFilterHandler": {
+      "id": "Awb0StructureFilterCommand",
+      "activeWhen": {
+        "condition": "conditions.isStructureObjectAnyTopic"
+      },
+      "visibleWhen": false,
+      "enableWhen": false
+    },
+    "hideAceStructureAlignHandler": {
+      "id": "Pma1AlignGroup",
+      "activeWhen": {
+        "condition": "conditions.isStructureObjectAnyTopic"
+      },
+      "visibleWhen": false,
+      "enableWhen": false
+    }
+  },
+  "commandPlacements": {
+    "Ctm1CopyGraphicReferencePlacement": {
+      "id": "Ctm1CopyGraphicReference",
+      "uiAnchor": "aw_rightWall",
+      "priority": 400,
+      "parentGroupId": "Awp0ManageGroup"
+    },
+    "Ctm1ImportTranslationCommandPlacement": {
+      "id": "Ctm1ImportTranslation",
+      "uiAnchor": "aw_rightWall",
+      "priority": 201,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "Ctm1ExportTranslationCommandPlacement": {
+      "id": "Ctm1ExportTranslation",
+      "uiAnchor": "aw_rightWall",
+      "priority": 1,
+      "parentGroupId": "Awp0ShareGroup"
+    },
+    "Ctm1AddTransOrderCommandPlacement": {
+      "id": "Ctm1AddTransOrder",
+      "uiAnchor": "aw_rightWall",
+      "priority": 200,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "Ctm1AddTransDeliveryCommandPlacement": {
+      "id": "Ctm1AddTransDelivery",
+      "uiAnchor": "aw_rightWall",
+      "priority": 200,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "Ctm1ExportPlacement": {
+      "id": "Ctm1Export",
+      "uiAnchor": "aw_rightWall",
+      "priority": 90,
+      "parentGroupId": "Awp0ShareGroup",
+      "relativeTo": "Arm0ExportToOfficeApp"
+    },
+    "Ctm1PublishPlacement": {
+      "id": "Ctm1Publish",
+      "uiAnchor": "aw_rightWall",
+      "priority": 200,
+      "parentGroupId": "Awp0ShareGroup",
+      "relativeTo": "Awp0Print"
+    },
+    "Ctm1ImportGraphicPlacement": {
+      "id": "Ctm1ImportGraphic",
+      "uiAnchor": "aw_rightWall",
+      "priority": 201,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "Ctm1ImportDMRLPlacement": {
+      "id": "Ctm1ImportDMRL",
+      "uiAnchor": "aw_rightWall",
+      "priority": 202,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "Ctm1ImportSNSPlacement": {
+      "id": "Ctm1ImportSNS",
+      "uiAnchor": "aw_rightWall",
+      "priority": 203,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "Ctm1ImportTopicPlacement": {
+      "id": "Ctm1ImportTopic",
+      "uiAnchor": "aw_rightWall",
+      "priority": 204,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "Ctm1ImportDitaMapPlacement": {
+      "id": "Ctm1ImportDitaMap",
+      "uiAnchor": "aw_rightWall",
+      "priority": 205,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "Ctm1BrexValidationPlacement": {
+      "id": "Ctm1BrexValidation",
+      "uiAnchor": "aw_rightWall",
+      "priority": 210,
+      "parentGroupId": "Awp0ManageGroup"
+    },
+    "Ctm1OpenInXMetaLOneStepCommandPlacement": {
+      "id": "Ctm1OpenInXMetaL",
+      "uiAnchor": "aw_rightWall",
+      "priority": 330,
+      "parentGroupId": "Awp0OpenGroup"
+    },
+    "Ctm1OpenInXMetaLFromContentOneStepCommandPlacement": {
+      "id": "Ctm1OpenInXMetaLFromContent",
+      "uiAnchor": "aw_rightWall",
+      "priority": 330,
+      "parentGroupId": "Awp0OpenGroup"
+    },
+    "Ctm1OpenInOxygenCommandPlacement": {
+      "id": "Ctm1OpenInOxygen",
+      "uiAnchor": "aw_rightWall",
+      "priority": 350,
+      "parentGroupId": "Awp0OpenGroup"
+    },
+    "Ctm1OpenInOxygenFromContentOneStepCommandPlacement": {
+      "id": "Ctm1OpenInOxygenFromContent",
+      "uiAnchor": "aw_rightWall",
+      "priority": 350,
+      "parentGroupId": "Awp0OpenGroup"
+    },
+    "Ctm1ProjectSectionAddCmdPlacement": {
+      "id": "Ctm1ProjectSectionAddCmd",
+      "uiAnchor": "ctm1_projectSectionCommands",
+      "priority": 100
+    },
+    "Ctm1AddContentCommandPlacement": {
+      "id": "Ctm1CreateContent",
+      "uiAnchor": "aw_rightWall",
+      "priority": 475,
+      "parentGroupId": "Awp0NewGroup"
+    },
+    "Ctm1ImportContentCommandPlacement": {
+      "id": "Ctm1ImportContent",
+      "uiAnchor": "aw_rightWall",
+      "priority": 478,
+      "parentGroupId": "Awp0NewGroup"
+    }
+  },
+  "actions": {
+    "Ctm1GetGraphicReferenceToCopyAction": {
+      "actionType": "TcSoaService",
+      "serviceName": "Core-2007-09-DataManagement",
+      "method": "expandGRMRelationsForPrimary",
+      "inputData": {
+        "primaryObjects": [
+          {
+            "uid": "{{ctx.selected.uid}}",
+            "type": "{{ctx.selected.type}}"
+          }
+        ],
+        "pref": {
+          "expItemRev": false,
+          "returnRelations": true,
+          "info": [
+            {
+              "relationTypeName": "IMAN_specification"
+            }
+          ]
+        }
+      },
+      "outputData": {
+        "otherSideObject": "output[0].relationshipData[0].relationshipObjects[0].otherSideObject"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "ctm1.copyGraphicReferenceReady",
+            "eventData": {
+              "dataset": "{{data.otherSideObject}}"
+            }
+          }
+        ]
+      }
+    },
+    "Ctm1CopyGraphicReferenceAction": {
+      "actionType": "JSFunction",
+      "method": "copyGraphicReference",
+      "inputData": {
+        "data": "{{data.eventData}}"
+      },
+      "deps": "js/Ctm1ContentMgmtService"
+    },
+    "Ctm1DownloadDataset": {
+      "actionType": "JSFunction",
+      "method": "downloadDataset",
+      "inputData": {
+        "data": "{{data.eventData}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "complete",
+            "eventData": {
+              "source": "toolAndInfoPanel"
+            }
+          }
+        ]
+      },
+      "deps": "js/Ctm1ContentMgmtService"
+    },
+    "Ctm1ShowImportTranslationAction": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ctm1ImportTranslation",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Ctm1ExportTranslationAction": {
+      "actionType": "TcSoaService",
+      "serviceName": "Core-2007-09-DataManagement",
+      "method": "expandGRMRelationsForPrimary",
+      "inputData": {
+        "primaryObjects": [
+          {
+            "uid": "{{ctx.selected.uid}}",
+            "type": "{{ctx.selected.type}}"
+          }
+        ],
+        "pref": {
+          "expItemRev": false,
+          "returnRelations": true,
+          "info": [
+            {
+              "relationTypeName": "IMAN_specification"
+            }
+          ]
+        }
+      },
+      "outputData": {
+        "otherSideObject": "output[0].relationshipData[0].relationshipObjects[0].otherSideObject"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "ctm1.translationReady",
+            "eventData": {
+              "dataset": "{{data.otherSideObject}}"
+            }
+          }
+        ]
+      }
+    },
+    "Ctm1ShowNewTransOrder": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ctm1AddTransOrder",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Ctm1OrderIsDelivered": {
+      "actionType": "TcSoaService",
+      "serviceName": "Core-2007-09-DataManagement",
+      "method": "expandGRMRelationsForPrimary",
+      "inputData": {
+        "primaryObjects": [
+          {
+            "uid": "{{ctx.selected.uid}}",
+            "type": "{{ctx.selected.type}}"
+          }
+        ],
+        "pref": {
+          "expItemRev": false,
+          "returnRelations": true,
+          "info": [
+            {
+              "relationTypeName": "ResultsInR"
+            }
+          ]
+        }
+      },
+      "outputData": {
+        "numberOfRelations": "output[0].relationshipData[0].relationshipObjects.length"
+      },
+      "events": {
+        "success": [
+          {
+            "condition": "data.numberOfRelations < 1",
+            "name": "ctm1.okayToDeliver"
+          }
+        ]
+      },
+      "actionMessages": {
+        "success": [
+          {
+            "condition": "data.numberOfRelations > 0",
+            "message": "deliveryAlreadyCreatedWarning"
+          }
+        ]
+      }
+    },
+    "Ctm1ShowNewTransDelivery": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ctm1AddTransDelivery",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Ctm1ShowExportPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ctm1Export",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Ctm1ShowPublishPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ctm1Publish",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Ctm1ShowImportGraphicPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ctm1ImportGraphic",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Ctm1ShowImportDMRLPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ctm1ImportDMRL",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Ctm1ShowImportSNSPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ctm1ImportSNS",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Ctm1ShowImportTopicPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ctm1ImportTopic",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Ctm1ShowImportDitaMapPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ctm1ImportDitaMap",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Ctm1ShowBrexValidationPanel": {
+      "actionType": "JSFunction",
+      "method": "activateCommandPanel",
+      "deps": "js/commandPanel.service",
+      "inputData": {
+        "commandId": "Ctm1BrexValidation",
+        "location": "aw_toolsAndInfo"
+      }
+    },
+    "Ctm1OpenInXMetaLAction": {
+      "actionType": "JSFunction",
+      "method": "openInXMetaL",
+      "deps": "js/Ctm1ContentMgmtService",
+      "inputData": {
+        "uid": "{{ctx.selected.uid}}",
+        "itemId": "{{ctx.selected.props.object_string.dbValues[0]}}"
+      }
+    },
+    "Ctm1OpenInXMetaLFromContentAction": {
+      "actionType": "JSFunction",
+      "method": "openInXMetaL",
+      "deps": "js/Ctm1ContentMgmtService",
+      "inputData": {
+        "uid": "{{ctx.mselected[0].props.awb0UnderlyingObject.dbValues[0]}}",
+        "itemId": "{{ctx.mselected[0].props.awb0UnderlyingObject.uiValues[0]}}"
+      }
+    },
+    "Ctm1OpenInOxygenAction": {
+      "actionType": "JSFunction",
+      "method": "openInOxygen",
+      "deps": "js/Ctm1ContentMgmtService",
+      "inputData": {
+        "uid": "{{ctx.selected.uid}}",
+        "itemId": "{{ctx.selected.props.object_string.dbValues[0]}}"
+      }
+    },
+    "Ctm1OpenInOxygenFromContentAction": {
+      "actionType": "JSFunction",
+      "method": "openInOxygen",
+      "deps": "js/Ctm1ContentMgmtService",
+      "inputData": {
+        "uid": "{{ctx.mselected[0].props.awb0UnderlyingObject.dbValues[0]}}",
+        "itemId": "{{ctx.mselected[0].props.awb0UnderlyingObject.uiValues[0]}}"
+      }
+    },
+    "openContMgmtNotification": {
+      "actionType": "JSFunction",
+      "method": "openLineItem",
+      "inputData": {
+        "notificationObject": "{{commandContext}}"
+      },
+      "events": {
+        "success": [
+          {
+            "name": "NotificationMessage.markRead"
+          }
+        ]
+      },
+      "deps": "js/Ctm1ContentMgmtService"
+    },
+    "ctm1ActivateAddContentPanel": {
+      "actionType": "activateCommandPanel",
+      "inputData": {
+        "commandId": "Ctm1CreateContent",
+        "location": "aw_toolsAndInfo",
+        "config": {
+          "isPinUnpinEnabled": true
+        }
+      }
+    },
+    "ctm1ActivateImportContentPanel": {
+      "actionType": "activateCommandPanel",
+      "inputData": {
+        "commandId": "Ctm1ImportContent",
+        "location": "aw_toolsAndInfo",
+        "config": {
+          "isPinUnpinEnabled": true
+        }
+      }
+    },
+    "Ctm1ProjectSectionAddCmdAction": {
+      "actionType": "JSFunction",
+      "method": "updateAtomicDataValue",
+      "inputData": {
+        "AtomicObj": "{{commandContext}}",
+        "value": {
+          "activeView": "AssignProjectSub"
+        }
+      },
+      "deps": "js/addObjectUtils"
+    }
+  },
+  "functions": {},
+  "onEvent": [
+    {
+      "eventId": "ctm1.translationReady",
+      "action": "Ctm1DownloadDataset",
+      "cacheEventData": true
+    },
+    {
+      "eventId": "ctm1.okayToDeliver",
+      "action": "Ctm1ShowNewTransDelivery"
+    },
+    {
+      "eventId": "ctm1.copyGraphicReferenceReady",
+      "action": "Ctm1CopyGraphicReferenceAction",
+      "cacheEventData": true
+    }
+  ],
+  "messages": {
+    "deliveryAlreadyCreatedWarning": {
+      "messageType": "ERROR",
+      "messageText": "{{i18n.deliveryAlreadyCreate}}"
+    }
+  },
+  "conditions": {
+    "ctm1VersionCondition12_2": {
+      "expression": "ctx.tcSessionData.tcMajorVersion === 12 && ctx.tcSessionData.tcMinorVersion > 2"
+    },
+    "ctm1VersionCondition13": {
+      "expression": "ctx.tcSessionData.tcMajorVersion > 12"
+    },
+    "importTranslationSoaAvailable": {
+      "expression": "conditions.ctm1VersionCondition12_2 || conditions.ctm1VersionCondition13"
+    },
+    "importTranslationVisible": {
+      "expression": "conditions.objectIsAnyTopic && conditions.importTranslationSoaAvailable"
+    },
+    "objectIsCtm1Topic": {
+      "expression": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'Ctm1Topic' ) > -1"
+    },
+    "objectIsTopic": {
+      "expression": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'DC_TopicRevision' ) > -1"
+    },
+    "objectIsGraphicOptionRevision": {
+      "expression": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'GraphicOptionRevision') > -1"
+    },
+    "objectIsAnyTopic": {
+      "expression": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'Ctm1Topic' ) > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf( 'DC_TopicRevision' ) > -1"
+    },
+    "objectIsTranslationOrder": {
+      "expression": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'TranslationOrderRevision' ) > -1"
+    },
+    "objectIsTranslationDelivery": {
+      "expression": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'TranslatnDelvryRevision' ) > -1"
+    },
+    "objectIsTranslation": {
+      "expression": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'DCt_TranslationRevision' ) > -1"
+    },
+    "oneObjectIsSelected": {
+      "expression": "!ctx.mselected || ctx.mselected.length === 1"
+    },
+    "canOpenInXMetaL": {
+      "expression": "conditions.objectIsTopic || conditions.objectIsTranslation"
+    },
+    "canOpenInXMetaLFromContent": {
+      "expression": "conditions.objectIsCtm1Topic && conditions.oneObjectIsSelected"
+    },
+    "canOpenInOxygen": {
+      "expression": "(conditions.objectIsTopic || conditions.objectIsTranslation) && conditions.ctm1EnableOxygenIntegration"
+    },
+    "canOpenInOxygenFromContent": {
+      "expression": "conditions.objectIsCtm1Topic && conditions.oneObjectIsSelected && conditions.ctm1EnableOxygenIntegration"
+    },
+    "ctm1EnableOxygenIntegration": {
+      "expression": "ctx.preferences.ctm0EnableOxygenIntegration[0]==='true' || ctx.preferences.ctm0EnableOxygenIntegration[0]==='True' || ctx.preferences.ctm0EnableOxygenIntegration[0]==='TRUE' && ctx.tcSessionData.tcMajorVersion === 14 && ctx.tcSessionData.tcMinorVersion >= 1"
+    },
+    "ctm1ShowChildLinesView": {
+      "expression": "ctx.parametersTableViewMode !== undefined && ctx.parametersTableViewMode.viewModeContext === 'showChildLines'"
+    },
+    "ctm1OnlyElementsSelectedInTreeMode": {
+      "expression": "conditions.ctm1ShowChildLinesView && ctx.parametersTable.selectedElementsFromProxy.length > 0 && ctx.parametersTable.selectedObjects.length === ctx.parametersTable.selectedElementsFromProxy.length"
+    },
+    "ctm1IsShowingArm0GenerateTraceabilityMatrix": {
+      "expression": {
+        "$and": [
+          {
+            "$source": "conditions.ctm1IsCreateTracelinkCommandVisible",
+            "$query": {
+              "$eq": true
+            }
+          },
+          {
+            "$source": "conditions.objectIsAnyTopic",
+            "$query": {
+              "$eq": true
+            }
+          }
+        ]
+      }
+    },
+    "enableOpenContMgmtNotificationCmd": {
+      "expression": "commandContext.group.groupName==='CONTMGMT'"
+    },
+    "ctm1IsShowingAqc0AddCharRepresentation": {
+      "expression": {
+        "$and": [
+          {
+            "$source": "conditions.ctm1IsAddCharRepVisible",
+            "$query": {
+              "$eq": true
+            }
+          },
+          {
+            "$source": "conditions.objectIsAnyTopic",
+            "$query": {
+              "$eq": true
+            }
+          }
+        ]
+      }
+    },
+    "ctm1IsShowingAtt1SetFreezePoint": {
+      "expression": {
+        "$and": [
+          {
+            "$source": "conditions.ctm1setFreezePointCommandVisibilityCond",
+            "$query": {
+              "$eq": true
+            }
+          },
+          {
+            "$source": "conditions.objectIsAnyTopic",
+            "$query": {
+              "$eq": true
+            }
+          }
+        ]
+      }
+    },
+    "ctm1IsShowingEvm1CreateRecipe": {
+      "expression": {
+        "$and": [
+          {
+            "$source": "conditions.ctm1createRecipeFromBomSelection",
+            "$query": {
+              "$eq": true
+            }
+          },
+          {
+            "$source": "conditions.objectIsAnyTopic",
+            "$query": {
+              "$eq": true
+            }
+          }
+        ]
+      }
+    },
+    "ctm1setFreezePointCommandVisibilityCond": {
+      "expression": "conditions.ctm1IsTcReleaseAtLeast123 && conditions.ctm1InAceContext && ( ctx.selected.modelType.typeHierarchyArray.indexOf( 'Awb0Element' ) > -1 || conditions.ctm1OnlyElementsSelectedInTreeMode )  && conditions.ctm1projectModelNotSelected"
+    },
+    "ctm1IsTcReleaseAtLeast123": {
+      "expression": "ctx.tcSessionData.tcMajorVersion > 12 || ctx.tcSessionData.tcMajorVersion === 12 && ctx.tcSessionData.tcMinorVersion >= 3"
+    },
+    "ctm1InAceContext": {
+      "expression": "ctx.occmgmtContext.modelObject.modelType.typeHierarchyArray.indexOf('Awb0Element') > -1"
+    },
+    "ctm1projectModelNotSelected": {
+      "expression": "ctx.occmgmtContext.modelObject.modelType.typeHierarchyArray.indexOf('Uml1ModelElement') === -1 && ctx.pselected.modelType.typeHierarchyArray.indexOf( 'Uml1ModelElement' ) === -1"
+    },
+    "ctm1createRecipeFromBomSelection": {
+      "expression": "ctx.occmgmtContext && ctx.occmgmtContext.selectedModelObjects && ctx.occmgmtContext.selectedModelObjects.length > 0 && ctx.occmgmtContext.topElement.modelType.typeHierarchyArray.indexOf('Fgf0ApplicationModel') === -1  && conditions.ctm1isTcReleaseAtLeast122Version"
+    },
+    "ctm1isTcReleaseAtLeast122Version": {
+      "expression": "ctx.tcSessionData.tcMajorVersion > 12 || ( ctx.tcSessionData.tcMajorVersion === 12 && ctx.tcSessionData.tcMinorVersion >= 2 )"
+    },
+    "ctm1IsAddCharRepVisible": {
+      "expression": "ctx.mselected.length === 1 && conditions.ctm1IsOccStructure"
+    },
+    "ctm1IsOccStructure": {
+      "expression": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'Awb0Element' ) > -1 && ctx.sublocation.nameToken === 'com.siemens.splm.client.occmgmt:OccurrenceManagementSubLocation'"
+    },
+    "ctm1IsCreateTracelinkCommandVisible": {
+      "expression": "(conditions.ctm1IsCreateTracelinkCommandVisibleAce || conditions.ctm1IsCreateTracelinkCommandVisibleNonAce)"
+    },
+    "ctm1IsCreateTracelinkCommandVisibleAce": {
+      "expression": "ctx.occmgmtContext  && (ctx.selected.modelType.typeHierarchyArray.indexOf( 'Awb0ConditionalElement' ) > -1 || ctx.selected.modelType.typeHierarchyArray.indexOf( 'ItemRevision' ) > -1)"
+    },
+    "ctm1IsCreateTracelinkCommandVisibleNonAce": {
+      "expression": "!ctx.occmgmtContext && ctx.visibleServerCommands.Arm0CreateTraceLink"
+    },
+    "ctm1FolderSelected": {
+      "expression": "ctx.selected.modelType.typeHierarchyArray.indexOf( 'Folder' ) > -1 && ctx.sublocation.nameToken === 'com.siemens.splm.clientfx.tcui.xrt.objectNavigationSubLocation' && ctx.mselected.length === 1"
+    },
+    "isStructureObjectAnyTopic": {
+      "expression": "ctx.occmgmtContext && ( ctx.occmgmtContext.selectedModelObjects[0].modelType.typeHierarchyArray.indexOf( 'Ctm1Topic' ) > -1 || ctx.occmgmtContext.selectedModelObjects[0].modelType.typeHierarchyArray.indexOf( 'DC_TopicRevision' ) > -1 )"
+    },
+    "isStructureObjectPM": {
+      "expression": "ctx.occmgmtContext && ctx.occmgmtContext.selectedModelObjects[0].modelType.typeHierarchyArray.indexOf( 'Ctm1Topic' ) > -1 && (ctx.occmgmtContext.selectedModelObjects[0].props.awb0UnderlyingObjectType === undefined || ctx.occmgmtContext.selectedModelObjects[0].props.awb0UnderlyingObjectType.dbValues[0] === 'DC_SkdPMRevision' || ctx.occmgmtContext.selectedModelObjects[0].props.awb0UnderlyingObjectType.dbValues[0] === 'Civ0PM4Revision')"
+    },
+    "isStructureObjectDM": {
+      "expression": "ctx.occmgmtContext && ctx.occmgmtContext.selectedModelObjects[0].modelType.typeHierarchyArray.indexOf( 'Ctm1Topic' ) > -1 && ( ctx.occmgmtContext.selectedModelObjects[0].props.awb0UnderlyingObjectType === undefined || ctx.occmgmtContext.selectedModelObjects[0].props.awb0UnderlyingObjectType.dbValues[0] === 'Civ0DM4Revision')"
+    },
+    "isStructureObjectDMOrPM": {
+      "expression": "( conditions.isStructureObjectDM || conditions.isStructureObjectPM )"
+    }
+  },
+  "i18n": {
+    "copyGraphicReference": [
+      "ContentMgmtMessages"
+    ],
+    "createTranslationOrder": [
+      "ContentMgmtMessages"
+    ],
+    "createTranslationDelivery": [
+      "ContentMgmtMessages"
+    ],
+    "exportTopic": [
+      "ContentMgmtMessages"
+    ],
+    "publishTopic": [
+      "ContentMgmtMessages"
+    ],
+    "exportTranslation": [
+      "ContentMgmtMessages"
+    ],
+    "importGraphic": [
+      "ContentMgmtMessages"
+    ],
+    "importDMRL": [
+      "ContentMgmtMessages"
+    ],
+    "importSNS": [
+      "ContentMgmtMessages"
+    ],
+    "importTopic": [
+      "ContentMgmtMessages"
+    ],
+    "importDitaMap": [
+      "ContentMgmtMessages"
+    ],
+    "brexValidation": [
+      "ContentMgmtMessages"
+    ],
+    "openInXMetaL": [
+      "ContentMgmtMessages"
+    ],
+    "openInOxygen": [
+      "ContentMgmtMessages"
+    ],
+    "importTranslation": [
+      "ContentMgmtMessages"
+    ],
+    "deliveryAlreadyCreate": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1ExportTranslationDesc": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1AddTransOrderDesc": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1AddTransDeliveryDesc": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1ExportDesc": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1PublishDesc": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1ImportGraphicDesc": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1ImportDMRLDesc": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1ImportSNSDesc": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1ImportTopicDesc": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1ImportDitaMapDesc": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1BrexValidationDesc": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1OpenInXMetaLDesc": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1OpenInOxygenDesc": [
+      "ContentMgmtMessages"
+    ],
+    "addProjectButtonTitle": [
+      "awAddDirectiveMessages"
+    ],
+    "uiwidgetAddcmdDesc": [
+      "awAddDirectiveMessages"
+    ],
+    "ctm1_projectSectionCommands": [
+      "ContentMgmtMessages"
+    ],
+    "addContentTitle": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1AddContentDesc": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1ImportContentTitle": [
+      "ContentMgmtMessages"
+    ],
+    "Ctm1ImportContentDesc": [
+      "ContentMgmtMessages"
+    ]
+  }
+}

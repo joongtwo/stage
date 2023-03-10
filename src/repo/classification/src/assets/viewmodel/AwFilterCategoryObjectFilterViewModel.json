@@ -1,0 +1,77 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "actions": {
+        "render": {
+            "method": "awFilterCategoryObjectFilterRenderFunction",
+            "deps": "js/AwFilterCategoryObjectFilterService"
+        },
+        "updateNumberOfFiltersToShowForMoreLink": {
+            "actionType": "JSFunctionAsync",
+            "method": "updateNumberOfFiltersToShowForMoreLink",
+            "inputData": {
+                "props": "{{props}}",
+                "numberOfFiltersToShow": "{{data.numberOfFiltersToShow}}"
+            },
+            "outputData": {
+                "numberOfFiltersToShow": ""
+            },
+            "deps": "js/AwFilterPanelUtils"
+        },
+        "updateNumberOfFiltersToShowForLessLink": {
+            "actionType": "JSFunction",
+            "method": "updateNumberOfFiltersToShowForLessLink",
+            "inputData": {
+                "props": "{{props}}",
+                "numberOfFiltersToShow": "{{data.numberOfFiltersToShow}}"
+            },
+            "outputData": {
+                "numberOfFiltersToShow": ""
+            },
+            "deps": "js/AwFilterPanelUtils"
+        }
+    },
+    "data": {
+        "numberOfFiltersToShow": {
+            "displayName": "{{i18n.numberOfFiltersToShow}}",
+            "type": "INTEGER",
+            "isRequired": "false",
+            "propertyDisplayName": "numberOfFiltersToShow",
+            "dbValue": 5
+        },
+        "facetSearchString": {
+            "displayName": "",
+            "type": "STRING",
+            "isRequired": "false",
+            "isEditable": "true",
+            "propertyDisplayName": "",
+            "requiredText": "Filter",
+            "dbValue": ""
+        }
+    },
+    "i18n": {
+        "numberOfFiltersToShow": [ "ClassificationPanelMessages" ]
+    },
+    "conditions": {},
+    "onEvent": [],
+    "props": {
+        "category": {
+            "type": "object"
+        },
+        "facetAction": {
+            "type": "object"
+        },
+        "updateNumberOfFiltersShown": {
+            "type": "boolean"
+        },
+        "noResultsFoundLabel": {
+            "type": "object"
+        },
+        "selectFilterAction": {
+            "type": "object"
+        }
+    },
+    "lifecycleHooks": {
+        "render": "render"
+    }
+}

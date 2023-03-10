@@ -1,0 +1,147 @@
+{
+    "props": {
+        "search-state": {
+            "type": "object"
+        },
+        "sidenav-mode": {
+            "type": "object"
+        },
+        "selection-data": {
+            "type": "object"
+        }
+    },
+    "lifecycleHooks": {
+        "onMount": "establishNavState",
+        "onUpdate": [ {
+            "action": "updateSearchLocation",
+            "observers": [
+                "viewModel.atomicData.selectionData"
+            ]
+        } ]
+    },
+    "schemaVersion": "1.0.0",
+    "imports": [],
+    "ports": {
+        "nodeData": {
+            "syncObject": {}
+        }
+    },
+    "data": {
+        "sortOption": {
+            "type": "INTEGER"
+        },
+        "selectionData": {
+            "initialValues": {},
+            "meta": {}
+        },
+        "navigateState": {
+            "initialValues": {
+                "showNavigateImage": false,
+                "searchString": ""
+            },
+            "meta": {
+                "showNavigateImage":{
+                    "type": "BOOLEAN",
+                    "field": "true"
+                },
+                "searchString": {
+                    "type": "STRING",
+                    "field": "true"
+                }
+            }
+        }
+    },
+    "actions": {
+        "establishNavState": {
+            "actionType": "JSFunction",
+            "method": "establishNavState",
+            "inputData": {
+                "navState": "{{data.navigateState}}",
+                "searchState": "{{props.searchState}}",
+                "selectionData": "{{data.selectionData}}"
+            },
+            "outputData": {
+                "navigateState": ""
+            },
+            "deps": "js/Awp0ClassificationSearchNavigateService"
+        },
+        "clsLocationLaunched": {
+            "actionType": "JSFunction",
+            "method": "clsLocationLaunched",
+            "inputData": {
+                "ctx": "{{ctx.clsLocation}}"
+            },
+            "deps": "js/classifySearchService"
+        },
+        "setPanelIsClosedOnCtx": {
+            "actionType": "JSFunction",
+            "method": "setPanelIsClosedOnCtx",
+            "inputData": {},
+            "deps": "js/classifySearchService"
+        },
+        "activateClassificationSearchFilters": {
+            "actionType": "batchJob",
+            "steps": [
+                {
+                    "action": "updateNodeDataSync"
+                },
+                {
+                    "action": "activateSearchFilters"
+                }
+            ]
+
+        },
+        "activateSearchFilters": {
+            "actionType": "JSFunction",
+            "method": "activateCommandPanel",
+            "deps": "js/commandPanel.service",
+            "inputData": {
+                "commandId": "Awp0SearchFilter",
+                "location": "aw_navigation"
+            }
+        },
+        "updateSearchLocation": {
+            "actionType": "JSFunction",
+            "method": "updateSearchLocation",
+            "inputData": {
+                "selectionData": "{{data.selectionData}}",
+                "searchState": "{{props.searchState}}",
+                "navigateState": "{{data.navigateState}}"
+            },
+            "deps": "js/Awp0ClassificationSearchNavigateService"
+        },
+        "updateNodeDataSync": {
+            "actionType": "Sync",
+            "inputData": {
+                "port": "nodeData",
+                "syncObject": {
+                    "selectedNode": "{{props.searchState.selectedClassNode}}"
+                }
+            }
+        }
+    },
+    "dataProviders": {},
+    "columnProviders": {},
+    "grids": {
+
+    },
+    "conditions": {
+    },
+    "onEvent": [
+        {
+            "eventId": "activate.classificationSearchFilters",
+            "action": "activateClassificationSearchFilters"
+        },
+        {
+            "eventId": "classifyLocation.getPreferences",
+            "condition": "!ctx.clsAdmin.eReleases",
+            "action": "getEReleases"
+        }
+    ],
+    "messages": {
+    },
+    "functions": {
+    },
+    "i18n": {
+    }
+}

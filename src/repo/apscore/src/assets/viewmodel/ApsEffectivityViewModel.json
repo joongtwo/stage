@@ -1,0 +1,48 @@
+{
+    "schemaVersion": "1.0.0",
+    "i18n": {
+        "effectivity": [
+            "ApsEffectivityMessages"
+        ],
+        "addEffectivity": [
+            "ApsEffectivityMessages"
+        ],
+        "editEffectivity": [
+            "ApsEffectivityMessages"
+        ]
+    },
+    "data": {
+        "apsExpEffState": {
+            "initialValues": {
+                "activeView": "ApsEffectivitySub",
+                "effectivities":{
+                },
+                "editEffectivity":{
+                }
+            },
+            "meta": { }
+        }
+    },
+    "actions": {
+        "backAction":
+        {
+            "actionType": "JSFunction",
+            "method": "setActiveView",
+            "inputData":
+            {
+                "destinationPanelId":"ApsEffectivitySub",
+                "apsExpEffState": "{{data.apsExpEffState}}"
+            },
+            "outputData": {
+                "apsExpEffState":""
+            },
+            "deps": "js/apsEffectivityAuthoringService"
+        }
+    },
+    "props": {
+        "sub-panel-context": {
+            "type": "object"
+        }
+
+    }
+}

@@ -1,0 +1,204 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel.directive",
+        "js/aw-widget.directive"
+    ],
+
+    "actions": {
+        "updateDataSource": {
+            "actionType": "JSFunction",
+            "method": "addHtmlPanelInDataSource",
+            "inputData": {
+                "data": "{{data}}",
+                "type": "{{data.subPanelContext.xrtType}}",
+                "panelID": "Ctm1CreateLanguage"
+            },
+            "deps": "js/addObjectUtils"
+        },
+
+        "reveal": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 5,
+                    "maxToReturn": 5,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "__ctm0_Language_Query",
+                        "searchID": "LANGUAGE_QUERY",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0",
+                        "lastEndIndex": "0",
+                        "languageName": "{{function:getDefaultLanguage}}",
+                        "startIndex": "{{data.dataProviders.languageProvider.startIndex}}"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "languageName",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "policy": {
+                "types": [ {
+                    "name": "DCt_Language",
+                    "properties": [ {
+                        "name": "languageName"
+                    } ]
+                } ]
+            },
+
+            "outputData": {
+                "lovValues": "{{function:setLanguage}}"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+        "loadAction": {
+            "actionType": "TcSoaService",
+            "serviceName": "Internal-AWS2-2019-06-Finder",
+            "method": "performSearchViewModel4",
+            "inputData": {
+                "columnConfigInput": {
+                    "clientName": "AWClient",
+                    "clientScopeURI": ""
+                },
+                "inflateProperties": false,
+                "saveColumnConfigData": {},
+                "searchInput": {
+                    "maxToLoad": 250,
+                    "maxToReturn": 250,
+                    "providerName": "Awp0SavedQuerySearchProvider",
+                    "searchCriteria": {
+                        "queryName": "__ctm0_Language_Query",
+                        "searchID": "LANGUAGE_QUERY",
+                        "typeOfSearch": "ADVANCED_SEARCH",
+                        "utcOffset": "0",
+                        "lastEndIndex": "0",
+                        "languageName": "{{function:getSearchString}}",
+                        "startIndex": "{{data.dataProviders.languageProvider.startIndex}}"
+                    },
+                    "searchSortCriteria": [ {
+                        "fieldName": "languageName",
+                        "sortDirection": "ASC"
+                    } ]
+                }
+            },
+
+            "policy": {
+                "types": [ {
+                    "name": "DCt_Language",
+                    "properties": [ {
+                        "name": "languageName"
+                    } ]
+                } ]
+            },
+
+            "outputData": {
+                "lovValues": "{{function:getLovFromQuery}}",
+                "totalFound": "totalFound"
+            },
+
+            "deps": "js/Ctm1ContentMgmtService"
+        },
+        "validateList": {
+            "actionType": "JSFunction",
+            "method": "rejectSuggestions",
+            "inputData": {
+                "suggestion": "request.suggestion"
+            },
+            "outputData": {
+                "valid": "valid",
+                "message": "message"
+            },
+            "deps": "js/Ctm1ContentMgmtService"
+        }
+    },
+
+    "data": {
+        "revision__ctm0MasterLanguageTagref": {
+            "dbValue": "",
+            "displayName": "{{i18n.masterLanguage}}",
+            "type": "STRING",
+            "dataProvider": "languageProvider",
+            "isRequired": "true",
+            "isEditable": "true"
+        }
+    },
+
+    "dataProviders": {
+        "languageProvider": {
+            "initializeAction": "loadAction",
+            "nextAction": "loadAction",
+            "response": "{{data.lovValues}}",
+            "totalFound": "{{data.totalFound}}",
+            "valid": "{{data.valid}}",
+            "message": "{{data.message}}",
+            "moreValuesExist": false
+        }
+    },
+
+    "functions": {
+        "getDefaultLanguage": {
+            "functionName": "getDefaultLanguage",
+            "parameters": []
+        },
+        "setLanguage": {
+            "functionName": "setLanguage",
+            "parameters": [
+                "{{data}}",
+                "{{response}}"
+            ]
+        },
+        "getLovFromQuery": {
+            "functionName": "getLovFromQuery",
+            "parameters": [
+                "{{data}}"
+            ]
+        },
+        "getSearchString": {
+            "functionName": "getSearchString",
+            "parameters": [
+                "{{data.revision__ctm0MasterLanguageTagref.filterString}}"
+            ]
+        }
+    },
+
+    "lifecycleHooks": {
+        "onMount": "updateDataSource",
+        "onUpdate": {
+            "action": "updateDataSource",
+            "observers": [ "viewModel.data" ]
+        },
+        "onInit": "reveal"
+    },
+
+    "onEvent": [
+
+    ],
+
+    "conditions": {
+
+    },
+
+    "preferences": [
+        "ctm0DefaultLanguage"
+    ],
+
+    "messages": {
+
+    },
+
+    "i18n": {
+        "masterLanguage": [ "ContentMgmtMessages" ]
+    }
+}

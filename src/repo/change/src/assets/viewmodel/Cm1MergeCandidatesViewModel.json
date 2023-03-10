@@ -1,0 +1,94 @@
+{
+    "schemaVersion": "1.0.0",
+    "imports": [
+        "js/aw-panel-body.directive",
+        "js/aw-default-cell.directive",
+        "js/aw-list.directive"
+    ],
+    "actions": {
+        "callGetMergeCandidatesSoa": {
+            "actionType": "JSFunction",
+            "deps": "js/Cm1RevertMergeUtils",
+            "method": "callGetMergeCandidatesSoa",
+            "inputData": {
+                "data":"{{data}}"
+            },
+            "outputData": {
+                "showMergeAllButton": "showMergeAllButton"
+            }
+        },
+        "updateMergeCandidateProvider": {
+            "actionType": "JSFunction",
+            "method": "updateMergeCandidateProvider",
+            "inputData": {
+                "mergeCandidates": "{{data.mergeCandidates}}",
+                "data":"{{data}}"
+            },
+            "outputData": {
+                "showMergeAllButton": "showMergeAllButton"
+            },
+            "deps": "js/Cm1RevertMergeUtils"
+        },
+        "callMergeChangesSoa": {
+            "actionType": "TcSoaService",
+            "deps": "js/Cm1RevertMergeUtils",
+            "serviceName": "Internal-CmAws-2020-12-Changes",
+            "method": "mergeRedLineChanges",
+            "inputData": {
+                "mergeRedLineChangesInput": "{{function:getInputForMerge}}"
+            },
+            "events": {
+                "success": [
+                    {
+                        "name": "getMergeCandidates.reload"
+                    },
+                    {
+                        "name": "updateStartFreshNavigation"
+                    }
+                ]
+            }
+        }
+    },
+
+    "onEvent": [
+        {
+            "eventId": "occDataLoadedEvent",
+            "cacheEventData": true,
+            "action": "callGetMergeCandidatesSoa",
+            "condition": "dataProviderActionType ==='activateWindow'"
+        },
+        {
+            "eventId": "getMergeCandidates.retrieved",
+            "action": "updateMergeCandidateProvider"
+        },
+        {
+            "eventId": "getMergeCandidates.reload",
+            "action": "callGetMergeCandidatesSoa"
+        }
+    ],
+    "dataProviders": {
+
+        "mergeCandidatesDataProvider": {
+            "response": "{{data.mergeCandidates}}",
+            "totalFound": "{{data.totalFound}}"
+        }
+    },
+    "functions": {
+        "getInputForMerge": {
+            "functionName": "getInputForMerge",
+            "parameters": [
+                "{{data.dataProviders.mergeCandidatesDataProvider.viewModelCollection.loadedVMObjects}}"
+            ]
+        }
+    },
+    "props": {
+        "sub-panel-context":{
+            "type":"object"
+        }
+    },
+    "i18n": {
+        "Cm1MergeCandidatesTitle": [
+            "ChangeMessages"
+        ]
+    }
+}

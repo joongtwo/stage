@@ -1,0 +1,372 @@
+<HTML>
+
+<HEAD>
+    <META name="author" content="JUL">
+    <META name="date" content="2006-03-11">
+    
+    <LINK rel="stylesheet" href="common.css" type="text/css">
+    <SCRIPT language="JavaScript" src="common.js" type="text/javascript"></SCRIPT> 
+
+    <TITLE>MEK</TITLE>
+
+
+    <SCRIPT language="JavaScript">
+    function nocontextmenu(){ 
+          if (window.Event) { 
+                document.captureEvents(Event.MOUSEUP); 
+          } 
+          event.cancelBubble = true; 
+          event.returnValue = false; 
+          return false; 
+    } 
+    function norightclick(e) 
+    { 
+          if (window.Event) 
+          { 
+                if(e.which!=1) 
+                      return false; 
+          } 
+          else if (event.button !=1) 
+          { 
+                event.cancelBubble = true; 
+                event.returnValue = false; 
+                return false; 
+          } 
+    } 
+    // Block backspace onKeyDown 
+    function onKeyDown() { 
+          if ( (event.altKey) || ((event.keyCode == 8) && (event.srcElement.type != "text" && 
+                event.srcElement.type != "textarea" && event.srcElement.type != "password")) || 
+                ((event.ctrlKey) && ((event.keyCode == 78) || (event.keyCode == 82)) ) || 
+                (event.keyCode == 116) ) 
+          { 
+                event.keyCode = 0; 
+                event.returnValue = false; 
+          } 
+    } 
+    </SCRIPT>
+
+
+    <SCRIPT language="JavaScript">
+// Copyright 2004 MTM Softwarehaus Dresden
+// Hilfsfunktionen fuer HTML-Datenkarten
+// 2004-04-26 TOM
+
+
+var MTMcolorSelect = '#FFCC00';  // Farbe für Hervorhebungen beim Ueberstreichen mit der Maus
+var MTMcolorDeselect;            // Hier wird waehrend der Hervorhebung die urspruengliche Farbe gespeichert
+var MTMdragging = 0;             // Wird beim Linksklick auf 1 gesetzt und beim Verlassen einer Zelle geprueft
+
+
+// Wird beim Ueberstreichen einer Zelle mit der Maus aufgerufen
+// 1. Parameter object ist ein HTML-Objekt, dessen Hintergrundfarbe geaendert wird (idR = this)
+// 2. Parameter Text der in einer Infozeile ausgegeben werden soll (wird nicht mehr verwendet)
+// 3. bis 5. Parameter, Daten zu dem Element
+function MTMselect(object, text, code, index, variant)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorSelect;
+       parentObj.style.background = MTMcolorSelect;
+       //alert(parentObj.nodeName + " = " + parentObj.style.background);
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        MTMcolorDeselect = parentObj.bgColor;
+        parentObj.bgColor = MTMcolorSelect;
+    }
+
+//    MTMInfo.innerHTML = '<SPAN class="MTMInfo" align="left">' + MTMgetText(text) + '</SPAN>';
+}
+
+
+// Wird beim Verlassen einer Zelle mit der Maus aufgerufen (wenn beim Verlassen immer noch die linke
+// Maustaste gedrueckt ist, wird ein Drag&Drop Event im TiCon erzeugt
+// 1. Parameter object ist ein HTML-Objekt, dessen Hintergrundfarbe zurueckgesetzt werden soll (idR = this)
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMdeselect(object, code, index, variant)
+{
+    var parentObj;
+    var protect = 10;
+
+    parentObj = object;
+    while(parentObj.nodeName != 'TD' && protect > 0) {
+       parentObj.bgColor = MTMcolorDeselect;
+       parentObj.style.background = MTMcolorDeselect;
+       protect --;
+       parentObj = parentObj.parentElement;
+       if(parentObj == null) break;
+    }
+
+    if(parentObj != null) {
+        parentObj.bgColor = MTMcolorDeselect;
+    }
+    
+    //    MTMInfo.innerHTML = '<SPAN class="MTMInfo" align="left">&nbsp;</SPAN>';
+
+    if(MTMdragging) {
+        MTMnavigate(2, code, index, variant);
+        MTMdragging=0;
+    }
+}
+
+// Loest einen Navigationsevent im TiCon aus
+// 1. Parameter Navigationscode: 1 = mit linker Maustaste angeklickt, 2 Drag & Drop, 3 Rechte Maustaste
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMnavigate(navcode, code, index, variant, time, descr)
+{
+    document.location.href=encodeURI("usercode://"+ code + "|" + index + "|" + variant + "|" + time + "|" + descr);
+}
+
+
+// Wird beim Pressen einer beliebigen Maustaste aufgerufen 
+// es wird geprueft ob Drag & Drop gestartet werden soll oder ein Rechtsklick ausgeloest werden soll
+// 1. Event der ausgeloest wurde (idR = event)
+// 2. bis 4. Parameter, Daten zu dem Element
+function MTMmouseDown(e, code, index, variant)
+{
+    if(e.button == 1) { // linke Maustaste
+       // vorbereiten zum Drag & Drop
+        MTMdragging=1;
+    } else if(e.button == 2) { // rechte Maustaste
+       // Navigieren mit NavCode 3
+       MTMnavigate(3, code, index, variant);
+    }
+}
+
+    </SCRIPT>
+
+
+    <STYLE type="text/css">
+.MTMGeneral { 
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt
+    }
+
+.MTMElement {
+    }
+
+.MTMText {
+    }
+
+A {
+    font-family: Arial;
+    font-size: 8pt;
+    color: #6F5415;
+    width: 200px;
+    }
+
+A:visited {
+    color: #6F5415;
+    }
+
+A:hover {
+    color: #AE1111;
+    }
+
+BODY {
+    background-color: ButtonFace;
+}
+
+.MTMTooltip {
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt;
+    color: #31247B;
+    background-color: #FFFFE1
+    width: 200px; 
+    }
+
+#tipBox {
+    position: absolute; 
+    z-index: 100;
+    border: 1px #663333 solid; 
+    padding: 2px 2px 2px 2px;
+    background-color: #FFFFE1;
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt;
+    color: #663333;
+    visibility: hidden;
+    filter:            progid:DXImageTransform.Microsoft.Gradient(StartColorStr=#fffcfcfe, EndColorStr=#fff4f3ee, GradientType=0)
+                    progid:DXImageTransform.Microsoft.Shadow(Color=#ff919899, Strength=2, Direction=135);
+}
+#tipBoxWidth {
+    position: absolute; 
+    left: 0px;
+    right: 0px;
+    z-index: 0;
+    border: 1px #663333 solid; 
+    padding: 2px 2px 2px 2px;
+    background-color: #FFFFE1;
+    font-family: Arial, Helvetica, sans-serif; 
+    font-size: 8pt;
+    color: #663333;
+    visibility: hidden;
+    filter:            progid:DXImageTransform.Microsoft.Gradient(StartColorStr=#fffcfcfe, EndColorStr=#fff4f3ee, GradientType=0)
+                    progid:DXImageTransform.Microsoft.Shadow(Color=#ff919899, Strength=2, Direction=135);
+}
+
+.MEKHeaderRed { font-weight: bold; color: #FF0000 }
+.MEKHeaderLightBlue { font-weight: bold; color: #FFFFFF; background-color: #3333CC }
+.MEKHeaderBlue { font-weight: bold; color: #FFFFFF; background-color: #000080; }
+.SDBHeaderRed { font-weight: bold; color: #FF0000 }
+.SDBHeaderBlue { font-weight: bold; color: #FFFFFF; background-color: #0000FF; }
+.SDBHeaderLightBlue { font-weight: bold; color: #FFFFFF; background-color: #3333CC }
+.UASHeaderLightBlue { font-weight: bold; color: #FFFFFF; background-color: #000080}
+.UASHeaderRed { font-weight: bold; color: #FF0000 }
+.MTMSPHeaderGreen { font-weight: bold; color: #FFFFFF; background-color: #006600}
+.MTM1HeaderRed { font-weight: bold; color: #FF0000 }
+.MTM2HeaderRed { font-weight: bold; color: #FF0000 }
+.MTM2HeaderGreen { font-weight: bold; color: #FFFFFF; background-color: #009966}
+.MOSHeaderBlack { font-weight: bold; color: #000000; background-color: #EAEAEA}
+.MOSHeaderRed { font-weight: bold; color: #840000;}
+.LOGHeader {  font-weight: bold; color: #993300}
+
+    </STYLE>
+
+</HEAD>
+
+<BODY bgcolor="#C6F2FC" leftmargin="6" topmargin="6" marginwidth="6" marginheight="6">
+<DIV ID=tipBox></DIV>
+<DIV ID=tipBoxWidth></DIV>
+
+<TABLE border="1" cellpadding="0" cellspacing="0" width="100%" bgcolor="#000000"><TR><TD>
+            <TABLE border="1" cellspacing="1" cellpadding="1" width="100%" class="MTMGeneral">
+                <TR align="center" bgcolor="#C6F2FC">
+                    <TD colspan="3" class="MEKHeaderRed" width="48%"><SPAN class="MTMText">Transport</SPAN></TD>
+                    <TD width="13%" class="MEKHeaderRed"><SPAN class="MTMText">Code</SPAN></TD>
+                    <TD width="13%" title="TMU per distance (longest transport distance in m) &lt;= 2">B</TD>
+                    <TD width="13%" title="TMU per distance (longest transport distance in m) &gt; 2 to &lt;= 10">C</TD>
+                    <TD width="13%" title="TMU per distance (longest transport distance in m) &gt; 10 to &lt;= 50">D</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC">
+                    <TD colspan="4" class="MEKHeaderLightBlue" width="61%"><SPAN class="MTMText">Without transport means </SPAN></TD>
+                    <TD width="13%">&nbsp;</TD>
+                    <TD width="13%">&nbsp;</TD>
+                    <TD width="13%">&nbsp;</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="3" class="MTMText" width="48%" align="left">shift transported unit</TD>
+                    <TD width="13%" class="MEKHeaderRed">A-TAA.</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TAAB..46', '', '');" title="transport, without means of transport, shift transported unit,  2m" onmouseout="MTMdeselect(this, '50A-TAAB..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TAAB..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TAAB..46', '', '',190,'transport, without means of transport, shift transported unit,  2m');">190</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TAAC..46', '', '');" title="transport, without means of transport, shift transported unit,  2-10m" onmouseout="MTMdeselect(this, '50A-TAAC..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TAAC..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TAAC..46', '', '',440,'transport, without means of transport, shift transported unit,  2-10m');">440</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TAAD..46', '', '');" title="transport, without means of transport, shift transported unit, 10-50m" onmouseout="MTMdeselect(this, '50A-TAAD..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TAAD..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TAAD..46', '', '',1650,'transport, without means of transport, shift transported unit, 10-50m');">1650</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="3" class="MTMText" width="48%" align="left">exchange transported unit</TD>
+                    <TD width="13%" class="MEKHeaderRed">A-TAB.</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TABB..46', '', '');" title="transport, without means of transport, exchange tranported unit, 2m" onmouseout="MTMdeselect(this, '50A-TABB..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TABB..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TABB..46', '', '',320,'transport, without means of transport, exchange tranported unit, 2m');">320</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TABC..46', '', '');" title="transport, without means of transport, exchange tranported unit, 2-10m" onmouseout="MTMdeselect(this, '50A-TABC..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TABC..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TABC..46', '', '',690,'transport, without means of transport, exchange tranported unit, 2-10m');">690</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TABD..46', '', '');" title="transport, without means of transport, exchange tranported unit, 10-50m" onmouseout="MTMdeselect(this, '50A-TABD..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TABD..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TABD..46', '', '',2500,'transport, without means of transport, exchange tranported unit, 10-50m');">2500</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="3" class="MEKHeaderLightBlue" width="48%" align="left"><SPAN class="MTMText">Allowance</SPAN></TD>
+                    <TD width="13%" class="MEKHeaderRed">&nbsp;</TD>
+                    <TD width="13%">&nbsp;</TD>
+                    <TD width="13%">&nbsp;</TD>
+                    <TD width="13%">&nbsp;</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="3" class="MTMText" width="48%" align="left">pour parts</TD>
+                    <TD width="13%" class="MEKHeaderRed">A-TZAA</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TZAA..46', '', '');" title="transport, allowance pour parts" onmouseout="MTMdeselect(this, '50A-TZAA..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TZAA..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TZAA..46', '', '',370,'transport, allowance pour parts');">370</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="3" class="MTMText" width="48%" align="left">accessibility (e.g. open and close door/drawer)</TD>
+                    <TD width="13%" class="MEKHeaderRed">A-TZBA</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TZBA..46', '', '');" title="transport, allowance  accessibility" onmouseout="MTMdeselect(this, '50A-TZBA..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TZBA..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TZBA..46', '', '',130,'transport, allowance  accessibility');">130</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="4" class="MEKHeaderLightBlue" width="61%" align="left"><SPAN class="MTMText">Hand-operated floor truck</SPAN></TD>
+                    <TD width="13%">&nbsp;</TD>
+                    <TD width="13%">&nbsp;</TD>
+                    <TD width="13%">&nbsp;</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="3" class="MTMText" width="48%" align="left"><B>without Get and Set</B></TD>
+                    <TD width="13%" class="MEKHeaderRed">A-TBA.</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBAC..46', '', '');" title="transport, transport cart, without get and set, 2-10m" onmouseout="MTMdeselect(this, '50A-TBAC..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBAC..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBAC..46', '', '',450,'transport, transport cart, without get and set, 2-10m');">450</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBAD..46', '', '');" title="transport, transport cart, without get and set, 10-50 m" onmouseout="MTMdeselect(this, '50A-TBAD..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBAD..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBAD..46', '', '',1650,'transport, transport cart, without get and set, 10-50 m');">1650</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD rowspan="6" class="MTMText" width="16%" align="left"><B>with Get and Set</B></TD>
+                    <TD rowspan="3" class="MTMText" width="16%" align="left">manual</TD>
+                    <TD width="16%" class="MTMText" align="left">ground-ground</TD>
+                    <TD width="13%" class="MEKHeaderRed">A-TBB.</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBBC..46', '', '');" title="transport, floor truck, manual ground-ground,  2-10m" onmouseout="MTMdeselect(this, '50A-TBBC..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBBC..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBBC..46', '', '',1350,'transport, floor truck, manual ground-ground,  2-10m');">1350</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBBD..46', '', '');" title="transport, floor truck, manual ground-ground, 10-50m" onmouseout="MTMdeselect(this, '50A-TBBD..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBBD..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBBD..46', '', '',3150,'transport, floor truck, manual ground-ground, 10-50m');">3150</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD width="16%" class="MTMText" align="left">ground-table</TD>
+                    <TD width="13%" class="MEKHeaderRed">A-TBC.</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBCC..46', '', '');" title="transport, floor truck, manual ground-table,  2-10m" onmouseout="MTMdeselect(this, '50A-TBCC..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBCC..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBCC..46', '', '',3600,'transport, floor truck, manual ground-table,  2-10m');">3600</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBCD..46', '', '');" title="transport, floor truck, manual ground-table,  10-50m" onmouseout="MTMdeselect(this, '50A-TBCD..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBCD..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBCD..46', '', '',5400,'transport, floor truck, manual ground-table,  10-50m');">5400</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD width="16%" class="MTMText" align="left">table-table</TD>
+                    <TD width="13%" class="MEKHeaderRed">A-TBD.</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBDC..46', '', '');" title="transport, floor truck, manual table-table,  2-10m" onmouseout="MTMdeselect(this, '50A-TBDC..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBDC..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBDC..46', '', '',5800,'transport, floor truck, manual table-table,  2-10m');">5800</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBDD..46', '', '');" title="transport, floor truck, manual table-table, 10-50m" onmouseout="MTMdeselect(this, '50A-TBDD..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBDD..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBDD..46', '', '',7600,'transport, floor truck, manual table-table, 10-50m');">7600</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD rowspan="3" class="MTMText" width="16%" align="left">motor-ized</TD>
+                    <TD width="16%" class="MTMText" align="left">ground-ground</TD>
+                    <TD width="13%" class="MEKHeaderRed">A-TBE.</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBEC..46', '', '');" title="transport, floor truck, motorized ground-ground,  2-10m" onmouseout="MTMdeselect(this, '50A-TBEC..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBEC..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBEC..46', '', '',1200,'transport, floor truck, motorized ground-ground,  2-10m');">1200</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBED..46', '', '');" title="transport, floor truck, motorized ground-ground,  10-50m" onmouseout="MTMdeselect(this, '50A-TBED..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBED..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBED..46', '', '',3500,'transport, floor truck, motorized ground-ground,  10-50m');">3500</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD width="16%" class="MTMText" align="left">ground-table</TD>
+                    <TD width="13%" class="MEKHeaderRed">A-TBF.</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBFC..46', '', '');" title="transport, floor truck, motorized ground-table,  2-10m" onmouseout="MTMdeselect(this, '50A-TBFC..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBFC..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBFC..46', '', '',2050,'transport, floor truck, motorized ground-table,  2-10m');">2050</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBFD..46', '', '');" title="transport, floor truck, motorized ground-table, 10-50m" onmouseout="MTMdeselect(this, '50A-TBFD..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBFD..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBFD..46', '', '',4300,'transport, floor truck, motorized ground-table, 10-50m');">4300</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD width="16%" class="MTMText" align="left">table-table</TD>
+                    <TD width="13%" class="MEKHeaderRed">A-TBG.</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBGC..46', '', '');" title="transport, floor truck, motorized table-table,  2-10m" onmouseout="MTMdeselect(this, '50A-TBGC..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBGC..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBGC..46', '', '',2650,'transport, floor truck, motorized table-table,  2-10m');">2650</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TBGD..46', '', '');" title="transport, floor truck, motorized table-table, 10-50m" onmouseout="MTMdeselect(this, '50A-TBGD..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TBGD..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TBGD..46', '', '',5000,'transport, floor truck, motorized table-table, 10-50m');">5000</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="3" class="MEKHeaderLightBlue" width="48%" align="left"><SPAN class="MTMText">Allowance per additional 10 m along transport route &gt; 50 m</SPAN></TD>
+                    <TD width="13%">&nbsp;</TD>
+                    <TD width="13%">&nbsp;</TD>
+                    <TD width="13%">&nbsp;</TD>
+                    <TD width="13%">&nbsp;</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="3" class="MTMText" width="48%" align="left">for floor truck, manual</TD>
+                    <TD width="13%" class="MEKHeaderRed">A-TZCA</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TZCA..46', '', '');" title="transport, floor truck, manual, allowance along transport route >50m    walk/10m" onmouseout="MTMdeselect(this, '50A-TZCA..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TZCA..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TZCA..46', '', '',250,'transport, floor truck, manual, allowance along transport route >50m    walk/10m');">250</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                </TR>
+                <TR bgcolor="#C6F2FC" align="center">
+                    <TD colspan="3" class="MTMText" width="48%" align="left">for floor truck, motorized</TD>
+                    <TD width="13%" class="MEKHeaderRed">A-TZDA</TD>
+                    <TD width="13%" class="MTMElement" style="cursor: hand; cursor: pointer;" onmouseover="MTMselect(this, '', '50A-TZDA..46', '', '');" title="transport, floor truck, motorized, allowance along transport route >50m   PT/10m" onmouseout="MTMdeselect(this, '50A-TZDA..46', '', '');" onmousedown="MTMmouseDown(event, '50A-TZDA..46','','');" onmouseup="MTMdragging=0;" onclick="MTMnavigate(1, '50A-TZDA..46', '', '',480,'transport, floor truck, motorized, allowance along transport route >50m   PT/10m');">480</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                    <TD width="13%" class="MTMGreyedOut">&nbsp;</TD>
+                </TR>
+            </TABLE>
+</TD></TR></TABLE>
+</BODY>
+
+</HTML>
+
